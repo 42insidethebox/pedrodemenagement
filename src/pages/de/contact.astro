@@ -4,32 +4,30 @@ import HeroText from '~/components/widgets/HeroText.astro';
 import ContactUs from '~/components/widgets/Contact.astro';
 import Features2 from '~/components/widgets/Features2.astro';
 
+import { headerDataDe, footerDataDe } from '~/navigation';
+
 const metadata = {
   title: 'Kontakt',
 };
 ---
 
-<Layout metadata={metadata}>
-  <HeroText
-    tagline="Kontakt"
-    title="Planen wir Ihren Launch"
-    subtitle="Eine Expert·in von MonWebsite.ch meldet sich innerhalb von 2 Arbeitsstunden."
-  />
+<Layout metadata={metadata} header={headerDataDe} footer={footerDataDe}>
+  <HeroText tagline="Kontakt" title="Lassen Sie uns über Ihre Website sprechen" subtitle="Eine Expertin oder ein Experte meldet sich innerhalb eines Arbeitstages." />
 
   <ContactUs
     id="form"
-    title="Demo oder Offerte anfragen"
-    subtitle="Füllen Sie das Formular aus – wir melden uns per Telefon oder Video, um Ihren 24h-Go-Live vorzubereiten."
+    title="Demo oder Angebot anfragen"
+    subtitle="Füllen Sie das Formular aus – wir melden uns per Telefon oder Video, um den Launch vorzubereiten (typischer Zeitrahmen: 5 Arbeitstage)."
     inputs={[
       {
         type: 'text',
         name: 'name',
-        label: 'Vollständiger Name',
+        label: 'Vor- und Nachname',
       },
       {
         type: 'email',
         name: 'email',
-        label: 'Business-E-Mail',
+        label: 'Geschäftliche E-Mail',
       },
       {
         type: 'text',
@@ -41,27 +39,27 @@ const metadata = {
         name: 'service',
         label: 'Gewünschtes Paket',
         options: [
-          { label: 'Express 24 h', value: 'express' },
-          { label: 'Signature', value: 'signature' },
-          { label: 'Continuum', value: 'continuum' },
+          { label: 'Essentiel', value: 'essentiel' },
+          { label: 'Automatisierung', value: 'automation' },
+          { label: 'Serviceplan', value: 'maintenance' },
           { label: 'Individuell / zu definieren', value: 'custom' },
         ],
       },
     ]}
     textarea={{
       label: 'Ihr Projekt',
-      placeholder: 'Teilen Sie Ihre Tätigkeit, Ziele und Ihren Zeitplan.',
+      placeholder: 'Beschreiben Sie Ihr Unternehmen, Ziele und Zeitplan.',
     }}
     disclaimer={{
       label:
-        'Mit dem Absenden stimmen Sie zu, dass MonWebsite.ch Ihre Daten gemäss Datenschutzrichtlinie zur Beantwortung Ihrer Anfrage verarbeitet.',
+        'Mit dem Absenden stimmen Sie zu, dass MonWebsite.ch Ihre Daten verarbeitet, um Ihre Anfrage zu beantworten – gemäss unserer Datenschutzerklärung.',
     }}
-    description="Bürozeiten Montag bis Samstag, 8–18 Uhr. Wir sprechen Französisch, Deutsch, Englisch und Italienisch."
+    description="Unsere Büros sind Montag bis Freitag von 9–17 Uhr geöffnet. Wir sprechen Französisch, Englisch und Deutsch."
   />
 
   <Features2
-    title="Kontaktieren Sie uns direkt"
-    subtitle="Wählen Sie den Kanal, der für Sie am besten passt."
+    title="Direkter Kontakt"
+    subtitle="Wählen Sie den Kanal, der zu Ihnen passt."
     items={[
       {
         title: 'Telefon',
@@ -74,23 +72,18 @@ const metadata = {
         icon: 'tabler:mail',
       },
       {
-        title: 'WhatsApp Business',
-        description: '+41 79 555 24 24',
-        icon: 'tabler:brand-whatsapp',
-      },
-      {
         title: 'Adresse',
         description: 'Rue du Grand-Chêne 8, 1003 Lausanne',
         icon: 'tabler:map-pin',
       },
       {
-        title: 'Öffnungszeiten',
-        description: 'Montag bis Samstag, 08:00 – 18:00',
+        title: 'Erreichbarkeit',
+        description: 'Montag bis Freitag, 09:00 – 17:00',
         icon: 'tabler:calendar-time',
       },
       {
         title: 'Kundensupport',
-        description: 'support@monwebsite.ch — Antwort in < 2 h',
+        description: 'support@monwebsite.ch — Antwort innerhalb eines Arbeitstages',
         icon: 'tabler:help',
       },
     ]}

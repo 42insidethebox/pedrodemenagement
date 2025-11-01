@@ -3,20 +3,21 @@ import CallToAction from '~/components/widgets/CallToAction.astro';
 import Content from '~/components/widgets/Content.astro';
 import Features2 from '~/components/widgets/Features2.astro';
 import Hero from '~/components/widgets/Hero.astro';
-import Testimonials from '~/components/widgets/Testimonials.astro';
 import Layout from '~/layouts/PageLayout.astro';
+
+import { headerDataEn, footerDataEn } from '~/navigation';
 
 const metadata = {
   title: 'Services',
 };
 ---
 
-<Layout metadata={metadata}>
+<Layout metadata={metadata} header={headerDataEn} footer={footerDataEn}>
   <Hero
     id="services"
     tagline="Our services"
-    title="Turnkey showcase websites crafted for Swiss SMEs"
-    subtitle="MonWebsite.ch combines automation and human expertise to deliver high-end websites with ongoing care."
+    title="Turnkey showcase sites for Romandie SMEs"
+    subtitle="MonWebsite.ch blends automation and human expertise to deliver high-end websites with ongoing care."
     actions={[{ variant: 'primary', text: 'See pricing', href: '/en/pricing' }]}
   >
     <Fragment slot="image">
@@ -24,7 +25,7 @@ const metadata = {
         <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Automated services</p>
         <h4 class="mt-4 text-4xl font-semibold">Design · Content · Care</h4>
         <p class="mt-6 max-w-xl text-lg text-blue-100/90">
-          A proprietary platform orchestrating production while our experts focus on quality and client relationship.
+          A proprietary platform orchestrates production while our experts focus on quality and client relationships.
         </p>
       </div>
     </Fragment>
@@ -32,26 +33,26 @@ const metadata = {
 
   <Features2
     title="Three offers, one standard"
-    subtitle="Pick the formula that matches your growth."
+    subtitle="Pick the formula that matches your growth pace."
     columns={3}
     items={[
       {
-        title: 'Express 24 h',
+        title: 'Essential',
         description:
-          'Five-section showcase site, local optimisation and hosting included. Perfect to launch your presence instantly.',
-        icon: 'tabler:bolt',
+          'Five-section showcase site, copy tuned for the Léman Arc and guided launch.',
+        icon: 'tabler:layout',
       },
       {
-        title: 'Signature',
+        title: 'Automation',
         description:
-          'Bespoke design, multilingual copywriting, business tool integrations and personalised video training.',
-        icon: 'tabler:diamond',
+          'Connect to your tools via Zapier or Make to automate forms, bookings and notifications.',
+        icon: 'tabler:api',
       },
       {
-        title: 'Continuum',
+        title: 'Care & security',
         description:
-          'Quarterly support, update campaigns, content production and continuous SEO improvements.',
-        icon: 'tabler:arrows-left-right',
+          'Technical updates, backups, pro email management and planned support at CHF 79/month.',
+        icon: 'tabler:shield-check',
       },
     ]}
   />
@@ -63,25 +64,25 @@ const metadata = {
       {
         title: 'Automated production',
         description:
-          'Our pipeline assembles your site in minutes using validated industry playbooks.',
+          'Our pipeline assembles your site using industry templates that we tailor to your identity.',
         icon: 'tabler:cube',
       },
       {
-        title: 'Human oversight',
+        title: 'Human control',
         description:
-          'Designers, copywriters and SEO experts verify every deliverable for coherence and compliance.',
+          'Designers, writers and SEO specialists review each deliverable to ensure coherence and compliance.',
         icon: 'tabler:shield-check',
       },
       {
-        title: 'Continuous delivery',
+        title: 'Planned delivery',
         description:
-          'Through our platform, your page additions or updates are handled within 48 h.',
+          'We share a clear retro-planning and adapt launch timing to your business constraints.',
         icon: 'tabler:inbox',
       },
       {
-        title: 'Monthly follow-up',
+        title: 'Essential follow-up',
         description:
-          'An automated report covering traffic, conversions and insights to maintain performance.',
+          'Regular checkpoints, assistance with updates and pragmatic recommendations.',
         icon: 'tabler:report-analytics',
       },
     ]}
@@ -95,7 +96,7 @@ const metadata = {
       <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl">
         <h4 class="text-3xl font-semibold">Supervised pipeline</h4>
         <p class="mt-6 max-w-sm text-blue-100/90">
-          32 automated checkpoints reviewed by a project lead before every launch.
+          Every project goes through full human checks: content, design, GDPR compliance and navigation tests.
         </p>
       </div>
     </Fragment>
@@ -106,33 +107,33 @@ const metadata = {
     isAfterContent
     items={[
       {
-        title: 'Local SEO & Google listings',
+        title: 'Local SEO & Google profiles',
         description:
-          'Technical optimisation, meta copywriting and Google Business Profile setup.',
+          'Technical optimisation, metadata writing and guidance for your Google Business Profile.',
         icon: 'tabler:map-pin',
       },
       {
-        title: 'Premium content',
+        title: 'Visual content',
         description:
-          'Photo shoots, short videos and storytelling aligned with your brand to capture attention.',
+          'Curated royalty-free visuals or coordination with your local providers for consistent imagery.',
         icon: 'tabler:photo',
       },
       {
         title: 'Acquisition campaigns',
         description:
-          'Landing pages, forms and automated email journeys to convert visitors into clients.',
+          'Landing pages, forms and automated email scenarios quoted according to your goals.',
         icon: 'tabler:send',
       },
       {
-        title: 'Command centre',
+        title: 'Client dashboard',
         description:
-          'Access a live dashboard to track leads, bookings and orders in real time.',
+          'Access a client area to track deliverables, share content and approve steps.',
         icon: 'tabler:layout-dashboard',
       },
     ]}
   >
     <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Long-term levers</h3>
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Levers built to last</h3>
       We activate the right tools to deliver measurable outcomes.
     </Fragment>
 
@@ -140,7 +141,7 @@ const metadata = {
       <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-left text-white shadow-xl">
         <h4 class="text-3xl font-semibold">Controlled acquisition</h4>
         <p class="mt-6 max-w-sm text-blue-100/90">
-          Campaigns calibrated to attract your local customers and measure every conversion.
+          We help you prioritise effective channels and measure what truly matters to your activity.
         </p>
       </div>
     </Fragment>
@@ -149,65 +150,38 @@ const metadata = {
   <Features2
     id="support"
     title="Support & care"
-    subtitle="Stay focused on your craft, we handle the rest."
+    subtitle="Focus on your business—we handle the rest."
     columns={3}
     items={[
       {
-        title: 'Priority helpdesk',
-        description: 'Lake Geneva hotline with responses within 2 working hours and follow-up through your portal.',
+        title: 'Planned support',
+        description: 'Replies within one business day by email or phone, tracked via your client area.',
         icon: 'tabler:headset',
       },
       {
-        title: '24/7 monitoring',
-        description: 'Automated performance watch, real-time alerts and proactive fixes.',
+        title: 'Essential monitoring',
+        description: 'Regular performance checks and alerts whenever an issue is detected.',
         icon: 'tabler:antenna',
       },
       {
-        title: 'Unlimited updates',
-        description: 'Add content, evolve the design or connect tools with no hidden fees.',
+        title: 'Security updates',
+        description: 'Critical patches, backups and restoration whenever needed.',
         icon: 'tabler:tools',
       },
       {
         title: 'GDPR compliance',
-        description: 'Cookie policy, consent management and legal documentation included.',
+        description: 'Cookie policy, legal mentions and consent banner tailored to Switzerland.',
         icon: 'tabler:shield-check',
       },
       {
-        title: 'Reinforced security',
-        description: 'SSL certificates, daily backups and automated anti-malware scans.',
-        icon: 'tabler:lock',
+        title: 'Email management',
+        description: 'Setup and support for your @yourdomain.ch accounts with SPF/DKIM.',
+        icon: 'tabler:mail',
       },
       {
-        title: 'Strategic guidance',
-        description: 'Quarterly advisory session with data analysis and personalised action plan.',
-        icon: 'tabler:target',
-      },
-    ]}
-  />
-
-  <Testimonials
-    title="Trusted by local businesses"
-    testimonials={[
-      {
-        title: 'Brasserie de la Cathédrale, Lausanne',
-        testimonial:
-          '“In 24 hours we had a polished bilingual site with online reservations. Our customers love the look and we keep full control.”',
-        name: 'Élodie Favre',
-        position: 'Owner',
-      },
-      {
-        title: 'CleanWave Services, Genève',
-        testimonial:
-          '“The automated dashboard and ongoing support make it feel like an in-house digital team. Leads doubled in two months.”',
-        name: 'Marc Schmid',
-        position: 'Director',
-      },
-      {
-        title: 'Studio Léman Coaching, Vevey',
-        testimonial:
-          '“We switched to MonWebsite.ch for the 24h delivery promise. The result is premium, fast and perfectly aligned with our brand.”',
-        name: 'Sonia Ribeiro',
-        position: 'Founder',
+        title: 'Enhancements on demand',
+        description: 'Additional pages, modules or automations quoted to match your objectives.',
+        icon: 'tabler:arrows-left-right',
       },
     ]}
   />
@@ -216,18 +190,18 @@ const metadata = {
     actions={[
       {
         variant: 'primary',
-        text: 'Book a consultation',
+        text: 'Schedule a demo',
         href: '/en/contact#form',
-        icon: 'tabler:calendar-event',
-      },
-      {
-        text: 'Discover plans',
-        href: '/en/pricing',
+        icon: 'tabler:device-desktop-analytics',
       },
     ]}
   >
-    <Fragment slot="title">Your 24 h website starts here</Fragment>
+    <Fragment slot="title">
+      Let’s discuss your next launch
+    </Fragment>
 
-    <Fragment slot="subtitle">Speak with a local expert and get your launch scheduled within one business day.</Fragment>
+    <Fragment slot="subtitle">
+      Share your goals and we’ll prepare a fully managed launch plan with MonWebsite.ch.
+    </Fragment>
   </CallToAction>
 </Layout>

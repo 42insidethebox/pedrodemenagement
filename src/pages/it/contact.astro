@@ -4,22 +4,20 @@ import HeroText from '~/components/widgets/HeroText.astro';
 import ContactUs from '~/components/widgets/Contact.astro';
 import Features2 from '~/components/widgets/Features2.astro';
 
+import { headerDataIt, footerDataIt } from '~/navigation';
+
 const metadata = {
   title: 'Contatto',
 };
 ---
 
-<Layout metadata={metadata}>
-  <HeroText
-    tagline="Contatto"
-    title="Organizziamo il tuo lancio"
-    subtitle="Un esperto MonWebsite.ch risponde entro 2 ore lavorative."
-  />
+<Layout metadata={metadata} header={headerDataIt} footer={footerDataIt}>
+  <HeroText tagline="Contatto" title="Parliamo del tuo sito chiavi in mano" subtitle="Un esperto MonWebsite.ch risponde entro un giorno lavorativo." />
 
   <ContactUs
     id="form"
     title="Richiedi demo o preventivo"
-    subtitle="Compila il form: ti ricontattiamo via telefono o video per preparare il go-live in 24 ore."
+    subtitle="Compila il modulo: ti richiameremo o fisseremo una videochiamata per preparare il lancio (timeline tipica: 5 giorni lavorativi)."
     inputs={[
       {
         type: 'text',
@@ -41,27 +39,27 @@ const metadata = {
         name: 'service',
         label: 'Pacchetto desiderato',
         options: [
-          { label: 'Express 24 h', value: 'express' },
-          { label: 'Signature', value: 'signature' },
-          { label: 'Continuum', value: 'continuum' },
-          { label: 'Personalizzato / da definire', value: 'custom' },
+          { label: 'Essenziale', value: 'essentiel' },
+          { label: 'Automazione', value: 'automation' },
+          { label: 'Piano di cura', value: 'maintenance' },
+          { label: 'Altro / da definire', value: 'custom' },
         ],
       },
     ]}
     textarea={{
       label: 'Il tuo progetto',
-      placeholder: 'Raccontaci attività, obiettivi e tempistiche.',
+      placeholder: 'Descrivi attività, obiettivi e tempi.',
     }}
     disclaimer={{
       label:
-        'Inviando il form, autorizzi MonWebsite.ch a trattare i tuoi dati per rispondere alla richiesta secondo la privacy policy.',
+        'Inviando il modulo accetti che MonWebsite.ch tratti i tuoi dati per rispondere alla richiesta, secondo la nostra privacy policy.',
     }}
-    description="Uffici aperti dal lunedì al sabato, 8–18. Parliamo francese, italiano, tedesco e inglese."
+    description="Siamo disponibili dal lunedì al venerdì, 9:00–17:00. Parliamo francese, inglese e tedesco."
   />
 
   <Features2
-    title="Contattaci direttamente"
-    subtitle="Scegli il canale più comodo per te."
+    title="Contatto diretto"
+    subtitle="Scegli il canale più comodo."
     items={[
       {
         title: 'Telefono',
@@ -74,23 +72,18 @@ const metadata = {
         icon: 'tabler:mail',
       },
       {
-        title: 'WhatsApp Business',
-        description: '+41 79 555 24 24',
-        icon: 'tabler:brand-whatsapp',
-      },
-      {
         title: 'Indirizzo',
         description: 'Rue du Grand-Chêne 8, 1003 Losanna',
         icon: 'tabler:map-pin',
       },
       {
-        title: 'Orari',
-        description: 'Lunedì–Sabato, 08:00 – 18:00',
+        title: 'Disponibilità',
+        description: 'Dal lunedì al venerdì, 9:00 – 17:00',
         icon: 'tabler:calendar-time',
       },
       {
         title: 'Supporto clienti',
-        description: 'support@monwebsite.ch — risposta in < 2 h',
+        description: 'support@monwebsite.ch — risposta entro un giorno lavorativo',
         icon: 'tabler:help',
       },
     ]}

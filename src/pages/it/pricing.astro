@@ -7,69 +7,95 @@ import Steps from '~/components/widgets/Steps.astro';
 import Features3 from '~/components/widgets/Features3.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 
+import { headerDataIt, footerDataIt } from '~/navigation';
+
 const metadata = {
   title: 'Prezzi',
 };
 ---
 
-<Layout metadata={metadata}>
+<Layout metadata={metadata} header={headerDataIt} footer={footerDataIt}>
   <HeroText
     tagline="Prezzi"
-    title="Fatturazione svizzera trasparente"
-    subtitle="Ogni piano include consegna in 24 h, hosting, supporto e manutenzione automatizzata."
+    title="Pacchetti trasparenti, fatturati in Svizzera"
+    subtitle="Ogni pacchetto include design, messa online e supporto umano. Piano di cura e automazioni su misura."
   />
 
   <Prices
-    title="Pacchetti chiavi in mano"
-    subtitle="Scegli l’offerta più adatta alle tue esigenze. Nessun costo nascosto."
+    title="I nostri pacchetti chiavi in mano"
+    subtitle="Scegli la soluzione più adatta. Nessun costo nascosto."
     prices={[
       {
-        title: 'Express 24 h',
-        subtitle: 'Presenza online immediata',
-        price: 1490,
-        period: 'CHF — una tantum',
+        title: 'Essenziale',
+        subtitle: 'Sito vetrina chiavi in mano',
+        price: 999,
+        period: 'CHF — pagamento unico',
         items: [
-          { description: 'Sito vetrina in cinque sezioni + pagina contatti' },
-          { description: 'Copywriting ottimizzato per SEO locale' },
-          { description: 'Hosting svizzero & certificato SSL inclusi per 12 mesi' },
-          { description: 'Go-live entro 24 ore lavorative' },
+          {
+            description: 'Sito vetrina con 5 sezioni + pagina contatti responsive',
+          },
+          {
+            description: 'Copywriting in francese ottimizzato per l’Arco lemanico',
+          },
+          {
+            description: 'Hosting svizzero & certificato SSL inclusi per 12 mesi',
+          },
+          {
+            description: 'Video training + checklist di autonomia',
+          },
         ],
         callToAction: {
-          text: 'Inizia ora',
+          text: 'Avvia il progetto',
           href: '/it/contact#form',
         },
       },
       {
-        title: 'Signature',
-        subtitle: 'Esperienza premium bilingue',
-        price: 2490,
-        period: 'CHF — una tantum',
+        title: 'Automazione',
+        subtitle: 'Sito + 1 flusso Zapier/Make',
+        price: 1200,
+        period: 'CHF — pagamento unico',
         items: [
-          { description: 'Design su misura con 8 sezioni + blog o landing page' },
-          { description: 'Contenuti FR/IT o FR/EN + shooting fotografico partner' },
-          { description: 'Integrazione di strumenti di prenotazione, CRM o pagamenti' },
-          { description: 'Workshop strategico di 60 minuti con un esperto' },
+          {
+            description: 'Include il pacchetto Essenziale',
+          },
+          {
+            description: 'Connessione a uno strumento via Zapier o Make (1 automazione)',
+          },
+          {
+            description: 'Test end-to-end e documentazione semplice',
+          },
+          {
+            description: 'Fino a 4 automazioni: CHF 1’500',
+          },
         ],
         callToAction: {
-          text: 'Prenota lo slot',
+          text: 'Richiedi preventivo automazioni',
           href: '/it/contact#form',
         },
         hasRibbon: true,
-        ribbonTitle: 'Più scelto',
+        ribbonTitle: 'Il più richiesto',
       },
       {
-        title: 'Continuum',
-        subtitle: 'Partnership mensile continuativa',
-        price: 290,
-        period: 'CHF / mese — impegno 12 mesi',
+        title: 'Piano di cura',
+        subtitle: 'Aggiornamenti e email professionali',
+        price: 79,
+        period: 'CHF / mese — senza sorprese',
         items: [
-          { description: 'Manutenzione illimitata & aggiornamenti settimanali' },
-          { description: 'Due contenuti premium al mese' },
-          { description: 'Campagne SEO & SEA locali gestite dal nostro team' },
-          { description: 'Report mensile + workshop trimestrale' },
+          {
+            description: 'Aggiornamenti di sicurezza e backup pianificati',
+          },
+          {
+            description: 'Monitoraggio uptime & interventi prioritari',
+          },
+          {
+            description: 'Gestione caselle @tuodominio.ch professionali',
+          },
+          {
+            description: 'Supporto email e video entro un giorno lavorativo',
+          },
         ],
         callToAction: {
-          text: 'Parla con un consulente',
+          text: 'Attiva il piano',
           href: '/it/contact#form',
         },
       },
@@ -77,38 +103,38 @@ const metadata = {
   />
 
   <Features3
-    title="Benefici inclusi"
+    title="Vantaggi inclusi"
     subtitle="Ogni offerta comprende queste garanzie."
     columns={2}
     items={[
       {
-        title: 'Supporto illimitato',
-        description: 'Risposte entro 2 ore lavorative via WhatsApp, telefono o email.',
+        title: 'Supporto umano',
+        description: 'Assistenza via email e telefono, risposta entro un giorno lavorativo.',
         icon: 'tabler:headset',
       },
       {
         title: 'Hosting sovrano',
-        description: 'Server in Svizzera, energia rinnovabile, conformità GDPR/revLDP.',
+        description: 'Server in Svizzera, conformi GDPR/LPD, con SSL incluso.',
         icon: 'tabler:server',
       },
       {
         title: 'Dashboard cliente',
-        description: 'Monitora avanzamento, performance e richieste in tempo reale.',
+        description: 'Monitora avanzamento, condividi contenuti e approva le fasi online.',
         icon: 'tabler:layout-dashboard',
       },
       {
-        title: 'Fatture chiare',
-        description: 'IVA inclusa, QR-fattura o Twint, possibilità di rate mensili.',
+        title: 'Fatturazione chiara',
+        description: 'IVA inclusa, fattura QR o Twint, possibilità di rate mensili.',
         icon: 'tabler:receipt',
       },
       {
-        title: 'Garanzia performance',
-        description: 'Punteggio Lighthouse ≥ 90 su mobile e desktop o ottimizzazione gratuita.',
+        title: 'Performance ottimizzata',
+        description: 'Architettura Astro e immagini ottimizzate per caricamenti rapidi.',
         icon: 'tabler:gauge',
       },
       {
-        title: 'Sicurezza rinforzata',
-        description: 'Backup giornalieri, anti-spam e firewall applicativo.',
+        title: 'Sicurezza potenziata',
+        description: 'Backup iniziali, firewall applicativo e aggiornamenti regolari.',
         icon: 'tabler:lock',
       },
     ]}
@@ -116,28 +142,28 @@ const metadata = {
   />
 
   <Steps
-    title="Timeline del progetto"
-    tagline="Journey"
+    title="Come si svolge il progetto"
+    tagline="Percorso"
     isReversed={true}
     items={[
       {
         title: '1. Firma digitale',
-        description: 'Conferma il pacchetto e ricevi subito l’accesso all’onboarding.',
+        description: 'Conferma il pacchetto e ricevi l’accesso onboarding.',
         icon: 'tabler:edit',
       },
       {
         title: '2. Questionario smart',
-        description: 'Condividi informazioni chiave, carica i visual e scegli i moduli.',
+        description: 'Inserisci informazioni chiave, carica visual e scegli i moduli.',
         icon: 'tabler:clipboard-list',
       },
       {
-        title: '3. Produzione automatizzata',
-        description: 'La piattaforma genera il sito mentre gli esperti rifiniscono e approvano.',
+        title: '3. Produzione supervisionata',
+        description: 'La piattaforma genera il sito, gli esperti rifiniscono e verificano.',
         icon: 'tabler:robot',
       },
       {
-        title: '4. Lancio & formazione',
-        description: 'Ricevi il sito live, video guida e report di performance.',
+        title: '4. Validazione & training',
+        description: 'Ricevi il sito pronto, la guida video e il riepilogo delle prossime azioni.',
         icon: 'tabler:rocket',
       },
     ]}
@@ -146,7 +172,7 @@ const metadata = {
       <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-white shadow-xl">
         <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Processo</p>
         <p class="mt-6 max-w-xs text-base text-blue-100/90">
-          Dalla firma al go-live, ogni fase è timbrata e documentata nel portale clienti.
+          Dalla firma al lancio, ogni fase è tracciata e documentata nel tuo spazio cliente.
         </p>
       </div>
     </Fragment>
@@ -157,20 +183,24 @@ const metadata = {
     subtitle="Crediamo nella massima trasparenza."
     items={[
       {
-        title: 'I prezzi includono l’IVA?',
-        description: 'Sì, tutti gli importi sono IVA inclusa. La fattura indica IVA svizzera e il nostro UID.',
+        title: 'L’IVA è inclusa?',
+        description: 'Sì, tutti gli importi sono IVA inclusa. La fattura indica l’IVA svizzera e il numero IDE.',
       },
       {
-        title: 'Cosa succede dopo 12 mesi di hosting?',
-        description: 'Il sito resta online. Hosting e supporto si rinnovano a CHF 290/anno o tramite il piano Continuum.',
+        title: 'Qual è la tempistica media per l’Essenziale?',
+        description: 'Circa cinque giorni lavorativi dopo aver ricevuto i contenuti. Condividiamo il planning durante il brief.',
       },
       {
-        title: 'Posso fare upgrade più avanti?',
-        description: 'Puoi passare da Express a Signature o Continuum in qualsiasi momento. Dedurremo pro-rata l’investimento iniziale.',
+        title: 'Come fatturate automazioni extra?',
+        description: 'Ogni flusso aggiuntivo è preventivato in anticipo. Tre-quattro automazioni standard costano CHF 1’500.',
       },
       {
-        title: 'Supportate l’e-commerce?',
-        description: 'Sì, aggiungiamo Click & Collect, gift card o cataloghi digitali. L’e-commerce completo si valuta con offerta personalizzata.',
+        title: 'Il piano di cura è obbligatorio?',
+        description: 'No. Puoi gestire il sito in autonomia oppure affidarci il piano da CHF 79/mese, disdicibile con 30 giorni di preavviso.',
+      },
+      {
+        title: 'Quali metodi di pagamento accettate?',
+        description: 'Carte svizzere, Twint, bonifico bancario e fattura QR. Gli abbonamenti possono essere mensili o annuali.',
       },
     ]}
   />
@@ -179,18 +209,22 @@ const metadata = {
     actions={[
       {
         variant: 'primary',
-        text: 'Prenota una call',
+        text: 'Ricevi una proposta',
         href: '/it/contact#form',
-        icon: 'tabler:calendar-event',
+        icon: 'tabler:mail-forward',
       },
       {
-        text: 'Confronta le offerte',
+        text: 'Confronta i pacchetti',
         href: '/it/services',
       },
     ]}
   >
-    <Fragment slot="title">Hai bisogno di supporto nella scelta?</Fragment>
+    <Fragment slot="title">
+      Hai bisogno di un preventivo su misura?
+    </Fragment>
 
-    <Fragment slot="subtitle">I nostri consulenti rispondono entro due ore lavorative con una raccomandazione su misura.</Fragment>
+    <Fragment slot="subtitle">
+      Adattiamo ogni offerta alle specificità della tua attività nell’Arco lemanico.
+    </Fragment>
   </CallToAction>
 </Layout>

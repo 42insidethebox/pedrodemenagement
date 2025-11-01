@@ -6,62 +6,67 @@ import Stats from '~/components/widgets/Stats.astro';
 import Steps2 from '~/components/widgets/Steps2.astro';
 import Layout from '~/layouts/PageLayout.astro';
 
+import { headerDataIt, footerDataIt } from '~/navigation';
+
 const metadata = {
   title: 'Chi siamo',
 };
 ---
 
-<Layout metadata={metadata}>
-  <Hero tagline="Chi è MonWebsite.ch">
-    <Fragment slot="title">Un team del Lago Lemano che unisce automazione e cura umana</Fragment>
+<Layout metadata={metadata} header={headerDataIt} footer={footerDataIt}>
+  <Hero tagline="Chi siamo">
+    <Fragment slot="title">
+      Un team lemanico che unisce automazione e servizio umano
+    </Fragment>
 
     <Fragment slot="subtitle">
-      Nato a Losanna, MonWebsite.ch consegna siti premium in 24 ore per PMI e indipendenti senza compromettere precisione o accompagnamento. Uniamo tecnologia proprietaria ed esperti locali per garantire risultati impeccabili.
+      MonWebsite.ch nasce a Losanna per offrire a PMI e indipendenti un sito di alto livello, consegnato rapidamente senza
+      compromettere precisione e accompagnamento. Tecnologia proprietaria e specialisti locali per risultati impeccabili.
     </Fragment>
 
     <Fragment slot="image">
       <div class="relative aspect-[5/3] overflow-hidden rounded-2xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-left text-white shadow-2xl">
-        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Lago Lemano</p>
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Arco lemanico</p>
         <h4 class="mt-4 text-4xl font-semibold">Losanna · Ginevra · Vevey · Montreux</h4>
         <p class="mt-6 max-w-xl text-lg text-blue-100/90">
-          Specialisti digital, contenuti e performance allineati da un unico obiettivo: consegnare siti impeccabili in 24 ore.
+          Specialisti di digitale, contenuti e performance riuniti da un obiettivo comune: creare siti impeccabili per i player locali.
         </p>
       </div>
     </Fragment>
   </Hero>
 
   <Stats
-    title="I nostri numeri"
+    title="I nostri riferimenti"
     stats={[
-      { title: 'Esperti basati nell’Arco Lemanico', amount: '12' },
-      { title: 'Clienti accompagnati ogni mese', amount: '45' },
-      { title: 'Tasso di soddisfazione', amount: '97%' },
-      { title: 'Valutazione supporto', amount: '4.9/5' },
+      { title: 'Area di intervento', amount: 'Arco lemanico' },
+      { title: 'Approccio', amount: 'Automazione + umano' },
+      { title: 'Piano di cura', amount: 'Opzionale CHF 79/mese' },
+      { title: 'Lingue', amount: 'FR · EN · DE' },
     ]}
   />
 
   <Features3
     title="I nostri pilastri"
-    subtitle="Rigore svizzero applicato a ogni progetto."
+    subtitle="Applichiamo il rigore svizzero a ogni progetto."
     columns={3}
     isBeforeContent={true}
     items={[
       {
         title: 'Automazione controllata',
         description:
-          'Pipeline proprietarie orchestrano contenuti, design e deploy per assicurare la consegna in 24 ore.',
+          'Pipeline proprietarie orchestrano contenuti, design e deploy per accelerare senza sacrificare la qualità.',
         icon: 'tabler:cpu',
       },
       {
         title: 'Design minimalista',
         description:
-          'Ispirato ai codici visivi svizzeri, con layout ariosi, tipografia precisa e contrasti netti.',
+          'Ispirati al linguaggio elvetico, puntiamo su layout ariosi, tipografia nitida e contrasti precisi.',
         icon: 'tabler:layout-grid',
       },
       {
-        title: 'Relazione vicina',
+        title: 'Relazione di prossimità',
         description:
-          'Project manager disponibili via telefono o WhatsApp per un follow-up dedicato anche dopo il lancio.',
+          'Project manager disponibili via telefono o WhatsApp per un follow-up attento anche dopo il lancio.',
         icon: 'tabler:users',
       },
     ]}
@@ -72,39 +77,33 @@ const metadata = {
     isAfterContent={true}
     items={[
       {
-        title: 'Stack svizzero + globale',
-        description:
-          'Astro, Tailwind e hosting svizzero per unire sovranità e performance mondiale.',
+        title: 'Tecnologia svizzera + globale',
+        description: 'Astro, Tailwind e hosting svizzero per unire sovranità e performance internazionale.',
         icon: 'tabler:world',
       },
       {
         title: 'Partner sul territorio',
-        description:
-          'Fotografi, copywriter, consulenti SEO e privacy tra Ginevra e Montreux.',
+        description: 'Fotografi, copywriter e consulenti tra Ginevra e Montreux secondo le esigenze dei progetti.',
         icon: 'tabler:briefcase',
       },
       {
-        title: 'Cultura data-driven',
-        description:
-          'Ogni consegna include report performance, roadmap di miglioramento e review trimestrale.',
+        title: 'Cultura della misura',
+        description: 'Analizziamo ogni rilascio e proponiamo miglioramenti mirati alla tua attività.',
         icon: 'tabler:chart-dots',
       },
       {
         title: 'Supporto multilingue',
-        description:
-          'Rispondiamo in francese, italiano, tedesco o inglese secondo le tue preferenze.',
+        description: 'Rispondiamo in francese, inglese o tedesco secondo la preferenza del tuo team.',
         icon: 'tabler:language',
       },
       {
-        title: 'Conformità privacy CH/UE',
-        description:
-          'Documentazione legale, gestione consensi e dati ospitati in Svizzera.',
+        title: 'Conformità GDPR/LPD',
+        description: 'Documentazione legale fornita, consensi gestiti e dati ospitati in Svizzera.',
         icon: 'tabler:shield-lock',
       },
       {
-        title: 'Mentalità sostenibile',
-        description:
-          'Compensazione CO₂ per ogni sito e partnership con hosting alimentati da energia rinnovabile.',
+        title: 'Spirito sostenibile',
+        description: 'Partner responsabili e ottimizzazione delle risorse per ridurre l’impronta di ogni sito.',
         icon: 'tabler:leaf',
       },
     ]}
@@ -113,7 +112,7 @@ const metadata = {
       <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
         <p class="text-sm uppercase tracking-[0.3em] text-blue-200/80">Presenza locale</p>
         <p class="mt-4 max-w-sm text-lg text-blue-100/90">
-          Operare tra Losanna, Ginevra, Vevey e Montreux ci mantiene allineati alla realtà quotidiana dei clienti.
+          Operiamo da Losanna, Ginevra, Vevey e Montreux per restare vicini alle realtà dei nostri clienti.
         </p>
       </div>
     </Fragment>
@@ -121,48 +120,45 @@ const metadata = {
 
   <Steps2
     title="I nostri valori"
-    subtitle="Tecnologia al servizio delle imprese locali con trasparenza e affidabilità."
+    subtitle="Tecnologia al servizio del business locale, con trasparenza e affidabilità."
     items={[
       {
         title: 'Precisione',
-        description:
-          'Ogni parola e ogni pixel sono verificati manualmente prima della messa online.',
+        description: 'Ogni testo e ogni pixel è verificato da un controllo qualità umano prima della messa online.',
       },
       {
         title: 'Chiarezza',
-        description:
-          'Offerte all-inclusive, fatture svizzere e KPI condivisi in tempo reale.',
+        description: 'Offerte all inclusive, fatture svizzere e indicatori condivisi in tempo reale con i clienti.',
       },
       {
         title: 'Prossimità',
-        description:
-          'Partnership di lungo periodo con consulente dedicato e sessioni trimestrali incluse.',
+        description: 'Accompagnamento duraturo con referente dedicato e check-in trimestrali inclusi.',
       },
     ]}
   />
 
   <Steps2
     title="La nostra storia"
-    subtitle="Tre anni per costruire una piattaforma capace di consegnare siti impeccabili alla massima velocità."
+    subtitle="Costruiamo una piattaforma capace di consegnare siti impeccabili senza rinunciare al supporto."
     isReversed={true}
     callToAction={{
-      text: 'Vedi le offerte',
+      text: 'Scopri i pacchetti',
       href: '/it/pricing',
     }}
     items={[
       {
         title: '2021 — Lancio',
-        description: 'Creazione di MonWebsite.ch a Losanna con la missione di semplificare la presenza digitale degli imprenditori.',
+        description: 'Nasce MonWebsite.ch a Losanna per semplificare la presenza web degli indipendenti.',
         icon: 'tabler:flag',
       },
       {
         title: '2022 — Industrializzazione',
-        description: 'Messa in produzione delle pipeline automatizzate e apertura a Ginevra e Vevey.',
+        description: 'Implementazione delle pipeline automatizzate e apertura di hub a Ginevra e Vevey.',
         icon: 'tabler:arrows-exchange',
       },
       {
         title: '2023 — Accelerazione',
-        description: 'Oltre 150 siti consegnati, partnership con agenzie locali e lancio dell’offerta multilingue.',
+        description: 'Lancio dell’offerta multilingue e partnership rafforzate con agenzie locali.',
         icon: 'tabler:rocket',
       },
     ]}
@@ -187,7 +183,7 @@ const metadata = {
       },
       {
         title: 'Montreux',
-        description: 'Studi partner per i tuoi shooting fotografici',
+        description: 'Studi fotografici partner per i tuoi shooting',
       },
     ]}
   />

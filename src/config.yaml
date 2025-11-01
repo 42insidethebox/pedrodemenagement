@@ -11,7 +11,7 @@ metadata:
   title:
     default: MonWebsite.ch
     template: '%s — MonWebsite.ch'
-  description: "Agence digitale suisse : sites vitrines clés-en-main, livrés en 24 h pour PME et indépendants de l'Arc lémanique."
+  description: "Agence digitale suisse : sites vitrines clés-en-main pour PME et indépendants de l'Arc lémanique, avec un accompagnement transparent."
   robots:
     index: true
     follow: true

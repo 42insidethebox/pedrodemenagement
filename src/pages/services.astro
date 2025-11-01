@@ -3,7 +3,6 @@ import CallToAction from '~/components/widgets/CallToAction.astro';
 import Content from '~/components/widgets/Content.astro';
 import Features2 from '~/components/widgets/Features2.astro';
 import Hero from '~/components/widgets/Hero.astro';
-import Testimonials from '~/components/widgets/Testimonials.astro';
 import Layout from '~/layouts/PageLayout.astro';
 
 const metadata = {
@@ -40,22 +39,22 @@ const metadata = {
     columns={3}
     items={[
       {
-        title: 'Express 24 h',
+        title: 'Essentiel',
         description:
-          'Site vitrine 5 sections, optimisation locale et hébergement inclus. Idéal pour lancer rapidement votre présence en ligne.',
-        icon: 'tabler:bolt',
+          'Site vitrine de 5 sections, textes optimisés pour l’Arc lémanique et mise en ligne accompagnée.',
+        icon: 'tabler:layout',
       },
       {
-        title: 'Signature',
+        title: 'Automatisation',
         description:
-          'Design sur-mesure, contenus multilingues, intégration de vos outils métiers et formation vidéo personnalisée.',
-        icon: 'tabler:diamond',
+          'Connexion à vos outils via Zapier ou Make pour automatiser formulaires, rendez-vous et notifications.',
+        icon: 'tabler:api',
       },
       {
-        title: 'Continuum',
+        title: 'Maintenance sécurité',
         description:
-          'Accompagnement trimestriel, campagnes de mises à jour, production de contenus et optimisation SEO continue.',
-        icon: 'tabler:arrows-left-right',
+          'Mises à jour techniques, sauvegardes, gestion d’emails pro et support planifié à 79 CHF/mois.',
+        icon: 'tabler:shield-check',
       },
     ]}
   />
@@ -69,7 +68,7 @@ const metadata = {
       {
         title: 'Production automatisée',
         description:
-          'Notre pipeline assemble votre site en quelques minutes en s’appuyant sur des modèles sectoriels éprouvés.',
+          'Notre pipeline assemble votre site en s’appuyant sur des gabarits sectoriels que nous adaptons à votre identité.',
         icon: 'tabler:cube',
       },
       {
@@ -79,15 +78,15 @@ const metadata = {
         icon: 'tabler:shield-check',
       },
       {
-        title: 'Livraison continue',
+        title: 'Livraison planifiée',
         description:
-          'Grâce à notre plateforme, vos demandes d’ajout de page ou d’actualités sont traitées sous 48 h.',
+          'Nous partageons un rétroplanning clair et adaptons la mise en ligne selon vos contraintes métier.',
         icon: 'tabler:inbox',
       },
       {
-        title: 'Suivi mensuel',
+        title: 'Suivi essentiel',
         description:
-          'Un rapport automatisé détaille trafic, conversions et recommandations pour maintenir vos performances.',
+          'Points de contrôle réguliers, assistance pour vos mises à jour et recommandations pragmatiques.',
         icon: 'tabler:report-analytics',
       },
     ]}
@@ -101,7 +100,7 @@ const metadata = {
       <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl">
         <h4 class="text-3xl font-semibold">Pipeline supervisé</h4>
         <p class="mt-6 max-w-sm text-blue-100/90">
-          32 points de contrôle automatisés et vérifiés par un chef de projet avant chaque livraison.
+          Chaque projet suit un contrôle humain complet&nbsp;: contenus, design, conformité RGPD et tests de navigation.
         </p>
       </div>
     </Fragment>
@@ -116,25 +115,25 @@ const metadata = {
       {
         title: 'SEO local & fiches Google',
         description:
-          'Optimisation technique, rédaction de balises et paramétrage de votre fiche Google Business Profile.',
+          'Optimisation technique, rédaction de balises et conseils pour votre fiche Google Business Profile.',
         icon: 'tabler:map-pin',
       },
       {
-        title: 'Contenus premium',
+        title: 'Contenus visuels',
         description:
-          'Reportages photo, vidéos courtes et storytelling adaptés à votre marque pour capter l’attention.',
+          'Sélection de visuels libres de droits ou coordination avec vos prestataires locaux pour un rendu cohérent.',
         icon: 'tabler:photo',
       },
       {
         title: 'Campagnes d’acquisition',
         description:
-          'Landing pages, formulaires et scénarios email automatisés pour transformer vos visiteurs en clients.',
+          'Landing pages, formulaires et scénarios email automatisés sur devis selon vos objectifs.',
         icon: 'tabler:send',
       },
       {
         title: 'Tableau de bord',
         description:
-          'Accédez à un dashboard en temps réel pour suivre leads, réservations et commandes.',
+          'Accédez à un espace client pour suivre les livrables, partager vos contenus et valider les étapes.',
         icon: 'tabler:layout-dashboard',
       },
     ]}
@@ -148,7 +147,7 @@ const metadata = {
       <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-left text-white shadow-xl">
         <h4 class="text-3xl font-semibold">Acquisition maîtrisée</h4>
         <p class="mt-6 max-w-sm text-blue-100/90">
-          Des campagnes calibrées pour attirer vos clients locaux et mesurer chaque conversion.
+          Nous vous aidons à prioriser les leviers efficaces et à mesurer les résultats réellement utiles à votre activité.
         </p>
       </div>
     </Fragment>
@@ -163,66 +162,34 @@ const metadata = {
     columns={3}
     items={[
       {
-        title: 'Helpdesk prioritaire',
-        description: 'Hotline romande, réponses garanties en moins de 2 h ouvrées et suivi via votre espace client.',
+        title: 'Support planifié',
+        description: 'Réponses sous un jour ouvré par email ou téléphone, suivi via votre espace client.',
         icon: 'tabler:headset',
       },
       {
-        title: 'Surveillance 24/7',
-        description: 'Monitoring automatisé des performances, alertes temps réel et correctifs proactifs.',
+        title: 'Surveillance essentielle',
+        description: 'Vérifications régulières des performances et alertes en cas de problème détecté.',
         icon: 'tabler:antenna',
       },
       {
-        title: 'Mises à jour illimitées',
-        description: 'Ajout de contenus, évolution de design ou intégration d’outils sans coûts cachés.',
+        title: 'Mises à jour sécurité',
+        description: 'Application des correctifs critiques, sauvegardes et restauration si nécessaire.',
         icon: 'tabler:tools',
       },
       {
         title: 'Conformité RGPD',
-        description: 'Politique de cookies, gestion des consentements et documentation juridique incluses.',
+        description: 'Politique de cookies, mentions légales et bannière de consentement adaptées à la Suisse.',
         icon: 'tabler:shield-check',
       },
       {
-        title: 'Sécurité renforcée',
-        description: 'Certificat SSL, sauvegardes quotidiennes et scans anti-malware automatisés.',
-        icon: 'tabler:lock',
+        title: 'Gestion des emails',
+        description: 'Configuration et support de vos comptes @votredomaine.ch avec SPF/DKIM.',
+        icon: 'tabler:mail',
       },
       {
-        title: 'Accompagnement stratégique',
-        description: 'Point conseil trimestriel avec analyse de données et plan d’actions personnalisé.',
-        icon: 'tabler:target',
-      },
-    ]}
-  />
-
-  <!-- Testimonials Widget *********** -->
-
-  <Testimonials
-    title="Ils nous font confiance"
-    testimonials={[
-      {
-        testimonial:
-          'Livraison en moins de 24 h, intégration de notre système de réservation et équipe ultra disponible. Nous avons gagné 30 % de demandes en un mois.',
-        name: 'Camille Dupraz',
-        job: 'Fondatrice, Studio Pilates Montreux',
-        image:
-          '<span class="flex h-full w-full items-center justify-center rounded-full bg-blue-600 text-xs font-semibold uppercase text-white">CD</span>',
-      },
-      {
-        testimonial:
-          'Nous avons lancé deux sites vitrines pour nos salons en 48 h. L’équipe MonWebsite.ch gère tout, des contenus aux campagnes locales.',
-        name: 'Julien Moret',
-        job: 'Co-gérant, Coiffure Signature Genève',
-        image:
-          '<span class="flex h-full w-full items-center justify-center rounded-full bg-blue-500 text-xs font-semibold uppercase text-white">JM</span>',
-      },
-      {
-        testimonial:
-          'Un accompagnement pro et rassurant pour notre PME. Nous recevons chaque mois un rapport clair avec les actions prioritaires.',
-        name: 'Sophie Rey',
-        job: 'Directrice, Net&Clean Lausanne',
-        image:
-          '<span class="flex h-full w-full items-center justify-center rounded-full bg-blue-400 text-xs font-semibold uppercase text-white">SR</span>',
+        title: 'Évolutions sur devis',
+        description: 'Ajout de pages, modules ou automatisations supplémentaires selon vos objectifs.',
+        icon: 'tabler:arrows-left-right',
       },
     ]}
   />

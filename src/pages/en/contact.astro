@@ -4,22 +4,20 @@ import HeroText from '~/components/widgets/HeroText.astro';
 import ContactUs from '~/components/widgets/Contact.astro';
 import Features2 from '~/components/widgets/Features2.astro';
 
+import { headerDataEn, footerDataEn } from '~/navigation';
+
 const metadata = {
   title: 'Contact',
 };
 ---
 
-<Layout metadata={metadata}>
-  <HeroText
-    tagline="Contact"
-    title="Let’s plan your turnkey launch"
-    subtitle="A MonWebsite.ch expert answers within 2 working hours."
-  />
+<Layout metadata={metadata} header={headerDataEn} footer={footerDataEn}>
+  <HeroText tagline="Contact" title="Let’s discuss your turnkey site" subtitle="A MonWebsite.ch expert replies within one business day." />
 
   <ContactUs
     id="form"
     title="Request a demo or quote"
-    subtitle="Fill in the form and we will reach out by phone or video call to prepare your 24 h go-live."
+    subtitle="Fill out the form and we’ll call or schedule a video meeting to prepare your launch (typical timeline: 5 business days)."
     inputs={[
       {
         type: 'text',
@@ -39,28 +37,28 @@ const metadata = {
       {
         type: 'select',
         name: 'service',
-        label: 'Desired plan',
+        label: 'Desired pack',
         options: [
-          { label: 'Express 24 h', value: 'express' },
-          { label: 'Signature', value: 'signature' },
-          { label: 'Continuum', value: 'continuum' },
-          { label: 'Custom / to be defined', value: 'custom' },
+          { label: 'Essential', value: 'essential' },
+          { label: 'Automation', value: 'automation' },
+          { label: 'Care & security', value: 'maintenance' },
+          { label: 'Custom / to define', value: 'custom' },
         ],
       },
     ]}
     textarea={{
       label: 'Your project',
-      placeholder: 'Share your activity, objectives and timeline.',
+      placeholder: 'Describe your business, objectives and deadlines.',
     }}
     disclaimer={{
       label:
-        'By submitting this form, you agree that MonWebsite.ch processes your data to answer your request, according to our privacy policy.',
+        'By submitting this form you agree that MonWebsite.ch processes your data to answer your request, in line with our privacy policy.',
     }}
-    description="Offices open Monday to Saturday, 8am–6pm. We speak French, English and German."
+    description="Our offices are open Monday to Friday, 9am–5pm. We speak French, English and German."
   />
 
   <Features2
-    title="Talk to us directly"
+    title="Direct contact"
     subtitle="Choose the channel that suits you best."
     items={[
       {
@@ -74,23 +72,18 @@ const metadata = {
         icon: 'tabler:mail',
       },
       {
-        title: 'WhatsApp Business',
-        description: '+41 79 555 24 24',
-        icon: 'tabler:brand-whatsapp',
-      },
-      {
         title: 'Address',
         description: 'Rue du Grand-Chêne 8, 1003 Lausanne',
         icon: 'tabler:map-pin',
       },
       {
-        title: 'Opening hours',
-        description: 'Monday to Saturday, 8:00 – 18:00',
+        title: 'Availability',
+        description: 'Monday to Friday, 9:00 – 17:00',
         icon: 'tabler:calendar-time',
       },
       {
         title: 'Client support',
-        description: 'support@monwebsite.ch — response in &lt; 2 h',
+        description: 'support@monwebsite.ch — reply within one business day',
         icon: 'tabler:help',
       },
     ]}

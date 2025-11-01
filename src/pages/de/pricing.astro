@@ -7,69 +7,95 @@ import Steps from '~/components/widgets/Steps.astro';
 import Features3 from '~/components/widgets/Features3.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 
+import { headerDataDe, footerDataDe } from '~/navigation';
+
 const metadata = {
-  title: 'Tarife',
+  title: 'Preise',
 };
 ---
 
-<Layout metadata={metadata}>
+<Layout metadata={metadata} header={headerDataDe} footer={footerDataDe}>
   <HeroText
-    tagline="Tarife"
-    title="Transparente Schweizer Abrechnung"
-    subtitle="Alle Pakete beinhalten Lieferung in 24 h, Hosting, Support und automatisierte Wartung."
+    tagline="Preise"
+    title="Transparente Pakete, in der Schweiz fakturiert"
+    subtitle="Jedes Paket umfasst Design, Launch und menschliche Begleitung. Betreuung und Automatisierungen nach Bedarf."
   />
 
   <Prices
-    title="Schlüsselfertige Pakete"
-    subtitle="Wählen Sie das Angebot, das zu Ihren Bedürfnissen passt. Keine versteckten Gebühren."
+    title="Unsere schlüsselfertigen Pakete"
+    subtitle="Wählen Sie das Angebot, das zu Ihrem Bedarf passt. Ohne versteckte Kosten."
     prices={[
       {
-        title: 'Express 24 h',
-        subtitle: 'Sofort online präsent',
-        price: 1490,
+        title: 'Essentiel',
+        subtitle: 'Schlüsselfertige Showcase-Seite',
+        price: 999,
         period: 'CHF — einmalig',
         items: [
-          { description: 'Fünfteilige Showcase-Seite + Kontaktseite' },
-          { description: 'Textgestaltung optimiert für lokales SEO' },
-          { description: 'Schweizer Hosting & SSL-Zertifikat für 12 Monate inklusive' },
-          { description: 'Go-Live innerhalb von 24 Arbeitsstunden' },
+          {
+            description: 'Showcase-Seite mit 5 Sektionen + responsive Kontaktseite',
+          },
+          {
+            description: 'Französische Texte optimiert für den Genfersee-Raum',
+          },
+          {
+            description: 'Schweizer Hosting & SSL-Zertifikat für 12 Monate inklusive',
+          },
+          {
+            description: 'Video-Training + Checkliste für Eigenständigkeit',
+          },
         ],
         callToAction: {
-          text: 'Jetzt starten',
+          text: 'Projekt starten',
           href: '/de/contact#form',
         },
       },
       {
-        title: 'Signature',
-        subtitle: 'Premium-Erlebnis in zwei Sprachen',
-        price: 2490,
+        title: 'Automatisierung',
+        subtitle: 'Website + 1 Zapier/Make-Flow',
+        price: 1200,
         period: 'CHF — einmalig',
         items: [
-          { description: 'Massgeschneidertes Design mit 8 Sektionen + Blog oder Landingpage' },
-          { description: 'FR/DE oder FR/EN Inhalte + Partner-Fotoshooting' },
-          { description: 'Integration von Buchungs-, CRM- oder Payment-Tools' },
-          { description: '60-minütiger Strategieworkshop mit einer Expert·in' },
+          {
+            description: 'Enthält das Paket Essentiel',
+          },
+          {
+            description: 'Anbindung eines Tools via Zapier oder Make (1 Automation)',
+          },
+          {
+            description: 'End-to-End-Tests und einfache Dokumentation',
+          },
+          {
+            description: 'Bis zu 4 Automationen: CHF 1’500',
+          },
         ],
         callToAction: {
-          text: 'Platz reservieren',
+          text: 'Automatisierungsangebot anfragen',
           href: '/de/contact#form',
         },
         hasRibbon: true,
-        ribbonTitle: 'Beliebtest',
+        ribbonTitle: 'Beliebtestes',
       },
       {
-        title: 'Continuum',
-        subtitle: 'Laufende monatliche Partnerschaft',
-        price: 290,
-        period: 'CHF / Monat — 12 Monate Laufzeit',
+        title: 'Serviceplan',
+        subtitle: 'Updates und Profi-E-Mails',
+        price: 79,
+        period: 'CHF / Monat — ohne Überraschungen',
         items: [
-          { description: 'Unbegrenzte Wartung & wöchentliche Updates' },
-          { description: 'Zwei Premium-Content-Pieces pro Monat' },
-          { description: 'Lokale SEO- & SEA-Kampagnen durch unser Team' },
-          { description: 'Monatsreporting + Quartalsworkshop' },
+          {
+            description: 'Sicherheitsupdates und geplante Backups',
+          },
+          {
+            description: 'Uptime-Monitoring & priorisierte Korrekturen',
+          },
+          {
+            description: 'Verwaltung der @ihredomain.ch E-Mail-Konten',
+          },
+          {
+            description: 'Support per E-Mail & Video innerhalb eines Arbeitstages',
+          },
         ],
         callToAction: {
-          text: 'Beratungsgespräch',
+          text: 'Serviceplan aktivieren',
           href: '/de/contact#form',
         },
       },
@@ -77,38 +103,38 @@ const metadata = {
   />
 
   <Features3
-    title="Leistungen inklusive"
-    subtitle="Jedes Paket beinhaltet diese Garantien."
+    title="Inklusive Leistungen"
+    subtitle="Alle Angebote beinhalten diese Garantien."
     columns={2}
     items={[
       {
-        title: 'Unbegrenzter Support',
-        description: 'Antwort innerhalb von 2 Arbeitsstunden via WhatsApp, Telefon oder E-Mail.',
+        title: 'Menschlicher Support',
+        description: 'Begleitung per E-Mail und Telefon, Antworten innerhalb eines Arbeitstages.',
         icon: 'tabler:headset',
       },
       {
         title: 'Souveränes Hosting',
-        description: 'Server in der Schweiz, erneuerbare Energie, DSGVO / revDSG-konform.',
+        description: 'Server in der Schweiz, DSGVO/LPD-konform, SSL inklusive.',
         icon: 'tabler:server',
       },
       {
         title: 'Kunden-Dashboard',
-        description: 'Fortschritt, Performance und Anfragen in Echtzeit verfolgen.',
+        description: 'Fortschritt verfolgen, Inhalte teilen und Schritte online freigeben.',
         icon: 'tabler:layout-dashboard',
       },
       {
-        title: 'Klare Rechnungen',
-        description: 'MWST inklusive, QR-Rechnung oder Twint, monatliche Zahlungen möglich.',
+        title: 'Klare Fakturierung',
+        description: 'MwSt. inklusive, QR-Rechnung oder Twint, monatliche Zahlung möglich.',
         icon: 'tabler:receipt',
       },
       {
-        title: 'Performance-Garantie',
-        description: 'Lighthouse-Score ≥ 90 auf Mobil & Desktop oder Optimierung auf unsere Kosten.',
+        title: 'Optimierte Performance',
+        description: 'Astro-Architektur und Bildoptimierung für schnelle Ladezeiten.',
         icon: 'tabler:gauge',
       },
       {
         title: 'Erhöhte Sicherheit',
-        description: 'Tägliche Backups, Anti-Spam und Application Firewall.',
+        description: 'Initiale Backups, Application-Firewall und regelmässige Updates.',
         icon: 'tabler:lock',
       },
     ]}
@@ -116,13 +142,13 @@ const metadata = {
   />
 
   <Steps
-    title="Ihr Projektfahrplan"
-    tagline="Journey"
+    title="So läuft Ihr Projekt ab"
+    tagline="Ablauf"
     isReversed={true}
     items={[
       {
-        title: '1. Digitale Signatur',
-        description: 'Paket bestätigen und sofortigen Zugang zum Onboarding erhalten.',
+        title: '1. Digitale Unterschrift',
+        description: 'Paket bestätigen und Zugang zum Onboarding erhalten.',
         icon: 'tabler:edit',
       },
       {
@@ -131,13 +157,13 @@ const metadata = {
         icon: 'tabler:clipboard-list',
       },
       {
-        title: '3. Automatisierte Produktion',
-        description: 'Unsere Plattform generiert Ihre Seite, Expert·innen verfeinern und geben frei.',
+        title: '3. Überwachte Produktion',
+        description: 'Plattform generiert Ihre Website, Expert·innen finalisieren und prüfen.',
         icon: 'tabler:robot',
       },
       {
-        title: '4. Launch & Schulung',
-        description: 'Live-Seite, Video-Guide und Performance-Report erhalten.',
+        title: '4. Freigabe & Training',
+        description: 'Fertige Website, Video-Guide und nächste Schritte erhalten.',
         icon: 'tabler:rocket',
       },
     ]}
@@ -146,31 +172,35 @@ const metadata = {
       <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-white shadow-xl">
         <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Prozess</p>
         <p class="mt-6 max-w-xs text-base text-blue-100/90">
-          Vom Vertrag bis zum Go-Live wird jeder Meilenstein in Ihrem Kundenportal dokumentiert.
+          Von der Unterschrift bis zum Launch – jeder Schritt wird in Ihrem Kundenbereich protokolliert.
         </p>
       </div>
     </Fragment>
   </Steps>
 
   <FAQs
-    title="Fragen zu den Tarifen"
-    subtitle="Wir glauben an totale Transparenz."
+    title="Fragen zu unseren Preisen"
+    subtitle="Wir setzen auf vollständige Transparenz."
     items={[
       {
-        title: 'Sind die Preise inkl. MWST?',
-        description: 'Ja, alle Beträge verstehen sich inklusive MWST. Die Rechnung weist Schweizer MWST und unsere UID aus.',
+        title: 'Ist die MwSt. enthalten?',
+        description: 'Ja, alle Beträge sind inkl. MwSt. Die Rechnung weist die Schweizer MwSt. und die IDE-Nummer aus.',
       },
       {
-        title: 'Was passiert nach 12 Monaten Hosting?',
-        description: 'Ihre Website bleibt online. Hosting und Support verlängern sich für CHF 290/Jahr oder über den Continuum-Plan.',
+        title: 'Wie lange dauert das Paket Essentiel?',
+        description: 'Rund fünf Arbeitstage nach Eingang Ihrer Inhalte. Den genauen Zeitplan erhalten Sie beim Briefing.',
       },
       {
-        title: 'Kann ich später upgraden?',
-        description: 'Ein Wechsel von Express zu Signature oder Continuum ist jederzeit möglich. Wir rechnen die Erstinvestition pro rata an.',
+        title: 'Wie verrechnet ihr zusätzliche Automationen?',
+        description: 'Jeder zusätzliche Flow wird vorab offeriert. Drei bis vier Standard-Automatismen kosten CHF 1’500.',
       },
       {
-        title: 'Unterstützen Sie E-Commerce?',
-        description: 'Ja, wir ergänzen Click & Collect, Gutscheine oder Katalog-Erlebnisse. Vollständiger E-Commerce erfolgt via individuelle Offerte.',
+        title: 'Ist der Serviceplan obligatorisch?',
+        description: 'Nein. Sie können die Website selbst verwalten oder uns für CHF 79/Monat beauftragen (30 Tage Kündigungsfrist).',
+      },
+      {
+        title: 'Welche Zahlungsmittel akzeptiert ihr?',
+        description: 'Schweizer Karten, Twint, Banküberweisung und QR-Rechnung. Abonnemente monatlich oder jährlich zahlbar.',
       },
     ]}
   />
@@ -179,18 +209,20 @@ const metadata = {
     actions={[
       {
         variant: 'primary',
-        text: 'Gespräch buchen',
+        text: 'Angebot erhalten',
         href: '/de/contact#form',
-        icon: 'tabler:calendar-event',
+        icon: 'tabler:mail-forward',
       },
       {
-        text: 'Angebote vergleichen',
+        text: 'Pakete vergleichen',
         href: '/de/services',
       },
     ]}
   >
-    <Fragment slot="title">Brauchen Sie Unterstützung bei der Wahl?</Fragment>
+    <Fragment slot="title">Brauchen Sie ein massgeschneidertes Angebot?</Fragment>
 
-    <Fragment slot="subtitle">Unsere Berater melden sich innerhalb von zwei Arbeitsstunden mit einer Empfehlung.</Fragment>
+    <Fragment slot="subtitle">
+      Wir passen jedes Paket an die Besonderheiten Ihres Unternehmens im Genfersee-Raum an.
+    </Fragment>
   </CallToAction>
 </Layout>

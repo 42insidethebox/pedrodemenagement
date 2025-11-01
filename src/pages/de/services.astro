@@ -3,55 +3,53 @@ import CallToAction from '~/components/widgets/CallToAction.astro';
 import Content from '~/components/widgets/Content.astro';
 import Features2 from '~/components/widgets/Features2.astro';
 import Hero from '~/components/widgets/Hero.astro';
-import Testimonials from '~/components/widgets/Testimonials.astro';
 import Layout from '~/layouts/PageLayout.astro';
 
+import { headerDataDe, footerDataDe } from '~/navigation';
+
 const metadata = {
-  title: 'Services',
+  title: 'Leistungen',
 };
 ---
 
-<Layout metadata={metadata}>
+<Layout metadata={metadata} header={headerDataDe} footer={footerDataDe}>
   <Hero
     id="services"
     tagline="Unsere Leistungen"
-    title="Schlüsselfertige Showcase-Websites für Schweizer KMU"
-    subtitle="MonWebsite.ch verbindet Automatisierung und menschliche Expertise, um hochwertige Websites mit laufender Betreuung zu liefern."
-    actions={[{ variant: 'primary', text: 'Preise ansehen', href: '/de/pricing' }]}
+    title="Schlüsselfertige Showcase-Seiten für KMU der Romandie"
+    subtitle="MonWebsite.ch kombiniert Automatisierung und menschliche Expertise, um hochwertige Websites mit laufender Betreuung zu liefern."
+    actions={[{ variant: 'primary', text: 'Pakete ansehen', href: '/de/pricing' }]}
   >
     <Fragment slot="image">
       <div class="relative aspect-[5/3] overflow-hidden rounded-2xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-left text-white shadow-2xl">
         <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Automatisierte Services</p>
-        <h4 class="mt-4 text-4xl font-semibold">Design · Content · Care</h4>
+        <h4 class="mt-4 text-4xl font-semibold">Design · Inhalt · Betreuung</h4>
         <p class="mt-6 max-w-xl text-lg text-blue-100/90">
-          Unsere proprietäre Plattform orchestriert die Produktion, während sich Expert·innen um Qualität und Kundenbeziehung kümmern.
+          Eine eigene Plattform orchestriert die Produktion, während sich unsere Expert·innen um Qualität und Beziehung kümmern.
         </p>
       </div>
     </Fragment>
   </Hero>
 
   <Features2
-    title="Drei Angebote, ein Standard"
+    title="Drei Angebote, ein Anspruch"
     subtitle="Wählen Sie die Formel, die zu Ihrem Wachstum passt."
     columns={3}
     items={[
       {
-        title: 'Express 24 h',
-        description:
-          'Fünfteilige Showcase-Seite, lokale Optimierung und Hosting inklusive. Ideal für den sofortigen Auftritt.',
-        icon: 'tabler:bolt',
+        title: 'Essentiel',
+        description: 'Showcase-Seite mit fünf Sektionen, Texte für den Genfersee-Raum und begleiteter Launch.',
+        icon: 'tabler:layout',
       },
       {
-        title: 'Signature',
-        description:
-          'Individuelles Design, mehrsprachige Texte, Integrationen Ihrer Tools und personalisiertes Video-Onboarding.',
-        icon: 'tabler:diamond',
+        title: 'Automatisierung',
+        description: 'Anbindung Ihrer Tools via Zapier oder Make für automatisierte Formulare, Buchungen und Benachrichtigungen.',
+        icon: 'tabler:api',
       },
       {
-        title: 'Continuum',
-        description:
-          'Quartalsweise Betreuung, Update-Kampagnen, Content-Produktion und kontinuierliche SEO-Optimierung.',
-        icon: 'tabler:arrows-left-right',
+        title: 'Serviceplan',
+        description: 'Technische Updates, Backups, E-Mail-Management und geplanter Support für CHF 79/Monat.',
+        icon: 'tabler:shield-check',
       },
     ]}
   />
@@ -62,40 +60,36 @@ const metadata = {
     items={[
       {
         title: 'Automatisierte Produktion',
-        description:
-          'Unsere Pipeline baut Ihre Website in Minuten anhand validierter Branchen-Playbooks.',
+        description: 'Unsere Pipeline baut Ihre Website auf Basis branchenspezifischer Templates, angepasst an Ihre Identität.',
         icon: 'tabler:cube',
       },
       {
         title: 'Menschliche Kontrolle',
-        description:
-          'Designer, Copywriter und SEO-Spezialist·innen prüfen jedes Ergebnis auf Kohärenz und Compliance.',
+        description: 'Designer·innen, Texter·innen und SEO-Expert·innen prüfen jedes Ergebnis für Kohärenz und Compliance.',
         icon: 'tabler:shield-check',
       },
       {
-        title: 'Kontinuierliche Auslieferung',
-        description:
-          'Über unsere Plattform werden Seitenergänzungen oder Updates innerhalb von 48 Stunden umgesetzt.',
+        title: 'Geplante Auslieferung',
+        description: 'Wir teilen einen klaren Retro-Plan und richten den Launch nach Ihren betrieblichen Vorgaben aus.',
         icon: 'tabler:inbox',
       },
       {
-        title: 'Monatliches Reporting',
-        description:
-          'Automatisierte Berichte zu Traffic, Conversions und Insights halten Ihre Performance auf Kurs.',
+        title: 'Essentielles Follow-up',
+        description: 'Regelmässige Check-ins, Unterstützung bei Updates und pragmatische Empfehlungen.',
         icon: 'tabler:report-analytics',
       },
     ]}
   >
     <Fragment slot="content">
       <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Unsere hybride Methodik</h3>
-      Automatisierung für Tempo, Expert·innen für Qualität.
+      Automatisierung für Geschwindigkeit, Expert·innen für Qualität.
     </Fragment>
 
     <Fragment slot="image">
       <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl">
         <h4 class="text-3xl font-semibold">Überwachte Pipeline</h4>
         <p class="mt-6 max-w-sm text-blue-100/90">
-          32 automatisierte Checkpoints, geprüft von einer Projektleitung vor jedem Launch.
+          Jedes Projekt durchläuft manuelle Checks: Inhalte, Design, DSGVO-Konformität und Usability-Tests.
         </p>
       </div>
     </Fragment>
@@ -107,32 +101,28 @@ const metadata = {
     items={[
       {
         title: 'Lokales SEO & Google-Profile',
-        description:
-          'Technische Optimierung, Meta-Texte und Einrichtung Ihres Google Business Profile.',
+        description: 'Technische Optimierung, Meta-Texte und Beratung für Ihr Google Business Profile.',
         icon: 'tabler:map-pin',
       },
       {
-        title: 'Premium-Content',
-        description:
-          'Fotoshootings, Kurzvideos und Storytelling abgestimmt auf Ihre Marke, um Aufmerksamkeit zu gewinnen.',
+        title: 'Visuelle Inhalte',
+        description: 'Auswahl lizenzfreier Visuals oder Koordination mit Ihren lokalen Partnern für ein stimmiges Erscheinungsbild.',
         icon: 'tabler:photo',
       },
       {
         title: 'Akquise-Kampagnen',
-        description:
-          'Landingpages, Formulare und automatisierte E-Mail-Strecken, die Besucher in Kundschaft verwandeln.',
+        description: 'Landing Pages, Formulare und automatisierte E-Mail-Strecken – je nach Zielsetzung.',
         icon: 'tabler:send',
       },
       {
-        title: 'Command Center',
-        description:
-          'Live-Dashboard zur Verfolgung von Leads, Buchungen und Bestellungen in Echtzeit.',
+        title: 'Kunden-Dashboard',
+        description: 'Zugang zu einem Kundenbereich, um Deliverables zu verfolgen, Inhalte zu teilen und Schritte freizugeben.',
         icon: 'tabler:layout-dashboard',
       },
     ]}
   >
     <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Hebel für den Long Run</h3>
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Hebel für nachhaltigen Erfolg</h3>
       Wir aktivieren die passenden Tools für messbare Resultate.
     </Fragment>
 
@@ -140,7 +130,7 @@ const metadata = {
       <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-left text-white shadow-xl">
         <h4 class="text-3xl font-semibold">Kontrollierte Akquise</h4>
         <p class="mt-6 max-w-sm text-blue-100/90">
-          Kampagnen, die Ihre lokale Kundschaft anziehen und jede Conversion nachvollziehbar machen.
+          Wir priorisieren gemeinsam wirksame Kanäle und messen, was für Ihr Geschäft zählt.
         </p>
       </div>
     </Fragment>
@@ -149,65 +139,38 @@ const metadata = {
   <Features2
     id="support"
     title="Support & Betreuung"
-    subtitle="Sie fokussieren sich auf Ihr Handwerk, wir erledigen den Rest."
+    subtitle="Sie konzentrieren sich auf Ihr Business – wir kümmern uns um den Rest."
     columns={3}
     items={[
       {
-        title: 'Priorisierter Helpdesk',
-        description: 'Hotline in der Genferseeregion mit Antworten innerhalb von 2 Arbeitsstunden und Follow-up über Ihr Portal.',
+        title: 'Geplanter Support',
+        description: 'Antworten innerhalb eines Arbeitstages per E-Mail oder Telefon, dokumentiert im Kundenbereich.',
         icon: 'tabler:headset',
       },
       {
-        title: '24/7 Monitoring',
-        description: 'Automatisiertes Performance-Monitoring, Echtzeitwarnungen und proaktive Korrekturen.',
+        title: 'Essentielles Monitoring',
+        description: 'Regelmässige Performance-Checks und Alarme bei erkannten Problemen.',
         icon: 'tabler:antenna',
       },
       {
-        title: 'Unbegrenzte Updates',
-        description: 'Inhalte ergänzen, Design weiterentwickeln oder Tools anbinden – ohne versteckte Gebühren.',
+        title: 'Sicherheits-Updates',
+        description: 'Kritische Patches, Backups und Wiederherstellung bei Bedarf.',
         icon: 'tabler:tools',
       },
       {
-        title: 'DSGVO-konform',
-        description: 'Cookie-Richtlinie, Consent-Management und rechtliche Dokumente inklusive.',
+        title: 'DSGVO-Konformität',
+        description: 'Cookie-Richtlinie, Rechtstexte und Consent-Banner passend zur Schweiz.',
         icon: 'tabler:shield-check',
       },
       {
-        title: 'Erhöhte Sicherheit',
-        description: 'SSL-Zertifikate, tägliche Backups und automatisierte Anti-Malware-Scans.',
-        icon: 'tabler:lock',
+        title: 'E-Mail-Verwaltung',
+        description: 'Einrichtung und Support Ihrer @ihredomain.ch Konten mit SPF/DKIM.',
+        icon: 'tabler:mail',
       },
       {
-        title: 'Strategische Begleitung',
-        description: 'Quartalsweise Beratung mit Datenanalyse und individuellem Aktionsplan.',
-        icon: 'tabler:target',
-      },
-    ]}
-  />
-
-  <Testimonials
-    title="Vertrauenspartner der lokalen Wirtschaft"
-    testimonials={[
-      {
-        title: 'Brasserie de la Cathédrale, Lausanne',
-        testimonial:
-          '„In 24 Stunden erhielten wir eine polierte zweisprachige Website mit Online-Reservationen. Unsere Gäste lieben das Design und wir behalten die volle Kontrolle.“',
-        name: 'Élodie Favre',
-        position: 'Inhaberin',
-      },
-      {
-        title: 'CleanWave Services, Genève',
-        testimonial:
-          '„Dashboard und laufender Support fühlen sich wie ein internes Digitalteam an. Die Leads haben sich in zwei Monaten verdoppelt.“',
-        name: 'Marc Schmid',
-        position: 'Direktor',
-      },
-      {
-        title: 'Studio Léman Coaching, Vevey',
-        testimonial:
-          '„Wir haben wegen des 24h-Versprechens gewechselt. Das Resultat ist hochwertig, schnell und perfekt auf unsere Marke abgestimmt.“',
-        name: 'Sonia Ribeiro',
-        position: 'Gründerin',
+        title: 'Erweiterungen auf Anfrage',
+        description: 'Zusätzliche Seiten, Module oder Automationen passend zu Ihren Zielen.',
+        icon: 'tabler:arrows-left-right',
       },
     ]}
   />
@@ -216,18 +179,16 @@ const metadata = {
     actions={[
       {
         variant: 'primary',
-        text: 'Beratung buchen',
+        text: 'Demo vereinbaren',
         href: '/de/contact#form',
-        icon: 'tabler:calendar-event',
-      },
-      {
-        text: 'Pakete entdecken',
-        href: '/de/pricing',
+        icon: 'tabler:device-desktop-analytics',
       },
     ]}
   >
-    <Fragment slot="title">Ihre 24h-Website startet hier</Fragment>
+    <Fragment slot="title">Sprechen wir über Ihren nächsten Launch</Fragment>
 
-    <Fragment slot="subtitle">Sprechen Sie mit einem lokalen Experten und sichern Sie sich Ihren Launch innerhalb eines Arbeitstages.</Fragment>
+    <Fragment slot="subtitle">
+      Teilen Sie Ihre Ziele – wir erstellen einen komplett betreuten Launch-Plan mit MonWebsite.ch.
+    </Fragment>
   </CallToAction>
 </Layout>

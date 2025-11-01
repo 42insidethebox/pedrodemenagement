@@ -11,13 +11,15 @@ import FAQs from '~/components/widgets/FAQs.astro';
 import Stats from '~/components/widgets/Stats.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 
+import { headerDataEn, footerDataEn } from '~/navigation';
+
 const metadata = {
-  title: 'MonWebsite.ch — Your turnkey Swiss website in 24 h',
+  title: 'MonWebsite.ch — Swiss turnkey sites for the Léman Arc',
   ignoreTitleTemplate: true,
 };
 ---
 
-<Layout metadata={metadata}>
+<Layout metadata={metadata} header={headerDataEn} footer={footerDataEn}>
   <Hero
     id="process"
     actions={[
@@ -29,65 +31,62 @@ const metadata = {
       },
       { text: 'Talk to an expert', href: '/en/contact#form' },
     ]}
-    image={{
-      src: '~/assets/images/hero-image.png',
-      alt: 'MonWebsite.ch interface',
-    }}
+    image={{ src: '~/assets/images/hero-image.png', alt: 'MonWebsite.ch interface' }}
   >
     <Fragment slot="title">
-      Your turnkey website delivered in <span class="text-accent dark:text-white">24&nbsp;hours</span>
+      Your turnkey website, tailored to the Léman market
     </Fragment>
 
     <Fragment slot="subtitle">
-      Swiss design, global performance. MonWebsite.ch automates bespoke showcase sites for SMEs and entrepreneurs across the Lake Geneva region – content, design, hosting and invoicing are taken care of in one business day.
+      Swiss design, controlled performance. MonWebsite.ch blends automation and local expertise to deliver reliable showcase
+      sites for SMEs and independents across the Léman Arc—without unrealistic promises or technical overload.
     </Fragment>
   </Hero>
 
   <Note
     title="Commitment"
-    description="Local service, human support and automated orchestration for an impeccable result without friction."
+    description="Local service, human support and automated orchestration for a flawless result without extra effort."
   />
 
   <Features
     id="features"
-    tagline="Why choose us"
+    tagline="Why work with us"
     title="Swiss precision applied to digital"
-    subtitle="Each website is generated, personalised and reviewed by our team so you can stay focused on your business."
+    subtitle="Every project follows a clear framework: discovery, design, validation and guided go-live."
     items={[
       {
-        title: '24 h express delivery',
+        title: 'Managed timeline',
         description:
-          'Brief, content, design and go-live are orchestrated automatically to publish your showcase site within a single working day.',
-        icon: 'tabler:clock-hour-4',
+          'Briefing, design and launch are typically completed within five business days, depending on content and integrations.',
+        icon: 'tabler:calendar-time',
       },
       {
         title: 'Premium bespoke design',
         description:
-          'Inter / Montserrat typography, refined palettes and subtle motion for a high-end and consistent brand experience.',
+          'Inter/Montserrat typography, refined palettes and subtle animations for a high-end, cohesive visual identity.',
         icon: 'tabler:sparkles',
       },
       {
-        title: 'Built-in local SEO',
+        title: 'Essential local SEO',
         description:
-          'Content tailored to Lausanne, Geneva, Montreux and the whole French-speaking part of Switzerland to maximise local visibility.',
+          'Structure, tags and copy tuned for Lausanne, Geneva, Montreux and neighbouring towns to showcase your local roots.',
         icon: 'tabler:map-pin',
       },
       {
-        title: 'Automated maintenance',
+        title: 'Optional care plan',
         description:
-          'Backups, updates and performance monitoring handled by our platform with no hidden costs.',
+          'Security patches, backups and uptime checks available at CHF 79/month so your site stays up-to-date effortlessly.',
         icon: 'tabler:shield-check',
       },
       {
         title: 'Transparent Swiss billing',
-        description:
-          'Clear contracts, VAT included and payments in Swiss francs through the leading local methods.',
+        description: 'Clear contracts, VAT included and CHF payments through the main Swiss methods.',
         icon: 'tabler:receipt',
       },
       {
         title: 'Local human support',
         description:
-          'Experts based around Lake Geneva answering within 2 working hours via phone, email or WhatsApp.',
+          'Experts based around the Léman Arc answer within one business day by email or phone, with scheduled follow-up.',
         icon: 'tabler:headset',
       },
     ]}
@@ -100,32 +99,30 @@ const metadata = {
     items={[
       {
         title: 'Structured brief',
-        description:
-          'A guided questionnaire collects your services, schedules, testimonials and visuals to feed our proprietary AI.',
+        description: 'A focused questionnaire gathers your services, hours, testimonials and visuals for our proprietary AI.',
       },
       {
-        title: 'Guided personalisation',
+        title: 'Design & integration',
         description:
-          'Our designers tailor the sections, tune typography and guarantee compliance with Swiss standards.',
+          'Our designers adapt sections, fine-tune typography and integrate your content, media and calls to action.',
       },
       {
-        title: 'Quality control',
-        description:
-          'Performance, SEO and accessibility tests before going live, plus a detailed acceptance report.',
+        title: 'Quality assurance',
+        description: 'Human proofreading, performance tests and GDPR checklist before the final approval and launch.',
       },
     ]}
   >
     <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Ready for tomorrow</h3>
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Your site delivered without stress</h3>
       Three automated steps, validated by a local expert.
     </Fragment>
 
     <Fragment slot="image">
       <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl">
-        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">24 h workflow</p>
-        <h4 class="mt-4 text-3xl font-semibold">Brief → Creation → QA</h4>
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Controlled workflow</p>
+        <h4 class="mt-4 text-3xl font-semibold">Brief → Creation → Launch</h4>
         <p class="mt-6 max-w-xs text-base text-blue-100/90">
-          Every milestone is tracked inside your client portal with real-time notifications and quick approvals.
+          Each milestone is tracked in your client space with notifications, retro-planning and clear approvals.
         </p>
       </div>
     </Fragment>
@@ -136,27 +133,27 @@ const metadata = {
   </Content>
 
   <Steps
-    title="Delivery in 24 h, guaranteed"
+    title="Our structured method"
     tagline="Client journey"
     items={[
       {
         title: 'Digital signature',
-        description: 'Select your plan, e-sign and get instant access to your client portal.',
+        description: 'Choose your pack, sign electronically and receive client access to start the brief.',
         icon: 'tabler:edit',
       },
       {
         title: 'Guided onboarding',
-        description: 'Our assistant gathers your key information and proposes a sitemap adapted to your industry.',
+        description: 'Our assistant gathers key information and proposes a structure tailored to your industry.',
         icon: 'tabler:clipboard-list',
       },
       {
-        title: 'Automated production',
-        description: 'Pipelines assemble your site, integrate your content and alert our team for validation.',
+        title: 'Supervised production',
+        description: 'Pipelines generate the site, integrate your content and alert our team for review.',
         icon: 'tabler:robot',
       },
       {
-        title: 'Launch & handover',
-        description: 'Receive the live link, a personalised video walkthrough and your Swiss invoice.',
+        title: 'Approval & launch',
+        description: 'You approve the final version, receive your video guide and schedule the go-live.',
         icon: 'tabler:rocket',
       },
     ]}
@@ -165,47 +162,42 @@ const metadata = {
       <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
         <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Timeline</p>
         <p class="mt-6 max-w-xs text-base text-blue-100/90">
-          Each step is monitored within your portal with real-time validation and proactive alerts.
+          Typical delivery: five business days after we receive your content. We adjust the schedule to your priorities.
         </p>
       </div>
     </Fragment>
   </Steps>
 
   <Content
-    id="content"
     isAfterContent
     items={[
       {
         title: 'Multilingual content',
-        description:
-          'French, English or German copywriting so you can connect with your audience wherever they are.',
+        description: 'French by default, with optional English or German versions quoted separately to support growth.',
       },
       {
-        title: 'Measured performance',
-        description:
-          'Lighthouse score ≥ 90 guaranteed on mobile and desktop thanks to advanced optimisation.',
+        title: 'Optimised performance',
+        description: 'Astro architecture, fast Swiss hosting and image optimisation for quick mobile loading.',
       },
       {
-        title: 'Business integrations',
-        description:
-          'Bookings, Click & Collect, secure forms – we connect your tools at no extra cost.',
+        title: 'Essential integrations',
+        description: 'Contact form, booking flow or favourite tool connection via Zapier (from CHF 1,200).',
       },
       {
         title: 'Express training',
-        description:
-          'A personalised 10-minute video guide to master your site and publish autonomously.',
+        description: 'A tailored 15-minute video guide so you can update your site independently.',
       },
     ]}
   >
-    <Fragment slot="content">A digital presence that mirrors your Swiss-level precision.</Fragment>
+    <Fragment slot="content">An online presence reflecting your company’s precision.</Fragment>
 
     <Fragment slot="image">
       <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
-        <h4 class="text-3xl font-semibold">Performance under control</h4>
+        <h4 class="text-3xl font-semibold">Measured performance</h4>
         <ul class="mt-6 space-y-3 text-left text-blue-100/90">
-          <li>✓ KPIs tracked in your dashboard</li>
-          <li>✓ Automatic alerts when metrics drop</li>
-          <li>✓ Monthly actionable recommendations</li>
+          <li>✓ Mobile-first design</li>
+          <li>✓ Optimised loading times</li>
+          <li>✓ Optional care plan at CHF 79/month</li>
         </ul>
       </div>
     </Fragment>
@@ -217,39 +209,39 @@ const metadata = {
 
   <Features2
     id="included"
-    title="Everything included"
-    subtitle="A turnkey solution for French-speaking Swiss entrepreneurs"
-    tagline="What every plan covers"
+    title="Everything you need"
+    subtitle="A turnkey solution for Romandie entrepreneurs"
+    tagline="Included in every pack"
     items={[
       {
-        title: 'Swiss green hosting',
-        description: 'Servers located in Geneva powered by certified renewable energy.',
+        title: 'Swiss hosting',
+        description: 'Servers based in Switzerland with SSL certificate and initial backups covered for 12 months.',
         icon: 'tabler:server',
       },
       {
         title: 'Professional email',
-        description: 'Business mailboxes configured with SPF/DKIM security.',
+        description: 'Email accounts @yourdomain.ch configured with the care plan (CHF 79/month).',
         icon: 'tabler:mail',
       },
       {
-        title: 'Analytics monitoring',
-        description: 'Automated monthly report with key insights and optimisation ideas.',
-        icon: 'tabler:chart-line',
+        title: 'Proximity SEO',
+        description: 'Structure, headings and meta descriptions oriented to the Léman Arc so you appear locally.',
+        icon: 'tabler:map-pin',
       },
       {
-        title: 'Priority support',
-        description: 'Dedicated WhatsApp channel and hotline available 8am–6pm, Monday to Saturday.',
+        title: 'Planned support',
+        description: 'Email and video assistance with replies within one business day for every request.',
         icon: 'tabler:message',
       },
       {
-        title: 'Included updates',
-        description: 'Security, GDPR and accessibility supervised continuously by our scripts.',
-        icon: 'tabler:refresh',
+        title: 'Training & guides',
+        description: 'Recorded video session and simplified documentation for ongoing autonomy.',
+        icon: 'tabler:video',
       },
       {
-        title: 'Optional photo session',
-        description: 'Preferred pricing with partner photographers in Lausanne, Vevey or Geneva.',
-        icon: 'tabler:camera',
+        title: 'Scalable modules',
+        description: 'Additional pages, automations or advanced forms available on demand.',
+        icon: 'tabler:puzzle',
       },
     ]}
   >
@@ -259,46 +251,46 @@ const metadata = {
   </Features2>
 
   <Stats
-    title="Proven outcomes"
+    title="Clear benchmarks to decide"
     stats={[
-      { title: 'Websites delivered', amount: '180+' },
-      { title: 'Average lead time', amount: '19h' },
-      { title: 'Client satisfaction', amount: '4.9/5' },
-      { title: 'Support response', amount: '≤2h' },
+      { title: 'Typical timeline', amount: '5 business days' },
+      { title: 'Showcase pack', amount: 'CHF 999' },
+      { title: 'Care & security', amount: 'CHF 79/mo' },
+      { title: 'Zapier automations', amount: 'from CHF 1,200' },
     ]}
   />
 
   <FAQs
     id="faq"
     title="Frequently asked questions"
-    subtitle="Full transparency, from onboarding to launch."
+    subtitle="Transparency on how we work."
     tagline="FAQ"
     classes={{ container: 'max-w-6xl' }}
     items={[
       {
-        title: 'How do you guarantee a 24 h delivery?',
+        title: 'What is the delivery timeline?',
         description:
-          'Sector-specific frameworks and automation prepare 80% of the site. A local expert finalises and validates before go-live.',
+          'After receiving your content, we usually deliver the first version within five business days. Automation projects may take longer—we share the schedule in the proposal.',
       },
       {
-        title: 'Is content included?',
+        title: 'Is copywriting included?',
         description:
-          'Yes, we write your French copy and can provide English or German versions. You can review everything before publication.',
+          'Yes, we write or adapt your French copy with a local SEO focus. English or German versions are quoted separately.',
       },
       {
-        title: 'Can I update the site myself afterward?',
+        title: 'What does the CHF 79/month care plan include?',
         description:
-          'Absolutely. You receive editor access, a personalised video tutorial and unlimited support for any question.',
+          'Security updates, regular backups, uptime monitoring and management of your professional email accounts.',
       },
       {
-        title: 'Which payment methods do you accept?',
+        title: 'Do you provide automations?',
         description:
-          'Swiss cards, Twint, bank transfer and QR-billing. Subscriptions can be paid monthly or yearly.',
+          'Yes. A simple integration via Zapier or Make starts at CHF 1,200. Expect CHF 1,500 for three to four automations. We detail each flow in the proposal.',
       },
       {
-        title: 'Do you offer e-commerce options?',
+        title: 'How does support work after launch?',
         description:
-          'We integrate Click & Collect, gift card sales or catalogue experiences depending on your needs.',
+          'You get access to our client portal to submit tickets. Responses are provided within one business day via email or scheduled video sessions.',
       },
     ]}
   />
@@ -307,9 +299,9 @@ const metadata = {
     actions={[
       {
         variant: 'primary',
-        text: 'Book my launch',
+        text: 'Request a proposal',
         href: '/en/contact#form',
-        icon: 'tabler:calendar-event',
+        icon: 'tabler:mail-forward',
       },
       {
         text: 'Explore pricing',
@@ -317,10 +309,10 @@ const metadata = {
       },
     ]}
   >
-    <Fragment slot="title">Ready for your turnkey website?</Fragment>
+    <Fragment slot="title">Ready to clarify your online presence?</Fragment>
 
     <Fragment slot="subtitle">
-      An expert answers within 2 business hours to schedule your launch within 24 hours.
+      We analyse your needs and outline a realistic action plan for your business across the Léman Arc.
     </Fragment>
   </CallToAction>
 </Layout>

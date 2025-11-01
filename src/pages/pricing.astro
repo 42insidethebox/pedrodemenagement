@@ -18,7 +18,7 @@ const metadata = {
   <HeroText
     tagline="Tarifs"
     title="Des offres transparentes, facturées en Suisse"
-    subtitle="Chaque pack inclut la livraison en 24 h, l’hébergement, le support et la maintenance automatique."
+    subtitle="Chaque pack inclut la conception, la mise en ligne et un accompagnement humain. Maintenance et automatisations sont proposées selon vos besoins."
   />
 
   <!-- Pricing Widget ******************* -->
@@ -28,76 +28,76 @@ const metadata = {
     subtitle="Choisissez l’offre qui correspond à votre besoin. Sans frais cachés."
     prices={[
       {
-        title: 'Express 24 h',
-        subtitle: 'Présence en ligne immédiate',
-        price: 1490,
+        title: 'Essentiel',
+        subtitle: 'Site vitrine clé-en-main',
+        price: 999,
         period: 'CHF — paiement unique',
         items: [
           {
-            description: 'Site vitrine 5 sections + page contact',
+            description: 'Site vitrine 5 sections + page contact responsive',
           },
           {
-            description: 'Contenus rédigés et optimisés pour le SEO local',
+            description: 'Contenus rédigés en français et optimisés pour l’Arc lémanique',
           },
           {
             description: 'Hébergement suisse & certificat SSL inclus 12 mois',
           },
           {
-            description: 'Mise en ligne en 24 h ouvrées',
+            description: 'Formation vidéo + check-list d’autonomie',
           },
         ],
         callToAction: {
-          text: 'Démarrer',
+          text: 'Lancer mon projet',
           href: '/contact#form',
         },
       },
       {
-        title: 'Signature',
-        subtitle: 'Image premium & multilingue',
-        price: 2490,
+        title: 'Automatisation',
+        subtitle: 'Site + 1 flux Zapier/Make',
+        price: 1200,
         period: 'CHF — paiement unique',
         items: [
           {
-            description: 'Design sur-mesure 8 sections + blog ou landing',
+            description: 'Inclut tout le pack Essentiel',
           },
           {
-            description: 'Contenus FR/EN ou FR/DE + shooting photo partenaire',
+            description: 'Connexion à un outil via Zapier ou Make (1 automatisation)',
           },
           {
-            description: 'Intégration de vos outils (réservation, CRM, paiement)',
+            description: 'Tests de bout en bout et documentation simple',
           },
           {
-            description: 'Atelier stratégique de 60 min avec un expert',
+            description: 'Jusqu’à 4 automatisations&nbsp;: 1 500 CHF',
           },
         ],
         callToAction: {
-          text: 'Réserver',
+          text: 'Demander un devis automatisation',
           href: '/contact#form',
         },
         hasRibbon: true,
-        ribbonTitle: 'Best-seller',
+        ribbonTitle: 'Plus demandé',
       },
       {
-        title: 'Continuum',
-        subtitle: 'Accompagnement mensuel complet',
-        price: 290,
-        period: 'CHF / mois — engagement 12 mois',
+        title: 'Maintenance sécurité',
+        subtitle: 'Mises à jour et emails pro',
+        price: 79,
+        period: 'CHF / mois — sans surprise',
         items: [
           {
-            description: 'Maintenance illimitée & mises à jour hebdomadaires',
+            description: 'Mises à jour de sécurité et sauvegardes planifiées',
           },
           {
-            description: 'Production de 2 contenus premium / mois',
+            description: 'Surveillance de disponibilité & correctifs prioritaires',
           },
           {
-            description: 'Campagnes SEO & SEA locales pilotées par nos experts',
+            description: 'Gestion des emails professionnels @votredomaine.ch',
           },
           {
-            description: 'Reporting mensuel + workshop trimestriel',
+            description: 'Support email et visio sous un jour ouvré',
           },
         ],
         callToAction: {
-          text: 'Parler à un conseiller',
+          text: 'Activer la maintenance',
           href: '/contact#form',
         },
       },
@@ -112,18 +112,18 @@ const metadata = {
     columns={2}
     items={[
       {
-        title: 'Support illimité',
-        description: 'Réponses en moins de 2 h ouvrées via WhatsApp, téléphone ou email.',
+        title: 'Support humain',
+        description: 'Accompagnement par email et téléphone, réponses sous un jour ouvré.',
         icon: 'tabler:headset',
       },
       {
         title: 'Hébergement souverain',
-        description: 'Serveurs situés en Suisse, énergie renouvelable, conformité RGPD/LPD.',
+        description: 'Serveurs situés en Suisse, conformité RGPD/LPD et certificat SSL inclus.',
         icon: 'tabler:server',
       },
       {
         title: 'Tableau de bord client',
-        description: 'Suivez l’avancement, les performances et vos demandes en temps réel.',
+        description: 'Suivez l’avancement, partagez vos contenus et validez chaque étape en ligne.',
         icon: 'tabler:layout-dashboard',
       },
       {
@@ -132,13 +132,13 @@ const metadata = {
         icon: 'tabler:receipt',
       },
       {
-        title: 'Performance garantie',
-        description: 'Score Lighthouse ≥ 90 sur mobile et desktop ou optimisation offerte.',
+        title: 'Performance optimisée',
+        description: 'Architecture Astro et optimisation d’images pour un chargement rapide.',
         icon: 'tabler:gauge',
       },
       {
         title: 'Sécurité renforcée',
-        description: 'Sauvegardes quotidiennes, anti-spam, pare-feu applicatif.',
+        description: 'Sauvegardes initiales, pare-feu applicatif et mises à jour régulières.',
         icon: 'tabler:lock',
       },
     ]}
@@ -163,13 +163,13 @@ const metadata = {
           icon: 'tabler:clipboard-list',
         },
         {
-          title: '3. Production automatisée',
+          title: '3. Production supervisée',
           description: 'Notre plateforme génère votre site, nos experts ajustent et contrôlent.',
           icon: 'tabler:robot',
         },
         {
-          title: '4. Mise en ligne & formation',
-          description: 'Recevez votre site prêt, le guide vidéo et le rapport de performance.',
+          title: '4. Validation & formation',
+          description: 'Recevez votre site prêt, le guide vidéo et un récapitulatif de vos prochaines étapes.',
           icon: 'tabler:rocket',
         },
       ]}
@@ -195,20 +195,20 @@ const metadata = {
         description: 'Oui, tous les montants sont affichés TTC. La facture mentionne la TVA suisse et le numéro IDE.',
       },
       {
-        title: 'Que se passe-t-il après 12 mois d’hébergement ?',
-        description: 'Votre site reste en ligne. L’hébergement et le support se renouvellent à 290 CHF/an ou via l’offre Continuum.',
+        title: 'Quel est le délai moyen pour le pack Essentiel ?',
+        description: 'Comptez environ cinq jours ouvrés après réception de vos contenus. Nous vous donnons un planning précis lors du brief.',
       },
       {
-        title: 'Proposez-vous des options e-commerce ?',
-        description: 'Oui, sur devis. Nous intégrons paiement en ligne, Click & Collect ou catalogue produits selon vos besoins.',
+        title: 'Comment facturez-vous les automatisations supplémentaires ?',
+        description: 'Chaque flux additionnel est chiffré à l’avance. Trois à quatre automatisations standards sont facturées 1 500 CHF.',
       },
       {
-        title: 'Puis-je payer en plusieurs fois ?',
-        description: 'Paiement possible en 3 fois sans frais via carte ou virement. Les abonnements sont prélevés mensuellement.',
+        title: 'La maintenance est-elle obligatoire ?',
+        description: 'Non. Vous pouvez gérer votre site en autonomie ou nous confier la maintenance à 79 CHF/mois, résiliable avec un préavis de 30 jours.',
       },
       {
-        title: 'Quelles sont les conditions de résiliation ?',
-        description: 'Pour l’offre Continuum, un préavis de 30 jours suffit après la période d’engagement initiale de 12 mois.',
+        title: 'Quels moyens de paiement acceptez-vous ?',
+        description: 'Cartes suisses, Twint, virement bancaire et facturation QR. Les abonnements peuvent être payés mensuellement ou annuellement.',
       },
     ]}
   />

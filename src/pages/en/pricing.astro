@@ -7,69 +7,95 @@ import Steps from '~/components/widgets/Steps.astro';
 import Features3 from '~/components/widgets/Features3.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 
+import { headerDataEn, footerDataEn } from '~/navigation';
+
 const metadata = {
   title: 'Pricing',
 };
 ---
 
-<Layout metadata={metadata}>
+<Layout metadata={metadata} header={headerDataEn} footer={footerDataEn}>
   <HeroText
     tagline="Pricing"
-    title="Transparent Swiss billing"
-    subtitle="Every plan includes 24 h delivery, hosting, support and automated maintenance."
+    title="Transparent packages, billed in Switzerland"
+    subtitle="Every pack includes design, launch and human support. Care and automations are added as needed."
   />
 
   <Prices
-    title="Turnkey plans"
+    title="Our turnkey packs"
     subtitle="Choose the offer that fits your needs. No hidden fees."
     prices={[
       {
-        title: 'Express 24 h',
-        subtitle: 'Immediate online presence',
-        price: 1490,
+        title: 'Essential',
+        subtitle: 'Turnkey showcase site',
+        price: 999,
         period: 'CHF — one-time',
         items: [
-          { description: 'Five-section showcase site + contact page' },
-          { description: 'Copywriting optimised for local SEO' },
-          { description: 'Swiss hosting & SSL certificate included for 12 months' },
-          { description: 'Launch within 24 working hours' },
+          {
+            description: 'Showcase site with 5 sections + responsive contact page',
+          },
+          {
+            description: 'French copywriting optimised for the Léman Arc',
+          },
+          {
+            description: 'Swiss hosting & SSL certificate included for 12 months',
+          },
+          {
+            description: 'Video training + autonomy checklist',
+          },
         ],
         callToAction: {
-          text: 'Get started',
+          text: 'Start my project',
           href: '/en/contact#form',
         },
       },
       {
-        title: 'Signature',
-        subtitle: 'Premium bilingual experience',
-        price: 2490,
+        title: 'Automation',
+        subtitle: 'Site + 1 Zapier/Make flow',
+        price: 1200,
         period: 'CHF — one-time',
         items: [
-          { description: 'Bespoke design with 8 sections + blog or landing page' },
-          { description: 'FR/EN or FR/DE content + partner photo shoot' },
-          { description: 'Integration of booking, CRM or payment tools' },
-          { description: '60-minute strategy workshop with an expert' },
+          {
+            description: 'Includes the Essential pack',
+          },
+          {
+            description: 'Connection to one tool via Zapier or Make (1 automation)',
+          },
+          {
+            description: 'End-to-end testing and simple documentation',
+          },
+          {
+            description: 'Up to 4 automations: CHF 1,500',
+          },
         ],
         callToAction: {
-          text: 'Reserve now',
+          text: 'Request an automation quote',
           href: '/en/contact#form',
         },
         hasRibbon: true,
-        ribbonTitle: 'Best seller',
+        ribbonTitle: 'Most popular',
       },
       {
-        title: 'Continuum',
-        subtitle: 'Ongoing monthly partnership',
-        price: 290,
-        period: 'CHF / month — 12-month commitment',
+        title: 'Care & security',
+        subtitle: 'Updates and pro email',
+        price: 79,
+        period: 'CHF / month — no surprises',
         items: [
-          { description: 'Unlimited maintenance & weekly updates' },
-          { description: 'Two premium content pieces per month' },
-          { description: 'Local SEO & SEA campaigns managed by our team' },
-          { description: 'Monthly reporting + quarterly workshop' },
+          {
+            description: 'Security updates and scheduled backups',
+          },
+          {
+            description: 'Uptime monitoring & priority fixes',
+          },
+          {
+            description: 'Management of @yourdomain.ch professional emails',
+          },
+          {
+            description: 'Email & video support within one business day',
+          },
         ],
         callToAction: {
-          text: 'Speak with an advisor',
+          text: 'Activate care plan',
           href: '/en/contact#form',
         },
       },
@@ -78,37 +104,37 @@ const metadata = {
 
   <Features3
     title="Included benefits"
-    subtitle="All offers come with these guarantees."
+    subtitle="All our offers come with these guarantees."
     columns={2}
     items={[
       {
-        title: 'Unlimited support',
-        description: 'Responses within 2 working hours via WhatsApp, phone or email.',
+        title: 'Human support',
+        description: 'Email and phone assistance, responses within one business day.',
         icon: 'tabler:headset',
       },
       {
         title: 'Sovereign hosting',
-        description: 'Servers located in Switzerland, renewable energy, GDPR/FADP compliant.',
+        description: 'Servers located in Switzerland, GDPR/LPD compliant with SSL certificate included.',
         icon: 'tabler:server',
       },
       {
         title: 'Client dashboard',
-        description: 'Track progress, performance and requests in real time.',
+        description: 'Track progress, share content and approve each step online.',
         icon: 'tabler:layout-dashboard',
       },
       {
-        title: 'Clear invoicing',
+        title: 'Clear billing',
         description: 'VAT included, QR invoice or Twint, monthly payments available.',
         icon: 'tabler:receipt',
       },
       {
-        title: 'Performance guarantee',
-        description: 'Lighthouse score ≥ 90 on mobile & desktop or optimisation on us.',
+        title: 'Optimised performance',
+        description: 'Astro architecture and image optimisation for fast loading.',
         icon: 'tabler:gauge',
       },
       {
-        title: 'Reinforced security',
-        description: 'Daily backups, anti-spam and application firewall.',
+        title: 'Enhanced security',
+        description: 'Initial backups, application firewall and regular updates.',
         icon: 'tabler:lock',
       },
     ]}
@@ -116,28 +142,28 @@ const metadata = {
   />
 
   <Steps
-    title="Your project timeline"
+    title="How your project unfolds"
     tagline="Journey"
     isReversed={true}
     items={[
       {
         title: '1. Digital signature',
-        description: 'Validate your plan and receive instant onboarding access.',
+        description: 'Confirm your pack and receive onboarding access.',
         icon: 'tabler:edit',
       },
       {
         title: '2. Smart questionnaire',
-        description: 'Share your key information, upload visuals and choose your modules.',
+        description: 'Share key information, upload visuals and pick your modules.',
         icon: 'tabler:clipboard-list',
       },
       {
-        title: '3. Automated production',
-        description: 'Our platform generates your site while experts refine and approve.',
+        title: '3. Supervised production',
+        description: 'Our platform generates your site while experts fine-tune and review.',
         icon: 'tabler:robot',
       },
       {
-        title: '4. Launch & training',
-        description: 'Receive your live site, video guide and performance report.',
+        title: '4. Approval & training',
+        description: 'Receive your ready-to-use site, video guide and next steps recap.',
         icon: 'tabler:rocket',
       },
     ]}
@@ -146,7 +172,7 @@ const metadata = {
       <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-white shadow-xl">
         <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Process</p>
         <p class="mt-6 max-w-xs text-base text-blue-100/90">
-          From signature to go-live, every milestone is timestamped and documented within your client portal.
+          From signature to launch, every milestone is timestamped and documented in your client space.
         </p>
       </div>
     </Fragment>
@@ -157,20 +183,24 @@ const metadata = {
     subtitle="We believe in total transparency."
     items={[
       {
-        title: 'Do prices include VAT?',
-        description: 'Yes, all amounts are VAT included. The invoice mentions Swiss VAT and our company UID.',
+        title: 'Is VAT included?',
+        description: 'Yes, all amounts include VAT. The invoice shows Swiss VAT and IDE number.',
       },
       {
-        title: 'What happens after 12 months of hosting?',
-        description: 'Your site stays online. Hosting and support renew at CHF 290/year or through the Continuum plan.',
+        title: 'What is the average timeline for the Essential pack?',
+        description: 'Around five business days after we receive your content. We share a detailed schedule during the brief.',
       },
       {
-        title: 'Can I upgrade later?',
-        description: 'You can move from Express to Signature or Continuum at any time. We deduct the initial investment pro-rata.',
+        title: 'How do you bill extra automations?',
+        description: 'Each additional flow is quoted upfront. Three to four standard automations are CHF 1,500.',
       },
       {
-        title: 'Do you support e-commerce?',
-        description: 'Yes, we add Click & Collect, gift cards or catalogue experiences. Full e-commerce is handled via custom quote.',
+        title: 'Is the care plan mandatory?',
+        description: 'No. You can manage the site yourself or entrust us with the CHF 79/month plan, cancellable with 30 days notice.',
+      },
+      {
+        title: 'Which payment methods do you accept?',
+        description: 'Swiss cards, Twint, bank transfer and QR billing. Subscriptions can be paid monthly or annually.',
       },
     ]}
   />
@@ -179,18 +209,22 @@ const metadata = {
     actions={[
       {
         variant: 'primary',
-        text: 'Book a call',
+        text: 'Get a proposal',
         href: '/en/contact#form',
-        icon: 'tabler:calendar-event',
+        icon: 'tabler:mail-forward',
       },
       {
-        text: 'Compare offers',
+        text: 'Compare packs',
         href: '/en/services',
       },
     ]}
   >
-    <Fragment slot="title">Need help choosing?</Fragment>
+    <Fragment slot="title">
+      Need a tailored quote?
+    </Fragment>
 
-    <Fragment slot="subtitle">Our advisors respond within two working hours with a tailored recommendation.</Fragment>
+    <Fragment slot="subtitle">
+      We adapt each offer to the specifics of your business in the Léman Arc.
+    </Fragment>
   </CallToAction>
 </Layout>
