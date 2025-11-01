@@ -130,7 +130,7 @@ export const headerDataEn: Navigation = {
     {
       text: 'Solutions',
       links: [
-        { text: 'Turnkey showcase sites', href: getPermalink('/en/#process') },
+        { text: 'Turnkey showcase sites', href: getPermalink('/en#process') },
         { text: 'Ongoing support', href: getPermalink('/en/services') },
         { text: 'Care & Maintenance', href: getPermalink('/en/services#support') },
         { text: 'Multilingual content', href: getPermalink('/en/services#content') },
@@ -142,8 +142,8 @@ export const headerDataEn: Navigation = {
     {
       text: 'Resources',
       links: [
-        { text: 'Project steps', href: getPermalink('/en/#process') },
-        { text: 'FAQ', href: getPermalink('/en/#faq') },
+        { text: 'Project steps', href: getPermalink('/en#process') },
+        { text: 'FAQ', href: getPermalink('/en#faq') },
         { text: 'Blog', href: getBlogPermalink() },
       ],
     },
@@ -158,7 +158,7 @@ export const footerDataEn: FooterNavigation = {
       title: 'MonWebsite.ch',
       links: [
         { text: 'Our approach', href: getPermalink('/en/about') },
-        { text: 'Our process', href: getPermalink('/en/#process') },
+        { text: 'Our process', href: getPermalink('/en#process') },
         { text: 'Pricing', href: getPermalink('/en/pricing') },
       ],
     },
@@ -201,7 +201,7 @@ export const headerDataDe: Navigation = {
     {
       text: 'Lösungen',
       links: [
-        { text: 'Schlüsselfertige Websites', href: getPermalink('/de/#process') },
+        { text: 'Schlüsselfertige Websites', href: getPermalink('/de#process') },
         { text: 'Begleitung & Beratung', href: getPermalink('/de/services') },
         { text: 'Support & Wartung', href: getPermalink('/de/services#support') },
         { text: 'Mehrsprachige Inhalte', href: getPermalink('/de/services#content') },
@@ -213,8 +213,8 @@ export const headerDataDe: Navigation = {
     {
       text: 'Ressourcen',
       links: [
-        { text: 'Projektablauf', href: getPermalink('/de/#process') },
-        { text: 'FAQ', href: getPermalink('/de/#faq') },
+        { text: 'Projektablauf', href: getPermalink('/de#process') },
+        { text: 'FAQ', href: getPermalink('/de#faq') },
         { text: 'Blog', href: getBlogPermalink() },
       ],
     },
@@ -229,7 +229,7 @@ export const footerDataDe: FooterNavigation = {
       title: 'MonWebsite.ch',
       links: [
         { text: 'Unsere Arbeitsweise', href: getPermalink('/de/about') },
-        { text: 'Ablauf', href: getPermalink('/de/#process') },
+        { text: 'Ablauf', href: getPermalink('/de#process') },
         { text: 'Preise', href: getPermalink('/de/pricing') },
       ],
     },
@@ -272,7 +272,7 @@ export const headerDataIt: Navigation = {
     {
       text: 'Soluzioni',
       links: [
-        { text: 'Siti vetrina chiavi in mano', href: getPermalink('/it/#process') },
+        { text: 'Siti vetrina chiavi in mano', href: getPermalink('/it#process') },
         { text: 'Accompagnamento continuo', href: getPermalink('/it/services') },
         { text: 'Supporto e manutenzione', href: getPermalink('/it/services#support') },
         { text: 'Contenuti multilingue', href: getPermalink('/it/services#content') },
@@ -284,8 +284,8 @@ export const headerDataIt: Navigation = {
     {
       text: 'Risorse',
       links: [
-        { text: 'Fasi del progetto', href: getPermalink('/it/#process') },
-        { text: 'FAQ', href: getPermalink('/it/#faq') },
+        { text: 'Fasi del progetto', href: getPermalink('/it#process') },
+        { text: 'FAQ', href: getPermalink('/it#faq') },
         { text: 'Blog', href: getBlogPermalink() },
       ],
     },
@@ -300,7 +300,7 @@ export const footerDataIt: FooterNavigation = {
       title: 'MonWebsite.ch',
       links: [
         { text: 'Il nostro approccio', href: getPermalink('/it/about') },
-        { text: 'Il nostro processo', href: getPermalink('/it/#process') },
+        { text: 'Il nostro processo', href: getPermalink('/it#process') },
         { text: 'Prezzi', href: getPermalink('/it/pricing') },
       ],
     },
