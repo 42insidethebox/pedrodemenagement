@@ -8,15 +8,38 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
 <form>
   {
     inputs &&
-      inputs.map(
-        ({ type = 'text', name, label = '', autocomplete = 'on', placeholder = '' }) =>
-          name && (
-            <div class="mb-6">
-              {label && (
-                <label for={name} class="block text-sm font-medium">
-                  {label}
-                </label>
-              )}
+      inputs.map((field) => {
+        if (!field || !field.name) return null;
+        const {
+          type = 'text',
+          name,
+          label = '',
+          autocomplete = 'on',
+          placeholder = '',
+          options = [],
+        } = field;
+
+        return (
+          <div class="mb-6">
+            {label && (
+              <label for={name} class="block text-sm font-medium">
+                {label}
+              </label>
+            )}
+
+            {type === 'select' ? (
+              <select
+                name={name}
+                id={name}
+                class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900"
+              >
+                {(options.length ? options : [{ value: '', label: 'Select an option' }]).map((option) => (
+                  <option value={option.value}>
+                    {option.label ?? option.value}
+                  </option>
+                ))}
+              </select>
+            ) : (
               <input
                 type={type}
                 name={name}
@@ -25,9 +48,10 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
                 placeholder={placeholder}
                 class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900"
               />
-            </div>
-          )
-      )
+            )}
+          </div>
+        );
+      })
   }
 
   {

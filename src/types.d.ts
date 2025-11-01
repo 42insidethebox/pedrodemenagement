@@ -1,5 +1,5 @@
 import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
-import type { HTMLAttributes, ImageMetadata } from 'astro/types';
+import type { HTMLAttributes, HTMLInputTypeAttribute, ImageMetadata } from 'astro/types';
 
 export interface Post {
   /** A unique ID number that identifies a post. */
@@ -162,11 +162,12 @@ export interface Testimonial {
 }
 
 export interface Input {
-  type: HTMLInputTypeAttribute;
+  type: HTMLInputTypeAttribute | 'select';
   name: string;
   label?: string;
   autocomplete?: string;
   placeholder?: string;
+  options?: Array<{ label?: string; value: string }>;
 }
 
 export interface Textarea {
@@ -279,3 +280,119 @@ export interface Content extends Omit<Headline, 'classes'>, Widget {
 }
 
 export interface Contact extends Omit<Headline, 'classes'>, Form, Widget {}
+
+// BACKEND DOMAIN TYPES
+export interface AgencyProfile {
+  id: string;
+  user_id: string;
+  agency_id: string;
+  full_name: string | null;
+  role: 'owner' | 'admin' | 'manager' | 'member';
+  timezone: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Agency {
+  id: string;
+  name: string;
+  slug: string;
+  owner_id: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ClientRecord {
+  id: string;
+  agency_id: string;
+  owner_id: string;
+  company_name: string;
+  primary_contact: string;
+  email: string;
+  phone: string | null;
+  status: 'lead' | 'active' | 'inactive';
+  services: string[];
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ProjectRecord {
+  id: string;
+  agency_id: string;
+  client_id: string;
+  owner_id: string;
+  name: string;
+  status: 'discovery' | 'in_progress' | 'on_hold' | 'completed';
+  start_date: string | null;
+  due_date: string | null;
+  budget: number | null;
+  currency: string | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface TaskRecord {
+  id: string;
+  project_id: string;
+  agency_id: string;
+  assignee_id: string | null;
+  title: string;
+  description: string | null;
+  status: 'todo' | 'in_progress' | 'blocked' | 'done';
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+  due_date: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface InvoiceRecord {
+  id: string;
+  agency_id: string;
+  client_id: string;
+  project_id: string | null;
+  owner_id: string;
+  invoice_number: string;
+  amount: number;
+  currency: string;
+  status: 'draft' | 'sent' | 'paid' | 'overdue';
+  issue_date: string;
+  due_date: string;
+  line_items: Array<{ description: string; quantity: number; unit_amount: number }>;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface DocumentRecord {
+  id: string;
+  agency_id: string;
+  owner_id: string;
+  title: string;
+  document_type: 'proposal' | 'contract' | 'brief' | 'report' | 'asset';
+  status: 'draft' | 'sent' | 'signed' | 'archived';
+  storage_path: string;
+  metadata: Record<string, string>;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ActivityRecord {
+  id: string;
+  agency_id: string;
+  actor_id: string;
+  entity_type: 'client' | 'project' | 'task' | 'invoice' | 'document';
+  entity_id: string;
+  action: string;
+  payload: Record<string, unknown>;
+  created_at: string;
+}
+
+declare global {
+  namespace App {
+    interface Locals {
+      user?: import('@supabase/supabase-js').User;
+    }
+  }
+}
