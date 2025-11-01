@@ -1,0 +1,343 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+
+import Hero from '~/components/widgets/Hero.astro';
+import Note from '~/components/widgets/Note.astro';
+import Features from '~/components/widgets/Features.astro';
+import Features2 from '~/components/widgets/Features2.astro';
+import Steps from '~/components/widgets/Steps.astro';
+import Content from '~/components/widgets/Content.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import Stats from '~/components/widgets/Stats.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+
+const metadata = {
+  title: 'MonWebsite.ch — Sites vitrines suisses pour l’Arc lémanique',
+  ignoreTitleTemplate: true,
+};
+---
+
+<Layout metadata={metadata}>
+  <!-- Hero Widget ******************* -->
+
+  <Hero
+    id="process"
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Voir les offres',
+        href: '/pricing',
+        icon: 'tabler:arrow-right',
+      },
+      { text: 'Parler à un expert', href: '/contact#form' },
+    ]}
+    image={{ src: '~/assets/images/hero-image.png', alt: 'Interface MonWebsite.ch' }}
+  >
+    <Fragment slot="title">
+      Votre site clé-en-main, pensé pour le marché lémanique
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      Design suisse, performance maîtrisée. MonWebsite.ch combine automatisation et expertise locale pour livrer des sites vitrines
+      fiables aux PME et indépendants de l'Arc lémanique, sans promesse irréaliste ni surcharge technique.
+    </Fragment>
+  </Hero>
+
+  <!-- Note Widget ******************* -->
+
+  <Note
+    title="Engagement"
+    description="Service local, support humain et orchestrations automatisées pour un résultat impeccable sans effort."
+  />
+
+  <!-- Features Widget *************** -->
+
+  <Features
+    id="features"
+    tagline="Pourquoi nous choisir"
+    title="La précision suisse appliquée au digital"
+    subtitle="Chaque projet suit un cadre clair&nbsp;: collecte des informations, conception, validation et mise en ligne accompagnée."
+    items={[
+      {
+        title: 'Délai maîtrisé',
+        description:
+          'Brief, design et mise en ligne sont réalisés en moyenne sous cinq jours ouvrés, selon la complexité de vos contenus et intégrations.',
+        icon: 'tabler:calendar-time',
+      },
+      {
+        title: 'Design premium sur mesure',
+        description:
+          'Charte typographique Inter/Montserrat, palettes sobres et animations légères pour un rendu haut de gamme et cohérent.',
+        icon: 'tabler:sparkles',
+      },
+      {
+        title: 'SEO local essentiel',
+        description:
+          'Structure, balises et textes optimisés pour Lausanne, Genève, Montreux et les communes voisines afin de refléter votre ancrage local.',
+        icon: 'tabler:map-pin',
+      },
+      {
+        title: 'Maintenance sécurité en option',
+        description:
+          'Patches, sauvegardes et suivi de disponibilité sont proposés à 79 CHF/mois pour garder votre site à jour sans effort.',
+        icon: 'tabler:shield-check',
+      },
+      {
+        title: 'Facturation suisse transparente',
+        description:
+          'Contrats clairs, TVA incluse et paiement en francs suisses via les principaux moyens helvétiques.',
+        icon: 'tabler:receipt',
+      },
+      {
+        title: 'Support humain local',
+        description:
+          'Nos experts basés sur l’Arc lémanique vous répondent sous un jour ouvré par email ou téléphone, avec suivi planifié.',
+        icon: 'tabler:headset',
+      },
+    ]}
+  />
+
+  <!-- Content Widget **************** -->
+
+  <Content
+    isReversed
+    tagline="Processus"
+    title="Une orchestration en 3 temps"
+    items={[
+      {
+        title: 'Brief structuré',
+        description:
+          'Un questionnaire ciblé collecte vos services, horaires, témoignages et visuels pour alimenter notre IA propriétaire.',
+      },
+      {
+        title: 'Design & intégration',
+        description:
+          'Nos designers adaptent les sections, calibrent la typographie et intègrent vos contenus, médias et appels à l’action.',
+      },
+      {
+        title: 'Contrôle qualité',
+        description:
+          'Relecture humaine, tests de performance et checklist RGPD avant validation finale et mise en ligne.',
+      },
+    ]}
+  >
+    <Fragment slot="content">
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Votre site prêt sans stress</h3>
+      Trois étapes automatisées, validées par un expert local.
+    </Fragment>
+
+    <Fragment slot="image">
+      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl">
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Workflow maîtrisé</p>
+        <h4 class="mt-4 text-3xl font-semibold">Brief → Création → Mise en ligne</h4>
+        <p class="mt-6 max-w-xs text-base text-blue-100/90">
+          Chaque étape est tracée dans votre espace client avec notifications, rétroplanning et validations claires.
+        </p>
+      </div>
+    </Fragment>
+
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    </Fragment>
+  </Content>
+
+  <!-- Steps Widget ****************** -->
+
+    <Steps
+      title="Notre méthode encadrée"
+      tagline="Parcours client"
+      items={[
+        {
+          title: 'Signature en ligne',
+          description: 'Choisissez votre pack, signez électroniquement et recevez votre accès client pour lancer le brief.',
+          icon: 'tabler:edit',
+        },
+        {
+          title: 'Onboarding guidé',
+          description: 'Notre assistant collecte vos informations clés et propose une arborescence adaptée à votre métier.',
+          icon: 'tabler:clipboard-list',
+        },
+        {
+          title: 'Production supervisée',
+          description: 'Nos pipelines génèrent le site, intègrent vos contenus et notifient notre équipe pour relecture.',
+          icon: 'tabler:robot',
+        },
+        {
+          title: 'Validation & lancement',
+          description: 'Vous validez la version finale, recevez votre guide vidéo et programmez la mise en ligne selon vos besoins.',
+          icon: 'tabler:rocket',
+        },
+      ]}
+    >
+      <Fragment slot="image">
+        <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
+          <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Timeline</p>
+          <p class="mt-6 max-w-xs text-base text-blue-100/90">
+            Délai typique&nbsp;: cinq jours ouvrés après réception des contenus. Nous ajustons le planning selon vos priorités.
+          </p>
+        </div>
+      </Fragment>
+    </Steps>
+
+  <!-- Content Widget **************** -->
+
+  <Content
+    isAfterContent
+    items={[
+      {
+        title: 'Contenus multilingues',
+        description:
+          'Français en standard, option anglaise ou allemande sur devis pour accompagner votre croissance régionale.',
+      },
+      {
+        title: 'Performance optimisée',
+        description:
+          'Architecture Astro, hébergement rapide en Suisse et optimisation d’images pour charger vite sur mobile.',
+      },
+      {
+        title: 'Intégrations essentielles',
+        description:
+          'Formulaire de contact, prise de rendez-vous ou connexion à votre outil favori via Zapier (dès 1 200 CHF).',
+      },
+      {
+        title: 'Formation express',
+        description:
+          'Un guide vidéo personnalisé de 15 minutes pour vous approprier votre site et publier en autonomie.',
+      },
+    ]}
+  >
+    <Fragment slot="content">Une présence en ligne qui reflète la précision de votre entreprise.</Fragment>
+
+    <Fragment slot="image">
+      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
+        <h4 class="text-3xl font-semibold">Performances maîtrisées</h4>
+        <ul class="mt-6 space-y-3 text-left text-blue-100/90">
+          <li>✓ Conception mobile-first</li>
+          <li>✓ Temps de chargement optimisé</li>
+          <li>✓ Mise à jour de sécurité possible à 79 CHF/mois</li>
+        </ul>
+      </div>
+    </Fragment>
+
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    </Fragment>
+  </Content>
+
+  <!-- Features2 Widget ************** -->
+
+  <Features2
+    id="included"
+    title="Tout est compris"
+    subtitle="Une solution clé-en-main pensée pour les entrepreneurs romands"
+    tagline="Inclus dans chaque pack"
+    items={[
+      {
+        title: 'Hébergement en Suisse',
+        description: 'Serveurs localisés en Suisse avec certificat SSL et sauvegardes initiales incluses pendant 12 mois.',
+        icon: 'tabler:server',
+      },
+      {
+        title: 'Emails professionnels',
+        description: 'Comptes email @votredomaine.ch configurés lors de l’option maintenance (79 CHF/mois).',
+        icon: 'tabler:mail',
+      },
+      {
+        title: 'SEO de proximité',
+        description: 'Structure, balises titres et méta descriptions orientées Arc lémanique pour être trouvé localement.',
+        icon: 'tabler:map-pin',
+      },
+      {
+        title: 'Support planifié',
+        description: 'Accompagnement par email et visio, réponses sous un jour ouvré pour chaque demande.',
+        icon: 'tabler:message',
+      },
+      {
+        title: 'Formation & guide',
+        description: 'Session vidéo enregistrée et documentation simplifiée pour rester autonome.',
+        icon: 'tabler:video',
+      },
+      {
+        title: 'Modules évolutifs',
+        description: 'Ajout de pages, automatisations Zapier ou formulaires avancés sur devis dédié.',
+        icon: 'tabler:puzzle',
+      },
+    ]}
+  >
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    </Fragment>
+  </Features2>
+
+  <!-- Stats Widget ****************** -->
+
+  <Stats
+    title="Des repères clairs pour décider"
+    stats={[
+      { title: 'Délai typique', amount: '5 jours ouvrés' },
+      { title: 'Pack site vitrine', amount: '999 CHF' },
+      { title: 'Maintenance sécurité', amount: '79 CHF/mois' },
+      { title: 'Automations Zapier', amount: 'dès 1 200 CHF' },
+    ]}
+  />
+
+  <!-- FAQs Widget ******************* -->
+
+  <FAQs
+    id="faq"
+    title="Questions fréquentes"
+    subtitle="Transparence totale sur notre façon de travailler."
+    tagline="FAQ"
+    classes={{ container: 'max-w-6xl' }}
+    items={[
+      {
+        title: 'Quel est le délai de livraison ?',
+        description:
+          'Après réception des contenus, nous livrons généralement la première version en cinq jours ouvrés. Les projets avec automatisations peuvent nécessiter davantage de temps, annoncé dès le devis.',
+      },
+      {
+        title: 'Le contenu est-il inclus ?',
+        description:
+          'Oui, nous rédigeons ou retravaillons vos textes en français avec une optimisation locale de base. Les versions anglaise ou allemande sont proposées sur devis.',
+      },
+      {
+        title: 'Que comprend la maintenance à 79 CHF/mois ?',
+        description:
+          'Elle couvre les mises à jour de sécurité, les sauvegardes régulières, la surveillance de disponibilité et la gestion de vos comptes emails professionnels.',
+      },
+      {
+        title: 'Proposez-vous des automatisations ?',
+        description:
+          'Oui. Une intégration simple via Zapier ou Make démarre à 1 200 CHF. Pour trois à quatre automatisations, prévoir 1 500 CHF. Nous détaillons chaque flux dans la proposition.',
+      },
+      {
+        title: 'Comment se déroule le support après la mise en ligne ?',
+        description:
+          'Vous disposez d’un accès à notre espace client pour ouvrir des tickets. Les réponses sont apportées sous un jour ouvré via email ou visio planifiée.',
+      },
+    ]}
+  />
+
+  <!-- CallToAction Widget *********** -->
+
+  <CallToAction
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Demander une proposition',
+        href: '/contact#form',
+        icon: 'tabler:mail-forward',
+      },
+      {
+        text: 'Découvrir nos tarifs',
+        href: '/pricing',
+      },
+    ]}
+  >
+    <Fragment slot="title">Prêts à clarifier votre présence en ligne ?</Fragment>
+
+    <Fragment slot="subtitle">
+      Nous analysons vos besoins et proposons un plan d’action réaliste pour votre activité sur l’Arc lémanique.
+    </Fragment>
+  </CallToAction>
+</Layout>

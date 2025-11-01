@@ -6,6 +6,9 @@ import { adminClient } from '~/utils/supabase/admin';
 import { withAuth } from '~/utils/supabase/auth';
 import { ensureRecord } from '~/utils/backend/repository';
 
+export const prerender = false;
+
+
 type DocumentRecord = DocumentInput & {
   id: string;
   agency_id: string;

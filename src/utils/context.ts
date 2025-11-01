@@ -1,7 +1,5 @@
-// temporary backend context placeholder
-export const getBackendContext = async () => {
-  return {
-    env: process.env.ENVIRONMENT || "development",
-    timestamp: new Date().toISOString(),
-  };
+// src/utils/backend/context.ts
+export const backendContext = {
+  initialized: true,
+  env: import.meta.env.MODE || 'production'
 };

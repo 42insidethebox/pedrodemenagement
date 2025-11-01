@@ -1,0 +1,240 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import Prices from '~/components/widgets/Pricing.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import Steps from '~/components/widgets/Steps.astro';
+import Features3 from '~/components/widgets/Features3.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+
+const metadata = {
+  title: 'Tarifs',
+};
+---
+
+<Layout metadata={metadata}>
+  <!-- HeroText Widget ******************* -->
+
+  <HeroText
+    tagline="Tarifs"
+    title="Des offres transparentes, facturées en Suisse"
+    subtitle="Chaque pack inclut la conception, la mise en ligne et un accompagnement humain. Maintenance et automatisations sont proposées selon vos besoins."
+  />
+
+  <!-- Pricing Widget ******************* -->
+
+  <Prices
+    title="Nos packs clés-en-main"
+    subtitle="Choisissez l’offre qui correspond à votre besoin. Sans frais cachés."
+    prices={[
+      {
+        title: 'Essentiel',
+        subtitle: 'Site vitrine clé-en-main',
+        price: 999,
+        period: 'CHF — paiement unique',
+        items: [
+          {
+            description: 'Site vitrine 5 sections + page contact responsive',
+          },
+          {
+            description: 'Contenus rédigés en français et optimisés pour l’Arc lémanique',
+          },
+          {
+            description: 'Hébergement suisse & certificat SSL inclus 12 mois',
+          },
+          {
+            description: 'Formation vidéo + check-list d’autonomie',
+          },
+        ],
+        callToAction: {
+          text: 'Lancer mon projet',
+          href: '/contact#form',
+        },
+      },
+      {
+        title: 'Automatisation',
+        subtitle: 'Site + 1 flux Zapier/Make',
+        price: 1200,
+        period: 'CHF — paiement unique',
+        items: [
+          {
+            description: 'Inclut tout le pack Essentiel',
+          },
+          {
+            description: 'Connexion à un outil via Zapier ou Make (1 automatisation)',
+          },
+          {
+            description: 'Tests de bout en bout et documentation simple',
+          },
+          {
+            description: 'Jusqu’à 4 automatisations&nbsp;: 1 500 CHF',
+          },
+        ],
+        callToAction: {
+          text: 'Demander un devis automatisation',
+          href: '/contact#form',
+        },
+        hasRibbon: true,
+        ribbonTitle: 'Plus demandé',
+      },
+      {
+        title: 'Maintenance sécurité',
+        subtitle: 'Mises à jour et emails pro',
+        price: 79,
+        period: 'CHF / mois — sans surprise',
+        items: [
+          {
+            description: 'Mises à jour de sécurité et sauvegardes planifiées',
+          },
+          {
+            description: 'Surveillance de disponibilité & correctifs prioritaires',
+          },
+          {
+            description: 'Gestion des emails professionnels @votredomaine.ch',
+          },
+          {
+            description: 'Support email et visio sous un jour ouvré',
+          },
+        ],
+        callToAction: {
+          text: 'Activer la maintenance',
+          href: '/contact#form',
+        },
+      },
+    ]}
+  />
+
+  <!-- Features3 Widget ************** -->
+
+  <Features3
+    title="Avantages inclus"
+    subtitle="Toutes nos offres comprennent ces garanties."
+    columns={2}
+    items={[
+      {
+        title: 'Support humain',
+        description: 'Accompagnement par email et téléphone, réponses sous un jour ouvré.',
+        icon: 'tabler:headset',
+      },
+      {
+        title: 'Hébergement souverain',
+        description: 'Serveurs situés en Suisse, conformité RGPD/LPD et certificat SSL inclus.',
+        icon: 'tabler:server',
+      },
+      {
+        title: 'Tableau de bord client',
+        description: 'Suivez l’avancement, partagez vos contenus et validez chaque étape en ligne.',
+        icon: 'tabler:layout-dashboard',
+      },
+      {
+        title: 'Facturation claire',
+        description: 'TVA incluse, facture QR ou Twint, mensualisation disponible.',
+        icon: 'tabler:receipt',
+      },
+      {
+        title: 'Performance optimisée',
+        description: 'Architecture Astro et optimisation d’images pour un chargement rapide.',
+        icon: 'tabler:gauge',
+      },
+      {
+        title: 'Sécurité renforcée',
+        description: 'Sauvegardes initiales, pare-feu applicatif et mises à jour régulières.',
+        icon: 'tabler:lock',
+      },
+    ]}
+    classes={{ container: 'max-w-5xl' }}
+  />
+
+  <!-- Steps Widget ****************** -->
+
+    <Steps
+      title="Comment se déroule votre projet"
+      tagline="Parcours"
+      isReversed={true}
+      items={[
+        {
+          title: '1. Signature numérique',
+          description: 'Validez le pack choisi et recevez votre accès onboarding.',
+          icon: 'tabler:edit',
+        },
+        {
+          title: '2. Questionnaire intelligent',
+          description: 'Renseignez vos informations clés, importez vos visuels et sélectionnez vos modules.',
+          icon: 'tabler:clipboard-list',
+        },
+        {
+          title: '3. Production supervisée',
+          description: 'Notre plateforme génère votre site, nos experts ajustent et contrôlent.',
+          icon: 'tabler:robot',
+        },
+        {
+          title: '4. Validation & formation',
+          description: 'Recevez votre site prêt, le guide vidéo et un récapitulatif de vos prochaines étapes.',
+          icon: 'tabler:rocket',
+        },
+      ]}
+    >
+      <Fragment slot="image">
+        <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-white shadow-xl">
+          <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Process</p>
+          <p class="mt-6 max-w-xs text-base text-blue-100/90">
+            De la signature à la mise en ligne, chaque étape est horodatée et documentée dans votre espace client.
+          </p>
+        </div>
+      </Fragment>
+    </Steps>
+
+  <!-- FAQs Widget ******************* -->
+
+  <FAQs
+    title="Questions sur nos tarifs"
+    subtitle="Nous croyons en une transparence totale."
+    items={[
+      {
+        title: 'Les prix incluent-ils la TVA ?',
+        description: 'Oui, tous les montants sont affichés TTC. La facture mentionne la TVA suisse et le numéro IDE.',
+      },
+      {
+        title: 'Quel est le délai moyen pour le pack Essentiel ?',
+        description: 'Comptez environ cinq jours ouvrés après réception de vos contenus. Nous vous donnons un planning précis lors du brief.',
+      },
+      {
+        title: 'Comment facturez-vous les automatisations supplémentaires ?',
+        description: 'Chaque flux additionnel est chiffré à l’avance. Trois à quatre automatisations standards sont facturées 1 500 CHF.',
+      },
+      {
+        title: 'La maintenance est-elle obligatoire ?',
+        description: 'Non. Vous pouvez gérer votre site en autonomie ou nous confier la maintenance à 79 CHF/mois, résiliable avec un préavis de 30 jours.',
+      },
+      {
+        title: 'Quels moyens de paiement acceptez-vous ?',
+        description: 'Cartes suisses, Twint, virement bancaire et facturation QR. Les abonnements peuvent être payés mensuellement ou annuellement.',
+      },
+    ]}
+  />
+
+  <!-- CallToAction Widget *********** -->
+
+  <CallToAction
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Recevoir une proposition',
+        href: '/contact#form',
+        icon: 'tabler:mail-forward',
+      },
+      {
+        text: 'Comparer les packs',
+        href: '/services',
+      },
+    ]}
+  >
+    <Fragment slot="title">
+      Besoin d’un devis personnalisé ?
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      Nous adaptons chaque offre aux spécificités de votre activité sur l’Arc lémanique.
+    </Fragment>
+  </CallToAction>
+</Layout>

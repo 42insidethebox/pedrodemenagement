@@ -1,0 +1,230 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import Prices from '~/components/widgets/Pricing.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import Steps from '~/components/widgets/Steps.astro';
+import Features3 from '~/components/widgets/Features3.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+
+import { headerDataIt, footerDataIt } from '~/navigation';
+
+const metadata = {
+  title: 'Prezzi',
+};
+---
+
+<Layout metadata={metadata} header={headerDataIt} footer={footerDataIt}>
+  <HeroText
+    tagline="Prezzi"
+    title="Pacchetti trasparenti, fatturati in Svizzera"
+    subtitle="Ogni pacchetto include design, messa online e supporto umano. Piano di cura e automazioni su misura."
+  />
+
+  <Prices
+    title="I nostri pacchetti chiavi in mano"
+    subtitle="Scegli la soluzione più adatta. Nessun costo nascosto."
+    prices={[
+      {
+        title: 'Essenziale',
+        subtitle: 'Sito vetrina chiavi in mano',
+        price: 999,
+        period: 'CHF — pagamento unico',
+        items: [
+          {
+            description: 'Sito vetrina con 5 sezioni + pagina contatti responsive',
+          },
+          {
+            description: 'Copywriting in francese ottimizzato per l’Arco lemanico',
+          },
+          {
+            description: 'Hosting svizzero & certificato SSL inclusi per 12 mesi',
+          },
+          {
+            description: 'Video training + checklist di autonomia',
+          },
+        ],
+        callToAction: {
+          text: 'Avvia il progetto',
+          href: '/it/contact#form',
+        },
+      },
+      {
+        title: 'Automazione',
+        subtitle: 'Sito + 1 flusso Zapier/Make',
+        price: 1200,
+        period: 'CHF — pagamento unico',
+        items: [
+          {
+            description: 'Include il pacchetto Essenziale',
+          },
+          {
+            description: 'Connessione a uno strumento via Zapier o Make (1 automazione)',
+          },
+          {
+            description: 'Test end-to-end e documentazione semplice',
+          },
+          {
+            description: 'Fino a 4 automazioni: CHF 1’500',
+          },
+        ],
+        callToAction: {
+          text: 'Richiedi preventivo automazioni',
+          href: '/it/contact#form',
+        },
+        hasRibbon: true,
+        ribbonTitle: 'Il più richiesto',
+      },
+      {
+        title: 'Piano di cura',
+        subtitle: 'Aggiornamenti e email professionali',
+        price: 79,
+        period: 'CHF / mese — senza sorprese',
+        items: [
+          {
+            description: 'Aggiornamenti di sicurezza e backup pianificati',
+          },
+          {
+            description: 'Monitoraggio uptime & interventi prioritari',
+          },
+          {
+            description: 'Gestione caselle @tuodominio.ch professionali',
+          },
+          {
+            description: 'Supporto email e video entro un giorno lavorativo',
+          },
+        ],
+        callToAction: {
+          text: 'Attiva il piano',
+          href: '/it/contact#form',
+        },
+      },
+    ]}
+  />
+
+  <Features3
+    title="Vantaggi inclusi"
+    subtitle="Ogni offerta comprende queste garanzie."
+    columns={2}
+    items={[
+      {
+        title: 'Supporto umano',
+        description: 'Assistenza via email e telefono, risposta entro un giorno lavorativo.',
+        icon: 'tabler:headset',
+      },
+      {
+        title: 'Hosting sovrano',
+        description: 'Server in Svizzera, conformi GDPR/LPD, con SSL incluso.',
+        icon: 'tabler:server',
+      },
+      {
+        title: 'Dashboard cliente',
+        description: 'Monitora avanzamento, condividi contenuti e approva le fasi online.',
+        icon: 'tabler:layout-dashboard',
+      },
+      {
+        title: 'Fatturazione chiara',
+        description: 'IVA inclusa, fattura QR o Twint, possibilità di rate mensili.',
+        icon: 'tabler:receipt',
+      },
+      {
+        title: 'Performance ottimizzata',
+        description: 'Architettura Astro e immagini ottimizzate per caricamenti rapidi.',
+        icon: 'tabler:gauge',
+      },
+      {
+        title: 'Sicurezza potenziata',
+        description: 'Backup iniziali, firewall applicativo e aggiornamenti regolari.',
+        icon: 'tabler:lock',
+      },
+    ]}
+    classes={{ container: 'max-w-5xl' }}
+  />
+
+  <Steps
+    title="Come si svolge il progetto"
+    tagline="Percorso"
+    isReversed={true}
+    items={[
+      {
+        title: '1. Firma digitale',
+        description: 'Conferma il pacchetto e ricevi l’accesso onboarding.',
+        icon: 'tabler:edit',
+      },
+      {
+        title: '2. Questionario smart',
+        description: 'Inserisci informazioni chiave, carica visual e scegli i moduli.',
+        icon: 'tabler:clipboard-list',
+      },
+      {
+        title: '3. Produzione supervisionata',
+        description: 'La piattaforma genera il sito, gli esperti rifiniscono e verificano.',
+        icon: 'tabler:robot',
+      },
+      {
+        title: '4. Validazione & training',
+        description: 'Ricevi il sito pronto, la guida video e il riepilogo delle prossime azioni.',
+        icon: 'tabler:rocket',
+      },
+    ]}
+  >
+    <Fragment slot="image">
+      <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-white shadow-xl">
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Processo</p>
+        <p class="mt-6 max-w-xs text-base text-blue-100/90">
+          Dalla firma al lancio, ogni fase è tracciata e documentata nel tuo spazio cliente.
+        </p>
+      </div>
+    </Fragment>
+  </Steps>
+
+  <FAQs
+    title="Domande sui prezzi"
+    subtitle="Crediamo nella massima trasparenza."
+    items={[
+      {
+        title: 'L’IVA è inclusa?',
+        description: 'Sì, tutti gli importi sono IVA inclusa. La fattura indica l’IVA svizzera e il numero IDE.',
+      },
+      {
+        title: 'Qual è la tempistica media per l’Essenziale?',
+        description: 'Circa cinque giorni lavorativi dopo aver ricevuto i contenuti. Condividiamo il planning durante il brief.',
+      },
+      {
+        title: 'Come fatturate automazioni extra?',
+        description: 'Ogni flusso aggiuntivo è preventivato in anticipo. Tre-quattro automazioni standard costano CHF 1’500.',
+      },
+      {
+        title: 'Il piano di cura è obbligatorio?',
+        description: 'No. Puoi gestire il sito in autonomia oppure affidarci il piano da CHF 79/mese, disdicibile con 30 giorni di preavviso.',
+      },
+      {
+        title: 'Quali metodi di pagamento accettate?',
+        description: 'Carte svizzere, Twint, bonifico bancario e fattura QR. Gli abbonamenti possono essere mensili o annuali.',
+      },
+    ]}
+  />
+
+  <CallToAction
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Ricevi una proposta',
+        href: '/it/contact#form',
+        icon: 'tabler:mail-forward',
+      },
+      {
+        text: 'Confronta i pacchetti',
+        href: '/it/services',
+      },
+    ]}
+  >
+    <Fragment slot="title">
+      Hai bisogno di un preventivo su misura?
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      Adattiamo ogni offerta alle specificità della tua attività nell’Arco lemanico.
+    </Fragment>
+  </CallToAction>
+</Layout>

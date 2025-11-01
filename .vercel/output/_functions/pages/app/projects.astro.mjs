@@ -1,0 +1,335 @@
+import { c as createComponent, a as renderTemplate, r as renderComponent, m as maybeRenderHead } from '../../chunks/astro/server_CGLXZ7Kv.mjs';
+import { $ as $$BackendLayout } from '../../chunks/BackendLayout_D0FIHz3R.mjs';
+export { renderers } from '../../renderers.mjs';
+
+var __freeze = Object.freeze;
+var __defProp = Object.defineProperty;
+var __template = (cooked, raw) => __freeze(__defProp(cooked, "raw", { value: __freeze(raw || cooked.slice()) }));
+var _a;
+const $$Projects = createComponent(async ($$result, $$props, $$slots) => {
+  return renderTemplate(_a || (_a = __template(["", ` <script type="module">
+  import { authFetch } from '~/utils/backend/api';
+
+  const form = document.getElementById('project-form');
+  const message = document.getElementById('project-message');
+  const submitButton = document.getElementById('project-submit');
+  const tableBody = document.getElementById('project-table');
+  const clientSelect = document.getElementById('client_id');
+  const clientLookup = {};
+
+  const formatBudget = (amount, currency) => {
+    if (!amount) return '\u2014';
+    const formatter = new Intl.NumberFormat(undefined, {
+      style: 'currency',
+      currency: currency || 'USD',
+      currencyDisplay: 'code',
+    });
+    return formatter.format(amount);
+  };
+
+  const loadClients = async () => {
+    if (!clientSelect) return;
+    clientSelect.innerHTML = '<option value="">Loading clients\u2026</option>';
+    Object.keys(clientLookup).forEach((key) => delete clientLookup[key]);
+    try {
+      const response = await authFetch('/clients');
+      const clients = response.clients ?? [];
+      if (!clients.length) {
+        clientSelect.innerHTML = '<option value="">Add a client first</option>';
+        return;
+      }
+      clients.forEach((client) => {
+        clientLookup[client.id] = client.company_name;
+      });
+      clientSelect.innerHTML = clients
+        .map((client) => \`<option value="\${client.id}">\${client.company_name}</option>\`)
+        .join('');
+    } catch (error) {
+      console.error(error);
+      clientSelect.innerHTML = '<option value="">Unable to load clients</option>';
+    }
+  };
+
+  const renderProjects = (projects) => {
+    if (!tableBody) return;
+    tableBody.innerHTML = '';
+
+    if (!projects.length) {
+      tableBody.innerHTML = '<tr><td colspan="6" class="px-4 py-6 text-center text-sm text-slate-400">No projects yet. Create one above.</td></tr>';
+      return;
+    }
+
+    projects.forEach((project) => {
+      const row = document.createElement('tr');
+      const timeline = [project.start_date, project.due_date].filter(Boolean).join(' \u2192 ');
+      row.innerHTML = \`
+        <td class="px-4 py-3">
+          <div class="font-medium text-white">\${project.name}</div>
+          <div class="text-xs text-slate-400">\${project.notes ?? ''}</div>
+        </td>
+        <td class="px-4 py-3 text-sm">\${clientLookup[project.client_id] ?? project.client_id ?? ''}</td>
+        <td class="px-4 py-3"><span class="inline-flex rounded-full bg-slate-800 px-2.5 py-1 text-xs capitalize text-slate-200">\${project.status}</span></td>
+        <td class="px-4 py-3 text-xs text-slate-300">\${timeline || '\u2014'}</td>
+        <td class="px-4 py-3 text-xs text-slate-300">\${formatBudget(project.budget, project.currency)}</td>
+        <td class="px-4 py-3 text-right">
+          <button data-delete="\${project.id}" class="rounded-lg border border-red-500/50 px-3 py-1 text-xs text-red-300 hover:bg-red-500/10">Delete</button>
+        </td>\`;
+      tableBody.appendChild(row);
+    });
+  };
+
+  const loadProjects = async () => {
+    try {
+      const response = await authFetch('/projects');
+      renderProjects(response.projects ?? []);
+    } catch (error) {
+      console.error(error);
+      if (tableBody) {
+        tableBody.innerHTML = '<tr><td colspan="6" class="px-4 py-6 text-center text-sm text-red-400">Unable to load projects.</td></tr>';
+      }
+    }
+  };
+
+  if (form) {
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (message) {
+        message.classList.remove('text-red-400', 'text-blue-400');
+        message.textContent = '';
+      }
+      if (submitButton) {
+        submitButton.classList.add('animate-pulse');
+        submitButton.disabled = true;
+      }
+
+      const formData = new FormData(form);
+      const payload = {
+        name: String(formData.get('name') ?? '').trim(),
+        client_id: String(formData.get('client_id') ?? ''),
+        status: String(formData.get('status') ?? 'discovery'),
+        start_date: String(formData.get('start_date') ?? '') || null,
+        due_date: String(formData.get('due_date') ?? '') || null,
+        budget: formData.get('budget') ? Number(formData.get('budget')) : null,
+        currency: String(formData.get('currency') ?? '').trim() || null,
+        notes: String(formData.get('notes') ?? '').trim() || null,
+      };
+
+      try {
+        await authFetch('/projects', {
+          method: 'POST',
+          body: JSON.stringify(payload),
+        });
+        if (message) {
+          message.classList.add('text-blue-400');
+          message.textContent = 'Project captured.';
+        }
+        form.reset();
+        await loadProjects();
+      } catch (error) {
+        console.error(error);
+        if (message) {
+          message.classList.add('text-red-400');
+          message.textContent = error instanceof Error ? error.message : 'Failed to save project.';
+        }
+      } finally {
+        if (submitButton) {
+          submitButton.classList.remove('animate-pulse');
+          submitButton.disabled = false;
+        }
+      }
+    });
+  }
+
+  if (tableBody) {
+    tableBody.addEventListener('click', async (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      const deleteId = target.getAttribute('data-delete');
+      if (!deleteId) return;
+
+      target.classList.add('animate-pulse');
+      try {
+        await authFetch(\`/projects/\${deleteId}\`, {
+          method: 'DELETE',
+          parseJson: false,
+        });
+        await loadProjects();
+      } catch (error) {
+        console.error(error);
+      }
+    });
+  }
+
+  await loadClients();
+  await loadProjects();
+<\/script>`], ["", ` <script type="module">
+  import { authFetch } from '~/utils/backend/api';
+
+  const form = document.getElementById('project-form');
+  const message = document.getElementById('project-message');
+  const submitButton = document.getElementById('project-submit');
+  const tableBody = document.getElementById('project-table');
+  const clientSelect = document.getElementById('client_id');
+  const clientLookup = {};
+
+  const formatBudget = (amount, currency) => {
+    if (!amount) return '\u2014';
+    const formatter = new Intl.NumberFormat(undefined, {
+      style: 'currency',
+      currency: currency || 'USD',
+      currencyDisplay: 'code',
+    });
+    return formatter.format(amount);
+  };
+
+  const loadClients = async () => {
+    if (!clientSelect) return;
+    clientSelect.innerHTML = '<option value="">Loading clients\u2026</option>';
+    Object.keys(clientLookup).forEach((key) => delete clientLookup[key]);
+    try {
+      const response = await authFetch('/clients');
+      const clients = response.clients ?? [];
+      if (!clients.length) {
+        clientSelect.innerHTML = '<option value="">Add a client first</option>';
+        return;
+      }
+      clients.forEach((client) => {
+        clientLookup[client.id] = client.company_name;
+      });
+      clientSelect.innerHTML = clients
+        .map((client) => \\\`<option value="\\\${client.id}">\\\${client.company_name}</option>\\\`)
+        .join('');
+    } catch (error) {
+      console.error(error);
+      clientSelect.innerHTML = '<option value="">Unable to load clients</option>';
+    }
+  };
+
+  const renderProjects = (projects) => {
+    if (!tableBody) return;
+    tableBody.innerHTML = '';
+
+    if (!projects.length) {
+      tableBody.innerHTML = '<tr><td colspan="6" class="px-4 py-6 text-center text-sm text-slate-400">No projects yet. Create one above.</td></tr>';
+      return;
+    }
+
+    projects.forEach((project) => {
+      const row = document.createElement('tr');
+      const timeline = [project.start_date, project.due_date].filter(Boolean).join(' \u2192 ');
+      row.innerHTML = \\\`
+        <td class="px-4 py-3">
+          <div class="font-medium text-white">\\\${project.name}</div>
+          <div class="text-xs text-slate-400">\\\${project.notes ?? ''}</div>
+        </td>
+        <td class="px-4 py-3 text-sm">\\\${clientLookup[project.client_id] ?? project.client_id ?? ''}</td>
+        <td class="px-4 py-3"><span class="inline-flex rounded-full bg-slate-800 px-2.5 py-1 text-xs capitalize text-slate-200">\\\${project.status}</span></td>
+        <td class="px-4 py-3 text-xs text-slate-300">\\\${timeline || '\u2014'}</td>
+        <td class="px-4 py-3 text-xs text-slate-300">\\\${formatBudget(project.budget, project.currency)}</td>
+        <td class="px-4 py-3 text-right">
+          <button data-delete="\\\${project.id}" class="rounded-lg border border-red-500/50 px-3 py-1 text-xs text-red-300 hover:bg-red-500/10">Delete</button>
+        </td>\\\`;
+      tableBody.appendChild(row);
+    });
+  };
+
+  const loadProjects = async () => {
+    try {
+      const response = await authFetch('/projects');
+      renderProjects(response.projects ?? []);
+    } catch (error) {
+      console.error(error);
+      if (tableBody) {
+        tableBody.innerHTML = '<tr><td colspan="6" class="px-4 py-6 text-center text-sm text-red-400">Unable to load projects.</td></tr>';
+      }
+    }
+  };
+
+  if (form) {
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (message) {
+        message.classList.remove('text-red-400', 'text-blue-400');
+        message.textContent = '';
+      }
+      if (submitButton) {
+        submitButton.classList.add('animate-pulse');
+        submitButton.disabled = true;
+      }
+
+      const formData = new FormData(form);
+      const payload = {
+        name: String(formData.get('name') ?? '').trim(),
+        client_id: String(formData.get('client_id') ?? ''),
+        status: String(formData.get('status') ?? 'discovery'),
+        start_date: String(formData.get('start_date') ?? '') || null,
+        due_date: String(formData.get('due_date') ?? '') || null,
+        budget: formData.get('budget') ? Number(formData.get('budget')) : null,
+        currency: String(formData.get('currency') ?? '').trim() || null,
+        notes: String(formData.get('notes') ?? '').trim() || null,
+      };
+
+      try {
+        await authFetch('/projects', {
+          method: 'POST',
+          body: JSON.stringify(payload),
+        });
+        if (message) {
+          message.classList.add('text-blue-400');
+          message.textContent = 'Project captured.';
+        }
+        form.reset();
+        await loadProjects();
+      } catch (error) {
+        console.error(error);
+        if (message) {
+          message.classList.add('text-red-400');
+          message.textContent = error instanceof Error ? error.message : 'Failed to save project.';
+        }
+      } finally {
+        if (submitButton) {
+          submitButton.classList.remove('animate-pulse');
+          submitButton.disabled = false;
+        }
+      }
+    });
+  }
+
+  if (tableBody) {
+    tableBody.addEventListener('click', async (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      const deleteId = target.getAttribute('data-delete');
+      if (!deleteId) return;
+
+      target.classList.add('animate-pulse');
+      try {
+        await authFetch(\\\`/projects/\\\${deleteId}\\\`, {
+          method: 'DELETE',
+          parseJson: false,
+        });
+        await loadProjects();
+      } catch (error) {
+        console.error(error);
+      }
+    });
+  }
+
+  await loadClients();
+  await loadProjects();
+<\/script>`])), renderComponent($$result, "BackendLayout", $$BackendLayout, { "pageTitle": "Projects" }, { "default": async ($$result2) => renderTemplate` ${maybeRenderHead()}<section class="space-y-8"> <div class="rounded-2xl border border-slate-800 bg-slate-900/40 px-6 py-6 shadow-lg shadow-slate-950/40"> <h2 class="text-lg font-semibold text-white">Plan a project</h2> <p class="mt-2 text-sm text-slate-400">Map deliverables to clients and keep production accountable.</p> <form id="project-form" class="mt-6 grid gap-4 lg:grid-cols-2"> <div> <label class="block text-sm text-slate-300" for="name">Project name</label> <input id="name" name="name" required class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> </div> <div> <label class="block text-sm text-slate-300" for="client_id">Client</label> <select id="client_id" name="client_id" required class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> <option value="">Loading clients…</option> </select> </div> <div> <label class="block text-sm text-slate-300" for="status">Status</label> <select id="status" name="status" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> <option value="discovery">Discovery</option> <option value="in_progress">In progress</option> <option value="on_hold">On hold</option> <option value="completed">Completed</option> </select> </div> <div class="grid grid-cols-2 gap-4 lg:col-span-2"> <div> <label class="block text-sm text-slate-300" for="start_date">Start date</label> <input id="start_date" name="start_date" type="date" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> </div> <div> <label class="block text-sm text-slate-300" for="due_date">Due date</label> <input id="due_date" name="due_date" type="date" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> </div> </div> <div> <label class="block text-sm text-slate-300" for="budget">Budget</label> <input id="budget" name="budget" type="number" step="0.01" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> </div> <div> <label class="block text-sm text-slate-300" for="currency">Currency</label> <input id="currency" name="currency" placeholder="USD" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> </div> <div class="lg:col-span-2"> <label class="block text-sm text-slate-300" for="notes">Summary</label> <textarea id="notes" name="notes" rows="3" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"></textarea> </div> <div class="lg:col-span-2 flex items-center gap-3"> <button id="project-submit" type="submit" class="rounded-lg bg-blue-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-70">Save project</button> <p id="project-message" class="text-sm text-slate-400"></p> </div> </form> </div> <div class="rounded-2xl border border-slate-800 bg-slate-900/40 px-6 py-6 shadow-lg shadow-slate-950/40"> <div class="flex items-center justify-between"> <h2 class="text-lg.font-semibold text-white">Pipeline</h2> <span class="text-xs uppercase tracking-wide text-slate-400">Realtime snapshot</span> </div> <div class="mt-6 overflow-x-auto"> <table class="min-w-full text-left text-sm"> <thead class="text-xs uppercase tracking-wide text-slate-400"> <tr> <th class="px-4 py-3">Project</th> <th class="px-4 py-3">Client</th> <th class="px-4 py-3">Status</th> <th class="px-4 py-3">Timeline</th> <th class="px-4 py-3">Budget</th> <th class="px-4 py-3 text-right">Actions</th> </tr> </thead> <tbody id="project-table" class="divide-y divide-slate-800 text-slate-200"> <tr> <td colspan="6" class="px-4 py-6 text-center text-sm text-slate-400">Fetching projects…</td> </tr> </tbody> </table> </div> </div> </section> ` }));
+}, "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/app/projects.astro", void 0);
+
+const $$file = "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/app/projects.astro";
+const $$url = "/app/projects";
+
+const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: $$Projects,
+  file: $$file,
+  url: $$url
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const page = () => _page;
+
+export { page };

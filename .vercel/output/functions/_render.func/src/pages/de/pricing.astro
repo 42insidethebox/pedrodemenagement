@@ -1,0 +1,228 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import Prices from '~/components/widgets/Pricing.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import Steps from '~/components/widgets/Steps.astro';
+import Features3 from '~/components/widgets/Features3.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+
+import { headerDataDe, footerDataDe } from '~/navigation';
+
+const metadata = {
+  title: 'Preise',
+};
+---
+
+<Layout metadata={metadata} header={headerDataDe} footer={footerDataDe}>
+  <HeroText
+    tagline="Preise"
+    title="Transparente Pakete, in der Schweiz fakturiert"
+    subtitle="Jedes Paket umfasst Design, Launch und menschliche Begleitung. Betreuung und Automatisierungen nach Bedarf."
+  />
+
+  <Prices
+    title="Unsere schlüsselfertigen Pakete"
+    subtitle="Wählen Sie das Angebot, das zu Ihrem Bedarf passt. Ohne versteckte Kosten."
+    prices={[
+      {
+        title: 'Essentiel',
+        subtitle: 'Schlüsselfertige Showcase-Seite',
+        price: 999,
+        period: 'CHF — einmalig',
+        items: [
+          {
+            description: 'Showcase-Seite mit 5 Sektionen + responsive Kontaktseite',
+          },
+          {
+            description: 'Französische Texte optimiert für den Genfersee-Raum',
+          },
+          {
+            description: 'Schweizer Hosting & SSL-Zertifikat für 12 Monate inklusive',
+          },
+          {
+            description: 'Video-Training + Checkliste für Eigenständigkeit',
+          },
+        ],
+        callToAction: {
+          text: 'Projekt starten',
+          href: '/de/contact#form',
+        },
+      },
+      {
+        title: 'Automatisierung',
+        subtitle: 'Website + 1 Zapier/Make-Flow',
+        price: 1200,
+        period: 'CHF — einmalig',
+        items: [
+          {
+            description: 'Enthält das Paket Essentiel',
+          },
+          {
+            description: 'Anbindung eines Tools via Zapier oder Make (1 Automation)',
+          },
+          {
+            description: 'End-to-End-Tests und einfache Dokumentation',
+          },
+          {
+            description: 'Bis zu 4 Automationen: CHF 1’500',
+          },
+        ],
+        callToAction: {
+          text: 'Automatisierungsangebot anfragen',
+          href: '/de/contact#form',
+        },
+        hasRibbon: true,
+        ribbonTitle: 'Beliebtestes',
+      },
+      {
+        title: 'Serviceplan',
+        subtitle: 'Updates und Profi-E-Mails',
+        price: 79,
+        period: 'CHF / Monat — ohne Überraschungen',
+        items: [
+          {
+            description: 'Sicherheitsupdates und geplante Backups',
+          },
+          {
+            description: 'Uptime-Monitoring & priorisierte Korrekturen',
+          },
+          {
+            description: 'Verwaltung der @ihredomain.ch E-Mail-Konten',
+          },
+          {
+            description: 'Support per E-Mail & Video innerhalb eines Arbeitstages',
+          },
+        ],
+        callToAction: {
+          text: 'Serviceplan aktivieren',
+          href: '/de/contact#form',
+        },
+      },
+    ]}
+  />
+
+  <Features3
+    title="Inklusive Leistungen"
+    subtitle="Alle Angebote beinhalten diese Garantien."
+    columns={2}
+    items={[
+      {
+        title: 'Menschlicher Support',
+        description: 'Begleitung per E-Mail und Telefon, Antworten innerhalb eines Arbeitstages.',
+        icon: 'tabler:headset',
+      },
+      {
+        title: 'Souveränes Hosting',
+        description: 'Server in der Schweiz, DSGVO/LPD-konform, SSL inklusive.',
+        icon: 'tabler:server',
+      },
+      {
+        title: 'Kunden-Dashboard',
+        description: 'Fortschritt verfolgen, Inhalte teilen und Schritte online freigeben.',
+        icon: 'tabler:layout-dashboard',
+      },
+      {
+        title: 'Klare Fakturierung',
+        description: 'MwSt. inklusive, QR-Rechnung oder Twint, monatliche Zahlung möglich.',
+        icon: 'tabler:receipt',
+      },
+      {
+        title: 'Optimierte Performance',
+        description: 'Astro-Architektur und Bildoptimierung für schnelle Ladezeiten.',
+        icon: 'tabler:gauge',
+      },
+      {
+        title: 'Erhöhte Sicherheit',
+        description: 'Initiale Backups, Application-Firewall und regelmässige Updates.',
+        icon: 'tabler:lock',
+      },
+    ]}
+    classes={{ container: 'max-w-5xl' }}
+  />
+
+  <Steps
+    title="So läuft Ihr Projekt ab"
+    tagline="Ablauf"
+    isReversed={true}
+    items={[
+      {
+        title: '1. Digitale Unterschrift',
+        description: 'Paket bestätigen und Zugang zum Onboarding erhalten.',
+        icon: 'tabler:edit',
+      },
+      {
+        title: '2. Intelligenter Fragebogen',
+        description: 'Schlüsselinformationen teilen, Visuals hochladen und Module wählen.',
+        icon: 'tabler:clipboard-list',
+      },
+      {
+        title: '3. Überwachte Produktion',
+        description: 'Plattform generiert Ihre Website, Expert·innen finalisieren und prüfen.',
+        icon: 'tabler:robot',
+      },
+      {
+        title: '4. Freigabe & Training',
+        description: 'Fertige Website, Video-Guide und nächste Schritte erhalten.',
+        icon: 'tabler:rocket',
+      },
+    ]}
+  >
+    <Fragment slot="image">
+      <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-white shadow-xl">
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Prozess</p>
+        <p class="mt-6 max-w-xs text-base text-blue-100/90">
+          Von der Unterschrift bis zum Launch – jeder Schritt wird in Ihrem Kundenbereich protokolliert.
+        </p>
+      </div>
+    </Fragment>
+  </Steps>
+
+  <FAQs
+    title="Fragen zu unseren Preisen"
+    subtitle="Wir setzen auf vollständige Transparenz."
+    items={[
+      {
+        title: 'Ist die MwSt. enthalten?',
+        description: 'Ja, alle Beträge sind inkl. MwSt. Die Rechnung weist die Schweizer MwSt. und die IDE-Nummer aus.',
+      },
+      {
+        title: 'Wie lange dauert das Paket Essentiel?',
+        description: 'Rund fünf Arbeitstage nach Eingang Ihrer Inhalte. Den genauen Zeitplan erhalten Sie beim Briefing.',
+      },
+      {
+        title: 'Wie verrechnet ihr zusätzliche Automationen?',
+        description: 'Jeder zusätzliche Flow wird vorab offeriert. Drei bis vier Standard-Automatismen kosten CHF 1’500.',
+      },
+      {
+        title: 'Ist der Serviceplan obligatorisch?',
+        description: 'Nein. Sie können die Website selbst verwalten oder uns für CHF 79/Monat beauftragen (30 Tage Kündigungsfrist).',
+      },
+      {
+        title: 'Welche Zahlungsmittel akzeptiert ihr?',
+        description: 'Schweizer Karten, Twint, Banküberweisung und QR-Rechnung. Abonnemente monatlich oder jährlich zahlbar.',
+      },
+    ]}
+  />
+
+  <CallToAction
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Angebot erhalten',
+        href: '/de/contact#form',
+        icon: 'tabler:mail-forward',
+      },
+      {
+        text: 'Pakete vergleichen',
+        href: '/de/services',
+      },
+    ]}
+  >
+    <Fragment slot="title">Brauchen Sie ein massgeschneidertes Angebot?</Fragment>
+
+    <Fragment slot="subtitle">
+      Wir passen jedes Paket an die Besonderheiten Ihres Unternehmens im Genfersee-Raum an.
+    </Fragment>
+  </CallToAction>
+</Layout>

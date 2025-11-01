@@ -12,6 +12,7 @@ import compress from 'astro-compress';
 import type { AstroIntegration } from 'astro';
 
 import astrowind from './vendor/integration';
+import vercel from '@astrojs/vercel/serverless';
 
 import { readingTimeRemarkPlugin, responsiveTablesRehypePlugin, lazyImagesRehypePlugin } from './src/utils/frontmatter';
 
@@ -22,12 +23,11 @@ const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroInteg
   hasExternalScripts ? (Array.isArray(items) ? items.map((item) => item()) : [items()]) : [];
 
 export default defineConfig({
-  output: 'static',
+  output: 'server',
+  adapter: vercel(),
 
   integrations: [
-    tailwind({
-      applyBaseStyles: false,
-    }),
+    tailwind({ applyBaseStyles: false }),
     sitemap(),
     mdx(),
     icon({
@@ -46,45 +46,26 @@ export default defineConfig({
         ],
       },
     }),
-
     ...whenExternalScripts(() =>
-      partytown({
-        config: { forward: ['dataLayer.push'] },
-      })
+      partytown({ config: { forward: ['dataLayer.push'] } })
     ),
-
     compress({
       CSS: true,
-      HTML: {
-        'html-minifier-terser': {
-          removeAttributeQuotes: false,
-        },
-      },
+      HTML: { 'html-minifier-terser': { removeAttributeQuotes: false } },
       Image: false,
       JavaScript: true,
       SVG: false,
       Logger: 1,
     }),
-
-    astrowind({
-      config: './src/config.yaml',
-    }),
+    astrowind({ config: './src/config.yaml' }),
   ],
 
-  image: {
-    domains: ['cdn.pixabay.com'],
-  },
-
+  image: { domains: ['cdn.pixabay.com'] },
   markdown: {
     remarkPlugins: [readingTimeRemarkPlugin],
     rehypePlugins: [responsiveTablesRehypePlugin, lazyImagesRehypePlugin],
   },
-
   vite: {
-    resolve: {
-      alias: {
-        '~': path.resolve(__dirname, './src'),
-      },
-    },
+    resolve: { alias: { '~': path.resolve(__dirname, './src') } },
   },
 });

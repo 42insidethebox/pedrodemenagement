@@ -4,6 +4,8 @@ import { getAgencyContext } from '~/utils/backend/context';
 import { adminClient } from '~/utils/supabase/admin';
 import { withAuth } from '~/utils/supabase/auth';
 
+export const prerender = false;
+
 export const GET: APIRoute = withAuth(async ({ locals }) => {
   const { agency, user } = await getAgencyContext(locals.user!);
   const now = new Date();
