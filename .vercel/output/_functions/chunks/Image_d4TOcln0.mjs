@@ -1,5 +1,5 @@
 import { d as createAstro, c as createComponent, r as renderComponent, F as Fragment, a as renderTemplate, m as maybeRenderHead, b as addAttribute, x as spreadAttributes } from './astro/server_CGLXZ7Kv.mjs';
-import { f as findImage, i as isUnpicCompatible, g as getImagesOptimized, u as unpicOptimizer, a as astroAssetsOptimizer } from './Layout_tPwj8LVB.mjs';
+import { f as findImage, i as isUnpicCompatible, g as getImagesOptimized, u as unpicOptimizer, a as astroAssetsOptimizer } from './Layout_BdFysGYs.mjs';
 
 const $$Astro = createAstro("https://monwebsite.ch");
 const $$Image = createComponent(async ($$result, $$props, $$slots) => {

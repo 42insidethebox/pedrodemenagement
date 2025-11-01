@@ -1,8 +1,8 @@
 import { d as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead, F as Fragment, u as unescapeHTML } from './astro/server_CGLXZ7Kv.mjs';
 import { $ as $$Headline } from './Headline_DJNx1UoH.mjs';
-import { $ as $$ItemGrid } from './ItemGrid_lRHOOwD3.mjs';
+import { $ as $$ItemGrid } from './ItemGrid_BE3f6bEk.mjs';
 import { $ as $$WidgetWrapper } from './WidgetWrapper_DdnkWp3O.mjs';
-import { $ as $$Image } from './Image_BV8Kzsbh.mjs';
+import { $ as $$Image } from './Image_d4TOcln0.mjs';
 
 const $$Astro = createAstro("https://monwebsite.ch");
 const $$Features3 = createComponent(async ($$result, $$props, $$slots) => {

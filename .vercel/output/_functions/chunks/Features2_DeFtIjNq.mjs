@@ -1,7 +1,7 @@
 import { d as createAstro, c as createComponent, m as maybeRenderHead, b as addAttribute, r as renderComponent, a as renderTemplate, u as unescapeHTML } from './astro/server_CGLXZ7Kv.mjs';
 import { $ as $$WidgetWrapper } from './WidgetWrapper_DdnkWp3O.mjs';
 import { $ as $$Headline } from './Headline_DJNx1UoH.mjs';
-import { g as $$Icon, e as $$Button } from './PageLayout_56pJNQwh.mjs';
+import { g as $$Icon, e as $$Button } from './PageLayout_4vEQIg5R.mjs';
 import { twMerge } from 'tailwind-merge';
 
 const $$Astro$1 = createAstro("https://monwebsite.ch");

@@ -1,7 +1,7 @@
 import { d as createAstro, c as createComponent, m as maybeRenderHead, r as renderComponent, u as unescapeHTML, F as Fragment, a as renderTemplate } from './astro/server_CGLXZ7Kv.mjs';
-import { g as $$Icon } from './PageLayout_56pJNQwh.mjs';
+import { g as $$Icon } from './PageLayout_4vEQIg5R.mjs';
 import { $ as $$WidgetWrapper } from './WidgetWrapper_DdnkWp3O.mjs';
-import { $ as $$ItemGrid } from './ItemGrid_lRHOOwD3.mjs';
+import { $ as $$ItemGrid } from './ItemGrid_BE3f6bEk.mjs';
 import { $ as $$Headline } from './Headline_DJNx1UoH.mjs';
 
 const $$Astro$1 = createAstro("https://monwebsite.ch");

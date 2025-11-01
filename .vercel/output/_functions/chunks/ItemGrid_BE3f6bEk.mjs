@@ -1,6 +1,6 @@
 import { d as createAstro, c as createComponent, m as maybeRenderHead, b as addAttribute, r as renderComponent, a as renderTemplate, u as unescapeHTML } from './astro/server_CGLXZ7Kv.mjs';
 import { twMerge } from 'tailwind-merge';
-import { g as $$Icon, e as $$Button } from './PageLayout_56pJNQwh.mjs';
+import { g as $$Icon, e as $$Button } from './PageLayout_4vEQIg5R.mjs';
 
 const $$Astro = createAstro("https://monwebsite.ch");
 const $$ItemGrid = createComponent(($$result, $$props, $$slots) => {

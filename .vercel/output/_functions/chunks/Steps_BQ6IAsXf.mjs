@@ -1,10 +1,10 @@
 import { d as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead, b as addAttribute, u as unescapeHTML, F as Fragment } from './astro/server_CGLXZ7Kv.mjs';
 import { $ as $$Headline } from './Headline_DJNx1UoH.mjs';
-import { $ as $$ItemGrid } from './ItemGrid_lRHOOwD3.mjs';
+import { $ as $$ItemGrid } from './ItemGrid_BE3f6bEk.mjs';
 import { $ as $$WidgetWrapper } from './WidgetWrapper_DdnkWp3O.mjs';
-import { g as $$Icon } from './PageLayout_56pJNQwh.mjs';
+import { g as $$Icon } from './PageLayout_4vEQIg5R.mjs';
 import { twMerge } from 'tailwind-merge';
-import { $ as $$Image } from './Image_BV8Kzsbh.mjs';
+import { $ as $$Image } from './Image_d4TOcln0.mjs';
 
 const $$Astro$2 = createAstro("https://monwebsite.ch");
 const $$FAQs = createComponent(async ($$result, $$props, $$slots) => {

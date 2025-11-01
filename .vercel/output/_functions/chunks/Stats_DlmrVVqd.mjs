@@ -1,7 +1,7 @@
 import { d as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead } from './astro/server_CGLXZ7Kv.mjs';
 import { $ as $$WidgetWrapper } from './WidgetWrapper_DdnkWp3O.mjs';
 import { $ as $$Headline } from './Headline_DJNx1UoH.mjs';
-import { g as $$Icon } from './PageLayout_56pJNQwh.mjs';
+import { g as $$Icon } from './PageLayout_4vEQIg5R.mjs';
 
 const $$Astro = createAstro("https://monwebsite.ch");
 const $$Stats = createComponent(async ($$result, $$props, $$slots) => {

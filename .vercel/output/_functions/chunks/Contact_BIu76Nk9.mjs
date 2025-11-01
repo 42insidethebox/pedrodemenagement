@@ -1,5 +1,5 @@
 import { d as createAstro, c as createComponent, m as maybeRenderHead, b as addAttribute, a as renderTemplate, r as renderComponent } from './astro/server_CGLXZ7Kv.mjs';
-import { e as $$Button } from './PageLayout_56pJNQwh.mjs';
+import { e as $$Button } from './PageLayout_4vEQIg5R.mjs';
 import { $ as $$Headline } from './Headline_DJNx1UoH.mjs';
 import { $ as $$WidgetWrapper } from './WidgetWrapper_DdnkWp3O.mjs';
 

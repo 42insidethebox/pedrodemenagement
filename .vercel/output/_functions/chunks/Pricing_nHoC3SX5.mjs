@@ -1,5 +1,5 @@
 import { d as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead, b as addAttribute, F as Fragment, u as unescapeHTML } from './astro/server_CGLXZ7Kv.mjs';
-import { g as $$Icon, e as $$Button } from './PageLayout_56pJNQwh.mjs';
+import { g as $$Icon, e as $$Button } from './PageLayout_4vEQIg5R.mjs';
 import { $ as $$Headline } from './Headline_DJNx1UoH.mjs';
 import { $ as $$WidgetWrapper } from './WidgetWrapper_DdnkWp3O.mjs';
 
