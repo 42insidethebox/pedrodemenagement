@@ -1,7 +1,7 @@
 import { d as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead, F as Fragment, u as unescapeHTML } from './astro/server_CGLXZ7Kv.mjs';
 import { $ as $$WidgetWrapper } from './WidgetWrapper_DdnkWp3O.mjs';
 import { $ as $$Headline } from './Headline_DJNx1UoH.mjs';
-import { e as $$Button } from './PageLayout_4vEQIg5R.mjs';
+import { e as $$Button } from './PageLayout_56pJNQwh.mjs';
 
 const $$Astro = createAstro("https://monwebsite.ch");
 const $$CallToAction = createComponent(async ($$result, $$props, $$slots) => {

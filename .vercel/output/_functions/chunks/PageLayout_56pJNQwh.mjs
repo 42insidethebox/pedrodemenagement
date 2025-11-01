@@ -1,5 +1,5 @@
 import { d as createAstro, c as createComponent, m as maybeRenderHead, x as spreadAttributes, b as addAttribute, a as renderTemplate, r as renderComponent, F as Fragment, u as unescapeHTML, f as renderSlot } from './astro/server_CGLXZ7Kv.mjs';
-import { $ as $$Layout } from './Layout_BdFysGYs.mjs';
+import { $ as $$Layout } from './Layout_tPwj8LVB.mjs';
 import { getIconData, iconToSVG } from '@iconify/utils';
 import { $ as $$Logo } from './Logo_ymEKTt-L.mjs';
 import { U as UI, t as trimSlash, g as getHomePermalink, a as getAsset, S as SITE, c as getPermalink } from './permalinks_DJ3XW3-H.mjs';

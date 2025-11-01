@@ -5,7 +5,7 @@ import 'clsx';
 import { c as createSvgComponent } from './runtime_C0zgvktp.mjs';
 import merge from 'lodash.merge';
 import { escape } from 'html-escaper';
-import { a as getImage } from './_astro_assets_CHcjmYBv.mjs';
+import { a as getImage } from './_astro_assets_C7xYSiDj.mjs';
 import { parseUrl, transformUrl } from 'unpic';
 
 const $$CommonMeta = createComponent(($$result, $$props, $$slots) => {

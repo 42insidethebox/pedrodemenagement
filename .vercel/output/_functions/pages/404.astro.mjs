@@ -1,5 +1,5 @@
 import { c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead, b as addAttribute } from '../chunks/astro/server_CGLXZ7Kv.mjs';
-import { $ as $$Layout } from '../chunks/Layout_BdFysGYs.mjs';
+import { $ as $$Layout } from '../chunks/Layout_tPwj8LVB.mjs';
 import { g as getHomePermalink } from '../chunks/permalinks_DJ3XW3-H.mjs';
 export { renderers } from '../renderers.mjs';
 

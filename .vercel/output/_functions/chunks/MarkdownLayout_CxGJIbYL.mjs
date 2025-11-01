@@ -1,5 +1,5 @@
 import { d as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead, f as renderSlot } from './astro/server_CGLXZ7Kv.mjs';
-import { $ as $$PageLayout } from './PageLayout_4vEQIg5R.mjs';
+import { $ as $$PageLayout } from './PageLayout_56pJNQwh.mjs';
 
 const $$Astro = createAstro("https://monwebsite.ch");
 const $$MarkdownLayout = createComponent(($$result, $$props, $$slots) => {
