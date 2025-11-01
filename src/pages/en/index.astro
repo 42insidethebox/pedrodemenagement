@@ -1,0 +1,326 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+
+import Hero from '~/components/widgets/Hero.astro';
+import Note from '~/components/widgets/Note.astro';
+import Features from '~/components/widgets/Features.astro';
+import Features2 from '~/components/widgets/Features2.astro';
+import Steps from '~/components/widgets/Steps.astro';
+import Content from '~/components/widgets/Content.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import Stats from '~/components/widgets/Stats.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+
+const metadata = {
+  title: 'MonWebsite.ch — Your turnkey Swiss website in 24 h',
+  ignoreTitleTemplate: true,
+};
+---
+
+<Layout metadata={metadata}>
+  <Hero
+    id="process"
+    actions={[
+      {
+        variant: 'primary',
+        text: 'View plans',
+        href: '/en/pricing',
+        icon: 'tabler:arrow-right',
+      },
+      { text: 'Talk to an expert', href: '/en/contact#form' },
+    ]}
+    image={{
+      src: '~/assets/images/hero-image.png',
+      alt: 'MonWebsite.ch interface',
+    }}
+  >
+    <Fragment slot="title">
+      Your turnkey website delivered in <span class="text-accent dark:text-white">24&nbsp;hours</span>
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      Swiss design, global performance. MonWebsite.ch automates bespoke showcase sites for SMEs and entrepreneurs across the Lake Geneva region – content, design, hosting and invoicing are taken care of in one business day.
+    </Fragment>
+  </Hero>
+
+  <Note
+    title="Commitment"
+    description="Local service, human support and automated orchestration for an impeccable result without friction."
+  />
+
+  <Features
+    id="features"
+    tagline="Why choose us"
+    title="Swiss precision applied to digital"
+    subtitle="Each website is generated, personalised and reviewed by our team so you can stay focused on your business."
+    items={[
+      {
+        title: '24 h express delivery',
+        description:
+          'Brief, content, design and go-live are orchestrated automatically to publish your showcase site within a single working day.',
+        icon: 'tabler:clock-hour-4',
+      },
+      {
+        title: 'Premium bespoke design',
+        description:
+          'Inter / Montserrat typography, refined palettes and subtle motion for a high-end and consistent brand experience.',
+        icon: 'tabler:sparkles',
+      },
+      {
+        title: 'Built-in local SEO',
+        description:
+          'Content tailored to Lausanne, Geneva, Montreux and the whole French-speaking part of Switzerland to maximise local visibility.',
+        icon: 'tabler:map-pin',
+      },
+      {
+        title: 'Automated maintenance',
+        description:
+          'Backups, updates and performance monitoring handled by our platform with no hidden costs.',
+        icon: 'tabler:shield-check',
+      },
+      {
+        title: 'Transparent Swiss billing',
+        description:
+          'Clear contracts, VAT included and payments in Swiss francs through the leading local methods.',
+        icon: 'tabler:receipt',
+      },
+      {
+        title: 'Local human support',
+        description:
+          'Experts based around Lake Geneva answering within 2 working hours via phone, email or WhatsApp.',
+        icon: 'tabler:headset',
+      },
+    ]}
+  />
+
+  <Content
+    isReversed
+    tagline="Process"
+    title="A three-step orchestration"
+    items={[
+      {
+        title: 'Structured brief',
+        description:
+          'A guided questionnaire collects your services, schedules, testimonials and visuals to feed our proprietary AI.',
+      },
+      {
+        title: 'Guided personalisation',
+        description:
+          'Our designers tailor the sections, tune typography and guarantee compliance with Swiss standards.',
+      },
+      {
+        title: 'Quality control',
+        description:
+          'Performance, SEO and accessibility tests before going live, plus a detailed acceptance report.',
+      },
+    ]}
+  >
+    <Fragment slot="content">
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Ready for tomorrow</h3>
+      Three automated steps, validated by a local expert.
+    </Fragment>
+
+    <Fragment slot="image">
+      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl">
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">24 h workflow</p>
+        <h4 class="mt-4 text-3xl font-semibold">Brief → Creation → QA</h4>
+        <p class="mt-6 max-w-xs text-base text-blue-100/90">
+          Every milestone is tracked inside your client portal with real-time notifications and quick approvals.
+        </p>
+      </div>
+    </Fragment>
+
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    </Fragment>
+  </Content>
+
+  <Steps
+    title="Delivery in 24 h, guaranteed"
+    tagline="Client journey"
+    items={[
+      {
+        title: 'Digital signature',
+        description: 'Select your plan, e-sign and get instant access to your client portal.',
+        icon: 'tabler:edit',
+      },
+      {
+        title: 'Guided onboarding',
+        description: 'Our assistant gathers your key information and proposes a sitemap adapted to your industry.',
+        icon: 'tabler:clipboard-list',
+      },
+      {
+        title: 'Automated production',
+        description: 'Pipelines assemble your site, integrate your content and alert our team for validation.',
+        icon: 'tabler:robot',
+      },
+      {
+        title: 'Launch & handover',
+        description: 'Receive the live link, a personalised video walkthrough and your Swiss invoice.',
+        icon: 'tabler:rocket',
+      },
+    ]}
+  >
+    <Fragment slot="image">
+      <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Timeline</p>
+        <p class="mt-6 max-w-xs text-base text-blue-100/90">
+          Each step is monitored within your portal with real-time validation and proactive alerts.
+        </p>
+      </div>
+    </Fragment>
+  </Steps>
+
+  <Content
+    id="content"
+    isAfterContent
+    items={[
+      {
+        title: 'Multilingual content',
+        description:
+          'French, English or German copywriting so you can connect with your audience wherever they are.',
+      },
+      {
+        title: 'Measured performance',
+        description:
+          'Lighthouse score ≥ 90 guaranteed on mobile and desktop thanks to advanced optimisation.',
+      },
+      {
+        title: 'Business integrations',
+        description:
+          'Bookings, Click & Collect, secure forms – we connect your tools at no extra cost.',
+      },
+      {
+        title: 'Express training',
+        description:
+          'A personalised 10-minute video guide to master your site and publish autonomously.',
+      },
+    ]}
+  >
+    <Fragment slot="content">A digital presence that mirrors your Swiss-level precision.</Fragment>
+
+    <Fragment slot="image">
+      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
+        <h4 class="text-3xl font-semibold">Performance under control</h4>
+        <ul class="mt-6 space-y-3 text-left text-blue-100/90">
+          <li>✓ KPIs tracked in your dashboard</li>
+          <li>✓ Automatic alerts when metrics drop</li>
+          <li>✓ Monthly actionable recommendations</li>
+        </ul>
+      </div>
+    </Fragment>
+
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    </Fragment>
+  </Content>
+
+  <Features2
+    id="included"
+    title="Everything included"
+    subtitle="A turnkey solution for French-speaking Swiss entrepreneurs"
+    tagline="What every plan covers"
+    items={[
+      {
+        title: 'Swiss green hosting',
+        description: 'Servers located in Geneva powered by certified renewable energy.',
+        icon: 'tabler:server',
+      },
+      {
+        title: 'Professional email',
+        description: 'Business mailboxes configured with SPF/DKIM security.',
+        icon: 'tabler:mail',
+      },
+      {
+        title: 'Analytics monitoring',
+        description: 'Automated monthly report with key insights and optimisation ideas.',
+        icon: 'tabler:chart-line',
+      },
+      {
+        title: 'Priority support',
+        description: 'Dedicated WhatsApp channel and hotline available 8am–6pm, Monday to Saturday.',
+        icon: 'tabler:message',
+      },
+      {
+        title: 'Included updates',
+        description: 'Security, GDPR and accessibility supervised continuously by our scripts.',
+        icon: 'tabler:refresh',
+      },
+      {
+        title: 'Optional photo session',
+        description: 'Preferred pricing with partner photographers in Lausanne, Vevey or Geneva.',
+        icon: 'tabler:camera',
+      },
+    ]}
+  >
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    </Fragment>
+  </Features2>
+
+  <Stats
+    title="Proven outcomes"
+    stats={[
+      { title: 'Websites delivered', amount: '180+' },
+      { title: 'Average lead time', amount: '19h' },
+      { title: 'Client satisfaction', amount: '4.9/5' },
+      { title: 'Support response', amount: '≤2h' },
+    ]}
+  />
+
+  <FAQs
+    id="faq"
+    title="Frequently asked questions"
+    subtitle="Full transparency, from onboarding to launch."
+    tagline="FAQ"
+    classes={{ container: 'max-w-6xl' }}
+    items={[
+      {
+        title: 'How do you guarantee a 24 h delivery?',
+        description:
+          'Sector-specific frameworks and automation prepare 80% of the site. A local expert finalises and validates before go-live.',
+      },
+      {
+        title: 'Is content included?',
+        description:
+          'Yes, we write your French copy and can provide English or German versions. You can review everything before publication.',
+      },
+      {
+        title: 'Can I update the site myself afterward?',
+        description:
+          'Absolutely. You receive editor access, a personalised video tutorial and unlimited support for any question.',
+      },
+      {
+        title: 'Which payment methods do you accept?',
+        description:
+          'Swiss cards, Twint, bank transfer and QR-billing. Subscriptions can be paid monthly or yearly.',
+      },
+      {
+        title: 'Do you offer e-commerce options?',
+        description:
+          'We integrate Click & Collect, gift card sales or catalogue experiences depending on your needs.',
+      },
+    ]}
+  />
+
+  <CallToAction
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Book my launch',
+        href: '/en/contact#form',
+        icon: 'tabler:calendar-event',
+      },
+      {
+        text: 'Explore pricing',
+        href: '/en/pricing',
+      },
+    ]}
+  >
+    <Fragment slot="title">Ready for your turnkey website?</Fragment>
+
+    <Fragment slot="subtitle">
+      An expert answers within 2 business hours to schedule your launch within 24 hours.
+    </Fragment>
+  </CallToAction>
+</Layout>

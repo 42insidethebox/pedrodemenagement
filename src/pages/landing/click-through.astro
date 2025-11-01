@@ -1,41 +1,85 @@
 ---
-import Layout from '~/layouts/LandingLayout.astro';
+import Layout from '~/layouts/PageLayout.astro';
 
 import Hero2 from '~/components/widgets/Hero2.astro';
+import Features2 from '~/components/widgets/Features2.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 
 const metadata = {
-  title: 'Click-through Landing Page Demo',
+  title: 'Landing Click-Through',
+  description: 'Landing MonWebsite.ch optimisée pour faire cliquer vers une boutique ou un configurateur externe.',
 };
 ---
 
 <Layout metadata={metadata}>
-  <!-- Hero2 Widget ******************* -->
-
   <Hero2
-    tagline="Click-through Demo"
-    title="Click-through Landing Page: The Perfect Bridge to Conversion!"
-    subtitle="Learn how to design a Click-Through Landing Page that seamlessly guides visitors to your main offer."
-    actions={[
-      { variant: 'primary', text: 'Call to Action', href: '#', icon: 'tabler:square-rounded-arrow-right' },
-      { text: 'Learn more', href: '#' },
-    ]}
-    image={{
-      src: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-      alt: 'Click-through Landing Page Hero Image',
-    }}
-  />
-
-  <CallToAction
-    title="Coming soon"
-    subtitle="We are working on the content of these demo pages. You will see them very soon. Stay tuned Stay tuned!"
+    tagline="Landing — Click-through"
     actions={[
       {
         variant: 'primary',
-        text: 'Download Template',
-        href: 'https://github.com/arthelokyo/astrowind',
-        icon: 'tabler:download',
+        text: 'Commander cette landing',
+        href: '/contact#form',
+        icon: 'tabler:cursor-text',
+      },
+      { text: 'Voir les offres', href: '/pricing' },
+    ]}
+  >
+    <Fragment slot="title">
+      <span class="text-accent dark:text-white">MonWebsite.ch</span> — Booster vos clics vers l’action
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      Une structure ultra-focalisée sur l’appel à l’action principal : hero immersif, preuve sociale express, bénéfices clés et bouton sticky.
+    </Fragment>
+
+    <Fragment slot="image">
+      <div class="relative aspect-[16/9] overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 via-slate-900 to-blue-400 p-10 text-white shadow-2xl">
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Call-to-action</p>
+        <h4 class="mt-4 text-3xl font-semibold">Focus sur un clic</h4>
+        <p class="mt-6 max-w-md text-blue-100/90">Bouton principal, témoignage express et rappel visuel toujours visibles.</p>
+      </div>
+    </Fragment>
+  </Hero2>
+
+  <Features2
+    title="Sections incluses"
+    subtitle="Le parcours est entièrement orienté vers la conversion."
+    items={[
+      {
+        title: 'Hero + CTA sticky',
+        description: 'Bloc principal avec image produit, bénéfice et bouton collant.',
+      },
+      {
+        title: 'Bullet points rapide',
+        description: 'Trois bénéfices clés en moins de 120 caractères chacun.',
+      },
+      {
+        title: 'Preuve sociale',
+        description: 'Logos partenaires, avis flash et score moyen.',
+      },
+      {
+        title: 'Section rappel',
+        description: 'Bloc final avec countdown ou offre limitée pour renforcer l’urgence.',
       },
     ]}
   />
+
+  <CallToAction
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Lancer ma landing',
+        href: '/contact#form',
+        icon: 'tabler:send',
+      },
+      {
+        text: 'Comparer avec les autres landings',
+        href: '/landing/lead-generation',
+      },
+    ]}
+  >
+    <Fragment slot="title">Prêt à maximiser vos clics ?</Fragment>
+
+    <Fragment slot="subtitle">Nous déployons cette landing en 24 h avec tracking et heatmaps configurés.</Fragment>
+  </CallToAction>
 </Layout>

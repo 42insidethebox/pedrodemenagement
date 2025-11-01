@@ -1,317 +1,186 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
 
-import Hero from '~/components/widgets/Hero.astro';
-import CallToAction from '~/components/widgets/CallToAction.astro';
-
-import Features2 from '~/components/widgets/Features2.astro';
-import Features from '~/components/widgets/Features.astro';
-import Stats from '~/components/widgets/Stats.astro';
+import Hero2 from '~/components/widgets/Hero2.astro';
 import Features3 from '~/components/widgets/Features3.astro';
+import Content from '~/components/widgets/Content.astro';
+import Testimonials from '~/components/widgets/Testimonials.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
-import Brands from '~/components/widgets/Brands.astro';
-
-import { YouTube } from 'astro-embed';
 
 const metadata = {
-  title: 'Startup Landing Page',
+  title: 'Template Startup & Innovation',
+  description: 'Landing MonWebsite.ch pour startups de l’Arc lémanique — pitch, roadmap, traction et CTA investisseurs.',
 };
 ---
 
 <Layout metadata={metadata}>
-  <!-- Hero Widget ******************* -->
-
-  <Hero
-    tagline="Startup Web Demo"
+  <Hero2
+    tagline="Template secteur — Startup"
     actions={[
       {
         variant: 'primary',
-        target: '_blank',
-        text: 'Get templates',
-        href: 'https://github.com/arthelokyo/astrowind',
-        icon: 'tabler:download',
+        text: 'Pitcher avec ce template',
+        href: '/contact#form',
+        icon: 'tabler:rocket',
       },
-      { text: 'Learn more', href: '#features' },
+      { text: 'Consulter les plans', href: '/pricing' },
     ]}
   >
     <Fragment slot="title">
-      Improve <span class="hidden sm:inline">the online presence of</span> your <span
-        class="text-accent dark:text-white">Startup</span
-      > with Astrowind templates
+      <span class="text-accent dark:text-white">NovaLink</span> — racontez votre vision en 30 secondes
     </Fragment>
 
     <Fragment slot="subtitle">
-      Step into the spotlight with <span class="font-semibold">Astrowind</span> templates, your pathway to fortifying your
-      startup's digital footprint, fostering credibility, and expanding your reach.
+      Une landing conçue pour convaincre investisseurs, partenaires et premiers clients : storytelling clair, chiffres clés et roadmap visuelle.
     </Fragment>
 
     <Fragment slot="image">
-      <YouTube id="gxBkghlglTg" title="Astro just Launched.... Could it be the ultimate web framework?" />
-      <style is:inline>
-        lite-youtube {
-          margin: 0 auto;
-          max-width: 100%;
-        }
-      </style>
+      <div class="relative aspect-[4/3] overflow-hidden rounded-2xl bg-gradient-to-br from-purple-600 via-blue-700 to-slate-900 p-10 text-white shadow-2xl">
+        <p class="text-sm uppercase tracking-[0.35em] text-purple-200/80">Vision produit</p>
+        <h4 class="mt-4 text-3xl font-semibold">Prototype interactif</h4>
+        <p class="mt-6 max-w-sm text-purple-100/90">
+          Animation WebGL légère pour illustrer votre solution en contexte.
+        </p>
+      </div>
     </Fragment>
-  </Hero>
+  </Hero2>
 
-  <!-- Features2 Widget ************** -->
-
-  <Features2
-    title="About us"
-    subtitle="We believe in the magic of turning dreams into stunning realities. Founded by passionate developers with a shared vision, we set out to simplify the website creation process. Our templates bring together the innovation of Astro 5.0 and the versatility of Tailwind CSS, enabling you to express your unique brand identity like never before."
-  >
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
-    </Fragment>
-  </Features2>
-
-  <!-- Stats Widget ****************** -->
-
-  <Stats
-    title="Discover the impressive impact of Astrowind"
-    subtitle="The numbers below reflect the trust our users have placed in us and the remarkable outcomes we've helped them achieve."
-    stats={[
-      { title: 'Downloads', amount: '182K' },
-      { title: 'Websites Launched', amount: '87' },
-      { title: 'User Ratings', amount: '4.8' },
-      { title: 'Satisfied Clients', amount: '116K' },
-    ]}
-  />
-
-  <!-- Brands Widget ****************** -->
-
-  <Brands
-    title="Partnerships & Collaborations"
-    subtitle="At Astrowind, we believe in the power of collaboration to drive innovation and create exceptional experiences."
-    icons={[]}
-    images={[
-      {
-        src: 'https://cdn.pixabay.com/photo/2015/05/26/09/37/paypal-784404_1280.png',
-        alt: 'Paypal',
-      },
-      {
-        src: 'https://cdn.pixabay.com/photo/2021/12/06/13/48/visa-6850402_1280.png',
-        alt: 'Visa',
-      },
-      {
-        src: 'https://cdn.pixabay.com/photo/2013/10/01/10/29/ebay-189064_1280.png',
-        alt: 'Ebay',
-      },
-
-      {
-        src: 'https://cdn.pixabay.com/photo/2015/04/13/17/45/icon-720944_1280.png',
-        alt: 'Youtube',
-      },
-      {
-        src: 'https://cdn.pixabay.com/photo/2013/02/12/09/07/microsoft-80658_1280.png',
-        alt: 'Microsoft',
-      },
-      {
-        src: 'https://cdn.pixabay.com/photo/2015/04/23/17/41/node-js-736399_1280.png',
-        alt: 'Node JS',
-      },
-      {
-        src: 'https://cdn.pixabay.com/photo/2015/10/31/12/54/google-1015751_1280.png',
-        alt: 'Google',
-      },
-      {
-        src: 'https://cdn.pixabay.com/photo/2021/12/06/13/45/meta-6850393_1280.png',
-        alt: 'Meta',
-      },
-      {
-        src: 'https://cdn.pixabay.com/photo/2013/01/29/22/53/yahoo-76684_1280.png',
-        alt: 'Yahoo',
-      },
-    ]}
-  />
-
-  <!-- Features2 Widget ************** -->
-
-  <Features2
-    title="What services do we provide?"
-    subtitle="We offer a wide range of website templates that suit various industries and purposes such as business, portfolio, e-commerce, blog, etc."
-    items={[
-      {
-        title: 'Installation Instructions',
-        description:
-          'Offer clear instructions on how to download the purchased templates and install them on various website platforms or content management systems.',
-        icon: 'flat-color-icons:document',
-      },
-      {
-        title: 'Demo and Previews',
-        description:
-          'Provide interactive demos and previews that allow customers to see how their chosen template will look and function before making a purchase.',
-        icon: 'flat-color-icons:template',
-      },
-      {
-        title: 'Technical Support',
-        description:
-          'Providing customer support for any technical issues related to the templates or their implementation.',
-        icon: 'flat-color-icons:voice-presentation',
-      },
-    ]}
-  >
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
-    </Fragment>
-  </Features2>
-
-  <!-- Features Widget *************** -->
-
-  <Features
-    id="features"
-    title="Main features of our templates"
-    subtitle="Possess several key characteristics to effectively cater to the needs of startups and entrepreneurs."
+  <Features3
+    title="Structure narrative"
+    subtitle="Inspirée des meilleures présentations startup."
     columns={3}
     items={[
       {
-        title: 'Modern and Professional Design',
-        description:
-          'Have a contemporary design that reflects current design trends and gives a professional impression.',
-        icon: 'tabler:artboard',
+        title: 'Problème → Solution',
+        description: 'Deux sections opposées avec chiffres du marché et bénéfices principaux.',
+        icon: 'tabler:presentation-analytics',
       },
       {
-        title: 'Responsive and Mobile-Friendly',
-        description: 'Adapt seamlessly to different screen sizes and devices to ensure a consistent experience.',
-        icon: 'tabler:picture-in-picture',
+        title: 'Traction & métriques',
+        description: 'Tableau KPI, croissance mensuelle, MRR projeté et témoignages presse.',
+        icon: 'tabler:trending-up',
       },
       {
-        title: 'Customizability',
-        description:
-          'Easily customizable, allowing users to adapt the design, colors, typography, and content to match their brand identity.',
-        icon: 'tabler:adjustments-horizontal',
+        title: 'Roadmap visuelle',
+        description: 'Timeline interactive sur 12 mois avec jalons produit et levées de fonds.',
+        icon: 'tabler:timeline',
       },
       {
-        title: 'Fast Loading Times',
-        description: 'Optimized for speed to ensure a smooth user experience and favorable search engine rankings.',
-        icon: 'tabler:rocket',
+        title: 'Équipe fondatrice',
+        description: 'Portraits, expertise et CTA LinkedIn pour chaque cofondateur.',
+        icon: 'tabler:users',
       },
       {
-        title: 'Search Engine Optimization (SEO)',
-        description:
-          'Incorporate SEO best practices in template structure and code to improve visibility in search engine results.',
-        icon: 'tabler:arrows-right-left',
+        title: 'Technologie & sécurité',
+        description: 'Stack technique, architecture et conformité expliquées clairement.',
+        icon: 'tabler:server-bolt',
       },
       {
-        title: 'Compatibility',
-        description: 'The templates work seamlessly across various content management systems and website builders.',
-        icon: 'tabler:plug-connected',
+        title: 'Appel à l’action final',
+        description: 'Bloc double : “Investir” et “Rejoindre la beta” avec formulaire ciblé.',
+        icon: 'tabler:target',
       },
     ]}
   />
 
-  <!-- FAQs Widget ******************* -->
-
-  <FAQs
-    title="Frequently Asked Questions"
+  <Content
+    isReversed
+    title="Design pensé pour les pitchs"
+    subtitle="Mobile-first, scrollytelling et interactions légères."
     items={[
       {
-        title: 'What are landing page templates?',
-        description:
-          'Landing page templates are pre-designed web page layouts that are specifically created to serve as a foundation for building effective landing pages. These templates are designed to capture the attention of visitors and guide them towards a specific action or goal, such as signing up for a newsletter, making a purchase, or downloading a resource.',
+        title: 'Hero vidéo',
+        description: 'Lecture automatique silencieuse, compatible mobile, avec fallback image optimisé.',
+        icon: 'tabler:video',
       },
       {
-        title: 'Why should I use a template?',
-        description:
-          'Some of the advantages are that they provide a ready-to-use structure,  saving you significant time. Are designed with user-friendliness in mind and provide a cost-effective alternative, saving you money while still delivering a quality result.',
+        title: 'Sections diagonales',
+        description: 'Angles dynamiques pour refléter l’innovation sans sacrifier la lisibilité.',
+        icon: 'tabler:tilt-shift',
       },
       {
-        title: 'Can I preview templates before buying?',
-        description:
-          'Yes, the templates allow you to preview them before making a purchase. There is a "Demo" button associated with each template.',
+        title: 'Badges presse',
+        description: 'Logos médias romands et citations pour rassurer vos visiteurs.',
+        icon: 'tabler:news',
       },
       {
-        title: 'Do I need technical skills to use a template?',
-        description:
-          'Advanced technical skills are not required to use a template, but having a basic understanding of web navigation and familiarity with using online tools can still be beneficial. If you have more specific customization needs, you might need to consult guides or reach out to customer support for assistance.',
-      },
-      {
-        title: 'Can I use the template on multiple websites?',
-        description:
-          'No, the template comes with a single-use license, meaning you can use the template on one website or project only. Using the template on additional websites would require purchasing additional licenses.',
-      },
-      {
-        title: 'What if I need help with customization?',
-        description:
-          "The templates provides a comprehensive step-by-step guide that walk you through the customization process. If you still have doubts, you can reach out to our customer support team. They can answer your questions, provide guidance on customization, and address any issues you're facing.",
+        title: 'Formulaire investisseur',
+        description: 'Collecte montant potentiel, horizon et intérêt via formulaire sécurisé.',
+        icon: 'tabler:report-money',
       },
     ]}
   >
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    <Fragment slot="content">
+      <p>
+        Idéal pour annoncer une levée, un lancement produit ou une campagne de financement participatif en Suisse romande.
+      </p>
     </Fragment>
-  </FAQs>
 
-  <!-- Features3 Widget ************** -->
+    <Fragment slot="image">
+      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-purple-700 to-blue-700 p-10 text-white shadow-xl">
+        <h4 class="text-3xl font-semibold">Pitch deck intégré</h4>
+        <p class="mt-6 max-w-sm text-blue-100/90">
+          Téléversez vos slides et proposez un téléchargement sécurisé pour les investisseurs.
+        </p>
+      </div>
+    </Fragment>
+  </Content>
 
-  <Features3
-    title="Let us know how we can help"
-    subtitle="We’re here to help and answer any question you might have."
-    columns={4}
-    items={[
+  <Testimonials
+    title="Startups accompagnées"
+    testimonials={[
       {
-        title: 'Phone',
-        icon: 'tabler:phone',
-        callToAction: {
-          target: '_blank',
-          text: 'Call us',
-          href: '/',
-          variant: 'link',
-        },
+        title: 'HydraSense — Genève',
+        testimonial:
+          '“Avec cette landing, nous avons validé notre MVP et obtenu 180 inscriptions beta dès la première semaine.”',
+        name: 'Lina Carrel',
+        position: 'CEO',
       },
       {
-        title: 'Email',
-        icon: 'tabler:mail',
-        callToAction: {
-          target: '_blank',
-          text: 'Write to us',
-          href: '/',
-          variant: 'link',
-        },
-      },
-      {
-        title: 'Chat with sales',
-        icon: 'tabler:message-circle',
-        callToAction: {
-          target: '_blank',
-          text: 'Start chatting',
-          href: '/',
-          variant: 'link',
-        },
-      },
-      {
-        title: 'Chat with support',
-        icon: 'tabler:message-circle',
-        callToAction: {
-          target: '_blank',
-          text: 'Start chatting',
-          href: '/',
-          variant: 'link',
-        },
+        title: 'Aurora Biotech — Lausanne',
+        testimonial:
+          '“Le bloc investisseur et la roadmap interactive ont convaincu nos partenaires financiers en moins de 10 minutes.”',
+        name: 'Hugo Werner',
+        position: 'Co-fondateur',
       },
     ]}
   />
 
-  <!-- CallToAction Widget *********** -->
+  <FAQs
+    title="Questions fréquentes"
+    items={[
+      {
+        title: 'Peut-on ajouter un module d’inscription beta ?',
+        description: 'Oui, intégration Typeform, Tally ou formulaire sur mesure livrée en 24 h.',
+      },
+      {
+        title: 'Le template supporte-t-il plusieurs langues ?',
+        description: 'Français/anglais par défaut, allemand en option, switcher de langue inclus.',
+      },
+      {
+        title: 'Peut-on connecter des outils analytics ?',
+        description: 'Oui, Mixpanel, Amplitude ou Matomo sont configurés par nos équipes.',
+      },
+    ]}
+  />
 
   <CallToAction
     actions={[
       {
         variant: 'primary',
-        target: '_blank',
-        text: 'Get templates',
-        href: 'https://github.com/arthelokyo/astrowind',
-        icon: 'tabler:download',
+        text: 'Planifier mon lancement',
+        href: '/contact#form',
+        icon: 'tabler:calendar-event',
+      },
+      {
+        text: 'Voir le template SaaS',
+        href: '/homes/saas',
       },
     ]}
   >
-    <Fragment slot="title">Be a part of our vision</Fragment>
+    <Fragment slot="title">Créez l’effet “wow” auprès de vos investisseurs</Fragment>
 
-    <Fragment slot="subtitle">
-      Discover a dynamic work environment, unparalleled growth opportunities, and the chance to make a meaningful
-      impact.
-    </Fragment>
+    <Fragment slot="subtitle">Nous livrons votre landing startup prête à pitcher en 24 h avec contenus et assets intégrés.</Fragment>
   </CallToAction>
 </Layout>

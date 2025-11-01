@@ -7,13 +7,12 @@ import Features from '~/components/widgets/Features.astro';
 import Features2 from '~/components/widgets/Features2.astro';
 import Steps from '~/components/widgets/Steps.astro';
 import Content from '~/components/widgets/Content.astro';
-import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import Stats from '~/components/widgets/Stats.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 
 const metadata = {
-  title: 'AstroWind — Free template for creating websites with Astro + Tailwind CSS',
+  title: 'MonWebsite.ch — Votre site clé-en-main en 24 h',
   ignoreTitleTemplate: true,
 };
 ---
@@ -22,81 +21,78 @@ const metadata = {
   <!-- Hero Widget ******************* -->
 
   <Hero
+    id="process"
     actions={[
       {
         variant: 'primary',
-        text: 'Get template',
-        href: 'https://github.com/arthelokyo/astrowind',
-        target: '_blank',
-        icon: 'tabler:download',
+        text: 'Voir les offres',
+        href: '/pricing',
+        icon: 'tabler:arrow-right',
       },
-      { text: 'Learn more', href: '#features' },
+      { text: 'Parler à un expert', href: '/contact#form' },
     ]}
-    image={{ src: '~/assets/images/hero-image.png', alt: 'AstroWind Hero Image' }}
+    image={{ src: '~/assets/images/hero-image.png', alt: 'Interface MonWebsite.ch' }}
   >
     <Fragment slot="title">
-      Free template for <span class="hidden xl:inline">creating websites with</span>
-      <span class="text-accent dark:text-white"> Astro 5.0</span> + Tailwind CSS
+      Votre site clé-en-main, livré en <span class="text-accent dark:text-white">24&nbsp;h</span>
     </Fragment>
 
     <Fragment slot="subtitle">
-      <span class="hidden sm:inline">
-        <span class="font-semibold">AstroWind</span> is a free, customizable and production-ready template for Astro 5.0
-        + Tailwind CSS.</span
-      >
-      <span class="block mb-1 sm:hidden font-bold text-blue-600">AstroWind: Production-ready.</span>
-      Suitable for Startups, Small Business, SaaS websites, Professional Portfolios, Marketing websites, Landing Pages &
-      Blogs.
+      Design suisse, performance mondiale. MonWebsite.ch automatise la création de sites vitrines pour les PME et indépendants
+      de l'Arc lémanique&nbsp;: contenu, design, hébergement et facturation sont gérés en une journée ouvrable.
     </Fragment>
   </Hero>
 
   <!-- Note Widget ******************* -->
 
-  <Note title="Philosophy:" description="Simplicity, Best Practices and High Performance" />
+  <Note
+    title="Engagement"
+    description="Service local, support humain et orchestrations automatisées pour un résultat impeccable sans effort."
+  />
 
   <!-- Features Widget *************** -->
 
   <Features
     id="features"
-    tagline="Features"
-    title="What you get with AstroWind"
-    subtitle="One of the most professional and comprehensive templates currently on the market. Most starred & forked Astro theme in 2022, 2023 and 2024."
+    tagline="Pourquoi nous choisir"
+    title="La précision suisse appliquée au digital"
+    subtitle="Chaque site est généré, personnalisé et contrôlé par notre équipe pour que vous puissiez vous concentrer sur votre activité."
     items={[
       {
-        title: 'Astro + Tailwind CSS Integration',
+        title: 'Livraison express 24 h',
         description:
-          'A seamless integration between two great frameworks that offer high productivity, performance and versatility.',
-        icon: 'tabler:brand-tailwind',
+          'Brief, contenu, design et mise en ligne sont orchestrés automatiquement pour publier votre site vitrine en une journée ouvrable.',
+        icon: 'tabler:clock-hour-4',
       },
       {
-        title: 'Ready-to-use Components',
+        title: 'Design premium sur mesure',
         description:
-          'Widgets made with Tailwind CSS ready to be used in Marketing Websites, SaaS, Blogs, Personal Profiles, Small Business...',
-        icon: 'tabler:components',
+          'Charte typographique Inter/Montserrat, palettes sobres et animations légères pour un rendu haut de gamme et cohérent.',
+        icon: 'tabler:sparkles',
       },
       {
-        title: 'Best Practices',
+        title: 'SEO local intégré',
         description:
-          'Creating secure, efficient, and user-friendly websites that deliver exceptional experiences and lasting value.',
-        icon: 'tabler:list-check',
+          'Contenus optimisés pour Lausanne, Genève, Montreux et toute la Suisse romande afin de maximiser votre visibilité régionale.',
+        icon: 'tabler:map-pin',
       },
       {
-        title: 'Excellent Page Speed',
+        title: 'Maintenance automatique',
         description:
-          'Having a good page speed impacts organic search ranking, improves user experience (UI/UX) and increase conversion rates.',
-        icon: 'tabler:rocket',
+          'Sauvegardes, mises à jour et surveillance de performance sont gérées par notre plateforme, sans frais cachés.',
+        icon: 'tabler:shield-check',
       },
       {
-        title: 'Search Engine Optimization (SEO)',
+        title: 'Facturation suisse transparente',
         description:
-          "SEO lies in its ability to enhance a website's visibility, driving organic traffic and enabling it to reach a wider audience.",
-        icon: 'tabler:arrows-right-left',
+          'Contrats clairs, TVA incluse et paiement en francs suisses via les principaux moyens helvétiques.',
+        icon: 'tabler:receipt',
       },
       {
-        title: 'Open to new ideas and contributions',
+        title: 'Support humain local',
         description:
-          'Embracing a culture that is open to new ideas and contributions is integral fostering innovation, collaboration, and a dynamic user experience.',
-        icon: 'tabler:bulb',
+          'Nos experts basés sur l’Arc lémanique répondent en moins de 2 h ouvrées par téléphone, email ou WhatsApp.',
+        icon: 'tabler:headset',
       },
     ]}
   />
@@ -105,109 +101,40 @@ const metadata = {
 
   <Content
     isReversed
-    tagline="Inside template"
-    title="AstroWind's Blueprint: Fun Meets Functionality!"
+    tagline="Processus"
+    title="Une orchestration en 3 temps"
     items={[
       {
-        title: 'Built on top of Astro 5.0',
+        title: 'Brief structuré',
         description:
-          'Benefiting from the performance and developer-friendly features of this modern static site generator.',
+          'Un questionnaire ciblé collecte vos services, horaires, témoignages et visuels pour alimenter notre IA propriétaire.',
       },
       {
-        title: 'Styled using Tailwind CSS',
+        title: 'Personnalisation assistée',
         description:
-          'Facilitating rapid design and consistent styling with this highly popular utility-first CSS framework.',
+          'Nos designers adaptent les sections, calibrent la typographie et garantissent la conformité aux normes suisses.',
       },
       {
-        title: 'Cross-browser compatibility',
+        title: 'Contrôle qualité',
         description:
-          'Ensure your website looks and functions consistently across various web browsers, delivering a seamless experience to all users.',
+          'Tests de performance, SEO et accessibilité avant mise en ligne et envoi du rapport de recette.',
       },
     ]}
-    image={{
-      src: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-      alt: 'Colorful Image',
-    }}
   >
     <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Building on modern foundations</h3>
-      Gain a competitive advantage by incorporating industry leading practices
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Votre site prêt demain</h3>
+      Trois étapes automatisées, validées par un expert local.
     </Fragment>
 
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    <Fragment slot="image">
+      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl">
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Workflow 24 h</p>
+        <h4 class="mt-4 text-3xl font-semibold">Brief → Création → Contrôle</h4>
+        <p class="mt-6 max-w-xs text-base text-blue-100/90">
+          Chaque étape est tracée dans votre espace client avec notifications en temps réel et validations rapides.
+        </p>
+      </div>
     </Fragment>
-  </Content>
-
-  <!-- Content Widget **************** -->
-
-  <Content
-    isAfterContent
-    items={[
-      {
-        title: 'High level of customization',
-        description: `Tailor the template effortlessly to match your brand's identity and requirements, making your website distinct and saving you time.`,
-      },
-      {
-        title: 'Multiple layout possibilities',
-        description:
-          'Explore various layout options to find the structure that best presents your content, enhancing user engagement and navigation.',
-      },
-      {
-        title: 'Fully responsive design',
-        description:
-          "Ensure your website's optimal performance on various devices and screen sizes, providing a consistent and enjoyable user experience.",
-      },
-      {
-        title: 'Integration of media',
-        description:
-          'Seamlessly incorporate images, videos, and multimedia elements that enhance your content and engage visitors effectively.',
-      },
-    ]}
-    image={{
-      src: 'https://images.unsplash.com/photo-1600132806370-bf17e65e942f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2194&q=80',
-      alt: 'Blueprint Image',
-    }}
-  >
-    <Fragment slot="content">Ensure your online presence truly represents you.</Fragment>
-
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
-    </Fragment>
-  </Content>
-
-  <!-- Content Widget **************** -->
-
-  <Content
-    isReversed
-    isAfterContent
-    items={[
-      {
-        title: 'Enhanced user engagement',
-        description:
-          'Captivate your audience with interactive elements, intuitive navigation, and visually appealing layouts, encouraging longer visits.',
-      },
-      {
-        title: 'Continuous improvement',
-        description:
-          'Ensure your website stays aligned with the latest trends and technologies through regular updates and enhancements.',
-      },
-      {
-        title: 'Time and resource efficiency',
-        description:
-          'Skip the time-consuming process of building a website from scratch and launch your online presence sooner with AstroWind.',
-      },
-      {
-        title: 'Community support',
-        description: `Join the growing AstroWind community for insights, resources, and assistance, ensuring you're never alone on your web development journey.`,
-      },
-    ]}
-    image={{
-      src: 'https://images.unsplash.com/photo-1611462985358-60d3498e0364?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-      alt: 'Astronauts Image',
-    }}
-  >
-    <Fragment slot="content">Designed to foster growth and success.</Fragment>
 
     <Fragment slot="bg">
       <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
@@ -216,94 +143,124 @@ const metadata = {
 
   <!-- Steps Widget ****************** -->
 
-  <Steps
-    title="Get your dream website up and running in no time with AstroWind."
+    <Steps
+      title="Livraison en 24 h, garantie"
+      tagline="Parcours client"
+      items={[
+        {
+          title: 'Signature en ligne',
+          description: 'Choisissez votre pack, signez électroniquement et recevez immédiatement votre accès client.',
+          icon: 'tabler:edit',
+        },
+        {
+          title: 'Onboarding guidé',
+          description: 'Notre assistant collecte vos informations clés et propose une arborescence adaptée à votre métier.',
+          icon: 'tabler:clipboard-list',
+        },
+        {
+          title: 'Production automatique',
+          description: 'Nos pipelines génèrent le site, intègrent vos contenus et notifient notre équipe pour validation.',
+          icon: 'tabler:robot',
+        },
+        {
+          title: 'Mise en ligne & formation',
+          description: 'Vous recevez le lien final, le guide vidéo personnalisé et la facture suisse correspondante.',
+          icon: 'tabler:rocket',
+        },
+      ]}
+    >
+      <Fragment slot="image">
+        <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
+          <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Timeline</p>
+          <p class="mt-6 max-w-xs text-base text-blue-100/90">
+            Chaque étape est suivie dans votre espace client avec validation en temps réel et alertes proactives.
+          </p>
+        </div>
+      </Fragment>
+    </Steps>
+
+  <!-- Content Widget **************** -->
+
+  <Content
+    isAfterContent
     items={[
       {
-        title: 'Step 1: <span class="font-medium">Download</span>',
+        title: 'Contenus multilingues',
         description:
-          "Kickstart with GitHub! Either fork the AstroWind template or simply click 'Use this template'. Your canvas awaits, ready for your digital masterpiece. In just a few clicks, you've already set the foundation.",
-        icon: 'tabler:package',
+          'Français, anglais ou allemand&nbsp;: nos rédacteurs adaptent les textes pour toucher vos clients où qu’ils soient.',
       },
       {
-        title: 'Step 2: <span class="font-medium">Add content</span>',
+        title: 'Performances mesurées',
         description:
-          "Pour your vision into it. Add images, text, and all that jazz to breathe life into your digital space. Remember, it's the content that tells your story, so make it captivating.",
-        icon: 'tabler:letter-case',
+          'Score Lighthouse ≥ 90 garanti sur mobile et desktop grâce à une optimisation technique avancée.',
       },
       {
-        title: 'Step 3: <span class="font-medium">Customize styles</span>',
+        title: 'Intégrations métiers',
         description:
-          'Give it your personal touch. Tailor colors, fonts, and layouts until it feels just right. Your unique flair, amplified by AstroWind! Precision in design ensures a seamless user experience.',
-        icon: 'tabler:paint',
+          'Réservation en ligne, Click & Collect, formulaires sécurisés&nbsp;: nous connectons vos outils sans surcoût.',
       },
       {
-        title: 'Ready!',
-        icon: 'tabler:check',
+        title: 'Formation express',
+        description:
+          'Un guide vidéo personnalisé de 10 minutes pour vous approprier votre site et publier en autonomie.',
       },
     ]}
-    image={{
-      src: 'https://images.unsplash.com/photo-1616198814651-e71f960c3180?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=987&q=80',
-      alt: 'Steps image',
-    }}
-  />
+  >
+    <Fragment slot="content">Une présence en ligne qui reflète la précision de votre entreprise.</Fragment>
+
+    <Fragment slot="image">
+      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
+        <h4 class="text-3xl font-semibold">Performances maîtrisées</h4>
+        <ul class="mt-6 space-y-3 text-left text-blue-100/90">
+          <li>✓ KPI suivis dans votre tableau de bord</li>
+          <li>✓ Alertes automatiques en cas de baisse</li>
+          <li>✓ Recommandations mensuelles actionnables</li>
+        </ul>
+      </div>
+    </Fragment>
+
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    </Fragment>
+  </Content>
 
   <!-- Features2 Widget ************** -->
 
   <Features2
-    title="Most used widgets"
-    subtitle="Provides frequently used components for building websites using Tailwind CSS"
-    tagline="Components"
+    id="included"
+    title="Tout est compris"
+    subtitle="Une solution clé-en-main pensée pour les entrepreneurs romands"
+    tagline="Inclus dans chaque pack"
     items={[
       {
-        title: 'Headers',
-        description: "Ever tried driving without GPS? Boom! That's why websites need headers for direction.",
-        icon: 'flat-color-icons:template',
+        title: 'Hébergement suisse vert',
+        description: 'Serveurs localisés à Genève, alimentés par de l’énergie renouvelable certifiée.',
+        icon: 'tabler:server',
       },
       {
-        title: 'Heros',
-        description:
-          "Picture a superhero landing – epic, right? That's the job of a Hero section, making grand entrances!",
-        icon: 'flat-color-icons:gallery',
+        title: 'Emails professionnels',
+        description: 'Comptes email @votredomaine.ch configurés et sécurisés avec SPF/DKIM.',
+        icon: 'tabler:mail',
       },
       {
-        title: 'Features',
-        description:
-          'Where websites strut their stuff and show off superpowers. No holding back on the bragging rights here!',
-        icon: 'flat-color-icons:approval',
+        title: 'Suivi analytique',
+        description: 'Rapport mensuel automatisé avec les indicateurs clés et recommandations d’optimisation.',
+        icon: 'tabler:chart-line',
       },
       {
-        title: 'Content',
-        description:
-          "Dive into the meat and potatoes of a site; without it, you'd just be window shopping. Content is king.",
-        icon: 'flat-color-icons:document',
+        title: 'Support prioritaire',
+        description: 'Canal WhatsApp dédié et hotline locale disponible de 8h à 18h, du lundi au samedi.',
+        icon: 'tabler:message',
       },
       {
-        title: 'Call-to-Action',
-        description:
-          'That enthusiastic friend who\'s always urging, "Do it! Do it!"? Yeah, that\'s this button nudging you towards adventure.',
-        icon: 'flat-color-icons:advertising',
+        title: 'Mises à jour incluses',
+        description: 'Sécurité, RGPD et accessibilité contrôlées en continu par nos scripts automatisés.',
+        icon: 'tabler:refresh',
       },
       {
-        title: 'Pricing',
-        description: 'Behold the dessert menu of the website world. Tempting choices await, can you resist?',
-        icon: 'flat-color-icons:currency-exchange',
-      },
-      {
-        title: 'Testimonial',
-        description: 'Step into the gossip corner! Here, other visitors spill the beans and share the juicy details.',
-        icon: 'flat-color-icons:voice-presentation',
-      },
-      {
-        title: 'Contact',
-        description:
-          'Like a digital mailbox, but faster! Drop a line, ask a question, or send a virtual high-five. Ding! Message in.',
-        icon: 'flat-color-icons:business-contact',
-      },
-      {
-        title: 'Footers',
-        description: "The footer's like the credits of a movie but sprinkled with easter eggs. Time to hunt!",
-        icon: 'flat-color-icons:database',
+        title: 'Séance photo optionnelle',
+        description: 'Photographe partenaire à tarif préférentiel sur Lausanne, Vevey ou Genève.',
+        icon: 'tabler:camera',
       },
     ]}
   >
@@ -312,65 +269,52 @@ const metadata = {
     </Fragment>
   </Features2>
 
-  <!-- HighlightedPosts Widget ******* -->
+  <!-- Stats Widget ****************** -->
 
-  <BlogLatestPosts
-    title="Find out more content in our Blog"
-    information={`The blog is used to display AstroWind documentation.
-                        Each new article will be an important step that you will need to know to be an expert in creating a website using Astro + Tailwind CSS.
-                        Astro is a very interesting technology. Thanks.
-                `}
+  <Stats
+    title="Des résultats concrets pour nos clients"
+    stats={[
+      { title: 'Sites livrés', amount: '180+' },
+      { title: 'Délai moyen', amount: '19h' },
+      { title: 'Satisfaction clients', amount: '4.9/5' },
+      { title: 'Support en moins de', amount: '2h' },
+    ]}
   />
 
   <!-- FAQs Widget ******************* -->
 
   <FAQs
-    title="Frequently Asked Questions"
-    subtitle="Dive into the following questions to gain insights into the powerful features that AstroWind offers and how it can elevate your web development journey."
-    tagline="FAQs"
+    id="faq"
+    title="Questions fréquentes"
+    subtitle="Transparent de bout en bout, comme votre future présence en ligne."
+    tagline="FAQ"
     classes={{ container: 'max-w-6xl' }}
     items={[
       {
-        title: 'Why AstroWind?',
+        title: 'Comment garantissez-vous la livraison en 24 h ?',
         description:
-          "Michael Knight a young loner on a crusade to champion the cause of the innocent. The helpless. The powerless in a world of criminals who operate above the law. Here he comes Here comes Speed Racer. He's a demon on wheels.",
+          'Nos gabarits sectoriels et notre plateforme d’automatisation préparent 80 % du site. Un expert local finalise et valide avant publication.',
       },
       {
-        title: 'What do I need to start?',
+        title: 'Le contenu est-il inclus ?',
         description:
-          'Space, the final frontier. These are the voyages of the Starship Enterprise. Its five-year mission: to explore strange new worlds. Many say exploration is part of our destiny, but it’s actually our duty to future generations.',
+          'Oui, nous rédigeons vos textes en français et pouvons les décliner en anglais ou allemand. Vous pouvez relire avant mise en ligne.',
       },
       {
-        title: 'How to install the Astro + Tailwind CSS template?',
+        title: 'Puis-je gérer moi-même le site après la livraison ?',
         description:
-          "Well, the way they make shows is, they make one show. That show's called a pilot. Then they show that show to the people who make shows, and on the strength of that one show they decide if they're going to make more shows.",
+          'Bien sûr. Vous disposez d’un accès éditeur avec guide vidéo et support illimité. Nous restons disponibles pour toute modification.',
       },
       {
-        title: "What's something that you don't understand?",
+        title: 'Quels moyens de paiement acceptez-vous ?',
         description:
-          "A flower in my garden, a mystery in my panties. Heart attack never stopped old Big Bear. I didn't even know we were calling him Big Bear.",
+          'Cartes suisses, Twint, virement bancaire et facturation QR. Les abonnements peuvent être payés mensuellement ou annuellement.',
       },
       {
-        title: 'What is something that you would like to try again?',
+        title: 'Proposez-vous des options e-commerce ?',
         description:
-          "A business big enough that it could be listed on the NASDAQ goes belly up. Disappears! It ceases to exist without me. No, you clearly don't know who you're talking to, so let me clue you in.",
+          'Nous intégrons des solutions de Click & Collect, vente de bons cadeaux ou catalogue sans panier complet selon vos besoins.',
       },
-      {
-        title: 'If you could only ask one question to each person you meet, what would that question be?',
-        description:
-          "This is not about revenge. This is about justice. A lot of things can change in twelve years, Admiral. Well, that's certainly good to know. About four years. I got tired of hearing how young I looked.",
-      },
-    ]}
-  />
-
-  <!-- Stats Widget ****************** -->
-
-  <Stats
-    stats={[
-      { title: 'Downloads', amount: '132K' },
-      { title: 'Stars', amount: '24.8K' },
-      { title: 'Forks', amount: '10.3K' },
-      { title: 'Users', amount: '48.4K' },
     ]}
   />
 
@@ -380,20 +324,22 @@ const metadata = {
     actions={[
       {
         variant: 'primary',
-        text: 'Get template',
-        href: 'https://github.com/arthelokyo/astrowind',
-        target: '_blank',
-        icon: 'tabler:download',
+        text: 'Réserver mon lancement',
+        href: '/contact#form',
+        icon: 'tabler:calendar-event',
+      },
+      {
+        text: 'Consulter les tarifs',
+        href: '/pricing',
       },
     ]}
   >
     <Fragment slot="title">
-      Astro&nbsp;+&nbsp;<br class="block sm:hidden" /><span class="sm:whitespace-nowrap">Tailwind CSS</span>
+      Prêt à lancer votre site clé-en-main ?
     </Fragment>
 
     <Fragment slot="subtitle">
-      Be very surprised by these huge fake numbers you are seeing on this page. <br class="hidden md:inline" />Don't
-      waste more time! :P
+      Un conseiller MonWebsite.ch vous répond dans les 2&nbsp;heures ouvrées pour planifier votre mise en ligne sous 24&nbsp;h.
     </Fragment>
   </CallToAction>
 </Layout>

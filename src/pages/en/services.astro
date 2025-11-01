@@ -1,0 +1,233 @@
+---
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import Content from '~/components/widgets/Content.astro';
+import Features2 from '~/components/widgets/Features2.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import Testimonials from '~/components/widgets/Testimonials.astro';
+import Layout from '~/layouts/PageLayout.astro';
+
+const metadata = {
+  title: 'Services',
+};
+---
+
+<Layout metadata={metadata}>
+  <Hero
+    id="services"
+    tagline="Our services"
+    title="Turnkey showcase websites crafted for Swiss SMEs"
+    subtitle="MonWebsite.ch combines automation and human expertise to deliver high-end websites with ongoing care."
+    actions={[{ variant: 'primary', text: 'See pricing', href: '/en/pricing' }]}
+  >
+    <Fragment slot="image">
+      <div class="relative aspect-[5/3] overflow-hidden rounded-2xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-left text-white shadow-2xl">
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Automated services</p>
+        <h4 class="mt-4 text-4xl font-semibold">Design · Content · Care</h4>
+        <p class="mt-6 max-w-xl text-lg text-blue-100/90">
+          A proprietary platform orchestrating production while our experts focus on quality and client relationship.
+        </p>
+      </div>
+    </Fragment>
+  </Hero>
+
+  <Features2
+    title="Three offers, one standard"
+    subtitle="Pick the formula that matches your growth."
+    columns={3}
+    items={[
+      {
+        title: 'Express 24 h',
+        description:
+          'Five-section showcase site, local optimisation and hosting included. Perfect to launch your presence instantly.',
+        icon: 'tabler:bolt',
+      },
+      {
+        title: 'Signature',
+        description:
+          'Bespoke design, multilingual copywriting, business tool integrations and personalised video training.',
+        icon: 'tabler:diamond',
+      },
+      {
+        title: 'Continuum',
+        description:
+          'Quarterly support, update campaigns, content production and continuous SEO improvements.',
+        icon: 'tabler:arrows-left-right',
+      },
+    ]}
+  />
+
+  <Content
+    id="content"
+    isReversed
+    items={[
+      {
+        title: 'Automated production',
+        description:
+          'Our pipeline assembles your site in minutes using validated industry playbooks.',
+        icon: 'tabler:cube',
+      },
+      {
+        title: 'Human oversight',
+        description:
+          'Designers, copywriters and SEO experts verify every deliverable for coherence and compliance.',
+        icon: 'tabler:shield-check',
+      },
+      {
+        title: 'Continuous delivery',
+        description:
+          'Through our platform, your page additions or updates are handled within 48 h.',
+        icon: 'tabler:inbox',
+      },
+      {
+        title: 'Monthly follow-up',
+        description:
+          'An automated report covering traffic, conversions and insights to maintain performance.',
+        icon: 'tabler:report-analytics',
+      },
+    ]}
+  >
+    <Fragment slot="content">
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Our hybrid methodology</h3>
+      Automation for speed, experts for quality.
+    </Fragment>
+
+    <Fragment slot="image">
+      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl">
+        <h4 class="text-3xl font-semibold">Supervised pipeline</h4>
+        <p class="mt-6 max-w-sm text-blue-100/90">
+          32 automated checkpoints reviewed by a project lead before every launch.
+        </p>
+      </div>
+    </Fragment>
+  </Content>
+
+  <Content
+    id="seo"
+    isAfterContent
+    items={[
+      {
+        title: 'Local SEO & Google listings',
+        description:
+          'Technical optimisation, meta copywriting and Google Business Profile setup.',
+        icon: 'tabler:map-pin',
+      },
+      {
+        title: 'Premium content',
+        description:
+          'Photo shoots, short videos and storytelling aligned with your brand to capture attention.',
+        icon: 'tabler:photo',
+      },
+      {
+        title: 'Acquisition campaigns',
+        description:
+          'Landing pages, forms and automated email journeys to convert visitors into clients.',
+        icon: 'tabler:send',
+      },
+      {
+        title: 'Command centre',
+        description:
+          'Access a live dashboard to track leads, bookings and orders in real time.',
+        icon: 'tabler:layout-dashboard',
+      },
+    ]}
+  >
+    <Fragment slot="content">
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Long-term levers</h3>
+      We activate the right tools to deliver measurable outcomes.
+    </Fragment>
+
+    <Fragment slot="image">
+      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-left text-white shadow-xl">
+        <h4 class="text-3xl font-semibold">Controlled acquisition</h4>
+        <p class="mt-6 max-w-sm text-blue-100/90">
+          Campaigns calibrated to attract your local customers and measure every conversion.
+        </p>
+      </div>
+    </Fragment>
+  </Content>
+
+  <Features2
+    id="support"
+    title="Support & care"
+    subtitle="Stay focused on your craft, we handle the rest."
+    columns={3}
+    items={[
+      {
+        title: 'Priority helpdesk',
+        description: 'Lake Geneva hotline with responses within 2 working hours and follow-up through your portal.',
+        icon: 'tabler:headset',
+      },
+      {
+        title: '24/7 monitoring',
+        description: 'Automated performance watch, real-time alerts and proactive fixes.',
+        icon: 'tabler:antenna',
+      },
+      {
+        title: 'Unlimited updates',
+        description: 'Add content, evolve the design or connect tools with no hidden fees.',
+        icon: 'tabler:tools',
+      },
+      {
+        title: 'GDPR compliance',
+        description: 'Cookie policy, consent management and legal documentation included.',
+        icon: 'tabler:shield-check',
+      },
+      {
+        title: 'Reinforced security',
+        description: 'SSL certificates, daily backups and automated anti-malware scans.',
+        icon: 'tabler:lock',
+      },
+      {
+        title: 'Strategic guidance',
+        description: 'Quarterly advisory session with data analysis and personalised action plan.',
+        icon: 'tabler:target',
+      },
+    ]}
+  />
+
+  <Testimonials
+    title="Trusted by local businesses"
+    testimonials={[
+      {
+        title: 'Brasserie de la Cathédrale, Lausanne',
+        testimonial:
+          '“In 24 hours we had a polished bilingual site with online reservations. Our customers love the look and we keep full control.”',
+        name: 'Élodie Favre',
+        position: 'Owner',
+      },
+      {
+        title: 'CleanWave Services, Genève',
+        testimonial:
+          '“The automated dashboard and ongoing support make it feel like an in-house digital team. Leads doubled in two months.”',
+        name: 'Marc Schmid',
+        position: 'Director',
+      },
+      {
+        title: 'Studio Léman Coaching, Vevey',
+        testimonial:
+          '“We switched to MonWebsite.ch for the 24h delivery promise. The result is premium, fast and perfectly aligned with our brand.”',
+        name: 'Sonia Ribeiro',
+        position: 'Founder',
+      },
+    ]}
+  />
+
+  <CallToAction
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Book a consultation',
+        href: '/en/contact#form',
+        icon: 'tabler:calendar-event',
+      },
+      {
+        text: 'Discover plans',
+        href: '/en/pricing',
+      },
+    ]}
+  >
+    <Fragment slot="title">Your 24 h website starts here</Fragment>
+
+    <Fragment slot="subtitle">Speak with a local expert and get your launch scheduled within one business day.</Fragment>
+  </CallToAction>
+</Layout>

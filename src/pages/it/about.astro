@@ -1,0 +1,194 @@
+---
+import Features2 from '~/components/widgets/Features2.astro';
+import Features3 from '~/components/widgets/Features3.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import Stats from '~/components/widgets/Stats.astro';
+import Steps2 from '~/components/widgets/Steps2.astro';
+import Layout from '~/layouts/PageLayout.astro';
+
+const metadata = {
+  title: 'Chi siamo',
+};
+---
+
+<Layout metadata={metadata}>
+  <Hero tagline="Chi è MonWebsite.ch">
+    <Fragment slot="title">Un team del Lago Lemano che unisce automazione e cura umana</Fragment>
+
+    <Fragment slot="subtitle">
+      Nato a Losanna, MonWebsite.ch consegna siti premium in 24 ore per PMI e indipendenti senza compromettere precisione o accompagnamento. Uniamo tecnologia proprietaria ed esperti locali per garantire risultati impeccabili.
+    </Fragment>
+
+    <Fragment slot="image">
+      <div class="relative aspect-[5/3] overflow-hidden rounded-2xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-left text-white shadow-2xl">
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Lago Lemano</p>
+        <h4 class="mt-4 text-4xl font-semibold">Losanna · Ginevra · Vevey · Montreux</h4>
+        <p class="mt-6 max-w-xl text-lg text-blue-100/90">
+          Specialisti digital, contenuti e performance allineati da un unico obiettivo: consegnare siti impeccabili in 24 ore.
+        </p>
+      </div>
+    </Fragment>
+  </Hero>
+
+  <Stats
+    title="I nostri numeri"
+    stats={[
+      { title: 'Esperti basati nell’Arco Lemanico', amount: '12' },
+      { title: 'Clienti accompagnati ogni mese', amount: '45' },
+      { title: 'Tasso di soddisfazione', amount: '97%' },
+      { title: 'Valutazione supporto', amount: '4.9/5' },
+    ]}
+  />
+
+  <Features3
+    title="I nostri pilastri"
+    subtitle="Rigore svizzero applicato a ogni progetto."
+    columns={3}
+    isBeforeContent={true}
+    items={[
+      {
+        title: 'Automazione controllata',
+        description:
+          'Pipeline proprietarie orchestrano contenuti, design e deploy per assicurare la consegna in 24 ore.',
+        icon: 'tabler:cpu',
+      },
+      {
+        title: 'Design minimalista',
+        description:
+          'Ispirato ai codici visivi svizzeri, con layout ariosi, tipografia precisa e contrasti netti.',
+        icon: 'tabler:layout-grid',
+      },
+      {
+        title: 'Relazione vicina',
+        description:
+          'Project manager disponibili via telefono o WhatsApp per un follow-up dedicato anche dopo il lancio.',
+        icon: 'tabler:users',
+      },
+    ]}
+  />
+
+  <Features3
+    columns={3}
+    isAfterContent={true}
+    items={[
+      {
+        title: 'Stack svizzero + globale',
+        description:
+          'Astro, Tailwind e hosting svizzero per unire sovranità e performance mondiale.',
+        icon: 'tabler:world',
+      },
+      {
+        title: 'Partner sul territorio',
+        description:
+          'Fotografi, copywriter, consulenti SEO e privacy tra Ginevra e Montreux.',
+        icon: 'tabler:briefcase',
+      },
+      {
+        title: 'Cultura data-driven',
+        description:
+          'Ogni consegna include report performance, roadmap di miglioramento e review trimestrale.',
+        icon: 'tabler:chart-dots',
+      },
+      {
+        title: 'Supporto multilingue',
+        description:
+          'Rispondiamo in francese, italiano, tedesco o inglese secondo le tue preferenze.',
+        icon: 'tabler:language',
+      },
+      {
+        title: 'Conformità privacy CH/UE',
+        description:
+          'Documentazione legale, gestione consensi e dati ospitati in Svizzera.',
+        icon: 'tabler:shield-lock',
+      },
+      {
+        title: 'Mentalità sostenibile',
+        description:
+          'Compensazione CO₂ per ogni sito e partnership con hosting alimentati da energia rinnovabile.',
+        icon: 'tabler:leaf',
+      },
+    ]}
+  >
+    <Fragment slot="image">
+      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
+        <p class="text-sm uppercase tracking-[0.3em] text-blue-200/80">Presenza locale</p>
+        <p class="mt-4 max-w-sm text-lg text-blue-100/90">
+          Operare tra Losanna, Ginevra, Vevey e Montreux ci mantiene allineati alla realtà quotidiana dei clienti.
+        </p>
+      </div>
+    </Fragment>
+  </Features3>
+
+  <Steps2
+    title="I nostri valori"
+    subtitle="Tecnologia al servizio delle imprese locali con trasparenza e affidabilità."
+    items={[
+      {
+        title: 'Precisione',
+        description:
+          'Ogni parola e ogni pixel sono verificati manualmente prima della messa online.',
+      },
+      {
+        title: 'Chiarezza',
+        description:
+          'Offerte all-inclusive, fatture svizzere e KPI condivisi in tempo reale.',
+      },
+      {
+        title: 'Prossimità',
+        description:
+          'Partnership di lungo periodo con consulente dedicato e sessioni trimestrali incluse.',
+      },
+    ]}
+  />
+
+  <Steps2
+    title="La nostra storia"
+    subtitle="Tre anni per costruire una piattaforma capace di consegnare siti impeccabili alla massima velocità."
+    isReversed={true}
+    callToAction={{
+      text: 'Vedi le offerte',
+      href: '/it/pricing',
+    }}
+    items={[
+      {
+        title: '2021 — Lancio',
+        description: 'Creazione di MonWebsite.ch a Losanna con la missione di semplificare la presenza digitale degli imprenditori.',
+        icon: 'tabler:flag',
+      },
+      {
+        title: '2022 — Industrializzazione',
+        description: 'Messa in produzione delle pipeline automatizzate e apertura a Ginevra e Vevey.',
+        icon: 'tabler:arrows-exchange',
+      },
+      {
+        title: '2023 — Accelerazione',
+        description: 'Oltre 150 siti consegnati, partnership con agenzie locali e lancio dell’offerta multilingue.',
+        icon: 'tabler:rocket',
+      },
+    ]}
+  />
+
+  <Features2
+    title="Dove incontrarci"
+    tagline="Presenza locale"
+    columns={4}
+    items={[
+      {
+        title: 'Losanna',
+        description: 'Quartiere Flon — incontri su richiesta',
+      },
+      {
+        title: 'Ginevra',
+        description: 'Rue du Rhône — showroom partner',
+      },
+      {
+        title: 'Vevey',
+        description: 'Coworking La Forge — sessioni di onboarding',
+      },
+      {
+        title: 'Montreux',
+        description: 'Studi partner per i tuoi shooting fotografici',
+      },
+    ]}
+  />
+</Layout>

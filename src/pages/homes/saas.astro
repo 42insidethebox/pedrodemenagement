@@ -1,348 +1,177 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
 
-import Header from '~/components/widgets/Header.astro';
 import Hero2 from '~/components/widgets/Hero2.astro';
-import Features from '~/components/widgets/Features.astro';
-import Steps2 from '~/components/widgets/Steps2.astro';
+import Features3 from '~/components/widgets/Features3.astro';
 import Content from '~/components/widgets/Content.astro';
-import Pricing from '~/components/widgets/Pricing.astro';
-
-import { headerData } from '~/navigation';
+import Stats from '~/components/widgets/Stats.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
-import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
 
 const metadata = {
-  title: 'SaaS Landing Page',
+  title: 'Template SaaS & Plateformes',
+  description: 'Page d’accueil MonWebsite.ch pour SaaS romands : métriques, intégrations et conversions B2B.',
 };
 ---
 
 <Layout metadata={metadata}>
-  <Fragment slot="header">
-    <Header
-      {...headerData}
-      actions={[
-        {
-          variant: 'secondary',
-          text: 'Login',
-          href: '#',
-        },
-        {
-          variant: 'primary',
-          text: 'Sign Up',
-          href: '#',
-        },
-      ]}
-      isSticky
-    />
-  </Fragment>
-
-  <!-- Hero2 Widget ******************* -->
-
   <Hero2
-    tagline="SaaS Web Demo"
+    tagline="Template secteur — SaaS & plateformes"
     actions={[
-      { variant: 'primary', target: '_blank', text: 'Get Started', href: 'https://github.com/arthelokyo/astrowind' },
-      { text: 'Learn more', href: '#features' },
+      {
+        variant: 'primary',
+        text: 'Déployer le template',
+        href: '/contact#form',
+        icon: 'tabler:rocket',
+      },
+      { text: 'Voir le comparatif', href: '/pricing' },
     ]}
-    image={{
-      src: 'https://images.unsplash.com/photo-1580481072645-022f9a6dbf27?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-      alt: 'AstroWind Hero Image',
-    }}
   >
     <Fragment slot="title">
-      Simplify web design with Astrowind: <br /> your ultimate <span class="text-accent dark:text-white">SaaS</span> companion<br
-      />
+      <span class="text-accent dark:text-white">SaaS Léman Analytics</span> — pipeline de conversion B2B
     </Fragment>
 
     <Fragment slot="subtitle">
-      <span class="hidden sm:inline">
-        Elevate your website creation process with <span class="font-semibold">AstroWind</span>'s SaaS solutions.</span
-      >
-      Seamlessly blend the power of Astro 5.0 and Tailwind CSS to craft websites that resonate with your brand and audience.
+      Un hero à fort impact, métriques en direct, preuve sociale et bloc démo pour transformer vos visiteurs en leads qualifiés.
+    </Fragment>
+
+    <Fragment slot="image">
+      <div class="relative aspect-[16/9] overflow-hidden rounded-2xl bg-gradient-to-br from-blue-700 via-slate-900 to-emerald-500 p-10 text-white shadow-2xl">
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Dashboard SaaS</p>
+        <h4 class="mt-4 text-3xl font-semibold">Métriques en live</h4>
+        <p class="mt-6 max-w-lg text-blue-100/90">
+          Graphiques interactifs, cartes comparatives et intégrations CRM prêtes à l’emploi.
+        </p>
+      </div>
     </Fragment>
   </Hero2>
 
-  <!-- Features Widget *************** -->
-
-  <Features
-    id="features"
-    title="Why choose AstroWind?"
-    subtitle="Each of the following features enhances AstroWind's value proposition."
-    columns={2}
+  <Features3
+    title="Architecture"
+    subtitle="Chaque bloc est pensé pour convaincre les décideurs."
+    columns={3}
     items={[
       {
-        title: 'Integration of Astro 5.0 and Tailwind CSS',
-        description:
-          'Offers a powerful combination that enhances both the development process and the end-user experience. Also, allows to build dynamic and visually stunning websites with optimized performance.',
-        icon: 'tabler:layers-union',
+        title: 'Hero data-driven',
+        description: 'Titre précis, sous-titre orienté valeur et call-to-action démo + essai gratuit.',
+        icon: 'tabler:gauge',
       },
       {
-        title: 'Versatile design for startups, small businesses, and more',
-        description: `Easily customize AstroWind to harmonize with the unique branding and identity of your venture. AstroWind's versatile design adapts to suit your needs.`,
-        icon: 'tabler:artboard',
+        title: 'Section problématique',
+        description: 'Expose les douleurs métiers avec pictogrammes et chiffres locaux.',
+        icon: 'tabler:alert-circle',
       },
       {
-        title: 'Effortless customization for portfolios and marketing sites',
-        description:
-          'With intuitive customization, easily showcase portfolio pieces, case studies, project highlights, and relevant content. Ideal for creative professionals and businesses looking to highlight their expertise.',
-        icon: 'tabler:writing',
+        title: 'Fonctionnalités modulaires',
+        description: 'Cartes modulaires regroupées par cas d’usage (ops, marketing, finance).',
+        icon: 'tabler:layers-linked',
       },
       {
-        title: 'Optimized landing pages and engaging blogs',
-        description: `Landing pages are strategically designed to captivate visitors and prompt specific actions. Additionally, the blog creation feature empowers sharing insights, engaging the audience.`,
-        icon: 'tabler:podium',
+        title: 'Intégrations',
+        description: 'Logos interactifs (SAP, Salesforce, ERP suisses) avec lien vers documentation.',
+        icon: 'tabler:plug-connected',
       },
       {
-        title: 'Fast loading times and production-ready code',
-        description: `Using Astro 5.0 ensures fast loading and seamless rendering, enhancing browsing. The code follows best practices, improving user experience, SEO, and reducing bounce rates.`,
-        icon: 'tabler:rocket',
+        title: 'Preuve sociale B2B',
+        description: 'Logos clients, avis G2/Capterra et success stories Arc lémanique.',
+        icon: 'tabler:stars',
       },
       {
-        title: 'SEO-optimized structure for enhanced visibility',
-        description: `Follows SEO best practices with clean code, semantic HTML markup, and fast loading, enhancing search engine rankings. AstroWind's SEO structure ensures visibility to potential customers and clients.`,
-        icon: 'tabler:eyeglass',
+        title: 'Bloc sécurité & conformité',
+        description: 'Met en avant conformité LPD/RGPD, hébergement suisse et certifications ISO.',
+        icon: 'tabler:shield-lock',
       },
     ]}
   />
 
-  <!-- Content Widget **************** -->
-
   <Content
-    title="Use cases"
-    subtitle="Discover how AstroWind's versatile template serves as the ideal solution for various use cases, providing tailored solutions to drive success."
+    id="demo"
     isReversed
+    title="Flux de génération de leads"
+    subtitle="Convaincre et capturer en un seul écran."
     items={[
       {
-        title: 'Description:',
-        description:
-          'Are you a startup with big dreams? AstroWind propels your success. Our template forges a seamless online presence, attracting investors and customers from day one. Astro 5.0 and Tailwind CSS ensure striking, responsive sites, leaving lasting impressions. Countless startups leverage AstroWind to kickstart their journey and resonate with audiences.',
+        title: 'Video walkthrough',
+        description: 'Lecteur intégré (Vimeo/YouTube) avec transcript et CTA “Voir la démo complète”.',
+        icon: 'tabler:player-play',
       },
       {
-        title: 'Benefits:',
-        description: `Allow startups to quickly create professional websites without investing extensive time and resources. <br /> Make a memorable first impression with visually appealing design elements that highlight your startup's unique value proposition. <br /> Ensures your website looks stunning and works well on all devices. <br /> Engage potential investors and customers with engaging content, clear messaging, and intuitive navigation.`,
+        title: 'Formulaire multi-étapes',
+        description: 'Collecte entreprise, effectif et objectif en 3 champs avec intégration HubSpot.',
+        icon: 'tabler:forms',
+      },
+      {
+        title: 'Comparatif plans',
+        description: 'Tableau comparatif Free / Pro / Enterprise avec badges et CTA alignés.',
+        icon: 'tabler:columns',
+      },
+      {
+        title: 'Bloc ROI',
+        description: 'Calculateur dynamique du temps gagné et du retour sur investissement.',
+        icon: 'tabler:chart-infographic',
       },
     ]}
-    image={{
-      src: 'https://images.unsplash.com/photo-1620558138198-cfb9b4f3c294?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1671&q=80',
-      alt: 'Startup Image',
-    }}
   >
     <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
-        Startup success stories: <br /><span class="text-2xl">Launching with AstroWind</span>
-      </h3>
+      <p>
+        Ce template SaaS est optimisé pour les parcours desktop et mobile : CSS grid réactif, micro-interactions et chargement différé des vidéos.
+      </p>
     </Fragment>
 
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    <Fragment slot="image">
+      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-500 p-10 text-white shadow-xl">
+        <h4 class="text-3xl font-semibold">Score performance</h4>
+        <p class="mt-6 max-w-sm text-emerald-100/90">
+          Lighthouse 98 desktop / 94 mobile avec optimisation Tailwind + Astro.
+        </p>
+      </div>
     </Fragment>
   </Content>
 
-  <!-- Content Widget **************** -->
-
-  <Content
-    isAfterContent={true}
-    items={[
-      {
-        title: 'Description:',
-        description: `For SaaS businesses, user experience is key. AstroWind enhances showcasing SaaS solutions intuitively. The template's Astro 5.0 and Tailwind CSS integration guarantees user-friendly experience, mirroring your software's efficiency. Customize pages to communicate SaaS value and solutions for your audience.`,
-      },
-      {
-        title: 'Benefits:',
-        description: `Ensuring a cohesive and user-centric design for your SaaS website. <br /> Effectively communicate complex SaaS features through visual aids, animations, and interactive elements. <br /> Prioritize user needs and pain points through well-structured layouts and clear navigation. <br /> Encourage visitors to take action with strategically placed CTAs. <br /> Ensures your SaaS website works seamlessly across all devices.`,
-      },
-    ]}
-    image={{
-      src: 'https://images.unsplash.com/photo-1531973486364-5fa64260d75b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1658&q=80',
-      alt: 'SaaS Businesses Image',
-    }}
-  >
-    <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
-        SaaS showcase: <br /><span class="text-2xl">Streamlining user experience</span>
-      </h3>
-    </Fragment>
-
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
-    </Fragment>
-  </Content>
-
-  <!-- Content Widget **************** -->
-
-  <Content
-    isReversed
-    isAfterContent={true}
-    items={[
-      {
-        title: 'Description:',
-        description: `Your portfolio is your masterpiece, and AstroWind is your canvas. Whether you're a designer, photographer, artist, or any other creative professional, AstroWind empowers you to showcase your work with elegance and sophistication. Tailored to highlight your creative projects, AstroWind's templates offer a visually immersive experience that lets your portfolio shine.`,
-      },
-      {
-        title: 'Benefits:',
-        description: `Serve as a captivating backdrop to showcase your creative work, capturing attention and leaving a lasting impression. <br /> Tailor your portfolio to reflect your unique style and artistic vision. <br /> Prioritizes visuals, allowing you to present your work in high-resolution detail that draws viewers into your creations. <br /> Enables seamless navigation for effortless portfolio exploration.`,
-      },
-    ]}
-    image={{
-      src: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-      alt: 'Portfolio Image',
-    }}
-  >
-    <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
-        Creative portfolios: <br /><span class="text-2xl">Highlighting your work</span>
-      </h3>
-    </Fragment>
-
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
-    </Fragment>
-  </Content>
-
-  <!-- Content Widget **************** -->
-
-  <Content
-    items={[
-      {
-        title: 'Description:',
-        description: `For small businesses, a well-crafted website can be a game-changer. AstroWind empowers small businesses to not only establish a credible online presence but also convert visitors into loyal customers. The template's thoughtful design and optimization features ensure that your website doesn't just attract attention but also guides visitors through a seamless journey, ultimately leading to conversions.`,
-      },
-      {
-        title: 'Benefits:',
-        description: `Present your small business with a professional and polished website that instills confidence and trust among visitors. <br /> Strategically placed CTAs, user-friendly forms, and optimized layouts work together to drive user engagement and conversions. <br /> Ensure a smooth browsing experience, reducing bounce rates and encouraging interaction.`,
-      },
-    ]}
-    image={{
-      src: 'https://images.unsplash.com/photo-1514621166532-aa7eb1a3a2f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
-      alt: 'Small Business Image',
-    }}
-  >
-    <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
-        Small business growth: <br /><span class="text-2xl">Converting visitors into customers</span>
-      </h3>
-    </Fragment>
-
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
-    </Fragment>
-  </Content>
-
-  <!-- Pricing Widget ******************* -->
-
-  <Pricing
-    title="Flexible pricing plans"
-    prices={[
-      {
-        title: 'free',
-        subtitle: 'Access to core features and a wide range of templates',
-        price: '0',
-        period: '/ month',
-        callToAction: {
-          target: '_blank',
-          text: 'Get Started for Free',
-          href: '#',
-        },
-      },
-      {
-        title: 'pro',
-        subtitle: 'Premium templates and advanced customization',
-        price: 15,
-        period: '/ Month',
-        callToAction: {
-          target: '_blank',
-          text: 'Upgrade to Pro',
-          href: '#',
-        },
-        hasRibbon: true,
-        ribbonTitle: 'popular',
-      },
-      {
-        title: 'Enterprise',
-        subtitle: 'Tailored solutions for large-scale projects',
-        price: 45,
-        period: '/ Month',
-        callToAction: {
-          target: '_blank',
-          text: 'Unlock Enterprise Features',
-          href: '#',
-        },
-      },
+  <Stats
+    title="KPIs observés"
+    stats={[
+      { title: 'Taux de clic sur démo', amount: '41%' },
+      { title: 'Conversion lead qualifié', amount: '19%' },
+      { title: 'Temps moyen page', amount: '3:20' },
+      { title: 'Sections personnalisables', amount: '14' },
     ]}
   />
-
-  <!-- FAQs Widget ******************* -->
 
   <FAQs
-    title="Frequently Asked Questions"
+    title="Questions fréquentes"
     items={[
       {
-        title: 'Is AstroWind compatible with the latest versions of Astro and Tailwind CSS?',
-        description:
-          'Yes, AstroWind is designed to be compatible with the latest versions of both Astro and Tailwind CSS. This ensures that you can harness the full capabilities of these technologies while benefiting from the features offered by AstroWind.',
-        icon: 'tabler:chevrons-right',
+        title: 'Peut-on intégrer un chatbot ?',
+        description: 'Oui, intégration Intercom, Drift ou chatbot custom disponible en 24 h.',
       },
       {
-        title: 'Can I use AstroWind for both personal and commercial projects?',
-        description: `Certainly! AstroWind is versatile and can be used for a wide range of projects, including both personal and commercial endeavors. Whether you're building a professional portfolio, launching a startup, or creating a marketing website, AstroWind has you covered.`,
-        icon: 'tabler:chevrons-right',
+        title: 'Support des langues ?',
+        description: 'Français, anglais, allemand disponibles par défaut, autres langues sur demande.',
       },
       {
-        title: 'What level of coding knowledge is required to use AstroWind?',
-        description:
-          'While some familiarity with HTML, CSS, and web development concepts is helpful, the user-friendly interface and customization options allow those with limited coding experience to create impressive websites. For more advanced users, AstroWind offers extensive customization capabilities.',
-        icon: 'tabler:chevrons-right',
-      },
-      {
-        title: 'Is customer support available for AstroWind users seeking guidance?',
-        description: `Absolutely, our dedicated customer support team is here to assist you with any questions or challenges you may encounter. Feel free to reach out to us through our support channels, and we'll be happy to provide the help you need.`,
-        icon: 'tabler:chevrons-right',
-      },
-    ]}
-  >
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
-    </Fragment>
-  </FAQs>
-
-  <!-- Steps2 Widget ****************** -->
-
-  <Steps2
-    title="Reach out to us"
-    subtitle="Have questions? Feel free to contact us using the form below. We're here to help!"
-    callToAction={{
-      text: 'Contact us',
-      href: '/',
-    }}
-    items={[
-      {
-        title: 'Email us',
-        description: 'contact@support.com',
-        icon: 'tabler:mail',
-      },
-      {
-        title: 'Call us',
-        description: '+1 (234) 567-890',
-        icon: 'tabler:headset',
-      },
-      {
-        title: 'Follow us',
-        description: '@example',
-        icon: 'tabler:brand-twitter',
+        title: 'Quelles données analytiques ?',
+        description: 'Taggage Google Analytics 4, Matomo ou Plausible et suivi des conversions géré par nos équipes.',
       },
     ]}
   />
 
-  <!-- BlogLatestPost Widget **************** -->
-
-  <BlogLatestPosts
-    id="blog"
-    title="Stay informed with AstroWind's blog"
-    information={`Explore our collection of articles, guides, and tutorials on web development, design trends, and using AstroWind effectively for your projects.`}
+  <CallToAction
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Planifier une démo',
+        href: '/contact#form',
+        icon: 'tabler:calendar',
+      },
+      {
+        text: 'Voir le template startup',
+        href: '/homes/startup',
+      },
+    ]}
   >
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
-    </Fragment>
-  </BlogLatestPosts>
+    <Fragment slot="title">Prêt à accélérer votre acquisition B2B ?</Fragment>
+
+    <Fragment slot="subtitle">Nous personnalisons ce template SaaS à votre image et le mettons en ligne en moins de 24 h.</Fragment>
+  </CallToAction>
 </Layout>

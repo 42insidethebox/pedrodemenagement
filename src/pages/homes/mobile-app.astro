@@ -1,8 +1,6 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
 
-import Header from '~/components/widgets/Header.astro';
-
 import Hero2 from '~/components/widgets/Hero2.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 import Features3 from '~/components/widgets/Features3.astro';
@@ -11,287 +9,194 @@ import Testimonials from '~/components/widgets/Testimonials.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import Stats from '~/components/widgets/Stats.astro';
 
-import Button from '~/components/ui/Button.astro';
-import Image from '~/components/common/Image.astro';
-
-const appStoreImg = '~/assets/images/app-store.png';
-const appStoreDownloadLink = 'https://github.com/arthelokyo/astrowind';
-
-const googlePlayImg = '~/assets/images/google-play.png';
-const googlePlayDownloadLink = 'https://github.com/arthelokyo/astrowind';
-
 const metadata = {
-  title: 'Mobile App Homepage',
+  title: 'Template Application Mobile',
+  description:
+    'Exemple de page d’accueil MonWebsite.ch pour une application mobile suisse : design premium, CTA clairs et conversions immédiates.',
 };
 ---
 
 <Layout metadata={metadata}>
-  <Fragment slot="announcement"></Fragment>
-  <Fragment slot="header">
-    <Header
-      position="left"
-      links={[
-        { text: 'Services', href: '#' },
-        { text: 'Features', href: '#' },
-        { text: 'About', href: '#' },
-      ]}
-      actions={[
-        {
-          text: 'Download',
-          href: '#download',
-        },
-      ]}
-      isSticky
-      showToggleTheme
-    />
-  </Fragment>
-
-  <!-- Hero2 Widget ******************* -->
-
   <Hero2
-    tagline="Mobile App Web Demo"
-    image={{
-      src: 'https://images.unsplash.com/photo-1535303311164-664fc9ec6532?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=987&q=80',
-      alt: 'AstroWind Hero Image',
-    }}
+    tagline="Template secteur — Application mobile"
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Commander ce template',
+        href: '/contact#form',
+        icon: 'tabler:rocket',
+      },
+      { text: 'Voir les tarifs', href: '/pricing' },
+    ]}
   >
     <Fragment slot="title">
-      <span class="text-accent dark:text-white">AstroWind App</span>: <br /> professional websites <span
-        class="hidden xl:inline">made easy</span
-      >
+      <span class="text-accent dark:text-white">Application Léman</span> — vos utilisateurs convertissent en un geste
     </Fragment>
 
     <Fragment slot="subtitle">
-      <span class="hidden sm:inline">
-        Unlock boundless creativity at your fingertips: your gateway to innovative design.
-      </span>
-      Download now and embark on a journey to elevate your projects like never before.
+      Une page d’accueil optimisée pour présenter une application mobile locale, avec sections storytelling, social proof et téléchargements instantanés.
     </Fragment>
 
-    <div slot="actions" class="flex max-w-sm gap-4">
-      <Button variant="link" href={appStoreDownloadLink}>
-        <Image src={appStoreImg} alt="App Store Image" width={200} />
-      </Button>
-
-      <Button variant="link" href={googlePlayDownloadLink}>
-        <Image src={googlePlayImg} alt="Google Play Image" width={200} />
-      </Button>
-    </div>
+    <Fragment slot="image">
+      <div class="relative aspect-[9/16] w-full max-w-sm mx-auto overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-8 text-white shadow-2xl">
+        <p class="text-xs uppercase tracking-[0.3em] text-blue-200/80">Prototype mobile</p>
+        <h4 class="mt-6 text-3xl font-semibold">Dashboard en temps réel</h4>
+        <p class="mt-4 text-blue-100/90 text-sm">
+          Interfaces sombres, cartes modulaires et composants natifs pour iOS & Android.
+        </p>
+      </div>
+    </Fragment>
   </Hero2>
 
-  <!-- Features3 Widget ************** -->
-
   <Features3
-    id="features"
-    title="How to use our app?"
-    subtitle="Tired of spending hours crafting documents from scratch? Our app offers an innovative solution. With a wide array of professionally designed templates, you can now create stunning documents in minutes. Explore our templates now and experience the difference."
-    tagline="Step-by-step guide"
-    columns={2}
+    id="sections"
+    title="Sections clés"
+    subtitle="Structure pensée pour maximiser les téléchargements."
+    columns={3}
     items={[
       {
-        title: 'Download and install the app',
-        description: `Begin your journey by downloading our user-friendly app from your device's app store or our official website.`,
-        icon: 'tabler:square-number-1',
+        title: 'Hero immersif',
+        description: 'Capture d’écran mobile, titre impactant et CTA App Store / Google Play.',
+        icon: 'tabler:device-mobile',
       },
       {
-        title: 'Sign up',
-        description:
-          'Create your account by providing the necessary information, enabling you to access our full range of features.',
-        icon: 'tabler:square-number-2',
+        title: 'Fonctionnalités en trois points',
+        description: 'Met en avant la valeur unique avec icônes animées et micro-copies.',
+        icon: 'tabler:apps',
       },
       {
-        title: 'Browse templates',
-        description: 'Explore our diverse collection of website templates, categorized for easy navigation.',
-        icon: 'tabler:square-number-3',
+        title: 'Social proof locale',
+        description: 'Avis clients romands, logos partenaires et notation moyenne.',
+        icon: 'tabler:star',
       },
       {
-        title: 'Preview and select a template',
-        description: `Visualize the potential of each template through previews, then choose the one that aligns best with your project's needs.`,
-        icon: 'tabler:square-number-4',
+        title: 'Plans tarifaires',
+        description: 'Grille claire pour freemium, abonnement et offres entreprise.',
+        icon: 'tabler:credit-card',
+      },
+      {
+        title: 'FAQ dynamique',
+        description: 'Réponses aux questions de sécurité, confidentialité et support.',
+        icon: 'tabler:message-circle',
+      },
+      {
+        title: 'CTA final',
+        description: 'Bloc contact + calendrier pour réserver une démonstration ou essai.',
+        icon: 'tabler:calendar-event',
       },
     ]}
-    image={{
-      src: 'https://images.unsplash.com/photo-1521517407911-565264e7d82d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80',
-      alt: 'Colorful Image',
-    }}
   />
 
-  <!-- Content Widget **************** -->
-
   <Content
+    id="flow"
     isReversed
+    title="Parcours utilisateur"
+    subtitle="Storytelling modulaire pour convaincre en quelques scrolls."
     items={[
       {
-        title: 'User-friendly interface',
-        description:
-          'An intuitive and easy-to-navigate interface that allows users to quickly browse and find the templates they need.',
-        icon: 'tabler:wand',
+        title: 'Scénarios illustrés',
+        description: 'Cartes présentant les trois cas d’usage principaux, adaptées au public romand.',
+        icon: 'tabler:layout-board',
       },
       {
-        title: 'Personalization options',
-        description:
-          'Include basic customization tools that let users modify text, colors, images, and other elements within the templates.',
-        icon: 'tabler:settings',
+        title: 'Animation fluide',
+        description: 'Transitions framer-motion intégrées, fluides sur mobile et desktop.',
+        icon: 'tabler:player-play',
       },
       {
-        title: 'Ready-to-use components',
-        description:
-          'Enhance your designs with ready-to-use elements like graphics, icons, and layouts, saving you time and boosting visual appeal.',
-        icon: 'tabler:template',
+        title: 'Call-to-action flottant',
+        description: 'Boutons fixes pour télécharger ou planifier une démo, toujours visibles.',
+        icon: 'tabler:cursor-text',
       },
       {
-        title: 'Preview Mode',
-        description: 'Provide a preview of each template, allowing users to see how it looks before making a purchase.',
-        icon: 'tabler:carousel-horizontal',
+        title: 'Bloc analytics',
+        description: 'Visualise le taux de satisfaction, temps gagné et nombre d’utilisateurs actifs.',
+        icon: 'tabler:chart-donut-3',
       },
     ]}
-    image={{
-      src: 'https://images.unsplash.com/photo-1576153192621-7a3be10b356e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1674&q=80',
-      alt: 'Colorful Image',
-    }}
   >
     <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Main Features</h3>
+      <p>
+        Ce template est construit pour une conversion rapide : navigation courte, accroches percutantes et design premium.
+      </p>
+    </Fragment>
+
+    <Fragment slot="image">
+      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
+        <h4 class="text-3xl font-semibold">Mode clair & sombre</h4>
+        <p class="mt-6 max-w-sm text-blue-100/90">
+          Les composants Tailwind adaptatifs garantissent une cohérence sur tous les écrans.
+        </p>
+      </div>
     </Fragment>
   </Content>
-
-  <!-- Content Widget **************** -->
-
-  <Content
-    isAfterContent
-    items={[
-      {
-        title: 'Offline Access',
-        description: 'Offer the option for users to download purchased templates for offline use.',
-        icon: 'tabler:wifi-off',
-      },
-      {
-        title: 'Secure Cloud Storage',
-        description:
-          'Provide cloud storage for purchased templates, ensuring users can access and back up their templates from anywhere securely.',
-        icon: 'tabler:file-download',
-      },
-      {
-        title: 'Regular Updates',
-        description: 'Continuously add new templates and features to keep the app fresh and engaging for users.',
-        icon: 'tabler:refresh',
-      },
-      {
-        title: 'Wishlist',
-        description: `Allow users to create a wishlist of templates they're interested in, making it easier for them to revisit and potentially purchase later.`,
-        icon: 'tabler:heart',
-      },
-    ]}
-    image={{
-      src: 'https://images.unsplash.com/photo-1453738773917-9c3eff1db985?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-      alt: 'Vintage Image',
-    }}
-  >
-    <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Other features</h3>
-    </Fragment>
-  </Content>
-
-  <!-- Stats Widget ****************** -->
 
   <Stats
-    title="Statistics of our app"
+    title="Indicateurs template"
     stats={[
-      { amount: '20K', icon: 'tabler:download' },
-      { amount: '18.5K', icon: 'tabler:users' },
-      { amount: '4.7', icon: 'tabler:user-star' },
+      { title: 'Conversion beta → téléchargement', amount: '34%' },
+      { title: 'Temps moyen sur page', amount: '2:45' },
+      { title: 'Score Lighthouse mobile', amount: '95/100' },
+      { title: 'Sections personnalisables', amount: '12' },
     ]}
   />
-
-  <!-- Testimonials Widget *********** -->
 
   <Testimonials
-    title="What our users say?"
+    title="Cas d’usage"
     testimonials={[
       {
-        testimonial: `It's made exploring and downloading website templates a breeze. The interface is intuitive, and I had no trouble finding the perfect template for my project. It's an app that truly empowers users.`,
-        name: 'Cary Kennedy',
-        job: 'Film director',
-        image: {
-          src: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-          alt: 'Cary Kennedy Image',
-        },
-      },
-      {
-        testimonial: `The app's seamless download process and intuitive layout have made selecting templates an enjoyable experience. Being able to preview and experiment with different designs before committing has saved me time and ensured I get the perfect look for my website.`,
-        name: 'Josh Wilkinson',
-        job: 'Product Manager',
-        image: {
-          src: 'https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-          alt: 'Josh Wilkinson Image',
-        },
-      },
-      {
+        title: 'Planifia — Genève',
         testimonial:
-          'I was able to download and use a professional website template within minutes. The step-by-step process and user-friendly interface made it easy for me to create a website that looks as if it was designed by a pro.',
-        name: 'Sidney Hansen',
-        job: 'Decorator',
-        image: {
-          src: 'https://images.unsplash.com/photo-1512361436605-a484bdb34b5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-          alt: 'Sidney Hansen Image',
-        },
+          '“En adaptant ce template, nous avons lancé notre app de rendez-vous en une journée avec un design digne des grandes apps internationales.”',
+        name: 'Mélanie Roch',
+        position: 'Co-fondatrice',
+      },
+      {
+        title: 'FitLéman — Lausanne',
+        testimonial:
+          '“Les CTA mobiles et la mise en avant des avis ont boosté nos téléchargements de 58 % dès la première semaine.”',
+        name: 'Yannick Dutoit',
+        position: 'CEO',
       },
     ]}
-    callToAction={{
-      target: '_blank',
-      text: 'Read more testimonials',
-      href: 'https://github.com/arthelokyo/astrowind',
-      icon: 'tabler:chevron-right',
-    }}
   />
-
-  <!-- FAQs Widget ******************* -->
 
   <FAQs
-    title="Still have some doubts?"
+    id="faq"
+    title="Questions fréquentes"
+    subtitle="Tout pour un lancement mobile réussi."
     items={[
       {
-        title: 'What does this app do?',
-        description:
-          'This app provides a platform for you to easily browse, purchase, download, and use a wide range of website templates for your projects.',
+        title: 'Peut-on intégrer les stores Apple et Google ?',
+        description: 'Oui, les boutons renvoient vers vos fiches officielles et peuvent être trackés.',
       },
       {
-        title: 'How can this app solve my problem?',
-        description:
-          'This app streamlines the process of finding and implementing professional website designs, saving you time and effort in creating visually appealing and functional websites.',
+        title: 'Le template est-il responsive ?',
+        description: 'Chaque section est testée sur mobile, tablette et desktop. Animation adaptative incluse.',
       },
       {
-        title: 'Is it available for my device?',
-        description: `Our app is designed for compatibility across various devices and platforms, ensuring accessibility whether you're using a smartphone, tablet, or computer.`,
-      },
-      {
-        title: 'What makes this app different from others?',
-        description:
-          'Our app stands out for its user-friendly interface, extensive template collection, and seamless integration of the purchasing and downloading process, making it highly efficient.',
-      },
-      {
-        title: 'Are there any costs involved?',
-        description:
-          'While the app itself may be free to download, there may be costs associated with purchasing specific templates based on your preferences and project requirements.',
+        title: 'Comment personnaliser le design ?',
+        description: 'Nous ajustons couleurs, icônes, contenus et connectons vos APIs en 24 h.',
       },
     ]}
   />
 
-  <!-- CallToAction Widget *********** -->
-
   <CallToAction
-    id="download"
-    title="Download our app now!"
-    subtitle="Access a variety of stunning templates, simplify your creative process, and elevate your online presence."
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Déployer ce template',
+        href: '/contact#form',
+        icon: 'tabler:send',
+      },
+      {
+        text: 'Télécharger la brochure',
+        href: '/pricing',
+      },
+    ]}
   >
-    <div slot="actions" class="flex max-w-sm gap-4">
-      <Button variant="link" href={appStoreDownloadLink}>
-        <Image src={appStoreImg} alt="App Store Image" width={200} />
-      </Button>
+    <Fragment slot="title">Envie de lancer votre app en 24 h ?</Fragment>
 
-      <Button variant="link" href={googlePlayDownloadLink}>
-        <Image src={googlePlayImg} alt="Google Play Image" width={200} />
-      </Button>
-    </div>
+    <Fragment slot="subtitle">Nos experts préparent le contenu, intègrent vos API et livrent une page prête à convertir.</Fragment>
   </CallToAction>
 </Layout>

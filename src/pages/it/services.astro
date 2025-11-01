@@ -1,0 +1,233 @@
+---
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import Content from '~/components/widgets/Content.astro';
+import Features2 from '~/components/widgets/Features2.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import Testimonials from '~/components/widgets/Testimonials.astro';
+import Layout from '~/layouts/PageLayout.astro';
+
+const metadata = {
+  title: 'Servizi',
+};
+---
+
+<Layout metadata={metadata}>
+  <Hero
+    id="services"
+    tagline="I nostri servizi"
+    title="Siti vetrina chiavi in mano per le PMI svizzere"
+    subtitle="MonWebsite.ch unisce automazione e competenza umana per consegnare siti premium con cura continuativa."
+    actions={[{ variant: 'primary', text: 'Scopri i prezzi', href: '/it/pricing' }]}
+  >
+    <Fragment slot="image">
+      <div class="relative aspect-[5/3] overflow-hidden rounded-2xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-left text-white shadow-2xl">
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Servizi automatizzati</p>
+        <h4 class="mt-4 text-4xl font-semibold">Design · Contenuti · Care</h4>
+        <p class="mt-6 max-w-xl text-lg text-blue-100/90">
+          La nostra piattaforma proprietaria orchestra la produzione mentre gli esperti curano qualità e relazione con il cliente.
+        </p>
+      </div>
+    </Fragment>
+  </Hero>
+
+  <Features2
+    title="Tre offerte, un unico standard"
+    subtitle="Scegli la formula che supporta la tua crescita."
+    columns={3}
+    items={[
+      {
+        title: 'Express 24 h',
+        description:
+          'Sito vetrina in cinque sezioni, ottimizzazione locale e hosting inclusi. Perfetto per essere online subito.',
+        icon: 'tabler:bolt',
+      },
+      {
+        title: 'Signature',
+        description:
+          'Design su misura, copywriting multilingue, integrazione degli strumenti business e video training personalizzato.',
+        icon: 'tabler:diamond',
+      },
+      {
+        title: 'Continuum',
+        description:
+          'Supporto trimestrale, campagne di aggiornamento, produzione di contenuti e miglioramenti SEO continui.',
+        icon: 'tabler:arrows-left-right',
+      },
+    ]}
+  />
+
+  <Content
+    id="content"
+    isReversed
+    items={[
+      {
+        title: 'Produzione automatizzata',
+        description:
+          'La nostra pipeline compone il sito in pochi minuti utilizzando playbook settoriali validati.',
+        icon: 'tabler:cube',
+      },
+      {
+        title: 'Supervisione umana',
+        description:
+          'Designer, copywriter e specialisti SEO verificano ogni consegna per coerenza e conformità.',
+        icon: 'tabler:shield-check',
+      },
+      {
+        title: 'Delivery continuo',
+        description:
+          'Attraverso la piattaforma, aggiunte o aggiornamenti alle pagine vengono gestiti entro 48 ore.',
+        icon: 'tabler:inbox',
+      },
+      {
+        title: 'Report mensile',
+        description:
+          'Un report automatizzato su traffico, conversioni e insight mantiene le performance sotto controllo.',
+        icon: 'tabler:report-analytics',
+      },
+    ]}
+  >
+    <Fragment slot="content">
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">La nostra metodologia ibrida</h3>
+      Automazione per la velocità, esperti per la qualità.
+    </Fragment>
+
+    <Fragment slot="image">
+      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl">
+        <h4 class="text-3xl font-semibold">Pipeline supervisionata</h4>
+        <p class="mt-6 max-w-sm text-blue-100/90">
+          32 checkpoint automatizzati revisionati da un project lead prima di ogni lancio.
+        </p>
+      </div>
+    </Fragment>
+  </Content>
+
+  <Content
+    id="seo"
+    isAfterContent
+    items={[
+      {
+        title: 'SEO locale & Google Profile',
+        description:
+          'Ottimizzazione tecnica, meta copywriting e setup del profilo Google Business.',
+        icon: 'tabler:map-pin',
+      },
+      {
+        title: 'Contenuti premium',
+        description:
+          'Shooting fotografici, video brevi e storytelling allineato al brand per catturare l’attenzione.',
+        icon: 'tabler:photo',
+      },
+      {
+        title: 'Campagne di acquisizione',
+        description:
+          'Landing page, form e email automatizzate per trasformare i visitatori in clienti.',
+        icon: 'tabler:send',
+      },
+      {
+        title: 'Command center',
+        description:
+          'Dashboard live per monitorare lead, prenotazioni e ordini in tempo reale.',
+        icon: 'tabler:layout-dashboard',
+      },
+    ]}
+  >
+    <Fragment slot="content">
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Leve a lungo termine</h3>
+      Attiviamo gli strumenti giusti per risultati misurabili.
+    </Fragment>
+
+    <Fragment slot="image">
+      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-left text-white shadow-xl">
+        <h4 class="text-3xl font-semibold">Acquisizione controllata</h4>
+        <p class="mt-6 max-w-sm text-blue-100/90">
+          Campagne calibrate per attrarre la tua clientela locale e misurare ogni conversione.
+        </p>
+      </div>
+    </Fragment>
+  </Content>
+
+  <Features2
+    id="support"
+    title="Supporto & care"
+    subtitle="Tu ti concentri sul tuo mestiere, noi ci occupiamo del resto."
+    columns={3}
+    items={[
+      {
+        title: 'Helpdesk prioritario',
+        description: 'Hotline nel bacino lemanico con risposte entro 2 ore lavorative e follow-up nel tuo portale.',
+        icon: 'tabler:headset',
+      },
+      {
+        title: 'Monitoraggio 24/7',
+        description: 'Controllo performance automatizzato, avvisi in tempo reale e interventi proattivi.',
+        icon: 'tabler:antenna',
+      },
+      {
+        title: 'Aggiornamenti illimitati',
+        description: 'Aggiungi contenuti, evolvi il design o integra strumenti senza costi nascosti.',
+        icon: 'tabler:tools',
+      },
+      {
+        title: 'Conformità GDPR',
+        description: 'Cookie policy, gestione consensi e documentazione legale inclusa.',
+        icon: 'tabler:shield-check',
+      },
+      {
+        title: 'Sicurezza rinforzata',
+        description: 'Certificati SSL, backup quotidiani e scansioni anti-malware automatiche.',
+        icon: 'tabler:lock',
+      },
+      {
+        title: 'Guida strategica',
+        description: 'Sessione di advisory trimestrale con analisi dati e piano d’azione personalizzato.',
+        icon: 'tabler:target',
+      },
+    ]}
+  />
+
+  <Testimonials
+    title="Scelto dalle imprese locali"
+    testimonials={[
+      {
+        title: 'Brasserie de la Cathédrale, Losanna',
+        testimonial:
+          '“In 24 ore avevamo un sito bilingue curato con prenotazioni online. I nostri clienti adorano il design e manteniamo il pieno controllo.”',
+        name: 'Élodie Favre',
+        position: 'Titolare',
+      },
+      {
+        title: 'CleanWave Services, Ginevra',
+        testimonial:
+          '“Dashboard e supporto continuo sembrano un team digitale interno. I lead sono raddoppiati in due mesi.”',
+        name: 'Marc Schmid',
+        position: 'Direttore',
+      },
+      {
+        title: 'Studio Léman Coaching, Vevey',
+        testimonial:
+          '“Abbiamo scelto MonWebsite.ch per la promessa 24h. Il risultato è premium, veloce e perfettamente allineato al nostro brand.”',
+        name: 'Sonia Ribeiro',
+        position: 'Founder',
+      },
+    ]}
+  />
+
+  <CallToAction
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Prenota una consulenza',
+        href: '/it/contact#form',
+        icon: 'tabler:calendar-event',
+      },
+      {
+        text: 'Scopri i pacchetti',
+        href: '/it/pricing',
+      },
+    ]}
+  >
+    <Fragment slot="title">Il tuo sito 24h inizia qui</Fragment>
+
+    <Fragment slot="subtitle">Parla con un esperto locale e pianifica il lancio in un solo giorno lavorativo.</Fragment>
+  </CallToAction>
+</Layout>

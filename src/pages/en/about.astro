@@ -1,0 +1,194 @@
+---
+import Features2 from '~/components/widgets/Features2.astro';
+import Features3 from '~/components/widgets/Features3.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import Stats from '~/components/widgets/Stats.astro';
+import Steps2 from '~/components/widgets/Steps2.astro';
+import Layout from '~/layouts/PageLayout.astro';
+
+const metadata = {
+  title: 'About',
+};
+---
+
+<Layout metadata={metadata}>
+  <Hero tagline="About MonWebsite.ch">
+    <Fragment slot="title">A Lake Geneva team combining automation and human care</Fragment>
+
+    <Fragment slot="subtitle">
+      Born in Lausanne, MonWebsite.ch delivers premium websites in 24 h for SMEs and entrepreneurs without compromising precision or guidance. We blend proprietary technology with local experts to guarantee immaculate outcomes.
+    </Fragment>
+
+    <Fragment slot="image">
+      <div class="relative aspect-[5/3] overflow-hidden rounded-2xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-left text-white shadow-2xl">
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Lake Geneva</p>
+        <h4 class="mt-4 text-4xl font-semibold">Lausanne · Geneva · Vevey · Montreux</h4>
+        <p class="mt-6 max-w-xl text-lg text-blue-100/90">
+          Digital, content and performance specialists united around a single goal: deliver flawless sites in 24 hours.
+        </p>
+      </div>
+    </Fragment>
+  </Hero>
+
+  <Stats
+    title="Our figures"
+    stats={[
+      { title: 'Experts based around Lake Geneva', amount: '12' },
+      { title: 'Clients supported monthly', amount: '45' },
+      { title: 'Satisfaction rate', amount: '97%' },
+      { title: 'Support rating', amount: '4.9/5' },
+    ]}
+  />
+
+  <Features3
+    title="Our pillars"
+    subtitle="Swiss rigour applied to every project."
+    columns={3}
+    isBeforeContent={true}
+    items={[
+      {
+        title: 'Controlled automation',
+        description:
+          'Proprietary pipelines orchestrate content, design and deployment to secure a consistent 24 h delivery time.',
+        icon: 'tabler:cpu',
+      },
+      {
+        title: 'Minimalist design',
+        description:
+          'Inspired by Swiss visual codes, with airy layouts, crisp typography and precise contrasts.',
+        icon: 'tabler:layout-grid',
+      },
+      {
+        title: 'Close relationship',
+        description:
+          'Project managers available by phone or WhatsApp for dedicated follow-up even after launch.',
+        icon: 'tabler:users',
+      },
+    ]}
+  />
+
+  <Features3
+    columns={3}
+    isAfterContent={true}
+    items={[
+      {
+        title: 'Swiss + global stack',
+        description:
+          'Astro, Tailwind and Swiss-based hosting to combine sovereignty and worldwide performance.',
+        icon: 'tabler:world',
+      },
+      {
+        title: 'Field partners',
+        description:
+          'Photographers, copywriters, SEO consultants and privacy experts between Geneva and Montreux.',
+        icon: 'tabler:briefcase',
+      },
+      {
+        title: 'Data-driven culture',
+        description:
+          'Every delivery includes a performance report, improvement roadmap and quarterly review.',
+        icon: 'tabler:chart-dots',
+      },
+      {
+        title: 'Multilingual support',
+        description:
+          'We answer in French, English or German according to your team’s preference.',
+        icon: 'tabler:language',
+      },
+      {
+        title: 'Swiss/EU privacy compliance',
+        description:
+          'Legal documentation provided, consent managed and data hosted in Switzerland.',
+        icon: 'tabler:shield-lock',
+      },
+      {
+        title: 'Sustainable mindset',
+        description:
+          'Carbon offset for every site and partnerships with renewable-powered hosting providers.',
+        icon: 'tabler:leaf',
+      },
+    ]}
+  >
+    <Fragment slot="image">
+      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
+        <p class="text-sm uppercase tracking-[0.3em] text-blue-200/80">Local presence</p>
+        <p class="mt-4 max-w-sm text-lg text-blue-100/90">
+          Operating from Lausanne, Geneva, Vevey and Montreux keeps us aligned with our clients’ daily realities.
+        </p>
+      </div>
+    </Fragment>
+  </Features3>
+
+  <Steps2
+    title="Our values"
+    subtitle="Technology that serves local business with transparency and reliability."
+    items={[
+      {
+        title: 'Precision',
+        description:
+          'Every word and pixel is checked by human quality assurance before going live.',
+      },
+      {
+        title: 'Clarity',
+        description:
+          'All-inclusive offers, Swiss invoices and shared KPIs updated in real time.',
+      },
+      {
+        title: 'Proximity',
+        description:
+          'Long-term partnership with a dedicated advisor and complimentary quarterly sessions.',
+      },
+    ]}
+  />
+
+  <Steps2
+    title="Our story"
+    subtitle="Three years building a platform capable of delivering impeccable sites at record speed."
+    isReversed={true}
+    callToAction={{
+      text: 'View plans',
+      href: '/en/pricing',
+    }}
+    items={[
+      {
+        title: '2021 — Launch',
+        description: 'Creation of MonWebsite.ch in Lausanne with a mission to simplify digital presence for entrepreneurs.',
+        icon: 'tabler:flag',
+      },
+      {
+        title: '2022 — Industrialisation',
+        description: 'Deployment of our automated pipelines and openings in Geneva and Vevey.',
+        icon: 'tabler:arrows-exchange',
+      },
+      {
+        title: '2023 — Acceleration',
+        description: 'Over 150 sites delivered, partnerships with local agencies and multilingual offer launch.',
+        icon: 'tabler:rocket',
+      },
+    ]}
+  />
+
+  <Features2
+    title="Where to meet us"
+    tagline="Local presence"
+    columns={4}
+    items={[
+      {
+        title: 'Lausanne',
+        description: 'Flon district — meetings on request',
+      },
+      {
+        title: 'Geneva',
+        description: 'Rue du Rhône — partner showroom',
+      },
+      {
+        title: 'Vevey',
+        description: 'La Forge coworking — onboarding sessions',
+      },
+      {
+        title: 'Montreux',
+        description: 'Partner studios for your photo shoots',
+      },
+    ]}
+  />
+</Layout>

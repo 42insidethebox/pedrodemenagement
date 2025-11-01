@@ -5,71 +5,71 @@ import ContactUs from '~/components/widgets/Contact.astro';
 import Features2 from '~/components/widgets/Features2.astro';
 
 const metadata = {
-  title: 'Contact',
+  title: 'Kontakt',
 };
 ---
 
 <Layout metadata={metadata}>
-  <!-- HeroText Widget ******************* -->
-
-  <HeroText tagline="Contact" title="Parlons de votre site clé-en-main" subtitle="Un expert MonWebsite.ch vous répond sous 2 h ouvrées." />
+  <HeroText
+    tagline="Kontakt"
+    title="Planen wir Ihren Launch"
+    subtitle="Eine Expert·in von MonWebsite.ch meldet sich innerhalb von 2 Arbeitsstunden."
+  />
 
   <ContactUs
     id="form"
-    title="Demander une démo ou un devis"
-    subtitle="Remplissez le formulaire, nous vous recontactons par téléphone ou visio pour préparer votre mise en ligne sous 24 h."
+    title="Demo oder Offerte anfragen"
+    subtitle="Füllen Sie das Formular aus – wir melden uns per Telefon oder Video, um Ihren 24h-Go-Live vorzubereiten."
     inputs={[
       {
         type: 'text',
         name: 'name',
-        label: 'Nom et prénom',
+        label: 'Vollständiger Name',
       },
       {
         type: 'email',
         name: 'email',
-        label: 'Email professionnel',
+        label: 'Business-E-Mail',
       },
       {
         type: 'text',
         name: 'company',
-        label: 'Entreprise',
+        label: 'Unternehmen',
       },
       {
         type: 'select',
         name: 'service',
-        label: 'Pack souhaité',
+        label: 'Gewünschtes Paket',
         options: [
           { label: 'Express 24 h', value: 'express' },
           { label: 'Signature', value: 'signature' },
           { label: 'Continuum', value: 'continuum' },
-          { label: 'Autre / à définir', value: 'custom' },
+          { label: 'Individuell / zu definieren', value: 'custom' },
         ],
       },
     ]}
     textarea={{
-      label: 'Votre projet',
-      placeholder: 'Présentez votre activité, vos objectifs et vos délais.',
+      label: 'Ihr Projekt',
+      placeholder: 'Teilen Sie Ihre Tätigkeit, Ziele und Ihren Zeitplan.',
     }}
     disclaimer={{
       label:
-        'En envoyant ce formulaire, vous acceptez que MonWebsite.ch traite vos données pour répondre à votre demande, conformément à notre politique de confidentialité.',
+        'Mit dem Absenden stimmen Sie zu, dass MonWebsite.ch Ihre Daten gemäss Datenschutzrichtlinie zur Beantwortung Ihrer Anfrage verarbeitet.',
     }}
-    description="Nos bureaux sont ouverts du lundi au samedi, 8h-18h. Nous parlons français, anglais et allemand."
+    description="Bürozeiten Montag bis Samstag, 8–18 Uhr. Wir sprechen Französisch, Deutsch, Englisch und Italienisch."
   />
 
-  <!-- Features2 Widget ************** -->
-
   <Features2
-    title="Contact direct"
-    subtitle="Choisissez le canal qui vous convient le mieux."
+    title="Kontaktieren Sie uns direkt"
+    subtitle="Wählen Sie den Kanal, der für Sie am besten passt."
     items={[
       {
-        title: 'Téléphone',
+        title: 'Telefon',
         description: '+41 21 555 24 24',
         icon: 'tabler:phone',
       },
       {
-        title: 'Email',
+        title: 'E-Mail',
         description: 'hello@monwebsite.ch',
         icon: 'tabler:mail',
       },
@@ -84,13 +84,13 @@ const metadata = {
         icon: 'tabler:map-pin',
       },
       {
-        title: 'Disponibilité',
-        description: 'Du lundi au samedi, 8h00 – 18h00',
+        title: 'Öffnungszeiten',
+        description: 'Montag bis Samstag, 08:00 – 18:00',
         icon: 'tabler:calendar-time',
       },
       {
-        title: 'Support client',
-        description: 'support@monwebsite.ch — réponse en &lt; 2 h',
+        title: 'Kundensupport',
+        description: 'support@monwebsite.ch — Antwort in < 2 h',
         icon: 'tabler:help',
       },
     ]}

@@ -8,7 +8,7 @@ import Features3 from '~/components/widgets/Features3.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 
 const metadata = {
-  title: 'Pricing',
+  title: 'Tarifs',
 };
 ---
 
@@ -16,95 +16,89 @@ const metadata = {
   <!-- HeroText Widget ******************* -->
 
   <HeroText
-    tagline="Pricing"
-    title="Stellar Pricing for Every Journey"
-    subtitle="Choose the perfect plan that aligns with your cosmic goals."
+    tagline="Tarifs"
+    title="Des offres transparentes, facturées en Suisse"
+    subtitle="Chaque pack inclut la livraison en 24 h, l’hébergement, le support et la maintenance automatique."
   />
 
   <!-- Pricing Widget ******************* -->
 
   <Prices
-    title="Our prices"
-    subtitle="Only pay for what you need"
+    title="Nos packs clés-en-main"
+    subtitle="Choisissez l’offre qui correspond à votre besoin. Sans frais cachés."
     prices={[
       {
-        title: 'basic',
-        subtitle: 'Optimal choice for personal use',
-        price: 29,
-        period: 'per month',
+        title: 'Express 24 h',
+        subtitle: 'Présence en ligne immédiate',
+        price: 1490,
+        period: 'CHF — paiement unique',
         items: [
           {
-            description: 'Etiam in libero, et volutpat',
+            description: 'Site vitrine 5 sections + page contact',
           },
           {
-            description: 'Aenean ac nunc dolor tristique',
+            description: 'Contenus rédigés et optimisés pour le SEO local',
           },
           {
-            description: 'Cras scelerisque accumsan lib',
+            description: 'Hébergement suisse & certificat SSL inclus 12 mois',
           },
           {
-            description: 'In hac habitasse',
+            description: 'Mise en ligne en 24 h ouvrées',
           },
         ],
         callToAction: {
-          target: '_blank',
-          text: 'Get started',
-          href: '#',
+          text: 'Démarrer',
+          href: '/contact#form',
         },
       },
       {
-        title: 'standard',
-        subtitle: 'Optimal choice for small teams',
-        price: 69,
-        period: 'Per Month',
+        title: 'Signature',
+        subtitle: 'Image premium & multilingue',
+        price: 2490,
+        period: 'CHF — paiement unique',
         items: [
           {
-            description: 'Proin vel laoreet',
+            description: 'Design sur-mesure 8 sections + blog ou landing',
           },
           {
-            description: 'Ut efficitur habitasse egestas',
+            description: 'Contenus FR/EN ou FR/DE + shooting photo partenaire',
           },
           {
-            description: 'Volutpat hac curabitur',
+            description: 'Intégration de vos outils (réservation, CRM, paiement)',
           },
           {
-            description: 'Pellentesque blandit ut nibh',
-          },
-          {
-            description: 'Donec fringilla sem',
+            description: 'Atelier stratégique de 60 min avec un expert',
           },
         ],
         callToAction: {
-          target: '_blank',
-          text: 'Get started',
-          href: '#',
+          text: 'Réserver',
+          href: '/contact#form',
         },
         hasRibbon: true,
-        ribbonTitle: 'popular',
+        ribbonTitle: 'Best-seller',
       },
       {
-        title: 'premium',
-        subtitle: 'Optimal choice for companies',
-        price: 199,
-        period: 'Per Month',
+        title: 'Continuum',
+        subtitle: 'Accompagnement mensuel complet',
+        price: 290,
+        period: 'CHF / mois — engagement 12 mois',
         items: [
           {
-            description: 'Curabitur suscipit risus',
+            description: 'Maintenance illimitée & mises à jour hebdomadaires',
           },
           {
-            description: 'Aliquam habitasse malesuada',
+            description: 'Production de 2 contenus premium / mois',
           },
           {
-            description: 'Suspendisse sit amet blandit',
+            description: 'Campagnes SEO & SEA locales pilotées par nos experts',
           },
           {
-            description: 'Suspendisse auctor blandit dui',
+            description: 'Reporting mensuel + workshop trimestriel',
           },
         ],
         callToAction: {
-          target: '_blank',
-          text: 'Get started',
-          href: '#',
+          text: 'Parler à un conseiller',
+          href: '/contact#form',
         },
       },
     ]}
@@ -113,39 +107,39 @@ const metadata = {
   <!-- Features3 Widget ************** -->
 
   <Features3
-    title="Price-related features"
-    subtitle="Discover the advantages of choosing our plans"
+    title="Avantages inclus"
+    subtitle="Toutes nos offres comprennent ces garanties."
     columns={2}
     items={[
       {
-        title: 'Tiered Pricing Plans',
-        description: 'Choose from a range of pricing plans designed to accommodate different budgets and requirements.',
-        icon: 'tabler:stairs',
-      },
-      {
-        title: 'Transparent Pricing',
-        description: 'Clearly displayed pricing details for each plan, with no hidden costs or unexpected charges.',
-        icon: 'tabler:flip-vertical',
-      },
-      {
-        title: 'Secure Payment Methods',
-        description: 'Secure payment gateways to protect your financial information during transactions.',
-        icon: 'tabler:shield-lock',
-      },
-      {
-        title: 'Instant Access',
-        description: `Immediate access to your chosen plan's features and templates upon subscription.`,
-        icon: 'tabler:accessible',
-      },
-      {
-        title: 'Upgrade Value',
-        description: 'Upgrade to higher-tier plans to unlock more features and benefits for an enhanced experience.',
-        icon: 'tabler:chevrons-up',
-      },
-      {
-        title: '24H support',
-        description: 'Questions answered via live chat, email or phone, every calendar day.',
+        title: 'Support illimité',
+        description: 'Réponses en moins de 2 h ouvrées via WhatsApp, téléphone ou email.',
         icon: 'tabler:headset',
+      },
+      {
+        title: 'Hébergement souverain',
+        description: 'Serveurs situés en Suisse, énergie renouvelable, conformité RGPD/LPD.',
+        icon: 'tabler:server',
+      },
+      {
+        title: 'Tableau de bord client',
+        description: 'Suivez l’avancement, les performances et vos demandes en temps réel.',
+        icon: 'tabler:layout-dashboard',
+      },
+      {
+        title: 'Facturation claire',
+        description: 'TVA incluse, facture QR ou Twint, mensualisation disponible.',
+        icon: 'tabler:receipt',
+      },
+      {
+        title: 'Performance garantie',
+        description: 'Score Lighthouse ≥ 90 sur mobile et desktop ou optimisation offerte.',
+        icon: 'tabler:gauge',
+      },
+      {
+        title: 'Sécurité renforcée',
+        description: 'Sauvegardes quotidiennes, anti-spam, pare-feu applicatif.',
+        icon: 'tabler:lock',
       },
     ]}
     classes={{ container: 'max-w-5xl' }}
@@ -153,77 +147,68 @@ const metadata = {
 
   <!-- Steps Widget ****************** -->
 
-  <Steps
-    title="A guided journey from plans to creativity"
-    tagline="simplified process"
-    isReversed={true}
-    items={[
-      {
-        title: 'Explore plans',
-        icon: 'tabler:number-1',
-      },
-      {
-        title: 'Select a plan',
-        icon: 'tabler:number-2',
-      },
-      {
-        title: 'Sign Up / Log In',
-        icon: 'tabler:number-3',
-      },
-      {
-        title: 'Review order',
-        icon: 'tabler:number-4',
-      },
-      {
-        title: 'Enter payment details',
-        icon: 'tabler:number-5',
-      },
-      {
-        title: 'Confirmation',
-        icon: 'tabler:number-6',
-      },
-      {
-        title: 'Download and start using the template(s)',
-        icon: 'tabler:number-7',
-      },
-    ]}
-    image={{
-      src: 'https://images.unsplash.com/photo-1536816579748-4ecb3f03d72a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=987&q=80',
-      alt: 'Steps image',
-    }}
-  />
+    <Steps
+      title="Comment se déroule votre projet"
+      tagline="Parcours"
+      isReversed={true}
+      items={[
+        {
+          title: '1. Signature numérique',
+          description: 'Validez le pack choisi et recevez votre accès onboarding.',
+          icon: 'tabler:edit',
+        },
+        {
+          title: '2. Questionnaire intelligent',
+          description: 'Renseignez vos informations clés, importez vos visuels et sélectionnez vos modules.',
+          icon: 'tabler:clipboard-list',
+        },
+        {
+          title: '3. Production automatisée',
+          description: 'Notre plateforme génère votre site, nos experts ajustent et contrôlent.',
+          icon: 'tabler:robot',
+        },
+        {
+          title: '4. Mise en ligne & formation',
+          description: 'Recevez votre site prêt, le guide vidéo et le rapport de performance.',
+          icon: 'tabler:rocket',
+        },
+      ]}
+    >
+      <Fragment slot="image">
+        <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-white shadow-xl">
+          <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Process</p>
+          <p class="mt-6 max-w-xs text-base text-blue-100/90">
+            De la signature à la mise en ligne, chaque étape est horodatée et documentée dans votre espace client.
+          </p>
+        </div>
+      </Fragment>
+    </Steps>
 
   <!-- FAQs Widget ******************* -->
 
   <FAQs
-    title="Pricing FAQs"
-    subtitle="Choosing the right plan is important, and we're here to answer your questions. If you have queries about our pricing options, you're in the right place."
-    columns={1}
+    title="Questions sur nos tarifs"
+    subtitle="Nous croyons en une transparence totale."
     items={[
       {
-        title: 'Do the plans come with customer support?',
-        description:
-          'Absolutely, all plans include access to our dedicated customer support to assist you with any queries or concerns.',
+        title: 'Les prix incluent-ils la TVA ?',
+        description: 'Oui, tous les montants sont affichés TTC. La facture mentionne la TVA suisse et le numéro IDE.',
       },
       {
-        title: 'Is there a trial period for the different plans?',
-        description:
-          "Unfortunately, we don't offer trial periods for the plans. However, you can check out our demo section to preview the quality of our templates.",
+        title: 'Que se passe-t-il après 12 mois d’hébergement ?',
+        description: 'Votre site reste en ligne. L’hébergement et le support se renouvellent à 290 CHF/an ou via l’offre Continuum.',
       },
       {
-        title: 'Can I switch between plans?',
-        description:
-          'Certainly! You can easily upgrade or downgrade your plan, at any time, to find the one that best suits your evolving requirements.',
+        title: 'Proposez-vous des options e-commerce ?',
+        description: 'Oui, sur devis. Nous intégrons paiement en ligne, Click & Collect ou catalogue produits selon vos besoins.',
       },
       {
-        title: 'What payment methods do you accept?',
-        description:
-          'We accept major credit cards and online payment methods to ensure a convenient and secure transaction process.',
+        title: 'Puis-je payer en plusieurs fois ?',
+        description: 'Paiement possible en 3 fois sans frais via carte ou virement. Les abonnements sont prélevés mensuellement.',
       },
       {
-        title: 'Are there any hidden fees beyond the displayed cost?',
-        description:
-          'No, the subscription cost covers all the features and templates listed under each plan. There are no hidden fees or extra charges.',
+        title: 'Quelles sont les conditions de résiliation ?',
+        description: 'Pour l’offre Continuum, un préavis de 30 jours suffit après la période d’engagement initiale de 12 mois.',
       },
     ]}
   />
@@ -231,14 +216,25 @@ const metadata = {
   <!-- CallToAction Widget *********** -->
 
   <CallToAction
-    title="Ready to boost your projects?"
-    subtitle="Join our community of satisfied customers who have transformed their work with our templates."
     actions={[
       {
         variant: 'primary',
-        text: 'Get started now',
-        href: '/',
+        text: 'Recevoir une proposition',
+        href: '/contact#form',
+        icon: 'tabler:mail-forward',
+      },
+      {
+        text: 'Comparer les packs',
+        href: '/services',
       },
     ]}
-  />
+  >
+    <Fragment slot="title">
+      Besoin d’un devis personnalisé ?
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      Nous adaptons chaque offre aux spécificités de votre activité sur l’Arc lémanique.
+    </Fragment>
+  </CallToAction>
 </Layout>

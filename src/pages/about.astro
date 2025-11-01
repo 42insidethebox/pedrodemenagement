@@ -7,69 +7,72 @@ import Steps2 from '~/components/widgets/Steps2.astro';
 import Layout from '~/layouts/PageLayout.astro';
 
 const metadata = {
-  title: 'About us',
+  title: 'À propos',
 };
 ---
 
 <Layout metadata={metadata}>
   <!-- Hero Widget ******************* -->
 
-  <Hero
-    tagline="About us"
-    image={{
-      src: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-      alt: 'Caos Image',
-    }}
-  >
+  <Hero tagline="À propos de MonWebsite.ch">
     <Fragment slot="title">
-      Elevate your online presence with our <br />
-      <span class="text-accent dark:text-white"> Beautiful Website Templates</span>
+      Une équipe lémanique qui marie automatisation et service humain
     </Fragment>
 
     <Fragment slot="subtitle">
-      Donec efficitur, ipsum quis congue luctus, mauris magna convallis mauris, eu auctor nisi lectus non augue. Donec
-      quis lorem non massa vulputate efficitur ac at turpis. Sed tincidunt ex a nunc convallis, et lobortis nisi tempus.
-      Suspendisse vitae nisi eget tortor luctus maximus sed non lectus.
+      MonWebsite.ch est née à Lausanne pour offrir aux PME et indépendants un site web haut de gamme, livré en 24 h, sans
+      sacrifier la précision ni l’accompagnement. Nous combinons une technologie propriétaire et des experts locaux pour garantir
+      un résultat impeccable.
+    </Fragment>
+
+    <Fragment slot="image">
+      <div class="relative aspect-[5/3] overflow-hidden rounded-2xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-left text-white shadow-2xl">
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Arc Lémanique</p>
+        <h4 class="mt-4 text-4xl font-semibold">Lausanne · Genève · Vevey · Montreux</h4>
+        <p class="mt-6 max-w-xl text-lg text-blue-100/90">
+          Des spécialistes du digital, du contenu et de la performance web réunis autour d’un objectif&nbsp;: livrer des sites irréprochables en 24 h.
+        </p>
+      </div>
     </Fragment>
   </Hero>
 
   <!-- Stats Widget ****************** -->
 
   <Stats
-    title="Statistics about us"
+    title="Nos repères"
     stats={[
-      { title: 'Offices', amount: '4' },
-      { title: 'Employees', amount: '248' },
-      { title: 'Templates', amount: '12' },
-      { title: 'Awards', amount: '24' },
+      { title: 'Experts basés sur l’Arc lémanique', amount: '12' },
+      { title: 'Clients accompagnés chaque mois', amount: '45' },
+      { title: 'Taux de satisfaction', amount: '97%' },
+      { title: 'Note moyenne support', amount: '4.9/5' },
     ]}
   />
 
   <!-- Features3 Widget ************** -->
 
   <Features3
-    title="Our templates"
-    subtitle="Etiam scelerisque, enim eget vestibulum luctus, nibh mauris blandit nulla, nec vestibulum risus justo ut enim. Praesent lacinia diam et ante imperdiet euismod."
+    title="Nos piliers"
+    subtitle="Nous appliquons la rigueur suisse à chaque projet livré."
     columns={3}
     isBeforeContent={true}
     items={[
       {
-        title: 'Educational',
+        title: 'Automatisation maîtrisée',
         description:
-          'Morbi faucibus luctus quam, sit amet aliquet felis tempor id. Cras augue massa, ornare quis dignissim a, molestie vel nulla.',
-        icon: 'tabler:template',
+          'Nos pipelines propriétaires orchestrent contenus, design et déploiement pour garantir un délai constant de 24 h.',
+        icon: 'tabler:cpu',
       },
       {
-        title: 'Interior Design',
+        title: 'Design minimaliste',
         description:
-          'Vivamus porttitor, tortor convallis aliquam pretium, turpis enim consectetur elit, vitae egestas purus erat ac nunc nulla.',
-        icon: 'tabler:template',
+          'Inspirés par les codes helvétiques, nous misons sur des mises en page aérées, typographies nettes et contrastes précis.',
+        icon: 'tabler:layout-grid',
       },
       {
-        title: 'Photography',
+        title: 'Relation de proximité',
         description:
-          'Duis sed lectus in nisl vehicula porttitor eget quis odio. Aliquam erat volutpat. Nulla eleifend nulla id sem fermentum.',
-        icon: 'tabler:template',
+          'Nos chefs de projet sont disponibles par téléphone ou WhatsApp pour un suivi attentif, même après la mise en ligne.',
+        icon: 'tabler:users',
       },
     ]}
   />
@@ -81,68 +84,73 @@ const metadata = {
     isAfterContent={true}
     items={[
       {
-        title: 'E-commerce',
+        title: 'Tech suisse + mondiale',
         description:
-          'Rutrum non odio at vehicula. Proin ipsum justo, dignissim in vehicula sit amet, dignissim id quam. Sed ac tincidunt sapien.',
-        icon: 'tabler:template',
+          'Stack Astro, Tailwind et hébergement basé en Suisse pour conjuguer souveraineté et performance internationale.',
+        icon: 'tabler:world',
       },
       {
-        title: 'Blog',
+        title: 'Partenaires terrain',
         description:
-          'Nullam efficitur volutpat sem sed fringilla. Suspendisse et enim eu orci volutpat laoreet ac vitae libero.',
-        icon: 'tabler:template',
+          'Photographes, copywriters, consultants SEO et juristes RGPD basés entre Genève et Montreux.',
+        icon: 'tabler:briefcase',
       },
       {
-        title: 'Business',
+        title: 'Culture de la mesure',
         description:
-          'Morbi et elit finibus, facilisis justo ut, pharetra ipsum. Donec efficitur, ipsum quis congue luctus, mauris magna.',
-        icon: 'tabler:template',
+          'Chaque livraison inclut un rapport de performance, un plan d’amélioration et une revue trimestrielle.',
+        icon: 'tabler:chart-dots',
       },
       {
-        title: 'Branding',
+        title: 'Support multilingue',
         description:
-          'Suspendisse vitae nisi eget tortor luctus maximus sed non lectus. Cras malesuada pretium placerat. Nullam venenatis dolor a ante rhoncus.',
-        icon: 'tabler:template',
+          'Nous répondons en français, anglais ou allemand selon la préférence de vos équipes.',
+        icon: 'tabler:language',
       },
       {
-        title: 'Medical',
+        title: 'Respect du RGPD suisse/UE',
         description:
-          'Vestibulum malesuada lacus id nibh posuere feugiat. Nam volutpat nulla a felis ultrices, id suscipit mauris congue. In hac habitasse platea dictumst.',
-        icon: 'tabler:template',
+          'Documentation juridique fournie, consentements gérés et données hébergées sur territoire helvétique.',
+        icon: 'tabler:shield-lock',
       },
       {
-        title: 'Fashion Design',
+        title: 'Esprit durable',
         description:
-          'Maecenas eu tellus eget est scelerisque lacinia et a diam. Aliquam velit lorem, vehicula id fermentum et, rhoncus et purus.',
-        icon: 'tabler:template',
+          'Compensation carbone pour chaque site livré et partenariat avec des hébergeurs alimentés en énergies renouvelables.',
+        icon: 'tabler:leaf',
       },
     ]}
-    image={{
-      src: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80',
-      alt: 'Colorful Image',
-    }}
-  />
+  >
+    <Fragment slot="image">
+      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
+        <p class="text-sm uppercase tracking-[0.3em] text-blue-200/80">Présence locale</p>
+        <p class="mt-4 max-w-sm text-lg text-blue-100/90">
+          Nous opérons depuis Lausanne, Genève, Vevey et Montreux pour rester au plus proche des réalités terrain de nos clients.
+        </p>
+      </div>
+    </Fragment>
+  </Features3>
 
   <!-- Steps2 Widget ****************** -->
 
   <Steps2
-    title="Our values"
-    subtitle="Maecenas eu tellus eget est scelerisque lacinia et a diam. Aliquam velit lorem, vehicula id fermentum et, rhoncus et purus. Nulla facilisi. Vestibulum malesuada lacus."
+    title="Nos valeurs"
+    subtitle="Nous croyons à une technologie qui sert le business local, avec transparence et fiabilité."
     items={[
       {
-        title: 'Customer-centric approach',
+        title: 'Précision',
         description:
-          'Donec id nibh neque. Quisque et fermentum tortor. Fusce vitae dolor a mauris dignissim commodo. Ut eleifend luctus condimentum.',
+          'Chaque ligne de contenu et chaque pixel sont vérifiés par un contrôle qualité humain avant mise en production.',
       },
       {
-        title: 'Constant Improvement',
+        title: 'Clarté',
         description:
-          'Phasellus laoreet fermentum venenatis. Vivamus dapibus pulvinar arcu eget mattis. Fusce eget mauris leo.',
+          'Des offres tout inclus, des factures suisses et des indicateurs partagés en temps réel avec nos clients.',
       },
       {
-        title: 'Ethical Practices',
+        title: 'Proximité',
         description:
-          'Vestibulum imperdiet libero et lectus molestie, et maximus augue porta. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.',
+          'Nous accompagnons nos clients sur la durée avec un interlocuteur dédié et des points trimestriels offerts.',
       },
     ]}
   />
@@ -150,30 +158,28 @@ const metadata = {
   <!-- Steps2 Widget ****************** -->
 
   <Steps2
-    title="Achievements"
-    subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sagittis, quam nec venenatis lobortis, mi risus tempus nulla, sed porttitor est nibh at nulla."
+    title="Notre histoire"
+    subtitle="En trois années, nous avons bâti une plateforme capable de livrer des sites irréprochables en un temps record."
     isReversed={true}
     callToAction={{
-      text: 'See more',
-      href: '/',
+      text: 'Découvrir nos offres',
+      href: '/pricing',
     }}
     items={[
       {
-        title: 'Global reach',
-        description: 'Nam malesuada urna in enim imperdiet tincidunt. Phasellus non tincidunt nisi, at elementum mi.',
-        icon: 'tabler:globe',
+        title: '2021 — Lancement',
+        description: 'Création de MonWebsite.ch à Lausanne avec l’objectif de simplifier la présence web des indépendants.',
+        icon: 'tabler:flag',
       },
       {
-        title: 'Positive customer feedback and reviews',
-        description:
-          'Cras semper nulla leo, eget laoreet erat cursus sed. Praesent faucibus massa in purus iaculis dictum.',
-        icon: 'tabler:message-star',
+        title: '2022 — Industrialisation',
+        description: 'Déploiement de nos pipelines automatisés et ouverture de bureaux à Genève et Vevey.',
+        icon: 'tabler:arrows-exchange',
       },
       {
-        title: 'Awards and recognition as industry experts',
-        description:
-          'Phasellus lacinia cursus velit, eu malesuada magna pretium eu. Etiam aliquet tellus purus, blandit lobortis ex rhoncus vitae.',
-        icon: 'tabler:award',
+        title: '2023 — Accélération',
+        description: 'Plus de 150 sites livrés, partenariat avec des agences locales et lancement de notre offre multilingue.',
+        icon: 'tabler:rocket',
       },
     ]}
   />
@@ -181,47 +187,25 @@ const metadata = {
   <!-- Features2 Widget ************** -->
 
   <Features2
-    title="Our locations"
-    tagline="Find us"
+    title="Où nous rencontrer"
+    tagline="Présence locale"
     columns={4}
     items={[
       {
-        title: 'EE.UU',
-        description: '1234 Lorem Ipsum St, 12345, Miami',
+        title: 'Lausanne',
+        description: 'Quartier Flon — rendez-vous sur demande',
       },
       {
-        title: 'Spain',
-        description: '5678 Lorem Ipsum St, 56789, Madrid',
+        title: 'Genève',
+        description: 'Rue du Rhône — showroom partenaires',
       },
       {
-        title: 'Australia',
-        description: '9012 Lorem Ipsum St, 90123, Sydney',
+        title: 'Vevey',
+        description: 'Espace de coworking La Forge — sessions onboarding',
       },
       {
-        title: 'Brazil',
-        description: '3456 Lorem Ipsum St, 34567, São Paulo',
-      },
-    ]}
-  />
-
-  <!-- Features2 Widget ************** -->
-
-  <Features2
-    title="Technical Support"
-    tagline="Contact us"
-    columns={2}
-    items={[
-      {
-        title: 'Chat with us',
-        description:
-          'Integer luctus laoreet libero, auctor varius purus rutrum sit amet. Ut nec molestie nisi, quis eleifend mi.',
-        icon: 'tabler:messages',
-      },
-      {
-        title: 'Call us',
-        description:
-          'Mauris faucibus finibus orci, in posuere elit viverra non. In hac habitasse platea dictumst. Cras lobortis metus a hendrerit congue.',
-        icon: 'tabler:headset',
+        title: 'Montreux',
+        description: 'Studios photo partenaires pour vos shootings',
       },
     ]}
   />

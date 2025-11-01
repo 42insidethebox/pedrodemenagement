@@ -1,0 +1,196 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import Prices from '~/components/widgets/Pricing.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import Steps from '~/components/widgets/Steps.astro';
+import Features3 from '~/components/widgets/Features3.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+
+const metadata = {
+  title: 'Pricing',
+};
+---
+
+<Layout metadata={metadata}>
+  <HeroText
+    tagline="Pricing"
+    title="Transparent Swiss billing"
+    subtitle="Every plan includes 24 h delivery, hosting, support and automated maintenance."
+  />
+
+  <Prices
+    title="Turnkey plans"
+    subtitle="Choose the offer that fits your needs. No hidden fees."
+    prices={[
+      {
+        title: 'Express 24 h',
+        subtitle: 'Immediate online presence',
+        price: 1490,
+        period: 'CHF — one-time',
+        items: [
+          { description: 'Five-section showcase site + contact page' },
+          { description: 'Copywriting optimised for local SEO' },
+          { description: 'Swiss hosting & SSL certificate included for 12 months' },
+          { description: 'Launch within 24 working hours' },
+        ],
+        callToAction: {
+          text: 'Get started',
+          href: '/en/contact#form',
+        },
+      },
+      {
+        title: 'Signature',
+        subtitle: 'Premium bilingual experience',
+        price: 2490,
+        period: 'CHF — one-time',
+        items: [
+          { description: 'Bespoke design with 8 sections + blog or landing page' },
+          { description: 'FR/EN or FR/DE content + partner photo shoot' },
+          { description: 'Integration of booking, CRM or payment tools' },
+          { description: '60-minute strategy workshop with an expert' },
+        ],
+        callToAction: {
+          text: 'Reserve now',
+          href: '/en/contact#form',
+        },
+        hasRibbon: true,
+        ribbonTitle: 'Best seller',
+      },
+      {
+        title: 'Continuum',
+        subtitle: 'Ongoing monthly partnership',
+        price: 290,
+        period: 'CHF / month — 12-month commitment',
+        items: [
+          { description: 'Unlimited maintenance & weekly updates' },
+          { description: 'Two premium content pieces per month' },
+          { description: 'Local SEO & SEA campaigns managed by our team' },
+          { description: 'Monthly reporting + quarterly workshop' },
+        ],
+        callToAction: {
+          text: 'Speak with an advisor',
+          href: '/en/contact#form',
+        },
+      },
+    ]}
+  />
+
+  <Features3
+    title="Included benefits"
+    subtitle="All offers come with these guarantees."
+    columns={2}
+    items={[
+      {
+        title: 'Unlimited support',
+        description: 'Responses within 2 working hours via WhatsApp, phone or email.',
+        icon: 'tabler:headset',
+      },
+      {
+        title: 'Sovereign hosting',
+        description: 'Servers located in Switzerland, renewable energy, GDPR/FADP compliant.',
+        icon: 'tabler:server',
+      },
+      {
+        title: 'Client dashboard',
+        description: 'Track progress, performance and requests in real time.',
+        icon: 'tabler:layout-dashboard',
+      },
+      {
+        title: 'Clear invoicing',
+        description: 'VAT included, QR invoice or Twint, monthly payments available.',
+        icon: 'tabler:receipt',
+      },
+      {
+        title: 'Performance guarantee',
+        description: 'Lighthouse score ≥ 90 on mobile & desktop or optimisation on us.',
+        icon: 'tabler:gauge',
+      },
+      {
+        title: 'Reinforced security',
+        description: 'Daily backups, anti-spam and application firewall.',
+        icon: 'tabler:lock',
+      },
+    ]}
+    classes={{ container: 'max-w-5xl' }}
+  />
+
+  <Steps
+    title="Your project timeline"
+    tagline="Journey"
+    isReversed={true}
+    items={[
+      {
+        title: '1. Digital signature',
+        description: 'Validate your plan and receive instant onboarding access.',
+        icon: 'tabler:edit',
+      },
+      {
+        title: '2. Smart questionnaire',
+        description: 'Share your key information, upload visuals and choose your modules.',
+        icon: 'tabler:clipboard-list',
+      },
+      {
+        title: '3. Automated production',
+        description: 'Our platform generates your site while experts refine and approve.',
+        icon: 'tabler:robot',
+      },
+      {
+        title: '4. Launch & training',
+        description: 'Receive your live site, video guide and performance report.',
+        icon: 'tabler:rocket',
+      },
+    ]}
+  >
+    <Fragment slot="image">
+      <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-white shadow-xl">
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Process</p>
+        <p class="mt-6 max-w-xs text-base text-blue-100/90">
+          From signature to go-live, every milestone is timestamped and documented within your client portal.
+        </p>
+      </div>
+    </Fragment>
+  </Steps>
+
+  <FAQs
+    title="Pricing questions"
+    subtitle="We believe in total transparency."
+    items={[
+      {
+        title: 'Do prices include VAT?',
+        description: 'Yes, all amounts are VAT included. The invoice mentions Swiss VAT and our company UID.',
+      },
+      {
+        title: 'What happens after 12 months of hosting?',
+        description: 'Your site stays online. Hosting and support renew at CHF 290/year or through the Continuum plan.',
+      },
+      {
+        title: 'Can I upgrade later?',
+        description: 'You can move from Express to Signature or Continuum at any time. We deduct the initial investment pro-rata.',
+      },
+      {
+        title: 'Do you support e-commerce?',
+        description: 'Yes, we add Click & Collect, gift cards or catalogue experiences. Full e-commerce is handled via custom quote.',
+      },
+    ]}
+  />
+
+  <CallToAction
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Book a call',
+        href: '/en/contact#form',
+        icon: 'tabler:calendar-event',
+      },
+      {
+        text: 'Compare offers',
+        href: '/en/services',
+      },
+    ]}
+  >
+    <Fragment slot="title">Need help choosing?</Fragment>
+
+    <Fragment slot="subtitle">Our advisors respond within two working hours with a tailored recommendation.</Fragment>
+  </CallToAction>
+</Layout>

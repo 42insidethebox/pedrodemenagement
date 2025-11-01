@@ -1,0 +1,278 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+
+import Hero from '~/components/widgets/Hero.astro';
+import Note from '~/components/widgets/Note.astro';
+import Features from '~/components/widgets/Features.astro';
+import Features2 from '~/components/widgets/Features2.astro';
+import Steps from '~/components/widgets/Steps.astro';
+import Content from '~/components/widgets/Content.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import Stats from '~/components/widgets/Stats.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+
+const metadata = {
+  title: 'MonWebsite.ch — Ihre schlüsselfertige Schweizer Website in 24 h',
+  ignoreTitleTemplate: true,
+};
+---
+
+<Layout metadata={metadata}>
+  <Hero
+    id="process"
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Pakete ansehen',
+        href: '/de/pricing',
+        icon: 'tabler:arrow-right',
+      },
+      { text: 'Mit Expert·in sprechen', href: '/de/contact#form' },
+    ]}
+    image={{
+      src: '~/assets/images/hero-image.png',
+      alt: 'MonWebsite.ch Oberfläche',
+    }}
+  >
+    <Fragment slot="title">
+      Ihre Website schlüsselfertig in <span class="text-accent dark:text-white">24&nbsp;Stunden</span>
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      Schweizer Design, globale Performance. MonWebsite.ch automatisiert individuelle Showcase-Seiten für KMU und Selbstständige
+      in der Genferseeregion – Inhalte, Design, Hosting und Rechnungsstellung sind innerhalb eines Arbeitstages erledigt.
+    </Fragment>
+  </Hero>
+
+  <Note
+    title="Versprechen"
+    description="Lokaler Service, menschlicher Support und automatisierte Orchestrierung für ein makelloses Resultat ohne Reibung."
+  />
+
+  <Features
+    id="features"
+    tagline="Warum wir"
+    title="Schweizer Präzision für Ihren Auftritt"
+    subtitle="Jede Website wird von unserem Team generiert, personalisiert und geprüft, damit Sie sich auf Ihr Geschäft konzentrieren können."
+    items={[
+      {
+        title: 'Express-Lieferung in 24 h',
+        description:
+          'Briefing, Inhalte, Design und Go-Live werden automatisch orchestriert, damit Ihre Website innerhalb eines Arbeitstages online ist.',
+        icon: 'tabler:clock-hour-4',
+      },
+      {
+        title: 'Premium-Design nach Mass',
+        description:
+          'Inter- / Montserrat-Typografie, raffinierte Paletten und dezente Animationen für ein hochwertiges Markenerlebnis.',
+        icon: 'tabler:sparkles',
+      },
+      {
+        title: 'Lokales SEO integriert',
+        description:
+          'Texte optimiert für Lausanne, Genf, Montreux und die gesamte Romandie, um Ihre regionale Sichtbarkeit zu maximieren.',
+        icon: 'tabler:map-pin',
+      },
+      {
+        title: 'Automatisierte Wartung',
+        description:
+          'Backups, Updates und Performance-Monitoring werden von unserer Plattform abgewickelt – ohne versteckte Kosten.',
+        icon: 'tabler:shield-check',
+      },
+      {
+        title: 'Transparente Schweizer Abrechnung',
+        description:
+          'Klare Verträge, MWST inklusive und Zahlungen in Schweizer Franken über die wichtigsten lokalen Methoden.',
+        icon: 'tabler:receipt',
+      },
+      {
+        title: 'Lokaler menschlicher Support',
+        description:
+          'Expert·innen aus der Genferseeregion antworten innerhalb von 2 Arbeitsstunden per Telefon, E-Mail oder WhatsApp.',
+        icon: 'tabler:headset',
+      },
+    ]}
+  />
+
+  <Content
+    isReversed
+    tagline="Prozess"
+    title="Orchestrierung in drei Schritten"
+    items={[
+      {
+        title: 'Strukturiertes Briefing',
+        description:
+          'Ein geführter Fragebogen sammelt Ihre Dienstleistungen, Öffnungszeiten, Testimonials und Visuals für unsere proprietäre KI.',
+      },
+      {
+        title: 'Geführte Personalisierung',
+        description:
+          'Unsere Designer passen die Sektionen an, kalibrieren die Typografie und sichern die Einhaltung der Schweizer Standards.',
+      },
+      {
+        title: 'Qualitätssicherung',
+        description:
+          'Performance-, SEO- und Accessibility-Tests vor dem Go-Live sowie ein detaillierter Abnahmereport.',
+      },
+    ]}
+  >
+    <Fragment slot="content">
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Morgen einsatzbereit</h3>
+      Drei automatisierte Schritte, validiert von einem lokalen Profi.
+    </Fragment>
+
+    <Fragment slot="image">
+      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl">
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Workflow 24 h</p>
+        <h4 class="mt-4 text-3xl font-semibold">Briefing → Kreation → QA</h4>
+        <p class="mt-6 max-w-xs text-base text-blue-100/90">
+          Jeder Meilenstein wird in Ihrem Kundenportal verfolgt – mit Echtzeitbenachrichtigungen und schnellen Freigaben.
+        </p>
+      </div>
+    </Fragment>
+
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    </Fragment>
+  </Content>
+
+  <Steps
+    title="Lieferung in 24 h – garantiert"
+    tagline="Kundenreise"
+    items={[
+      {
+        title: 'Digitale Signatur',
+        description: 'Wählen Sie Ihr Paket, unterschreiben Sie elektronisch und erhalten Sie sofort Zugang zum Kundenportal.',
+        icon: 'tabler:edit',
+      },
+      {
+        title: 'Geführtes Onboarding',
+        description: 'Unser Assistent sammelt Ihre Schlüsselinformationen und schlägt eine auf Ihre Branche abgestimmte Sitemap vor.',
+        icon: 'tabler:clipboard-list',
+      },
+      {
+        title: 'Automatisierte Produktion',
+        description: 'Pipelines bauen Ihre Seite, integrieren Inhalte und benachrichtigen unser Team zur Freigabe.',
+        icon: 'tabler:robot',
+      },
+      {
+        title: 'Launch & Übergabe',
+        description: 'Sie erhalten den Live-Link, ein persönliches Video-Walkthrough und Ihre Schweizer Rechnung.',
+        icon: 'tabler:rocket',
+      },
+    ]}
+  />
+
+  <Features2
+    isReversed
+    tagline="Swiss made"
+    title="Messbare Ergebnisse ab Tag eins"
+    subtitle="Unsere Plattform verbindet Automatisierung mit Präzision und liefert sichtbare KPIs schon in der ersten Woche."
+    items={[
+      {
+        title: 'Core Web Vitals',
+        description: 'Ladezeiten unter 1,2 s auf Mobilgeräten und > 95 Lighthouse-Score standardmässig.',
+        icon: 'tabler:gauge',
+      },
+      {
+        title: 'SEO-Setup',
+        description: 'Strukturierte Daten, lokale Schema-Tags und sprachspezifische Meta-Tags für FR / EN / DE / IT.',
+        icon: 'tabler:seo',
+      },
+      {
+        title: 'Conversion Tracking',
+        description: 'Integrierte Analytics, Form-Tracking und Anruf-Tracking für präzises Reporting.',
+        icon: 'tabler:chart-donut',
+      },
+      {
+        title: 'CI-konforme Designs',
+        description: 'Bibliothek mit Branchen-Templates, anpassbar an Ihre Farben und Bildwelt.',
+        icon: 'tabler:palette',
+      },
+    ]}
+  />
+
+  <Stats
+    title="Zahlen, die überzeugen"
+    items={[
+      { title: '24 h', description: 'Garantierter Zeitrahmen von Briefing bis Go-Live.' },
+      { title: '98 %', description: 'Kundenzufriedenheit gemessen nach dem Launch.' },
+      { title: '15+', description: 'Aktive Branchen-Templates für den Sofortstart.' },
+      { title: '100 %', description: 'Hosting in der Schweiz mit ISO 27001-Zertifizierung.' },
+    ]}
+  />
+
+  <Content
+    tagline="Branchenfokus"
+    title="Lösungen für die Arc Lémanique"
+    items={[
+      {
+        title: 'Lokale Geschäfte',
+        description:
+          'Restaurants, Boutiquen und Salons erhalten ein elegantes Schaufenster mit integrierter Reservation und Google-Profile-Optimierung.',
+      },
+      {
+        title: 'Dienstleistende',
+        description:
+          'Coaches, Berater und Handwerker profitieren von überzeugenden Angebots- und Terminblöcken inklusive Kundenstimmen.',
+      },
+      {
+        title: 'Start-ups & KMU',
+        description:
+          'Pakete für SaaS, mobile Apps und Agenturen mit Fokus auf Produkt, Roadmap und Investorenmaterial.',
+      },
+    ]}
+  >
+    <Fragment slot="content">
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Regional verankert</h3>
+      Wir kennen die Erwartungen Ihrer Kundschaft zwischen Genf und Montreux.
+    </Fragment>
+
+    <Fragment slot="image">
+      <div class="relative aspect-[16/9] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-blue-800 to-blue-500 p-10 text-left text-white shadow-xl">
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Arc Lémanique</p>
+        <h4 class="mt-4 text-3xl font-semibold">Genf · Lausanne · Vevey · Montreux</h4>
+        <p class="mt-6 max-w-sm text-base text-blue-100/90">Partnerschaften mit lokalen Verbänden und Zahlungsanbietern sichern einen nahtlosen Ablauf für Ihr Unternehmen.</p>
+      </div>
+    </Fragment>
+  </Content>
+
+  <FAQs
+    id="faq"
+    title="Häufige Fragen"
+    items={[
+      {
+        title: 'Wie funktioniert die 24-Stunden-Lieferung?',
+        description:
+          'Nach Vertragsabschluss führt unser Assistent Sie durch ein kompaktes Briefing. Automatisierte Pipelines generieren Struktur und Inhalte, unser Team finalisiert Design und prüft Qualität, bevor wir live gehen.',
+      },
+      {
+        title: 'Kann ich später Änderungen vornehmen?',
+        description:
+          'Ja. Über unser Kundenportal können Sie Inhalte aktualisieren oder zusätzliche Seiten bestellen. Kleine Anpassungen sind im Support inklusive.',
+      },
+      {
+        title: 'Welche Sprachen sind enthalten?',
+        description:
+          'Wir liefern standardmässig Französisch, Englisch, Deutsch und Italienisch mit hreflang-Tags und sprachspezifischen URLs.',
+      },
+      {
+        title: 'Wie wird abgerechnet?',
+        description:
+          'Sie erhalten eine Schweizer Rechnung in CHF, zahlbar per Karte, Twint oder Banküberweisung. Monatliche Pakete sind ebenfalls möglich.',
+      },
+      {
+        title: 'Wie läuft Support & Wartung?',
+        description:
+          'Monitoring, Sicherheitsupdates und Backups sind automatisiert. Unser Supportteam reagiert an Werktagen innerhalb von zwei Stunden.',
+      },
+    ]}
+  />
+
+  <CallToAction
+    title="Bereit für Ihren Launch in 24 Stunden?"
+    subtitle="Sichern Sie sich Ihren Slot – wir koordinieren Briefing, Produktion und Qualitätssicherung."
+    primaryAction={{ text: 'Termin vereinbaren', href: '/de/contact#form' }}
+    secondaryAction={{ text: 'Pakete vergleichen', href: '/de/pricing' }}
+  />
+</Layout>

@@ -10,61 +10,61 @@ const metadata = {
 ---
 
 <Layout metadata={metadata}>
-  <!-- HeroText Widget ******************* -->
-
-  <HeroText tagline="Contact" title="Parlons de votre site clé-en-main" subtitle="Un expert MonWebsite.ch vous répond sous 2 h ouvrées." />
+  <HeroText
+    tagline="Contact"
+    title="Let’s plan your turnkey launch"
+    subtitle="A MonWebsite.ch expert answers within 2 working hours."
+  />
 
   <ContactUs
     id="form"
-    title="Demander une démo ou un devis"
-    subtitle="Remplissez le formulaire, nous vous recontactons par téléphone ou visio pour préparer votre mise en ligne sous 24 h."
+    title="Request a demo or quote"
+    subtitle="Fill in the form and we will reach out by phone or video call to prepare your 24 h go-live."
     inputs={[
       {
         type: 'text',
         name: 'name',
-        label: 'Nom et prénom',
+        label: 'Full name',
       },
       {
         type: 'email',
         name: 'email',
-        label: 'Email professionnel',
+        label: 'Business email',
       },
       {
         type: 'text',
         name: 'company',
-        label: 'Entreprise',
+        label: 'Company',
       },
       {
         type: 'select',
         name: 'service',
-        label: 'Pack souhaité',
+        label: 'Desired plan',
         options: [
           { label: 'Express 24 h', value: 'express' },
           { label: 'Signature', value: 'signature' },
           { label: 'Continuum', value: 'continuum' },
-          { label: 'Autre / à définir', value: 'custom' },
+          { label: 'Custom / to be defined', value: 'custom' },
         ],
       },
     ]}
     textarea={{
-      label: 'Votre projet',
-      placeholder: 'Présentez votre activité, vos objectifs et vos délais.',
+      label: 'Your project',
+      placeholder: 'Share your activity, objectives and timeline.',
     }}
     disclaimer={{
       label:
-        'En envoyant ce formulaire, vous acceptez que MonWebsite.ch traite vos données pour répondre à votre demande, conformément à notre politique de confidentialité.',
+        'By submitting this form, you agree that MonWebsite.ch processes your data to answer your request, according to our privacy policy.',
     }}
-    description="Nos bureaux sont ouverts du lundi au samedi, 8h-18h. Nous parlons français, anglais et allemand."
+    description="Offices open Monday to Saturday, 8am–6pm. We speak French, English and German."
   />
 
-  <!-- Features2 Widget ************** -->
-
   <Features2
-    title="Contact direct"
-    subtitle="Choisissez le canal qui vous convient le mieux."
+    title="Talk to us directly"
+    subtitle="Choose the channel that suits you best."
     items={[
       {
-        title: 'Téléphone',
+        title: 'Phone',
         description: '+41 21 555 24 24',
         icon: 'tabler:phone',
       },
@@ -79,18 +79,18 @@ const metadata = {
         icon: 'tabler:brand-whatsapp',
       },
       {
-        title: 'Adresse',
+        title: 'Address',
         description: 'Rue du Grand-Chêne 8, 1003 Lausanne',
         icon: 'tabler:map-pin',
       },
       {
-        title: 'Disponibilité',
-        description: 'Du lundi au samedi, 8h00 – 18h00',
+        title: 'Opening hours',
+        description: 'Monday to Saturday, 8:00 – 18:00',
         icon: 'tabler:calendar-time',
       },
       {
-        title: 'Support client',
-        description: 'support@monwebsite.ch — réponse en &lt; 2 h',
+        title: 'Client support',
+        description: 'support@monwebsite.ch — response in &lt; 2 h',
         icon: 'tabler:help',
       },
     ]}

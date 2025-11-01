@@ -1,6 +1,6 @@
 site:
-  name: AstroWind
-  site: 'https://astrowind.vercel.app'
+  name: MonWebsite.ch
+  site: 'https://monwebsite.ch'
   base: '/'
   trailingSlash: false
 
@@ -9,26 +9,26 @@ site:
 # Default SEO metadata
 metadata:
   title:
-    default: AstroWind
-    template: '%s — AstroWind'
-  description: "\U0001F680 Suitable for Startups, Small Business, Sass Websites, Professional Portfolios, Marketing Websites, Landing Pages & Blogs."
+    default: MonWebsite.ch
+    template: '%s — MonWebsite.ch'
+  description: "Agence digitale suisse : sites vitrines clés-en-main, livrés en 24 h pour PME et indépendants de l'Arc lémanique."
   robots:
     index: true
     follow: true
   openGraph:
-    site_name: AstroWind
+    site_name: MonWebsite.ch
     images:
       - url: '~/assets/images/default.png'
         width: 1200
         height: 628
     type: website
   twitter:
-    handle: '@arthelokyo'
-    site: '@arthelokyo'
+    handle: '@monwebsite'
+    site: '@monwebsite'
     cardType: summary_large_image
 
 i18n:
-  language: en
+  language: fr
   textDirection: ltr
 
 apps:

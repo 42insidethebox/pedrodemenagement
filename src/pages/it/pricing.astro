@@ -1,0 +1,196 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import Prices from '~/components/widgets/Pricing.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import Steps from '~/components/widgets/Steps.astro';
+import Features3 from '~/components/widgets/Features3.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+
+const metadata = {
+  title: 'Prezzi',
+};
+---
+
+<Layout metadata={metadata}>
+  <HeroText
+    tagline="Prezzi"
+    title="Fatturazione svizzera trasparente"
+    subtitle="Ogni piano include consegna in 24 h, hosting, supporto e manutenzione automatizzata."
+  />
+
+  <Prices
+    title="Pacchetti chiavi in mano"
+    subtitle="Scegli l’offerta più adatta alle tue esigenze. Nessun costo nascosto."
+    prices={[
+      {
+        title: 'Express 24 h',
+        subtitle: 'Presenza online immediata',
+        price: 1490,
+        period: 'CHF — una tantum',
+        items: [
+          { description: 'Sito vetrina in cinque sezioni + pagina contatti' },
+          { description: 'Copywriting ottimizzato per SEO locale' },
+          { description: 'Hosting svizzero & certificato SSL inclusi per 12 mesi' },
+          { description: 'Go-live entro 24 ore lavorative' },
+        ],
+        callToAction: {
+          text: 'Inizia ora',
+          href: '/it/contact#form',
+        },
+      },
+      {
+        title: 'Signature',
+        subtitle: 'Esperienza premium bilingue',
+        price: 2490,
+        period: 'CHF — una tantum',
+        items: [
+          { description: 'Design su misura con 8 sezioni + blog o landing page' },
+          { description: 'Contenuti FR/IT o FR/EN + shooting fotografico partner' },
+          { description: 'Integrazione di strumenti di prenotazione, CRM o pagamenti' },
+          { description: 'Workshop strategico di 60 minuti con un esperto' },
+        ],
+        callToAction: {
+          text: 'Prenota lo slot',
+          href: '/it/contact#form',
+        },
+        hasRibbon: true,
+        ribbonTitle: 'Più scelto',
+      },
+      {
+        title: 'Continuum',
+        subtitle: 'Partnership mensile continuativa',
+        price: 290,
+        period: 'CHF / mese — impegno 12 mesi',
+        items: [
+          { description: 'Manutenzione illimitata & aggiornamenti settimanali' },
+          { description: 'Due contenuti premium al mese' },
+          { description: 'Campagne SEO & SEA locali gestite dal nostro team' },
+          { description: 'Report mensile + workshop trimestrale' },
+        ],
+        callToAction: {
+          text: 'Parla con un consulente',
+          href: '/it/contact#form',
+        },
+      },
+    ]}
+  />
+
+  <Features3
+    title="Benefici inclusi"
+    subtitle="Ogni offerta comprende queste garanzie."
+    columns={2}
+    items={[
+      {
+        title: 'Supporto illimitato',
+        description: 'Risposte entro 2 ore lavorative via WhatsApp, telefono o email.',
+        icon: 'tabler:headset',
+      },
+      {
+        title: 'Hosting sovrano',
+        description: 'Server in Svizzera, energia rinnovabile, conformità GDPR/revLDP.',
+        icon: 'tabler:server',
+      },
+      {
+        title: 'Dashboard cliente',
+        description: 'Monitora avanzamento, performance e richieste in tempo reale.',
+        icon: 'tabler:layout-dashboard',
+      },
+      {
+        title: 'Fatture chiare',
+        description: 'IVA inclusa, QR-fattura o Twint, possibilità di rate mensili.',
+        icon: 'tabler:receipt',
+      },
+      {
+        title: 'Garanzia performance',
+        description: 'Punteggio Lighthouse ≥ 90 su mobile e desktop o ottimizzazione gratuita.',
+        icon: 'tabler:gauge',
+      },
+      {
+        title: 'Sicurezza rinforzata',
+        description: 'Backup giornalieri, anti-spam e firewall applicativo.',
+        icon: 'tabler:lock',
+      },
+    ]}
+    classes={{ container: 'max-w-5xl' }}
+  />
+
+  <Steps
+    title="Timeline del progetto"
+    tagline="Journey"
+    isReversed={true}
+    items={[
+      {
+        title: '1. Firma digitale',
+        description: 'Conferma il pacchetto e ricevi subito l’accesso all’onboarding.',
+        icon: 'tabler:edit',
+      },
+      {
+        title: '2. Questionario smart',
+        description: 'Condividi informazioni chiave, carica i visual e scegli i moduli.',
+        icon: 'tabler:clipboard-list',
+      },
+      {
+        title: '3. Produzione automatizzata',
+        description: 'La piattaforma genera il sito mentre gli esperti rifiniscono e approvano.',
+        icon: 'tabler:robot',
+      },
+      {
+        title: '4. Lancio & formazione',
+        description: 'Ricevi il sito live, video guida e report di performance.',
+        icon: 'tabler:rocket',
+      },
+    ]}
+  >
+    <Fragment slot="image">
+      <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-white shadow-xl">
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Processo</p>
+        <p class="mt-6 max-w-xs text-base text-blue-100/90">
+          Dalla firma al go-live, ogni fase è timbrata e documentata nel portale clienti.
+        </p>
+      </div>
+    </Fragment>
+  </Steps>
+
+  <FAQs
+    title="Domande sui prezzi"
+    subtitle="Crediamo nella massima trasparenza."
+    items={[
+      {
+        title: 'I prezzi includono l’IVA?',
+        description: 'Sì, tutti gli importi sono IVA inclusa. La fattura indica IVA svizzera e il nostro UID.',
+      },
+      {
+        title: 'Cosa succede dopo 12 mesi di hosting?',
+        description: 'Il sito resta online. Hosting e supporto si rinnovano a CHF 290/anno o tramite il piano Continuum.',
+      },
+      {
+        title: 'Posso fare upgrade più avanti?',
+        description: 'Puoi passare da Express a Signature o Continuum in qualsiasi momento. Dedurremo pro-rata l’investimento iniziale.',
+      },
+      {
+        title: 'Supportate l’e-commerce?',
+        description: 'Sì, aggiungiamo Click & Collect, gift card o cataloghi digitali. L’e-commerce completo si valuta con offerta personalizzata.',
+      },
+    ]}
+  />
+
+  <CallToAction
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Prenota una call',
+        href: '/it/contact#form',
+        icon: 'tabler:calendar-event',
+      },
+      {
+        text: 'Confronta le offerte',
+        href: '/it/services',
+      },
+    ]}
+  >
+    <Fragment slot="title">Hai bisogno di supporto nella scelta?</Fragment>
+
+    <Fragment slot="subtitle">I nostri consulenti rispondono entro due ore lavorative con una raccomandazione su misura.</Fragment>
+  </CallToAction>
+</Layout>
