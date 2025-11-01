@@ -5,11 +5,11 @@ layout: '~/layouts/MarkdownLayout.astro'
 
 _Aktualisiert: Februar 2024_
 
-Diese Allgemeinen Geschäftsbedingungen ("AGB") regeln die Leistungen von **MonWebsite.ch**, einer Marke der TonSiteWeb Sàrl, Chemin de la Digitale 10, 1000 Lausanne, Schweiz.
+Diese Allgemeinen Geschäftsbedingungen ("AGB") regeln die Leistungen von **TonSiteWeb.ch**, einer Marke der TonSiteWeb Sàrl.
 
 ## 1. Zweck
 
-MonWebsite.ch entwirft, implementiert und betreut Websites für KMU und Selbständige im Genferseegebiet. Mit der Bestätigung eines Angebots über unsere Website, per E-Mail oder elektronischer Signatur akzeptieren Sie diese AGB.
+TonSiteWeb.ch entwirft, implementiert und betreut Websites. Mit der Bestätigung eines Angebots über unsere Website, per E-Mail oder elektronischer Signatur akzeptieren Sie diese AGB.
 
 ## 2. Bestellablauf
 
@@ -34,7 +34,7 @@ Angekündigte Fristen gelten nur, wenn Anzahlung, Inhalte und Zugänge vollstän
 
 ## 5. Inhalte und Verantwortung
 
-Sie bestätigen, dass Sie über die Rechte an allen bereitgestellten Texten, Bildern und Daten verfügen. MonWebsite.ch übernimmt keine Haftung für Ansprüche aufgrund widerrechtlicher oder fremder Inhalte. Projekte, die unseren ethischen Richtlinien oder dem Schweizer Recht widersprechen, können wir ablehnen.
+Sie bestätigen, dass Sie über die Rechte an allen bereitgestellten Texten, Bildern und Daten verfügen. TonSiteWeb.ch übernimmt keine Haftung für Ansprüche aufgrund widerrechtlicher oder fremder Inhalte. Projekte, die unseren ethischen Richtlinien oder dem Schweizer Recht widersprechen, können wir ablehnen.
 
 ## 6. Betreuung und Support
 
@@ -42,7 +42,7 @@ Der Wartungsplan beinhaltet technisches Monitoring, Sicherheitspatches, Backup-M
 
 ## 7. Hosting und Domains
 
-Sofern nichts anderes vereinbart ist, erfolgt das Hosting über Schweizer oder EU-Cloud-Anbieter mit anerkannten Sicherheits- und Datenschutzstandards. Sie bleiben Inhaber Ihrer Domain; MonWebsite.ch kann die technische Verwaltung auf schriftliches Mandat übernehmen.
+Sofern nichts anderes vereinbart ist, erfolgt das Hosting über geprüfte Cloud-Anbieter. Sie bleiben Inhaber Ihrer Domain; TonSiteWeb.ch kann die technische Verwaltung auf schriftliches Mandat übernehmen.
 
 ## 8. Geistiges Eigentum
 
@@ -66,4 +66,4 @@ Diese AGB unterstehen schweizerischem Recht. Gerichtsstand ist Lausanne (Kanton 
 
 ## 13. Kontakt
 
-Fragen? Schreiben Sie an **hello@monwebsite.ch** oder rufen Sie uns unter **+41 21 555 24 24** (Montag bis Freitag, 9–18 Uhr) an.
+Fragen? Schreiben Sie an **support@tonsiteweb.ch** oder rufen Sie uns unter **+41 21 555 24 24** (Montag bis Freitag, 9–18 Uhr) an.

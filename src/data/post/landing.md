@@ -69,7 +69,7 @@ Let's say you have a Landing Page for a new skincare product. Version A uses an 
 
 Landing Pages are versatile tools in your marketing toolkit. They play a role in various scenarios: promoting a product launch, capturing emails for a newsletter, or driving event registrations. They’re not just about capturing leads but nurturing and converting them.
 
-Presented below se trouvent habituellement plusieurs types de landing pages. Dans notre nouvelle offre, ces guides seront remis à jour prochainement afin de refléter les standards MonWebsite.ch.
+Presented below se trouvent habituellement plusieurs types de landing pages. Dans notre nouvelle offre, ces guides seront remis à jour prochainement afin de refléter les standards TonSiteWeb.ch.
 
 En attendant la mise en ligne des nouveaux exemples, nous conseillons de se concentrer sur l’essentiel&nbsp;: un message clair, un appel à l’action unique et un formulaire qui collecte uniquement les informations indispensables.
 

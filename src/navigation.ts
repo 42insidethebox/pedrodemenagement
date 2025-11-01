@@ -77,7 +77,7 @@ export const headerDataFr: Navigation = {
 export const footerDataFr: FooterNavigation = {
   links: [
     {
-      title: 'MonWebsite.ch',
+      title: 'TonSiteWeb.ch',
       links: [
         { text: 'Notre approche', href: getPermalink('/about') },
         { text: 'Notre processus', href: getPermalink('/#process') },
@@ -88,7 +88,7 @@ export const footerDataFr: FooterNavigation = {
       title: 'Services',
       links: [
         { text: 'Site vitrine clé-en-main', href: getPermalink('/services') },
-        { text: 'Contenus & SEO local', href: getPermalink('/services#seo') },
+        { text: 'Contenus & structure', href: getPermalink('/services#content') },
         { text: 'Support continu', href: getPermalink('/services#support') },
         { text: 'Multilingue', href: getPermalink('/services#content') },
       ],
@@ -97,7 +97,7 @@ export const footerDataFr: FooterNavigation = {
       title: 'Contact',
       links: [
         { text: 'Parler à un expert', href: getPermalink('/contact#form') },
-        { text: 'hello@monwebsite.ch', href: 'mailto:hello@monwebsite.ch' },
+        { text: 'support@tonsiteweb.ch', href: 'mailto:support@tonsiteweb.ch' },
         { text: '+41 21 555 24 24', href: 'tel:+41215552424' },
       ],
     },
@@ -114,7 +114,7 @@ export const footerDataFr: FooterNavigation = {
     { ariaLabel: 'RSS', icon: 'tabler:rss', href: getAsset('/rss.xml') },
   ],
   footNote: `
-    © ${new Date().getFullYear()} MonWebsite.ch · Conception digitale suisse, basée sur l'Arc Lémanique.
+    © ${new Date().getFullYear()} TonSiteWeb.ch · Conception digitale suisse, basée sur l'Arc Lémanique.
   `,
 };
 
@@ -141,7 +141,7 @@ export const headerDataEn: Navigation = {
 export const footerDataEn: FooterNavigation = {
   links: [
     {
-      title: 'MonWebsite.ch',
+      title: 'TonSiteWeb.ch',
       links: [
         { text: 'Our approach', href: getPermalink('/en/about') },
         { text: 'Our process', href: getPermalink('/en#process') },
@@ -152,7 +152,7 @@ export const footerDataEn: FooterNavigation = {
       title: 'Services',
       links: [
         { text: 'Turnkey website', href: getPermalink('/en/services') },
-        { text: 'Content & local SEO', href: getPermalink('/en/services#seo') },
+        { text: 'Content & structure', href: getPermalink('/en/services#content') },
         { text: 'Continuous care', href: getPermalink('/en/services#support') },
         { text: 'Multilingual', href: getPermalink('/en/services#content') },
       ],
@@ -161,7 +161,7 @@ export const footerDataEn: FooterNavigation = {
       title: 'Contact',
       links: [
         { text: 'Talk to an expert', href: getPermalink('/en/contact#form') },
-        { text: 'hello@monwebsite.ch', href: 'mailto:hello@monwebsite.ch' },
+        { text: 'support@tonsiteweb.ch', href: 'mailto:support@tonsiteweb.ch' },
         { text: '+41 21 555 24 24', href: 'tel:+41215552424' },
       ],
     },
@@ -178,7 +178,7 @@ export const footerDataEn: FooterNavigation = {
     { ariaLabel: 'RSS', icon: 'tabler:rss', href: getAsset('/rss.xml') },
   ],
   footNote: `
-    © ${new Date().getFullYear()} MonWebsite.ch · Swiss digital agency serving the Léman Arc.
+    © ${new Date().getFullYear()} TonSiteWeb.ch · Swiss digital agency serving the Léman Arc.
   `,
 };
 
@@ -205,7 +205,7 @@ export const headerDataDe: Navigation = {
 export const footerDataDe: FooterNavigation = {
   links: [
     {
-      title: 'MonWebsite.ch',
+      title: 'TonSiteWeb.ch',
       links: [
         { text: 'Unsere Arbeitsweise', href: getPermalink('/de/about') },
         { text: 'Ablauf', href: getPermalink('/de#process') },
@@ -216,7 +216,7 @@ export const footerDataDe: FooterNavigation = {
       title: 'Services',
       links: [
         { text: 'Website-Paket', href: getPermalink('/de/services') },
-        { text: 'Inhalte & lokales SEO', href: getPermalink('/de/services#seo') },
+        { text: 'Inhalte & Struktur', href: getPermalink('/de/services#content') },
         { text: 'Betreuung', href: getPermalink('/de/services#support') },
         { text: 'Mehrsprachig', href: getPermalink('/de/services#content') },
       ],
@@ -225,7 +225,7 @@ export const footerDataDe: FooterNavigation = {
       title: 'Kontakt',
       links: [
         { text: 'Mit uns sprechen', href: getPermalink('/de/contact#form') },
-        { text: 'hello@monwebsite.ch', href: 'mailto:hello@monwebsite.ch' },
+        { text: 'support@tonsiteweb.ch', href: 'mailto:support@tonsiteweb.ch' },
         { text: '+41 21 555 24 24', href: 'tel:+41215552424' },
       ],
     },
@@ -242,7 +242,7 @@ export const footerDataDe: FooterNavigation = {
     { ariaLabel: 'RSS', icon: 'tabler:rss', href: getAsset('/rss.xml') },
   ],
   footNote: `
-    © ${new Date().getFullYear()} MonWebsite.ch · Schweizer Digitalagentur für den Genfersee-Bogen.
+    © ${new Date().getFullYear()} TonSiteWeb.ch · Schweizer Digitalagentur für den Genfersee-Bogen.
   `,
 };
 
@@ -269,7 +269,7 @@ export const headerDataIt: Navigation = {
 export const footerDataIt: FooterNavigation = {
   links: [
     {
-      title: 'MonWebsite.ch',
+      title: 'TonSiteWeb.ch',
       links: [
         { text: 'Il nostro approccio', href: getPermalink('/it/about') },
         { text: 'Il nostro processo', href: getPermalink('/it#process') },
@@ -280,7 +280,7 @@ export const footerDataIt: FooterNavigation = {
       title: 'Servizi',
       links: [
         { text: 'Sito vetrina', href: getPermalink('/it/services') },
-        { text: 'Contenuti & SEO locale', href: getPermalink('/it/services#seo') },
+        { text: 'Contenuti & struttura', href: getPermalink('/it/services#content') },
         { text: 'Assistenza continuativa', href: getPermalink('/it/services#support') },
         { text: 'Multilingua', href: getPermalink('/it/services#content') },
       ],
@@ -289,7 +289,7 @@ export const footerDataIt: FooterNavigation = {
       title: 'Contatti',
       links: [
         { text: 'Parla con un esperto', href: getPermalink('/it/contact#form') },
-        { text: 'hello@monwebsite.ch', href: 'mailto:hello@monwebsite.ch' },
+        { text: 'support@tonsiteweb.ch', href: 'mailto:support@tonsiteweb.ch' },
         { text: '+41 21 555 24 24', href: 'tel:+41215552424' },
       ],
     },
@@ -306,7 +306,7 @@ export const footerDataIt: FooterNavigation = {
     { ariaLabel: 'RSS', icon: 'tabler:rss', href: getAsset('/rss.xml') },
   ],
   footNote: `
-    © ${new Date().getFullYear()} MonWebsite.ch · Agenzia digitale svizzera per l'Arco lemanico.
+    © ${new Date().getFullYear()} TonSiteWeb.ch · Agenzia digitale svizzera per l'Arco lemanico.
   `,
 };
 

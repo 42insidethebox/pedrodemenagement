@@ -5,11 +5,11 @@ layout: '~/layouts/MarkdownLayout.astro'
 
 _Last updated: February 2024_
 
-These Terms of Service (the “Terms”) govern the digital services provided by **MonWebsite.ch**, a brand operated by TonSiteWeb Sàrl, chemin de la Digitale 10, 1000 Lausanne, Switzerland.
+These Terms of Service (the “Terms”) govern the digital services provided by **TonSiteWeb.ch**, a brand operated by TonSiteWeb Sàrl.
 
 ## 1. Scope
 
-MonWebsite.ch designs, deploys, and maintains brochure websites for small businesses located in the Léman Arc. By confirming an order through our website, by e-mail, or by electronically signing a quote, you agree to these Terms.
+TonSiteWeb.ch designs, deploys, and maintains brochure websites. By confirming an order through our website, by e-mail, or by electronically signing a quote, you agree to these Terms.
 
 ## 2. Order process
 
@@ -34,7 +34,7 @@ Delivery timelines are indicative and start only after we have received the depo
 
 ## 5. Content responsibility
 
-You warrant that you hold the rights to all texts, visuals, and data you provide. MonWebsite.ch declines any liability for claims related to unlawful or infringing content. We may refuse a project that contradicts our ethics or Swiss law.
+You warrant that you hold the rights to all texts, visuals, and data you provide. TonSiteWeb.ch declines any liability for claims related to unlawful or infringing content. We may refuse a project that contradicts our ethics or Swiss law.
 
 ## 6. Maintenance and support
 
@@ -42,7 +42,7 @@ The maintenance plan includes technical monitoring, security patches, backup man
 
 ## 7. Hosting and domains
 
-Unless agreed otherwise, hosting is provided through Swiss or EU cloud providers that comply with relevant security and data-protection standards. You remain the owner of your domain name; MonWebsite.ch may manage it on your behalf with written permission.
+Unless agreed otherwise, hosting is provided through vetted cloud providers. You remain the owner of your domain name; TonSiteWeb.ch may manage it on your behalf with written permission.
 
 ## 8. Intellectual property
 
@@ -66,4 +66,4 @@ These Terms are governed by Swiss law. Any dispute shall be submitted to the com
 
 ## 13. Contact
 
-Questions? Reach us at **hello@monwebsite.ch** or call **+41 21 555 24 24** (Monday to Friday, 9am–6pm CET).
+Questions? Reach us at **support@tonsiteweb.ch** or call **+41 21 555 24 24** (Monday to Friday, 9am–6pm CET).

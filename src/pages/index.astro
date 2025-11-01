@@ -12,7 +12,7 @@ import Stats from '~/components/widgets/Stats.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 
 const metadata = {
-  title: 'MonWebsite.ch — Sites vitrines suisses pour l’Arc lémanique',
+  title: 'TonSiteWeb.ch — Sites vitrines suisses pour l’Arc lémanique',
   ignoreTitleTemplate: true,
 };
 ---
@@ -31,14 +31,14 @@ const metadata = {
       },
       { text: 'Parler à un expert', href: '/contact#form' },
     ]}
-    image={{ src: '~/assets/images/hero-image.png', alt: 'Interface MonWebsite.ch' }}
+    image={{ src: '~/assets/images/hero-image.png', alt: 'Interface TonSiteWeb.ch' }}
   >
     <Fragment slot="title">
       Votre site clé-en-main, pensé pour le marché lémanique
     </Fragment>
 
     <Fragment slot="subtitle">
-      Design suisse, performance maîtrisée. MonWebsite.ch combine automatisation et expertise locale pour livrer des sites vitrines
+      Design suisse, performance maîtrisée. TonSiteWeb.ch combine automatisation et expertise locale pour livrer des sites vitrines
       fiables aux PME et indépendants de l'Arc lémanique, sans promesse irréaliste ni surcharge technique.
     </Fragment>
   </Hero>
@@ -71,15 +71,15 @@ const metadata = {
         icon: 'tabler:sparkles',
       },
       {
-        title: 'SEO local essentiel',
+        title: 'Balises de base',
         description:
-          'Structure, balises et textes optimisés pour Lausanne, Genève, Montreux et les communes voisines afin de refléter votre ancrage local.',
+          'Titres et méta-descriptions de base pour un affichage propre sur les moteurs de recherche (sans prestation SEO).',
         icon: 'tabler:map-pin',
       },
       {
-        title: 'Maintenance sécurité en option',
+        title: 'Maintenance (option)',
         description:
-          'Patches, sauvegardes et suivi de disponibilité sont proposés à 79 CHF/mois pour garder votre site à jour sans effort.',
+          'Mises à jour, sauvegardes et surveillance, dès 79 CHF/mois.',
         icon: 'tabler:shield-check',
       },
       {
@@ -130,9 +130,9 @@ const metadata = {
       <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl">
         <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Workflow maîtrisé</p>
         <h4 class="mt-4 text-3xl font-semibold">Brief → Création → Mise en ligne</h4>
-        <p class="mt-6 max-w-xs text-base text-blue-100/90">
-          Chaque étape est tracée dans votre espace client avec notifications, rétroplanning et validations claires.
-        </p>
+          <p class="mt-6 max-w-xs text-base text-blue-100/90">
+            Brief clair, intégration de vos contenus et validations par email.
+          </p>
       </div>
     </Fragment>
 
@@ -195,14 +195,14 @@ const metadata = {
           'Architecture Astro, hébergement rapide en Suisse et optimisation d’images pour charger vite sur mobile.',
       },
       {
-        title: 'Intégrations essentielles',
+        title: 'Fonctionnalités essentielles',
         description:
-          'Formulaire de contact, prise de rendez-vous ou connexion à votre outil favori via Zapier (dès 1 200 CHF).',
+          'Formulaire de contact et prise de rendez-vous. Pour les grands projets, intégrations API possibles sur devis.',
       },
       {
         title: 'Formation express',
         description:
-          'Un guide vidéo personnalisé de 15 minutes pour vous approprier votre site et publier en autonomie.',
+          'Un guide vidéo personnalisé pour vous approprier votre site et publier en autonomie.',
       },
     ]}
   >
@@ -214,7 +214,7 @@ const metadata = {
         <ul class="mt-6 space-y-3 text-left text-blue-100/90">
           <li>✓ Conception mobile-first</li>
           <li>✓ Temps de chargement optimisé</li>
-          <li>✓ Mise à jour de sécurité possible à 79 CHF/mois</li>
+          <li>✓ Maintenance dès 79 CHF/mois</li>
         </ul>
       </div>
     </Fragment>
@@ -228,23 +228,18 @@ const metadata = {
 
   <Features2
     id="included"
-    title="Tout est compris"
-    subtitle="Une solution clé-en-main pensée pour les entrepreneurs romands"
-    tagline="Inclus dans chaque pack"
+    title="Ce que peut inclure votre projet"
+    subtitle="Selon le pack choisi et vos besoins"
+    tagline="Exemples d’options"
     items={[
-      {
-        title: 'Hébergement en Suisse',
-        description: 'Serveurs localisés en Suisse avec certificat SSL et sauvegardes initiales incluses pendant 12 mois.',
-        icon: 'tabler:server',
-      },
       {
         title: 'Emails professionnels',
         description: 'Comptes email @votredomaine.ch configurés lors de l’option maintenance (79 CHF/mois).',
         icon: 'tabler:mail',
       },
       {
-        title: 'SEO de proximité',
-        description: 'Structure, balises titres et méta descriptions orientées Arc lémanique pour être trouvé localement.',
+        title: 'Balises on‑page',
+        description: 'Titres et méta‑descriptions de base.',
         icon: 'tabler:map-pin',
       },
       {
@@ -259,7 +254,7 @@ const metadata = {
       },
       {
         title: 'Modules évolutifs',
-        description: 'Ajout de pages, automatisations Zapier ou formulaires avancés sur devis dédié.',
+        description: 'Ajout de pages ou formulaires avancés sur devis dédié.',
         icon: 'tabler:puzzle',
       },
     ]}
@@ -276,8 +271,8 @@ const metadata = {
     stats={[
       { title: 'Délai typique', amount: '5 jours ouvrés' },
       { title: 'Pack site vitrine', amount: '999 CHF' },
-      { title: 'Maintenance sécurité', amount: '79 CHF/mois' },
-      { title: 'Automations Zapier', amount: 'dès 1 200 CHF' },
+      { title: 'Maintenance', amount: 'dès 79 CHF/mois' },
+      { title: 'Intégrations avancées', amount: 'sur devis' },
     ]}
   />
 
@@ -301,14 +296,14 @@ const metadata = {
           'Oui, nous rédigeons ou retravaillons vos textes en français avec une optimisation locale de base. Les versions anglaise ou allemande sont proposées sur devis.',
       },
       {
-        title: 'Que comprend la maintenance à 79 CHF/mois ?',
+        title: 'Quels sont les niveaux de maintenance ?',
         description:
-          'Elle couvre les mises à jour de sécurité, les sauvegardes régulières, la surveillance de disponibilité et la gestion de vos comptes emails professionnels.',
+          'Maintenance dès 79 CHF/mois avec mises à jour et sauvegardes. Options additionnelles selon vos besoins.',
       },
       {
-        title: 'Proposez-vous des automatisations ?',
+        title: 'Proposez-vous des intégrations ?',
         description:
-          'Oui. Une intégration simple via Zapier ou Make démarre à 1 200 CHF. Pour trois à quatre automatisations, prévoir 1 500 CHF. Nous détaillons chaque flux dans la proposition.',
+          'Oui. Les intégrations simples (formulaire, rendez‑vous) sont incluses. Pour des connexions API ou workflows complexes, nous établissons un devis dédié.',
       },
       {
         title: 'Comment se déroule le support après la mise en ligne ?',
@@ -337,7 +332,7 @@ const metadata = {
     <Fragment slot="title">Prêts à clarifier votre présence en ligne ?</Fragment>
 
     <Fragment slot="subtitle">
-      Nous analysons vos besoins et proposons un plan d’action réaliste pour votre activité sur l’Arc lémanique.
+      Nous analysons vos besoins et proposons un plan d’action réaliste pour votre activité dans la région avec TonSiteWeb.ch.
     </Fragment>
   </CallToAction>
 </Layout>

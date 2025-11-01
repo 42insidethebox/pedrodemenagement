@@ -5,11 +5,11 @@ layout: '~/layouts/MarkdownLayout.astro'
 
 _Aktualisiert: Februar 2024_
 
-Diese Datenschutzerklärung informiert darüber, wie **MonWebsite.ch** personenbezogene Daten von Kunden und Interessenten verarbeitet.
+Diese Datenschutzerklärung informiert darüber, wie **TonSiteWeb.ch** personenbezogene Daten von Kunden und Interessenten verarbeitet.
 
 ## 1. Verantwortliche Stelle
 
-TonSiteWeb Sàrl, Chemin de la Digitale 10, 1000 Lausanne, Schweiz, ist für die nachfolgend beschriebenen Bearbeitungen verantwortlich. Kontakt: **privacy@monwebsite.ch**.
+TonSiteWeb Sàrl ist für die nachfolgend beschriebenen Bearbeitungen verantwortlich. Kontakt: **support@tonsiteweb.ch**.
 
 ## 2. Erhobene Daten
 
@@ -52,7 +52,7 @@ Sie haben das Recht:
 - die von Ihnen bereitgestellten Daten in einem strukturierten Format zu erhalten (Datenportabilität);
 - eine erteilte Einwilligung jederzeit zu widerrufen.
 
-Wenden Sie sich zur Ausübung Ihrer Rechte an **privacy@monwebsite.ch**. Wir antworten innert 30 Tagen.
+Wenden Sie sich zur Ausübung Ihrer Rechte an **support@tonsiteweb.ch**. Wir antworten innert 30 Tagen.
 
 ## 8. Sicherheit
 
@@ -68,4 +68,4 @@ Wir können diese Datenschutzerklärung anpassen, um rechtliche Vorgaben oder Se
 
 ## 11. Kontakt
 
-Bei Fragen zum Datenschutz wenden Sie sich an **privacy@monwebsite.ch** oder schreiben Sie an TonSiteWeb Sàrl, Chemin de la Digitale 10, 1000 Lausanne, Schweiz.
+Bei Fragen zum Datenschutz wenden Sie sich an **support@tonsiteweb.ch**.

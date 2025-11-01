@@ -5,11 +5,11 @@ layout: '~/layouts/MarkdownLayout.astro'
 
 _Aggiornato: febbraio 2024_
 
-Questa informativa descrive come **MonWebsite.ch** tratta i dati personali dei propri clienti e contatti.
+Questa informativa descrive come **TonSiteWeb.ch** tratta i dati personali dei propri clienti e contatti.
 
 ## 1. Titolare del trattamento
 
-TonSiteWeb Sàrl, chemin de la Digitale 10, 1000 Losanna, Svizzera, è il titolare del trattamento. Potete contattarci a **privacy@monwebsite.ch**.
+TonSiteWeb Sàrl è il titolare del trattamento. Potete contattarci a **support@tonsiteweb.ch**.
 
 ## 2. Dati raccolti
 
@@ -52,7 +52,7 @@ Potete in qualsiasi momento:
 - ricevere una copia dei dati forniti in formato strutturato (portabilità);
 - revocare il consenso quando costituisce la base giuridica.
 
-Per esercitare i vostri diritti scrivete a **privacy@monwebsite.ch**. Risponderemo entro 30 giorni.
+Per esercitare i vostri diritti scrivete a **support@tonsiteweb.ch**. Risponderemo entro 30 giorni.
 
 ## 8. Sicurezza
 
@@ -68,4 +68,4 @@ Potremmo aggiornare questa informativa per adeguarci alla normativa o ai cambiam
 
 ## 11. Contatti
 
-Per domande sulla protezione dei dati scrivete a **privacy@monwebsite.ch** o inviate una lettera a TonSiteWeb Sàrl, chemin de la Digitale 10, 1000 Losanna, Svizzera.
+Per domande sulla protezione dei dati scrivete a **support@tonsiteweb.ch**.

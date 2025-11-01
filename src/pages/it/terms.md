@@ -5,11 +5,11 @@ layout: '~/layouts/MarkdownLayout.astro'
 
 _Aggiornato: febbraio 2024_
 
-Le presenti condizioni generali (le "Condizioni") disciplinano i servizi digitali forniti da **MonWebsite.ch**, marchio di TonSiteWeb Sàrl, chemin de la Digitale 10, 1000 Losanna, Svizzera.
+Le presenti condizioni generali (le "Condizioni") disciplinano i servizi digitali forniti da **TonSiteWeb.ch**, marchio di TonSiteWeb Sàrl.
 
 ## 1. Oggetto
 
-MonWebsite.ch progetta, realizza e mantiene siti vetrina per PMI e indipendenti attivi nell'Arco lemanico. Confermando un ordine tramite il nostro sito, e-mail o firma elettronica di un'offerta, accettate queste Condizioni.
+TonSiteWeb.ch progetta, realizza e mantiene siti vetrina. Confermando un ordine tramite il nostro sito, e-mail o firma elettronica di un'offerta, accettate queste Condizioni.
 
 ## 2. Processo d'ordine
 
@@ -34,7 +34,7 @@ Le tempistiche comunicate sono indicative e decorrono solo dopo aver ricevuto ac
 
 ## 5. Contenuti e responsabilità
 
-Garantite di possedere i diritti su tutti i testi, le immagini e i dati forniti. MonWebsite.ch declina ogni responsabilità per reclami legati a contenuti illeciti o che violano diritti di terzi. Possiamo rifiutare progetti contrari alla nostra etica o alla legislazione svizzera.
+Garantite di possedere i diritti su tutti i testi, le immagini e i dati forniti. TonSiteWeb.ch declina ogni responsabilità per reclami legati a contenuti illeciti o che violano diritti di terzi. Possiamo rifiutare progetti contrari alla nostra etica o alla legislazione svizzera.
 
 ## 6. Manutenzione e supporto
 
@@ -42,7 +42,7 @@ Il piano di manutenzione include monitoraggio tecnico, aggiornamenti di sicurezz
 
 ## 7. Hosting e domini
 
-Salvo diverso accordo, l'hosting è fornito da provider cloud svizzeri o UE conformi agli standard di sicurezza e protezione dei dati. Restate proprietari del vostro dominio; MonWebsite.ch può gestirlo tecnicamente su mandato scritto.
+Salvo diverso accordo, l'hosting è fornito da provider cloud selezionati. Restate proprietari del vostro dominio; TonSiteWeb.ch può gestirlo tecnicamente su mandato scritto.
 
 ## 8. Proprietà intellettuale
 
@@ -66,4 +66,4 @@ Le Condizioni sono regolate dal diritto svizzero. Eventuali controversie saranno
 
 ## 13. Contatti
 
-Per informazioni scrivete a **hello@monwebsite.ch** o chiamate **+41 21 555 24 24** (lunedì-venerdì, 9:00–18:00).
+Per informazioni scrivete a **support@tonsiteweb.ch** o chiamate **+41 21 555 24 24** (lunedì-venerdì, 9:00–18:00).

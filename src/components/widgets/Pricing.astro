@@ -42,10 +42,29 @@ const {
                     {subtitle && <p class="font-light sm:text-lg text-gray-600 dark:text-slate-400">{subtitle}</p>}
                     <div class="my-8">
                       <div class="flex items-center justify-center text-center mb-1">
-                        <span class="text-5xl">$</span>
+                        {
+                          // Localised “from” label support: fr=dès, en=from, de=ab, it=da
+                          (() => {
+                            const periodStr = typeof period === 'string' ? period : '';
+                            const tokens = ['dès', 'from', 'ab', 'da'];
+                            const found = tokens.find((t) => periodStr.toLowerCase().includes(t));
+                            return found ? <span class="text-sm uppercase tracking-wide mr-2">{found}</span> : '';
+                          })()
+                        }
+                        <span class="text-2xl mr-2">CHF</span>
                         <span class="text-6xl font-extrabold">{price}</span>
                       </div>
-                      <span class="text-base leading-6 lowercase text-gray-600 dark:text-slate-400">{period}</span>
+                      {
+                        (() => {
+                          const periodStr = typeof period === 'string' ? period : '';
+                          const tokens = ['dès', 'from', 'ab', 'da'];
+                          const token = tokens.find((t) => periodStr.toLowerCase().includes(t));
+                          const cleaned = token ? periodStr.replace(new RegExp(token, 'i'), '').trim() : periodStr;
+                          return (
+                            <span class="text-base leading-6 lowercase text-gray-600 dark:text-slate-400">{cleaned}</span>
+                          );
+                        })()
+                      }
                     </div>
                     {items && (
                       <ul class="my-8 md:my-10 space-y-2 text-left">

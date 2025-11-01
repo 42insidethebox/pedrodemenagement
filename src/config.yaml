@@ -1,5 +1,5 @@
 site:
-  name: MonWebsite.ch
+  name: TonSiteWeb.ch
   site: 'https://monwebsite.ch'
   base: '/'
   trailingSlash: false
@@ -9,14 +9,14 @@ site:
 # Default SEO metadata
 metadata:
   title:
-    default: MonWebsite.ch
-    template: '%s — MonWebsite.ch'
+    default: TonSiteWeb.ch
+    template: '%s — TonSiteWeb.ch'
   description: "Agence digitale suisse : sites vitrines clés-en-main pour PME et indépendants de l'Arc lémanique, avec un accompagnement transparent."
   robots:
     index: true
     follow: true
   openGraph:
-    site_name: MonWebsite.ch
+    site_name: TonSiteWeb.ch
     images:
       - url: '~/assets/images/default.png'
         width: 1200

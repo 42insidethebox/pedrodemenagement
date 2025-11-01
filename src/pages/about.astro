@@ -14,13 +14,13 @@ const metadata = {
 <Layout metadata={metadata}>
   <!-- Hero Widget ******************* -->
 
-  <Hero tagline="À propos de MonWebsite.ch">
+  <Hero tagline="À propos de TonSiteWeb.ch">
     <Fragment slot="title">
       Une équipe lémanique qui marie automatisation et service humain
     </Fragment>
 
     <Fragment slot="subtitle">
-      MonWebsite.ch est née à Lausanne pour offrir aux PME et indépendants un site web haut de gamme, livré rapidement et sans
+      TonSiteWeb.ch est née à Lausanne pour offrir aux PME et indépendants un site web haut de gamme, livré rapidement et sans
       sacrifier la précision ni l’accompagnement. Nous combinons une technologie propriétaire et des experts locaux pour garantir
       un résultat impeccable.
     </Fragment>
@@ -41,10 +41,8 @@ const metadata = {
   <Stats
     title="Nos repères"
     stats={[
-      { title: 'Rayon d’action', amount: 'Arc lémanique' },
       { title: 'Approche', amount: 'Automatisation + humain' },
-      { title: 'Maintenance', amount: 'Option 79 CHF/mois' },
-      { title: 'Langues', amount: 'FR · EN · DE' },
+      { title: 'Maintenance', amount: 'dès 79 CHF/mois' },
     ]}
   />
 
@@ -157,56 +155,9 @@ const metadata = {
 
   <!-- Steps2 Widget ****************** -->
 
-  <Steps2
-    title="Notre histoire"
-    subtitle="Nous construisons une plateforme capable de livrer des sites irréprochables sans compromis sur l’accompagnement."
-    isReversed={true}
-    callToAction={{
-      text: 'Découvrir nos offres',
-      href: '/pricing',
-    }}
-    items={[
-      {
-        title: '2021 — Lancement',
-        description: 'Création de MonWebsite.ch à Lausanne avec l’objectif de simplifier la présence web des indépendants.',
-        icon: 'tabler:flag',
-      },
-      {
-        title: '2022 — Industrialisation',
-        description: 'Déploiement de nos pipelines automatisés et ouverture de points de présence à Genève et Vevey.',
-        icon: 'tabler:arrows-exchange',
-      },
-      {
-        title: '2023 — Accélération',
-        description: 'Lancement de notre offre multilingue et partenariats renforcés avec des agences locales.',
-        icon: 'tabler:rocket',
-      },
-    ]}
-  />
+  
 
   <!-- Features2 Widget ************** -->
 
-  <Features2
-    title="Où nous rencontrer"
-    tagline="Présence locale"
-    columns={4}
-    items={[
-      {
-        title: 'Lausanne',
-        description: 'Quartier Flon — rendez-vous sur demande',
-      },
-      {
-        title: 'Genève',
-        description: 'Rue du Rhône — showroom partenaires',
-      },
-      {
-        title: 'Vevey',
-        description: 'Espace de coworking La Forge — sessions onboarding',
-      },
-      {
-        title: 'Montreux',
-        description: 'Studios photo partenaires pour vos shootings',
-      },
-    ]}
-  />
+  
 </Layout>

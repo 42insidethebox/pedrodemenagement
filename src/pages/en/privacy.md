@@ -5,11 +5,11 @@ layout: '~/layouts/MarkdownLayout.astro'
 
 _Last updated: February 2024_
 
-This privacy policy explains how **MonWebsite.ch** processes personal data for its clients and prospects.
+This privacy policy explains how **TonSiteWeb.ch** processes personal data for its clients and prospects.
 
 ## 1. Data controller
 
-TonSiteWeb Sàrl, chemin de la Digitale 10, 1000 Lausanne, Switzerland, acts as data controller. You can reach our privacy team at **privacy@monwebsite.ch**.
+TonSiteWeb Sàrl acts as data controller. You can reach us at **support@tonsiteweb.ch**.
 
 ## 2. Data we collect
 
@@ -52,7 +52,7 @@ You may at any time:
 - receive a copy of the data you provided in a structured format (portability);
 - withdraw consent whenever it is the legal basis for processing.
 
-Contact **privacy@monwebsite.ch** to exercise your rights. We answer within 30 days.
+Contact **support@tonsiteweb.ch** to exercise your rights. We answer within 30 days.
 
 ## 8. Security measures
 
@@ -68,4 +68,4 @@ We may update this policy to reflect legal changes or improvements to our servic
 
 ## 11. Contact
 
-For privacy enquiries, write to **privacy@monwebsite.ch** or mail TonSiteWeb Sàrl, chemin de la Digitale 10, 1000 Lausanne, Switzerland.
+For privacy enquiries, write to **support@tonsiteweb.ch**.

@@ -5,11 +5,11 @@ layout: '~/layouts/MarkdownLayout.astro'
 
 _Mise à jour : février 2024_
 
-Cette politique décrit la manière dont **MonWebsite.ch** collecte et traite les données personnelles de ses clients et prospects.
+Cette politique décrit la manière dont **TonSiteWeb.ch** collecte et traite les données personnelles de ses clients et prospects.
 
 ## 1. Responsable de traitement
 
-TonSiteWeb Sàrl, chemin de la Digitale 10, 1000 Lausanne, est responsable des traitements décrits dans ce document. Vous pouvez nous contacter à **privacy@monwebsite.ch**.
+TonSiteWeb Sàrl est responsable des traitements décrits dans ce document. Vous pouvez nous contacter à **support@tonsiteweb.ch**.
 
 ## 2. Données collectées
 
@@ -52,7 +52,7 @@ Vous pouvez à tout moment :
 - obtenir une copie des informations que vous nous avez fournies dans un format structuré (portabilité) ;
 - retirer votre consentement lorsque celui-ci est la base légale.
 
-Pour exercer ces droits, écrivez-nous à **privacy@monwebsite.ch**. Nous répondrons sous 30 jours.
+Pour exercer ces droits, écrivez-nous à **support@tonsiteweb.ch**. Nous répondrons sous 30 jours.
 
 ## 8. Sécurité
 
@@ -68,4 +68,4 @@ Nous pouvons mettre à jour cette politique pour refléter l'évolution de la l�
 
 ## 11. Contact
 
-Pour toute question relative à la protection des données, contactez **privacy@monwebsite.ch** ou adressez-nous un courrier à TonSiteWeb Sàrl, chemin de la Digitale 10, 1000 Lausanne.
+Pour toute question relative à la protection des données, contactez **support@tonsiteweb.ch**.

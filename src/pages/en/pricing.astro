@@ -2,6 +2,7 @@
 import Layout from '~/layouts/PageLayout.astro';
 import HeroText from '~/components/widgets/HeroText.astro';
 import Prices from '~/components/widgets/Pricing.astro';
+import Note from '~/components/widgets/Note.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import Steps from '~/components/widgets/Steps.astro';
 import Features3 from '~/components/widgets/Features3.astro';
@@ -18,7 +19,7 @@ const metadata = {
   <HeroText
     tagline="Pricing"
     title="Transparent packages, billed in Switzerland"
-    subtitle="Every pack includes design, launch and human support. Care and automations are added as needed."
+    subtitle="Every pack includes design, launch and human support. Care is optional; integrations on quote."
   />
 
   <Prices
@@ -27,18 +28,18 @@ const metadata = {
     prices={[
       {
         title: 'Essential',
-        subtitle: 'Turnkey showcase site',
+        subtitle: 'Turnkey showcase site (code delivered)',
         price: 999,
-        period: 'CHF — one-time',
+        period: 'from — one-time',
         items: [
           {
             description: 'Showcase site with 5 sections + responsive contact page',
           },
           {
-            description: 'French copywriting optimised for the Léman Arc',
+            description: 'Client-provided content; we integrate and format it',
           },
           {
-            description: 'Swiss hosting & SSL certificate included for 12 months',
+            description: 'Hosting not included (care plans from CHF 79/month)',
           },
           {
             description: 'Video training + autonomy checklist',
@@ -50,36 +51,25 @@ const metadata = {
         },
       },
       {
-        title: 'Automation',
-        subtitle: 'Site + 1 Zapier/Make flow',
-        price: 1200,
-        period: 'CHF — one-time',
+        title: 'Advanced',
+        subtitle: 'Site + advanced features',
+        price: 3000,
+        period: 'from — one-time',
         items: [
-          {
-            description: 'Includes the Essential pack',
-          },
-          {
-            description: 'Connection to one tool via Zapier or Make (1 automation)',
-          },
-          {
-            description: 'End-to-end testing and simple documentation',
-          },
-          {
-            description: 'Up to 4 automations: CHF 1,500',
-          },
+          { description: 'Includes the Essential pack' },
+          { description: 'Simple backend or specific features' },
+          { description: 'End-to-end testing and concise docs' },
         ],
         callToAction: {
-          text: 'Request an automation quote',
+          text: 'Request a proposal',
           href: '/en/contact#form',
         },
-        hasRibbon: true,
-        ribbonTitle: 'Most popular',
       },
       {
         title: 'Care & security',
-        subtitle: 'Updates and pro email',
+        subtitle: 'Updates and options by tier',
         price: 79,
-        period: 'CHF / month — no surprises',
+        period: 'from / month — no surprises',
         items: [
           {
             description: 'Security updates and scheduled backups',
@@ -88,7 +78,7 @@ const metadata = {
             description: 'Uptime monitoring & priority fixes',
           },
           {
-            description: 'Management of @yourdomain.ch professional emails',
+            description: 'Pro email & Swiss hosting from 149–249 CHF/month',
           },
           {
             description: 'Email & video support within one business day',
@@ -102,9 +92,11 @@ const metadata = {
     ]}
   />
 
+  
+
   <Features3
-    title="Included benefits"
-    subtitle="All our offers come with these guarantees."
+    title="What our offers can include"
+    subtitle="Depending on plan and needs."
     columns={2}
     items={[
       {
@@ -113,13 +105,13 @@ const metadata = {
         icon: 'tabler:headset',
       },
       {
-        title: 'Sovereign hosting',
-        description: 'Servers located in Switzerland, GDPR/LPD compliant with SSL certificate included.',
+        title: 'Swiss hosting (optional)',
+        description: 'Servers in Switzerland with SSL, available on higher tiers.',
         icon: 'tabler:server',
       },
       {
-        title: 'Client dashboard',
-        description: 'Track progress, share content and approve each step online.',
+        title: 'Simple process',
+        description: 'Email-based exchanges and step approvals (no client portal).',
         icon: 'tabler:layout-dashboard',
       },
       {
@@ -172,7 +164,7 @@ const metadata = {
       <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-white shadow-xl">
         <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Process</p>
         <p class="mt-6 max-w-xs text-base text-blue-100/90">
-          From signature to launch, every milestone is timestamped and documented in your client space.
+          Simple journey: brief, content integration and approvals by email.
         </p>
       </div>
     </Fragment>
@@ -191,12 +183,12 @@ const metadata = {
         description: 'Around five business days after we receive your content. We share a detailed schedule during the brief.',
       },
       {
-        title: 'How do you bill extra automations?',
-        description: 'Each additional flow is quoted upfront. Three to four standard automations are CHF 1,500.',
+        title: 'How do you bill integrations?',
+        description: 'Simple integrations are included. API connections and advanced scenarios are quoted.',
       },
       {
         title: 'Is the care plan mandatory?',
-        description: 'No. You can manage the site yourself or entrust us with the CHF 79/month plan, cancellable with 30 days notice.',
+        description: 'No. Care from CHF 79/month with a 30-day notice to cancel.',
       },
       {
         title: 'Which payment methods do you accept?',

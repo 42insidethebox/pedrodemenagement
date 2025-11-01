@@ -2,6 +2,7 @@
 import Layout from '~/layouts/PageLayout.astro';
 import HeroText from '~/components/widgets/HeroText.astro';
 import Prices from '~/components/widgets/Pricing.astro';
+import Note from '~/components/widgets/Note.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import Steps from '~/components/widgets/Steps.astro';
 import Features3 from '~/components/widgets/Features3.astro';
@@ -27,18 +28,18 @@ const metadata = {
     prices={[
       {
         title: 'Essentiel',
-        subtitle: 'Schlüsselfertige Showcase-Seite',
+        subtitle: 'Schlüsselfertige Showcase-Seite (Code geliefert)',
         price: 999,
-        period: 'CHF — einmalig',
+        period: 'ab — einmalig',
         items: [
           {
             description: 'Showcase-Seite mit 5 Sektionen + responsive Kontaktseite',
           },
           {
-            description: 'Französische Texte optimiert für den Genfersee-Raum',
+            description: 'Inhalte vom Kunden geliefert; wir integrieren und formatieren',
           },
           {
-            description: 'Schweizer Hosting & SSL-Zertifikat für 12 Monate inklusive',
+            description: 'Hosting nicht inbegriffen (Servicepläne ab 79 CHF/Monat)',
           },
           {
             description: 'Video-Training + Checkliste für Eigenständigkeit',
@@ -50,36 +51,25 @@ const metadata = {
         },
       },
       {
-        title: 'Automatisierung',
-        subtitle: 'Website + 1 Zapier/Make-Flow',
-        price: 1200,
-        period: 'CHF — einmalig',
+        title: 'Erweitert',
+        subtitle: 'Website + erweiterte Funktionen',
+        price: 3000,
+        period: 'ab — einmalig',
         items: [
-          {
-            description: 'Enthält das Paket Essentiel',
-          },
-          {
-            description: 'Anbindung eines Tools via Zapier oder Make (1 Automation)',
-          },
-          {
-            description: 'End-to-End-Tests und einfache Dokumentation',
-          },
-          {
-            description: 'Bis zu 4 Automationen: CHF 1’500',
-          },
+          { description: 'Enthält das Paket Essentiel' },
+          { description: 'Einfaches Backend oder spezifische Funktionen' },
+          { description: 'End-to-End-Tests und kurze Dokumentation' },
         ],
         callToAction: {
-          text: 'Automatisierungsangebot anfragen',
+          text: 'Angebot anfragen',
           href: '/de/contact#form',
         },
-        hasRibbon: true,
-        ribbonTitle: 'Beliebtestes',
       },
       {
         title: 'Serviceplan',
-        subtitle: 'Updates und Profi-E-Mails',
+        subtitle: 'Updates und Optionen je nach Stufe',
         price: 79,
-        period: 'CHF / Monat — ohne Überraschungen',
+        period: 'ab / Monat — ohne Überraschungen',
         items: [
           {
             description: 'Sicherheitsupdates und geplante Backups',
@@ -88,7 +78,7 @@ const metadata = {
             description: 'Uptime-Monitoring & priorisierte Korrekturen',
           },
           {
-            description: 'Verwaltung der @ihredomain.ch E-Mail-Konten',
+            description: 'Pro-E-Mail & Schweizer Hosting ab 149–249 CHF/Monat',
           },
           {
             description: 'Support per E-Mail & Video innerhalb eines Arbeitstages',
@@ -102,9 +92,11 @@ const metadata = {
     ]}
   />
 
+  
+
   <Features3
-    title="Inklusive Leistungen"
-    subtitle="Alle Angebote beinhalten diese Garantien."
+    title="Was unsere Angebote beinhalten können"
+    subtitle="Je nach Paket und Bedarf."
     columns={2}
     items={[
       {
@@ -113,13 +105,13 @@ const metadata = {
         icon: 'tabler:headset',
       },
       {
-        title: 'Souveränes Hosting',
-        description: 'Server in der Schweiz, DSGVO/LPD-konform, SSL inklusive.',
+        title: 'Schweizer Hosting (optional)',
+        description: 'Server in der Schweiz mit SSL, auf höheren Stufen verfügbar.',
         icon: 'tabler:server',
       },
       {
-        title: 'Kunden-Dashboard',
-        description: 'Fortschritt verfolgen, Inhalte teilen und Schritte online freigeben.',
+        title: 'Einfacher Prozess',
+        description: 'Austausch per E‑Mail und Freigaben pro Schritt (kein Kundenportal).',
         icon: 'tabler:layout-dashboard',
       },
       {
@@ -171,9 +163,9 @@ const metadata = {
     <Fragment slot="image">
       <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-white shadow-xl">
         <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Prozess</p>
-        <p class="mt-6 max-w-xs text-base text-blue-100/90">
-          Von der Unterschrift bis zum Launch – jeder Schritt wird in Ihrem Kundenbereich protokolliert.
-        </p>
+          <p class="mt-6 max-w-xs text-base text-blue-100/90">
+            Einfacher Ablauf: Briefing, Inhaltsintegration und Freigaben per E‑Mail.
+          </p>
       </div>
     </Fragment>
   </Steps>
@@ -191,12 +183,12 @@ const metadata = {
         description: 'Rund fünf Arbeitstage nach Eingang Ihrer Inhalte. Den genauen Zeitplan erhalten Sie beim Briefing.',
       },
       {
-        title: 'Wie verrechnet ihr zusätzliche Automationen?',
-        description: 'Jeder zusätzliche Flow wird vorab offeriert. Drei bis vier Standard-Automatismen kosten CHF 1’500.',
+        title: 'Wie verrechnet ihr Integrationen?',
+        description: 'Einfache Integrationen sind enthalten. API‑Anbindungen und komplexe Szenarien werden offeriert.',
       },
       {
         title: 'Ist der Serviceplan obligatorisch?',
-        description: 'Nein. Sie können die Website selbst verwalten oder uns für CHF 79/Monat beauftragen (30 Tage Kündigungsfrist).',
+        description: 'Nein. Service ab 79 CHF/Monat mit 30 Tagen Kündigungsfrist.',
       },
       {
         title: 'Welche Zahlungsmittel akzeptiert ihr?',

@@ -1,80 +1,27 @@
+import { defineConfig } from "astro/config";
+import vercel from "@astrojs/vercel"; // modern import path
+import icon from "astro-icon";
+import tailwind from "@astrojs/tailwind";
 import path from "path";
 import { fileURLToPath } from "url";
-import { defineConfig } from "astro/config";
-
-import vercel from "@astrojs/vercel";
-import sitemap from "@astrojs/sitemap";
-import tailwind from "@astrojs/tailwind";
-import mdx from "@astrojs/mdx";
-import partytown from "@astrojs/partytown";
-import icon from "astro-icon";
-import compress from "astro-compress";
-import type { AstroIntegration } from "astro";
-
-import astrowind from "./vendor/integration";
-import {
-  readingTimeRemarkPlugin,
-  responsiveTablesRehypePlugin,
-  lazyImagesRehypePlugin,
-} from "./src/utils/frontmatter";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const hasExternalScripts = false;
-const whenExternalScripts = (
-  items: (() => AstroIntegration) | (() => AstroIntegration)[] = []
-) =>
-  hasExternalScripts
-    ? Array.isArray(items)
-      ? items.map((item) => item())
-      : [items()]
-    : [];
 
 export default defineConfig({
-  adapter: vercel({ runtime: "node" }), // or "edge" if preferred
-  output: "server",
+  // Ensure Astro knows the site origin for canonical URLs, OG images, etc.
+  site: "https://monwebsite.ch",
+  base: "/",
+  trailingSlash: "never",
 
-  integrations: [
-    tailwind({ applyBaseStyles: false }),
-    sitemap(),
-    mdx(),
-    icon({
-      include: {
-        tabler: ["*"],
-        "flat-color-icons": [
-          "template",
-          "gallery",
-          "approval",
-          "document",
-          "advertising",
-          "currency-exchange",
-          "voice-presentation",
-          "business-contact",
-          "database",
-        ],
-      },
-    }),
-    ...whenExternalScripts(() =>
-      partytown({ config: { forward: ["dataLayer.push"] } })
-    ),
-    compress({
-      CSS: true,
-      HTML: { "html-minifier-terser": { removeAttributeQuotes: false } },
-      Image: false,
-      JavaScript: true,
-      SVG: false,
-      Logger: 1,
-    }),
-    astrowind({ config: "./src/config.yaml" }),
-  ],
-
-  image: { domains: ["cdn.pixabay.com"] },
-  markdown: {
-    remarkPlugins: [readingTimeRemarkPlugin],
-    rehypePlugins: [responsiveTablesRehypePlugin, lazyImagesRehypePlugin],
-  },
+  output: "static", // 👈 force prerendering
+  adapter: vercel(),
+  integrations: [tailwind({ applyBaseStyles: false }), icon()],
   vite: {
     resolve: {
-      alias: { "~": path.resolve(__dirname, "./src") },
+      alias: {
+        // Keep mock for astrowind config only
+        "astrowind:config": path.resolve(__dirname, "src/mocks/astrowind-config.ts"),
+      },
     },
   },
 });

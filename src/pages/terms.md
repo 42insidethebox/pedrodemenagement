@@ -5,11 +5,11 @@ layout: '~/layouts/MarkdownLayout.astro'
 
 _Mise à jour : février 2024_
 
-Les présentes conditions générales (les « Conditions ») régissent les prestations fournies par **MonWebsite.ch**, marque exploitée par TonSiteWeb Sàrl, chemin de la Digitale 10, 1000 Lausanne.
+Les présentes conditions générales (les « Conditions ») régissent les prestations fournies par **TonSiteWeb.ch**, marque exploitée par TonSiteWeb Sàrl.
 
 ## 1. Objet
 
-MonWebsite.ch conçoit, déploie et maintient des sites vitrines pour des entreprises et indépendants basés en Suisse romande. Les Conditions décrivent les droits et obligations applicables à toute commande passée via notre site, par e-mail ou par signature électronique d'une offre.
+TonSiteWeb.ch conçoit, déploie et maintient des sites vitrines pour des entreprises et indépendants. Les Conditions décrivent les droits et obligations applicables à toute commande passée via notre site, par e-mail ou par signature électronique d'une offre.
 
 ## 2. Commande et processus
 
@@ -34,7 +34,7 @@ Nos délais de livraison sont indicatifs. Ils débutent uniquement lorsque l'aco
 
 ## 5. Contenus et responsabilités
 
-Vous garantissez disposer des droits nécessaires sur l'ensemble des textes, images et données que vous nous confiez. MonWebsite.ch décline toute responsabilité en cas de réclamation liée à des contenus illicites ou portant atteinte à des droits de tiers. Nous pouvons refuser un projet contraire à notre éthique ou à la législation suisse.
+Vous garantissez disposer des droits nécessaires sur l'ensemble des textes, images et données que vous nous confiez. TonSiteWeb.ch décline toute responsabilité en cas de réclamation liée à des contenus illicites ou portant atteinte à des droits de tiers. Nous pouvons refuser un projet contraire à notre éthique ou à la législation suisse.
 
 ## 6. Maintenance et support
 
@@ -42,7 +42,7 @@ La maintenance inclut la surveillance technique, l'application des correctifs de
 
 ## 7. Hébergement et domaine
 
-Sauf accord différent, l'hébergement est assuré auprès de fournisseurs cloud certifiés en Suisse ou dans l'Union européenne, choisis pour leur conformité aux normes de sécurité et de protection des données. Vous restez propriétaire de votre nom de domaine ; MonWebsite.ch peut en assurer la gestion technique sur mandat écrit.
+Sauf accord différent, l'hébergement est assuré auprès de fournisseurs cloud certifiés. Vous restez propriétaire de votre nom de domaine ; TonSiteWeb.ch peut en assurer la gestion technique sur mandat écrit.
 
 ## 8. Propriété intellectuelle
 
@@ -66,4 +66,4 @@ Les présentes Conditions sont régies par le droit suisse. Tout litige sera sou
 
 ## 13. Contact
 
-Pour toute question, contactez-nous à **hello@monwebsite.ch** ou au **+41 21 555 24 24** (du lundi au vendredi, 9h–18h).
+Pour toute question, contactez-nous à **support@tonsiteweb.ch** ou au **+41 21 555 24 24** (du lundi au vendredi, 9h–18h).
