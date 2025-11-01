@@ -1,4 +1,4 @@
-import { getPermalink, getBlogPermalink, getAsset } from './utils/permalinks';
+import { getPermalink, getAsset } from './utils/permalinks';
 
 type Navigation = {
   links: Array<
@@ -63,14 +63,7 @@ export const headerDataFr: Navigation = {
       text: 'Contact',
       href: getPermalink('/contact'),
     },
-    {
-      text: 'Ressources',
-      links: [
-        { text: 'Étapes du projet', href: getPermalink('/#process') },
-        { text: 'Foire aux questions', href: getPermalink('/#faq') },
-        { text: 'Blog', href: getBlogPermalink() },
-      ],
-    },
+    { text: 'FAQ', href: getPermalink('/#faq') },
     {
       text: 'Langue',
       links: languageLinks,
@@ -139,14 +132,7 @@ export const headerDataEn: Navigation = {
     { text: 'Pricing', href: getPermalink('/en/pricing') },
     { text: 'About', href: getPermalink('/en/about') },
     { text: 'Contact', href: getPermalink('/en/contact') },
-    {
-      text: 'Resources',
-      links: [
-        { text: 'Project steps', href: getPermalink('/en#process') },
-        { text: 'FAQ', href: getPermalink('/en#faq') },
-        { text: 'Blog', href: getBlogPermalink() },
-      ],
-    },
+    { text: 'FAQ', href: getPermalink('/en#faq') },
     { text: 'Language', links: languageLinks },
   ],
   actions: [{ text: 'Request a demo', href: getPermalink('/en/contact#form') }],
@@ -181,8 +167,8 @@ export const footerDataEn: FooterNavigation = {
     },
   ],
   secondaryLinks: [
-    { text: 'Terms', href: getPermalink('/terms') },
-    { text: 'Privacy', href: getPermalink('/privacy') },
+    { text: 'Terms', href: getPermalink('/en/terms') },
+    { text: 'Privacy', href: getPermalink('/en/privacy') },
     ...languageLinks.map((link) => ({ text: link.text, href: link.href })),
   ],
   socialLinks: [
@@ -210,14 +196,7 @@ export const headerDataDe: Navigation = {
     { text: 'Preise', href: getPermalink('/de/pricing') },
     { text: 'Über uns', href: getPermalink('/de/about') },
     { text: 'Kontakt', href: getPermalink('/de/contact') },
-    {
-      text: 'Ressourcen',
-      links: [
-        { text: 'Projektablauf', href: getPermalink('/de#process') },
-        { text: 'FAQ', href: getPermalink('/de#faq') },
-        { text: 'Blog', href: getBlogPermalink() },
-      ],
-    },
+    { text: 'FAQ', href: getPermalink('/de#faq') },
     { text: 'Sprache', links: languageLinks },
   ],
   actions: [{ text: 'Demo anfragen', href: getPermalink('/de/contact#form') }],
@@ -252,8 +231,8 @@ export const footerDataDe: FooterNavigation = {
     },
   ],
   secondaryLinks: [
-    { text: 'AGB', href: getPermalink('/terms') },
-    { text: 'Datenschutz', href: getPermalink('/privacy') },
+    { text: 'AGB', href: getPermalink('/de/terms') },
+    { text: 'Datenschutz', href: getPermalink('/de/privacy') },
     ...languageLinks.map((link) => ({ text: link.text, href: link.href })),
   ],
   socialLinks: [
@@ -281,14 +260,7 @@ export const headerDataIt: Navigation = {
     { text: 'Prezzi', href: getPermalink('/it/pricing') },
     { text: 'Chi siamo', href: getPermalink('/it/about') },
     { text: 'Contatto', href: getPermalink('/it/contact') },
-    {
-      text: 'Risorse',
-      links: [
-        { text: 'Fasi del progetto', href: getPermalink('/it#process') },
-        { text: 'FAQ', href: getPermalink('/it#faq') },
-        { text: 'Blog', href: getBlogPermalink() },
-      ],
-    },
+    { text: 'FAQ', href: getPermalink('/it#faq') },
     { text: 'Lingua', links: languageLinks },
   ],
   actions: [{ text: 'Richiedi una demo', href: getPermalink('/it/contact#form') }],
@@ -323,8 +295,8 @@ export const footerDataIt: FooterNavigation = {
     },
   ],
   secondaryLinks: [
-    { text: 'Condizioni generali', href: getPermalink('/terms') },
-    { text: 'Privacy', href: getPermalink('/privacy') },
+    { text: 'Condizioni generali', href: getPermalink('/it/terms') },
+    { text: 'Privacy', href: getPermalink('/it/privacy') },
     ...languageLinks.map((link) => ({ text: link.text, href: link.href })),
   ],
   socialLinks: [
