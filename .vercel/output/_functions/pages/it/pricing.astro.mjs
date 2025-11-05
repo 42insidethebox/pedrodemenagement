@@ -1,11 +1,10 @@
-import { d as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead, F as Fragment } from '../../chunks/astro/server_BwlJ74mX.mjs';
-import { $ as $$PageLayout, e as footerDataIt, g as headerDataIt } from '../../chunks/PageLayout_BqyLTlOK.mjs';
-import { $ as $$HeroText } from '../../chunks/HeroText_ClQR8WMz.mjs';
-import { $ as $$Pricing$1 } from '../../chunks/Pricing_BoTyvBYR.mjs';
-import { $ as $$PricingOptions } from '../../chunks/PricingOptions_DemqZGFn.mjs';
-import { $ as $$Steps, a as $$FAQs } from '../../chunks/Steps_BjELtjt8.mjs';
-import { $ as $$Features3 } from '../../chunks/Features3_D14xZ8uE.mjs';
-import { $ as $$CallToAction } from '../../chunks/CallToAction_CXdxRUaW.mjs';
+import { d as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead, F as Fragment } from '../../chunks/astro/server_DpQ8NPFj.mjs';
+import { $ as $$PageLayout, e as footerDataIt, g as headerDataIt } from '../../chunks/PageLayout_C0BDAYgu.mjs';
+import { $ as $$HeroText } from '../../chunks/HeroText_BpoFtxPC.mjs';
+import { $ as $$Pricing$1, a as $$PricingOptions } from '../../chunks/PricingOptions_DSxOl6Rt.mjs';
+import { $ as $$Steps, a as $$FAQs } from '../../chunks/Steps_DMVgCwK2.mjs';
+import { $ as $$Features3 } from '../../chunks/Features3_Do8CCAA8.mjs';
+import { $ as $$CallToAction } from '../../chunks/CallToAction_BtHIYINw.mjs';
 export { renderers } from '../../renderers.mjs';
 
 const $$Astro = createAstro("https://tonsiteweb.ch");
@@ -72,10 +71,10 @@ const $$Pricing = createComponent(($$result, $$props, $$slots) => {
       callToAction: '<a class="btn btn-primary" href="#modal-care-it">Scegli</a>'
     }
   ] })} ${maybeRenderHead()}<div class="mt-6 grid gap-4 max-w-7xl mx-auto px-4"> <div class="flex flex-wrap gap-4"> ${renderComponent($$result2, "PricingOptions", $$PricingOptions, { "id": "modal-essential-it", "triggerText": "", "title": "Pacchetti Essenziale", "subtitle": "Scegli il livello di automazione", "ctaText": "Scegli", "tiers": [
-    { label: "CHF 999", price: "da 999", features: ["Sito statico", "Form semplice (email)"], href: "/it/choose-template?plan=essential999", info: ["Hosting & SSL inclusi (12 mesi)", "1 giro di piccole modifiche (\u2264 30 min)", "Nessun redesign continuo"] },
-    { label: "CHF 1\u2019249", price: "1\u2019249", features: ["Include Essenziale", "1 automazione (es: prenotazione)"], href: "/it/choose-template?plan=essential1249", primary: true, info: ["Hosting & SSL inclusi (12 mesi)", "1 giro di piccole modifiche (\u2264 30 min)", "Nessun redesign continuo"] },
-    { label: "CHF 1\u2019500", price: "1\u2019500", features: ["Include Essenziale", "2\u20133 automazioni"], href: "/it/choose-template?plan=essential1500", info: ["Hosting & SSL inclusi (12 mesi)", "1 giro di piccole modifiche (\u2264 30 min)", "Nessun redesign continuo"] }
-  ], "footnote": "Hosting & SSL inclusi il 1\xBA anno. Assistenza tecnica inclusa. Aggiornamenti di contenuto o design fatturati a parte." })} ${renderComponent($$result2, "PricingOptions", $$PricingOptions, { "id": "modal-advanced-it", "triggerText": "", "title": "Pacchetto Avanzato", "subtitle": "Template + backend leggero (3\u20135k) o su misura (10k+)", "ctaText": "Scegli", "tiers": [
+    { label: "CHF 999", price: "da 999", features: ["Sito statico", "Form semplice (email)"], href: "/it/choose-template?plan=essential999", info: ["Hosting & SSL inclusi (3 mesi)", "1 giro di piccole modifiche (\u2264 30 min)", "Abbinabile a Care 79 (hosting & sicurezza)"] },
+    { label: "CHF 1\u2019249", price: "1\u2019249", features: ["Include Essenziale", "1 automazione (es: prenotazione)"], href: "/it/choose-template?plan=essential1249", primary: true, info: ["Hosting & SSL inclusi (6 mesi)", "1 giro di piccole modifiche (\u2264 30 min)", "Abbinabile a Care 79 (hosting & sicurezza)"] },
+    { label: "CHF 1\u2019500", price: "1\u2019500", features: ["Include Essenziale", "2\u20133 automazioni"], href: "/it/choose-template?plan=essential1500", info: ["Hosting & SSL inclusi (9 mesi)", "1 giro di piccole modifiche (\u2264 30 min)", "Abbinabile a Care 79 (hosting & sicurezza)"] }
+  ], "footnote": "Hosting & SSL inclusi (3/6/9 mesi a seconda del pacchetto). Assistenza tecnica inclusa. Modifiche di contenuto o design fatturate a parte." })} ${renderComponent($$result2, "PricingOptions", $$PricingOptions, { "id": "modal-advanced-it", "triggerText": "", "title": "Pacchetto Avanzato", "subtitle": "Template + backend leggero (3\u20135k) o su misura (10k+)", "ctaText": "Scegli", "tiers": [
     { label: "Fino a 5\u2019000 CHF", price: "da 3\u2019000", features: ["Template + backend leggero (es: headless shop)", "1\u20132 automazioni"], href: "/it/contact?plan=advanced_5k#form" },
     { label: "Su misura", price: "10\u2019000 CHF+", features: ["Progetto personalizzato", "Scoping + preventivo"], href: "/it/contact?plan=bespoke_10k_plus#form", primary: true },
     { label: "Consulenza", price: "su richiesta", features: ["Workshop di scoping", "Architettura & strategia"], href: "/it/contact?plan=consulting#form" }
