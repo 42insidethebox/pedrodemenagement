@@ -1,0 +1,45 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Headline from '~/components/ui/Headline.astro';
+import { headerDataDe, footerDataDe } from '~/navigation';
+
+type Tpl = { id: string; name: string; preview?: string; url?: string };
+
+const plan = Astro.url.searchParams.get('plan') || '';
+const templates: Tpl[] = [
+  { id: 'classic-clean', name: 'Classic Clean', url: 'https://demo.example.com/classic-clean' },
+  { id: 'bold-contrast', name: 'Bold Contrast', url: 'https://demo.example.com/bold-contrast' },
+  { id: 'serif-elegance', name: 'Serif Elegance', url: 'https://demo.example.com/serif-elegance' },
+  { id: 'minimal-grid', name: 'Minimal Grid', url: 'https://demo.example.com/minimal-grid' },
+  { id: 'warm-landing', name: 'Warm Landing', url: 'https://demo.example.com/warm-landing' },
+  { id: 'artisan-folio', name: 'Artisan Folio', url: 'https://demo.example.com/artisan-folio' },
+];
+
+const metadata = { title: 'Vorlage wählen' };
+---
+
+<Layout metadata={metadata} header={headerDataDe} footer={footerDataDe}>
+  <div class="max-w-6xl mx-auto px-4 py-10">
+    <Headline title="Wählen Sie Ihr Template" subtitle={plan ? `Gewählter Plan: ${plan}` : 'Bitte wählen Sie zuerst ein Paket auf der Preisseite'} />
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+      {templates.map((t) => (
+        <div class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900 shadow overflow-hidden flex flex-col">
+          <div class="aspect-video bg-gray-100 dark:bg-slate-800 flex items-center justify-center text-gray-500 text-sm">
+            Vorschau
+          </div>
+          <div class="p-4 flex-1 flex flex-col">
+            <h3 class="text-lg font-semibold">{t.name}</h3>
+            <div class="mt-4 flex gap-2 mt-auto">
+              {t.url ? <a class="btn" href={t.url} target="_blank" rel="noreferrer">Vorschau</a> : ''}
+              <a class="btn btn-primary" href={`/api/payment/redirect?plan=${encodeURIComponent(plan)}&template=${encodeURIComponent(t.id)}`}>
+                Dieses Modell wählen
+              </a>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</Layout>
+

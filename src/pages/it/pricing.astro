@@ -2,6 +2,7 @@
 import Layout from '~/layouts/PageLayout.astro';
 import HeroText from '~/components/widgets/HeroText.astro';
 import Prices from '~/components/widgets/Pricing.astro';
+import PricingOptions from '~/components/widgets/PricingOptions.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import Steps from '~/components/widgets/Steps.astro';
 import Features3 from '~/components/widgets/Features3.astro';
@@ -44,10 +45,7 @@ const metadata = {
             description: 'Video training + checklist di autonomia',
           },
         ],
-        callToAction: {
-          text: 'Avvia il progetto',
-          href: '/it/contact#form',
-        },
+        callToAction: '<a class="btn btn-primary" href="#modal-essential-it">Scopri</a>',
       },
       {
         title: 'Avanzato',
@@ -56,13 +54,11 @@ const metadata = {
         period: 'da — pagamento unico',
         items: [
           { description: 'Include il pacchetto Essenziale' },
-          { description: 'Backend semplice o funzionalità specifiche' },
+          { description: 'Backend semplice + template (fino a 5’000 CHF)' },
+          { description: 'Progetti su misura da 10’000 CHF+ — parliamone' },
           { description: 'Test end-to-end e documentazione concisa' },
         ],
-        callToAction: {
-          text: 'Richiedi preventivo',
-          href: '/it/contact#form',
-        },
+        callToAction: '<a class="btn btn-primary" href="#modal-advanced-it">Scopri</a>',
       },
       {
         title: 'Piano di cura',
@@ -83,13 +79,52 @@ const metadata = {
             description: 'Supporto email e video entro un giorno lavorativo',
           },
         ],
-        callToAction: {
-          text: 'Attiva il piano',
-          href: '/it/contact#form',
-        },
+        callToAction: '<a class="btn btn-primary" href="#modal-care-it">Scegli</a>',
       },
     ]}
   />
+  <div class="mt-6 grid gap-4 max-w-7xl mx-auto px-4">
+    <div class="flex flex-wrap gap-4">
+      <PricingOptions
+        id="modal-essential-it"
+        triggerText=""
+        title="Pacchetti Essenziale"
+        subtitle="Scegli il livello di automazione"
+        ctaText="Scegli"
+        tiers={[
+          { label: 'CHF 999', price: 'da 999', features: ['Sito statico', 'Form semplice (email)'], href: '/it/choose-template?plan=essential999', info: ['Hosting & SSL inclusi (3 mesi)', '1 giro di piccole modifiche (≤ 30 min)', 'Abbinabile a Care 79 (hosting & sicurezza)'] },
+          { label: 'CHF 1’249', price: '1’249', features: ['Include Essenziale', '1 automazione (es: prenotazione)'], href: '/it/choose-template?plan=essential1249', primary: true, info: ['Hosting & SSL inclusi (6 mesi)', '1 giro di piccole modifiche (≤ 30 min)', 'Abbinabile a Care 79 (hosting & sicurezza)'] },
+          { label: 'CHF 1’500', price: '1’500', features: ['Include Essenziale', '2–3 automazioni'], href: '/it/choose-template?plan=essential1500', info: ['Hosting & SSL inclusi (9 mesi)', '1 giro di piccole modifiche (≤ 30 min)', 'Abbinabile a Care 79 (hosting & sicurezza)'] },
+        ]}
+        footnote="Hosting & SSL inclusi (3/6/9 mesi a seconda del pacchetto). Assistenza tecnica inclusa. Modifiche di contenuto o design fatturate a parte."
+      />
+      <PricingOptions
+        id="modal-advanced-it"
+        triggerText=""
+        title="Pacchetto Avanzato"
+        subtitle="Template + backend leggero (3–5k) o su misura (10k+)"
+        ctaText="Scegli"
+        tiers={[
+          { label: 'Fino a 5’000 CHF', price: 'da 3’000', features: ['Template + backend leggero (es: headless shop)', '1–2 automazioni'], href: '/it/contact?plan=advanced_5k#form' },
+          { label: 'Su misura', price: '10’000 CHF+', features: ['Progetto personalizzato', 'Scoping + preventivo'], href: '/it/contact?plan=bespoke_10k_plus#form', primary: true },
+          { label: 'Consulenza', price: 'su richiesta', features: ['Workshop di scoping', 'Architettura & strategia'], href: '/it/contact?plan=consulting#form' },
+        ]}
+        footnote="Alto traffico fatturato a consumo. Nessun server incluso."
+      />
+      <PricingOptions
+        id="modal-care-it"
+        triggerText=""
+        title="Piani Care (hosting & sicurezza)"
+        subtitle="Hosting svizzero + patch di sicurezza"
+        ctaText="Scegli"
+        tiers={[
+          { label: 'Care 79', price: 'CHF 79/mese', features: ['Hosting & SSL', 'Aggiornamenti di sicurezza'], href: '/api/payment/redirect?plan=care79' },
+          { label: 'Care 149', price: 'CHF 149/mese', features: ['Include Care 79', 'Supporto prioritario leggero'], href: '/api/payment/redirect?plan=care149', primary: true },
+          { label: 'Care 249', price: 'CHF 249/mese', features: ['Include Care 149', 'Supporto esteso & piccole modifiche'], href: '/api/payment/redirect?plan=care249' },
+        ]}
+      />
+    </div>
+  </div>
 
   <Features3
     title="Vantaggi inclusi"

@@ -1,0 +1,27 @@
+import type { APIRoute } from 'astro';
+import { getStripe } from '~/lib/stripe';
+
+export const prerender = false;
+
+export const GET: APIRoute = async ({ url }) => {
+  const sessionId = url.searchParams.get('session_id') || '';
+  if (!sessionId) return new Response('Missing session_id', { status: 400 });
+
+  const stripe = await getStripe();
+  if (!stripe) return new Response('Stripe not configured', { status: 501 });
+
+  try {
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    return new Response(JSON.stringify({
+      id: session.id,
+      customer_email: session.customer_details?.email || null,
+      payment_status: session.payment_status,
+      amount_total: session.amount_total,
+      currency: session.currency,
+      metadata: session.metadata || {},
+    }), { status: 200 });
+  } catch (e: any) {
+    return new Response(JSON.stringify({ error: e?.message || 'Not found' }), { status: 404 });
+  }
+};
+

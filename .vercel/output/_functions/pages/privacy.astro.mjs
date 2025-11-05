@@ -1,1 +1,53 @@
-// Contents removed by Astro as it's used for prerendering only
+import { c as createComponent, r as renderComponent, a as renderTemplate, u as unescapeHTML } from '../chunks/astro/server_BwlJ74mX.mjs';
+import { $ as $$MarkdownLayout } from '../chunks/MarkdownLayout_BuhSSb6O.mjs';
+export { renderers } from '../renderers.mjs';
+
+const html = () => "<p><em>Mise à jour : février 2024</em></p>\n<p>Cette politique décrit la manière dont <strong>TonSiteWeb.ch</strong> collecte et traite les données personnelles de ses clients et prospects.</p>\n<h2 id=\"1-responsable-de-traitement\">1. Responsable de traitement</h2>\n<p>TonSiteWeb Sàrl est responsable des traitements décrits dans ce document. Vous pouvez nous contacter à <strong><a href=\"mailto:support@tonsiteweb.ch\">support@tonsiteweb.ch</a></strong>.</p>\n<h2 id=\"2-données-collectées\">2. Données collectées</h2>\n<p>Nous collectons uniquement les informations nécessaires à la préparation, la réalisation et le suivi de nos prestations :</p>\n<ul>\n<li>Identité et coordonnées (nom, prénom, entreprise, e-mail, téléphone, adresse de facturation)</li>\n<li>Informations liées au projet (secteur, objectifs, contenus fournis)</li>\n<li>Données de facturation et d’historique commercial</li>\n<li>Logs techniques indispensables à la maintenance (adresse IP, événements serveur, horodatages)</li>\n</ul>\n<h2 id=\"3-finalités\">3. Finalités</h2>\n<p>Vos données sont utilisées pour :</p>\n<ol>\n<li>répondre à vos demandes et établir des offres personnalisées ;</li>\n<li>exécuter nos obligations contractuelles et assurer le support technique ;</li>\n<li>émettre les factures et suivre la relation client ;</li>\n<li>mesurer l’utilisation de nos services et améliorer nos produits (statistiques anonymisées).</li>\n</ol>\n<p>Nous n’envoyons pas de newsletters marketing sans votre accord explicite.</p>\n<h2 id=\"4-bases-légales\">4. Bases légales</h2>\n<p>Les traitements sont fondés sur votre consentement (prise de contact), l’exécution du contrat (production du site, maintenance) ou notre intérêt légitime à sécuriser nos infrastructures.</p>\n<h2 id=\"5-hébergement-et-conservation\">5. Hébergement et conservation</h2>\n<p>Les données sont hébergées sur des serveurs situés en Suisse ou dans l’Union européenne, auprès de prestataires offrant des garanties de sécurité conformes au RGPD et à la LPD. Nous conservons vos informations pendant toute la durée de la relation commerciale, puis pendant cinq ans à des fins comptables et légales.</p>\n<h2 id=\"6-partage-avec-des-tiers\">6. Partage avec des tiers</h2>\n<p>Nous travaillons avec des sous-traitants spécialisés (hébergeurs, outils de support, solutions de paiement). Ils n’accèdent à vos données que dans la mesure nécessaire à la prestation et sont tenus par des clauses de confidentialité strictes. Aucun transfert n’est réalisé vers des pays ne garantissant pas un niveau de protection adéquat sans mesures complémentaires.</p>\n<h2 id=\"7-vos-droits\">7. Vos droits</h2>\n<p>Vous pouvez à tout moment :</p>\n<ul>\n<li>demander l’accès, la rectification ou la suppression de vos données ;</li>\n<li>vous opposer à un traitement ou en demander la limitation ;</li>\n<li>obtenir une copie des informations que vous nous avez fournies dans un format structuré (portabilité) ;</li>\n<li>retirer votre consentement lorsque celui-ci est la base légale.</li>\n</ul>\n<p>Pour exercer ces droits, écrivez-nous à <strong><a href=\"mailto:support@tonsiteweb.ch\">support@tonsiteweb.ch</a></strong>. Nous répondrons sous 30 jours.</p>\n<h2 id=\"8-sécurité\">8. Sécurité</h2>\n<p>Nous mettons en œuvre des mesures techniques et organisationnelles adaptées (chiffrement TLS, gestion des accès, sauvegardes régulières). Malgré tous nos efforts, aucun service n’est totalement exempt de risques ; nous vous recommandons de conserver vos identifiants confidentiels et de nous signaler rapidement toute activité suspecte.</p>\n<h2 id=\"9-cookies-et-analytique\">9. Cookies et analytique</h2>\n<p>Notre site utilise uniquement des cookies essentiels au fonctionnement et des outils d’analyse anonymisés (par exemple Plausible Analytics). Vous pouvez configurer votre navigateur pour bloquer les cookies ; certaines fonctionnalités pourraient cependant être limitées.</p>\n<h2 id=\"10-évolutions-de-la-politique\">10. Évolutions de la politique</h2>\n<p>Nous pouvons mettre à jour cette politique pour refléter l’évolution de la législation ou de nos services. La date de mise à jour figure en haut de page. Nous vous informerons de tout changement matériel par e-mail ou lors de votre prochaine connexion à l’espace client.</p>\n<h2 id=\"11-contact\">11. Contact</h2>\n<p>Pour toute question relative à la protection des données, contactez <strong><a href=\"mailto:support@tonsiteweb.ch\">support@tonsiteweb.ch</a></strong>.</p>";
+
+				const frontmatter = {"title":"Politique de confidentialité","layout":"~/layouts/MarkdownLayout.astro"};
+				const file = "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/privacy.md";
+				const url = "/privacy";
+				function rawContent() {
+					return "   \n                                     \n                                        \n   \n\n_Mise à jour : février 2024_\n\nCette politique décrit la manière dont **TonSiteWeb.ch** collecte et traite les données personnelles de ses clients et prospects.\n\n## 1. Responsable de traitement\n\nTonSiteWeb Sàrl est responsable des traitements décrits dans ce document. Vous pouvez nous contacter à **support@tonsiteweb.ch**.\n\n## 2. Données collectées\n\nNous collectons uniquement les informations nécessaires à la préparation, la réalisation et le suivi de nos prestations :\n\n- Identité et coordonnées (nom, prénom, entreprise, e-mail, téléphone, adresse de facturation)\n- Informations liées au projet (secteur, objectifs, contenus fournis)\n- Données de facturation et d'historique commercial\n- Logs techniques indispensables à la maintenance (adresse IP, événements serveur, horodatages)\n\n## 3. Finalités\n\nVos données sont utilisées pour :\n\n1. répondre à vos demandes et établir des offres personnalisées ;\n2. exécuter nos obligations contractuelles et assurer le support technique ;\n3. émettre les factures et suivre la relation client ;\n4. mesurer l'utilisation de nos services et améliorer nos produits (statistiques anonymisées).\n\nNous n'envoyons pas de newsletters marketing sans votre accord explicite.\n\n## 4. Bases légales\n\nLes traitements sont fondés sur votre consentement (prise de contact), l'exécution du contrat (production du site, maintenance) ou notre intérêt légitime à sécuriser nos infrastructures.\n\n## 5. Hébergement et conservation\n\nLes données sont hébergées sur des serveurs situés en Suisse ou dans l'Union européenne, auprès de prestataires offrant des garanties de sécurité conformes au RGPD et à la LPD. Nous conservons vos informations pendant toute la durée de la relation commerciale, puis pendant cinq ans à des fins comptables et légales.\n\n## 6. Partage avec des tiers\n\nNous travaillons avec des sous-traitants spécialisés (hébergeurs, outils de support, solutions de paiement). Ils n'accèdent à vos données que dans la mesure nécessaire à la prestation et sont tenus par des clauses de confidentialité strictes. Aucun transfert n'est réalisé vers des pays ne garantissant pas un niveau de protection adéquat sans mesures complémentaires.\n\n## 7. Vos droits\n\nVous pouvez à tout moment :\n\n- demander l'accès, la rectification ou la suppression de vos données ;\n- vous opposer à un traitement ou en demander la limitation ;\n- obtenir une copie des informations que vous nous avez fournies dans un format structuré (portabilité) ;\n- retirer votre consentement lorsque celui-ci est la base légale.\n\nPour exercer ces droits, écrivez-nous à **support@tonsiteweb.ch**. Nous répondrons sous 30 jours.\n\n## 8. Sécurité\n\nNous mettons en œuvre des mesures techniques et organisationnelles adaptées (chiffrement TLS, gestion des accès, sauvegardes régulières). Malgré tous nos efforts, aucun service n'est totalement exempt de risques ; nous vous recommandons de conserver vos identifiants confidentiels et de nous signaler rapidement toute activité suspecte.\n\n## 9. Cookies et analytique\n\nNotre site utilise uniquement des cookies essentiels au fonctionnement et des outils d'analyse anonymisés (par exemple Plausible Analytics). Vous pouvez configurer votre navigateur pour bloquer les cookies ; certaines fonctionnalités pourraient cependant être limitées.\n\n## 10. Évolutions de la politique\n\nNous pouvons mettre à jour cette politique pour refléter l'évolution de la législation ou de nos services. La date de mise à jour figure en haut de page. Nous vous informerons de tout changement matériel par e-mail ou lors de votre prochaine connexion à l'espace client.\n\n## 11. Contact\n\nPour toute question relative à la protection des données, contactez **support@tonsiteweb.ch**.\n";
+				}
+				async function compiledContent() {
+					return await html();
+				}
+				function getHeadings() {
+					return [{"depth":2,"slug":"1-responsable-de-traitement","text":"1. Responsable de traitement"},{"depth":2,"slug":"2-données-collectées","text":"2. Données collectées"},{"depth":2,"slug":"3-finalités","text":"3. Finalités"},{"depth":2,"slug":"4-bases-légales","text":"4. Bases légales"},{"depth":2,"slug":"5-hébergement-et-conservation","text":"5. Hébergement et conservation"},{"depth":2,"slug":"6-partage-avec-des-tiers","text":"6. Partage avec des tiers"},{"depth":2,"slug":"7-vos-droits","text":"7. Vos droits"},{"depth":2,"slug":"8-sécurité","text":"8. Sécurité"},{"depth":2,"slug":"9-cookies-et-analytique","text":"9. Cookies et analytique"},{"depth":2,"slug":"10-évolutions-de-la-politique","text":"10. Évolutions de la politique"},{"depth":2,"slug":"11-contact","text":"11. Contact"}];
+				}
+
+				const Content = createComponent((result, _props, slots) => {
+					const { layout, ...content } = frontmatter;
+					content.file = file;
+					content.url = url;
+
+					return renderTemplate`${renderComponent(result, 'Layout', $$MarkdownLayout, {
+								file,
+								url,
+								content,
+								frontmatter: content,
+								headings: getHeadings(),
+								rawContent,
+								compiledContent,
+								'server:root': true,
+							}, {
+								'default': () => renderTemplate`${unescapeHTML(html())}`
+							})}`;
+				});
+
+const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+	__proto__: null,
+	Content,
+	compiledContent,
+	default: Content,
+	file,
+	frontmatter,
+	getHeadings,
+	rawContent,
+	url
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const page = () => _page;
+
+export { page };

@@ -2,6 +2,7 @@
 import Layout from '~/layouts/PageLayout.astro';
 import HeroText from '~/components/widgets/HeroText.astro';
 import Prices from '~/components/widgets/Pricing.astro';
+import PricingOptions from '~/components/widgets/PricingOptions.astro';
 import Note from '~/components/widgets/Note.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import Steps from '~/components/widgets/Steps.astro';
@@ -47,7 +48,7 @@ const metadata = {
         ],
         callToAction: {
           text: 'Projekt starten',
-          href: '/de/contact#form',
+          href: '#modal-essential-de',
         },
       },
       {
@@ -91,6 +92,24 @@ const metadata = {
       },
     ]}
   />
+
+  <div class="mt-6 grid gap-4 max-w-7xl mx-auto px-4">
+    <div class="flex flex-wrap gap-4">
+      <PricingOptions
+        id="modal-essential-de"
+        triggerText=""
+        title="Essentiel-Pakete"
+        subtitle="Automationsgrad auswählen"
+        ctaText="Wählen"
+        tiers={[
+          { label: 'CHF 999', price: 'ab 999', features: ['Statische Seite', 'Einfaches Formular (E-Mail)'], href: '/de/choose-template?plan=essential999', info: ['Hosting & SSL inklusive (3 Monate)', '1 Runde kleiner Anpassungen (≤ 30 Min)', 'Kombinierbar mit Care 79 (Hosting & Sicherheit)'] },
+          { label: 'CHF 1’249', price: '1’249', features: ['Enthält Essentiel', '1 Automation (z. B. Buchung)'], href: '/de/choose-template?plan=essential1249', primary: true, info: ['Hosting & SSL inklusive (6 Monate)', '1 Runde kleiner Anpassungen (≤ 30 Min)', 'Kombinierbar mit Care 79 (Hosting & Sicherheit)'] },
+          { label: 'CHF 1’500', price: '1’500', features: ['Enthält Essentiel', '2–3 Automationen'], href: '/de/choose-template?plan=essential1500', info: ['Hosting & SSL inklusive (9 Monate)', '1 Runde kleiner Anpassungen (≤ 30 Min)', 'Kombinierbar mit Care 79 (Hosting & Sicherheit)'] },
+        ]}
+        footnote="Hosting & SSL inklusive (3/6/9 Monate je nach Paket). Technischer Support inklusive. Inhalts-/Designänderungen separat verrechnet."
+      />
+    </div>
+  </div>
 
   
 
@@ -188,7 +207,7 @@ const metadata = {
       },
       {
         title: 'Ist der Serviceplan obligatorisch?',
-        description: 'Nein. Service ab 79 CHF/Monat mit 30 Tagen Kündigungsfrist.',
+        description: 'Nein. Pläne zu 79 / 149 / 249 CHF/Monat verfügbar. Kündigungsfrist 30 Tage.',
       },
       {
         title: 'Welche Zahlungsmittel akzeptiert ihr?',

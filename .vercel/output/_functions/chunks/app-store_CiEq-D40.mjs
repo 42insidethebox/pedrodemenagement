@@ -1,1 +1,14 @@
-// Contents removed by Astro as it's used for prerendering only
+const appStore = new Proxy({"src":"/_astro/app-store.t3tG4Jz3.png","width":300,"height":89,"format":"png"}, {
+						get(target, name, receiver) {
+							if (name === 'clone') {
+								return structuredClone(target);
+							}
+							if (name === 'fsPath') {
+								return "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/assets/images/app-store.png";
+							}
+							
+							return target[name];
+						}
+					});
+
+export { appStore as default };

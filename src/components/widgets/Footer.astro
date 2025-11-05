@@ -24,6 +24,31 @@ export interface Props {
 }
 
 const { socialLinks = [], secondaryLinks = [], links = [], footNote = '', theme = 'light' } = Astro.props;
+
+const urlObj = new URL(Astro.url);
+const currentPath = `/${(urlObj.pathname || '').replace(/^\/+|\/+$/g, '')}`;
+const currentSearch = urlObj.search || '';
+const currentHash = urlObj.hash || '';
+const suffixPath = currentPath.replace(/^\/(en|de|it)(?=\/|$)/, '') || '/';
+const buildLangHref = (lang: 'fr' | 'en' | 'de' | 'it') => {
+  if (lang === 'fr') return `${suffixPath}${currentSearch}${currentHash}`;
+  const base = suffixPath === '/' ? '' : suffixPath;
+  return `/${lang}${base}${currentSearch}${currentHash}`;
+};
+
+const resolvedSecondary = secondaryLinks.map((l) => {
+  if (!l || typeof l.href !== 'string') return l;
+  if (['/', '/en', '/de', '/it'].includes(l.href)) {
+    const map: Record<string, string> = {
+      '/': buildLangHref('fr'),
+      '/en': buildLangHref('en'),
+      '/de': buildLangHref('de'),
+      '/it': buildLangHref('it'),
+    };
+    return { ...l, href: map[l.href] };
+  }
+  return l;
+});
 ---
 
 <footer class:list={[{ dark: theme === 'dark' }, 'relative border-t border-gray-200 dark:border-slate-800 not-prose']}>
@@ -38,7 +63,7 @@ const { socialLinks = [], secondaryLinks = [], links = [], footNote = '', theme 
         </div>
         <div class="text-sm text-muted flex gap-1">
           {
-            secondaryLinks.map(({ text, href }, index) => (
+            resolvedSecondary.map(({ text, href }, index) => (
               <>
                 {index !== 0 ? ' · ' : ''}
                 <a

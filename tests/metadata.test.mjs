@@ -1,0 +1,15 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { serializeMetadata } from '../src/lib/metadata.js';
+
+test('serializeMetadata normalizes fields', () => {
+  const md = serializeMetadata({ name: '  Alice ', email: 'ALICE@EXAMPLE.COM', company: ' ACME ', phone: '079 123 45 67', template: 'classic', plan: 'Essential' });
+  assert.equal(md.name, 'Alice');
+  assert.equal(md.email, 'alice@example.com');
+  assert.equal(md.company, 'ACME');
+  assert.equal(md.phone.startsWith('+'), true);
+  assert.equal(md.template, 'classic');
+  assert.equal(md.plan, 'essential');
+  assert.ok(md.clientSlug.length > 0);
+});
+

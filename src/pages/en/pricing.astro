@@ -2,6 +2,7 @@
 import Layout from '~/layouts/PageLayout.astro';
 import HeroText from '~/components/widgets/HeroText.astro';
 import Prices from '~/components/widgets/Pricing.astro';
+import PricingOptions from '~/components/widgets/PricingOptions.astro';
 import Note from '~/components/widgets/Note.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import Steps from '~/components/widgets/Steps.astro';
@@ -39,16 +40,10 @@ const metadata = {
             description: 'Client-provided content; we integrate and format it',
           },
           {
-            description: 'Hosting not included (care plans from CHF 79/month)',
-          },
-          {
             description: 'Video training + autonomy checklist',
           },
         ],
-        callToAction: {
-          text: 'Start my project',
-          href: '/en/contact#form',
-        },
+        callToAction: '<a class="btn btn-primary" href="#modal-essential-en">Explore</a>',
       },
       {
         title: 'Advanced',
@@ -57,13 +52,11 @@ const metadata = {
         period: 'from — one-time',
         items: [
           { description: 'Includes the Essential pack' },
-          { description: 'Simple backend or specific features' },
+          { description: 'Simple backend + template (up to 5,000 CHF)' },
+          { description: 'Bespoke projects 10,000 CHF+ — let’s talk' },
           { description: 'End-to-end testing and concise docs' },
         ],
-        callToAction: {
-          text: 'Request a proposal',
-          href: '/en/contact#form',
-        },
+        callToAction: '<a class="btn btn-primary" href="#modal-advanced-en">Explore</a>',
       },
       {
         title: 'Care & security',
@@ -84,13 +77,52 @@ const metadata = {
             description: 'Email & video support within one business day',
           },
         ],
-        callToAction: {
-          text: 'Activate care plan',
-          href: '/en/contact#form',
-        },
+        callToAction: '<a class="btn btn-primary" href="#modal-care-en">Choose</a>',
       },
     ]}
   />
+  <div class="mt-6 grid gap-4 max-w-7xl mx-auto px-4">
+    <div class="flex flex-wrap gap-4">
+      <PricingOptions
+        id="modal-essential-en"
+        triggerText=""
+        title="Essential packs"
+        subtitle="Choose your automation level"
+        ctaText="Choose"
+        tiers={[
+          { label: 'CHF 999', price: 'from 999', features: ['Static site', 'Simple form (email)'], href: '/en/choose-template?plan=essential999', info: ['Hosting & SSL included (3 months)', '1 round of small edits (≤ 30min)', 'Can be combined with Care 79 (hosting & security)'] },
+          { label: 'CHF 1,249', price: '1,249', features: ['Includes Essential', '1 automation (e.g., booking)'], href: '/en/choose-template?plan=essential1249', primary: true, info: ['Hosting & SSL included (6 months)', '1 round of small edits (≤ 30min)', 'Can be combined with Care 79 (hosting & security)'] },
+          { label: 'CHF 1,500', price: '1,500', features: ['Includes Essential', '2–3 automations'], href: '/en/choose-template?plan=essential1500', info: ['Hosting & SSL included (9 months)', '1 round of small edits (≤ 30min)', 'Can be combined with Care 79 (hosting & security)'] },
+        ]}
+        footnote="Hosting & SSL included (3/6/9 months depending on pack). Technical assistance included. Content/design changes billed separately."
+      />
+      <PricingOptions
+        id="modal-advanced-en"
+        triggerText=""
+        title="Advanced pack"
+        subtitle="Template + small backend (3–5k) or bespoke (10k+)"
+        ctaText="Choose"
+        tiers={[
+          { label: 'Up to 5,000 CHF', price: 'from 3,000', features: ['Template + light backend (e.g., headless shop)', '1–2 automations'], href: '/en/contact?plan=advanced_5k#form' },
+          { label: 'Bespoke', price: '10,000 CHF+', features: ['Custom project', 'Scope + quote'], href: '/en/contact?plan=bespoke_10k_plus#form', primary: true },
+          { label: 'Consulting', price: 'on request', features: ['Scoping workshop', 'Architecture & strategy'], href: '/en/contact?plan=consulting#form' },
+        ]}
+        footnote="High‑traffic usage billed per use. No server included."
+      />
+      <PricingOptions
+        id="modal-care-en"
+        triggerText=""
+        title="Care plans (hosting & security)"
+        subtitle="Swiss hosting + security patches"
+        ctaText="Choose"
+        tiers={[
+          { label: 'Care 79', price: 'CHF 79/mo', features: ['Hosting & SSL', 'Security updates'], href: '/api/payment/redirect?plan=care79' },
+          { label: 'Care 149', price: 'CHF 149/mo', features: ['Includes Care 79', 'Priority support (light)'], href: '/api/payment/redirect?plan=care149', primary: true },
+          { label: 'Care 249', price: 'CHF 249/mo', features: ['Includes Care 149', 'Extended support & minor changes'], href: '/api/payment/redirect?plan=care249' },
+        ]}
+      />
+    </div>
+  </div>
 
   
 
@@ -105,8 +137,8 @@ const metadata = {
         icon: 'tabler:headset',
       },
       {
-        title: 'Swiss hosting (optional)',
-        description: 'Servers in Switzerland with SSL, available on higher tiers.',
+        title: 'Swiss hosting included',
+        description: 'Servers in Switzerland with SSL included for the first 12 months.',
         icon: 'tabler:server',
       },
       {
