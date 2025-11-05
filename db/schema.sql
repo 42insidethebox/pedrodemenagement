@@ -48,3 +48,13 @@ create table if not exists public.webhooks (
   payload jsonb
 );
 
+create table if not exists public.project_feedback (
+  id bigint primary key generated always as identity,
+  created_at timestamptz not null default now(),
+  project_id text,
+  order_id text,
+  author_name text,
+  author_email text,
+  message text not null
+);
+

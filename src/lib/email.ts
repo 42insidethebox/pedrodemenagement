@@ -74,6 +74,64 @@ export function renderEmailTemplate(_templateName: string, data: any) {
   return `<pre>${escapeHtml(JSON.stringify(data, null, 2))}</pre>`;
 }
 
+export async function sendWelcomeEmail(to: string, name?: string | null, verifyUrl?: string) {
+  if (!to) return { ok: false, error: 'Missing recipient' };
+  const subject = 'Bienvenue chez TonSiteWeb';
+  const verifyBlock = verifyUrl
+    ? `<p>Validez votre adresse email en cliquant sur <a href="${escapeHtml(verifyUrl)}">ce lien sécurisé</a>.</p>`
+    : '';
+  const html = `
+    <p>${escapeHtml(name || 'Bonjour')} 👋,</p>
+    <p>Votre compte TonSiteWeb a été créé avec succès.</p>
+    <p>Vous pouvez dès maintenant vous connecter pour suivre vos projets, gérer vos paiements et demander des ajustements.</p>
+    ${verifyBlock}
+    <p>Besoin d'aide ? Répondez simplement à cet email.</p>
+  `;
+  return sendEmailInternal(subject, to, html);
+}
+
+export async function sendPasswordResetEmail(to: string, resetUrl: string) {
+  if (!to) return { ok: false, error: 'Missing recipient' };
+  const subject = 'Réinitialisez votre mot de passe';
+  const html = `
+    <p>Nous avons reçu une demande de réinitialisation de mot de passe.</p>
+    <p><a href="${escapeHtml(resetUrl)}">Cliquez ici pour définir un nouveau mot de passe</a>.</p>
+    <p>Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.</p>
+  `;
+  return sendEmailInternal(subject, to, html);
+}
+
+export async function sendPasswordChangedEmail(to: string) {
+  if (!to) return { ok: false, error: 'Missing recipient' };
+  const subject = 'Mot de passe mis à jour';
+  const html = `
+    <p>Votre mot de passe TonSiteWeb a été modifié avec succès.</p>
+    <p>Si vous n'êtes pas à l'origine de ce changement, contactez immédiatement notre équipe support.</p>
+  `;
+  return sendEmailInternal(subject, to, html);
+}
+
+export async function sendFeedbackNotificationEmail({
+  to,
+  message,
+  project,
+  author,
+}: {
+  to: string;
+  message: string;
+  project: string;
+  author?: string;
+}) {
+  if (!to) return { ok: false, error: 'Missing recipient' };
+  const subject = `Nouveau retour client sur ${project}`;
+  const html = `
+    <p>Vous avez reçu un nouveau retour client pour <strong>${escapeHtml(project)}</strong>.</p>
+    <p><em>${escapeHtml(author || 'Client')}</em> a écrit :</p>
+    <blockquote>${escapeHtml(message)}</blockquote>
+  `;
+  return sendEmailInternal(subject, to, html);
+}
+
 function escapeHtml(s: string) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
