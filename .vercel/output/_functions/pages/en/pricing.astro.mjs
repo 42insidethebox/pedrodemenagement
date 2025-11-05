@@ -1,11 +1,10 @@
-import { d as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead, F as Fragment } from '../../chunks/astro/server_BwlJ74mX.mjs';
-import { $ as $$PageLayout, c as footerDataEn, d as headerDataEn } from '../../chunks/PageLayout_BqyLTlOK.mjs';
-import { $ as $$HeroText } from '../../chunks/HeroText_ClQR8WMz.mjs';
-import { $ as $$Pricing$1 } from '../../chunks/Pricing_BoTyvBYR.mjs';
-import { $ as $$PricingOptions } from '../../chunks/PricingOptions_DemqZGFn.mjs';
-import { $ as $$Steps, a as $$FAQs } from '../../chunks/Steps_BjELtjt8.mjs';
-import { $ as $$Features3 } from '../../chunks/Features3_D14xZ8uE.mjs';
-import { $ as $$CallToAction } from '../../chunks/CallToAction_CXdxRUaW.mjs';
+import { d as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead, F as Fragment } from '../../chunks/astro/server_DpQ8NPFj.mjs';
+import { $ as $$PageLayout, c as footerDataEn, d as headerDataEn } from '../../chunks/PageLayout_C0BDAYgu.mjs';
+import { $ as $$HeroText } from '../../chunks/HeroText_BpoFtxPC.mjs';
+import { $ as $$Pricing$1, a as $$PricingOptions } from '../../chunks/PricingOptions_DSxOl6Rt.mjs';
+import { $ as $$Steps, a as $$FAQs } from '../../chunks/Steps_DMVgCwK2.mjs';
+import { $ as $$Features3 } from '../../chunks/Features3_Do8CCAA8.mjs';
+import { $ as $$CallToAction } from '../../chunks/CallToAction_BtHIYINw.mjs';
 export { renderers } from '../../renderers.mjs';
 
 const $$Astro = createAstro("https://tonsiteweb.ch");
@@ -69,10 +68,10 @@ const $$Pricing = createComponent(($$result, $$props, $$slots) => {
       callToAction: '<a class="btn btn-primary" href="#modal-care-en">Choose</a>'
     }
   ] })} ${maybeRenderHead()}<div class="mt-6 grid gap-4 max-w-7xl mx-auto px-4"> <div class="flex flex-wrap gap-4"> ${renderComponent($$result2, "PricingOptions", $$PricingOptions, { "id": "modal-essential-en", "triggerText": "", "title": "Essential packs", "subtitle": "Choose your automation level", "ctaText": "Choose", "tiers": [
-    { label: "CHF 999", price: "from 999", features: ["Static site", "Simple form (email)"], href: "/en/choose-template?plan=essential999", info: ["Hosting & SSL included (12 months)", "1 round of small edits (\u2264 30min)", "No continuous redesigns"] },
-    { label: "CHF 1,249", price: "1,249", features: ["Includes Essential", "1 automation (e.g., booking)"], href: "/en/choose-template?plan=essential1249", primary: true, info: ["Hosting & SSL included (12 months)", "1 round of small edits (\u2264 30min)", "No continuous redesigns"] },
-    { label: "CHF 1,500", price: "1,500", features: ["Includes Essential", "2\u20133 automations"], href: "/en/choose-template?plan=essential1500", info: ["Hosting & SSL included (12 months)", "1 round of small edits (\u2264 30min)", "No continuous redesigns"] }
-  ], "footnote": "First\u2011year hosting & SSL included. Technical assistance included. Content/design changes billed separately." })} ${renderComponent($$result2, "PricingOptions", $$PricingOptions, { "id": "modal-advanced-en", "triggerText": "", "title": "Advanced pack", "subtitle": "Template + small backend (3\u20135k) or bespoke (10k+)", "ctaText": "Choose", "tiers": [
+    { label: "CHF 999", price: "from 999", features: ["Static site", "Simple form (email)"], href: "/en/choose-template?plan=essential999", info: ["Hosting & SSL included (3 months)", "1 round of small edits (\u2264 30min)", "Can be combined with Care 79 (hosting & security)"] },
+    { label: "CHF 1,249", price: "1,249", features: ["Includes Essential", "1 automation (e.g., booking)"], href: "/en/choose-template?plan=essential1249", primary: true, info: ["Hosting & SSL included (6 months)", "1 round of small edits (\u2264 30min)", "Can be combined with Care 79 (hosting & security)"] },
+    { label: "CHF 1,500", price: "1,500", features: ["Includes Essential", "2\u20133 automations"], href: "/en/choose-template?plan=essential1500", info: ["Hosting & SSL included (9 months)", "1 round of small edits (\u2264 30min)", "Can be combined with Care 79 (hosting & security)"] }
+  ], "footnote": "Hosting & SSL included (3/6/9 months depending on pack). Technical assistance included. Content/design changes billed separately." })} ${renderComponent($$result2, "PricingOptions", $$PricingOptions, { "id": "modal-advanced-en", "triggerText": "", "title": "Advanced pack", "subtitle": "Template + small backend (3\u20135k) or bespoke (10k+)", "ctaText": "Choose", "tiers": [
     { label: "Up to 5,000 CHF", price: "from 3,000", features: ["Template + light backend (e.g., headless shop)", "1\u20132 automations"], href: "/en/contact?plan=advanced_5k#form" },
     { label: "Bespoke", price: "10,000 CHF+", features: ["Custom project", "Scope + quote"], href: "/en/contact?plan=bespoke_10k_plus#form", primary: true },
     { label: "Consulting", price: "on request", features: ["Scoping workshop", "Architecture & strategy"], href: "/en/contact?plan=consulting#form" }

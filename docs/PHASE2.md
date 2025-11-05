@@ -19,6 +19,14 @@ This repo now includes a minimal backend scaffold that runs on Vercel using Astr
   - `GET /api/auth/session` → validate an access token and return the current user
   - `PATCH/DELETE /api/subscriptions/[id]` → update or cancel a Stripe subscription and sync Supabase
   - `POST /api/feedback` → persist client feedback (`project_feedback` table) + notify the team
+  - Backend workspace APIs (require `Authorization: Bearer <supabase access token>`)
+    - `GET/POST /api/backend/clients` & `DELETE /api/backend/clients/[id]`
+    - `GET/POST /api/backend/projects` & `DELETE /api/backend/projects/[id]`
+    - `GET/POST /api/backend/tasks` & `DELETE /api/backend/tasks/[id]`
+    - `GET/POST /api/backend/documents` plus `GET/PUT/DELETE /api/backend/documents/[id]`
+    - `GET/POST /api/backend/invoices` & `DELETE /api/backend/invoices/[id]`
+    - `GET /api/backend/dashboard/summary` → aggregates metrics for `/app`
+    - `GET /api/backend/team` → roster pulled from `agency_members`
 - Utilities:
   - `src/lib/env.ts` → safe env access
   - `src/lib/supabase.ts` → Supabase admin/anon clients
@@ -31,6 +39,15 @@ This repo now includes a minimal backend scaffold that runs on Vercel using Astr
 - Env template: `.env.example`
 - Runtime verifier: `node -r dotenv/config scripts/runtime_check.js`
 
+## Database layout
+
+`db/schema.sql` now provisions the full workspace schema:
+
+- `agencies` / `agency_members` → tenancy + team directory
+- `clients`, `projects`, `tasks`, `documents`, `invoices` → operational data surfaced in `/app`
+- `activities` → audit log entries written by the backend APIs
+- Existing tables (`orders`, `webhooks`, `project_feedback`, etc.) remain untouched
+
 ## Configure
 
 1) Copy `.env.example` → `.env` and set values (Supabase, Stripe, Resend, Vercel).
@@ -40,6 +57,12 @@ This repo now includes a minimal backend scaffold that runs on Vercel using Astr
 5) Create a Supabase project and run `db/schema.sql` (SQL editor) to create tables – includes `project_feedback`.
 6) Set the same env vars in Vercel Project Settings → Environment Variables.
 7) Run `node -r dotenv/config scripts/runtime_check.js` locally to validate connectivity before deploy.
+8) When using the `/app` portal locally, store the Supabase session returned by `/api/auth/signin`:
+   ```js
+   localStorage.setItem('tonsiteweb:accessToken', '<access_token>');
+   localStorage.setItem('tonsiteweb:refreshToken', '<refresh_token>');
+   ```
+   (The helper in `src/utils/backend/api.ts` reads these keys for every authenticated fetch.)
 
 ## Deploy
 

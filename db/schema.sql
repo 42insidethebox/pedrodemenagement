@@ -1,4 +1,29 @@
--- Supabase schema for TonSiteWeb backend
+-- Enable pgcrypto for gen_random_uuid
+create extension if not exists "pgcrypto";
+
+-- Agencies own the workspace data. The owner_id links back to auth.users.
+create table if not exists public.agencies (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  name text not null,
+  owner_id uuid references auth.users(id) on delete set null,
+  timezone text,
+  domain text
+);
+
+-- Each Supabase auth user who joins an agency is mirrored here for quick lookup.
+create table if not exists public.agency_members (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  agency_id uuid not null references public.agencies(id) on delete cascade,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  full_name text,
+  email text,
+  role text default 'member',
+  timezone text,
+  unique (agency_id, user_id)
+);
+
 create table if not exists public.leads (
   id bigint primary key generated always as identity,
   created_at timestamptz not null default now(),
@@ -12,20 +37,103 @@ create table if not exists public.leads (
 create table if not exists public.clients (
   id uuid primary key default gen_random_uuid(),
   created_at timestamptz not null default now(),
-  email text unique,
-  name text,
-  company text
+  agency_id uuid references public.agencies(id) on delete cascade,
+  company_name text not null,
+  primary_contact text,
+  email text,
+  phone text,
+  status text default 'lead',
+  services text[] default '{}',
+  notes text,
+  metadata jsonb default '{}'::jsonb
 );
+
+alter table public.clients
+  add column if not exists agency_id uuid references public.agencies(id) on delete cascade,
+  add column if not exists company_name text,
+  add column if not exists primary_contact text,
+  add column if not exists phone text,
+  add column if not exists status text default 'lead',
+  add column if not exists services text[] default '{}',
+  add column if not exists notes text,
+  add column if not exists metadata jsonb default '{}'::jsonb;
 
 create table if not exists public.projects (
   id uuid primary key default gen_random_uuid(),
   created_at timestamptz not null default now(),
+  agency_id uuid references public.agencies(id) on delete cascade,
   client_id uuid references public.clients(id) on delete set null,
-  plan text,
-  status text,
-  metadata jsonb,
+  name text not null,
+  status text default 'discovery',
+  start_date date,
+  due_date date,
+  budget numeric(12,2),
+  currency text,
+  notes text,
+  metadata jsonb default '{}'::jsonb,
   preview_url text,
   public_url text
+);
+
+alter table public.projects
+  add column if not exists agency_id uuid references public.agencies(id) on delete cascade,
+  add column if not exists name text,
+  add column if not exists start_date date,
+  add column if not exists due_date date,
+  add column if not exists budget numeric(12,2),
+  add column if not exists currency text,
+  add column if not exists notes text,
+  alter column status set default 'discovery',
+  alter column metadata set default '{}'::jsonb;
+
+create table if not exists public.tasks (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  agency_id uuid references public.agencies(id) on delete cascade,
+  project_id uuid references public.projects(id) on delete cascade,
+  assignee_id uuid references auth.users(id) on delete set null,
+  title text not null,
+  description text,
+  status text default 'todo',
+  priority text default 'medium',
+  due_date date
+);
+
+create table if not exists public.documents (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  agency_id uuid references public.agencies(id) on delete cascade,
+  title text not null,
+  document_type text default 'proposal',
+  status text default 'draft',
+  storage_path text not null,
+  metadata jsonb default '{}'::jsonb
+);
+
+create table if not exists public.invoices (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  agency_id uuid references public.agencies(id) on delete cascade,
+  client_id uuid references public.clients(id) on delete set null,
+  project_id uuid references public.projects(id) on delete set null,
+  invoice_number text not null,
+  status text default 'draft',
+  issue_date date,
+  due_date date,
+  currency text,
+  amount numeric(12,2),
+  line_items jsonb default '[]'::jsonb,
+  notes text
+);
+
+create table if not exists public.activities (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  agency_id uuid references public.agencies(id) on delete cascade,
+  action text not null,
+  entity_type text,
+  entity_id text,
+  metadata jsonb default '{}'::jsonb
 );
 
 create table if not exists public.orders (
@@ -57,4 +165,5 @@ create table if not exists public.project_feedback (
   author_email text,
   message text not null
 );
+
 

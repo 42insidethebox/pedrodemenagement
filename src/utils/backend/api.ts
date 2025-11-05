@@ -1,0 +1,69 @@
+// src/utils/backend/api.ts
+const ACCESS_TOKEN_KEY = 'tonsiteweb:accessToken';
+const REFRESH_TOKEN_KEY = 'tonsiteweb:refreshToken';
+
+export type AuthFetchOptions = RequestInit & {
+  parseJson?: boolean;
+};
+
+function getStoredToken(key: string) {
+  if (typeof window === 'undefined') return null;
+  try {
+    return window.localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+export function setAuthSession(session: {
+  accessToken: string;
+  refreshToken?: string;
+}) {
+  if (typeof window === 'undefined') return;
+  window.localStorage.setItem(ACCESS_TOKEN_KEY, session.accessToken);
+  if (session.refreshToken) {
+    window.localStorage.setItem(REFRESH_TOKEN_KEY, session.refreshToken);
+  }
+}
+
+export function clearAuthSession() {
+  if (typeof window === 'undefined') return;
+  window.localStorage.removeItem(ACCESS_TOKEN_KEY);
+  window.localStorage.removeItem(REFRESH_TOKEN_KEY);
+}
+
+export async function authFetch(path: string, options: AuthFetchOptions = {}) {
+  const token = getStoredToken(ACCESS_TOKEN_KEY);
+  if (!token) {
+    throw new Error('Missing auth session. Please sign in again.');
+  }
+
+  const { parseJson = true, headers, ...rest } = options;
+  const response = await fetch(`/api/backend${path}`, {
+    ...rest,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(headers || {}),
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    if (response.status === 401) {
+      clearAuthSession();
+      throw new Error('Session expired. Please sign in again.');
+    }
+
+    let errorMessage = `Request failed with status ${response.status}`;
+    try {
+      const data = await response.json();
+      if (data?.error) errorMessage = data.error;
+    } catch {
+      // ignore JSON parse errors
+    }
+    throw new Error(errorMessage);
+  }
+
+  if (!parseJson) return null;
+  return response.json();
+}

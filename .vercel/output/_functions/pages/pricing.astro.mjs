@@ -1,11 +1,10 @@
-import { d as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead, F as Fragment } from '../chunks/astro/server_BwlJ74mX.mjs';
-import { $ as $$PageLayout } from '../chunks/PageLayout_BqyLTlOK.mjs';
-import { $ as $$HeroText } from '../chunks/HeroText_ClQR8WMz.mjs';
-import { $ as $$Pricing$1 } from '../chunks/Pricing_BoTyvBYR.mjs';
-import { $ as $$PricingOptions } from '../chunks/PricingOptions_DemqZGFn.mjs';
-import { $ as $$Steps, a as $$FAQs } from '../chunks/Steps_BjELtjt8.mjs';
-import { $ as $$Features3 } from '../chunks/Features3_D14xZ8uE.mjs';
-import { $ as $$CallToAction } from '../chunks/CallToAction_CXdxRUaW.mjs';
+import { d as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead, F as Fragment } from '../chunks/astro/server_DpQ8NPFj.mjs';
+import { $ as $$PageLayout } from '../chunks/PageLayout_C0BDAYgu.mjs';
+import { $ as $$HeroText } from '../chunks/HeroText_BpoFtxPC.mjs';
+import { $ as $$Pricing$1, a as $$PricingOptions } from '../chunks/PricingOptions_DSxOl6Rt.mjs';
+import { $ as $$Steps, a as $$FAQs } from '../chunks/Steps_DMVgCwK2.mjs';
+import { $ as $$Features3 } from '../chunks/Features3_Do8CCAA8.mjs';
+import { $ as $$CallToAction } from '../chunks/CallToAction_BtHIYINw.mjs';
 export { renderers } from '../renderers.mjs';
 
 const $$Astro = createAstro("https://tonsiteweb.ch");
@@ -74,7 +73,7 @@ const $$Pricing = createComponent(($$result, $$props, $$slots) => {
       price: "d\xE8s 999",
       features: ["Site statique", "Formulaire simple (email)"],
       href: "/choose-template?plan=essential999",
-      info: ["H\xE9bergement & SSL inclus (12 mois)", "1 aller\u2011retour de petites retouches (\u2264 30\u202Fmin)", "Pas d\u2019\xE9volutions continues"]
+      info: ["H\xE9bergement & SSL inclus (3 mois)", "1 aller\u2011retour de petites retouches (\u2264 30\u202Fmin)", "Combinable avec Care 79 (h\xE9bergement & s\xE9curit\xE9)"]
     },
     {
       label: "CHF 1\u202F249",
@@ -82,16 +81,16 @@ const $$Pricing = createComponent(($$result, $$props, $$slots) => {
       features: ["Inclut Essentiel", "1 automatisation (ex: prise de RDV)"],
       href: "/choose-template?plan=essential1249",
       primary: true,
-      info: ["H\xE9bergement & SSL inclus (12 mois)", "1 aller\u2011retour de petites retouches (\u2264 30\u202Fmin)", "Pas d\u2019\xE9volutions continues"]
+      info: ["H\xE9bergement & SSL inclus (6 mois)", "1 aller\u2011retour de petites retouches (\u2264 30\u202Fmin)", "Combinable avec Care 79 (h\xE9bergement & s\xE9curit\xE9)"]
     },
     {
       label: "CHF 1\u202F500",
       price: "1\u202F500",
       features: ["Inclut Essentiel", "2\u20133 automatisations"],
       href: "/choose-template?plan=essential1500",
-      info: ["H\xE9bergement & SSL inclus (12 mois)", "1 aller\u2011retour de petites retouches (\u2264 30\u202Fmin)", "Pas d\u2019\xE9volutions continues"]
+      info: ["H\xE9bergement & SSL inclus (9 mois)", "1 aller\u2011retour de petites retouches (\u2264 30\u202Fmin)", "Combinable avec Care 79 (h\xE9bergement & s\xE9curit\xE9)"]
     }
-  ], "footnote": "H\xE9bergement & SSL inclus la 1\u02B3\u1D49 ann\xE9e. Assistance technique incluse. Modifications de contenu ou design factur\xE9es s\xE9par\xE9ment." })} </div> <div id="insert-advanced"> ${renderComponent($$result2, "PricingOptions", $$PricingOptions, { "id": "modal-advanced", "triggerText": "", "title": "Pack Avanc\xE9", "subtitle": "Template + petit back\u2011end (3\u20135\u202Fk) ou sur\u2011mesure (10\u202Fk+)", "ctaText": "Choisir", "tiers": [
+  ], "footnote": "H\xE9bergement & SSL inclus (3/6/9 mois selon le pack). Assistance technique incluse. Modifications de contenu ou design factur\xE9es s\xE9par\xE9ment." })} </div> <div id="insert-advanced"> ${renderComponent($$result2, "PricingOptions", $$PricingOptions, { "id": "modal-advanced", "triggerText": "", "title": "Pack Avanc\xE9", "subtitle": "Template + petit back\u2011end (3\u20135\u202Fk) ou sur\u2011mesure (10\u202Fk+)", "ctaText": "Choisir", "tiers": [
     {
       label: "Jusqu\u2019\xE0 5\u202F000\u202FCHF",
       price: "d\xE8s 3\u202F000",

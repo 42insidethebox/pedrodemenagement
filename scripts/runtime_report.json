@@ -1,11 +1,11 @@
 {
   "env.keys": {
     "status": "warn",
-    "info": "SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, SUPABASE_ANON_KEY, STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, VERCEL_TOKEN, RESEND_API_KEY"
+    "info": "SUPABASE_URL, SUPABASE_ANON_KEY, VERCEL_TOKEN"
   },
   "supabase.connection": {
     "status": "fail",
-    "info": "supabase url/service key missing"
+    "info": "Could not find the table 'public.orders' in the schema cache"
   },
   "stripe.connection": {
     "status": "fail",

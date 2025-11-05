@@ -1,9 +1,9 @@
-import { d as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, F as Fragment, m as maybeRenderHead } from '../chunks/astro/server_BwlJ74mX.mjs';
-import { $ as $$Features3 } from '../chunks/Features3_D14xZ8uE.mjs';
-import { $ as $$Hero } from '../chunks/Hero_BWPUH0FD.mjs';
-import { $ as $$Stats } from '../chunks/Stats_DCUffHu6.mjs';
-import { $ as $$Steps2 } from '../chunks/Steps2_DT6ybMv8.mjs';
-import { $ as $$PageLayout } from '../chunks/PageLayout_BqyLTlOK.mjs';
+import { d as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, F as Fragment, m as maybeRenderHead } from '../chunks/astro/server_DpQ8NPFj.mjs';
+import { $ as $$Features3 } from '../chunks/Features3_Do8CCAA8.mjs';
+import { $ as $$Hero } from '../chunks/Hero_BK_wwOAV.mjs';
+import { $ as $$Stats } from '../chunks/Stats_BS8Dp7Qj.mjs';
+import { $ as $$Steps2 } from '../chunks/Steps2_B8TUEve6.mjs';
+import { $ as $$PageLayout } from '../chunks/PageLayout_C0BDAYgu.mjs';
 export { renderers } from '../renderers.mjs';
 
 const $$Astro = createAstro("https://tonsiteweb.ch");

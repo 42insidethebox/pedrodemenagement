@@ -1,10 +1,10 @@
-import { d as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, F as Fragment, m as maybeRenderHead } from '../../chunks/astro/server_BwlJ74mX.mjs';
-import { $ as $$PageLayout, f as footerDataDe, h as headerDataDe } from '../../chunks/PageLayout_BqyLTlOK.mjs';
-import { $ as $$HeroText } from '../../chunks/HeroText_ClQR8WMz.mjs';
-import { $ as $$Pricing$1 } from '../../chunks/Pricing_BoTyvBYR.mjs';
-import { $ as $$Steps, a as $$FAQs } from '../../chunks/Steps_BjELtjt8.mjs';
-import { $ as $$Features3 } from '../../chunks/Features3_D14xZ8uE.mjs';
-import { $ as $$CallToAction } from '../../chunks/CallToAction_CXdxRUaW.mjs';
+import { d as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead, F as Fragment } from '../../chunks/astro/server_DpQ8NPFj.mjs';
+import { $ as $$PageLayout, f as footerDataDe, h as headerDataDe } from '../../chunks/PageLayout_C0BDAYgu.mjs';
+import { $ as $$HeroText } from '../../chunks/HeroText_BpoFtxPC.mjs';
+import { $ as $$Pricing$1, a as $$PricingOptions } from '../../chunks/PricingOptions_DSxOl6Rt.mjs';
+import { $ as $$Steps, a as $$FAQs } from '../../chunks/Steps_DMVgCwK2.mjs';
+import { $ as $$Features3 } from '../../chunks/Features3_Do8CCAA8.mjs';
+import { $ as $$CallToAction } from '../../chunks/CallToAction_BtHIYINw.mjs';
 export { renderers } from '../../renderers.mjs';
 
 const $$Astro = createAstro("https://tonsiteweb.ch");
@@ -36,7 +36,7 @@ const $$Pricing = createComponent(($$result, $$props, $$slots) => {
       ],
       callToAction: {
         text: "Projekt starten",
-        href: "/de/contact#form"
+        href: "#modal-essential-de"
       }
     },
     {
@@ -78,7 +78,11 @@ const $$Pricing = createComponent(($$result, $$props, $$slots) => {
         href: "/de/contact#form"
       }
     }
-  ] })} ${renderComponent($$result2, "Features3", $$Features3, { "title": "Was unsere Angebote beinhalten k\xF6nnen", "subtitle": "Je nach Paket und Bedarf.", "columns": 2, "items": [
+  ] })} ${maybeRenderHead()}<div class="mt-6 grid gap-4 max-w-7xl mx-auto px-4"> <div class="flex flex-wrap gap-4"> ${renderComponent($$result2, "PricingOptions", $$PricingOptions, { "id": "modal-essential-de", "triggerText": "", "title": "Essentiel-Pakete", "subtitle": "Automationsgrad ausw\xE4hlen", "ctaText": "W\xE4hlen", "tiers": [
+    { label: "CHF 999", price: "ab 999", features: ["Statische Seite", "Einfaches Formular (E-Mail)"], href: "/de/choose-template?plan=essential999", info: ["Hosting & SSL inklusive (3 Monate)", "1 Runde kleiner Anpassungen (\u2264 30 Min)", "Kombinierbar mit Care 79 (Hosting & Sicherheit)"] },
+    { label: "CHF 1\u2019249", price: "1\u2019249", features: ["Enth\xE4lt Essentiel", "1 Automation (z.\u202FB. Buchung)"], href: "/de/choose-template?plan=essential1249", primary: true, info: ["Hosting & SSL inklusive (6 Monate)", "1 Runde kleiner Anpassungen (\u2264 30 Min)", "Kombinierbar mit Care 79 (Hosting & Sicherheit)"] },
+    { label: "CHF 1\u2019500", price: "1\u2019500", features: ["Enth\xE4lt Essentiel", "2\u20133 Automationen"], href: "/de/choose-template?plan=essential1500", info: ["Hosting & SSL inklusive (9 Monate)", "1 Runde kleiner Anpassungen (\u2264 30 Min)", "Kombinierbar mit Care 79 (Hosting & Sicherheit)"] }
+  ], "footnote": "Hosting & SSL inklusive (3/6/9 Monate je nach Paket). Technischer Support inklusive. Inhalts-/Design\xE4nderungen separat verrechnet." })} </div> </div> ${renderComponent($$result2, "Features3", $$Features3, { "title": "Was unsere Angebote beinhalten k\xF6nnen", "subtitle": "Je nach Paket und Bedarf.", "columns": 2, "items": [
     {
       title: "Menschlicher Support",
       description: "Begleitung per E-Mail und Telefon, Antworten innerhalb eines Arbeitstages.",
@@ -130,7 +134,7 @@ const $$Pricing = createComponent(($$result, $$props, $$slots) => {
       description: "Fertige Website, Video-Guide und n\xE4chste Schritte erhalten.",
       icon: "tabler:rocket"
     }
-  ] }, { "image": ($$result3) => renderTemplate`${renderComponent($$result3, "Fragment", Fragment, { "slot": "image" }, { "default": ($$result4) => renderTemplate` ${maybeRenderHead()}<div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-white shadow-xl"> <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Prozess</p> <p class="mt-6 max-w-xs text-base text-blue-100/90">
+  ] }, { "image": ($$result3) => renderTemplate`${renderComponent($$result3, "Fragment", Fragment, { "slot": "image" }, { "default": ($$result4) => renderTemplate` <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-white shadow-xl"> <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Prozess</p> <p class="mt-6 max-w-xs text-base text-blue-100/90">
 Einfacher Ablauf: Briefing, Inhaltsintegration und Freigaben per E‑Mail.
 </p> </div> ` })}` })} ${renderComponent($$result2, "FAQs", $$FAQs, { "title": "Fragen zu unseren Preisen", "subtitle": "Wir setzen auf vollst\xE4ndige Transparenz.", "items": [
     {
