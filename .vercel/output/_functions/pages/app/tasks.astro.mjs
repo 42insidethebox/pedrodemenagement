@@ -1,5 +1,5 @@
 import { c as createComponent, a as renderTemplate, r as renderComponent, m as maybeRenderHead } from '../../chunks/astro/server_C7RkpNfc.mjs';
-import { $ as $$BackendLayout } from '../../chunks/BackendLayout_DNowksUb.mjs';
+import { $ as $$BackendLayout } from '../../chunks/BackendLayout_tzY1fcN3.mjs';
 export { renderers } from '../../renderers.mjs';
 
 var __freeze = Object.freeze;
@@ -22,13 +22,13 @@ const $$Tasks = createComponent(async ($$result, $$props, $$slots) => {
 
   const loadProjects = async () => {
     if (!projectSelect) return;
-    projectSelect.innerHTML = '<option value="">Loading projects\u2026</option>';
+      projectSelect.innerHTML = '<option value="">Loading projects\u2026</option>';
     Object.keys(projectLookup).forEach((key) => delete projectLookup[key]);
     try {
       const response = await authFetch('/projects');
       const projects = response.projects ?? [];
       if (!projects.length) {
-        projectSelect.innerHTML = '<option value="">Add a project first</option>';
+      projectSelect.innerHTML = '<option value="">Add a project first</option>';
         return;
       }
       projectSelect.innerHTML = projects
@@ -67,7 +67,7 @@ const $$Tasks = createComponent(async ($$result, $$props, $$slots) => {
     tableBody.innerHTML = '';
 
     if (!tasks.length) {
-      tableBody.innerHTML = '<tr><td colspan="7" class="px-4 py-6 text-center text-sm text-slate-400">No tasks yet. Schedule one above.</td></tr>';
+      tableBody.innerHTML = '<tr><td colspan="7" class="px-4 py-6 text-center text-sm text-slate-500 dark:text-slate-400">No tasks yet. Schedule one above.</td></tr>';
       return;
     }
 
@@ -75,16 +75,16 @@ const $$Tasks = createComponent(async ($$result, $$props, $$slots) => {
       const row = document.createElement('tr');
       row.innerHTML = \`
         <td class="px-4 py-3">
-          <div class="font-medium text-white">\${task.title}</div>
-          <div class="text-xs text-slate-400">\${task.description ?? ''}</div>
+          <div class="font-medium text-slate-900 dark:text-white">\${task.title}</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400">\${task.description ?? ''}</div>
         </td>
         <td class="px-4 py-3 text-sm">\${projectLookup[task.project_id] ?? task.project_id ?? ''}</td>
         <td class="px-4 py-3 text-sm">\${teamLookup[task.assignee_id] ?? '\u2014'}</td>
-        <td class="px-4 py-3"><span class="inline-flex rounded-full bg-slate-800 px-2.5 py-1 text-xs capitalize text-slate-200">\${task.status}</span></td>
-        <td class="px-4 py-3 text-xs text-slate-300">\${task.priority}</td>
-        <td class="px-4 py-3 text-xs text-slate-300">\${task.due_date ? new Date(task.due_date).toLocaleDateString() : '\u2014'}</td>
+        <td class="px-4 py-3"><span class="inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-xs capitalize text-slate-700 dark:bg-slate-800 dark:text-slate-200">\${task.status}</span></td>
+        <td class="px-4 py-3"><span class="inline-flex rounded-full bg-slate-50 px-2.5 py-1 text-xs capitalize text-slate-700 dark:bg-slate-800/60 dark:text-slate-200">\${task.priority}</span></td>
+        <td class="px-4 py-3 text-xs text-slate-500 dark:text-slate-300">\${task.due_date ? new Date(task.due_date).toLocaleDateString() : '\u2014'}</td>
         <td class="px-4 py-3 text-right">
-          <button data-delete="\${task.id}" class="rounded-lg border border-red-500/50 px-3 py-1 text-xs text-red-300 hover:bg-red-500/10">Delete</button>
+          <button data-delete="\${task.id}" class="rounded-lg border border-red-200 px-3 py-1 text-xs text-red-600 transition hover:bg-red-50 dark:border-red-500/40 dark:text-red-300 dark:hover:bg-red-500/10">Delete</button>
         </td>\`;
       tableBody.appendChild(row);
     });
@@ -106,7 +106,7 @@ const $$Tasks = createComponent(async ($$result, $$props, $$slots) => {
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       if (message) {
-        message.classList.remove('text-red-400', 'text-blue-400');
+        message.classList.remove('text-red-400', 'text-blue-600', 'dark:text-blue-400');
         message.textContent = '';
       }
       if (submitButton) {
@@ -131,7 +131,7 @@ const $$Tasks = createComponent(async ($$result, $$props, $$slots) => {
           body: JSON.stringify(payload),
         });
         if (message) {
-          message.classList.add('text-blue-400');
+          message.classList.add('text-blue-600', 'dark:text-blue-400');
           message.textContent = 'Task scheduled.';
         }
         form.reset();
@@ -189,13 +189,13 @@ const $$Tasks = createComponent(async ($$result, $$props, $$slots) => {
 
   const loadProjects = async () => {
     if (!projectSelect) return;
-    projectSelect.innerHTML = '<option value="">Loading projects\u2026</option>';
+      projectSelect.innerHTML = '<option value="">Loading projects\u2026</option>';
     Object.keys(projectLookup).forEach((key) => delete projectLookup[key]);
     try {
       const response = await authFetch('/projects');
       const projects = response.projects ?? [];
       if (!projects.length) {
-        projectSelect.innerHTML = '<option value="">Add a project first</option>';
+      projectSelect.innerHTML = '<option value="">Add a project first</option>';
         return;
       }
       projectSelect.innerHTML = projects
@@ -234,7 +234,7 @@ const $$Tasks = createComponent(async ($$result, $$props, $$slots) => {
     tableBody.innerHTML = '';
 
     if (!tasks.length) {
-      tableBody.innerHTML = '<tr><td colspan="7" class="px-4 py-6 text-center text-sm text-slate-400">No tasks yet. Schedule one above.</td></tr>';
+      tableBody.innerHTML = '<tr><td colspan="7" class="px-4 py-6 text-center text-sm text-slate-500 dark:text-slate-400">No tasks yet. Schedule one above.</td></tr>';
       return;
     }
 
@@ -242,16 +242,16 @@ const $$Tasks = createComponent(async ($$result, $$props, $$slots) => {
       const row = document.createElement('tr');
       row.innerHTML = \\\`
         <td class="px-4 py-3">
-          <div class="font-medium text-white">\\\${task.title}</div>
-          <div class="text-xs text-slate-400">\\\${task.description ?? ''}</div>
+          <div class="font-medium text-slate-900 dark:text-white">\\\${task.title}</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400">\\\${task.description ?? ''}</div>
         </td>
         <td class="px-4 py-3 text-sm">\\\${projectLookup[task.project_id] ?? task.project_id ?? ''}</td>
         <td class="px-4 py-3 text-sm">\\\${teamLookup[task.assignee_id] ?? '\u2014'}</td>
-        <td class="px-4 py-3"><span class="inline-flex rounded-full bg-slate-800 px-2.5 py-1 text-xs capitalize text-slate-200">\\\${task.status}</span></td>
-        <td class="px-4 py-3 text-xs text-slate-300">\\\${task.priority}</td>
-        <td class="px-4 py-3 text-xs text-slate-300">\\\${task.due_date ? new Date(task.due_date).toLocaleDateString() : '\u2014'}</td>
+        <td class="px-4 py-3"><span class="inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-xs capitalize text-slate-700 dark:bg-slate-800 dark:text-slate-200">\\\${task.status}</span></td>
+        <td class="px-4 py-3"><span class="inline-flex rounded-full bg-slate-50 px-2.5 py-1 text-xs capitalize text-slate-700 dark:bg-slate-800/60 dark:text-slate-200">\\\${task.priority}</span></td>
+        <td class="px-4 py-3 text-xs text-slate-500 dark:text-slate-300">\\\${task.due_date ? new Date(task.due_date).toLocaleDateString() : '\u2014'}</td>
         <td class="px-4 py-3 text-right">
-          <button data-delete="\\\${task.id}" class="rounded-lg border border-red-500/50 px-3 py-1 text-xs text-red-300 hover:bg-red-500/10">Delete</button>
+          <button data-delete="\\\${task.id}" class="rounded-lg border border-red-200 px-3 py-1 text-xs text-red-600 transition hover:bg-red-50 dark:border-red-500/40 dark:text-red-300 dark:hover:bg-red-500/10">Delete</button>
         </td>\\\`;
       tableBody.appendChild(row);
     });
@@ -273,7 +273,7 @@ const $$Tasks = createComponent(async ($$result, $$props, $$slots) => {
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       if (message) {
-        message.classList.remove('text-red-400', 'text-blue-400');
+        message.classList.remove('text-red-400', 'text-blue-600', 'dark:text-blue-400');
         message.textContent = '';
       }
       if (submitButton) {
@@ -298,7 +298,7 @@ const $$Tasks = createComponent(async ($$result, $$props, $$slots) => {
           body: JSON.stringify(payload),
         });
         if (message) {
-          message.classList.add('text-blue-400');
+          message.classList.add('text-blue-600', 'dark:text-blue-400');
           message.textContent = 'Task scheduled.';
         }
         form.reset();
@@ -341,7 +341,7 @@ const $$Tasks = createComponent(async ($$result, $$props, $$slots) => {
   await loadProjects();
   await loadTeam();
   await loadTasks();
-<\/script>`])), renderComponent($$result, "BackendLayout", $$BackendLayout, { "pageTitle": "Tasks" }, { "default": async ($$result2) => renderTemplate` ${maybeRenderHead()}<section class="space-y-8"> <div class="rounded-2xl border border-slate-800 bg-slate-900/40 px-6 py-6 shadow-lg shadow-slate-950/40"> <h2 class="text-lg font-semibold text-white">Create a task</h2> <p class="mt-2 text-sm text-slate-400">Assign deliverables to projects and owners with due dates.</p> <form id="task-form" class="mt-6 grid gap-4 lg:grid-cols-2"> <div> <label class="block text-sm text-slate-300" for="title">Title</label> <input id="title" name="title" required class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> </div> <div> <label class="block text-sm text-slate-300" for="project_id">Project</label> <select id="project_id" name="project_id" required class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> <option value="">Loading projects…</option> </select> </div> <div> <label class="block text-sm text-slate-300" for="assignee_id">Assignee</label> <select id="assignee_id" name="assignee_id" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> <option value="">Unassigned</option> </select> </div> <div> <label class="block text-sm text-slate-300" for="status">Status</label> <select id="status" name="status" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> <option value="todo">To do</option> <option value="in_progress">In progress</option> <option value="blocked">Blocked</option> <option value="done">Done</option> </select> </div> <div> <label class="block text-sm text-slate-300" for="priority">Priority</label> <select id="priority" name="priority" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> <option value="low">Low</option> <option value="medium">Medium</option> <option value="high">High</option> <option value="urgent">Urgent</option> </select> </div> <div> <label class="block text-sm text-slate-300" for="due_date">Due date</label> <input id="due_date" name="due_date" type="date" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> </div> <div class="lg:col-span-2"> <label class="block text-sm text-slate-300" for="description">Description</label> <textarea id="description" name="description" rows="3" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"></textarea> </div> <div class="lg:col-span-2 flex items-center gap-3"> <button id="task-submit" type="submit" class="rounded-lg bg-blue-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-70">Save task</button> <p id="task-message" class="text-sm text-slate-400"></p> </div> </form> </div> <div class="rounded-2xl border border-slate-800 bg-slate-900/40 px-6 py-6 shadow-lg shadow-slate-950/40"> <div class="flex items-center justify-between"> <h2 class="text-lg font-semibold text-white">Execution board</h2> <span class="text-xs uppercase tracking-wide text-slate-400">Operational view</span> </div> <div class="mt-6 overflow-x-auto"> <table class="min-w-full text-left text-sm"> <thead class="text-xs uppercase tracking-wide text-slate-400"> <tr> <th class="px-4 py-3">Task</th> <th class="px-4 py-3">Project</th> <th class="px-4 py-3">Assignee</th> <th class="px-4 py-3">Status</th> <th class="px-4 py-3">Priority</th> <th class="px-4 py-3">Due</th> <th class="px-4 py-3 text-right">Actions</th> </tr> </thead> <tbody id="task-table" class="divide-y divide-slate-800 text-slate-200"> <tr> <td colspan="7" class="px-4 py-6 text-center text-sm text-slate-400">Fetching tasks…</td> </tr> </tbody> </table> </div> </div> </section> ` }));
+<\/script>`])), renderComponent($$result, "BackendLayout", $$BackendLayout, { "pageTitle": "Tasks" }, { "default": async ($$result2) => renderTemplate` ${maybeRenderHead()}<section class="space-y-8"> <div class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40"> <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Create a task</h2> <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Assign deliverables to projects and owners with due dates.</p> <form id="task-form" class="mt-6 grid gap-4 lg:grid-cols-2"> <div> <label class="block text-sm text-slate-600 dark:text-slate-300" for="title">Title</label> <input id="title" name="title" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> </div> <div> <label class="block text-sm text-slate-600 dark:text-slate-300" for="project_id">Project</label> <select id="project_id" name="project_id" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> <option value="">Loading projects…</option> </select> </div> <div> <label class="block text-sm text-slate-600 dark:text-slate-300" for="assignee_id">Assignee</label> <select id="assignee_id" name="assignee_id" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> <option value="">Unassigned</option> </select> </div> <div> <label class="block text-sm text-slate-600 dark:text-slate-300" for="status">Status</label> <select id="status" name="status" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> <option value="todo">To do</option> <option value="in_progress">In progress</option> <option value="blocked">Blocked</option> <option value="done">Done</option> </select> </div> <div> <label class="block text-sm text-slate-600 dark:text-slate-300" for="priority">Priority</label> <select id="priority" name="priority" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> <option value="low">Low</option> <option value="medium">Medium</option> <option value="high">High</option> <option value="urgent">Urgent</option> </select> </div> <div> <label class="block text-sm text-slate-600 dark:text-slate-300" for="due_date">Due date</label> <input id="due_date" name="due_date" type="date" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> </div> <div class="lg:col-span-2"> <label class="block text-sm text-slate-600 dark:text-slate-300" for="description">Description</label> <textarea id="description" name="description" rows="3" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"></textarea> </div> <div class="lg:col-span-2 flex items-center gap-3"> <button id="task-submit" type="submit" class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-blue-500/30 transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-70">Save task</button> <p id="task-message" class="text-sm text-slate-500 dark:text-slate-400"></p> </div> </form> </div> <div class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40"> <div class="flex items-center justify-between"> <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Execution board</h2> <span class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Operational view</span> </div> <div class="mt-6 overflow-x-auto"> <table class="min-w-full text-left text-sm"> <thead class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400"> <tr> <th class="px-4 py-3">Task</th> <th class="px-4 py-3">Project</th> <th class="px-4 py-3">Assignee</th> <th class="px-4 py-3">Status</th> <th class="px-4 py-3">Priority</th> <th class="px-4 py-3">Due</th> <th class="px-4 py-3 text-right">Actions</th> </tr> </thead> <tbody id="task-table" class="divide-y divide-slate-200 text-slate-700 dark:divide-slate-800 dark:text-slate-200"> <tr> <td colspan="7" class="px-4 py-6 text-center text-sm text-slate-500 dark:text-slate-400">Fetching tasks…</td> </tr> </tbody> </table> </div> </div> </section> ` }));
 }, "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/app/tasks.astro", void 0);
 
 const $$file = "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/app/tasks.astro";

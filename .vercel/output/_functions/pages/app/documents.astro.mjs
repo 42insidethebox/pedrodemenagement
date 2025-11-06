@@ -1,5 +1,5 @@
 import { c as createComponent, a as renderTemplate, r as renderComponent, m as maybeRenderHead } from '../../chunks/astro/server_C7RkpNfc.mjs';
-import { $ as $$BackendLayout } from '../../chunks/BackendLayout_DNowksUb.mjs';
+import { $ as $$BackendLayout } from '../../chunks/BackendLayout_tzY1fcN3.mjs';
 export { renderers } from '../../renderers.mjs';
 
 var __freeze = Object.freeze;
@@ -33,7 +33,7 @@ const $$Documents = createComponent(async ($$result, $$props, $$slots) => {
     tableBody.innerHTML = '';
 
     if (!Array.isArray(docs) || docs.length === 0) {
-      tableBody.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-400">No documents yet. Add one above.</td></tr>';
+      tableBody.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">No documents yet. Add one above.</td></tr>';
       return;
     }
 
@@ -41,14 +41,14 @@ const $$Documents = createComponent(async ($$result, $$props, $$slots) => {
       const row = document.createElement('tr');
       row.innerHTML = \`
         <td class="px-4 py-3">
-          <div class="font-medium text-white">\${doc.title}</div>
-          <div class="text-xs text-blue-400 truncate"><a href="\${doc.storage_path}" target="_blank" rel="noreferrer" class="hover:underline">\${doc.storage_path}</a></div>
+          <div class="font-medium text-slate-900 dark:text-white">\${doc.title}</div>
+          <div class="text-xs text-blue-600 dark:text-blue-400 truncate"><a href="\${doc.storage_path}" target="_blank" rel="noreferrer" class="hover:underline">\${doc.storage_path}</a></div>
         </td>
         <td class="px-4 py-3 text-sm capitalize">\${doc.document_type}</td>
-        <td class="px-4 py-3"><span class="inline-flex rounded-full bg-slate-800 px-2.5 py-1 text-xs capitalize text-slate-200">\${doc.status}</span></td>
-        <td class="px-4 py-3 text-xs text-slate-300">\${JSON.stringify(doc.metadata ?? {})}</td>
+        <td class="px-4 py-3"><span class="inline-flex rounded-full bg-slate-100 dark:bg-slate-800 px-2.5 py-1 text-xs capitalize text-slate-700 dark:text-slate-200">\${doc.status}</span></td>
+        <td class="px-4 py-3 text-xs text-slate-500 dark:text-slate-300">\${JSON.stringify(doc.metadata ?? {})}</td>
         <td class="px-4 py-3 text-right">
-          <button data-delete="\${doc.id}" class="rounded-lg border border-red-500/50 px-3 py-1 text-xs text-red-300 hover:bg-red-500/10">Delete</button>
+          <button data-delete="\${doc.id}" class="rounded-lg border border-red-200 px-3 py-1 text-xs text-red-600 transition hover:bg-red-50 dark:border-red-500/40 dark:text-red-300 dark:hover:bg-red-500/10">Delete</button>
         </td>\`;
       tableBody.appendChild(row);
     });
@@ -70,7 +70,7 @@ const $$Documents = createComponent(async ($$result, $$props, $$slots) => {
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       if (message) {
-        message.classList.remove('text-red-400', 'text-blue-400');
+        message.classList.remove('text-red-400', 'text-blue-600', 'dark:text-blue-400');
         message.textContent = '';
       }
       if (submitButton) {
@@ -94,7 +94,7 @@ const $$Documents = createComponent(async ($$result, $$props, $$slots) => {
           body: JSON.stringify(payload),
         });
         if (message) {
-          message.classList.add('text-blue-400');
+          message.classList.add('text-blue-600', 'dark:text-blue-400');
           message.textContent = 'Document tracked.';
         }
         form.reset();
@@ -161,7 +161,7 @@ const $$Documents = createComponent(async ($$result, $$props, $$slots) => {
     tableBody.innerHTML = '';
 
     if (!Array.isArray(docs) || docs.length === 0) {
-      tableBody.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-400">No documents yet. Add one above.</td></tr>';
+      tableBody.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">No documents yet. Add one above.</td></tr>';
       return;
     }
 
@@ -169,14 +169,14 @@ const $$Documents = createComponent(async ($$result, $$props, $$slots) => {
       const row = document.createElement('tr');
       row.innerHTML = \\\`
         <td class="px-4 py-3">
-          <div class="font-medium text-white">\\\${doc.title}</div>
-          <div class="text-xs text-blue-400 truncate"><a href="\\\${doc.storage_path}" target="_blank" rel="noreferrer" class="hover:underline">\\\${doc.storage_path}</a></div>
+          <div class="font-medium text-slate-900 dark:text-white">\\\${doc.title}</div>
+          <div class="text-xs text-blue-600 dark:text-blue-400 truncate"><a href="\\\${doc.storage_path}" target="_blank" rel="noreferrer" class="hover:underline">\\\${doc.storage_path}</a></div>
         </td>
         <td class="px-4 py-3 text-sm capitalize">\\\${doc.document_type}</td>
-        <td class="px-4 py-3"><span class="inline-flex rounded-full bg-slate-800 px-2.5 py-1 text-xs capitalize text-slate-200">\\\${doc.status}</span></td>
-        <td class="px-4 py-3 text-xs text-slate-300">\\\${JSON.stringify(doc.metadata ?? {})}</td>
+        <td class="px-4 py-3"><span class="inline-flex rounded-full bg-slate-100 dark:bg-slate-800 px-2.5 py-1 text-xs capitalize text-slate-700 dark:text-slate-200">\\\${doc.status}</span></td>
+        <td class="px-4 py-3 text-xs text-slate-500 dark:text-slate-300">\\\${JSON.stringify(doc.metadata ?? {})}</td>
         <td class="px-4 py-3 text-right">
-          <button data-delete="\\\${doc.id}" class="rounded-lg border border-red-500/50 px-3 py-1 text-xs text-red-300 hover:bg-red-500/10">Delete</button>
+          <button data-delete="\\\${doc.id}" class="rounded-lg border border-red-200 px-3 py-1 text-xs text-red-600 transition hover:bg-red-50 dark:border-red-500/40 dark:text-red-300 dark:hover:bg-red-500/10">Delete</button>
         </td>\\\`;
       tableBody.appendChild(row);
     });
@@ -198,7 +198,7 @@ const $$Documents = createComponent(async ($$result, $$props, $$slots) => {
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       if (message) {
-        message.classList.remove('text-red-400', 'text-blue-400');
+        message.classList.remove('text-red-400', 'text-blue-600', 'dark:text-blue-400');
         message.textContent = '';
       }
       if (submitButton) {
@@ -222,7 +222,7 @@ const $$Documents = createComponent(async ($$result, $$props, $$slots) => {
           body: JSON.stringify(payload),
         });
         if (message) {
-          message.classList.add('text-blue-400');
+          message.classList.add('text-blue-600', 'dark:text-blue-400');
           message.textContent = 'Document tracked.';
         }
         form.reset();
@@ -263,7 +263,7 @@ const $$Documents = createComponent(async ($$result, $$props, $$slots) => {
   }
 
   await loadDocuments();
-<\/script>`])), renderComponent($$result, "BackendLayout", $$BackendLayout, { "pageTitle": "Documents" }, { "default": async ($$result2) => renderTemplate` ${maybeRenderHead()}<section class="space-y-8"> <div class="rounded-2xl border border-slate-800 bg-slate-900/40 px-6 py-6 shadow-lg shadow-slate-950/40"> <h2 class="text-lg font-semibold text-white">Record a document</h2> <p class="mt-2 text-sm text-slate-400">Track proposals, contracts, briefs and assets in one system.</p> <form id="document-form" class="mt-6 grid gap-4 lg:grid-cols-2"> <div> <label class="block text-sm text-slate-300" for="title">Title</label> <input id="title" name="title" required class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> </div> <div> <label class="block text-sm text-slate-300" for="document_type">Type</label> <select id="document_type" name="document_type" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> <option value="proposal">Proposal</option> <option value="contract">Contract</option> <option value="brief">Brief</option> <option value="report">Report</option> <option value="asset">Asset</option> </select> </div> <div> <label class="block text-sm text-slate-300" for="status">Status</label> <select id="status" name="status" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> <option value="draft">Draft</option> <option value="sent">Sent</option> <option value="signed">Signed</option> <option value="archived">Archived</option> </select> </div> <div> <label class="block text-sm text-slate-300" for="storage_path">Storage path or URL</label> <input id="storage_path" name="storage_path" required class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> </div> <div class="lg:col-span-2"> <label class="block text-sm text-slate-300" for="metadata">Metadata (JSON)</label> <textarea id="metadata" name="metadata" rows="3" placeholder="{&quot;key&quot;:&quot;value&quot;}" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"></textarea> </div> <div class="lg:col-span-2 flex items-center gap-3"> <button id="document-submit" type="submit" class="rounded-lg bg-blue-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-70">Save document</button> <p id="document-message" class="text-sm text-slate-400"></p> </div> </form> </div> <div class="rounded-2xl border border-slate-800 bg-slate-900/40 px-6 py-6 shadow-lg shadow-slate-950/40"> <div class="flex items-center justify-between"> <h2 class="text-lg font-semibold text-white">Repository</h2> <span class="text-xs uppercase tracking-wide text-slate-400">Knowledge base</span> </div> <div class="mt-6 overflow-x-auto"> <table class="min-w-full text-left text-sm"> <thead class="text-xs uppercase tracking-wide text-slate-400"> <tr> <th class="px-4 py-3">Title</th> <th class="px-4 py-3">Type</th> <th class="px-4 py-3">Status</th> <th class="px-4 py-3">Storage</th> <th class="px-4 py-3 text-right">Actions</th> </tr> </thead> <tbody id="document-table" class="divide-y divide-slate-800 text-slate-200"> <tr> <td colspan="5" class="px-4 py-6 text-center text-sm text-slate-400">Fetching documents…</td> </tr> </tbody> </table> </div> </div> </section> ` }));
+<\/script>`])), renderComponent($$result, "BackendLayout", $$BackendLayout, { "pageTitle": "Documents" }, { "default": async ($$result2) => renderTemplate` ${maybeRenderHead()}<section class="space-y-8"> <div class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40"> <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Record a document</h2> <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Track proposals, contracts, briefs and assets in one system.</p> <form id="document-form" class="mt-6 grid gap-4 lg:grid-cols-2"> <div> <label class="block text-sm text-slate-600 dark:text-slate-300" for="title">Title</label> <input id="title" name="title" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> </div> <div> <label class="block text-sm text-slate-600 dark:text-slate-300" for="document_type">Type</label> <select id="document_type" name="document_type" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> <option value="proposal">Proposal</option> <option value="contract">Contract</option> <option value="brief">Brief</option> <option value="report">Report</option> <option value="asset">Asset</option> </select> </div> <div> <label class="block text-sm text-slate-600 dark:text-slate-300" for="status">Status</label> <select id="status" name="status" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> <option value="draft">Draft</option> <option value="sent">Sent</option> <option value="signed">Signed</option> <option value="archived">Archived</option> </select> </div> <div> <label class="block text-sm text-slate-600 dark:text-slate-300" for="storage_path">Storage path or URL</label> <input id="storage_path" name="storage_path" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> </div> <div class="lg:col-span-2"> <label class="block text-sm text-slate-600 dark:text-slate-300" for="metadata">Metadata (JSON)</label> <textarea id="metadata" name="metadata" rows="3" placeholder="{&quot;key&quot;:&quot;value&quot;}" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"></textarea> </div> <div class="lg:col-span-2 flex items-center gap-3"> <button id="document-submit" type="submit" class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-blue-500/30 transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-70">Save document</button> <p id="document-message" class="text-sm text-slate-600 dark:text-slate-400"></p> </div> </form> </div> <div class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40"> <div class="flex items-center justify-between"> <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Repository</h2> <span class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Knowledge base</span> </div> <div class="mt-6 overflow-x-auto"> <table class="min-w-full text-left text-sm"> <thead class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400"> <tr> <th class="px-4 py-3">Title</th> <th class="px-4 py-3">Type</th> <th class="px-4 py-3">Status</th> <th class="px-4 py-3">Storage</th> <th class="px-4 py-3 text-right">Actions</th> </tr> </thead> <tbody id="document-table" class="divide-y divide-slate-200 dark:divide-slate-800 text-slate-700 dark:text-slate-200"> <tr> <td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">Fetching documents…</td> </tr> </tbody> </table> </div> </div> </section> ` }));
 }, "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/app/documents.astro", void 0);
 
 const $$file = "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/app/documents.astro";

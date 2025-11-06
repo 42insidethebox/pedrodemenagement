@@ -1,5 +1,5 @@
 import { c as createComponent, a as renderTemplate, r as renderComponent, m as maybeRenderHead } from '../../chunks/astro/server_C7RkpNfc.mjs';
-import { $ as $$BackendLayout } from '../../chunks/BackendLayout_DNowksUb.mjs';
+import { $ as $$BackendLayout } from '../../chunks/BackendLayout_tzY1fcN3.mjs';
 export { renderers } from '../../renderers.mjs';
 
 var __freeze = Object.freeze;
@@ -20,7 +20,7 @@ const $$Clients = createComponent(async ($$result, $$props, $$slots) => {
     tableBody.innerHTML = '';
 
     if (!clients.length) {
-      tableBody.innerHTML = '<tr><td colspan="6" class="px-4 py-6 text-center text-sm text-slate-400">No clients yet. Add your first relationship above.</td></tr>';
+      tableBody.innerHTML = '<tr><td colspan="6" class="px-4 py-6 text-center text-sm text-slate-500 dark:text-slate-400">No clients yet. Add your first relationship above.</td></tr>';
       return;
     }
 
@@ -28,15 +28,15 @@ const $$Clients = createComponent(async ($$result, $$props, $$slots) => {
       const row = document.createElement('tr');
       row.innerHTML = \`
         <td class="px-4 py-3">
-          <div class="font-medium text-white">\${client.company_name}</div>
-          <div class="text-xs text-slate-400">\${client.notes ?? ''}</div>
+          <div class="font-medium text-slate-900 dark:text-white">\${client.company_name}</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400">\${client.notes ?? ''}</div>
         </td>
         <td class="px-4 py-3">\${client.primary_contact}</td>
         <td class="px-4 py-3">\${client.email}</td>
-        <td class="px-4 py-3"><span class="inline-flex rounded-full bg-slate-800 px-2.5 py-1 text-xs capitalize text-slate-200">\${client.status}</span></td>
-        <td class="px-4 py-3 text-xs text-slate-300">\${(client.services ?? []).join(', ')}</td>
+        <td class="px-4 py-3"><span class="inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-xs capitalize text-slate-700 dark:bg-slate-800 dark:text-slate-200">\${client.status}</span></td>
+        <td class="px-4 py-3 text-xs text-slate-500 dark:text-slate-300">\${(client.services ?? []).join(', ')}</td>
         <td class="px-4 py-3 text-right">
-          <button data-delete="\${client.id}" class="rounded-lg border border-red-500/50 px-3 py-1 text-xs text-red-300 hover:bg-red-500/10">Delete</button>
+          <button data-delete="\${client.id}" class="rounded-lg border border-red-200 px-3 py-1 text-xs text-red-600 transition hover:bg-red-50 dark:border-red-500/40 dark:text-red-300 dark:hover:bg-red-500/10">Delete</button>
         </td>\`;
       tableBody.appendChild(row);
     });
@@ -59,7 +59,7 @@ const $$Clients = createComponent(async ($$result, $$props, $$slots) => {
       event.preventDefault();
       if (message) {
         message.classList.remove('text-red-400');
-        message.classList.remove('text-blue-400');
+        message.classList.remove('text-blue-600', 'dark:text-blue-400');
         message.textContent = '';
       }
       if (submitButton) {
@@ -87,7 +87,7 @@ const $$Clients = createComponent(async ($$result, $$props, $$slots) => {
           body: JSON.stringify(payload),
         });
         if (message) {
-          message.classList.add('text-blue-400');
+          message.classList.add('text-blue-600', 'dark:text-blue-400');
           message.textContent = 'Client saved.';
         }
         form.reset();
@@ -141,7 +141,7 @@ const $$Clients = createComponent(async ($$result, $$props, $$slots) => {
     tableBody.innerHTML = '';
 
     if (!clients.length) {
-      tableBody.innerHTML = '<tr><td colspan="6" class="px-4 py-6 text-center text-sm text-slate-400">No clients yet. Add your first relationship above.</td></tr>';
+      tableBody.innerHTML = '<tr><td colspan="6" class="px-4 py-6 text-center text-sm text-slate-500 dark:text-slate-400">No clients yet. Add your first relationship above.</td></tr>';
       return;
     }
 
@@ -149,15 +149,15 @@ const $$Clients = createComponent(async ($$result, $$props, $$slots) => {
       const row = document.createElement('tr');
       row.innerHTML = \\\`
         <td class="px-4 py-3">
-          <div class="font-medium text-white">\\\${client.company_name}</div>
-          <div class="text-xs text-slate-400">\\\${client.notes ?? ''}</div>
+          <div class="font-medium text-slate-900 dark:text-white">\\\${client.company_name}</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400">\\\${client.notes ?? ''}</div>
         </td>
         <td class="px-4 py-3">\\\${client.primary_contact}</td>
         <td class="px-4 py-3">\\\${client.email}</td>
-        <td class="px-4 py-3"><span class="inline-flex rounded-full bg-slate-800 px-2.5 py-1 text-xs capitalize text-slate-200">\\\${client.status}</span></td>
-        <td class="px-4 py-3 text-xs text-slate-300">\\\${(client.services ?? []).join(', ')}</td>
+        <td class="px-4 py-3"><span class="inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-xs capitalize text-slate-700 dark:bg-slate-800 dark:text-slate-200">\\\${client.status}</span></td>
+        <td class="px-4 py-3 text-xs text-slate-500 dark:text-slate-300">\\\${(client.services ?? []).join(', ')}</td>
         <td class="px-4 py-3 text-right">
-          <button data-delete="\\\${client.id}" class="rounded-lg border border-red-500/50 px-3 py-1 text-xs text-red-300 hover:bg-red-500/10">Delete</button>
+          <button data-delete="\\\${client.id}" class="rounded-lg border border-red-200 px-3 py-1 text-xs text-red-600 transition hover:bg-red-50 dark:border-red-500/40 dark:text-red-300 dark:hover:bg-red-500/10">Delete</button>
         </td>\\\`;
       tableBody.appendChild(row);
     });
@@ -180,7 +180,7 @@ const $$Clients = createComponent(async ($$result, $$props, $$slots) => {
       event.preventDefault();
       if (message) {
         message.classList.remove('text-red-400');
-        message.classList.remove('text-blue-400');
+        message.classList.remove('text-blue-600', 'dark:text-blue-400');
         message.textContent = '';
       }
       if (submitButton) {
@@ -208,7 +208,7 @@ const $$Clients = createComponent(async ($$result, $$props, $$slots) => {
           body: JSON.stringify(payload),
         });
         if (message) {
-          message.classList.add('text-blue-400');
+          message.classList.add('text-blue-600', 'dark:text-blue-400');
           message.textContent = 'Client saved.';
         }
         form.reset();
@@ -249,7 +249,7 @@ const $$Clients = createComponent(async ($$result, $$props, $$slots) => {
   }
 
   loadClients();
-<\/script>`])), renderComponent($$result, "BackendLayout", $$BackendLayout, { "pageTitle": "Clients" }, { "default": async ($$result2) => renderTemplate` ${maybeRenderHead()}<section class="space-y-8"> <div class="rounded-2xl border border-slate-800 bg-slate-900/40 px-6 py-6 shadow-lg shadow-slate-950/40"> <h2 class="text-lg font-semibold text-white">Add a client</h2> <p class="mt-2 text-sm text-slate-400">Capture leads or active customers with their key context.</p> <form id="client-form" class="mt-6 grid gap-4 lg:grid-cols-2"> <div class="lg:col-span-1"> <label class="block text-sm text-slate-300" for="company_name">Company name</label> <input id="company_name" name="company_name" required class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> </div> <div class="lg:col-span-1"> <label class="block text-sm text-slate-300" for="primary_contact">Primary contact</label> <input id="primary_contact" name="primary_contact" required class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> </div> <div> <label class="block text-sm text-slate-300" for="email">Email</label> <input id="email" name="email" type="email" required class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> </div> <div> <label class="block text-sm text-slate-300" for="phone">Phone</label> <input id="phone" name="phone" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> </div> <div> <label class="block text-sm text-slate-300" for="status">Status</label> <select id="status" name="status" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> <option value="lead">Lead</option> <option value="active">Active</option> <option value="inactive">Inactive</option> </select> </div> <div> <label class="block text-sm text-slate-300" for="services">Services (comma separated)</label> <input id="services" name="services" placeholder="Branding, Web, Retainer" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> </div> <div class="lg:col-span-2"> <label class="block text-sm text-slate-300" for="notes">Notes</label> <textarea id="notes" name="notes" rows="3" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"></textarea> </div> <div class="lg:col-span-2 flex items-center gap-3"> <button id="client-submit" type="submit" class="rounded-lg bg-blue-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-70">Save client</button> <p id="client-message" class="text-sm text-slate-400"></p> </div> </form> </div> <div class="rounded-2xl border border-slate-800 bg-slate-900/40 px-6 py-6 shadow-lg shadow-slate-950/40"> <div class="flex items-center justify-between"> <h2 class="text-lg font-semibold text-white">Client roster</h2> <span class="text-xs uppercase tracking-wide text-slate-400">Auto-synced</span> </div> <div class="mt-6 overflow-x-auto"> <table class="min-w-full text-left text-sm"> <thead class="text-xs uppercase tracking-wide text-slate-400"> <tr> <th class="px-4 py-3">Company</th> <th class="px-4 py-3">Contact</th> <th class="px-4 py-3">Email</th> <th class="px-4 py-3">Status</th> <th class="px-4 py-3">Services</th> <th class="px-4 py-3 text-right">Actions</th> </tr> </thead> <tbody id="client-table" class="divide-y divide-slate-800 text-slate-200"> <tr> <td colspan="6" class="px-4 py-6 text-center text-sm text-slate-400">Fetching clients…</td> </tr> </tbody> </table> </div> </div> </section> ` }));
+<\/script>`])), renderComponent($$result, "BackendLayout", $$BackendLayout, { "pageTitle": "Clients" }, { "default": async ($$result2) => renderTemplate` ${maybeRenderHead()}<section class="space-y-8"> <div class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40"> <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Add a client</h2> <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Capture leads or active customers with their key context.</p> <form id="client-form" class="mt-6 grid gap-4 lg:grid-cols-2"> <div class="lg:col-span-1"> <label class="block text-sm text-slate-600 dark:text-slate-300" for="company_name">Company name</label> <input id="company_name" name="company_name" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> </div> <div class="lg:col-span-1"> <label class="block text-sm text-slate-600 dark:text-slate-300" for="primary_contact">Primary contact</label> <input id="primary_contact" name="primary_contact" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> </div> <div> <label class="block text-sm text-slate-600 dark:text-slate-300" for="email">Email</label> <input id="email" name="email" type="email" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> </div> <div> <label class="block text-sm text-slate-600 dark:text-slate-300" for="phone">Phone</label> <input id="phone" name="phone" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> </div> <div> <label class="block text-sm text-slate-600 dark:text-slate-300" for="status">Status</label> <select id="status" name="status" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> <option value="lead">Lead</option> <option value="active">Active</option> <option value="inactive">Inactive</option> </select> </div> <div> <label class="block text-sm text-slate-600 dark:text-slate-300" for="services">Services (comma separated)</label> <input id="services" name="services" placeholder="Branding, Web, Retainer" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> </div> <div class="lg:col-span-2"> <label class="block text-sm text-slate-600 dark:text-slate-300" for="notes">Notes</label> <textarea id="notes" name="notes" rows="3" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"></textarea> </div> <div class="lg:col-span-2 flex items-center gap-3"> <button id="client-submit" type="submit" class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-blue-500/30 transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-70">Save client</button> <p id="client-message" class="text-sm text-slate-500 dark:text-slate-400"></p> </div> </form> </div> <div class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40"> <div class="flex items-center justify-between"> <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Client roster</h2> <span class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Auto-synced</span> </div> <div class="mt-6 overflow-x-auto"> <table class="min-w-full text-left text-sm"> <thead class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400"> <tr> <th class="px-4 py-3">Company</th> <th class="px-4 py-3">Contact</th> <th class="px-4 py-3">Email</th> <th class="px-4 py-3">Status</th> <th class="px-4 py-3">Services</th> <th class="px-4 py-3 text-right">Actions</th> </tr> </thead> <tbody id="client-table" class="divide-y divide-slate-200 text-slate-700 dark:divide-slate-800 dark:text-slate-200"> <tr> <td colspan="6" class="px-4 py-6 text-center text-sm text-slate-500 dark:text-slate-400">Fetching clients…</td> </tr> </tbody> </table> </div> </div> </section> ` }));
 }, "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/app/clients.astro", void 0);
 
 const $$file = "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/app/clients.astro";

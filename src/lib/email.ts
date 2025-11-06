@@ -1,11 +1,33 @@
 import { ENV } from './env';
 import { logger } from './logger.js';
+import { renderTemplate, renderLayout } from './email-templates';
+
+function isFullHtml(html: string) {
+  const s = (html || '').trim().toLowerCase();
+  return s.startsWith('<!doctype html') || s.startsWith('<html');
+}
+
+function stripTagsToText(html: string) {
+  return String(html || '')
+    .replace(/<\s*br\s*\/?>/gi, '\n')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
 
 // Internal low-level sender used by helpers below
 async function sendEmailInternal(subject: string, to: string, html: string) {
   const key = ENV.RESEND_API_KEY;
   if (!key) return { ok: false, error: 'RESEND_API_KEY missing' };
   try {
+    // Always ensure a branded layout; if caller already passed a full HTML document, keep it.
+    const finalHtml = isFullHtml(html)
+      ? html
+      : renderLayout({
+          title: subject,
+          preheader: stripTagsToText(html).slice(0, 140),
+          contentHtml: html,
+        });
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -16,7 +38,7 @@ async function sendEmailInternal(subject: string, to: string, html: string) {
         from: `${ENV.SENDER_NAME} <${ENV.SUPPORT_EMAIL}>`,
         to: [to],
         subject,
-        html,
+        html: finalHtml,
       }),
     });
     if (!res.ok) {
@@ -46,7 +68,7 @@ export async function sendEmail({
 export async function sendAdminNotificationEmail(order: any) {
   const to = ENV.SUPPORT_EMAIL;
   const subject = 'New order received';
-  const html = `<p>New order</p><pre>${escapeHtml(JSON.stringify(order, null, 2))}</pre>`;
+  const html = renderTemplate('admin_notification', { order });
   return sendEmailInternal(subject, to, html);
 }
 
@@ -54,7 +76,7 @@ export async function sendClientConfirmationEmail(order: any) {
   const to = order?.customer_email || order?.email;
   if (!to) return { ok: false, error: 'Missing recipient' };
   const subject = 'We received your order';
-  const html = `<p>Thanks for your order. We will be in touch shortly.</p>`;
+  const html = renderTemplate('client_confirmation', { order });
   return sendEmailInternal(subject, to, html);
 }
 
@@ -62,7 +84,7 @@ export async function sendDeploymentReadyEmail(order: any, previewUrl: string) {
   const to = order?.customer_email || order?.email;
   if (!to) return { ok: false, error: 'Missing recipient' };
   const subject = 'Preview is ready';
-  const html = `<p>Your preview is ready:</p><p><a href="${previewUrl}">${previewUrl}</a></p>`;
+  const html = renderTemplate('project_ready', { projectName: order?.projectName || 'Votre site', previewUrl });
   return sendEmailInternal(subject, to, html);
 }
 
@@ -71,43 +93,28 @@ export async function sendInvoiceOrReceiptEmail(_stripeData: any) {
 }
 
 export function renderEmailTemplate(_templateName: string, data: any) {
-  return `<pre>${escapeHtml(JSON.stringify(data, null, 2))}</pre>`;
+  // Bridge to real templates
+  return renderTemplate(_templateName, data);
 }
 
 export async function sendWelcomeEmail(to: string, name?: string | null, verifyUrl?: string) {
   if (!to) return { ok: false, error: 'Missing recipient' };
   const subject = 'Bienvenue chez TonSiteWeb';
-  const verifyBlock = verifyUrl
-    ? `<p>Validez votre adresse email en cliquant sur <a href="${escapeHtml(verifyUrl)}">ce lien sécurisé</a>.</p>`
-    : '';
-  const html = `
-    <p>${escapeHtml(name || 'Bonjour')} 👋,</p>
-    <p>Votre compte TonSiteWeb a été créé avec succès.</p>
-    <p>Vous pouvez dès maintenant vous connecter pour suivre vos projets, gérer vos paiements et demander des ajustements.</p>
-    ${verifyBlock}
-    <p>Besoin d'aide ? Répondez simplement à cet email.</p>
-  `;
+  const html = renderTemplate('welcome', { name, verifyUrl });
   return sendEmailInternal(subject, to, html);
 }
 
 export async function sendPasswordResetEmail(to: string, resetUrl: string) {
   if (!to) return { ok: false, error: 'Missing recipient' };
   const subject = 'Réinitialisez votre mot de passe';
-  const html = `
-    <p>Nous avons reçu une demande de réinitialisation de mot de passe.</p>
-    <p><a href="${escapeHtml(resetUrl)}">Cliquez ici pour définir un nouveau mot de passe</a>.</p>
-    <p>Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.</p>
-  `;
+  const html = renderTemplate('password_reset', { resetUrl });
   return sendEmailInternal(subject, to, html);
 }
 
 export async function sendPasswordChangedEmail(to: string) {
   if (!to) return { ok: false, error: 'Missing recipient' };
   const subject = 'Mot de passe mis à jour';
-  const html = `
-    <p>Votre mot de passe TonSiteWeb a été modifié avec succès.</p>
-    <p>Si vous n'êtes pas à l'origine de ce changement, contactez immédiatement notre équipe support.</p>
-  `;
+  const html = renderTemplate('password_changed', {});
   return sendEmailInternal(subject, to, html);
 }
 
@@ -122,12 +129,7 @@ export async function sendProjectReadyEmail({
 }) {
   if (!to) return { ok: false, error: 'Missing recipient' };
   const subject = `Votre site ${escapeHtml(projectName)} est prêt à être validé`;
-  const html = `
-    <p>Bonjour 👋,</p>
-    <p>Nous venons de terminer la première version de <strong>${escapeHtml(projectName)}</strong>.</p>
-    <p>Consultez la maquette : <a href="${escapeHtml(previewUrl)}">${escapeHtml(previewUrl)}</a></p>
-    <p>Ajoutez vos commentaires directement dans le document partagé. Nous sommes prêts pour les derniers ajustements.</p>
-  `;
+  const html = renderTemplate('project_ready', { projectName, previewUrl });
   return sendEmailInternal(subject, to, html);
 }
 
@@ -142,12 +144,7 @@ export async function sendProjectDelayedEmail({
 }) {
   if (!to) return { ok: false, error: 'Missing recipient' };
   const subject = `Mise à jour du planning pour ${escapeHtml(projectName)}`;
-  const html = `
-    <p>Bonjour,</p>
-    <p>Nous avons dû ajuster le calendrier du projet <strong>${escapeHtml(projectName)}</strong>.</p>
-    <p>La nouvelle date de livraison estimée est le <strong>${escapeHtml(newEta)}</strong>.</p>
-    <p>Contactez-nous si vous avez besoin d'un point rapide.</p>
-  `;
+  const html = renderTemplate('project_delayed', { projectName, newEta });
   return sendEmailInternal(subject, to, html);
 }
 
@@ -166,11 +163,7 @@ export async function sendSupportTicketEmail({
 }) {
   if (!to) return { ok: false, error: 'Missing recipient' };
   const subject = `Nouveau ticket #${escapeHtml(ticketId)} (${escapeHtml(priority || 'normal')})`;
-  const html = `
-    <p>Nouvelle demande client reçue.</p>
-    <p><strong>${escapeHtml(customerName || 'Client TonSiteWeb')}</strong> : ${escapeHtml(summary)}</p>
-    <p>Connectez-vous au portail pour suivre et facturer l'intervention.</p>
-  `;
+  const html = renderTemplate('support_ticket', { ticketId, summary, customerName, priority });
   return sendEmailInternal(subject, to, html);
 }
 
@@ -185,13 +178,7 @@ export async function sendSubscriptionUpdateEmail({
 }) {
   if (!to) return { ok: false, error: 'Missing recipient' };
   const subject = `Votre abonnement ${escapeHtml(subscriptionId)} a été ${action === 'updated' ? 'mis à jour' : 'annulé'}`;
-  const html = `
-    <p>Bonjour,</p>
-    <p>Nous confirmons que votre abonnement <strong>${escapeHtml(subscriptionId)}</strong> a bien été ${
-      action === 'updated' ? 'mis à jour.' : 'annulé.'
-    }</p>
-    <p>Besoin d'aide ou d'ajustements ? Répondez simplement à cet email.</p>
-  `;
+  const html = renderTemplate('subscription_update', { subscriptionId, action });
   return sendEmailInternal(subject, to, html);
 }
 
@@ -208,11 +195,7 @@ export async function sendFeedbackNotificationEmail({
 }) {
   if (!to) return { ok: false, error: 'Missing recipient' };
   const subject = `Nouveau retour client sur ${project}`;
-  const html = `
-    <p>Vous avez reçu un nouveau retour client pour <strong>${escapeHtml(project)}</strong>.</p>
-    <p><em>${escapeHtml(author || 'Client')}</em> a écrit :</p>
-    <blockquote>${escapeHtml(message)}</blockquote>
-  `;
+  const html = renderTemplate('feedback_notification', { message, project, author });
   return sendEmailInternal(subject, to, html);
 }
 

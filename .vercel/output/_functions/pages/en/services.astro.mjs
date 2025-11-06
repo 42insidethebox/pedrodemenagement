@@ -1,9 +1,9 @@
 import { c as createComponent, r as renderComponent, a as renderTemplate, F as Fragment, m as maybeRenderHead } from '../../chunks/astro/server_C7RkpNfc.mjs';
-import { $ as $$CallToAction } from '../../chunks/CallToAction_DhJAECSa.mjs';
-import { $ as $$Content } from '../../chunks/Content_BPmtK-Jy.mjs';
-import { $ as $$Features2 } from '../../chunks/Features2_CXSUoGFH.mjs';
-import { $ as $$Hero } from '../../chunks/Hero_Dd0RL5IT.mjs';
-import { $ as $$PageLayout, b as footerDataEn, c as headerDataEn } from '../../chunks/PageLayout_Dv6PWVVn.mjs';
+import { $ as $$CallToAction } from '../../chunks/CallToAction_D-qkxWc_.mjs';
+import { $ as $$Content } from '../../chunks/Content_CAcisoMG.mjs';
+import { $ as $$Features2 } from '../../chunks/Features2_CKSkF_sF.mjs';
+import { $ as $$Hero } from '../../chunks/Hero_D-NL8TYE.mjs';
+import { $ as $$PageLayout, b as footerDataEn, c as headerDataEn } from '../../chunks/PageLayout_DHKJQKmh.mjs';
 export { renderers } from '../../renderers.mjs';
 
 const $$Services = createComponent(($$result, $$props, $$slots) => {

@@ -1,5 +1,5 @@
 import { c as createComponent, a as renderTemplate, r as renderComponent, m as maybeRenderHead } from '../../chunks/astro/server_C7RkpNfc.mjs';
-import { $ as $$BackendLayout } from '../../chunks/BackendLayout_DNowksUb.mjs';
+import { $ as $$BackendLayout } from '../../chunks/BackendLayout_tzY1fcN3.mjs';
 export { renderers } from '../../renderers.mjs';
 
 var __freeze = Object.freeze;
@@ -61,7 +61,7 @@ const $$Invoices = createComponent(async ($$result, $$props, $$slots) => {
     tableBody.innerHTML = '';
 
     if (!invoices.length) {
-      tableBody.innerHTML = '<tr><td colspan="6" class="px-4 py-6 text-center text-sm text-slate-400">No invoices yet. Create one above.</td></tr>';
+      tableBody.innerHTML = '<tr><td colspan="6" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">No invoices yet. Create one above.</td></tr>';
       return;
     }
 
@@ -73,15 +73,15 @@ const $$Invoices = createComponent(async ($$result, $$props, $$slots) => {
       });
       row.innerHTML = \`
         <td class="px-4 py-3">
-          <div class="font-medium text-white">\${invoice.invoice_number}</div>
-          <div class="text-xs text-slate-400">\${invoice.issue_date ? new Date(invoice.issue_date).toLocaleDateString() : ''}</div>
+          <div class="font-medium text-slate-900 dark:text-white">\${invoice.invoice_number}</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400">\${invoice.issue_date ? new Date(invoice.issue_date).toLocaleDateString() : ''}</div>
         </td>
         <td class="px-4 py-3 text-sm">\${clientLookup[invoice.client_id] ?? invoice.client_id ?? ''}</td>
-        <td class="px-4 py-3"><span class="inline-flex rounded-full bg-slate-800 px-2.5 py-1 text-xs capitalize text-slate-200">\${invoice.status}</span></td>
-        <td class="px-4 py-3 text-sm text-slate-200">\${formatter.format(invoice.amount ?? 0)}</td>
-        <td class="px-4 py-3 text-xs text-slate-300">\${invoice.due_date ? new Date(invoice.due_date).toLocaleDateString() : '\u2014'}</td>
+        <td class="px-4 py-3"><span class="inline-flex rounded-full bg-slate-100 dark:bg-slate-800 px-2.5 py-1 text-xs capitalize text-slate-700 dark:text-slate-200">\${invoice.status}</span></td>
+        <td class="px-4 py-3 text-sm text-slate-700 dark:text-slate-200">\${formatter.format(invoice.amount ?? 0)}</td>
+        <td class="px-4 py-3 text-xs text-slate-500 dark:text-slate-300">\${invoice.due_date ? new Date(invoice.due_date).toLocaleDateString() : '\u2014'}</td>
         <td class="px-4 py-3 text-right">
-          <button data-delete="\${invoice.id}" class="rounded-lg border border-red-500/50 px-3 py-1 text-xs text-red-300 hover:bg-red-500/10">Delete</button>
+          <button data-delete="\${invoice.id}" class="rounded-lg border border-red-200 px-3 py-1 text-xs text-red-600 transition hover:bg-red-50 dark:border-red-500/40 dark:text-red-300 dark:hover:bg-red-500/10">Delete</button>
         </td>\`;
       tableBody.appendChild(row);
     });
@@ -103,7 +103,7 @@ const $$Invoices = createComponent(async ($$result, $$props, $$slots) => {
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       if (message) {
-        message.classList.remove('text-red-400', 'text-blue-400');
+        message.classList.remove('text-red-400', 'text-blue-600', 'dark:text-blue-400');
         message.textContent = '';
       }
       if (submitButton) {
@@ -141,7 +141,7 @@ const $$Invoices = createComponent(async ($$result, $$props, $$slots) => {
           body: JSON.stringify(payload),
         });
         if (message) {
-          message.classList.add('text-blue-400');
+          message.classList.add('text-blue-600', 'dark:text-blue-400');
           message.textContent = 'Invoice saved.';
         }
         form.reset();
@@ -238,7 +238,7 @@ const $$Invoices = createComponent(async ($$result, $$props, $$slots) => {
     tableBody.innerHTML = '';
 
     if (!invoices.length) {
-      tableBody.innerHTML = '<tr><td colspan="6" class="px-4 py-6 text-center text-sm text-slate-400">No invoices yet. Create one above.</td></tr>';
+      tableBody.innerHTML = '<tr><td colspan="6" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">No invoices yet. Create one above.</td></tr>';
       return;
     }
 
@@ -250,15 +250,15 @@ const $$Invoices = createComponent(async ($$result, $$props, $$slots) => {
       });
       row.innerHTML = \\\`
         <td class="px-4 py-3">
-          <div class="font-medium text-white">\\\${invoice.invoice_number}</div>
-          <div class="text-xs text-slate-400">\\\${invoice.issue_date ? new Date(invoice.issue_date).toLocaleDateString() : ''}</div>
+          <div class="font-medium text-slate-900 dark:text-white">\\\${invoice.invoice_number}</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400">\\\${invoice.issue_date ? new Date(invoice.issue_date).toLocaleDateString() : ''}</div>
         </td>
         <td class="px-4 py-3 text-sm">\\\${clientLookup[invoice.client_id] ?? invoice.client_id ?? ''}</td>
-        <td class="px-4 py-3"><span class="inline-flex rounded-full bg-slate-800 px-2.5 py-1 text-xs capitalize text-slate-200">\\\${invoice.status}</span></td>
-        <td class="px-4 py-3 text-sm text-slate-200">\\\${formatter.format(invoice.amount ?? 0)}</td>
-        <td class="px-4 py-3 text-xs text-slate-300">\\\${invoice.due_date ? new Date(invoice.due_date).toLocaleDateString() : '\u2014'}</td>
+        <td class="px-4 py-3"><span class="inline-flex rounded-full bg-slate-100 dark:bg-slate-800 px-2.5 py-1 text-xs capitalize text-slate-700 dark:text-slate-200">\\\${invoice.status}</span></td>
+        <td class="px-4 py-3 text-sm text-slate-700 dark:text-slate-200">\\\${formatter.format(invoice.amount ?? 0)}</td>
+        <td class="px-4 py-3 text-xs text-slate-500 dark:text-slate-300">\\\${invoice.due_date ? new Date(invoice.due_date).toLocaleDateString() : '\u2014'}</td>
         <td class="px-4 py-3 text-right">
-          <button data-delete="\\\${invoice.id}" class="rounded-lg border border-red-500/50 px-3 py-1 text-xs text-red-300 hover:bg-red-500/10">Delete</button>
+          <button data-delete="\\\${invoice.id}" class="rounded-lg border border-red-200 px-3 py-1 text-xs text-red-600 transition hover:bg-red-50 dark:border-red-500/40 dark:text-red-300 dark:hover:bg-red-500/10">Delete</button>
         </td>\\\`;
       tableBody.appendChild(row);
     });
@@ -280,7 +280,7 @@ const $$Invoices = createComponent(async ($$result, $$props, $$slots) => {
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       if (message) {
-        message.classList.remove('text-red-400', 'text-blue-400');
+        message.classList.remove('text-red-400', 'text-blue-600', 'dark:text-blue-400');
         message.textContent = '';
       }
       if (submitButton) {
@@ -318,7 +318,7 @@ const $$Invoices = createComponent(async ($$result, $$props, $$slots) => {
           body: JSON.stringify(payload),
         });
         if (message) {
-          message.classList.add('text-blue-400');
+          message.classList.add('text-blue-600', 'dark:text-blue-400');
           message.textContent = 'Invoice saved.';
         }
         form.reset();
@@ -361,7 +361,7 @@ const $$Invoices = createComponent(async ($$result, $$props, $$slots) => {
   await loadClients();
   await loadProjects();
   await loadInvoices();
-<\/script>`])), renderComponent($$result, "BackendLayout", $$BackendLayout, { "pageTitle": "Invoices" }, { "default": async ($$result2) => renderTemplate` ${maybeRenderHead()}<section class="space-y-8"> <div class="rounded-2xl border border-slate-800 bg-slate-900/40 px-6 py-6 shadow-lg shadow-slate-950/40"> <h2 class="text-lg font-semibold text-white">Generate an invoice</h2> <p class="mt-2 text-sm text-slate-400">Send polished billing straight from your operations backend.</p> <form id="invoice-form" class="mt-6 grid gap-4 lg:grid-cols-3"> <div class="lg:col-span-1"> <label class="block text-sm text-slate-300" for="invoice_number">Invoice number</label> <input id="invoice_number" name="invoice_number" required class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> </div> <div class="lg:col-span-1"> <label class="block text-sm text-slate-300" for="client_id">Client</label> <select id="client_id" name="client_id" required class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> <option value="">Loading clients…</option> </select> </div> <div class="lg:col-span-1"> <label class="block text-sm text-slate-300" for="project_id">Project</label> <select id="project_id" name="project_id" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> <option value="">Optional</option> </select> </div> <div class="lg:col-span-1"> <label class="block text-sm text-slate-300" for="status">Status</label> <select id="status" name="status" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> <option value="draft">Draft</option> <option value="sent">Sent</option> <option value="paid">Paid</option> <option value="overdue">Overdue</option> </select> </div> <div class="lg:col-span-1"> <label class="block text-sm text-slate-300" for="issue_date">Issue date</label> <input id="issue_date" name="issue_date" type="date" required class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> </div> <div class="lg:col-span-1"> <label class="block text-sm text-slate-300" for="due_date">Due date</label> <input id="due_date" name="due_date" type="date" required class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> </div> <div> <label class="block text-sm text-slate-300" for="currency">Currency</label> <input id="currency" name="currency" required placeholder="USD" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> </div> <div> <label class="block text-sm text-slate-300" for="line_description">Line item description</label> <input id="line_description" name="line_description" required class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> </div> <div> <label class="block text-sm text-slate-300" for="line_quantity">Qty</label> <input id="line_quantity" name="line_quantity" type="number" min="1" value="1" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> </div> <div> <label class="block text-sm text-slate-300" for="line_unit_amount">Unit amount</label> <input id="line_unit_amount" name="line_unit_amount" type="number" min="0" step="0.01" required class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> </div> <div class="lg:col-span-3"> <label class="block text-sm text-slate-300" for="notes">Notes</label> <textarea id="notes" name="notes" rows="3" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"></textarea> </div> <div class="lg:col-span-3 flex items-center gap-3"> <button id="invoice-submit" type="submit" class="rounded-lg bg-blue-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-70">Save invoice</button> <p id="invoice-message" class="text-sm text-slate-400"></p> </div> </form> </div> <div class="rounded-2xl border border-slate-800 bg-slate-900/40 px-6 py-6 shadow-lg shadow-slate-950/40"> <div class="flex items-center justify-between"> <h2 class="text-lg font-semibold text-white">Billing queue</h2> <span class="text-xs uppercase tracking-wide text-slate-400">Finance view</span> </div> <div class="mt-6 overflow-x-auto"> <table class="min-w-full text-left text-sm"> <thead class="text-xs uppercase tracking-wide text-slate-400"> <tr> <th class="px-4 py-3">Invoice</th> <th class="px-4 py-3">Client</th> <th class="px-4 py-3">Status</th> <th class="px-4 py-3">Amount</th> <th class="px-4 py-3">Due</th> <th class="px-4 py-3 text-right">Actions</th> </tr> </thead> <tbody id="invoice-table" class="divide-y divide-slate-800 text-slate-200"> <tr> <td colspan="6" class="px-4 py-6 text-center text-sm text-slate-400">Fetching invoices…</td> </tr> </tbody> </table> </div> </div> </section> ` }));
+<\/script>`])), renderComponent($$result, "BackendLayout", $$BackendLayout, { "pageTitle": "Invoices" }, { "default": async ($$result2) => renderTemplate` ${maybeRenderHead()}<section class="space-y-8"> <div class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40"> <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Generate an invoice</h2> <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Send polished billing straight from your operations backend.</p> <form id="invoice-form" class="mt-6 grid gap-4 lg:grid-cols-3"> <div class="lg:col-span-1"> <label class="block text-sm text-slate-600 dark:text-slate-300" for="invoice_number">Invoice number</label> <input id="invoice_number" name="invoice_number" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> </div> <div class="lg:col-span-1"> <label class="block text-sm text-slate-600 dark:text-slate-300" for="client_id">Client</label> <select id="client_id" name="client_id" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> <option value="">Loading clients…</option> </select> </div> <div class="lg:col-span-1"> <label class="block text-sm text-slate-600 dark:text-slate-300" for="project_id">Project</label> <select id="project_id" name="project_id" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> <option value="">Optional</option> </select> </div> <div class="lg:col-span-1"> <label class="block text-sm text-slate-600 dark:text-slate-300" for="status">Status</label> <select id="status" name="status" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> <option value="draft">Draft</option> <option value="sent">Sent</option> <option value="paid">Paid</option> <option value="overdue">Overdue</option> </select> </div> <div class="lg:col-span-1"> <label class="block text-sm text-slate-600 dark:text-slate-300" for="issue_date">Issue date</label> <input id="issue_date" name="issue_date" type="date" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> </div> <div class="lg:col-span-1"> <label class="block text-sm text-slate-600 dark:text-slate-300" for="due_date">Due date</label> <input id="due_date" name="due_date" type="date" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> </div> <div> <label class="block text-sm text-slate-600 dark:text-slate-300" for="currency">Currency</label> <input id="currency" name="currency" required placeholder="USD" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> </div> <div> <label class="block text-sm text-slate-600 dark:text-slate-300" for="line_description">Line item description</label> <input id="line_description" name="line_description" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> </div> <div> <label class="block text-sm text-slate-600 dark:text-slate-300" for="line_quantity">Qty</label> <input id="line_quantity" name="line_quantity" type="number" min="1" value="1" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> </div> <div> <label class="block text-sm text-slate-600 dark:text-slate-300" for="line_unit_amount">Unit amount</label> <input id="line_unit_amount" name="line_unit_amount" type="number" min="0" step="0.01" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> </div> <div class="lg:col-span-3"> <label class="block text-sm text-slate-600 dark:text-slate-300" for="notes">Notes</label> <textarea id="notes" name="notes" rows="3" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"></textarea> </div> <div class="lg:col-span-3 flex items-center gap-3"> <button id="invoice-submit" type="submit" class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-blue-500/30 transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-70">Save invoice</button> <p id="invoice-message" class="text-sm text-slate-600 dark:text-slate-400"></p> </div> </form> </div> <div class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40"> <div class="flex items-center justify-between"> <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Billing queue</h2> <span class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Finance view</span> </div> <div class="mt-6 overflow-x-auto"> <table class="min-w-full text-left text-sm"> <thead class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400"> <tr> <th class="px-4 py-3">Invoice</th> <th class="px-4 py-3">Client</th> <th class="px-4 py-3">Status</th> <th class="px-4 py-3">Amount</th> <th class="px-4 py-3">Due</th> <th class="px-4 py-3 text-right">Actions</th> </tr> </thead> <tbody id="invoice-table" class="divide-y divide-slate-200 dark:divide-slate-800 text-slate-700 dark:text-slate-200"> <tr> <td colspan="6" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">Fetching invoices…</td> </tr> </tbody> </table> </div> </div> </section> ` }));
 }, "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/app/invoices.astro", void 0);
 
 const $$file = "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/app/invoices.astro";

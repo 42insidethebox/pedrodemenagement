@@ -1,5 +1,5 @@
 import { g as getAgencyContext, b as adminClient } from '../../../../chunks/context_0A2u7TnH.mjs';
-import { w as withAuth } from '../../../../chunks/auth_DvgOVKbc.mjs';
+import { w as withAuth } from '../../../../chunks/auth_CZPMsOX0.mjs';
 export { renderers } from '../../../../renderers.mjs';
 
 const prerender = false;

@@ -21,7 +21,8 @@
     "check:prettier": "prettier --check .",
     "fix": "npm run fix:eslint && npm run fix:prettier",
     "fix:eslint": "eslint --fix .",
-    "fix:prettier": "prettier -w ."
+    "fix:prettier": "prettier -w .",
+    "emails:test": "node scripts/send_test_emails.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.12",

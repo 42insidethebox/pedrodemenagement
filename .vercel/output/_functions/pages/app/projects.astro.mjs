@@ -1,5 +1,5 @@
 import { c as createComponent, a as renderTemplate, r as renderComponent, m as maybeRenderHead } from '../../chunks/astro/server_C7RkpNfc.mjs';
-import { $ as $$BackendLayout } from '../../chunks/BackendLayout_DNowksUb.mjs';
+import { $ as $$BackendLayout } from '../../chunks/BackendLayout_tzY1fcN3.mjs';
 export { renderers } from '../../renderers.mjs';
 
 var __freeze = Object.freeze;
@@ -55,7 +55,7 @@ const $$Projects = createComponent(async ($$result, $$props, $$slots) => {
     tableBody.innerHTML = '';
 
     if (!projects.length) {
-      tableBody.innerHTML = '<tr><td colspan="6" class="px-4 py-6 text-center text-sm text-slate-400">No projects yet. Create one above.</td></tr>';
+      tableBody.innerHTML = '<tr><td colspan="6" class="px-4 py-6 text-center text-sm text-slate-500 dark:text-slate-400">No projects yet. Create one above.</td></tr>';
       return;
     }
 
@@ -64,15 +64,15 @@ const $$Projects = createComponent(async ($$result, $$props, $$slots) => {
       const timeline = [project.start_date, project.due_date].filter(Boolean).join(' \u2192 ');
       row.innerHTML = \`
         <td class="px-4 py-3">
-          <div class="font-medium text-white">\${project.name}</div>
-          <div class="text-xs text-slate-400">\${project.notes ?? ''}</div>
+          <div class="font-medium text-slate-900 dark:text-white">\${project.name}</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400">\${project.notes ?? ''}</div>
         </td>
         <td class="px-4 py-3 text-sm">\${clientLookup[project.client_id] ?? project.client_id ?? ''}</td>
-        <td class="px-4 py-3"><span class="inline-flex rounded-full bg-slate-800 px-2.5 py-1 text-xs capitalize text-slate-200">\${project.status}</span></td>
-        <td class="px-4 py-3 text-xs text-slate-300">\${timeline || '\u2014'}</td>
-        <td class="px-4 py-3 text-xs text-slate-300">\${formatBudget(project.budget, project.currency)}</td>
+        <td class="px-4 py-3"><span class="inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-xs capitalize text-slate-700 dark:bg-slate-800 dark:text-slate-200">\${project.status}</span></td>
+        <td class="px-4 py-3 text-xs text-slate-500 dark:text-slate-300">\${timeline || '\u2014'}</td>
+        <td class="px-4 py-3 text-xs text-slate-500 dark:text-slate-300">\${formatBudget(project.budget, project.currency)}</td>
         <td class="px-4 py-3 text-right">
-          <button data-delete="\${project.id}" class="rounded-lg border border-red-500/50 px-3 py-1 text-xs text-red-300 hover:bg-red-500/10">Delete</button>
+          <button data-delete="\${project.id}" class="rounded-lg border border-red-200 px-3 py-1 text-xs text-red-600 transition hover:bg-red-50 dark:border-red-500/40 dark:text-red-300 dark:hover:bg-red-500/10">Delete</button>
         </td>\`;
       tableBody.appendChild(row);
     });
@@ -94,7 +94,7 @@ const $$Projects = createComponent(async ($$result, $$props, $$slots) => {
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       if (message) {
-        message.classList.remove('text-red-400', 'text-blue-400');
+        message.classList.remove('text-red-400', 'text-blue-600', 'dark:text-blue-400');
         message.textContent = '';
       }
       if (submitButton) {
@@ -120,7 +120,7 @@ const $$Projects = createComponent(async ($$result, $$props, $$slots) => {
           body: JSON.stringify(payload),
         });
         if (message) {
-          message.classList.add('text-blue-400');
+          message.classList.add('text-blue-600', 'dark:text-blue-400');
           message.textContent = 'Project captured.';
         }
         form.reset();
@@ -210,7 +210,7 @@ const $$Projects = createComponent(async ($$result, $$props, $$slots) => {
     tableBody.innerHTML = '';
 
     if (!projects.length) {
-      tableBody.innerHTML = '<tr><td colspan="6" class="px-4 py-6 text-center text-sm text-slate-400">No projects yet. Create one above.</td></tr>';
+      tableBody.innerHTML = '<tr><td colspan="6" class="px-4 py-6 text-center text-sm text-slate-500 dark:text-slate-400">No projects yet. Create one above.</td></tr>';
       return;
     }
 
@@ -219,15 +219,15 @@ const $$Projects = createComponent(async ($$result, $$props, $$slots) => {
       const timeline = [project.start_date, project.due_date].filter(Boolean).join(' \u2192 ');
       row.innerHTML = \\\`
         <td class="px-4 py-3">
-          <div class="font-medium text-white">\\\${project.name}</div>
-          <div class="text-xs text-slate-400">\\\${project.notes ?? ''}</div>
+          <div class="font-medium text-slate-900 dark:text-white">\\\${project.name}</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400">\\\${project.notes ?? ''}</div>
         </td>
         <td class="px-4 py-3 text-sm">\\\${clientLookup[project.client_id] ?? project.client_id ?? ''}</td>
-        <td class="px-4 py-3"><span class="inline-flex rounded-full bg-slate-800 px-2.5 py-1 text-xs capitalize text-slate-200">\\\${project.status}</span></td>
-        <td class="px-4 py-3 text-xs text-slate-300">\\\${timeline || '\u2014'}</td>
-        <td class="px-4 py-3 text-xs text-slate-300">\\\${formatBudget(project.budget, project.currency)}</td>
+        <td class="px-4 py-3"><span class="inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-xs capitalize text-slate-700 dark:bg-slate-800 dark:text-slate-200">\\\${project.status}</span></td>
+        <td class="px-4 py-3 text-xs text-slate-500 dark:text-slate-300">\\\${timeline || '\u2014'}</td>
+        <td class="px-4 py-3 text-xs text-slate-500 dark:text-slate-300">\\\${formatBudget(project.budget, project.currency)}</td>
         <td class="px-4 py-3 text-right">
-          <button data-delete="\\\${project.id}" class="rounded-lg border border-red-500/50 px-3 py-1 text-xs text-red-300 hover:bg-red-500/10">Delete</button>
+          <button data-delete="\\\${project.id}" class="rounded-lg border border-red-200 px-3 py-1 text-xs text-red-600 transition hover:bg-red-50 dark:border-red-500/40 dark:text-red-300 dark:hover:bg-red-500/10">Delete</button>
         </td>\\\`;
       tableBody.appendChild(row);
     });
@@ -249,7 +249,7 @@ const $$Projects = createComponent(async ($$result, $$props, $$slots) => {
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       if (message) {
-        message.classList.remove('text-red-400', 'text-blue-400');
+        message.classList.remove('text-red-400', 'text-blue-600', 'dark:text-blue-400');
         message.textContent = '';
       }
       if (submitButton) {
@@ -275,7 +275,7 @@ const $$Projects = createComponent(async ($$result, $$props, $$slots) => {
           body: JSON.stringify(payload),
         });
         if (message) {
-          message.classList.add('text-blue-400');
+          message.classList.add('text-blue-600', 'dark:text-blue-400');
           message.textContent = 'Project captured.';
         }
         form.reset();
@@ -317,7 +317,7 @@ const $$Projects = createComponent(async ($$result, $$props, $$slots) => {
 
   await loadClients();
   await loadProjects();
-<\/script>`])), renderComponent($$result, "BackendLayout", $$BackendLayout, { "pageTitle": "Projects" }, { "default": async ($$result2) => renderTemplate` ${maybeRenderHead()}<section class="space-y-8"> <div class="rounded-2xl border border-slate-800 bg-slate-900/40 px-6 py-6 shadow-lg shadow-slate-950/40"> <h2 class="text-lg font-semibold text-white">Plan a project</h2> <p class="mt-2 text-sm text-slate-400">Map deliverables to clients and keep production accountable.</p> <form id="project-form" class="mt-6 grid gap-4 lg:grid-cols-2"> <div> <label class="block text-sm text-slate-300" for="name">Project name</label> <input id="name" name="name" required class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> </div> <div> <label class="block text-sm text-slate-300" for="client_id">Client</label> <select id="client_id" name="client_id" required class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> <option value="">Loading clients…</option> </select> </div> <div> <label class="block text-sm text-slate-300" for="status">Status</label> <select id="status" name="status" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> <option value="discovery">Discovery</option> <option value="in_progress">In progress</option> <option value="on_hold">On hold</option> <option value="completed">Completed</option> </select> </div> <div class="grid grid-cols-2 gap-4 lg:col-span-2"> <div> <label class="block text-sm text-slate-300" for="start_date">Start date</label> <input id="start_date" name="start_date" type="date" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> </div> <div> <label class="block text-sm text-slate-300" for="due_date">Due date</label> <input id="due_date" name="due_date" type="date" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> </div> </div> <div> <label class="block text-sm text-slate-300" for="budget">Budget</label> <input id="budget" name="budget" type="number" step="0.01" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> </div> <div> <label class="block text-sm text-slate-300" for="currency">Currency</label> <input id="currency" name="currency" placeholder="USD" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"> </div> <div class="lg:col-span-2"> <label class="block text-sm text-slate-300" for="notes">Summary</label> <textarea id="notes" name="notes" rows="3" class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"></textarea> </div> <div class="lg:col-span-2 flex items-center gap-3"> <button id="project-submit" type="submit" class="rounded-lg bg-blue-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-70">Save project</button> <p id="project-message" class="text-sm text-slate-400"></p> </div> </form> </div> <div class="rounded-2xl border border-slate-800 bg-slate-900/40 px-6 py-6 shadow-lg shadow-slate-950/40"> <div class="flex items-center justify-between"> <h2 class="text-lg.font-semibold text-white">Pipeline</h2> <span class="text-xs uppercase tracking-wide text-slate-400">Realtime snapshot</span> </div> <div class="mt-6 overflow-x-auto"> <table class="min-w-full text-left text-sm"> <thead class="text-xs uppercase tracking-wide text-slate-400"> <tr> <th class="px-4 py-3">Project</th> <th class="px-4 py-3">Client</th> <th class="px-4 py-3">Status</th> <th class="px-4 py-3">Timeline</th> <th class="px-4 py-3">Budget</th> <th class="px-4 py-3 text-right">Actions</th> </tr> </thead> <tbody id="project-table" class="divide-y divide-slate-800 text-slate-200"> <tr> <td colspan="6" class="px-4 py-6 text-center text-sm text-slate-400">Fetching projects…</td> </tr> </tbody> </table> </div> </div> </section> ` }));
+<\/script>`])), renderComponent($$result, "BackendLayout", $$BackendLayout, { "pageTitle": "Projects" }, { "default": async ($$result2) => renderTemplate` ${maybeRenderHead()}<section class="space-y-8"> <div class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40"> <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Plan a project</h2> <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Map deliverables to clients and keep production accountable.</p> <form id="project-form" class="mt-6 grid gap-4 lg:grid-cols-2"> <div> <label class="block text-sm text-slate-600 dark:text-slate-300" for="name">Project name</label> <input id="name" name="name" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> </div> <div> <label class="block text-sm text-slate-600 dark:text-slate-300" for="client_id">Client</label> <select id="client_id" name="client_id" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> <option value="">Loading clients…</option> </select> </div> <div> <label class="block text-sm text-slate-600 dark:text-slate-300" for="status">Status</label> <select id="status" name="status" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> <option value="discovery">Discovery</option> <option value="in_progress">In progress</option> <option value="on_hold">On hold</option> <option value="completed">Completed</option> </select> </div> <div class="grid grid-cols-2 gap-4 lg:col-span-2"> <div> <label class="block text-sm text-slate-600 dark:text-slate-300" for="start_date">Start date</label> <input id="start_date" name="start_date" type="date" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> </div> <div> <label class="block text-sm text-slate-600 dark:text-slate-300" for="due_date">Due date</label> <input id="due_date" name="due_date" type="date" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> </div> </div> <div> <label class="block text-sm text-slate-600 dark:text-slate-300" for="budget">Budget</label> <input id="budget" name="budget" type="number" step="0.01" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> </div> <div> <label class="block text-sm text-slate-600 dark:text-slate-300" for="currency">Currency</label> <input id="currency" name="currency" placeholder="USD" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"> </div> <div class="lg:col-span-2"> <label class="block text-sm text-slate-600 dark:text-slate-300" for="notes">Summary</label> <textarea id="notes" name="notes" rows="3" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"></textarea> </div> <div class="lg:col-span-2 flex items-center gap-3"> <button id="project-submit" type="submit" class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-blue-500/30 transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-70">Save project</button> <p id="project-message" class="text-sm text-slate-500 dark:text-slate-400"></p> </div> </form> </div> <div class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40"> <div class="flex items-center justify-between"> <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Pipeline</h2> <span class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Realtime snapshot</span> </div> <div class="mt-6 overflow-x-auto"> <table class="min-w-full text-left text-sm"> <thead class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400"> <tr> <th class="px-4 py-3">Project</th> <th class="px-4 py-3">Client</th> <th class="px-4 py-3">Status</th> <th class="px-4 py-3">Timeline</th> <th class="px-4 py-3">Budget</th> <th class="px-4 py-3 text-right">Actions</th> </tr> </thead> <tbody id="project-table" class="divide-y divide-slate-200 text-slate-700 dark:divide-slate-800 dark:text-slate-200"> <tr> <td colspan="6" class="px-4 py-6 text-center text-sm text-slate-500 dark:text-slate-400">Fetching projects…</td> </tr> </tbody> </table> </div> </div> </section> ` }));
 }, "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/app/projects.astro", void 0);
 
 const $$file = "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/app/projects.astro";
