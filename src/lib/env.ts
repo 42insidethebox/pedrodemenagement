@@ -32,6 +32,22 @@ const ENV = {
   RESEND_API_KEY:
     process.env.RESEND_API_KEY ?? import.meta.env.RESEND_API_KEY ?? '',
 
+  GOOGLE_SERVICE_ACCOUNT_EMAIL:
+    process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL ?? import.meta.env.GOOGLE_SERVICE_ACCOUNT_EMAIL ?? '',
+
+  GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY:
+    process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY ??
+    import.meta.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY ??
+    '',
+
+  GOOGLE_DRIVE_PARENT_FOLDER_ID:
+    process.env.GOOGLE_DRIVE_PARENT_FOLDER_ID ?? import.meta.env.GOOGLE_DRIVE_PARENT_FOLDER_ID ?? '',
+
+  GOOGLE_DOCS_SECTION_TEMPLATE_ID:
+    process.env.GOOGLE_DOCS_SECTION_TEMPLATE_ID ??
+    import.meta.env.GOOGLE_DOCS_SECTION_TEMPLATE_ID ??
+    '',
+
   SUPPORT_EMAIL:
     process.env.SENDER_EMAIL ??
     import.meta.env.SENDER_EMAIL ??
@@ -103,6 +119,8 @@ export function validateEnvVars(required: EnvKeys[] = [
   'SUPABASE_SERVICE_ROLE_KEY',
   'STRIPE_SECRET_KEY',
   'STRIPE_WEBHOOK_SECRET',
+  'GOOGLE_SERVICE_ACCOUNT_EMAIL',
+  'GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY',
 ]) {
   const missing: string[] = [];
   for (const key of required) {

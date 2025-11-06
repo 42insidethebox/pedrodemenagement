@@ -1,0 +1,356 @@
+---
+import BackendLayout from '~/layouts/BackendLayout.astro';
+---
+
+<BackendLayout pageTitle="Websites">
+  <section class="space-y-8">
+    <div class="rounded-2xl border border-slate-800 bg-slate-900/40 px-6 py-6 shadow-lg shadow-slate-950/40">
+      <h2 class="text-lg font-semibold text-white">Connect a website</h2>
+      <p class="mt-2 text-sm text-slate-400">
+        Capture the delivery workspace for a client site. Google Docs and folders are created automatically when you leave those
+        fields blank.
+      </p>
+      <form id="website-form" class="mt-6 grid gap-4 lg:grid-cols-2">
+        <div class="lg:col-span-2 grid gap-4 sm:grid-cols-2">
+          <div>
+            <label class="block text-sm text-slate-300" for="name">Website name</label>
+            <input
+              id="name"
+              name="name"
+              required
+              placeholder="Maison Favre – Viticulture"
+              class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
+            />
+          </div>
+          <div>
+            <label class="block text-sm text-slate-300" for="client_id">Client</label>
+            <select
+              id="client_id"
+              name="client_id"
+              class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
+            >
+              <option value="">No client yet</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm text-slate-300" for="status">Status</label>
+          <select
+            id="status"
+            name="status"
+            class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
+          >
+            <option value="draft">Draft</option>
+            <option value="content_review">Content review</option>
+            <option value="ready">Ready to launch</option>
+            <option value="live">Live</option>
+            <option value="paused">Paused</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm text-slate-300" for="domain">Domain</label>
+          <input
+            id="domain"
+            name="domain"
+            placeholder="clientsite.ch"
+            class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
+          />
+        </div>
+        <div>
+          <label class="block text-sm text-slate-300" for="preview_url">Preview URL</label>
+          <input
+            id="preview_url"
+            name="preview_url"
+            placeholder="preview.vercel.app"
+            class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
+          />
+        </div>
+        <div>
+          <label class="block text-sm text-slate-300" for="google_doc_id">Google Doc ID (optional)</label>
+          <input
+            id="google_doc_id"
+            name="google_doc_id"
+            placeholder="Automatically created when empty"
+            class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
+          />
+        </div>
+        <div>
+          <label class="block text-sm text-slate-300" for="template_key">Template key (optional)</label>
+          <input
+            id="template_key"
+            name="template_key"
+            placeholder="hero-01"
+            class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
+          />
+        </div>
+        <div class="lg:col-span-2 flex items-center gap-3">
+          <button
+            id="website-submit"
+            type="submit"
+            class="rounded-lg bg-blue-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:bg-blue-400 disabled:opacity-70"
+          >
+            Save website
+          </button>
+          <p id="website-message" class="text-sm text-slate-400"></p>
+        </div>
+      </form>
+    </div>
+
+    <div class="rounded-2xl border border-slate-800 bg-slate-900/40 px-6 py-6 shadow-lg shadow-slate-950/40">
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg font-semibold text-white">Delivery pipeline</h2>
+        <span class="text-xs uppercase tracking-wide text-slate-400">Realtime</span>
+      </div>
+      <div class="mt-6 overflow-x-auto">
+        <table class="min-w-full text-left text-sm">
+          <thead class="text-xs uppercase tracking-wide text-slate-400">
+            <tr>
+              <th class="px-4 py-3">Website</th>
+              <th class="px-4 py-3">Status</th>
+              <th class="px-4 py-3">Domain</th>
+              <th class="px-4 py-3">Docs</th>
+              <th class="px-4 py-3 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="website-table" class="divide-y divide-slate-800 text-slate-200">
+            <tr>
+              <td colspan="5" class="px-4 py-6 text-center text-sm text-slate-400">Loading websites…</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</BackendLayout>
+
+<script type="module">
+  import { authFetch } from '~/utils/backend/api';
+
+  const clientSelect = document.getElementById('client_id');
+  const form = document.getElementById('website-form');
+  const message = document.getElementById('website-message');
+  const submitButton = document.getElementById('website-submit');
+  const tableBody = document.getElementById('website-table');
+
+  const clientLookup = {};
+
+  const safe = (value) => (value ? String(value) : '—');
+
+  const renderSections = (sections) => {
+    if (!sections || !sections.length) {
+      return '<p class="text-xs text-slate-400">No sections captured yet.</p>';
+    }
+
+    return `
+      <ul class="mt-4 space-y-2 text-xs text-slate-300">
+        ${sections
+          .map(
+            (section) => `
+              <li class="rounded-lg border border-slate-800 bg-slate-950/70 px-3 py-2">
+                <div class="font-medium text-white">${safe(section.heading)}</div>
+                <p class="mt-1 leading-relaxed">${safe(section.content)}</p>
+              </li>
+            `,
+          )
+          .join('')}
+      </ul>
+    `;
+  };
+
+  const renderWebsites = (websites) => {
+    if (!tableBody) return;
+    tableBody.innerHTML = '';
+
+    if (!websites.length) {
+      tableBody.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-400">No websites yet. Capture one above.</td></tr>';
+      return;
+    }
+
+    websites.forEach((website) => {
+      const row = document.createElement('tr');
+      row.dataset.id = website.id;
+      row.innerHTML = `
+        <td class="px-4 py-3 align-top">
+          <div class="font-medium text-white">${safe(website.name)}</div>
+          <p class="text-xs text-slate-400">${website.client_id ? clientLookup[website.client_id] || website.client_id : 'No client'}</p>
+          <button data-toggle="${website.id}" class="mt-2 text-xs text-blue-400 hover:text-blue-300">View sections</button>
+          <div class="hidden" data-sections="${website.id}"></div>
+        </td>
+        <td class="px-4 py-3 align-top">
+          <select data-status="${website.id}" class="rounded-lg border border-slate-700 bg-slate-950 px-2 py-1 text-xs text-white">
+            <option value="draft" ${website.status === 'draft' ? 'selected' : ''}>Draft</option>
+            <option value="content_review" ${website.status === 'content_review' ? 'selected' : ''}>Review</option>
+            <option value="ready" ${website.status === 'ready' ? 'selected' : ''}>Ready</option>
+            <option value="live" ${website.status === 'live' ? 'selected' : ''}>Live</option>
+            <option value="paused" ${website.status === 'paused' ? 'selected' : ''}>Paused</option>
+          </select>
+        </td>
+        <td class="px-4 py-3 align-top">
+          <div class="text-xs text-slate-300">${website.domain ? `<a class="text-blue-400 hover:text-blue-300" href="${website.domain}" target="_blank" rel="noreferrer">${website.domain}</a>` : '—'}</div>
+          <div class="mt-1 text-xs text-slate-400">Preview: ${website.preview_url ? `<a class="text-blue-400 hover:text-blue-300" href="${website.preview_url}" target="_blank" rel="noreferrer">${website.preview_url}</a>` : '—'}</div>
+        </td>
+        <td class="px-4 py-3 align-top text-xs text-blue-400">
+          ${website.google_doc_id ? `<a class="block hover:text-blue-300" href="https://docs.google.com/document/d/${website.google_doc_id}" target="_blank" rel="noreferrer">Open doc</a>` : '<span class="text-slate-400">Not generated</span>'}
+          ${website.google_folder_id ? `<a class="mt-1 block hover:text-blue-300" href="https://drive.google.com/drive/folders/${website.google_folder_id}" target="_blank" rel="noreferrer">Open folder</a>` : ''}
+        </td>
+        <td class="px-4 py-3 text-right align-top">
+          <button data-sync="${website.id}" class="mr-2 rounded-lg border border-blue-500/50 px-3 py-1 text-xs text-blue-300 hover:bg-blue-500/10">Sync doc</button>
+          <button data-delete="${website.id}" class="rounded-lg border border-red-500/50 px-3 py-1 text-xs text-red-300 hover:bg-red-500/10">Delete</button>
+        </td>
+      `;
+      tableBody.appendChild(row);
+    });
+  };
+
+  const loadClients = async () => {
+    if (!clientSelect) return;
+    try {
+      const response = await authFetch('/clients');
+      const clients = response.clients ?? [];
+      clientSelect.innerHTML = '<option value="">No client yet</option>';
+      clients.forEach((client) => {
+        clientLookup[client.id] = client.company_name;
+        clientSelect.innerHTML += `<option value="${client.id}">${client.company_name}</option>`;
+      });
+    } catch (error) {
+      console.error(error);
+      clientSelect.innerHTML = '<option value="">Unable to load clients</option>';
+    }
+  };
+
+  const loadWebsites = async () => {
+    if (tableBody) {
+      tableBody.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-400">Loading websites…</td></tr>';
+    }
+    try {
+      const response = await authFetch('/websites');
+      renderWebsites(response.websites ?? []);
+    } catch (error) {
+      console.error(error);
+      if (tableBody) {
+        tableBody.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-red-400">Unable to load websites.</td></tr>';
+      }
+    }
+  };
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!form) return;
+    if (message) {
+      message.classList.remove('text-red-400', 'text-blue-400');
+      message.textContent = '';
+    }
+    submitButton?.classList.add('animate-pulse');
+    if (submitButton) submitButton.disabled = true;
+
+    const formData = new FormData(form);
+    const payload = {
+      name: String(formData.get('name') ?? '').trim(),
+      client_id: String(formData.get('client_id') ?? '') || null,
+      status: String(formData.get('status') ?? 'draft'),
+      domain: String(formData.get('domain') ?? '').trim() || null,
+      preview_url: String(formData.get('preview_url') ?? '').trim() || null,
+      google_doc_id: String(formData.get('google_doc_id') ?? '').trim() || null,
+      template_key: String(formData.get('template_key') ?? '').trim() || null,
+    };
+
+    try {
+      await authFetch('/websites', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      });
+      if (message) {
+        message.classList.add('text-blue-400');
+        message.textContent = 'Website captured. Google workspace ready.';
+      }
+      form.reset();
+      await loadWebsites();
+    } catch (error) {
+      console.error(error);
+      if (message) {
+        message.classList.add('text-red-400');
+        message.textContent = error instanceof Error ? error.message : 'Failed to save website.';
+      }
+    } finally {
+      submitButton?.classList.remove('animate-pulse');
+      if (submitButton) submitButton.disabled = false;
+    }
+  });
+
+  tableBody?.addEventListener('change', async (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLSelectElement)) return;
+    const id = target.getAttribute('data-status');
+    if (!id) return;
+
+    try {
+      await authFetch(`/websites/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status: target.value }),
+      });
+    } catch (error) {
+      console.error(error);
+      target.value = target.getAttribute('data-prev') || 'draft';
+    }
+    target.setAttribute('data-prev', target.value);
+  });
+
+  tableBody?.addEventListener('click', async (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+
+    const deleteId = target.getAttribute('data-delete');
+    if (deleteId) {
+      target.classList.add('animate-pulse');
+      try {
+        await authFetch(`/websites/${deleteId}`, { method: 'DELETE', parseJson: false });
+        await loadWebsites();
+      } catch (error) {
+        console.error(error);
+      }
+      return;
+    }
+
+    const toggleId = target.getAttribute('data-toggle');
+    if (toggleId) {
+      const container = document.querySelector(`[data-sections="${toggleId}"]`);
+      if (!(container instanceof HTMLElement)) return;
+      if (!container.classList.contains('hidden')) {
+        container.classList.add('hidden');
+        container.innerHTML = '';
+        target.textContent = 'View sections';
+        return;
+      }
+      target.textContent = 'Hide sections';
+      container.classList.remove('hidden');
+      container.innerHTML = '<p class="mt-4 text-xs text-slate-400">Loading sections…</p>';
+      try {
+        const response = await authFetch(`/websites/${toggleId}`);
+        container.innerHTML = renderSections(response.sections ?? []);
+      } catch (error) {
+        console.error(error);
+        container.innerHTML = '<p class="mt-4 text-xs text-red-400">Unable to load sections.</p>';
+      }
+      return;
+    }
+
+    const syncId = target.getAttribute('data-sync');
+    if (syncId) {
+      target.classList.add('animate-pulse');
+      try {
+        await authFetch(`/websites/${syncId}`, {
+          method: 'PATCH',
+          body: JSON.stringify({ syncFromDoc: true }),
+        });
+        await loadWebsites();
+      } catch (error) {
+        console.error(error);
+      } finally {
+        target.classList.remove('animate-pulse');
+      }
+    }
+  });
+
+  await loadClients();
+  await loadWebsites();
+</script>

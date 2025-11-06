@@ -23,6 +23,7 @@ export const GET: APIRoute = withAuth(async ({ locals }) => {
   const [
     clientsResult,
     activeProjectsResult,
+    liveWebsitesResult,
     overdueTasksResult,
     blockedTasksResult,
     inProgressTasksResult,
@@ -40,6 +41,11 @@ export const GET: APIRoute = withAuth(async ({ locals }) => {
         .select('id', { count: 'exact', head: true })
         .eq('agency_id', agency.id)
         .neq('status', 'completed'),
+      adminClient
+        .from('websites')
+        .select('id', { count: 'exact', head: true })
+        .eq('agency_id', agency.id)
+        .eq('status', 'live'),
       adminClient
         .from('tasks')
         .select('id', { count: 'exact', head: true })
@@ -77,6 +83,7 @@ export const GET: APIRoute = withAuth(async ({ locals }) => {
 
   const clientsCount = parseCount('clients', clientsResult);
   const activeProjectsCount = parseCount('projects', activeProjectsResult);
+  const liveWebsitesCount = parseCount('websites-live', liveWebsitesResult);
   const overdueTasksCount = parseCount('tasks-overdue', overdueTasksResult);
   const blockedTasksCount = parseCount('tasks-blocked', blockedTasksResult);
   const inProgressTasksCount = parseCount('tasks-in-progress', inProgressTasksResult);
@@ -100,6 +107,7 @@ export const GET: APIRoute = withAuth(async ({ locals }) => {
       metrics: {
         clients: clientsCount,
         activeProjects: activeProjectsCount,
+        liveWebsites: liveWebsitesCount,
         outstandingAmount,
         revenueLast30Days,
       },

@@ -71,6 +71,10 @@ const PROJECT_STATUSES = ['discovery', 'in_progress', 'on_hold', 'completed'] as
 const TASK_STATUSES = ['todo', 'in_progress', 'blocked', 'done'] as const;
 const TASK_PRIORITIES = ['low', 'medium', 'high', 'urgent'] as const;
 const INVOICE_STATUSES = ['draft', 'sent', 'paid', 'overdue'] as const;
+const WEBSITE_STATUSES = ['draft', 'content_review', 'ready', 'live', 'paused'] as const;
+const SUPPORT_STATUSES = ['open', 'in_progress', 'waiting', 'resolved', 'closed'] as const;
+const SUPPORT_PRIORITIES = ['low', 'normal', 'high', 'urgent'] as const;
+const SUPPORT_TYPES = ['bug', 'content_change', 'design', 'upgrade', 'billing', 'general'] as const;
 
 export type DocumentInput = {
   title: string;
@@ -209,6 +213,214 @@ export type InvoiceLineItem = {
   quantity: number;
   unit_amount: number;
 };
+
+export type WebsiteInput = {
+  name: string;
+  client_id: string | null;
+  status: typeof WEBSITE_STATUSES[number];
+  domain: string | null;
+  preview_url: string | null;
+  production_url: string | null;
+  google_doc_id: string | null;
+  google_folder_id: string | null;
+  template_key: string | null;
+  metadata: Record<string, unknown>;
+};
+
+export function parseWebsitePayload(payload: unknown): WebsiteInput {
+  if (!payload || typeof payload !== 'object') {
+    throw new Error('Invalid website payload');
+  }
+
+  const body = payload as Record<string, unknown>;
+  const domain = ensureOptionalString(body.domain);
+  const preview = ensureOptionalString(body.preview_url);
+  const production = ensureOptionalString(body.production_url);
+
+  const normalizedDomain = domain && !domain.startsWith('http') ? `https://${domain}` : domain;
+  const normalizedPreview = preview && !preview.startsWith('http') ? `https://${preview}` : preview;
+  const normalizedProduction = production && !production.startsWith('http') ? `https://${production}` : production;
+
+  return {
+    name: ensureString(body.name, 'name'),
+    client_id: ensureOptionalString(body.client_id),
+    status: ensureEnum(body.status, 'status', WEBSITE_STATUSES, 'draft'),
+    domain: normalizedDomain,
+    preview_url: normalizedPreview,
+    production_url: normalizedProduction,
+    google_doc_id: ensureOptionalString(body.google_doc_id),
+    google_folder_id: ensureOptionalString(body.google_folder_id),
+    template_key: ensureOptionalString(body.template_key),
+    metadata: ensureObject(body.metadata, 'metadata'),
+  };
+}
+
+export function parseWebsiteUpdatePayload(payload: unknown): Partial<WebsiteInput> {
+  if (!payload || typeof payload !== 'object') {
+    throw new Error('Invalid website payload');
+  }
+
+  const body = payload as Record<string, unknown>;
+  const result: Partial<WebsiteInput> = {};
+
+  if (body.name !== undefined) result.name = ensureString(body.name, 'name');
+  if (body.client_id !== undefined) result.client_id = ensureOptionalString(body.client_id);
+  if (body.status !== undefined) result.status = ensureEnum(body.status, 'status', WEBSITE_STATUSES, 'draft');
+
+  if (body.domain !== undefined) {
+    const domain = ensureOptionalString(body.domain);
+    result.domain = domain && !domain.startsWith('http') ? `https://${domain}` : domain;
+  }
+  if (body.preview_url !== undefined) {
+    const preview = ensureOptionalString(body.preview_url);
+    result.preview_url = preview && !preview.startsWith('http') ? `https://${preview}` : preview;
+  }
+  if (body.production_url !== undefined) {
+    const prod = ensureOptionalString(body.production_url);
+    result.production_url = prod && !prod.startsWith('http') ? `https://${prod}` : prod;
+  }
+  if (body.google_doc_id !== undefined) result.google_doc_id = ensureOptionalString(body.google_doc_id);
+  if (body.google_folder_id !== undefined)
+    result.google_folder_id = ensureOptionalString(body.google_folder_id);
+  if (body.template_key !== undefined) result.template_key = ensureOptionalString(body.template_key);
+  if (body.metadata !== undefined) result.metadata = ensureObject(body.metadata, 'metadata');
+
+  return result;
+}
+
+export type WebsiteSectionInput = {
+  section_key: string;
+  heading: string | null;
+  content: string | null;
+  media: Record<string, unknown>[];
+  google_doc_id: string | null;
+  google_doc_heading: string | null;
+};
+
+export function parseWebsiteSectionPayload(payload: unknown): WebsiteSectionInput {
+  if (!payload || typeof payload !== 'object') {
+    throw new Error('Invalid website section payload');
+  }
+
+  const body = payload as Record<string, unknown>;
+
+  return {
+    section_key: ensureString(body.section_key, 'section_key'),
+    heading: ensureOptionalString(body.heading),
+    content: ensureOptionalString(body.content),
+    media: Array.isArray(body.media)
+      ? body.media.filter((item) => item && typeof item === 'object') as Record<string, unknown>[]
+      : [],
+    google_doc_id: ensureOptionalString(body.google_doc_id),
+    google_doc_heading: ensureOptionalString(body.google_doc_heading),
+  };
+}
+
+export function parseWebsiteSectionUpdatePayload(payload: unknown): Partial<WebsiteSectionInput> {
+  if (!payload || typeof payload !== 'object') {
+    throw new Error('Invalid website section payload');
+  }
+
+  const body = payload as Record<string, unknown>;
+  const result: Partial<WebsiteSectionInput> = {};
+
+  if (body.section_key !== undefined) result.section_key = ensureString(body.section_key, 'section_key');
+  if (body.heading !== undefined) result.heading = ensureOptionalString(body.heading);
+  if (body.content !== undefined) result.content = ensureOptionalString(body.content);
+  if (body.media !== undefined) {
+    result.media = Array.isArray(body.media)
+      ? body.media.filter((item) => item && typeof item === 'object') as Record<string, unknown>[]
+      : [];
+  }
+  if (body.google_doc_id !== undefined) result.google_doc_id = ensureOptionalString(body.google_doc_id);
+  if (body.google_doc_heading !== undefined)
+    result.google_doc_heading = ensureOptionalString(body.google_doc_heading);
+
+  return result;
+}
+
+export type SupportRequestInput = {
+  website_id: string | null;
+  customer_email: string | null;
+  customer_name: string | null;
+  request_type: typeof SUPPORT_TYPES[number];
+  description: string | null;
+  status: typeof SUPPORT_STATUSES[number];
+  priority: typeof SUPPORT_PRIORITIES[number];
+  metadata: Record<string, unknown>;
+};
+
+export function parseSupportRequestPayload(payload: unknown): SupportRequestInput {
+  if (!payload || typeof payload !== 'object') {
+    throw new Error('Invalid support request payload');
+  }
+
+  const body = payload as Record<string, unknown>;
+  const email = ensureOptionalString(body.customer_email);
+  if (email && !/.+@.+\..+/.test(email)) {
+    throw new Error('Invalid customer email');
+  }
+
+  return {
+    website_id: ensureOptionalString(body.website_id),
+    customer_email: email,
+    customer_name: ensureOptionalString(body.customer_name),
+    request_type: ensureEnum(body.request_type, 'request_type', SUPPORT_TYPES, 'general'),
+    description: ensureOptionalString(body.description),
+    status: ensureEnum(body.status, 'status', SUPPORT_STATUSES, 'open'),
+    priority: ensureEnum(body.priority, 'priority', SUPPORT_PRIORITIES, 'normal'),
+    metadata: ensureObject(body.metadata, 'metadata'),
+  };
+}
+
+export function parseSupportRequestUpdatePayload(payload: unknown): Partial<SupportRequestInput> {
+  if (!payload || typeof payload !== 'object') {
+    throw new Error('Invalid support request payload');
+  }
+
+  const body = payload as Record<string, unknown>;
+  const result: Partial<SupportRequestInput> = {};
+
+  if (body.website_id !== undefined) result.website_id = ensureOptionalString(body.website_id);
+  if (body.customer_email !== undefined) {
+    const email = ensureOptionalString(body.customer_email);
+    if (email && !/.+@.+\..+/.test(email)) {
+      throw new Error('Invalid customer email');
+    }
+    result.customer_email = email;
+  }
+  if (body.customer_name !== undefined) result.customer_name = ensureOptionalString(body.customer_name);
+  if (body.request_type !== undefined)
+    result.request_type = ensureEnum(body.request_type, 'request_type', SUPPORT_TYPES, 'general');
+  if (body.description !== undefined) result.description = ensureOptionalString(body.description);
+  if (body.status !== undefined) result.status = ensureEnum(body.status, 'status', SUPPORT_STATUSES, 'open');
+  if (body.priority !== undefined)
+    result.priority = ensureEnum(body.priority, 'priority', SUPPORT_PRIORITIES, 'normal');
+  if (body.metadata !== undefined) result.metadata = ensureObject(body.metadata, 'metadata');
+
+  return result;
+}
+
+export type SubscriptionUpdateInput = {
+  priceId?: string | null;
+  cancelAtPeriodEnd?: boolean;
+};
+
+export function parseSubscriptionUpdatePayload(payload: unknown): SubscriptionUpdateInput {
+  if (!payload || typeof payload !== 'object') {
+    throw new Error('Invalid subscription payload');
+  }
+
+  const body = payload as Record<string, unknown>;
+  const result: SubscriptionUpdateInput = {};
+  if (body.priceId !== undefined) {
+    result.priceId = ensureOptionalString(body.priceId);
+  }
+  if (body.cancelAtPeriodEnd !== undefined) {
+    result.cancelAtPeriodEnd = Boolean(body.cancelAtPeriodEnd);
+  }
+  return result;
+}
 
 export type InvoiceInput = {
   invoice_number: string;
