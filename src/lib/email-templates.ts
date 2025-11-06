@@ -19,6 +19,17 @@ function stripTagsToText(html: string) {
     .trim();
 }
 
+function formatCurrency(amount: unknown, currency: string | null | undefined) {
+  const value = typeof amount === 'number' ? amount : Number(amount || 0);
+  if (!Number.isFinite(value)) return '—';
+  const cur = currency || 'CHF';
+  try {
+    return new Intl.NumberFormat('fr-CH', { style: 'currency', currency: cur }).format(value / 100);
+  } catch {
+    return `${(value / 100).toFixed(2)} ${cur}`.trim();
+  }
+}
+
 function getBrand() {
   const brand = {
     name: ENV.SENDER_NAME || 'TonSiteWeb',
@@ -175,18 +186,102 @@ export function renderTemplate(name: string, data: any) {
       return renderLayout({ title: `Nouveau retour client`, preheader: `Nouveau retour client sur ${project}`, contentHtml: content });
     }
     case 'admin_notification': {
-      const json = escapeHtml(JSON.stringify(data?.order || data, null, 2));
+      const order = data?.order || data || {};
+      const metadata = order.metadata || {};
+      const titleNumber = order.order_number ? `Nouvelle commande ${escapeHtml(order.order_number)}` : 'Nouvelle commande';
+      const amount = formatCurrency(order.amount_total, order.currency);
+      const details = [
+        ['Numéro de commande', order.order_number || '—'],
+        [
+          'Client',
+          `${escapeHtml(order.customer_name || metadata.name || 'Client TonSiteWeb')} (${escapeHtml(
+            order.customer_email || metadata.email || brand.supportEmail,
+          )})`,
+        ],
+        ['Entreprise', escapeHtml(order.company || metadata.company || '—')],
+        ['Téléphone', escapeHtml(order.phone || metadata.phone || '—')],
+        ['Plan', escapeHtml(order.plan || metadata.plan || '—')],
+        ['Modèle', escapeHtml(order.template_key || metadata.template || '—')],
+        ['Montant', escapeHtml(amount)],
+        ['Statut Stripe', escapeHtml(order.status || '—')],
+      ]
+        .map(
+          ([label, value]) => `
+            <tr>
+              <td style="padding:6px 12px; font-weight:600; width:180px; vertical-align:top;">${label}</td>
+              <td style="padding:6px 12px;">${value}</td>
+            </tr>
+          `,
+        )
+        .join('');
+
+      const notes = [
+        metadata.clientSlug ? `<li><strong>Slug souhaité :</strong> ${escapeHtml(metadata.clientSlug)}</li>` : '',
+        metadata.notes ? `<li><strong>Notes :</strong> ${escapeHtml(metadata.notes)}</li>` : '',
+      ]
+        .filter(Boolean)
+        .join('');
+
+      const stripeLink = order.stripe_session_id
+        ? order.mode === 'subscription' && order.subscription_id
+          ? `https://dashboard.stripe.com/subscriptions/${escapeHtml(order.subscription_id)}`
+          : `https://dashboard.stripe.com/checkouts/sessions/${escapeHtml(order.stripe_session_id)}`
+        : '';
+
       const content = `
-        <p>Nouvelle commande reçue.</p>
-        <pre style="white-space:pre-wrap; font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; font-size:12px; line-height:18px; background:#0b1020; color:#e2e8f0; padding:12px 16px; border-radius:8px;">${json}</pre>
+        <p>Une nouvelle commande vient d'être enregistrée.</p>
+        <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%; border:1px solid ${brand.border}; border-radius:12px; overflow:hidden; font-size:14px; line-height:20px;">
+          <tbody>${details}</tbody>
+        </table>
+        ${notes ? `<p style="margin-top:16px; font-weight:600;">Notes client</p><ul style="margin:8px 0 0 20px; padding:0;">${notes}</ul>` : ''}
+        <p style="margin-top:20px;">Démarrez la production, envoyez les accès et planifiez le premier appel avec le client.</p>
+        ${
+          stripeLink
+            ? `<p style="margin-top:16px;"><a href="${stripeLink}" target="_blank" rel="noopener" style="color:${brand.primary}; text-decoration:none; font-weight:600;">Ouvrir la commande dans Stripe →</a></p>`
+            : ''
+        }
       `;
-      return renderLayout({ title: 'Nouvelle commande', preheader: 'Nouvelle commande', contentHtml: content });
+      return renderLayout({
+        title: titleNumber,
+        preheader: `Commande ${order.order_number || ''} – ${order.plan || metadata.plan || 'nouvelle commande'}`.trim(),
+        contentHtml: content,
+        cta: { label: 'Voir les commandes', url: `${brand.origin.replace(/\/$/, '')}/app/orders` },
+      });
     }
     case 'client_confirmation': {
+      const order = data?.order || {};
+      const metadata = order.metadata || {};
+      const amount = formatCurrency(order.amount_total, order.currency);
+      const rows = [
+        ['Numéro de commande', order.order_number || '—'],
+        ['Plan sélectionné', escapeHtml(order.plan || metadata.plan || '—')],
+        ['Modèle choisi', escapeHtml(order.template_key || metadata.template || '—')],
+        ['Montant payé', escapeHtml(amount)],
+      ]
+        .map(
+          ([label, value]) => `
+            <tr>
+              <td style="padding:6px 12px; font-weight:600; width:180px;">${label}</td>
+              <td style="padding:6px 12px;">${value}</td>
+            </tr>
+          `,
+        )
+        .join('');
+
       const content = `
-        <p>Merci pour votre commande. Nous revenons vers vous très vite.</p>
+        <p>Merci beaucoup pour votre confiance ! Nous préparons dès maintenant votre site.</p>
+        <p>Voici un récapitulatif de votre commande :</p>
+        <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%; border:1px solid ${brand.border}; border-radius:12px; overflow:hidden; font-size:14px; line-height:20px;">
+          <tbody>${rows}</tbody>
+        </table>
+        <p style="margin-top:20px;">Un membre de notre équipe va vous contacter sous 24 heures pour récupérer les derniers éléments et planifier la mise en route.</p>
+        <p>Besoin d'ajouter des précisions ? Répondez directement à cet email ou écrivez-nous sur <a href="mailto:${escapeHtml(brand.supportEmail)}" style="color:${brand.primary}; text-decoration:none;">${escapeHtml(brand.supportEmail)}</a>.</p>
       `;
-      return renderLayout({ title: 'Commande reçue', preheader: 'Nous avons reçu votre commande', contentHtml: content });
+      return renderLayout({
+        title: 'Votre commande est confirmée',
+        preheader: `Commande ${order.order_number || ''} reçue`.trim(),
+        contentHtml: content,
+      });
     }
     default: {
       const content = typeof data?.html === 'string' ? data.html : `<pre>${escapeHtml(JSON.stringify(data, null, 2))}</pre>`;

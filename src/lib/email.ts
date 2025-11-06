@@ -67,7 +67,10 @@ export async function sendEmail({
 
 export async function sendAdminNotificationEmail(order: any) {
   const to = ENV.SUPPORT_EMAIL;
-  const subject = 'New order received';
+  if (!to) return { ok: false, error: 'Missing support email' };
+  const subject = order?.order_number
+    ? `Nouvelle commande ${order.order_number}`
+    : 'Nouvelle commande';
   const html = renderTemplate('admin_notification', { order });
   return sendEmailInternal(subject, to, html);
 }
@@ -75,7 +78,9 @@ export async function sendAdminNotificationEmail(order: any) {
 export async function sendClientConfirmationEmail(order: any) {
   const to = order?.customer_email || order?.email;
   if (!to) return { ok: false, error: 'Missing recipient' };
-  const subject = 'We received your order';
+  const subject = order?.order_number
+    ? `Votre commande ${order.order_number} est confirmée`
+    : 'Votre commande est confirmée';
   const html = renderTemplate('client_confirmation', { order });
   return sendEmailInternal(subject, to, html);
 }
