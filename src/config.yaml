@@ -1,6 +1,6 @@
 site:
   name: TonSiteWeb.ch
-  site: 'https://monwebsite.ch'
+  site: 'https://tonsiteweb.ch'
   base: '/'
   trailingSlash: false
 

@@ -4,7 +4,7 @@
 // Match the shape expected by the integration-generated virtual module
 export const SITE = {
   name: "TonSiteWeb.ch",
-  site: "https://monwebsite.ch",
+  site: "https://tonsiteweb.ch",
   base: "/",
   trailingSlash: false,
   googleSiteVerificationId: "",
