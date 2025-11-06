@@ -111,6 +111,90 @@ export async function sendPasswordChangedEmail(to: string) {
   return sendEmailInternal(subject, to, html);
 }
 
+export async function sendProjectReadyEmail({
+  to,
+  projectName,
+  previewUrl,
+}: {
+  to: string;
+  projectName: string;
+  previewUrl: string;
+}) {
+  if (!to) return { ok: false, error: 'Missing recipient' };
+  const subject = `Votre site ${escapeHtml(projectName)} est prêt à être validé`;
+  const html = `
+    <p>Bonjour 👋,</p>
+    <p>Nous venons de terminer la première version de <strong>${escapeHtml(projectName)}</strong>.</p>
+    <p>Consultez la maquette : <a href="${escapeHtml(previewUrl)}">${escapeHtml(previewUrl)}</a></p>
+    <p>Ajoutez vos commentaires directement dans le document partagé. Nous sommes prêts pour les derniers ajustements.</p>
+  `;
+  return sendEmailInternal(subject, to, html);
+}
+
+export async function sendProjectDelayedEmail({
+  to,
+  projectName,
+  newEta,
+}: {
+  to: string;
+  projectName: string;
+  newEta: string;
+}) {
+  if (!to) return { ok: false, error: 'Missing recipient' };
+  const subject = `Mise à jour du planning pour ${escapeHtml(projectName)}`;
+  const html = `
+    <p>Bonjour,</p>
+    <p>Nous avons dû ajuster le calendrier du projet <strong>${escapeHtml(projectName)}</strong>.</p>
+    <p>La nouvelle date de livraison estimée est le <strong>${escapeHtml(newEta)}</strong>.</p>
+    <p>Contactez-nous si vous avez besoin d'un point rapide.</p>
+  `;
+  return sendEmailInternal(subject, to, html);
+}
+
+export async function sendSupportTicketEmail({
+  to,
+  ticketId,
+  summary,
+  customerName,
+  priority,
+}: {
+  to: string;
+  ticketId: string;
+  summary: string;
+  customerName?: string | null;
+  priority?: string | null;
+}) {
+  if (!to) return { ok: false, error: 'Missing recipient' };
+  const subject = `Nouveau ticket #${escapeHtml(ticketId)} (${escapeHtml(priority || 'normal')})`;
+  const html = `
+    <p>Nouvelle demande client reçue.</p>
+    <p><strong>${escapeHtml(customerName || 'Client TonSiteWeb')}</strong> : ${escapeHtml(summary)}</p>
+    <p>Connectez-vous au portail pour suivre et facturer l'intervention.</p>
+  `;
+  return sendEmailInternal(subject, to, html);
+}
+
+export async function sendSubscriptionUpdateEmail({
+  to,
+  subscriptionId,
+  action,
+}: {
+  to: string;
+  subscriptionId: string;
+  action: 'updated' | 'canceled';
+}) {
+  if (!to) return { ok: false, error: 'Missing recipient' };
+  const subject = `Votre abonnement ${escapeHtml(subscriptionId)} a été ${action === 'updated' ? 'mis à jour' : 'annulé'}`;
+  const html = `
+    <p>Bonjour,</p>
+    <p>Nous confirmons que votre abonnement <strong>${escapeHtml(subscriptionId)}</strong> a bien été ${
+      action === 'updated' ? 'mis à jour.' : 'annulé.'
+    }</p>
+    <p>Besoin d'aide ou d'ajustements ? Répondez simplement à cet email.</p>
+  `;
+  return sendEmailInternal(subject, to, html);
+}
+
 export async function sendFeedbackNotificationEmail({
   to,
   message,

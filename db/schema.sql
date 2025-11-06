@@ -166,4 +166,56 @@ create table if not exists public.project_feedback (
   message text not null
 );
 
+create table if not exists public.websites (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  agency_id uuid references public.agencies(id) on delete cascade,
+  client_id uuid references public.clients(id) on delete set null,
+  name text not null,
+  status text default 'draft',
+  domain text,
+  preview_url text,
+  production_url text,
+  google_doc_id text,
+  google_folder_id text,
+  template_key text,
+  metadata jsonb default '{}'::jsonb
+);
+
+create table if not exists public.website_sections (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  website_id uuid references public.websites(id) on delete cascade,
+  section_key text not null,
+  heading text,
+  content text,
+  media jsonb default '[]'::jsonb,
+  google_doc_id text,
+  google_doc_heading text
+);
+
+create table if not exists public.support_requests (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  agency_id uuid references public.agencies(id) on delete cascade,
+  website_id uuid references public.websites(id) on delete set null,
+  customer_email text,
+  customer_name text,
+  request_type text not null,
+  description text,
+  status text default 'open',
+  priority text default 'normal',
+  metadata jsonb default '{}'::jsonb
+);
+
+create table if not exists public.subscription_events (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  agency_id uuid references public.agencies(id) on delete cascade,
+  subscription_id text not null,
+  customer_email text,
+  event_type text not null,
+  payload jsonb default '{}'::jsonb
+);
+
 
