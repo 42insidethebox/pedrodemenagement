@@ -24,6 +24,10 @@ const {
   twitter = {},
 } = Astro.props;
 
+const path = Astro.url?.pathname || '/';
+const match = path.match(/^\/(fr|en|de|it)(?=\/|$)/);
+const routeLang = (match && match[1]) || I18N?.language || 'fr';
+
 const seoProps: AstroSeoProps = merge(
   {
     title: '',
@@ -36,7 +40,7 @@ const seoProps: AstroSeoProps = merge(
       url: canonical,
       site_name: SITE?.name,
       images: [],
-      locale: I18N?.language || 'en',
+      locale: routeLang || 'en',
       type: 'website',
     },
     twitter: {

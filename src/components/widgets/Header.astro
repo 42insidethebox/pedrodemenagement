@@ -50,7 +50,7 @@ const currentSearch = urlObj.search || '';
 const currentHash = urlObj.hash || '';
 
 const locales = ['en', 'de', 'it'];
-const suffixPath = currentPath.replace(/^\/(en|de|it)(?=\/|$)/, '') || '/';
+const suffixPath = currentPath.replace(/^\/(fr|en|de|it)(?=\/|$)/, '') || '/';
 const buildLangHref = (lang: 'fr' | 'en' | 'de' | 'it') => {
   if (lang === 'fr') {
     return `${suffixPath}${currentSearch}${currentHash}`;
@@ -119,15 +119,15 @@ const buildLangHref = (lang: 'fr' | 'en' | 'de' | 'it') => {
                     });
                     const langItems = isLangMenu
                       ? [
-                          { text: 'Français', href: buildLangHref('fr') },
-                          { text: 'English', href: buildLangHref('en') },
-                          { text: 'Deutsch', href: buildLangHref('de') },
-                          { text: 'Italiano', href: buildLangHref('it') },
+                          { text: 'Français', href: buildLangHref('fr'), code: 'fr' },
+                          { text: 'English', href: buildLangHref('en'), code: 'en' },
+                          { text: 'Deutsch', href: buildLangHref('de'), code: 'de' },
+                          { text: 'Italiano', href: buildLangHref('it'), code: 'it' },
                         ]
                       : links;
                     return (
                       <ul class="dropdown-menu md:backdrop-blur-md dark:md:bg-dark rounded md:absolute pl-4 md:pl-0 md:hidden font-medium md:bg-white/90 md:min-w-[200px] drop-shadow-xl">
-                        {langItems.map(({ text: text2, href: href2 }) => (
+                        {langItems.map(({ text: text2, href: href2, code }) => (
                           <li>
                             <a
                               class:list={[
@@ -135,6 +135,7 @@ const buildLangHref = (lang: 'fr' | 'en' | 'de' | 'it') => {
                                 { 'aw-link-active': href2 === currentPath },
                               ]}
                               href={href2}
+                              {...(code ? { 'data-lang': code } : {})}
                             >
                               {text2}
                             </a>

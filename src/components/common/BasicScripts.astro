@@ -75,6 +75,15 @@ import { UI } from 'astrowind:config';
       localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
     });
 
+    // Persist preferred language when clicking language items
+    attachEvent('a[data-lang]', 'click', function (_, elem) {
+      const code = elem.getAttribute('data-lang');
+      if (!code) return;
+      try {
+        localStorage.setItem('preferredLang', code);
+      } catch {}
+    });
+
     attachEvent('[data-aw-social-share]', 'click', function (_, elem) {
       const network = elem.getAttribute('data-aw-social-share');
       const url = encodeURIComponent(elem.getAttribute('data-aw-url'));
@@ -271,4 +280,19 @@ import { UI } from 'astrowind:config';
   document.addEventListener('astro:after-swap', () => {
     Observer.start();
   });
+</script>
+
+<script is:inline>
+  // Apply preferred language to <html lang> on all pages
+  (function () {
+    try {
+      const path = location.pathname || '/';
+      const m = path.match(/^\/(fr|en|de|it)(?=\/|$)/);
+      const routeLang = (m && m[1]) || 'fr';
+      const stored = localStorage.getItem('preferredLang');
+      const isBackend = /^\/(app|auth)(?=\/|$)/.test(path.replace(/^\/(fr|en|de|it)(?=\/|$)/, ''));
+      const lang = isBackend ? (stored || 'fr') : routeLang;
+      document.documentElement.setAttribute('lang', lang);
+    } catch {}
+  })();
 </script>

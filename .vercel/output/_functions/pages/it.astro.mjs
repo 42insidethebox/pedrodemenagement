@@ -1,12 +1,12 @@
-import { d as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, F as Fragment, m as maybeRenderHead } from '../chunks/astro/server_Dp0aUUie.mjs';
-import { $ as $$PageLayout, e as footerDataIt, g as headerDataIt } from '../chunks/PageLayout_C1NlzRGT.mjs';
-import { $ as $$Hero } from '../chunks/Hero_DBbz5n4W.mjs';
-import { $ as $$Note, a as $$Features } from '../chunks/Features_B5Uqs0r8.mjs';
-import { $ as $$Features2 } from '../chunks/Features2_D40QzOgf.mjs';
-import { $ as $$Steps, a as $$FAQs } from '../chunks/Steps_A0bBa03p.mjs';
-import { $ as $$Content } from '../chunks/Content_Csw7PdWb.mjs';
-import { $ as $$Stats } from '../chunks/Stats_Bwbi_riw.mjs';
-import { $ as $$CallToAction } from '../chunks/CallToAction_CkiqG6vN.mjs';
+import { d as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, F as Fragment, m as maybeRenderHead } from '../chunks/astro/server_C7RkpNfc.mjs';
+import { $ as $$PageLayout, d as footerDataIt, e as headerDataIt } from '../chunks/PageLayout_Dv6PWVVn.mjs';
+import { $ as $$Hero } from '../chunks/Hero_Dd0RL5IT.mjs';
+import { $ as $$Note, a as $$Features } from '../chunks/Features_C0BWhUsK.mjs';
+import { $ as $$Features2 } from '../chunks/Features2_CXSUoGFH.mjs';
+import { $ as $$Steps, a as $$FAQs } from '../chunks/Steps_U4hm8CwK.mjs';
+import { $ as $$Content } from '../chunks/Content_BPmtK-Jy.mjs';
+import { $ as $$Stats } from '../chunks/Stats_CFJE7zOr.mjs';
+import { $ as $$CallToAction } from '../chunks/CallToAction_DhJAECSa.mjs';
 export { renderers } from '../renderers.mjs';
 
 const $$Astro = createAstro("https://tonsiteweb.ch");

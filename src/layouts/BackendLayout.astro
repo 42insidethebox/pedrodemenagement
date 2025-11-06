@@ -1,15 +1,38 @@
 ---
 // src/layouts/BackendLayout.astro
+import '~/assets/styles/tailwind.css';
+import ToggleTheme from '~/components/common/ToggleTheme.astro';
+import BasicScripts from '~/components/common/BasicScripts.astro';
+import ApplyColorMode from '~/components/common/ApplyColorMode.astro';
+import CustomStyles from '~/components/CustomStyles.astro';
+import CommonMeta from '~/components/common/CommonMeta.astro';
+import Favicons from '~/components/Favicons.astro';
+import Metadata from '~/components/common/Metadata.astro';
+import SiteVerification from '~/components/common/SiteVerification.astro';
+import Analytics from '~/components/common/Analytics.astro';
+import { I18N } from 'astrowind:config';
+
 const { pageTitle = 'Dashboard', children } = Astro.props;
+const { textDirection } = I18N;
+const path = Astro.url?.pathname || '/';
+const match = path.match(/^\/(fr|en|de|it)(?=\/|$)/);
+const language = (match && match[1]) || 'fr';
 ---
 
-<html lang="en" class="bg-slate-950 text-slate-100">
+<html lang={language} dir={textDirection} class="2xl:text-[20px]">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{pageTitle}</title>
+    <CommonMeta />
+    <Favicons />
+    <CustomStyles />
+    <ApplyColorMode />
+    <Metadata />
+    <SiteVerification />
+    <Analytics />
   </head>
-  <body class="min-h-screen flex flex-col">
+  <body class="min-h-screen flex flex-col antialiased text-default bg-page tracking-tight">
     <aside class="w-full bg-slate-900/90 border-b border-slate-800 px-4 py-3 shadow-lg backdrop-blur supports-[backdrop-filter]:bg-slate-900/70">
       <div class="container mx-auto flex items-center justify-between gap-4">
         <nav class="flex items-center gap-2 text-sm">
@@ -25,6 +48,23 @@ const { pageTitle = 'Dashboard', children } = Astro.props;
           <a href="/app/settings" class="rounded-md px-3 py-2 text-slate-200 hover:bg-slate-800 hover:text-white" data-nav="/app/settings">Settings</a>
         </nav>
         <div class="flex items-center gap-3">
+          <div class="hidden md:block">
+            <ToggleTheme iconClass="w-5 h-5" />
+          </div>
+          <div class="relative dropdown hidden md:block">
+            <button type="button" class="hover:text-link dark:hover:text-white px-3 min-[1100px]:px-4 py-2.5 flex items-center whitespace-nowrap" aria-label="Language">
+              Lingua
+              <svg width="1em" height="1em" viewBox="0 0 24 24" class="w-3.5 h-3.5 ml-0.5 rtl:ml-0 rtl:mr-0.5 hidden md:inline" data-icon="tabler:chevron-down">
+                <path fill="currentColor" d="M7 10l5 5l5-5" />
+              </svg>
+            </button>
+            <ul class="dropdown-menu md:backdrop-blur-md dark:md:bg-dark rounded md:absolute pl-4 md:pl-0 md:hidden font-medium md:bg-white/90 md:min-w-[200px] drop-shadow-xl">
+              <li><a class="first:rounded-t last:rounded-b md:hover:bg-gray-100 hover:text-link dark:hover:text-white dark:hover:bg-gray-700 py-2 px-5 block whitespace-no-wrap" href="#" data-lang="fr"> Français </a></li>
+              <li><a class="first:rounded-t last:rounded-b md:hover:bg-gray-100 hover:text-link dark:hover:text-white dark:hover:bg-gray-700 py-2 px-5 block whitespace-no-wrap" href="#" data-lang="en"> English </a></li>
+              <li><a class="first:rounded-t last:rounded-b md:hover:bg-gray-100 hover:text-link dark:hover:text-white dark:hover:bg-gray-700 py-2 px-5 block whitespace-no-wrap" href="#" data-lang="de"> Deutsch </a></li>
+              <li><a class="first:rounded-t last:rounded-b md:hover:bg-gray-100 hover:text-link dark:hover:text-white dark:hover:bg-gray-700 py-2 px-5 block whitespace-no-wrap" href="#" data-lang="it"> Italiano </a></li>
+            </ul>
+          </div>
           <span id="auth-user" class="text-xs text-slate-400">Checking session…</span>
           <button id="signout" class="rounded-md border border-slate-700 px-3 py-1.5 text-xs text-slate-200 hover:bg-slate-800">Sign out</button>
         </div>
@@ -38,6 +78,7 @@ const { pageTitle = 'Dashboard', children } = Astro.props;
     <footer class="bg-slate-900 text-center py-4 text-xs text-slate-500">
       © {new Date().getFullYear()} tonsiteweb.ch
     </footer>
+    <BasicScripts />
     <script type="module">
       import { clearAuthSession } from '~/utils/backend/api';
 
@@ -87,6 +128,34 @@ const { pageTitle = 'Dashboard', children } = Astro.props;
       });
 
       ensureSession();
+      // Language switch: preserve app/auth route, map marketing routes to same-page language
+      function computeLangHref(lang) {
+        const path = location.pathname;
+        const search = location.search || '';
+        const hash = location.hash || '';
+        const rawPath = path.replace(/^\/(fr|en|de|it)(?=\/|$)/, '') || '/';
+        // Keep backend/auth paths unchanged
+        if (/^\/(app|auth)(?=\/|$)/.test(rawPath)) {
+          return rawPath + search + hash;
+        }
+        const base = rawPath === '/' ? '' : rawPath;
+        return lang === 'fr' ? `${base}${search}${hash}` : `/${lang}${base}${search}${hash}`;
+      }
+
+      document.querySelectorAll('[data-lang]').forEach((a) => {
+        const lang = a.getAttribute('data-lang');
+        if (!lang) return;
+        a.setAttribute('href', computeLangHref(lang));
+        a.addEventListener('click', (e) => {
+          const rawPath = (location.pathname || '/').replace(/^\/(fr|en|de|it)(?=\/|$)/, '') || '/';
+          if (/^\/(app|auth)(?=\/|$)/.test(rawPath)) {
+            // Stay on same route; just update language preference and html lang
+            e.preventDefault();
+            document.documentElement.setAttribute('lang', lang === 'fr' ? 'fr' : lang);
+            try { localStorage.setItem('preferredLang', lang); } catch (_) {}
+          }
+        });
+      });
     </script>
   </body>
 </html>

@@ -22,7 +22,10 @@ export interface Props {
 }
 
 const { metadata = {} } = Astro.props;
-const { language, textDirection } = I18N;
+const { textDirection } = I18N;
+const path = Astro.url?.pathname || '/';
+const match = path.match(/^\/(fr|en|de|it)(?=\/|$)/);
+const language = (match && match[1]) || 'fr';
 ---
 
 <!doctype html>

@@ -1,5 +1,5 @@
 import { g as getAgencyContext, b as adminClient } from '../../../../chunks/context_0A2u7TnH.mjs';
-import { w as withAuth } from '../../../../chunks/auth_zPujQa1C.mjs';
+import { w as withAuth } from '../../../../chunks/auth_DvgOVKbc.mjs';
 export { renderers } from '../../../../renderers.mjs';
 
 const prerender = false;
@@ -18,6 +18,7 @@ const GET = withAuth(async ({ locals }) => {
   const [
     clientsResult,
     activeProjectsResult,
+    liveWebsitesResult,
     overdueTasksResult,
     blockedTasksResult,
     inProgressTasksResult,
@@ -27,6 +28,7 @@ const GET = withAuth(async ({ locals }) => {
   ] = await Promise.all([
     adminClient.from("clients").select("id", { count: "exact", head: true }).eq("agency_id", agency.id),
     adminClient.from("projects").select("id", { count: "exact", head: true }).eq("agency_id", agency.id).neq("status", "completed"),
+    adminClient.from("websites").select("id", { count: "exact", head: true }).eq("agency_id", agency.id).eq("status", "live"),
     adminClient.from("tasks").select("id", { count: "exact", head: true }).eq("agency_id", agency.id).not("status", "eq", "done").not("due_date", "is", null).lt("due_date", nowIso),
     adminClient.from("tasks").select("id", { count: "exact", head: true }).eq("agency_id", agency.id).eq("status", "blocked"),
     adminClient.from("tasks").select("id", { count: "exact", head: true }).eq("agency_id", agency.id).eq("status", "in_progress"),
@@ -36,6 +38,7 @@ const GET = withAuth(async ({ locals }) => {
   ]);
   const clientsCount = parseCount("clients", clientsResult);
   const activeProjectsCount = parseCount("projects", activeProjectsResult);
+  const liveWebsitesCount = parseCount("websites-live", liveWebsitesResult);
   const overdueTasksCount = parseCount("tasks-overdue", overdueTasksResult);
   const blockedTasksCount = parseCount("tasks-blocked", blockedTasksResult);
   const inProgressTasksCount = parseCount("tasks-in-progress", inProgressTasksResult);
@@ -51,6 +54,7 @@ const GET = withAuth(async ({ locals }) => {
       metrics: {
         clients: clientsCount,
         activeProjects: activeProjectsCount,
+        liveWebsites: liveWebsitesCount,
         outstandingAmount,
         revenueLast30Days
       },

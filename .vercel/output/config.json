@@ -2,14 +2,396 @@
 	"version": 3,
 	"routes": [
 		{
-			"src": "^/(.*)/$",
+			"src": "/_server-islands/([^/]+?)/",
 			"headers": {
-				"Location": "/$1"
+				"Location": "/_server-islands/$1"
 			},
 			"status": 308
 		},
 		{
-			"handle": "filesystem"
+			"src": "/404/",
+			"headers": {
+				"Location": "/404"
+			},
+			"status": 308
+		},
+		{
+			"src": "/about/",
+			"headers": {
+				"Location": "/about"
+			},
+			"status": 308
+		},
+		{
+			"src": "/app/clients/",
+			"headers": {
+				"Location": "/app/clients"
+			},
+			"status": 308
+		},
+		{
+			"src": "/app/documents/",
+			"headers": {
+				"Location": "/app/documents"
+			},
+			"status": 308
+		},
+		{
+			"src": "/app/invoices/",
+			"headers": {
+				"Location": "/app/invoices"
+			},
+			"status": 308
+		},
+		{
+			"src": "/app/projects/",
+			"headers": {
+				"Location": "/app/projects"
+			},
+			"status": 308
+		},
+		{
+			"src": "/app/settings/",
+			"headers": {
+				"Location": "/app/settings"
+			},
+			"status": 308
+		},
+		{
+			"src": "/app/subscriptions/",
+			"headers": {
+				"Location": "/app/subscriptions"
+			},
+			"status": 308
+		},
+		{
+			"src": "/app/support/",
+			"headers": {
+				"Location": "/app/support"
+			},
+			"status": 308
+		},
+		{
+			"src": "/app/tasks/",
+			"headers": {
+				"Location": "/app/tasks"
+			},
+			"status": 308
+		},
+		{
+			"src": "/app/websites/",
+			"headers": {
+				"Location": "/app/websites"
+			},
+			"status": 308
+		},
+		{
+			"src": "/app/",
+			"headers": {
+				"Location": "/app"
+			},
+			"status": 308
+		},
+		{
+			"src": "/auth/callback/",
+			"headers": {
+				"Location": "/auth/callback"
+			},
+			"status": 308
+		},
+		{
+			"src": "/auth/forgot/",
+			"headers": {
+				"Location": "/auth/forgot"
+			},
+			"status": 308
+		},
+		{
+			"src": "/auth/reset/",
+			"headers": {
+				"Location": "/auth/reset"
+			},
+			"status": 308
+		},
+		{
+			"src": "/auth/signin/",
+			"headers": {
+				"Location": "/auth/signin"
+			},
+			"status": 308
+		},
+		{
+			"src": "/auth/signup/",
+			"headers": {
+				"Location": "/auth/signup"
+			},
+			"status": 308
+		},
+		{
+			"src": "/choose-template/",
+			"headers": {
+				"Location": "/choose-template"
+			},
+			"status": 308
+		},
+		{
+			"src": "/contact/",
+			"headers": {
+				"Location": "/contact"
+			},
+			"status": 308
+		},
+		{
+			"src": "/de/about/",
+			"headers": {
+				"Location": "/de/about"
+			},
+			"status": 308
+		},
+		{
+			"src": "/de/choose-template/",
+			"headers": {
+				"Location": "/de/choose-template"
+			},
+			"status": 308
+		},
+		{
+			"src": "/de/contact/",
+			"headers": {
+				"Location": "/de/contact"
+			},
+			"status": 308
+		},
+		{
+			"src": "/de/pricing/",
+			"headers": {
+				"Location": "/de/pricing"
+			},
+			"status": 308
+		},
+		{
+			"src": "/de/privacy/",
+			"headers": {
+				"Location": "/de/privacy"
+			},
+			"status": 308
+		},
+		{
+			"src": "/de/services/",
+			"headers": {
+				"Location": "/de/services"
+			},
+			"status": 308
+		},
+		{
+			"src": "/de/terms/",
+			"headers": {
+				"Location": "/de/terms"
+			},
+			"status": 308
+		},
+		{
+			"src": "/de/thank-you/",
+			"headers": {
+				"Location": "/de/thank-you"
+			},
+			"status": 308
+		},
+		{
+			"src": "/de/",
+			"headers": {
+				"Location": "/de"
+			},
+			"status": 308
+		},
+		{
+			"src": "/en/about/",
+			"headers": {
+				"Location": "/en/about"
+			},
+			"status": 308
+		},
+		{
+			"src": "/en/choose-template/",
+			"headers": {
+				"Location": "/en/choose-template"
+			},
+			"status": 308
+		},
+		{
+			"src": "/en/contact/",
+			"headers": {
+				"Location": "/en/contact"
+			},
+			"status": 308
+		},
+		{
+			"src": "/en/pricing/",
+			"headers": {
+				"Location": "/en/pricing"
+			},
+			"status": 308
+		},
+		{
+			"src": "/en/privacy/",
+			"headers": {
+				"Location": "/en/privacy"
+			},
+			"status": 308
+		},
+		{
+			"src": "/en/services/",
+			"headers": {
+				"Location": "/en/services"
+			},
+			"status": 308
+		},
+		{
+			"src": "/en/terms/",
+			"headers": {
+				"Location": "/en/terms"
+			},
+			"status": 308
+		},
+		{
+			"src": "/en/thank-you/",
+			"headers": {
+				"Location": "/en/thank-you"
+			},
+			"status": 308
+		},
+		{
+			"src": "/en/",
+			"headers": {
+				"Location": "/en"
+			},
+			"status": 308
+		},
+		{
+			"src": "/it/about/",
+			"headers": {
+				"Location": "/it/about"
+			},
+			"status": 308
+		},
+		{
+			"src": "/it/choose-template/",
+			"headers": {
+				"Location": "/it/choose-template"
+			},
+			"status": 308
+		},
+		{
+			"src": "/it/contact/",
+			"headers": {
+				"Location": "/it/contact"
+			},
+			"status": 308
+		},
+		{
+			"src": "/it/pricing/",
+			"headers": {
+				"Location": "/it/pricing"
+			},
+			"status": 308
+		},
+		{
+			"src": "/it/privacy/",
+			"headers": {
+				"Location": "/it/privacy"
+			},
+			"status": 308
+		},
+		{
+			"src": "/it/services/",
+			"headers": {
+				"Location": "/it/services"
+			},
+			"status": 308
+		},
+		{
+			"src": "/it/terms/",
+			"headers": {
+				"Location": "/it/terms"
+			},
+			"status": 308
+		},
+		{
+			"src": "/it/thank-you/",
+			"headers": {
+				"Location": "/it/thank-you"
+			},
+			"status": 308
+		},
+		{
+			"src": "/it/",
+			"headers": {
+				"Location": "/it"
+			},
+			"status": 308
+		},
+		{
+			"src": "/pricing/",
+			"headers": {
+				"Location": "/pricing"
+			},
+			"status": 308
+		},
+		{
+			"src": "/privacy/",
+			"headers": {
+				"Location": "/privacy"
+			},
+			"status": 308
+		},
+		{
+			"src": "/services/",
+			"headers": {
+				"Location": "/services"
+			},
+			"status": 308
+		},
+		{
+			"src": "/terms/",
+			"headers": {
+				"Location": "/terms"
+			},
+			"status": 308
+		},
+		{
+			"src": "/thank-you/",
+			"headers": {
+				"Location": "/thank-you"
+			},
+			"status": 308
+		},
+		{
+			"src": "/(?:\\/(.*?))?/([^/]+?)(?:\\/(.*?))?/",
+			"headers": {
+				"Location": "/$1/$2/$3"
+			},
+			"status": 308
+		},
+		{
+			"src": "/(?:\\/(.*?))?/([^/]+?)(?:\\/(.*?))?/",
+			"headers": {
+				"Location": "/$1/$2/$3"
+			},
+			"status": 308
+		},
+		{
+			"src": "/(?:\\/(.*?))?(?:\\/(.*?))?/",
+			"headers": {
+				"Location": "/$1/$2"
+			},
+			"status": 308
+		},
+		{
+			"src": "/(?:\\/(.*?))?/",
+			"headers": {
+				"Location": "/$1"
+			},
+			"status": 308
 		},
 		{
 			"src": "^/_astro/(.*)$",
@@ -19,315 +401,390 @@
 			"continue": true
 		},
 		{
-			"src": "^/_server-islands/([^/]+?)$",
+			"handle": "filesystem"
+		},
+		{
+			"src": "^\\/_server-islands\\/([^/]+?)$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/_image$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/404$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/about$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/api\\/auth\\/forgot-password$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/api\\/auth\\/reset-password$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/api\\/auth\\/session$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/api\\/auth\\/signin$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/api\\/auth\\/signup$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/api\\/backend\\/clients\\/([^/]+?)$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/api\\/backend\\/clients$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/api\\/backend\\/dashboard\\/summary$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/api\\/backend\\/documents\\/([^/]+?)$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/api\\/backend\\/documents$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/api\\/backend\\/invoices\\/([^/]+?)$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/api\\/backend\\/invoices$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/api\\/backend\\/projects\\/([^/]+?)$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/api\\/backend\\/projects$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/api\\/backend\\/subscriptions\\/([^/]+?)$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/_image$",
+			"src": "^\\/api\\/backend\\/support\\/([^/]+?)$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/404$",
+			"src": "^\\/api\\/backend\\/support$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/about$",
+			"src": "^\\/api\\/backend\\/tasks\\/([^/]+?)$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/auth/forgot-password$",
+			"src": "^\\/api\\/backend\\/tasks$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/auth/reset-password$",
+			"src": "^\\/api\\/backend\\/team$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/auth/session$",
+			"src": "^\\/api\\/backend\\/websites\\/([^/]+?)$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/auth/signin$",
+			"src": "^\\/api\\/backend\\/websites$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/auth/signup$",
+			"src": "^\\/api\\/contact$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/backend/clients/([^/]+?)$",
+			"src": "^\\/api\\/demo$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/backend/clients$",
+			"src": "^\\/api\\/domains\\/search$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/backend/dashboard/summary$",
+			"src": "^\\/api\\/feedback$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/backend/documents/([^/]+?)$",
+			"src": "^\\/api\\/health$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/backend/documents$",
+			"src": "^\\/api\\/payment\\/checkout$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/backend/invoices/([^/]+?)$",
+			"src": "^\\/api\\/payment\\/portal$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/backend/invoices$",
+			"src": "^\\/api\\/payment\\/redirect$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/backend/projects/([^/]+?)$",
+			"src": "^\\/api\\/payment\\/session$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/backend/projects$",
+			"src": "^\\/api\\/stripe-webhook$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/backend/tasks/([^/]+?)$",
+			"src": "^\\/api\\/subscriptions\\/([^/]+?)$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/backend/tasks$",
+			"src": "^\\/app\\/clients$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/backend/team$",
+			"src": "^\\/app\\/documents$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/contact$",
+			"src": "^\\/app\\/invoices$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/demo$",
+			"src": "^\\/app\\/projects$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/domains/search$",
+			"src": "^\\/app\\/settings$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/feedback$",
+			"src": "^\\/app\\/subscriptions$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/health$",
+			"src": "^\\/app\\/support$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/payment/checkout$",
+			"src": "^\\/app\\/tasks$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/payment/portal$",
+			"src": "^\\/app\\/websites$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/payment/redirect$",
+			"src": "^\\/app$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/payment/session$",
+			"src": "^\\/auth\\/callback$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/stripe-webhook$",
+			"src": "^\\/auth\\/forgot$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/subscriptions/([^/]+?)$",
+			"src": "^\\/auth\\/reset$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/app/clients$",
+			"src": "^\\/auth\\/signin$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/app/documents$",
+			"src": "^\\/auth\\/signup$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/app/invoices$",
+			"src": "^\\/choose-template$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/app/projects$",
+			"src": "^\\/contact$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/app/settings$",
+			"src": "^\\/de\\/about$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/app/subscriptions$",
+			"src": "^\\/de\\/app(?:\\/(.*?))?$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/app/tasks$",
+			"src": "^\\/de\\/auth(?:\\/(.*?))?$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/app$",
+			"src": "^\\/de\\/choose-template$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/auth/callback$",
+			"src": "^\\/de\\/contact$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/auth/forgot$",
+			"src": "^\\/de\\/pricing$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/auth/reset$",
+			"src": "^\\/de\\/privacy$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/auth/signin$",
+			"src": "^\\/de\\/services$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/auth/signup$",
+			"src": "^\\/de\\/terms$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/choose-template$",
+			"src": "^\\/de\\/thank-you$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/contact$",
+			"src": "^\\/de$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/de/about$",
+			"src": "^\\/en\\/about$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/de/choose-template$",
+			"src": "^\\/en\\/app(?:\\/(.*?))?$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/de/contact$",
+			"src": "^\\/en\\/auth(?:\\/(.*?))?$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/de/pricing$",
+			"src": "^\\/en\\/choose-template$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/de/privacy$",
+			"src": "^\\/en\\/contact$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/de/services$",
+			"src": "^\\/en\\/pricing$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/de/terms$",
+			"src": "^\\/en\\/privacy$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/de$",
+			"src": "^\\/en\\/services$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/en/about$",
+			"src": "^\\/en\\/terms$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/en/choose-template$",
+			"src": "^\\/en\\/thank-you$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/en/contact$",
+			"src": "^\\/en$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/en/pricing$",
+			"src": "^\\/fr\\/app(?:\\/(.*?))?$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/en/privacy$",
+			"src": "^\\/fr\\/auth(?:\\/(.*?))?$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/en/services$",
+			"src": "^\\/it\\/about$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/en/terms$",
+			"src": "^\\/it\\/app(?:\\/(.*?))?$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/en$",
+			"src": "^\\/it\\/auth(?:\\/(.*?))?$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/it/about$",
+			"src": "^\\/it\\/choose-template$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/it/choose-template$",
+			"src": "^\\/it\\/contact$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/it/contact$",
+			"src": "^\\/it\\/pricing$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/it/pricing$",
+			"src": "^\\/it\\/privacy$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/it/privacy$",
+			"src": "^\\/it\\/services$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/it/services$",
+			"src": "^\\/it\\/terms$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/it/terms$",
+			"src": "^\\/it\\/thank-you$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/it$",
+			"src": "^\\/it$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/pricing$",
+			"src": "^\\/pricing$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/privacy$",
+			"src": "^\\/privacy$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/services$",
+			"src": "^\\/services$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/terms$",
+			"src": "^\\/terms$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/thank-you$",
+			"src": "^\\/thank-you$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/$",
+			"src": "^\\/$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/.*$",
+			"src": "/.*",
 			"dest": "_render",
 			"status": 404
 		}

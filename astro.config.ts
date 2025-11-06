@@ -1,3 +1,4 @@
+// astro.config.ts
 import { defineConfig } from "astro/config";
 import vercel from "@astrojs/vercel";
 import icon from "astro-icon";
@@ -18,12 +19,16 @@ export default defineConfig({
   vite: {
     resolve: {
       alias: {
-        "astrowind:config": path.resolve(__dirname, "src/mocks/astrowind-config.ts"),
+        "astrowind:config": path.resolve(
+          __dirname,
+          "src/mocks/astrowind-config.ts"
+        ),
       },
     },
     build: {
       rollupOptions: {
-        external: ["stripe"], // ✅ <— tell Vite not to bundle Stripe
+        // 👇 add googleapis here
+        external: ["stripe", "googleapis"],
       },
     },
   },
