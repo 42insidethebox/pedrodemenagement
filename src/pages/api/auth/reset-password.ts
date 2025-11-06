@@ -2,10 +2,12 @@ import type { APIRoute } from 'astro';
 import { getSupabaseAnon, getSupabaseAdmin } from '~/lib/supabase';
 import { logger } from '~/lib/logger.js';
 import { sendPasswordChangedEmail } from '~/lib/email';
+import { assertRateLimit } from '~/lib/rate-limit';
 
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
+  assertRateLimit(request, { key: 'auth:reset', limit: 10, window: 300 });
   const payload = await request.json().catch(() => null);
   const token = typeof payload?.token === 'string' ? payload.token.trim() : '';
   const email = typeof payload?.email === 'string' ? payload.email.trim().toLowerCase() : '';

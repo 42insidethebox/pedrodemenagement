@@ -2,7 +2,14 @@ import type { APIRoute } from 'astro';
 import { ENV } from '~/lib/env';
 import { getStripe } from '~/lib/stripe';
 import { getSupabaseAdmin } from '~/lib/supabase';
-import { extractMetadataFromSession, logSystemEvent, updateOrderStatusInSupabase, updateOrderStatusBySubscriptionId } from '~/lib/orders';
+import {
+  buildOrderDraftFromSession,
+  extractMetadataFromSession,
+  generateOrderNumber,
+  logSystemEvent,
+  updateOrderStatusInSupabase,
+  updateOrderStatusBySubscriptionId,
+} from '~/lib/orders';
 import { sendAdminNotificationEmail, sendClientConfirmationEmail } from '~/lib/email';
 import { triggerTemplateDeployment } from '~/lib/deployment.js';
 
@@ -29,23 +36,46 @@ export const POST: APIRoute = async ({ request }) => {
     if (sb) await sb.from('webhooks').insert({ provider: 'stripe', type: event.type, payload: event });
 
     if (event.type === 'checkout.session.completed') {
-      const s = event.data.object;
-      const md = extractMetadataFromSession(s);
+      const session = event.data.object;
+      const draft = buildOrderDraftFromSession(session);
+      const metadata = draft.metadata ?? extractMetadataFromSession(session);
 
-      if (sb)
-        await sb.from('orders').insert({
-          stripe_session_id: s.id,
-          amount_total: s.amount_total,
-          currency: s.currency,
-          mode: s.mode,
-          customer_email: s.customer_details?.email,
-          subscription_id: (s as any).subscription || null,
-          status: s.payment_status,
-        });
+      let orderRecord = { ...draft, order_number: await generateOrderNumber() } as any;
 
-      try { await logSystemEvent('order.created', { session_id: s.id, metadata: md }); } catch {}
-      try { await sendAdminNotificationEmail({ session_id: s.id, metadata: md }); } catch {}
-      try { await sendClientConfirmationEmail({ customer_email: s.customer_details?.email }); } catch {}
+      if (sb) {
+        for (let attempt = 0; attempt < 5; attempt += 1) {
+          const payload = { ...orderRecord, order_number: attempt === 0 ? orderRecord.order_number : await generateOrderNumber() };
+          const { data, error } = await sb.from('orders').insert(payload).select('*').maybeSingle();
+          if (!error && data) {
+            orderRecord = data;
+            break;
+          }
+          if (!error) {
+            orderRecord = { ...payload };
+            break;
+          }
+          if (error && String(error.code) === '23505') {
+            orderRecord = { ...payload };
+            continue;
+          }
+          if (error) {
+            orderRecord = { ...payload };
+            break;
+          }
+        }
+      }
+
+      const emailOrder = {
+        ...orderRecord,
+        metadata,
+        customer_email: orderRecord.customer_email || session?.customer_details?.email || metadata.email,
+        plan: orderRecord.plan || metadata.plan,
+        template_key: orderRecord.template_key || metadata.template,
+      };
+
+      try { await logSystemEvent('order.created', { session_id: session.id, order_number: emailOrder.order_number, metadata }); } catch {}
+      try { await sendAdminNotificationEmail(emailOrder); } catch {}
+      try { await sendClientConfirmationEmail(emailOrder); } catch {}
     }
 
     if (event.type === 'invoice.paid') {

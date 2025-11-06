@@ -3,12 +3,14 @@ import { getSupabaseAdmin } from '~/lib/supabase';
 import { ENV } from '~/lib/env';
 import { logger } from '~/lib/logger.js';
 import { sendFeedbackNotificationEmail } from '~/lib/email';
+import { assertRateLimit } from '~/lib/rate-limit';
 
 export const prerender = false;
 
 const TABLE_NAME = 'project_feedback';
 
 export const POST: APIRoute = async ({ request }) => {
+  assertRateLimit(request, { key: 'feedback', limit: 10, window: 60 });
   const payload = await request.json().catch(() => null);
   const message = typeof payload?.message === 'string' ? payload.message.trim() : '';
   const projectId = typeof payload?.projectId === 'string' ? payload.projectId.trim() : '';

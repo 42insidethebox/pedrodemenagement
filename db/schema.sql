@@ -139,13 +139,20 @@ create table if not exists public.activities (
 create table if not exists public.orders (
   id bigint primary key generated always as identity,
   created_at timestamptz not null default now(),
+  order_number text unique not null,
   stripe_session_id text unique,
   subscription_id text,
   customer_email text,
+  customer_name text,
+  company text,
+  phone text,
+  plan text,
+  template_key text,
   amount_total bigint,
   currency text,
   mode text,
-  status text
+  status text,
+  metadata jsonb default '{}'::jsonb
 );
 
 create table if not exists public.webhooks (

@@ -52,6 +52,28 @@ async function sendResend(to, subject, html) {
 }
 
 const ORIGIN = process.env.SITE_URL || process.env.ORIGIN || 'https://tonsiteweb.ch';
+const sampleOrder = {
+  order_number: 'TSW-20240609-ABCD',
+  customer_name: 'Jean Dupont',
+  customer_email: TEST_TO,
+  company: 'ACME SA',
+  phone: '+41 79 123 45 67',
+  plan: 'essential1249',
+  template_key: 'bold-contrast',
+  amount_total: 124900,
+  currency: 'CHF',
+  status: 'paid',
+  metadata: {
+    plan: 'essential1249',
+    template: 'bold-contrast',
+    name: 'Jean Dupont',
+    email: TEST_TO,
+    company: 'ACME SA',
+    phone: '+41 79 123 45 67',
+    clientSlug: 'acme',
+  },
+};
+
 const sample = {
   welcome: { name: 'Jean Dupont', verifyUrl: `${ORIGIN}/auth/verify?token=dummy` },
   password_reset: { resetUrl: `${ORIGIN}/auth/reset?token=dummy` },
@@ -61,8 +83,8 @@ const sample = {
   support_ticket: { ticketId: 'TSW-1234', summary: 'Le formulaire ne se soumet pas', customerName: 'Marie', priority: 'haut' },
   subscription_update: { subscriptionId: 'sub_12345', action: 'updated' },
   feedback_notification: { project: 'Site ACME', author: 'Client', message: 'Top. Merci !' },
-  admin_notification: { order: { id: 1001, amount: 9900, currency: 'CHF', customer_email: TEST_TO, plan: 'essential' } },
-  client_confirmation: {},
+  admin_notification: { order: sampleOrder },
+  client_confirmation: { order: sampleOrder },
 };
 
 const templates = [

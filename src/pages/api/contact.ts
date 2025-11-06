@@ -2,11 +2,13 @@ import type { APIRoute } from 'astro';
 import { ENV } from '~/lib/env';
 import { getSupabaseAdmin } from '~/lib/supabase';
 import { sendEmail } from '~/lib/email';
+import { assertRateLimit } from '~/lib/rate-limit';
 
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request, url }) => {
   try {
+    assertRateLimit(request, { key: 'contact', limit: 5, window: 60 });
     const ctype = request.headers.get('content-type') || '';
     let name = '', email = '', company = '', message = '', source = 'contact';
     if (ctype.includes('application/json')) {
@@ -62,6 +64,7 @@ export const POST: APIRoute = async ({ request, url }) => {
     }
     return new Response(JSON.stringify({ ok: true }), { status: 200 });
   } catch (e) {
-    return new Response(JSON.stringify({ ok: false, error: (e as Error).message }), { status: 200 });
+    if (e instanceof Response) return e;
+    return new Response(JSON.stringify({ ok: false, error: (e as Error).message }), { status: 500 });
   }
 };

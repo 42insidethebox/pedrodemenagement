@@ -3,6 +3,7 @@ import { getSupabaseAdmin } from '~/lib/supabase';
 import { ENV } from '~/lib/env';
 import { logger } from '~/lib/logger.js';
 import { sendPasswordResetEmail } from '~/lib/email';
+import { assertRateLimit } from '~/lib/rate-limit';
 
 export const prerender = false;
 
@@ -11,6 +12,7 @@ function isValidEmail(email: string) {
 }
 
 export const POST: APIRoute = async ({ request }) => {
+  assertRateLimit(request, { key: 'auth:forgot', limit: 5, window: 300 });
   const payload = await request.json().catch(() => null);
   const email = typeof payload?.email === 'string' ? payload.email.trim().toLowerCase() : '';
 
