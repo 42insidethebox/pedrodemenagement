@@ -4,41 +4,41 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
 
 <BackendLayout pageTitle="Websites">
   <section class="space-y-8">
-    <div class="rounded-2xl border border-slate-800 bg-slate-900/40 px-6 py-6 shadow-lg shadow-slate-950/40">
-      <h2 class="text-lg font-semibold text-white">Connect a website</h2>
-      <p class="mt-2 text-sm text-slate-400">
+    <div class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40">
+      <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Connect a website</h2>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
         Capture the delivery workspace for a client site. Google Docs and folders are created automatically when you leave those
         fields blank.
       </p>
       <form id="website-form" class="mt-6 grid gap-4 lg:grid-cols-2">
         <div class="lg:col-span-2 grid gap-4 sm:grid-cols-2">
           <div>
-            <label class="block text-sm text-slate-300" for="name">Website name</label>
+            <label class="block text-sm text-slate-600 dark:text-slate-300" for="name">Website name</label>
             <input
               id="name"
               name="name"
               required
               placeholder="Maison Favre – Viticulture"
-              class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
+              class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"
             />
           </div>
           <div>
-            <label class="block text-sm text-slate-300" for="client_id">Client</label>
+            <label class="block text-sm text-slate-600 dark:text-slate-300" for="client_id">Client</label>
             <select
               id="client_id"
               name="client_id"
-              class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
+              class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"
             >
               <option value="">No client yet</option>
             </select>
           </div>
         </div>
         <div>
-          <label class="block text-sm text-slate-300" for="status">Status</label>
+          <label class="block text-sm text-slate-600 dark:text-slate-300" for="status">Status</label>
           <select
             id="status"
             name="status"
-            class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
+            class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"
           >
             <option value="draft">Draft</option>
             <option value="content_review">Content review</option>
@@ -48,62 +48,62 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
           </select>
         </div>
         <div>
-          <label class="block text-sm text-slate-300" for="domain">Domain</label>
+          <label class="block text-sm text-slate-600 dark:text-slate-300" for="domain">Domain</label>
           <input
             id="domain"
             name="domain"
             placeholder="clientsite.ch"
-            class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
+            class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"
           />
         </div>
         <div>
-          <label class="block text-sm text-slate-300" for="preview_url">Preview URL</label>
+          <label class="block text-sm text-slate-600 dark:text-slate-300" for="preview_url">Preview URL</label>
           <input
             id="preview_url"
             name="preview_url"
             placeholder="preview.vercel.app"
-            class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
+            class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"
           />
         </div>
         <div>
-          <label class="block text-sm text-slate-300" for="google_doc_id">Google Doc ID (optional)</label>
+          <label class="block text-sm text-slate-600 dark:text-slate-300" for="google_doc_id">Google Doc ID (optional)</label>
           <input
             id="google_doc_id"
             name="google_doc_id"
             placeholder="Automatically created when empty"
-            class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
+            class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"
           />
         </div>
         <div>
-          <label class="block text-sm text-slate-300" for="template_key">Template key (optional)</label>
+          <label class="block text-sm text-slate-600 dark:text-slate-300" for="template_key">Template key (optional)</label>
           <input
             id="template_key"
             name="template_key"
             placeholder="hero-01"
-            class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
+            class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"
           />
         </div>
         <div class="lg:col-span-2 flex items-center gap-3">
           <button
             id="website-submit"
             type="submit"
-            class="rounded-lg bg-blue-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:bg-blue-400 disabled:opacity-70"
+            class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-blue-500/30 transition hover:bg-blue-500 disabled:opacity-70"
           >
             Save website
           </button>
-          <p id="website-message" class="text-sm text-slate-400"></p>
+          <p id="website-message" class="text-sm text-slate-600 dark:text-slate-400"></p>
         </div>
       </form>
     </div>
 
-    <div class="rounded-2xl border border-slate-800 bg-slate-900/40 px-6 py-6 shadow-lg shadow-slate-950/40">
+    <div class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40">
       <div class="flex items-center justify-between">
-        <h2 class="text-lg font-semibold text-white">Delivery pipeline</h2>
-        <span class="text-xs uppercase tracking-wide text-slate-400">Realtime</span>
+        <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Delivery pipeline</h2>
+        <span class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Realtime</span>
       </div>
       <div class="mt-6 overflow-x-auto">
         <table class="min-w-full text-left text-sm">
-          <thead class="text-xs uppercase tracking-wide text-slate-400">
+          <thead class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
             <tr>
               <th class="px-4 py-3">Website</th>
               <th class="px-4 py-3">Status</th>
@@ -112,9 +112,9 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
               <th class="px-4 py-3 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody id="website-table" class="divide-y divide-slate-800 text-slate-200">
+          <tbody id="website-table" class="divide-y divide-slate-200 dark:divide-slate-800 text-slate-700 dark:text-slate-200">
             <tr>
-              <td colspan="5" class="px-4 py-6 text-center text-sm text-slate-400">Loading websites…</td>
+              <td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">Loading websites…</td>
             </tr>
           </tbody>
         </table>
@@ -138,16 +138,16 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
 
   const renderSections = (sections) => {
     if (!sections || !sections.length) {
-      return '<p class="text-xs text-slate-400">No sections captured yet.</p>';
+      return '<p class="text-xs text-slate-500 dark:text-slate-400">No sections captured yet.</p>';
     }
 
     return `
-      <ul class="mt-4 space-y-2 text-xs text-slate-300">
+      <ul class="mt-4 space-y-2 text-xs text-slate-500 dark:text-slate-300">
         ${sections
           .map(
             (section) => `
-              <li class="rounded-lg border border-slate-800 bg-slate-950/70 px-3 py-2">
-                <div class="font-medium text-white">${safe(section.heading)}</div>
+              <li class="rounded-lg border border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950/70 px-3 py-2">
+                <div class="font-medium text-slate-900 dark:text-white">${safe(section.heading)}</div>
                 <p class="mt-1 leading-relaxed">${safe(section.content)}</p>
               </li>
             `,
@@ -162,7 +162,7 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
     tableBody.innerHTML = '';
 
     if (!websites.length) {
-      tableBody.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-400">No websites yet. Capture one above.</td></tr>';
+      tableBody.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">No websites yet. Capture one above.</td></tr>';
       return;
     }
 
@@ -171,13 +171,13 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
       row.dataset.id = website.id;
       row.innerHTML = `
         <td class="px-4 py-3 align-top">
-          <div class="font-medium text-white">${safe(website.name)}</div>
-          <p class="text-xs text-slate-400">${website.client_id ? clientLookup[website.client_id] || website.client_id : 'No client'}</p>
-          <button data-toggle="${website.id}" class="mt-2 text-xs text-blue-400 hover:text-blue-300">View sections</button>
+          <div class="font-medium text-slate-900 dark:text-white">${safe(website.name)}</div>
+          <p class="text-xs text-slate-500 dark:text-slate-400">${website.client_id ? clientLookup[website.client_id] || website.client_id : 'No client'}</p>
+          <button data-toggle="${website.id}" class="mt-2 text-xs text-blue-600 dark:text-blue-400 hover:text-blue-300">View sections</button>
           <div class="hidden" data-sections="${website.id}"></div>
         </td>
         <td class="px-4 py-3 align-top">
-          <select data-status="${website.id}" class="rounded-lg border border-slate-700 bg-slate-950 px-2 py-1 text-xs text-white">
+          <select data-status="${website.id}" class="rounded-lg border border-slate-300 bg-white px-2 py-1 text-xs text-slate-700 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-700 dark:bg-slate-950 dark:text-white">
             <option value="draft" ${website.status === 'draft' ? 'selected' : ''}>Draft</option>
             <option value="content_review" ${website.status === 'content_review' ? 'selected' : ''}>Review</option>
             <option value="ready" ${website.status === 'ready' ? 'selected' : ''}>Ready</option>
@@ -186,16 +186,16 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
           </select>
         </td>
         <td class="px-4 py-3 align-top">
-          <div class="text-xs text-slate-300">${website.domain ? `<a class="text-blue-400 hover:text-blue-300" href="${website.domain}" target="_blank" rel="noreferrer">${website.domain}</a>` : '—'}</div>
-          <div class="mt-1 text-xs text-slate-400">Preview: ${website.preview_url ? `<a class="text-blue-400 hover:text-blue-300" href="${website.preview_url}" target="_blank" rel="noreferrer">${website.preview_url}</a>` : '—'}</div>
+          <div class="text-xs text-slate-500 dark:text-slate-300">${website.domain ? `<a class="text-blue-600 dark:text-blue-400 hover:text-blue-300" href="${website.domain}" target="_blank" rel="noreferrer">${website.domain}</a>` : '—'}</div>
+          <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">Preview: ${website.preview_url ? `<a class="text-blue-600 dark:text-blue-400 hover:text-blue-300" href="${website.preview_url}" target="_blank" rel="noreferrer">${website.preview_url}</a>` : '—'}</div>
         </td>
-        <td class="px-4 py-3 align-top text-xs text-blue-400">
+        <td class="px-4 py-3 align-top text-xs text-blue-600 dark:text-blue-400">
           ${website.google_doc_id ? `<a class="block hover:text-blue-300" href="https://docs.google.com/document/d/${website.google_doc_id}" target="_blank" rel="noreferrer">Open doc</a>` : '<span class="text-slate-400">Not generated</span>'}
           ${website.google_folder_id ? `<a class="mt-1 block hover:text-blue-300" href="https://drive.google.com/drive/folders/${website.google_folder_id}" target="_blank" rel="noreferrer">Open folder</a>` : ''}
         </td>
         <td class="px-4 py-3 text-right align-top">
           <button data-sync="${website.id}" class="mr-2 rounded-lg border border-blue-500/50 px-3 py-1 text-xs text-blue-300 hover:bg-blue-500/10">Sync doc</button>
-          <button data-delete="${website.id}" class="rounded-lg border border-red-500/50 px-3 py-1 text-xs text-red-300 hover:bg-red-500/10">Delete</button>
+          <button data-delete="${website.id}" class="rounded-lg border border-red-200 px-3 py-1 text-xs text-red-600 transition hover:bg-red-50 dark:border-red-500/40 dark:text-red-300 dark:hover:bg-red-500/10">Delete</button>
         </td>
       `;
       tableBody.appendChild(row);
@@ -220,7 +220,7 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
 
   const loadWebsites = async () => {
     if (tableBody) {
-      tableBody.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-400">Loading websites…</td></tr>';
+      tableBody.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">Loading websites…</td></tr>';
     }
     try {
       const response = await authFetch('/websites');
@@ -237,7 +237,7 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
     event.preventDefault();
     if (!form) return;
     if (message) {
-      message.classList.remove('text-red-400', 'text-blue-400');
+      message.classList.remove('text-red-400', 'text-blue-600', 'dark:text-blue-400');
       message.textContent = '';
     }
     submitButton?.classList.add('animate-pulse');
@@ -260,7 +260,7 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
         body: JSON.stringify(payload),
       });
       if (message) {
-        message.classList.add('text-blue-400');
+        message.classList.add('text-blue-600', 'dark:text-blue-400');
         message.textContent = 'Website captured. Google workspace ready.';
       }
       form.reset();
@@ -323,7 +323,7 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
       }
       target.textContent = 'Hide sections';
       container.classList.remove('hidden');
-      container.innerHTML = '<p class="mt-4 text-xs text-slate-400">Loading sections…</p>';
+      container.innerHTML = '<p class="mt-4 text-xs text-slate-500 dark:text-slate-400">Loading sections…</p>';
       try {
         const response = await authFetch(`/websites/${toggleId}`);
         container.innerHTML = renderSections(response.sections ?? []);

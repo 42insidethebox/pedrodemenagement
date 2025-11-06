@@ -41,10 +41,10 @@ const { language, textDirection } = I18N;
         </ul>
       </div>
     </div>
-    <section class="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900/60 p-6 shadow-xl shadow-slate-950/40 text-center">
-      <h1 class="text-xl font-semibold text-white">Email confirmed</h1>
-      <p class="mt-2 text-sm text-slate-400">Your account is ready. You can now sign in.</p>
-      <a href="/auth/signin" class="mt-6 inline-flex items-center justify-center rounded-lg bg-blue-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:bg-blue-400">Go to sign in</a>
+    <section class="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/60 dark:shadow-xl dark:shadow-slate-950/40 text-center">
+      <h1 class="text-xl font-semibold text-slate-900 dark:text-white">Email confirmed</h1>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Your account is ready. You can now sign in.</p>
+      <a href="/auth/signin" class="mt-6 inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-blue-500/30 transition hover:bg-blue-500">Go to sign in</a>
     </section>
     <BasicScripts />
     <script type="module">
@@ -54,9 +54,6 @@ const { language, textDirection } = I18N;
         const search = location.search || '';
         const hash = location.hash || '';
         const rawPath = path.replace(/^\/(fr|en|de|it)(?=\/|$)/, '') || '/';
-        if (/^\/(app|auth)(?=\/|$)/.test(rawPath)) {
-          return rawPath + search + hash;
-        }
         const base = rawPath === '/' ? '' : rawPath;
         return lang === 'fr' ? `${base}${search}${hash}` : `/${lang}${base}${search}${hash}`;
       }
@@ -64,14 +61,6 @@ const { language, textDirection } = I18N;
         const lang = a.getAttribute('data-lang');
         if (!lang) return;
         a.setAttribute('href', computeLangHref(lang));
-        a.addEventListener('click', (e) => {
-          const rawPath = (location.pathname || '/').replace(/^\/(fr|en|de|it)(?=\/|$)/, '') || '/';
-          if (/^\/(app|auth)(?=\/|$)/.test(rawPath)) {
-            e.preventDefault();
-            document.documentElement.setAttribute('lang', lang === 'fr' ? 'fr' : lang);
-            try { localStorage.setItem('preferredLang', lang); } catch (_) {}
-          }
-        });
       });
     </script>
   </body>

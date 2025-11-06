@@ -4,25 +4,25 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
 
 <BackendLayout pageTitle="Subscriptions">
   <section class="space-y-8">
-    <div class="rounded-2xl border border-slate-800 bg-slate-900/40 px-6 py-6 shadow-lg shadow-slate-950/40">
-      <h2 class="text-lg font-semibold text-white">Manage a subscription</h2>
-      <p class="mt-2 text-sm text-slate-400">Enter a Stripe subscription ID to cancel or update.</p>
+    <div class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40">
+      <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Manage a subscription</h2>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Enter a Stripe subscription ID to cancel or update.</p>
       <form id="sub-form" class="mt-6 grid gap-4 lg:grid-cols-3">
         <div class="lg:col-span-1">
-          <label class="block text-sm text-slate-300" for="subscription_id">Subscription ID</label>
-          <input id="subscription_id" name="subscription_id" required placeholder="sub_..." class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60" />
+          <label class="block text-sm text-slate-600 dark:text-slate-300" for="subscription_id">Subscription ID</label>
+          <input id="subscription_id" name="subscription_id" required placeholder="sub_..." class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white" />
         </div>
         <div class="lg:col-span-1">
-          <label class="block text-sm text-slate-300" for="price_id">New price (optional)</label>
-          <input id="price_id" name="price_id" placeholder="price_..." class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60" />
+          <label class="block text-sm text-slate-600 dark:text-slate-300" for="price_id">New price (optional)</label>
+          <input id="price_id" name="price_id" placeholder="price_..." class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white" />
         </div>
         <div class="lg:col-span-1 flex items-end gap-3">
-          <label class="inline-flex items-center gap-2 text-sm text-slate-300"><input id="cancel_at_period_end" type="checkbox" class="rounded border-slate-700 bg-slate-950" /> Cancel at period end</label>
+          <label class="inline-flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300"><input id="cancel_at_period_end" type="checkbox" class="rounded border-slate-300 bg-white text-blue-600 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/40 dark:border-slate-700 dark:bg-slate-950 dark:text-white" /> Cancel at period end</label>
         </div>
         <div class="lg:col-span-3 flex items-center gap-3">
-          <button id="update-btn" type="button" class="rounded-lg bg-blue-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:bg-blue-400">Update</button>
+          <button id="update-btn" type="button" class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-blue-500/30 transition hover:bg-blue-500">Update</button>
           <button id="cancel-btn" type="button" class="rounded-lg border border-red-500 px-4 py-2 text-sm font-semibold text-red-300 hover:bg-red-500/10">Cancel immediately</button>
-          <p id="sub-message" class="text-sm text-slate-400"></p>
+          <p id="sub-message" class="text-sm text-slate-600 dark:text-slate-400"></p>
         </div>
       </form>
     </div>
@@ -41,8 +41,8 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
 
   function setMessage(text, ok = true) {
     if (!message) return;
-    message.classList.remove('text-red-400', 'text-blue-400');
-    message.classList.add(ok ? 'text-blue-400' : 'text-red-400');
+    message.classList.remove('text-red-400', 'text-blue-600', 'dark:text-blue-400');
+    message.classList.add(ok ? 'text-blue-600 dark:text-blue-400' : 'text-red-400');
     message.textContent = text;
   }
 

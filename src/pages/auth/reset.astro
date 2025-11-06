@@ -41,25 +41,25 @@ const { language, textDirection } = I18N;
         </ul>
       </div>
     </div>
-    <section class="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900/60 p-6 shadow-xl shadow-slate-950/40">
-      <h1 class="text-xl font-semibold text-white">Choose a new password</h1>
-      <p class="mt-2 text-sm text-slate-400">Enter and confirm your new password.</p>
+    <section class="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/60 dark:shadow-xl dark:shadow-slate-950/40">
+      <h1 class="text-xl font-semibold text-slate-900 dark:text-white">Choose a new password</h1>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Enter and confirm your new password.</p>
 
       <form id="reset-form" class="mt-6 space-y-4">
         <div>
-          <label class="block text-sm text-slate-300" for="password">New password</label>
-          <input id="password" name="password" type="password" minlength="8" required class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60" />
+          <label class="block text-sm text-slate-600 dark:text-slate-300" for="password">New password</label>
+          <input id="password" name="password" type="password" minlength="8" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white" />
         </div>
         <div>
-          <label class="block text-sm text-slate-300" for="confirm">Confirm password</label>
-          <input id="confirm" name="confirm" type="password" minlength="8" required class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60" />
+          <label class="block text-sm text-slate-600 dark:text-slate-300" for="confirm">Confirm password</label>
+          <input id="confirm" name="confirm" type="password" minlength="8" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white" />
         </div>
-        <button id="reset-submit" type="submit" class="w-full rounded-lg bg-blue-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:bg-blue-400 disabled:opacity-70">Update password</button>
-        <p id="reset-message" class="text-sm text-slate-400"></p>
+        <button id="reset-submit" type="submit" class="w-full rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-blue-500/30 transition hover:bg-blue-500 disabled:opacity-70">Update password</button>
+        <p id="reset-message" class="text-sm text-slate-600 dark:text-slate-400"></p>
       </form>
 
       <div class="mt-6 text-center text-sm">
-        <a href="/auth/signin" class="text-blue-400 hover:text-blue-300">Back to sign in</a>
+        <a href="/auth/signin" class="text-blue-600 dark:text-blue-400 hover:text-blue-300">Back to sign in</a>
       </div>
     </section>
 
@@ -71,9 +71,6 @@ const { language, textDirection } = I18N;
         const search = location.search || '';
         const hash = location.hash || '';
         const rawPath = path.replace(/^\/(fr|en|de|it)(?=\/|$)/, '') || '/';
-        if (/^\/(app|auth)(?=\/|$)/.test(rawPath)) {
-          return rawPath + search + hash;
-        }
         const base = rawPath === '/' ? '' : rawPath;
         return lang === 'fr' ? `${base}${search}${hash}` : `/${lang}${base}${search}${hash}`;
       }
@@ -81,14 +78,6 @@ const { language, textDirection } = I18N;
         const lang = a.getAttribute('data-lang');
         if (!lang) return;
         a.setAttribute('href', computeLangHref(lang));
-        a.addEventListener('click', (e) => {
-          const rawPath = (location.pathname || '/').replace(/^\/(fr|en|de|it)(?=\/|$)/, '') || '/';
-          if (/^\/(app|auth)(?=\/|$)/.test(rawPath)) {
-            e.preventDefault();
-            document.documentElement.setAttribute('lang', lang === 'fr' ? 'fr' : lang);
-            try { localStorage.setItem('preferredLang', lang); } catch (_) {}
-          }
-        });
       });
       const params = new URLSearchParams(location.search);
       const token = params.get('token') || '';
@@ -125,7 +114,7 @@ const { language, textDirection } = I18N;
           });
           const json = await res.json();
           if (!res.ok) throw new Error(json?.error || 'Unable to reset password');
-          message.classList.add('text-blue-400');
+          message.classList.add('text-blue-600', 'dark:text-blue-400');
           message.textContent = 'Password updated. You can now sign in.';
         } catch (err) {
           console.error(err);
