@@ -1,0 +1,65 @@
+---
+---
+
+<html lang="en" class="bg-slate-950 text-slate-100">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forgot password · TonSiteWeb</title>
+  </head>
+  <body class="min-h-screen flex items-center justify-center p-6">
+    <section class="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900/60 p-6 shadow-xl shadow-slate-950/40">
+      <h1 class="text-xl font-semibold text-white">Reset your password</h1>
+      <p class="mt-2 text-sm text-slate-400">We’ll email you a secure recovery link.</p>
+
+      <form id="forgot-form" class="mt-6 space-y-4">
+        <div>
+          <label class="block text-sm text-slate-300" for="email">Email</label>
+          <input id="email" name="email" type="email" required class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60" />
+        </div>
+        <button id="forgot-submit" type="submit" class="w-full rounded-lg bg-blue-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:bg-blue-400 disabled:opacity-70">Send reset link</button>
+        <p id="forgot-message" class="text-sm text-slate-400"></p>
+      </form>
+
+      <div class="mt-6 text-center text-sm">
+        <a href="/auth/signin" class="text-blue-400 hover:text-blue-300">Back to sign in</a>
+      </div>
+    </section>
+
+    <script type="module">
+      const form = document.getElementById('forgot-form');
+      const button = document.getElementById('forgot-submit');
+      const message = document.getElementById('forgot-message');
+
+      form?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        message.textContent = '';
+        button?.classList.add('animate-pulse');
+        button.disabled = true;
+
+        const data = new FormData(form);
+        const payload = { email: String(data.get('email') || '') };
+
+        try {
+          const res = await fetch('/api/auth/forgot-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+          await res.json().catch(() => null);
+          message.classList.add('text-blue-400');
+          message.textContent = 'If the email exists, a recovery link has been sent.';
+          form.reset();
+        } catch (err) {
+          console.error(err);
+          message.classList.add('text-red-400');
+          message.textContent = 'Unable to send reset link';
+        } finally {
+          button?.classList.remove('animate-pulse');
+          button.disabled = false;
+        }
+      });
+    </script>
+  </body>
+  </html>
+

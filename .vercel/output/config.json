@@ -55,11 +55,51 @@
 			"dest": "_render"
 		},
 		{
+			"src": "^/api/backend/clients/([^/]+?)$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/backend/clients$",
+			"dest": "_render"
+		},
+		{
 			"src": "^/api/backend/dashboard/summary$",
 			"dest": "_render"
 		},
 		{
 			"src": "^/api/backend/documents/([^/]+?)$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/backend/documents$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/backend/invoices/([^/]+?)$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/backend/invoices$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/backend/projects/([^/]+?)$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/backend/projects$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/backend/tasks/([^/]+?)$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/backend/tasks$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/backend/team$",
 			"dest": "_render"
 		},
 		{
@@ -127,11 +167,35 @@
 			"dest": "_render"
 		},
 		{
+			"src": "^/app/subscriptions$",
+			"dest": "_render"
+		},
+		{
 			"src": "^/app/tasks$",
 			"dest": "_render"
 		},
 		{
 			"src": "^/app$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/auth/callback$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/auth/forgot$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/auth/reset$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/auth/signin$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/auth/signup$",
 			"dest": "_render"
 		},
 		{

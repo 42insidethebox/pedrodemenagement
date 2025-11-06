@@ -1,12 +1,12 @@
-import { d as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, F as Fragment, m as maybeRenderHead } from '../chunks/astro/server_DpQ8NPFj.mjs';
-import { $ as $$PageLayout } from '../chunks/PageLayout_C0BDAYgu.mjs';
-import { $ as $$Hero } from '../chunks/Hero_BK_wwOAV.mjs';
-import { $ as $$Note, a as $$Features } from '../chunks/Features_HJsowMuA.mjs';
-import { $ as $$Features2 } from '../chunks/Features2_BhlDX8y5.mjs';
-import { $ as $$Steps, a as $$FAQs } from '../chunks/Steps_DMVgCwK2.mjs';
-import { $ as $$Content } from '../chunks/Content_Bw_VJdqS.mjs';
-import { $ as $$Stats } from '../chunks/Stats_BS8Dp7Qj.mjs';
-import { $ as $$CallToAction } from '../chunks/CallToAction_BtHIYINw.mjs';
+import { d as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, F as Fragment, m as maybeRenderHead } from '../chunks/astro/server_Dp0aUUie.mjs';
+import { $ as $$PageLayout } from '../chunks/PageLayout_C1NlzRGT.mjs';
+import { $ as $$Hero } from '../chunks/Hero_DBbz5n4W.mjs';
+import { $ as $$Note, a as $$Features } from '../chunks/Features_B5Uqs0r8.mjs';
+import { $ as $$Features2 } from '../chunks/Features2_D40QzOgf.mjs';
+import { $ as $$Steps, a as $$FAQs } from '../chunks/Steps_A0bBa03p.mjs';
+import { $ as $$Content } from '../chunks/Content_Csw7PdWb.mjs';
+import { $ as $$Stats } from '../chunks/Stats_Bwbi_riw.mjs';
+import { $ as $$CallToAction } from '../chunks/CallToAction_CkiqG6vN.mjs';
 export { renderers } from '../renderers.mjs';
 
 const $$Astro = createAstro("https://tonsiteweb.ch");
@@ -30,7 +30,7 @@ Design suisse, performance maîtrisée. TonSiteWeb.ch combine automatisation et 
       fiables aux PME et indépendants de l'Arc lémanique, sans promesse irréaliste ni surcharge technique.
 ` })}`, "title": ($$result3) => renderTemplate`${renderComponent($$result3, "Fragment", Fragment, { "slot": "title" }, { "default": ($$result4) => renderTemplate`
 Votre site clé-en-main, pensé pour le marché lémanique
-` })}` })}  ${renderComponent($$result2, "Note", $$Note, { "title": "Engagement", "description": "Service local, support humain et orchestrations automatis\xE9es pour un r\xE9sultat impeccable sans effort." })} ${renderComponent($$result2, "Content", $$Content, { "isAfterContent": true, "items": [] }, { "bg": ($$result3) => renderTemplate`${renderComponent($$result3, "Fragment", Fragment, { "slot": "bg" }, { "default": ($$result4) => renderTemplate` ${maybeRenderHead()}<div class="absolute inset-0"></div> ` })}`, "content": ($$result3) => renderTemplate`${renderComponent($$result3, "Fragment", Fragment, { "slot": "content" }, { "default": ($$result4) => renderTemplate` <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-3">Pourquoi pas Squarespace&nbsp;?</h3> <p class="text-base mb-3">Squarespace est excellent si vous aimez le design, avez des week‑ends libres et aimez comprendre par vous‑même.</p> <p class="text-base mb-4">Mais si vous voulez simplement votre entreprise en ligne — vite, fiable, avec un support suisse — on s’en charge pour vous.</p> <ul class="mt-2 space-y-2 text-left"> <li>✓ Hébergement inclus la première année</li> <li>✓ Facture et support suisses</li> <li>✓ Pas de DIY, pas de plugins, zéro stress</li> </ul> ` })}` })}  ${renderComponent($$result2, "Features", $$Features, { "id": "features", "tagline": "Pourquoi nous choisir", "title": "La pr\xE9cision suisse appliqu\xE9e au digital", "subtitle": "Chaque projet suit un cadre clair\xA0: collecte des informations, conception, validation et mise en ligne accompagn\xE9e.", "items": [
+` })}` })}  ${renderComponent($$result2, "Note", $$Note, { "title": "Engagement", "description": "Service local, support humain et orchestrations automatis\xE9es pour un r\xE9sultat impeccable sans effort." })}  ${renderComponent($$result2, "Features", $$Features, { "id": "features", "tagline": "Pourquoi nous choisir", "title": "La pr\xE9cision suisse appliqu\xE9e au digital", "subtitle": "Chaque projet suit un cadre clair\xA0: collecte des informations, conception, validation et mise en ligne accompagn\xE9e.", "items": [
     {
       title: "D\xE9lai ma\xEEtris\xE9",
       description: "Brief, design et mise en ligne sont r\xE9alis\xE9s en moyenne sous cinq jours ouvr\xE9s, selon la complexit\xE9 de vos contenus et int\xE9grations.",
@@ -74,7 +74,7 @@ Votre site clé-en-main, pensé pour le marché lémanique
       title: "Contr\xF4le qualit\xE9",
       description: "Relecture humaine, tests de performance et checklist RGPD avant validation finale et mise en ligne."
     }
-  ] }, { "bg": ($$result3) => renderTemplate`${renderComponent($$result3, "Fragment", Fragment, { "slot": "bg" }, { "default": ($$result4) => renderTemplate` <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div> ` })}`, "content": ($$result3) => renderTemplate`${renderComponent($$result3, "Fragment", Fragment, { "slot": "content" }, { "default": ($$result4) => renderTemplate` <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Votre site prêt sans stress</h3>
+  ] }, { "bg": ($$result3) => renderTemplate`${renderComponent($$result3, "Fragment", Fragment, { "slot": "bg" }, { "default": ($$result4) => renderTemplate` ${maybeRenderHead()}<div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div> ` })}`, "content": ($$result3) => renderTemplate`${renderComponent($$result3, "Fragment", Fragment, { "slot": "content" }, { "default": ($$result4) => renderTemplate` <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Votre site prêt sans stress</h3>
 Trois étapes automatisées, validées par un expert local.
 ` })}`, "image": ($$result3) => renderTemplate`${renderComponent($$result3, "Fragment", Fragment, { "slot": "image" }, { "default": ($$result4) => renderTemplate` <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl"> <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Workflow maîtrisé</p> <h4 class="mt-4 text-3xl font-semibold">Brief → Création → Mise en ligne</h4> <p class="mt-6 max-w-xs text-base text-blue-100/90">
 Brief clair, intégration de vos contenus et validations par email.

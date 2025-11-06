@@ -24,15 +24,27 @@ const metadata = { title: 'Vorlage wählen' };
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
       {templates.map((t) => (
-        <div class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900 shadow overflow-hidden flex flex-col">
-          <div class="aspect-video bg-gray-100 dark:bg-slate-800 flex items-center justify-center text-gray-500 text-sm">
+        <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden flex flex-col">
+          <div class="aspect-video bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 text-sm">
             Vorschau
           </div>
-          <div class="p-4 flex-1 flex flex-col">
-            <h3 class="text-lg font-semibold">{t.name}</h3>
+          <div class="p-5 flex-1 flex flex-col">
+            <h3 class="text-base font-semibold text-slate-900 dark:text-slate-100">{t.name}</h3>
             <div class="mt-4 flex gap-2 mt-auto">
-              {t.url ? <a class="btn" href={t.url} target="_blank" rel="noreferrer">Vorschau</a> : ''}
-              <a class="btn btn-primary" href={`/api/payment/redirect?plan=${encodeURIComponent(plan)}&template=${encodeURIComponent(t.id)}`}>
+              {t.url ? (
+                <a
+                  class="inline-flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-700 px-3 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition"
+                  href={t.url}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Vorschau
+                </a>
+              ) : ''}
+              <a
+                class="inline-flex items-center justify-center rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 transition"
+                href={`/api/payment/redirect?plan=${encodeURIComponent(plan)}&template=${encodeURIComponent(t.id)}`}
+              >
                 Dieses Modell wählen
               </a>
             </div>
@@ -42,4 +54,3 @@ const metadata = { title: 'Vorlage wählen' };
     </div>
   </div>
 </Layout>
-

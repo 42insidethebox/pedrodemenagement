@@ -1,0 +1,83 @@
+---
+---
+
+<html lang="en" class="bg-slate-950 text-slate-100">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Set new password · TonSiteWeb</title>
+  </head>
+  <body class="min-h-screen flex items-center justify-center p-6">
+    <section class="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900/60 p-6 shadow-xl shadow-slate-950/40">
+      <h1 class="text-xl font-semibold text-white">Choose a new password</h1>
+      <p class="mt-2 text-sm text-slate-400">Enter and confirm your new password.</p>
+
+      <form id="reset-form" class="mt-6 space-y-4">
+        <div>
+          <label class="block text-sm text-slate-300" for="password">New password</label>
+          <input id="password" name="password" type="password" minlength="8" required class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60" />
+        </div>
+        <div>
+          <label class="block text-sm text-slate-300" for="confirm">Confirm password</label>
+          <input id="confirm" name="confirm" type="password" minlength="8" required class="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/60" />
+        </div>
+        <button id="reset-submit" type="submit" class="w-full rounded-lg bg-blue-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:bg-blue-400 disabled:opacity-70">Update password</button>
+        <p id="reset-message" class="text-sm text-slate-400"></p>
+      </form>
+
+      <div class="mt-6 text-center text-sm">
+        <a href="/auth/signin" class="text-blue-400 hover:text-blue-300">Back to sign in</a>
+      </div>
+    </section>
+
+    <script type="module">
+      const params = new URLSearchParams(location.search);
+      const token = params.get('token') || '';
+      const email = params.get('email') || '';
+      const type = params.get('type') || '';
+      const form = document.getElementById('reset-form');
+      const button = document.getElementById('reset-submit');
+      const message = document.getElementById('reset-message');
+
+      if (!token || !email) {
+        message.classList.add('text-red-400');
+        message.textContent = 'Missing token or email in URL';
+      }
+
+      form?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        message.textContent = '';
+        const data = new FormData(form);
+        const password = String(data.get('password') || '');
+        const confirm = String(data.get('confirm') || '');
+        if (password !== confirm) {
+          message.classList.add('text-red-400');
+          message.textContent = 'Passwords do not match';
+          return;
+        }
+        button?.classList.add('animate-pulse');
+        button.disabled = true;
+
+        try {
+          const res = await fetch('/api/auth/reset-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token, email, password }),
+          });
+          const json = await res.json();
+          if (!res.ok) throw new Error(json?.error || 'Unable to reset password');
+          message.classList.add('text-blue-400');
+          message.textContent = 'Password updated. You can now sign in.';
+        } catch (err) {
+          console.error(err);
+          message.classList.add('text-red-400');
+          message.textContent = err instanceof Error ? err.message : 'Failed to reset password';
+        } finally {
+          button?.classList.remove('animate-pulse');
+          button.disabled = false;
+        }
+      });
+    </script>
+  </body>
+  </html>
+

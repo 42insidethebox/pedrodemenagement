@@ -1,12 +1,12 @@
-import { d as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, F as Fragment, m as maybeRenderHead } from '../chunks/astro/server_DpQ8NPFj.mjs';
-import { $ as $$PageLayout, f as footerDataDe, h as headerDataDe } from '../chunks/PageLayout_C0BDAYgu.mjs';
-import { $ as $$Hero } from '../chunks/Hero_BK_wwOAV.mjs';
-import { $ as $$Note, a as $$Features } from '../chunks/Features_HJsowMuA.mjs';
-import { $ as $$Features2 } from '../chunks/Features2_BhlDX8y5.mjs';
-import { $ as $$Steps, a as $$FAQs } from '../chunks/Steps_DMVgCwK2.mjs';
-import { $ as $$Content } from '../chunks/Content_Bw_VJdqS.mjs';
-import { $ as $$Stats } from '../chunks/Stats_BS8Dp7Qj.mjs';
-import { $ as $$CallToAction } from '../chunks/CallToAction_BtHIYINw.mjs';
+import { d as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, F as Fragment, m as maybeRenderHead } from '../chunks/astro/server_Dp0aUUie.mjs';
+import { $ as $$PageLayout, f as footerDataDe, h as headerDataDe } from '../chunks/PageLayout_C1NlzRGT.mjs';
+import { $ as $$Hero } from '../chunks/Hero_DBbz5n4W.mjs';
+import { $ as $$Note, a as $$Features } from '../chunks/Features_B5Uqs0r8.mjs';
+import { $ as $$Features2 } from '../chunks/Features2_D40QzOgf.mjs';
+import { $ as $$Steps, a as $$FAQs } from '../chunks/Steps_A0bBa03p.mjs';
+import { $ as $$Content } from '../chunks/Content_Csw7PdWb.mjs';
+import { $ as $$Stats } from '../chunks/Stats_Bwbi_riw.mjs';
+import { $ as $$CallToAction } from '../chunks/CallToAction_CkiqG6vN.mjs';
 export { renderers } from '../renderers.mjs';
 
 const $$Astro = createAstro("https://tonsiteweb.ch");
@@ -30,7 +30,7 @@ Schweizer Design, kontrollierte Performance. TonSiteWeb.ch verbindet Automatisie
       Showcase-Seiten für KMU und Selbstständige im Genfersee-Bogen zu liefern – ohne unrealistische Versprechen oder technischen Ballast.
 ` })}`, "title": ($$result3) => renderTemplate`${renderComponent($$result3, "Fragment", Fragment, { "slot": "title" }, { "default": ($$result4) => renderTemplate`
 Ihre schlüsselfertige Website für den Markt am Genfersee
-` })}` })} ${renderComponent($$result2, "Note", $$Note, { "title": "Versprechen", "description": "Lokaler Service, menschlicher Support und automatisierte Abl\xE4ufe f\xFCr ein makelloses Resultat ohne Zusatzaufwand." })} ${renderComponent($$result2, "Content", $$Content, { "isAfterContent": true, "items": [] }, { "bg": ($$result3) => renderTemplate`${renderComponent($$result3, "Fragment", Fragment, { "slot": "bg" }, { "default": ($$result4) => renderTemplate` ${maybeRenderHead()}<div class="absolute inset-0"></div> ` })}`, "content": ($$result3) => renderTemplate`${renderComponent($$result3, "Fragment", Fragment, { "slot": "content" }, { "default": ($$result4) => renderTemplate` <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-3">Warum nicht Squarespace?</h3> <p class="text-base mb-3">Squarespace ist super, wenn Sie Design lieben, freie Wochenenden haben und gerne tüfteln.</p> <p class="text-base mb-4">Wenn Sie aber einfach nur schnell, zuverlässig und mit Schweizer Support online sein wollen, übernehmen wir das für Sie.</p> <ul class="mt-2 space-y-2 text-left"> <li>✓ Hosting im ersten Jahr inklusive</li> <li>✓ Schweizer Rechnung & Support</li> <li>✓ Kein DIY, keine Plugins, kein Stress</li> </ul> ` })}` })} ${renderComponent($$result2, "Features", $$Features, { "id": "features", "tagline": "Warum wir", "title": "Schweizer Pr\xE4zision f\xFCr Ihren digitalen Auftritt", "subtitle": "Jedes Projekt folgt einem klaren Rahmen: Briefing, Gestaltung, Freigabe und begleiteter Go-Live.", "items": [
+` })}` })} ${renderComponent($$result2, "Note", $$Note, { "title": "Versprechen", "description": "Lokaler Service, menschlicher Support und automatisierte Abl\xE4ufe f\xFCr ein makelloses Resultat ohne Zusatzaufwand." })} ${renderComponent($$result2, "Features", $$Features, { "id": "features", "tagline": "Warum wir", "title": "Schweizer Pr\xE4zision f\xFCr Ihren digitalen Auftritt", "subtitle": "Jedes Projekt folgt einem klaren Rahmen: Briefing, Gestaltung, Freigabe und begleiteter Go-Live.", "items": [
     {
       title: "Geplanter Zeitrahmen",
       description: "Briefing, Design und Launch werden in der Regel innerhalb von f\xFCnf Arbeitstagen abgeschlossen \u2013 je nach Inhalt und Integrationen.",
@@ -74,7 +74,7 @@ Ihre schlüsselfertige Website für den Markt am Genfersee
       title: "Qualit\xE4tssicherung",
       description: "Manuelles Lektorat, Performance-Tests und DSGVO-Checkliste vor der finalen Freigabe und dem Go-Live."
     }
-  ] }, { "bg": ($$result3) => renderTemplate`${renderComponent($$result3, "Fragment", Fragment, { "slot": "bg" }, { "default": ($$result4) => renderTemplate` <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div> ` })}`, "content": ($$result3) => renderTemplate`${renderComponent($$result3, "Fragment", Fragment, { "slot": "content" }, { "default": ($$result4) => renderTemplate` <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Ihre Website ohne Stress</h3>
+  ] }, { "bg": ($$result3) => renderTemplate`${renderComponent($$result3, "Fragment", Fragment, { "slot": "bg" }, { "default": ($$result4) => renderTemplate` ${maybeRenderHead()}<div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div> ` })}`, "content": ($$result3) => renderTemplate`${renderComponent($$result3, "Fragment", Fragment, { "slot": "content" }, { "default": ($$result4) => renderTemplate` <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Ihre Website ohne Stress</h3>
 Drei automatisierte Schritte, validiert von einem lokalen Profi.
 ` })}`, "image": ($$result3) => renderTemplate`${renderComponent($$result3, "Fragment", Fragment, { "slot": "image" }, { "default": ($$result4) => renderTemplate` <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl"> <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Kontrollierter Workflow</p> <h4 class="mt-4 text-3xl font-semibold">Briefing → Kreation → Launch</h4> <p class="mt-6 max-w-xs text-base text-blue-100/90">
 Jeder Meilenstein wird in Ihrem Kundenbereich mit Benachrichtigungen, Retro-Planung und klaren Freigaben dokumentiert.

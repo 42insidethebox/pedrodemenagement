@@ -1,12 +1,12 @@
-import { d as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, F as Fragment, m as maybeRenderHead } from '../chunks/astro/server_DpQ8NPFj.mjs';
-import { $ as $$PageLayout, c as footerDataEn, d as headerDataEn } from '../chunks/PageLayout_C0BDAYgu.mjs';
-import { $ as $$Hero } from '../chunks/Hero_BK_wwOAV.mjs';
-import { $ as $$Note, a as $$Features } from '../chunks/Features_HJsowMuA.mjs';
-import { $ as $$Features2 } from '../chunks/Features2_BhlDX8y5.mjs';
-import { $ as $$Steps, a as $$FAQs } from '../chunks/Steps_DMVgCwK2.mjs';
-import { $ as $$Content } from '../chunks/Content_Bw_VJdqS.mjs';
-import { $ as $$Stats } from '../chunks/Stats_BS8Dp7Qj.mjs';
-import { $ as $$CallToAction } from '../chunks/CallToAction_BtHIYINw.mjs';
+import { d as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, F as Fragment, m as maybeRenderHead } from '../chunks/astro/server_Dp0aUUie.mjs';
+import { $ as $$PageLayout, c as footerDataEn, d as headerDataEn } from '../chunks/PageLayout_C1NlzRGT.mjs';
+import { $ as $$Hero } from '../chunks/Hero_DBbz5n4W.mjs';
+import { $ as $$Note, a as $$Features } from '../chunks/Features_B5Uqs0r8.mjs';
+import { $ as $$Features2 } from '../chunks/Features2_D40QzOgf.mjs';
+import { $ as $$Steps, a as $$FAQs } from '../chunks/Steps_A0bBa03p.mjs';
+import { $ as $$Content } from '../chunks/Content_Csw7PdWb.mjs';
+import { $ as $$Stats } from '../chunks/Stats_Bwbi_riw.mjs';
+import { $ as $$CallToAction } from '../chunks/CallToAction_CkiqG6vN.mjs';
 export { renderers } from '../renderers.mjs';
 
 const $$Astro = createAstro("https://tonsiteweb.ch");
@@ -30,7 +30,7 @@ Swiss design, controlled performance. TonSiteWeb.ch blends automation and local 
       sites for SMEs and independents across the Léman Arc—without unrealistic promises or technical overload.
 ` })}`, "title": ($$result3) => renderTemplate`${renderComponent($$result3, "Fragment", Fragment, { "slot": "title" }, { "default": ($$result4) => renderTemplate`
 Your turnkey website, tailored to the Léman market
-` })}` })} ${renderComponent($$result2, "Note", $$Note, { "title": "Commitment", "description": "Local service, human support and automated orchestration for a flawless result without extra effort." })} ${renderComponent($$result2, "Content", $$Content, { "isAfterContent": true, "items": [] }, { "bg": ($$result3) => renderTemplate`${renderComponent($$result3, "Fragment", Fragment, { "slot": "bg" }, { "default": ($$result4) => renderTemplate` ${maybeRenderHead()}<div class="absolute inset-0"></div> ` })}`, "content": ($$result3) => renderTemplate`${renderComponent($$result3, "Fragment", Fragment, { "slot": "content" }, { "default": ($$result4) => renderTemplate` <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-3">Why not Squarespace?</h3> <p class="text-base mb-3">Squarespace is great if you love design, have free weekends, and enjoy figuring things out.</p> <p class="text-base mb-4">But if you just want your business online — fast, reliable, and Swiss‑supported — we’ll do it for you.</p> <ul class="mt-2 space-y-2 text-left"> <li>✓ Hosting included for the first year</li> <li>✓ Swiss invoice + support</li> <li>✓ No DIY, no plugins, no stress</li> </ul> ` })}` })} ${renderComponent($$result2, "Features", $$Features, { "id": "features", "tagline": "Why work with us", "title": "Swiss precision applied to digital", "subtitle": "Every project follows a clear framework: discovery, design, validation and guided go-live.", "items": [
+` })}` })} ${renderComponent($$result2, "Note", $$Note, { "title": "Commitment", "description": "Local service, human support and automated orchestration for a flawless result without extra effort." })} ${renderComponent($$result2, "Features", $$Features, { "id": "features", "tagline": "Why work with us", "title": "Swiss precision applied to digital", "subtitle": "Every project follows a clear framework: discovery, design, validation and guided go-live.", "items": [
     {
       title: "Managed timeline",
       description: "Briefing, design and launch are typically completed within five business days, depending on content and integrations.",
@@ -74,7 +74,7 @@ Your turnkey website, tailored to the Léman market
       title: "Quality assurance",
       description: "Human proofreading, performance tests and GDPR checklist before the final approval and launch."
     }
-  ] }, { "bg": ($$result3) => renderTemplate`${renderComponent($$result3, "Fragment", Fragment, { "slot": "bg" }, { "default": ($$result4) => renderTemplate` <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div> ` })}`, "content": ($$result3) => renderTemplate`${renderComponent($$result3, "Fragment", Fragment, { "slot": "content" }, { "default": ($$result4) => renderTemplate` <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Your site delivered without stress</h3>
+  ] }, { "bg": ($$result3) => renderTemplate`${renderComponent($$result3, "Fragment", Fragment, { "slot": "bg" }, { "default": ($$result4) => renderTemplate` ${maybeRenderHead()}<div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div> ` })}`, "content": ($$result3) => renderTemplate`${renderComponent($$result3, "Fragment", Fragment, { "slot": "content" }, { "default": ($$result4) => renderTemplate` <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Your site delivered without stress</h3>
 Three automated steps, validated by a local expert.
 ` })}`, "image": ($$result3) => renderTemplate`${renderComponent($$result3, "Fragment", Fragment, { "slot": "image" }, { "default": ($$result4) => renderTemplate` <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl"> <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Controlled workflow</p> <h4 class="mt-4 text-3xl font-semibold">Brief → Creation → Launch</h4> <p class="mt-6 max-w-xs text-base text-blue-100/90">
 Each milestone is tracked in your client space with notifications, retro-planning and clear approvals.
