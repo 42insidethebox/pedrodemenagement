@@ -1,0 +1,1013 @@
+{
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/CustomStyles.astro": {
+    "methods": [],
+    "frontmatter": "import '@fontsource-variable/inter';\n\n// 'DM Sans'\n// Nunito\n// Dosis\n// Outfit\n// Roboto\n// Literata\n// 'IBM Plex Sans'\n// Karla\n// Poppins\n// 'Fira Sans'\n// 'Libre Franklin'\n// Inconsolata\n// Raleway\n// Oswald\n// 'Space Grotesk'\n// Urbanist"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/Favicons.astro": {
+    "methods": [],
+    "frontmatter": "import favIcon from '~/assets/favicons/favicon.ico';\nimport favIconSvg from '~/assets/favicons/favicon.svg';\nimport appleTouchIcon from '~/assets/favicons/apple-touch-icon.png';"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/Logo.astro": {
+    "methods": [],
+    "frontmatter": "import { SITE } from 'astrowind:config';"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/blog/Grid.astro": {
+    "methods": [],
+    "frontmatter": "import Item from '~/components/blog/GridItem.astro';\nimport type { Post } from '~/types';\n\nexport interface Props {\n  posts: Array<Post>;\n}\n\nconst { posts } = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/blog/GridItem.astro": {
+    "methods": [],
+    "frontmatter": "import { APP_BLOG } from 'astrowind:config';\nimport type { Post } from '~/types';\n\nimport Image from '~/components/common/Image.astro';\n\nimport { findImage } from '~/utils/images';\nimport { getPermalink } from '~/utils/permalinks';\n\nexport interface Props {\n  post: Post;\n}\n\nconst { post } = Astro.props;\nconst image = await findImage(post.image);\n\nconst link = APP_BLOG?.post?.isEnabled ? getPermalink(post.permalink, 'post') : '';"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/blog/Headline.astro": {
+    "methods": [],
+    "frontmatter": "const { title = await Astro.slots.render('default'), subtitle = await Astro.slots.render('subtitle') } = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/blog/List.astro": {
+    "methods": [],
+    "frontmatter": "import Item from '~/components/blog/ListItem.astro';\nimport type { Post } from '~/types';\n\nexport interface Props {\n  posts: Array<Post>;\n}\n\nconst { posts } = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/blog/ListItem.astro": {
+    "methods": [
+      "image"
+    ],
+    "frontmatter": "import type { ImageMetadata } from 'astro';\nimport { Icon } from 'astro-icon/components';\nimport Image from '~/components/common/Image.astro';\nimport PostTags from '~/components/blog/Tags.astro';\n\nimport { APP_BLOG } from 'astrowind:config';\nimport type { Post } from '~/types';\n\nimport { getPermalink } from '~/utils/permalinks';\nimport { findImage } from '~/utils/images';\nimport { getFormattedDate } from '~/utils/utils';\n\nexport interface Props {\n  post: Post;\n}\n\nconst { post } = Astro.props;\nconst image = (await findImage(post.image)) as ImageMetadata | undefined;\n\nconst link = APP_BLOG?.post?.isEnabled ? getPermalink(post.permalink, 'post') : '';"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/blog/Pagination.astro": {
+    "methods": [],
+    "frontmatter": "import { Icon } from 'astro-icon/components';\nimport { getPermalink } from '~/utils/permalinks';\nimport Button from '~/components/ui/Button.astro';\n\nexport interface Props {\n  prevUrl?: string;\n  nextUrl?: string;\n  prevText?: string;\n  nextText?: string;\n}\n\nconst { prevUrl, nextUrl, prevText = 'Newer posts', nextText = 'Older posts' } = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/blog/RelatedPosts.astro": {
+    "methods": [],
+    "frontmatter": "import { APP_BLOG } from 'astrowind:config';\n\nimport { getRelatedPosts } from '~/utils/blog';\nimport BlogHighlightedPosts from '../widgets/BlogHighlightedPosts.astro';\nimport type { Post } from '~/types';\nimport { getBlogPermalink } from '~/utils/permalinks';\n\nexport interface Props {\n  post: Post;\n}\n\nconst { post } = Astro.props;\n\nconst relatedPosts = post.tags ? await getRelatedPosts(post, 4) : [];"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/blog/SinglePost.astro": {
+    "methods": [],
+    "frontmatter": "import { Icon } from 'astro-icon/components';\n\nimport Image from '~/components/common/Image.astro';\nimport PostTags from '~/components/blog/Tags.astro';\nimport SocialShare from '~/components/common/SocialShare.astro';\n\nimport { getPermalink } from '~/utils/permalinks';\nimport { getFormattedDate } from '~/utils/utils';\n\nimport type { Post } from '~/types';\n\nexport interface Props {\n  post: Post;\n  url: string | URL;\n}\n\nconst { post, url } = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/blog/Tags.astro": {
+    "methods": [],
+    "frontmatter": "import { getPermalink } from '~/utils/permalinks';\n\nimport { APP_BLOG } from 'astrowind:config';\nimport type { Post } from '~/types';\n\nexport interface Props {\n  tags: Post['tags'];\n  class?: string;\n  title?: string | undefined;\n  isCategory?: boolean;\n}\n\nconst { tags, class: className = 'text-sm', title = undefined, isCategory = false } = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/blog/ToBlogLink.astro": {
+    "methods": [],
+    "frontmatter": "import { Icon } from 'astro-icon/components';\nimport { getBlogPermalink } from '~/utils/permalinks';\nimport { I18N } from 'astrowind:config';\nimport Button from '~/components/ui/Button.astro';\n\nconst { textDirection } = I18N;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/common/Analytics.astro": {
+    "methods": [],
+    "frontmatter": "import { GoogleAnalytics } from '@astrolib/analytics';\nimport { ANALYTICS } from 'astrowind:config';"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/common/ApplyColorMode.astro": {
+    "methods": [
+      "applyTheme"
+    ],
+    "frontmatter": "import { UI } from 'astrowind:config';\n\n// TODO: This code is temporary"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/common/BasicScripts.astro": {
+    "methods": [
+      "applyHeaderStylesOnScroll",
+      "applyTheme",
+      "attachEvent",
+      "callback",
+      "getThreshold",
+      "routeLang"
+    ],
+    "frontmatter": "import { UI } from 'astrowind:config';"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/common/CommonMeta.astro": {
+    "methods": [],
+    "frontmatter": "import { getAsset } from '~/utils/permalinks';"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/common/Image.astro": {
+    "methods": [],
+    "frontmatter": "import type { HTMLAttributes } from 'astro/types';\nimport { findImage } from '~/utils/images';\nimport {\n  getImagesOptimized,\n  astroAssetsOptimizer,\n  unpicOptimizer,\n  isUnpicCompatible,\n  type ImageProps,\n} from '~/utils/images-optimization';\n\ntype Props = ImageProps;\ntype ImageType = {\n  src: string;\n  attributes: HTMLAttributes<'img'>;\n};\n\nconst props = Astro.props;\n\nif (props.alt === undefined || props.alt === null) {\n  throw new Error();\n}\n\nif (typeof props.width === 'string') {\n  props.width = parseInt(props.width);\n}\n\nif (typeof props.height === 'string') {\n  props.height = parseInt(props.height);\n}\n\nif (!props.loading) {\n  props.loading = 'lazy';\n}\n\nif (!props.decoding) {\n  props.decoding = 'async';\n}\n\nconst _image = await findImage(props.src);\n\nlet image: ImageType | undefined = undefined;\n\nif (\n  typeof _image === 'string' &&\n  (_image.startsWith('http://') || _image.startsWith('https://')) &&\n  isUnpicCompatible(_image)\n) {\n  image = await getImagesOptimized(_image, props, unpicOptimizer);\n} else if (_image) {\n  image = await getImagesOptimized(_image, props, astroAssetsOptimizer);\n}"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/common/Metadata.astro": {
+    "methods": [
+      "routeLang"
+    ],
+    "frontmatter": "import merge from 'lodash.merge';\nimport { AstroSeo } from '@astrolib/seo';\n\nimport type { Props as AstroSeoProps } from '@astrolib/seo';\n\nimport { SITE, METADATA, I18N } from 'astrowind:config';\nimport type { MetaData } from '~/types';\nimport { getCanonical } from '~/utils/permalinks';\n\nimport { adaptOpenGraphImages } from '~/utils/images';\n\nexport interface Props extends MetaData {\n  dontUseTitleTemplate?: boolean;\n}\n\nconst {\n  title,\n  ignoreTitleTemplate = false,\n  canonical = String(getCanonical(String(Astro.url.pathname))),\n  robots = {},\n  description,\n  openGraph = {},\n  twitter = {},\n} = Astro.props;\n\nconst path = Astro.url?.pathname || '/';\nconst match = path.match(/^\\/(fr|en|de|it)(?=\\/|$)/);\nconst routeLang = (match && match[1]) || I18N?.language || 'fr';\n\nconst seoProps: AstroSeoProps = merge(\n  {\n    title: '',\n    titleTemplate: '%s',\n    canonical: canonical,\n    noindex: true,\n    nofollow: true,\n    description: undefined,\n    openGraph: {\n      url: canonical,\n      site_name: SITE?.name,\n      images: [],\n      locale: routeLang || 'en',\n      type: 'website',\n    },\n    twitter: {\n      cardType: openGraph?.images?.length ? 'summary_large_image' : 'summary',\n    },\n  },\n  {\n    title: METADATA?.title?.default,\n    titleTemplate: METADATA?.title?.template,\n    noindex: typeof METADATA?.robots?.index !== 'undefined' ? !METADATA.robots.index : undefined,\n    nofollow: typeof METADATA?.robots?.follow !== 'undefined' ? !METADATA.robots.follow : undefined,\n    description: METADATA?.description,\n    openGraph: METADATA?.openGraph,\n    twitter: METADATA?.twitter,\n  },\n  {\n    title: title,\n    titleTemplate: ignoreTitleTemplate ? '%s' : undefined,\n    canonical: canonical,\n    noindex: typeof robots?.index !== 'undefined' ? !robots.index : undefined,\n    nofollow: typeof robots?.follow !== 'undefined' ? !robots.follow : undefined,\n    description: description,\n    openGraph: { url: canonical, ...openGraph },\n    twitter: twitter,\n  }\n);"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/common/SiteVerification.astro": {
+    "methods": [],
+    "frontmatter": "import { SITE } from 'astrowind:config';"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/common/SocialShare.astro": {
+    "methods": [],
+    "frontmatter": "import { Icon } from 'astro-icon/components';\n\nexport interface Props {\n  text: string;\n  url: string | URL;\n  class?: string;\n}\n\nconst { text, url, class: className = 'inline-block' } = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/common/SplitbeeAnalytics.astro": {
+    "methods": [],
+    "frontmatter": "const { doNotTrack = true, noCookieMode = false, url = 'https://cdn.splitbee.io/sb.js' } = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/common/ToggleMenu.astro": {
+    "methods": [],
+    "frontmatter": "export interface Props {\n  label?: string;\n  class?: string;\n}\n\nconst {\n  label = 'Toggle Menu',\n  class: className = 'flex flex-col h-12 w-12 rounded justify-center items-center cursor-pointer group',\n} = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/common/ToggleTheme.astro": {
+    "methods": [],
+    "frontmatter": "import { Icon } from 'astro-icon/components';\n\nimport { UI } from 'astrowind:config';\n\nexport interface Props {\n  label?: string;\n  class?: string;\n  iconClass?: string;\n  iconName?: string;\n}\n\nconst {\n  label = 'Toggle between Dark and Light mode',\n  class:\n    className = 'text-muted dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 inline-flex items-center',\n  iconClass = 'w-6 h-6',\n  iconName = 'tabler:sun',\n} = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/ui/Background.astro": {
+    "methods": [],
+    "frontmatter": "export interface Props {\n  isDark?: boolean;\n}\n\nconst { isDark = false } = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/ui/Button.astro": {
+    "methods": [],
+    "frontmatter": "import { Icon } from 'astro-icon/components';\nimport { twMerge } from 'tailwind-merge';\nimport type { CallToAction as Props } from '~/types';\n\nconst {\n  variant = 'secondary',\n  target,\n  text = Astro.slots.render('default'),\n  icon = '',\n  class: className = '',\n  type,\n  ...rest\n} = Astro.props;\n\nconst variants = {\n  primary: 'btn-primary',\n  secondary: 'btn-secondary',\n  tertiary: 'btn btn-tertiary',\n  link: 'cursor-pointer hover:text-primary',\n};"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/ui/DListItem.astro": {
+    "methods": [],
+    "frontmatter": "// component: DListItem\n//\n// Mimics the html 'dl' (description list)\n//\n// The 'dt' item is the item 'term' and is inserted into an 'h6' tag.\n// Caller needs to style the 'h6' tag appropriately.\n//\n// You can put pretty much any content you want between the open and\n// closing tags - it's simply contained in an enclosing div with a\n// margin left.  No need for 'dd' items.\n//\nconst { dt } = Astro.props;\ninterface Props {\n  dt: string;\n}\n\nconst content: string = await Astro.slots.render('default');"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/ui/Form.astro": {
+    "methods": [],
+    "frontmatter": "import type { Form as Props } from '~/types';\nimport Button from '~/components/ui/Button.astro';\n\nconst { inputs, textarea, disclaimer, button = 'Contact us', description = '' } = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/ui/Headline.astro": {
+    "methods": [],
+    "frontmatter": "import type { Headline as Props } from '~/types';\nimport { twMerge } from 'tailwind-merge';\n\nconst {\n  title = await Astro.slots.render('title'),\n  subtitle = await Astro.slots.render('subtitle'),\n  tagline,\n  classes = {},\n} = Astro.props;\n\nconst {\n  container: containerClass = 'max-w-3xl',\n  title: titleClass = 'text-3xl md:text-4xl ',\n  subtitle: subtitleClass = 'text-xl',\n} = classes;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/ui/ItemGrid.astro": {
+    "methods": [],
+    "frontmatter": "import type { ItemGrid as Props } from '~/types';\nimport { twMerge } from 'tailwind-merge';\nimport Button from './Button.astro';\nimport { Icon } from 'astro-icon/components';\n\nconst { items = [], columns, defaultIcon = '', classes = {} } = Astro.props;\n\nconst {\n  container: containerClass = '',\n  panel: panelClass = '',\n  title: titleClass = '',\n  description: descriptionClass = '',\n  icon: defaultIconClass = 'text-primary',\n  action: actionClass = '',\n} = classes;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/ui/ItemGrid2.astro": {
+    "methods": [],
+    "frontmatter": "import type { ItemGrid as Props } from '~/types';\nimport { Icon } from 'astro-icon/components';\nimport { twMerge } from 'tailwind-merge';\nimport Button from './Button.astro';\n\nconst { items = [], columns, defaultIcon = '', classes = {} } = Astro.props;\n\nconst {\n  container: containerClass = '',\n  // container: containerClass = \"sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3\",\n  panel: panelClass = '',\n  title: titleClass = '',\n  description: descriptionClass = '',\n  icon: defaultIconClass = 'text-primary',\n} = classes;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/ui/Modal.astro": {
+    "methods": [
+      "closeModal",
+      "escClose",
+      "urlWithoutHash"
+    ],
+    "frontmatter": "export interface ModalAction {\n  text: string;\n  href: string;\n  variant?: 'primary' | 'secondary' | 'link';\n}\n\nexport interface Props {\n  id: string;\n  title?: string;\n  subtitle?: string;\n  children?: any;\n}\n\nconst { id, title = '', subtitle = '' } = Astro.props as Props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/ui/Timeline.astro": {
+    "methods": [],
+    "frontmatter": "import { Icon } from 'astro-icon/components';\nimport { twMerge } from 'tailwind-merge';\nimport type { Item } from '~/types';\n\nexport interface Props {\n  items?: Array<Item>;\n  defaultIcon?: string;\n  classes?: Record<string, string>;\n}\n\nconst { items = [], classes = {}, defaultIcon } = Astro.props as Props;\n\nconst {\n  container: containerClass = '',\n  panel: panelClass = '',\n  title: titleClass = '',\n  description: descriptionClass = '',\n  icon: defaultIconClass = 'text-primary dark:text-slate-200 border-primary dark:border-blue-700',\n} = classes;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/ui/WidgetWrapper.astro": {
+    "methods": [],
+    "frontmatter": "import type { HTMLTag } from 'astro/types';\nimport type { Widget } from '~/types';\nimport { twMerge } from 'tailwind-merge';\nimport Background from './Background.astro';\n\nexport interface Props extends Widget {\n  containerClass?: string;\n  ['as']?: HTMLTag;\n}\n\nconst { id, isDark = false, containerClass = '', bg, as = 'section' } = Astro.props;\n\nconst WrapperTag = as;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/widgets/Announcement.astro": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/widgets/BlogHighlightedPosts.astro": {
+    "methods": [],
+    "frontmatter": "import { APP_BLOG } from 'astrowind:config';\n\nimport Grid from '~/components/blog/Grid.astro';\n\nimport { getBlogPermalink } from '~/utils/permalinks';\nimport { findPostsByIds } from '~/utils/blog';\nimport WidgetWrapper from '~/components/ui/WidgetWrapper.astro';\nimport type { Widget } from '~/types';\n\nexport interface Props extends Widget {\n  title?: string;\n  linkText?: string;\n  linkUrl?: string | URL;\n  information?: string;\n  postIds: string[];\n}\n\nconst {\n  title = await Astro.slots.render('title'),\n  linkText = 'View all posts',\n  linkUrl = getBlogPermalink(),\n  information = await Astro.slots.render('information'),\n  postIds = [],\n\n  id,\n  isDark = false,\n  classes = {},\n  bg = await Astro.slots.render('bg'),\n} = Astro.props;\n\nconst posts = APP_BLOG.isEnabled ? await findPostsByIds(postIds) : [];"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/widgets/BlogLatestPosts.astro": {
+    "methods": [],
+    "frontmatter": "import { APP_BLOG } from 'astrowind:config';\n\nimport Grid from '~/components/blog/Grid.astro';\n\nimport { getBlogPermalink } from '~/utils/permalinks';\nimport { findLatestPosts } from '~/utils/blog';\nimport WidgetWrapper from '~/components/ui/WidgetWrapper.astro';\nimport type { Widget } from '~/types';\nimport Button from '~/components/ui/Button.astro';\n\nexport interface Props extends Widget {\n  title?: string;\n  linkText?: string;\n  linkUrl?: string | URL;\n  information?: string;\n  count?: number;\n}\n\nconst {\n  title = await Astro.slots.render('title'),\n  linkText = 'View all posts',\n  linkUrl = getBlogPermalink(),\n  information = await Astro.slots.render('information'),\n  count = 4,\n\n  id,\n  isDark = false,\n  classes = {},\n  bg = await Astro.slots.render('bg'),\n} = Astro.props;\n\nconst posts = APP_BLOG.isEnabled ? await findLatestPosts({ count }) : [];"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/widgets/Brands.astro": {
+    "methods": [],
+    "frontmatter": "import { Icon } from 'astro-icon/components';\nimport type { Brands as Props } from '~/types';\n\nimport Image from '~/components/common/Image.astro';\nimport Headline from '~/components/ui/Headline.astro';\nimport WidgetWrapper from '~/components/ui/WidgetWrapper.astro';\nconst {\n  title = '',\n  subtitle = '',\n  tagline = '',\n  icons = [],\n  images = [],\n  id,\n  isDark = false,\n  classes = {},\n  bg = await Astro.slots.render('bg'),\n} = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/widgets/CallToAction.astro": {
+    "methods": [],
+    "frontmatter": "import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';\nimport type { CallToAction, Widget } from '~/types';\nimport Headline from '~/components/ui/Headline.astro';\nimport Button from '~/components/ui/Button.astro';\n\ninterface Props extends Widget {\n  title?: string;\n  subtitle?: string;\n  tagline?: string;\n  callToAction?: CallToAction;\n  actions?: string | CallToAction[];\n}\n\nconst {\n  title = await Astro.slots.render('title'),\n  subtitle = await Astro.slots.render('subtitle'),\n  tagline = await Astro.slots.render('tagline'),\n  actions = await Astro.slots.render('actions'),\n\n  id,\n  isDark = false,\n  classes = {},\n  bg = await Astro.slots.render('bg'),\n} = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/widgets/Contact.astro": {
+    "methods": [],
+    "frontmatter": "import FormContainer from '~/components/ui/Form.astro';\nimport Headline from '~/components/ui/Headline.astro';\nimport WidgetWrapper from '~/components/ui/WidgetWrapper.astro';\nimport type { Contact as Props } from '~/types';\n\nconst {\n  title = await Astro.slots.render('title'),\n  subtitle = await Astro.slots.render('subtitle'),\n  tagline = await Astro.slots.render('tagline'),\n  inputs,\n  textarea,\n  disclaimer,\n  button,\n  description,\n\n  id,\n  isDark = false,\n  classes = {},\n  bg = await Astro.slots.render('bg'),\n} = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/widgets/Content.astro": {
+    "methods": [],
+    "frontmatter": "import type { Content as Props } from '~/types';\nimport Headline from '~/components/ui/Headline.astro';\nimport WidgetWrapper from '~/components/ui/WidgetWrapper.astro';\nimport Image from '~/components/common/Image.astro';\nimport Button from '~/components/ui/Button.astro';\nimport ItemGrid from '~/components/ui/ItemGrid.astro';\n\nconst {\n  title = await Astro.slots.render('title'),\n  subtitle = await Astro.slots.render('subtitle'),\n  tagline,\n  content = await Astro.slots.render('content'),\n  callToAction,\n  items = [],\n  columns,\n  image = await Astro.slots.render('image'),\n  isReversed = false,\n  isAfterContent = false,\n\n  id,\n  isDark = false,\n  classes = {},\n  bg = await Astro.slots.render('bg'),\n} = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/widgets/FAQs.astro": {
+    "methods": [],
+    "frontmatter": "import Headline from '~/components/ui/Headline.astro';\nimport ItemGrid from '~/components/ui/ItemGrid.astro';\nimport WidgetWrapper from '~/components/ui/WidgetWrapper.astro';\nimport type { Faqs as Props } from '~/types';\n\nconst {\n  title = '',\n  subtitle = '',\n  tagline = '',\n  items = [],\n  columns = 2,\n\n  id,\n  isDark = false,\n  classes = {},\n  bg = await Astro.slots.render('bg'),\n} = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/widgets/Features.astro": {
+    "methods": [],
+    "frontmatter": "import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';\nimport ItemGrid from '~/components/ui/ItemGrid.astro';\nimport Headline from '~/components/ui/Headline.astro';\nimport type { Features as Props } from '~/types';\n\nconst {\n  title = await Astro.slots.render('title'),\n  subtitle = await Astro.slots.render('subtitle'),\n  tagline = await Astro.slots.render('tagline'),\n  items = [],\n  columns = 2,\n\n  defaultIcon,\n\n  id,\n  isDark = false,\n  classes = {},\n  bg = await Astro.slots.render('bg'),\n} = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/widgets/Features2.astro": {
+    "methods": [],
+    "frontmatter": "import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';\nimport Headline from '~/components/ui/Headline.astro';\nimport ItemGrid2 from '~/components/ui/ItemGrid2.astro';\nimport type { Features as Props } from '~/types';\n\nconst {\n  title = await Astro.slots.render('title'),\n  subtitle = await Astro.slots.render('subtitle'),\n  tagline = await Astro.slots.render('tagline'),\n  items = [],\n  columns = 3,\n  defaultIcon,\n\n  id,\n  isDark = false,\n  classes = {},\n  bg = await Astro.slots.render('bg'),\n} = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/widgets/Features3.astro": {
+    "methods": [],
+    "frontmatter": "import Headline from '~/components/ui/Headline.astro';\nimport ItemGrid from '~/components/ui/ItemGrid.astro';\nimport WidgetWrapper from '~/components/ui/WidgetWrapper.astro';\nimport Image from '~/components/common/Image.astro';\nimport type { Features as Props } from '~/types';\n\nconst {\n  title = await Astro.slots.render('title'),\n  subtitle = await Astro.slots.render('subtitle'),\n  tagline = await Astro.slots.render('tagline'),\n  image,\n  items = [],\n  columns,\n  defaultIcon,\n  isBeforeContent,\n  isAfterContent,\n\n  id,\n  isDark = false,\n  classes = {},\n  bg = await Astro.slots.render('bg'),\n} = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/widgets/Footer.astro": {
+    "methods": [
+      "buildLangHref"
+    ],
+    "frontmatter": "import { Icon } from 'astro-icon/components';\nimport { SITE } from 'astrowind:config';\nimport { getHomePermalink } from '~/utils/permalinks';\n\ninterface Link {\n  text?: string;\n  href?: string;\n  ariaLabel?: string;\n  icon?: string;\n}\n\ninterface Links {\n  title?: string;\n  links: Array<Link>;\n}\n\nexport interface Props {\n  links: Array<Links>;\n  secondaryLinks: Array<Link>;\n  socialLinks: Array<Link>;\n  footNote?: string;\n  theme?: string;\n}\n\nconst { socialLinks = [], secondaryLinks = [], links = [], footNote = '', theme = 'light' } = Astro.props;\n\nconst urlObj = new URL(Astro.url);\nconst currentPath = `/${(urlObj.pathname || '').replace(/^\\/+|\\/+$/g, '')}`;\nconst currentSearch = urlObj.search || '';\nconst currentHash = urlObj.hash || '';\nconst suffixPath = currentPath.replace(/^\\/(fr|en|de|it)(?=\\/|$)/, '') || '/';\nconst buildLangHref = (lang: 'fr' | 'en' | 'de' | 'it') => {\n  if (lang === 'fr') return `${suffixPath}${currentSearch}${currentHash}`;\n  const base = suffixPath === '/' ? '' : suffixPath;\n  return `/${lang}${base}${currentSearch}${currentHash}`;\n};\n\nconst resolvedSecondary = secondaryLinks.map((l) => {\n  if (!l || typeof l.href !== 'string') return l;\n  if (['/', '/en', '/de', '/it'].includes(l.href)) {\n    const map: Record<string, string> = {\n      '/': buildLangHref('fr'),\n      '/en': buildLangHref('en'),\n      '/de': buildLangHref('de'),\n      '/it': buildLangHref('it'),\n    };\n    return { ...l, href: map[l.href] };\n  }\n  return l;\n});"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/widgets/Header.astro": {
+    "methods": [
+      "buildLangHref",
+      "t"
+    ],
+    "frontmatter": "import { Icon } from 'astro-icon/components';\nimport Logo from '~/components/Logo.astro';\nimport ToggleTheme from '~/components/common/ToggleTheme.astro';\nimport ToggleMenu from '~/components/common/ToggleMenu.astro';\nimport Button from '~/components/ui/Button.astro';\n\nimport { getHomePermalink } from '~/utils/permalinks';\nimport { trimSlash, getAsset } from '~/utils/permalinks';\nimport type { CallToAction } from '~/types';\n\ninterface Link {\n  text?: string;\n  href?: string;\n  ariaLabel?: string;\n  icon?: string;\n}\n\ninterface MenuLink extends Link {\n  links?: Array<MenuLink>;\n}\n\nexport interface Props {\n  id?: string;\n  links?: Array<MenuLink>;\n  actions?: Array<CallToAction>;\n  isSticky?: boolean;\n  isDark?: boolean;\n  isFullWidth?: boolean;\n  showToggleTheme?: boolean;\n  showRssFeed?: boolean;\n  position?: string;\n}\n\nconst {\n  id = 'header',\n  links = [],\n  actions = [],\n  isSticky = false,\n  isDark = false,\n  isFullWidth = false,\n  showToggleTheme = false,\n  showRssFeed = false,\n  position = 'center',\n} = Astro.props;\n\nconst urlObj = new URL(Astro.url);\nconst currentPath = `/${trimSlash(urlObj.pathname)}`;\nconst currentSearch = urlObj.search || '';\nconst currentHash = urlObj.hash || '';\n\nconst locales = ['en', 'de', 'it'];\nconst suffixPath = currentPath.replace(/^\\/(fr|en|de|it)(?=\\/|$)/, '') || '/';\nconst buildLangHref = (lang: 'fr' | 'en' | 'de' | 'it') => {\n  if (lang === 'fr') {\n    return `${suffixPath}${currentSearch}${currentHash}`;\n  }\n  const base = suffixPath === '/' ? '' : suffixPath;\n  return `/${lang}${base}${currentSearch}${currentHash}`;\n};"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/widgets/Hero.astro": {
+    "methods": [],
+    "frontmatter": "import Image from '~/components/common/Image.astro';\nimport Button from '~/components/ui/Button.astro';\n\nimport type { Hero as Props } from '~/types';\n\nconst {\n  title = await Astro.slots.render('title'),\n  subtitle = await Astro.slots.render('subtitle'),\n  tagline,\n\n  content = await Astro.slots.render('content'),\n  actions = await Astro.slots.render('actions'),\n  image = await Astro.slots.render('image'),\n\n  id,\n  bg = await Astro.slots.render('bg'),\n} = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/widgets/Hero2.astro": {
+    "methods": [],
+    "frontmatter": "import Image from '~/components/common/Image.astro';\nimport Button from '~/components/ui/Button.astro';\n\nimport type { Hero as Props } from '~/types';\n\nconst {\n  title = await Astro.slots.render('title'),\n  subtitle = await Astro.slots.render('subtitle'),\n  tagline,\n\n  content = await Astro.slots.render('content'),\n  actions = await Astro.slots.render('actions'),\n  image = await Astro.slots.render('image'),\n\n  id,\n  bg = await Astro.slots.render('bg'),\n} = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/widgets/HeroText.astro": {
+    "methods": [],
+    "frontmatter": "import type { CallToAction } from '~/types';\nimport Button from '~/components/ui/Button.astro';\n\nexport interface Props {\n  title?: string;\n  subtitle?: string;\n  tagline?: string;\n  content?: string;\n  callToAction?: string | CallToAction;\n  callToAction2?: string | CallToAction;\n}\n\nconst {\n  title = await Astro.slots.render('title'),\n  subtitle = await Astro.slots.render('subtitle'),\n  tagline,\n  content = await Astro.slots.render('content'),\n  callToAction = await Astro.slots.render('callToAction'),\n  callToAction2 = await Astro.slots.render('callToAction2'),\n} = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/widgets/Note.astro": {
+    "methods": [],
+    "frontmatter": "import { Icon } from 'astro-icon/components';\n\nexport interface Props {\n  icon?: string;\n  title?: string;\n  description?: string;\n}\n\nconst {\n  icon = 'tabler:info-square',\n  title = await Astro.slots.render('title'),\n  description = await Astro.slots.render('description'),\n} = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/widgets/Pricing.astro": {
+    "methods": [],
+    "frontmatter": "import { Icon } from 'astro-icon/components';\nimport Button from '~/components/ui/Button.astro';\nimport Headline from '~/components/ui/Headline.astro';\nimport WidgetWrapper from '~/components/ui/WidgetWrapper.astro';\nimport type { Pricing as Props } from '~/types';\n\nconst {\n  title = '',\n  subtitle = '',\n  tagline = '',\n  prices = [],\n\n  id,\n  isDark = false,\n  classes = {},\n  bg = await Astro.slots.render('bg'),\n} = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/widgets/PricingOptions.astro": {
+    "methods": [],
+    "frontmatter": "import Modal from '~/components/ui/Modal.astro';\n\ntype Tier = {\n  label: string;\n  price: string;\n  features: string[];\n  href: string;\n  primary?: boolean;\n  info?: string[]; // optional tooltip bullets (max 3 recommended)\n};\n\nexport interface Props {\n  id: string;\n  triggerText: string;\n  title: string;\n  subtitle?: string;\n  tiers: Tier[];\n  footnote?: string;\n  ctaText?: string;\n}\n\nconst { id, triggerText, title, subtitle = '', tiers = [], footnote = '', ctaText = 'Choose' } = Astro.props as Props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/widgets/Stats.astro": {
+    "methods": [],
+    "frontmatter": "import type { Stats as Props } from '~/types';\nimport WidgetWrapper from '~/components/ui/WidgetWrapper.astro';\nimport Headline from '~/components/ui/Headline.astro';\nimport { Icon } from 'astro-icon/components';\n\nconst {\n  title = await Astro.slots.render('title'),\n  subtitle = await Astro.slots.render('subtitle'),\n  tagline,\n  stats = [],\n\n  id,\n  isDark = false,\n  classes = {},\n  bg = await Astro.slots.render('bg'),\n} = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/widgets/Steps.astro": {
+    "methods": [],
+    "frontmatter": "import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';\nimport Timeline from '~/components/ui/Timeline.astro';\nimport Headline from '~/components/ui/Headline.astro';\nimport Image from '~/components/common/Image.astro';\nimport type { Steps as Props } from '~/types';\n\nconst {\n  title = await Astro.slots.render('title'),\n  subtitle = await Astro.slots.render('subtitle'),\n  tagline = await Astro.slots.render('tagline'),\n  items = [],\n  image = await Astro.slots.render('image'),\n  isReversed = false,\n\n  id,\n  isDark = false,\n  classes = {},\n  bg = await Astro.slots.render('bg'),\n} = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/widgets/Steps2.astro": {
+    "methods": [],
+    "frontmatter": "import { Icon } from 'astro-icon/components';\nimport WidgetWrapper from '~/components/ui/WidgetWrapper.astro';\nimport Headline from '~/components/ui/Headline.astro';\nimport Button from '~/components/ui/Button.astro';\nimport type { Steps as Props } from '~/types';\n\nconst {\n  title = await Astro.slots.render('title'),\n  subtitle = await Astro.slots.render('subtitle'),\n  tagline,\n  callToAction = await Astro.slots.render('callToAction'),\n  items = [],\n  isReversed = false,\n\n  id,\n  isDark = false,\n  classes = {},\n  bg = await Astro.slots.render('bg'),\n} = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/components/widgets/Testimonials.astro": {
+    "methods": [],
+    "frontmatter": "import Headline from '~/components/ui/Headline.astro';\nimport WidgetWrapper from '~/components/ui/WidgetWrapper.astro';\nimport Button from '~/components/ui/Button.astro';\nimport Image from '~/components/common/Image.astro';\nimport type { Testimonials as Props } from '~/types';\n\nconst {\n  title = '',\n  subtitle = '',\n  tagline = '',\n  testimonials = [],\n  callToAction,\n\n  id,\n  isDark = false,\n  classes = {},\n  bg = await Astro.slots.render('bg'),\n} = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/content/config.ts": {
+    "methods": [
+      "metadataDefinition"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/env.d.ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/layouts/BackendLayout.astro": {
+    "methods": [
+      "computeLangHref",
+      "ensureSession",
+      "getToken",
+      "language"
+    ],
+    "frontmatter": "// src/layouts/BackendLayout.astro\nimport '~/assets/styles/tailwind.css';\nimport ToggleTheme from '~/components/common/ToggleTheme.astro';\nimport BasicScripts from '~/components/common/BasicScripts.astro';\nimport ApplyColorMode from '~/components/common/ApplyColorMode.astro';\nimport CustomStyles from '~/components/CustomStyles.astro';\nimport CommonMeta from '~/components/common/CommonMeta.astro';\nimport Favicons from '~/components/Favicons.astro';\nimport Metadata from '~/components/common/Metadata.astro';\nimport SiteVerification from '~/components/common/SiteVerification.astro';\nimport Analytics from '~/components/common/Analytics.astro';\nimport { I18N } from 'astrowind:config';\n\nconst { pageTitle = 'Dashboard', children } = Astro.props;\nconst { textDirection } = I18N;\nconst path = Astro.url?.pathname || '/';\nconst match = path.match(/^\\/(fr|en|de|it)(?=\\/|$)/);\nconst language = (match && match[1]) || 'fr';"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/layouts/LandingLayout.astro": {
+    "methods": [],
+    "frontmatter": "import PageLayout from '~/layouts/PageLayout.astro';\nimport Header from '~/components/widgets/Header.astro';\n\nimport { headerData } from '~/navigation';\nimport type { MetaData } from '~/types';\n\nexport interface Props {\n  metadata?: MetaData;\n}\n\nconst { metadata } = Astro.props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/layouts/Layout.astro": {
+    "methods": [
+      "language"
+    ],
+    "frontmatter": "import '~/assets/styles/tailwind.css';\n\nimport { I18N } from 'astrowind:config';\n\nimport CommonMeta from '~/components/common/CommonMeta.astro';\nimport Favicons from '~/components/Favicons.astro';\nimport CustomStyles from '~/components/CustomStyles.astro';\nimport ApplyColorMode from '~/components/common/ApplyColorMode.astro';\nimport Metadata from '~/components/common/Metadata.astro';\nimport SiteVerification from '~/components/common/SiteVerification.astro';\nimport Analytics from '~/components/common/Analytics.astro';\nimport BasicScripts from '~/components/common/BasicScripts.astro';\n\n// Comment the line below to disable View Transitions\nimport { ClientRouter } from 'astro:transitions';\n\nimport type { MetaData as MetaDataType } from '~/types';\n\nexport interface Props {\n  metadata?: MetaDataType;\n}\n\nconst { metadata = {} } = Astro.props;\nconst { textDirection } = I18N;\nconst path = Astro.url?.pathname || '/';\nconst match = path.match(/^\\/(fr|en|de|it)(?=\\/|$)/);\nconst language = (match && match[1]) || 'fr';"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/layouts/MarkdownLayout.astro": {
+    "methods": [],
+    "frontmatter": "import Layout from '~/layouts/PageLayout.astro';\n\nimport type { MetaData } from '~/types';\n\nexport interface Props {\n  frontmatter: {\n    title?: string;\n  };\n}\n\nconst { frontmatter } = Astro.props;\n\nconst metadata: MetaData = {\n  title: frontmatter?.title,\n};"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/layouts/PageLayout.astro": {
+    "methods": [],
+    "frontmatter": "import Layout from '~/layouts/Layout.astro';\nimport Header from '~/components/widgets/Header.astro';\nimport Footer from '~/components/widgets/Footer.astro';\n\nimport { headerData, footerData } from '~/navigation';\n\nimport type { MetaData } from '~/types';\n\nexport interface Props {\n  metadata?: MetaData;\n  header?: typeof headerData;\n  footer?: typeof footerData;\n}\nconst { metadata, header = headerData, footer = footerData } = Astro.props as Props;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/lib/catchAsync.js": {
+    "methods": [
+      "catchAsync"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/lib/deployment.js": {
+    "methods": [
+      "triggerTemplateDeployment"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/lib/email.ts": {
+    "methods": [
+      "escapeHtml",
+      "renderEmailTemplate",
+      "sendAdminNotificationEmail",
+      "sendClientConfirmationEmail",
+      "sendDeploymentReadyEmail",
+      "sendEmail",
+      "sendEmailInternal",
+      "sendFeedbackNotificationEmail",
+      "sendInvoiceOrReceiptEmail",
+      "sendPasswordChangedEmail",
+      "sendPasswordResetEmail",
+      "sendProjectDelayedEmail",
+      "sendProjectReadyEmail",
+      "sendSubscriptionUpdateEmail",
+      "sendSupportTicketEmail",
+      "sendWelcomeEmail"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/lib/env.ts": {
+    "methods": [
+      "getEnv",
+      "requireEnv",
+      "validateEnvVars"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/lib/google-docs.ts": {
+    "methods": [
+      "appendSectionsToDocument",
+      "content",
+      "createGoogleClients",
+      "getClients",
+      "getDocumentSections",
+      "getPrivateKey",
+      "provisionWebsiteWorkspace",
+      "text"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/lib/logger.js": {
+    "methods": [
+      "safeLog",
+      "ts"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/lib/metadata.js": {
+    "methods": [
+      "serializeMetadata",
+      "toStr"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/lib/orders.ts": {
+    "methods": [
+      "extractMetadataFromSession",
+      "fetchOrderBySessionId",
+      "insertOrder",
+      "logSystemEvent",
+      "updateOrder",
+      "updateOrderStatusBySubscriptionId",
+      "updateOrderStatusInSupabase"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/lib/phone.js": {
+    "methods": [
+      "normalizePhoneNumber"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/lib/pricing.js": {
+    "methods": [
+      "determineStripePriceId",
+      "isSubscriptionPlan"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/lib/slug.js": {
+    "methods": [
+      "generateClientSlug"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/lib/stripe.ts": {
+    "methods": [
+      "Stripe",
+      "getStripe"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/lib/supabase.ts": {
+    "methods": [
+      "getSupabaseAdmin",
+      "getSupabaseAnon"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/lib/templates.js": {
+    "methods": [
+      "isAllowedTemplate"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/lib/urls.js": {
+    "methods": [
+      "buildCancelUrl",
+      "buildSuccessUrl",
+      "o"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/lib/vercel.ts": {
+    "methods": [
+      "attachDomainToDeployment",
+      "deployTemplate",
+      "generatePreviewUrl",
+      "updateSupabaseWithPreviewUrl",
+      "waitForDeploymentStatus"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/mocks/astro-icon.ts": {
+    "methods": [
+      "Icon"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/mocks/astrowind-config.ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/navigation.ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/404.astro": {
+    "methods": [],
+    "frontmatter": "import Layout from '~/layouts/Layout.astro';\nimport { getHomePermalink } from '~/utils/permalinks';\n\nconst title = `Error 404`;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/[...blog]/[...page].astro": {
+    "methods": [
+      "getStaticPaths"
+    ],
+    "frontmatter": "import type { InferGetStaticPropsType, GetStaticPaths } from 'astro';\n\nimport Layout from '~/layouts/PageLayout.astro';\nimport BlogList from '~/components/blog/List.astro';\nimport Headline from '~/components/blog/Headline.astro';\nimport Pagination from '~/components/blog/Pagination.astro';\n// import PostTags from \"~/components/blog/Tags.astro\";\n\nimport { blogListRobots, getStaticPathsBlogList } from '~/utils/blog';\n\nexport const prerender = true;\n\nexport const getStaticPaths = (async ({ paginate }) => {\n  return await getStaticPathsBlogList({ paginate });\n}) satisfies GetStaticPaths;\n\ntype Props = InferGetStaticPropsType<typeof getStaticPaths>;\n\nconst { page } = Astro.props as Props;\nconst currentPage = page.currentPage ?? 1;\n\n// const allCategories = await findCategories();\n// const allTags = await findTags();\n\nconst metadata = {\n  title: `Blog${currentPage > 1 ? ` — Page ${currentPage}` : ''}`,\n  robots: {\n    index: blogListRobots?.index && currentPage === 1,\n    follow: blogListRobots?.follow,\n  },\n  openGraph: {\n    type: 'blog',\n  },\n};"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/[...blog]/[category]/[...page].astro": {
+    "methods": [
+      "getStaticPaths"
+    ],
+    "frontmatter": "import type { InferGetStaticPropsType, GetStaticPaths } from 'astro';\nimport { blogCategoryRobots, getStaticPathsBlogCategory } from '~/utils/blog';\n\nimport Layout from '~/layouts/PageLayout.astro';\nimport BlogList from '~/components/blog/List.astro';\nimport Headline from '~/components/blog/Headline.astro';\nimport Pagination from '~/components/blog/Pagination.astro';\n\nexport const prerender = true;\n\nexport const getStaticPaths = (async ({ paginate }) => {\n  return await getStaticPathsBlogCategory({ paginate });\n}) satisfies GetStaticPaths;\n\ntype Props = InferGetStaticPropsType<typeof getStaticPaths> & { category: Record<string, string> };\n\nconst { page, category } = Astro.props as Props;\n\nconst currentPage = page.currentPage ?? 1;\n\nconst metadata = {\n  title: `Category '${category.title}' ${currentPage > 1 ? ` — Page ${currentPage}` : ''}`,\n  robots: {\n    index: blogCategoryRobots?.index,\n    follow: blogCategoryRobots?.follow,\n  },\n};"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/[...blog]/[tag]/[...page].astro": {
+    "methods": [
+      "getStaticPaths"
+    ],
+    "frontmatter": "import type { InferGetStaticPropsType, GetStaticPaths } from 'astro';\nimport { blogTagRobots, getStaticPathsBlogTag } from '~/utils/blog';\n\nimport Layout from '~/layouts/PageLayout.astro';\nimport BlogList from '~/components/blog/List.astro';\nimport Headline from '~/components/blog/Headline.astro';\nimport Pagination from '~/components/blog/Pagination.astro';\n\nexport const prerender = true;\n\nexport const getStaticPaths = (async ({ paginate }) => {\n  return await getStaticPathsBlogTag({ paginate });\n}) satisfies GetStaticPaths;\n\ntype Props = InferGetStaticPropsType<typeof getStaticPaths>;\n\nconst { page, tag } = Astro.props as Props;\n\nconst currentPage = page.currentPage ?? 1;\n\nconst metadata = {\n  title: `Posts by tag '${tag.title}'${currentPage > 1 ? ` — Page ${currentPage} ` : ''}`,\n  robots: {\n    index: blogTagRobots?.index,\n    follow: blogTagRobots?.follow,\n  },\n};"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/[...blog]/index.astro": {
+    "methods": [
+      "getStaticPaths",
+      "image"
+    ],
+    "frontmatter": "import type { InferGetStaticPropsType, GetStaticPaths } from 'astro';\n\nimport merge from 'lodash.merge';\nimport type { ImageMetadata } from 'astro';\nimport Layout from '~/layouts/PageLayout.astro';\nimport SinglePost from '~/components/blog/SinglePost.astro';\nimport ToBlogLink from '~/components/blog/ToBlogLink.astro';\n\nimport { getCanonical, getPermalink } from '~/utils/permalinks';\nimport { getStaticPathsBlogPost, blogPostRobots } from '~/utils/blog';\nimport { findImage } from '~/utils/images';\nimport type { MetaData } from '~/types';\nimport RelatedPosts from '~/components/blog/RelatedPosts.astro';\n\nexport const prerender = true;\n\nexport const getStaticPaths = (async () => {\n  return await getStaticPathsBlogPost();\n}) satisfies GetStaticPaths;\n\ntype Props = InferGetStaticPropsType<typeof getStaticPaths>;\n\nconst { post } = Astro.props as Props;\n\nconst url = getCanonical(getPermalink(post.permalink, 'post'));\nconst image = (await findImage(post.image)) as ImageMetadata | string | undefined;\n\nconst metadata = merge(\n  {\n    title: post.title,\n    description: post.excerpt,\n    robots: {\n      index: blogPostRobots?.index,\n      follow: blogPostRobots?.follow,\n    },\n    openGraph: {\n      type: 'article',\n      ...(image\n        ? { images: [{ url: image, width: (image as ImageMetadata)?.width, height: (image as ImageMetadata)?.height }] }\n        : {}),\n    },\n  },\n  { ...(post?.metadata ? { ...post.metadata, canonical: post.metadata?.canonical || url } : {}) }\n) as MetaData;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/about.astro": {
+    "methods": [],
+    "frontmatter": "import Features2 from '~/components/widgets/Features2.astro';\nimport Features3 from '~/components/widgets/Features3.astro';\nimport Hero from '~/components/widgets/Hero.astro';\nimport Stats from '~/components/widgets/Stats.astro';\nimport Steps2 from '~/components/widgets/Steps2.astro';\nimport Layout from '~/layouts/PageLayout.astro';\n\nconst metadata = {\n  title: 'À propos',\n};"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/auth/forgot-password.ts": {
+    "methods": [
+      "isValidEmail"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/auth/reset-password.ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/auth/session.ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/auth/signin.ts": {
+    "methods": [
+      "isValidEmail"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/auth/signup.ts": {
+    "methods": [
+      "isValidEmail"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/backend/clients/[id].ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/backend/clients/index.ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/backend/dashboard/summary.ts": {
+    "methods": [
+      "parseCount"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/backend/documents/[id].ts": {
+    "methods": [
+      "loadDocument"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/backend/documents/index.ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/backend/invoices/[id].ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/backend/invoices/index.ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/backend/projects/[id].ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/backend/projects/index.ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/backend/subscriptions/[id].ts": {
+    "methods": [
+      "storeEvent"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/backend/support/[id].ts": {
+    "methods": [
+      "loadSupportRequest"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/backend/support/index.ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/backend/tasks/[id].ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/backend/tasks/index.ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/backend/team.ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/backend/websites/[id].ts": {
+    "methods": [
+      "loadSections",
+      "loadWebsite",
+      "metadata",
+      "slugify"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/backend/websites/index.ts": {
+    "methods": [
+      "ids",
+      "payload",
+      "slugify"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/contact.ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/demo.ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/domains/search.ts": {
+    "methods": [
+      "q"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/feedback.ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/health.ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/payment/checkout.ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/payment/portal.ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/payment/redirect.ts": {
+    "methods": [
+      "plan",
+      "templateRaw"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/payment/session.ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/stripe-webhook.ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/api/subscriptions/[id].ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/app/clients.astro": {
+    "methods": [
+      "renderClients"
+    ],
+    "frontmatter": "import BackendLayout from '~/layouts/BackendLayout.astro';"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/app/documents.astro": {
+    "methods": [
+      "renderDocuments",
+      "safeParseMetadata"
+    ],
+    "frontmatter": "import BackendLayout from '~/layouts/BackendLayout.astro';"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/app/index.astro": {
+    "methods": [
+      "formatCurrency",
+      "renderActivities",
+      "renderDocuments",
+      "renderTasks",
+      "setMetric"
+    ],
+    "frontmatter": "import BackendLayout from '~/layouts/BackendLayout.astro';"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/app/invoices.astro": {
+    "methods": [
+      "renderInvoices"
+    ],
+    "frontmatter": "import BackendLayout from '~/layouts/BackendLayout.astro';"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/app/projects.astro": {
+    "methods": [
+      "formatBudget",
+      "renderProjects"
+    ],
+    "frontmatter": "import BackendLayout from '~/layouts/BackendLayout.astro';"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/app/settings.astro": {
+    "methods": [
+      "renderTeam"
+    ],
+    "frontmatter": "import BackendLayout from '~/layouts/BackendLayout.astro';"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/app/subscriptions.astro": {
+    "methods": [
+      "setMessage"
+    ],
+    "frontmatter": "import BackendLayout from '~/layouts/BackendLayout.astro';"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/app/support.astro": {
+    "methods": [
+      "renderTickets",
+      "safe"
+    ],
+    "frontmatter": "import BackendLayout from '~/layouts/BackendLayout.astro';"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/app/tasks.astro": {
+    "methods": [
+      "renderTasks"
+    ],
+    "frontmatter": "import BackendLayout from '~/layouts/BackendLayout.astro';"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/app/websites.astro": {
+    "methods": [
+      "renderSections",
+      "renderWebsites",
+      "safe"
+    ],
+    "frontmatter": "import BackendLayout from '~/layouts/BackendLayout.astro';"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/auth/callback.astro": {
+    "methods": [
+      "computeLangHref"
+    ],
+    "frontmatter": "import '~/assets/styles/tailwind.css';\nimport ToggleTheme from '~/components/common/ToggleTheme.astro';\nimport BasicScripts from '~/components/common/BasicScripts.astro';\nimport ApplyColorMode from '~/components/common/ApplyColorMode.astro';\nimport CustomStyles from '~/components/CustomStyles.astro';\nimport CommonMeta from '~/components/common/CommonMeta.astro';\nimport Favicons from '~/components/Favicons.astro';\nimport Metadata from '~/components/common/Metadata.astro';\nimport SiteVerification from '~/components/common/SiteVerification.astro';\nimport Analytics from '~/components/common/Analytics.astro';\nimport { I18N } from 'astrowind:config';\nconst { language, textDirection } = I18N;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/auth/forgot.astro": {
+    "methods": [
+      "computeLangHref"
+    ],
+    "frontmatter": "import '~/assets/styles/tailwind.css';\nimport ToggleTheme from '~/components/common/ToggleTheme.astro';\nimport BasicScripts from '~/components/common/BasicScripts.astro';\nimport ApplyColorMode from '~/components/common/ApplyColorMode.astro';\nimport CustomStyles from '~/components/CustomStyles.astro';\nimport CommonMeta from '~/components/common/CommonMeta.astro';\nimport Favicons from '~/components/Favicons.astro';\nimport Metadata from '~/components/common/Metadata.astro';\nimport SiteVerification from '~/components/common/SiteVerification.astro';\nimport Analytics from '~/components/common/Analytics.astro';\nimport { I18N } from 'astrowind:config';\nconst { language, textDirection } = I18N;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/auth/reset.astro": {
+    "methods": [
+      "computeLangHref"
+    ],
+    "frontmatter": "import '~/assets/styles/tailwind.css';\nimport ToggleTheme from '~/components/common/ToggleTheme.astro';\nimport BasicScripts from '~/components/common/BasicScripts.astro';\nimport ApplyColorMode from '~/components/common/ApplyColorMode.astro';\nimport CustomStyles from '~/components/CustomStyles.astro';\nimport CommonMeta from '~/components/common/CommonMeta.astro';\nimport Favicons from '~/components/Favicons.astro';\nimport Metadata from '~/components/common/Metadata.astro';\nimport SiteVerification from '~/components/common/SiteVerification.astro';\nimport Analytics from '~/components/common/Analytics.astro';\nimport { I18N } from 'astrowind:config';\nconst { language, textDirection } = I18N;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/auth/signin.astro": {
+    "methods": [
+      "computeLangHref"
+    ],
+    "frontmatter": "import '~/assets/styles/tailwind.css';\nimport ToggleTheme from '~/components/common/ToggleTheme.astro';\nimport BasicScripts from '~/components/common/BasicScripts.astro';\nimport ApplyColorMode from '~/components/common/ApplyColorMode.astro';\nimport CustomStyles from '~/components/CustomStyles.astro';\nimport CommonMeta from '~/components/common/CommonMeta.astro';\nimport Favicons from '~/components/Favicons.astro';\nimport Metadata from '~/components/common/Metadata.astro';\nimport SiteVerification from '~/components/common/SiteVerification.astro';\nimport Analytics from '~/components/common/Analytics.astro';\nimport { I18N } from 'astrowind:config';\nconst { language, textDirection } = I18N;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/auth/signup.astro": {
+    "methods": [
+      "computeLangHref"
+    ],
+    "frontmatter": "import '~/assets/styles/tailwind.css';\nimport ToggleTheme from '~/components/common/ToggleTheme.astro';\nimport BasicScripts from '~/components/common/BasicScripts.astro';\nimport ApplyColorMode from '~/components/common/ApplyColorMode.astro';\nimport CustomStyles from '~/components/CustomStyles.astro';\nimport CommonMeta from '~/components/common/CommonMeta.astro';\nimport Favicons from '~/components/Favicons.astro';\nimport Metadata from '~/components/common/Metadata.astro';\nimport SiteVerification from '~/components/common/SiteVerification.astro';\nimport Analytics from '~/components/common/Analytics.astro';\nimport { I18N } from 'astrowind:config';\nconst { language, textDirection } = I18N;"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/choose-template.astro": {
+    "methods": [],
+    "frontmatter": "import Layout from '~/layouts/PageLayout.astro';\nimport Headline from '~/components/ui/Headline.astro';\n\ntype Tpl = { id: string; name: string; preview?: string; url?: string };\n\nconst plan = Astro.url.searchParams.get('plan') || '';\nconst templates: Tpl[] = [\n  { id: 'classic-clean', name: 'Classic Clean', url: 'https://demo.example.com/classic-clean' },\n  { id: 'bold-contrast', name: 'Bold Contrast', url: 'https://demo.example.com/bold-contrast' },\n  { id: 'serif-elegance', name: 'Serif Elegance', url: 'https://demo.example.com/serif-elegance' },\n  { id: 'minimal-grid', name: 'Minimal Grid', url: 'https://demo.example.com/minimal-grid' },\n  { id: 'warm-landing', name: 'Warm Landing', url: 'https://demo.example.com/warm-landing' },\n  { id: 'artisan-folio', name: 'Artisan Folio', url: 'https://demo.example.com/artisan-folio' },\n];\n\nconst metadata = { title: 'Choisir un modèle' };"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/contact.astro": {
+    "methods": [],
+    "frontmatter": "import Layout from '~/layouts/PageLayout.astro';\nimport HeroText from '~/components/widgets/HeroText.astro';\nimport ContactUs from '~/components/widgets/Contact.astro';\nimport Features2 from '~/components/widgets/Features2.astro';\n\nconst metadata = {\n  title: 'Contact',\n};"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/de/about.astro": {
+    "methods": [],
+    "frontmatter": "import Features2 from '~/components/widgets/Features2.astro';\nimport Features3 from '~/components/widgets/Features3.astro';\nimport Hero from '~/components/widgets/Hero.astro';\nimport Stats from '~/components/widgets/Stats.astro';\nimport Steps2 from '~/components/widgets/Steps2.astro';\nimport Layout from '~/layouts/PageLayout.astro';\n\nimport { headerDataDe, footerDataDe } from '~/navigation';\n\nconst metadata = {\n  title: 'Über uns',\n};"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/de/app/[...path].ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/de/auth/[...path].ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/de/choose-template.astro": {
+    "methods": [],
+    "frontmatter": "import Layout from '~/layouts/PageLayout.astro';\nimport Headline from '~/components/ui/Headline.astro';\nimport { headerDataDe, footerDataDe } from '~/navigation';\n\ntype Tpl = { id: string; name: string; preview?: string; url?: string };\n\nconst plan = Astro.url.searchParams.get('plan') || '';\nconst templates: Tpl[] = [\n  { id: 'classic-clean', name: 'Classic Clean', url: 'https://demo.example.com/classic-clean' },\n  { id: 'bold-contrast', name: 'Bold Contrast', url: 'https://demo.example.com/bold-contrast' },\n  { id: 'serif-elegance', name: 'Serif Elegance', url: 'https://demo.example.com/serif-elegance' },\n  { id: 'minimal-grid', name: 'Minimal Grid', url: 'https://demo.example.com/minimal-grid' },\n  { id: 'warm-landing', name: 'Warm Landing', url: 'https://demo.example.com/warm-landing' },\n  { id: 'artisan-folio', name: 'Artisan Folio', url: 'https://demo.example.com/artisan-folio' },\n];\n\nconst metadata = { title: 'Vorlage wählen' };"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/de/contact.astro": {
+    "methods": [],
+    "frontmatter": "import Layout from '~/layouts/PageLayout.astro';\nimport HeroText from '~/components/widgets/HeroText.astro';\nimport ContactUs from '~/components/widgets/Contact.astro';\nimport Features2 from '~/components/widgets/Features2.astro';\n\nimport { headerDataDe, footerDataDe } from '~/navigation';\n\nconst metadata = {\n  title: 'Kontakt',\n};"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/de/index.astro": {
+    "methods": [],
+    "frontmatter": "import Layout from '~/layouts/PageLayout.astro';\n\nimport Hero from '~/components/widgets/Hero.astro';\nimport Note from '~/components/widgets/Note.astro';\nimport Features from '~/components/widgets/Features.astro';\nimport Features2 from '~/components/widgets/Features2.astro';\nimport Steps from '~/components/widgets/Steps.astro';\nimport Content from '~/components/widgets/Content.astro';\nimport FAQs from '~/components/widgets/FAQs.astro';\nimport Stats from '~/components/widgets/Stats.astro';\nimport CallToAction from '~/components/widgets/CallToAction.astro';\n\nimport { headerDataDe, footerDataDe } from '~/navigation';\n\nconst metadata = {\n  title: 'TonSiteWeb.ch — Schweizer Websites für den Genfersee-Raum',\n  ignoreTitleTemplate: true,\n};"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/de/pricing.astro": {
+    "methods": [],
+    "frontmatter": "import Layout from '~/layouts/PageLayout.astro';\nimport HeroText from '~/components/widgets/HeroText.astro';\nimport Prices from '~/components/widgets/Pricing.astro';\nimport PricingOptions from '~/components/widgets/PricingOptions.astro';\nimport Note from '~/components/widgets/Note.astro';\nimport FAQs from '~/components/widgets/FAQs.astro';\nimport Steps from '~/components/widgets/Steps.astro';\nimport Features3 from '~/components/widgets/Features3.astro';\nimport CallToAction from '~/components/widgets/CallToAction.astro';\n\nimport { headerDataDe, footerDataDe } from '~/navigation';\n\nconst metadata = {\n  title: 'Preise',\n};"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/de/services.astro": {
+    "methods": [],
+    "frontmatter": "import CallToAction from '~/components/widgets/CallToAction.astro';\nimport Content from '~/components/widgets/Content.astro';\nimport Features2 from '~/components/widgets/Features2.astro';\nimport Hero from '~/components/widgets/Hero.astro';\nimport Layout from '~/layouts/PageLayout.astro';\n\nimport { headerDataDe, footerDataDe } from '~/navigation';\n\nconst metadata = {\n  title: 'Leistungen',\n};"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/de/thank-you.astro": {
+    "methods": [],
+    "frontmatter": "import Layout from '~/layouts/PageLayout.astro';\nimport { headerDataDe, footerDataDe } from '~/navigation';\n\nconst metadata = { title: 'Danke — TonSiteWeb.ch' };\nconst sessionId = Astro.url.searchParams.get('session_id') || '';"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/en/about.astro": {
+    "methods": [],
+    "frontmatter": "import Features2 from '~/components/widgets/Features2.astro';\nimport Features3 from '~/components/widgets/Features3.astro';\nimport Hero from '~/components/widgets/Hero.astro';\nimport Stats from '~/components/widgets/Stats.astro';\nimport Steps2 from '~/components/widgets/Steps2.astro';\nimport Layout from '~/layouts/PageLayout.astro';\n\nimport { headerDataEn, footerDataEn } from '~/navigation';\n\nconst metadata = {\n  title: 'About',\n};"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/en/app/[...path].ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/en/auth/[...path].ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/en/choose-template.astro": {
+    "methods": [],
+    "frontmatter": "import Layout from '~/layouts/PageLayout.astro';\nimport Headline from '~/components/ui/Headline.astro';\nimport { headerDataEn, footerDataEn } from '~/navigation';\n\ntype Tpl = { id: string; name: string; preview?: string; url?: string };\n\nconst plan = Astro.url.searchParams.get('plan') || '';\nconst templates: Tpl[] = [\n  { id: 'classic-clean', name: 'Classic Clean', url: 'https://demo.example.com/classic-clean' },\n  { id: 'bold-contrast', name: 'Bold Contrast', url: 'https://demo.example.com/bold-contrast' },\n  { id: 'serif-elegance', name: 'Serif Elegance', url: 'https://demo.example.com/serif-elegance' },\n  { id: 'minimal-grid', name: 'Minimal Grid', url: 'https://demo.example.com/minimal-grid' },\n  { id: 'warm-landing', name: 'Warm Landing', url: 'https://demo.example.com/warm-landing' },\n  { id: 'artisan-folio', name: 'Artisan Folio', url: 'https://demo.example.com/artisan-folio' },\n];\n\nconst metadata = { title: 'Choose a template' };"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/en/contact.astro": {
+    "methods": [],
+    "frontmatter": "import Layout from '~/layouts/PageLayout.astro';\nimport HeroText from '~/components/widgets/HeroText.astro';\nimport ContactUs from '~/components/widgets/Contact.astro';\nimport Features2 from '~/components/widgets/Features2.astro';\n\nimport { headerDataEn, footerDataEn } from '~/navigation';\n\nconst metadata = {\n  title: 'Contact',\n};"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/en/index.astro": {
+    "methods": [],
+    "frontmatter": "import Layout from '~/layouts/PageLayout.astro';\n\nimport Hero from '~/components/widgets/Hero.astro';\nimport Note from '~/components/widgets/Note.astro';\nimport Features from '~/components/widgets/Features.astro';\nimport Features2 from '~/components/widgets/Features2.astro';\nimport Steps from '~/components/widgets/Steps.astro';\nimport Content from '~/components/widgets/Content.astro';\nimport FAQs from '~/components/widgets/FAQs.astro';\nimport Stats from '~/components/widgets/Stats.astro';\nimport CallToAction from '~/components/widgets/CallToAction.astro';\n\nimport { headerDataEn, footerDataEn } from '~/navigation';\n\nconst metadata = {\n  title: 'TonSiteWeb.ch — Swiss turnkey sites for the Léman Arc',\n  ignoreTitleTemplate: true,\n};"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/en/pricing.astro": {
+    "methods": [],
+    "frontmatter": "import Layout from '~/layouts/PageLayout.astro';\nimport HeroText from '~/components/widgets/HeroText.astro';\nimport Prices from '~/components/widgets/Pricing.astro';\nimport PricingOptions from '~/components/widgets/PricingOptions.astro';\nimport Note from '~/components/widgets/Note.astro';\nimport FAQs from '~/components/widgets/FAQs.astro';\nimport Steps from '~/components/widgets/Steps.astro';\nimport Features3 from '~/components/widgets/Features3.astro';\nimport CallToAction from '~/components/widgets/CallToAction.astro';\n\nimport { headerDataEn, footerDataEn } from '~/navigation';\n\nconst metadata = {\n  title: 'Pricing',\n};"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/en/services.astro": {
+    "methods": [],
+    "frontmatter": "import CallToAction from '~/components/widgets/CallToAction.astro';\nimport Content from '~/components/widgets/Content.astro';\nimport Features2 from '~/components/widgets/Features2.astro';\nimport Hero from '~/components/widgets/Hero.astro';\nimport Layout from '~/layouts/PageLayout.astro';\n\nimport { headerDataEn, footerDataEn } from '~/navigation';\n\nconst metadata = {\n  title: 'Services',\n};"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/en/thank-you.astro": {
+    "methods": [],
+    "frontmatter": "import Layout from '~/layouts/PageLayout.astro';\nimport { headerDataEn, footerDataEn } from '~/navigation';\n\nconst metadata = { title: 'Thank you — TonSiteWeb.ch' };\nconst sessionId = Astro.url.searchParams.get('session_id') || '';"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/fr/app/[...path].ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/fr/auth/[...path].ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/index.astro": {
+    "methods": [],
+    "frontmatter": "import Layout from '~/layouts/PageLayout.astro';\n\nimport Hero from '~/components/widgets/Hero.astro';\nimport Note from '~/components/widgets/Note.astro';\nimport Features from '~/components/widgets/Features.astro';\nimport Features2 from '~/components/widgets/Features2.astro';\nimport Steps from '~/components/widgets/Steps.astro';\nimport Content from '~/components/widgets/Content.astro';\nimport FAQs from '~/components/widgets/FAQs.astro';\nimport Stats from '~/components/widgets/Stats.astro';\nimport CallToAction from '~/components/widgets/CallToAction.astro';\n\nconst metadata = {\n  title: 'TonSiteWeb.ch — Sites vitrines suisses pour l’Arc lémanique',\n  ignoreTitleTemplate: true,\n};"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/it/about.astro": {
+    "methods": [],
+    "frontmatter": "import Features2 from '~/components/widgets/Features2.astro';\nimport Features3 from '~/components/widgets/Features3.astro';\nimport Hero from '~/components/widgets/Hero.astro';\nimport Stats from '~/components/widgets/Stats.astro';\nimport Steps2 from '~/components/widgets/Steps2.astro';\nimport Layout from '~/layouts/PageLayout.astro';\n\nimport { headerDataIt, footerDataIt } from '~/navigation';\n\nconst metadata = {\n  title: 'Chi siamo',\n};"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/it/app/[...path].ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/it/auth/[...path].ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/it/choose-template.astro": {
+    "methods": [],
+    "frontmatter": "import Layout from '~/layouts/PageLayout.astro';\nimport Headline from '~/components/ui/Headline.astro';\nimport { headerDataIt, footerDataIt } from '~/navigation';\n\ntype Tpl = { id: string; name: string; preview?: string; url?: string };\n\nconst plan = Astro.url.searchParams.get('plan') || '';\nconst templates: Tpl[] = [\n  { id: 'classic-clean', name: 'Classic Clean', url: 'https://demo.example.com/classic-clean' },\n  { id: 'bold-contrast', name: 'Bold Contrast', url: 'https://demo.example.com/bold-contrast' },\n  { id: 'serif-elegance', name: 'Serif Elegance', url: 'https://demo.example.com/serif-elegance' },\n  { id: 'minimal-grid', name: 'Minimal Grid', url: 'https://demo.example.com/minimal-grid' },\n  { id: 'warm-landing', name: 'Warm Landing', url: 'https://demo.example.com/warm-landing' },\n  { id: 'artisan-folio', name: 'Artisan Folio', url: 'https://demo.example.com/artisan-folio' },\n];\n\nconst metadata = { title: 'Scegli un modello' };"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/it/contact.astro": {
+    "methods": [],
+    "frontmatter": "import Layout from '~/layouts/PageLayout.astro';\nimport HeroText from '~/components/widgets/HeroText.astro';\nimport ContactUs from '~/components/widgets/Contact.astro';\nimport Features2 from '~/components/widgets/Features2.astro';\n\nimport { headerDataIt, footerDataIt } from '~/navigation';\n\nconst metadata = {\n  title: 'Contatto',\n};"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/it/index.astro": {
+    "methods": [],
+    "frontmatter": "import Layout from '~/layouts/PageLayout.astro';\n\nimport Hero from '~/components/widgets/Hero.astro';\nimport Note from '~/components/widgets/Note.astro';\nimport Features from '~/components/widgets/Features.astro';\nimport Features2 from '~/components/widgets/Features2.astro';\nimport Steps from '~/components/widgets/Steps.astro';\nimport Content from '~/components/widgets/Content.astro';\nimport FAQs from '~/components/widgets/FAQs.astro';\nimport Stats from '~/components/widgets/Stats.astro';\nimport CallToAction from '~/components/widgets/CallToAction.astro';\n\nimport { headerDataIt, footerDataIt } from '~/navigation';\n\nconst metadata = {\n  title: 'TonSiteWeb.ch — Siti svizzeri chiavi in mano per l’Arco lemanico',\n  ignoreTitleTemplate: true,\n};"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/it/pricing.astro": {
+    "methods": [],
+    "frontmatter": "import Layout from '~/layouts/PageLayout.astro';\nimport HeroText from '~/components/widgets/HeroText.astro';\nimport Prices from '~/components/widgets/Pricing.astro';\nimport PricingOptions from '~/components/widgets/PricingOptions.astro';\nimport FAQs from '~/components/widgets/FAQs.astro';\nimport Steps from '~/components/widgets/Steps.astro';\nimport Features3 from '~/components/widgets/Features3.astro';\nimport CallToAction from '~/components/widgets/CallToAction.astro';\n\nimport { headerDataIt, footerDataIt } from '~/navigation';\n\nconst metadata = {\n  title: 'Prezzi',\n};"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/it/services.astro": {
+    "methods": [],
+    "frontmatter": "import CallToAction from '~/components/widgets/CallToAction.astro';\nimport Content from '~/components/widgets/Content.astro';\nimport Features2 from '~/components/widgets/Features2.astro';\nimport Hero from '~/components/widgets/Hero.astro';\nimport Layout from '~/layouts/PageLayout.astro';\n\nimport { headerDataIt, footerDataIt } from '~/navigation';\n\nconst metadata = {\n  title: 'Servizi',\n};"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/it/thank-you.astro": {
+    "methods": [],
+    "frontmatter": "import Layout from '~/layouts/PageLayout.astro';\nimport { headerDataIt, footerDataIt } from '~/navigation';\n\nconst metadata = { title: 'Grazie — TonSiteWeb.ch' };\nconst sessionId = Astro.url.searchParams.get('session_id') || '';"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/pricing.astro": {
+    "methods": [],
+    "frontmatter": "import Layout from '~/layouts/PageLayout.astro';\nimport HeroText from '~/components/widgets/HeroText.astro';\nimport Prices from '~/components/widgets/Pricing.astro';\nimport PricingOptions from '~/components/widgets/PricingOptions.astro';\nimport Note from '~/components/widgets/Note.astro';\nimport FAQs from '~/components/widgets/FAQs.astro';\nimport Steps from '~/components/widgets/Steps.astro';\nimport Features3 from '~/components/widgets/Features3.astro';\nimport CallToAction from '~/components/widgets/CallToAction.astro';\n\nconst metadata = {\n  title: 'Tarifs',\n};"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/services.astro": {
+    "methods": [],
+    "frontmatter": "import CallToAction from '~/components/widgets/CallToAction.astro';\nimport Content from '~/components/widgets/Content.astro';\nimport Features2 from '~/components/widgets/Features2.astro';\nimport Hero from '~/components/widgets/Hero.astro';\nimport Layout from '~/layouts/PageLayout.astro';\n\nconst metadata = {\n  title: 'Services',\n};"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/pages/thank-you.astro": {
+    "methods": [],
+    "frontmatter": "import Layout from '~/layouts/PageLayout.astro';\n\nconst metadata = { title: 'Merci — TonSiteWeb.ch' };\nconst sessionId = Astro.url.searchParams.get('session_id') || '';"
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/types.d.ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/utils/backend/activity.ts": {
+    "methods": [
+      "logAgencyActivity"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/utils/backend/api.ts": {
+    "methods": [
+      "authFetch",
+      "clearAuthSession",
+      "getStoredToken",
+      "setAuthSession"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/utils/backend/context.ts": {
+    "methods": [
+      "ensureAgency",
+      "getAgencyContext",
+      "syncAgencyMember"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/utils/backend/repository.ts": {
+    "methods": [
+      "deleteById",
+      "ensureRecord",
+      "getById"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/utils/backend/validation.ts": {
+    "methods": [
+      "ensureArrayOfStrings",
+      "ensureDateString",
+      "ensureEnum",
+      "ensureNumber",
+      "ensureObject",
+      "ensureOptionalNumber",
+      "ensureOptionalString",
+      "ensureString",
+      "parseClientPayload",
+      "parseDocumentPayload",
+      "parseDocumentUpdate",
+      "parseInvoicePayload",
+      "parseProjectPayload",
+      "parseSubscriptionUpdatePayload",
+      "parseSupportRequestPayload",
+      "parseSupportRequestUpdatePayload",
+      "parseTaskPayload",
+      "parseWebsitePayload",
+      "parseWebsiteSectionPayload",
+      "parseWebsiteSectionUpdatePayload",
+      "parseWebsiteUpdatePayload",
+      "validateFields",
+      "validateId"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/utils/blog.ts": {
+    "methods": [
+      "getRelatedPosts",
+      "results"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/utils/context.ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/utils/directories.ts": {
+    "methods": [
+      "getProjectRootDir",
+      "getRelativeUrlByFilePath"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/utils/frontmatter.ts": {
+    "methods": [],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/utils/images-optimization.ts": {
+    "methods": [
+      "computeHeight",
+      "getBreakpoints",
+      "getImagesOptimized",
+      "getSizes",
+      "getStyle",
+      "isUnpicCompatible",
+      "parseAspectRatio",
+      "pixelate",
+      "srcset"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/utils/images.ts": {
+    "methods": [
+      "resolvedImage"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/utils/permalinks.ts": {
+    "methods": [
+      "applyGetPermalinks",
+      "cleanSlug",
+      "createPath",
+      "definitivePermalink",
+      "getAsset",
+      "getBlogPermalink",
+      "getCanonical",
+      "getHomePermalink",
+      "getPermalink",
+      "trimSlash"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/utils/supabase/admin.ts": {
+    "methods": [
+      "getAdminClient"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/utils/supabase/auth.ts": {
+    "methods": [
+      "withAuth"
+    ],
+    "frontmatter": ""
+  },
+  "/Users/pedroribeiro/iCloud Drive (Archive)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/tonwebsite/src/utils/utils.ts": {
+    "methods": [
+      "formattedNumber",
+      "getFormattedDate",
+      "toUiAmount",
+      "trim"
+    ],
+    "frontmatter": ""
+  }
+}
