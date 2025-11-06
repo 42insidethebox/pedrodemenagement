@@ -1,9 +1,11 @@
 import type { APIRoute } from 'astro';
 import { getSupabaseAdmin } from '~/lib/supabase';
+import { assertRateLimit } from '~/lib/rate-limit';
 
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
+  assertRateLimit(request, { key: 'demo', limit: 5, window: 60 });
   const data = await request.json().catch(() => ({}));
   const name = String(data.name || '').trim();
   const email = String(data.email || '').trim();

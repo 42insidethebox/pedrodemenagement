@@ -6,6 +6,9 @@ export const logger = {
   info(message, context) {
     safeLog('info', message, context);
   },
+  warn(message, context) {
+    safeLog('warn', message, context);
+  },
   error(error, context) {
     const message = error && error.message ? error.message : String(error);
     safeLog('error', message, { ...context, stack: error?.stack });
@@ -13,6 +16,7 @@ export const logger = {
   child(extra) {
     return {
       info: (m, c) => logger.info(m, { ...extra, ...c }),
+      warn: (m, c) => logger.warn(m, { ...extra, ...c }),
       error: (e, c) => logger.error(e, { ...extra, ...c }),
     };
   },

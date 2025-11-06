@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { getSupabaseAnon } from '~/lib/supabase';
 import { logger } from '~/lib/logger.js';
+import { assertRateLimit } from '~/lib/rate-limit';
 
 export const prerender = false;
 
@@ -9,6 +10,7 @@ function isValidEmail(email: string) {
 }
 
 export const POST: APIRoute = async ({ request }) => {
+  assertRateLimit(request, { key: 'auth:signin', limit: 10, window: 60 });
   const payload = await request.json().catch(() => null);
   const email = typeof payload?.email === 'string' ? payload.email.trim().toLowerCase() : '';
   const password = typeof payload?.password === 'string' ? payload.password : '';
