@@ -1,6 +1,6 @@
 import { c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead, b as addAttribute } from '../chunks/astro/server_C7RkpNfc.mjs';
-import { $ as $$Layout } from '../chunks/Layout_CyOwywap.mjs';
-import { g as getHomePermalink } from '../chunks/BasicScripts_CoHQ5C1O.mjs';
+import { $ as $$Layout } from '../chunks/Layout_n_VV7gfY.mjs';
+import { g as getHomePermalink } from '../chunks/BasicScripts_DxthmJco.mjs';
 export { renderers } from '../renderers.mjs';
 
 const $$404 = createComponent(($$result, $$props, $$slots) => {

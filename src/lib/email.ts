@@ -177,6 +177,20 @@ export async function sendAdminNotificationEmail(order: any) {
   });
 }
 
+export async function sendAdminUserSignupEmail(info: {
+  email: string;
+  name?: string | null;
+  phone?: string | null;
+  plan?: string | null;
+  template?: string | null;
+}) {
+  const to = ENV.SUPPORT_EMAIL;
+  if (!to) return { ok: false, error: 'Missing support email' };
+  const subject = info?.email ? `Nouveau compte: ${info.email}` : 'Nouveau compte créé';
+  const html = renderTemplate('admin_user_signup', info);
+  return sendEmailInternal(subject, to, html);
+}
+
 export async function sendClientConfirmationEmail(order: any) {
   const locale = orderLocale(order);
   const to = order?.customer_email || order?.email;

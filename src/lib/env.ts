@@ -59,6 +59,9 @@ const ENV = {
   ZAPIER_WEBHOOK_URL:
     process.env.ZAPIER_WEBHOOK_URL ?? import.meta.env.ZAPIER_WEBHOOK_URL ?? '',
 
+  CONTENT_INTAKE_FORM_URL:
+    process.env.CONTENT_INTAKE_FORM_URL ?? import.meta.env.CONTENT_INTAKE_FORM_URL ?? '',
+
   PRICE_ESSENTIAL:
     process.env.PRICE_ESSENTIAL ?? import.meta.env.PRICE_ESSENTIAL ?? '',
 

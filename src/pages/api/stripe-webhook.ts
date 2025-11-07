@@ -10,12 +10,8 @@ import {
   updateOrderStatusInSupabase,
   updateOrderStatusBySubscriptionId,
 } from '~/lib/orders';
-import {
-  sendAdminNotificationEmail,
-  sendClientConfirmationEmail,
-  sendSubscriptionCancelledEmail,
-  sendSubscriptionRenewalEmail,
-} from '~/lib/email';
+import { provisionWebsiteWorkspace, shareFileWithEmail } from '~/lib/google-docs';
+import { sendAdminNotificationEmail, sendClientConfirmationEmail } from '~/lib/email';
 import { triggerTemplateDeployment } from '~/lib/deployment.js';
 
 export const prerender = false;
@@ -78,6 +74,17 @@ export const POST: APIRoute = async ({ request }) => {
         template_key: orderRecord.template_key || metadata.template,
       };
 
+      try {
+        const projectName = metadata?.company || metadata?.name || 'Projet TonSiteWeb';
+        const workspace = await provisionWebsiteWorkspace(`${projectName} – ${emailOrder.order_number || 'Projet'}`);
+        if (workspace?.docId) {
+          (emailOrder as any).content_doc_url = `https://docs.google.com/document/d/${workspace.docId}/edit`;
+          if (emailOrder.customer_email) {
+            try { await shareFileWithEmail(workspace.docId, String(emailOrder.customer_email), 'writer'); } catch {}
+          }
+        }
+      } catch {}
+
       try { await logSystemEvent('order.created', { session_id: session.id, order_number: emailOrder.order_number, metadata }); } catch {}
       try { await sendAdminNotificationEmail(emailOrder); } catch {}
       try { await sendClientConfirmationEmail(emailOrder); } catch {}
@@ -86,23 +93,13 @@ export const POST: APIRoute = async ({ request }) => {
     if (event.type === 'invoice.paid') {
       const inv = event.data.object;
       if (inv.subscription) {
-        try {
-          const order = await updateOrderStatusBySubscriptionId(String(inv.subscription), 'paid');
-          if (order) {
-            try { await sendSubscriptionRenewalEmail(order, inv); } catch {}
-          }
-        } catch {}
+        try { await updateOrderStatusBySubscriptionId(String(inv.subscription), 'paid'); } catch {}
       }
     }
 
     if (event.type === 'customer.subscription.deleted') {
       const sub = event.data.object;
-      try {
-        const order = await updateOrderStatusBySubscriptionId(String(sub.id), 'cancelled');
-        if (order) {
-          try { await sendSubscriptionCancelledEmail(order, sub); } catch {}
-        }
-      } catch {}
+      try { await updateOrderStatusBySubscriptionId(String(sub.id), 'cancelled'); } catch {}
     }
 
     if (event.type === 'checkout.session.completed') {

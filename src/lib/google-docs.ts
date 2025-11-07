@@ -186,3 +186,22 @@ export async function appendSectionsToDocument(documentId: string, sections: Goo
   }
 }
 
+export async function shareFileWithEmail(fileId: string, email: string, role: 'reader' | 'commenter' | 'writer' = 'writer') {
+  const clients = await getClients();
+  if (!clients || !fileId || !email) return { ok: false };
+  try {
+    await clients.drive.permissions.create({
+      fileId,
+      requestBody: {
+        type: 'user',
+        role,
+        emailAddress: email,
+      },
+      sendNotificationEmail: true,
+    });
+    return { ok: true };
+  } catch (error) {
+    logger.error(error, { where: 'googleDocs.shareFileWithEmail', fileId, email });
+    return { ok: false };
+  }
+}

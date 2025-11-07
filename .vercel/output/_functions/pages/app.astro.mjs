@@ -1,5 +1,5 @@
 import { c as createComponent, a as renderTemplate, r as renderComponent, m as maybeRenderHead } from '../chunks/astro/server_C7RkpNfc.mjs';
-import { $ as $$BackendLayout } from '../chunks/BackendLayout_y7hU8ANi.mjs';
+import { $ as $$BackendLayout } from '../chunks/BackendLayout_ChukFPBi.mjs';
 export { renderers } from '../renderers.mjs';
 
 var __freeze = Object.freeze;

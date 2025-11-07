@@ -58,6 +58,19 @@ const buildLangHref = (lang: 'fr' | 'en' | 'de' | 'it') => {
   const base = suffixPath === '/' ? '' : suffixPath;
   return `/${lang}${base}${currentSearch}${currentHash}`;
 };
+
+// Determine current language from path and build localized auth links
+const currentLang = (locales.find((l) => currentPath.startsWith('/' + l)) as 'en' | 'de' | 'it' | undefined) || 'fr';
+const langPrefix = currentLang === 'fr' ? '' : `/${currentLang}`;
+const authLabels = {
+  fr: { signIn: 'Se connecter', signUp: 'Créer un compte' },
+  en: { signIn: 'Sign in', signUp: 'Sign up' },
+  de: { signIn: 'Anmelden', signUp: 'Registrieren' },
+  it: { signIn: 'Accedi', signUp: 'Registrati' },
+} as const;
+const t = authLabels[currentLang as keyof typeof authLabels] || authLabels.fr;
+const signinHref = `${langPrefix}/auth/signin`;
+const signupHref = `${langPrefix}/auth/signup`;
 ---
 
 <header
@@ -181,6 +194,21 @@ const buildLangHref = (lang: 'fr' | 'en' | 'de' | 'it') => {
               </a>
             )
           }
+        </div>
+        {/* Auth controls */}
+        <div class="ml-2 flex items-center gap-2">
+          <a
+            href={signinHref}
+            class="hidden sm:inline-flex items-center rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+          >
+            {t.signIn}
+          </a>
+          <a
+            href={signupHref}
+            class="inline-flex items-center rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm shadow-blue-500/40 transition hover:bg-blue-500"
+          >
+            {t.signUp}
+          </a>
         </div>
         {
           actions?.length ? (

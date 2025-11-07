@@ -1,8 +1,8 @@
 import { c as createComponent, r as renderComponent, a as renderTemplate } from '../../chunks/astro/server_C7RkpNfc.mjs';
-import { $ as $$PageLayout, b as footerDataEn, c as headerDataEn } from '../../chunks/PageLayout_eGdiW9lQ.mjs';
-import { $ as $$HeroText } from '../../chunks/HeroText_49JdCx5M.mjs';
-import { $ as $$Contact$1 } from '../../chunks/Contact_qFf75pPB.mjs';
-import { $ as $$Features2 } from '../../chunks/Features2_BhHeE5yg.mjs';
+import { $ as $$PageLayout, b as footerDataEn, c as headerDataEn } from '../../chunks/PageLayout_CEoU7WHT.mjs';
+import { $ as $$HeroText } from '../../chunks/HeroText_3y8PK1AY.mjs';
+import { $ as $$Contact$1 } from '../../chunks/Contact_h3-Qo7dk.mjs';
+import { $ as $$Features2 } from '../../chunks/Features2_DIvI_FDF.mjs';
 export { renderers } from '../../renderers.mjs';
 
 const $$Contact = createComponent(($$result, $$props, $$slots) => {
