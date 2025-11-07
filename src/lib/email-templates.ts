@@ -1,5 +1,8 @@
 import { ENV } from './env';
 
+// Shared locale type used by email rendering and callers
+export type EmailLocale = 'fr' | 'en' | 'de' | 'it';
+
 type CTA = { label: string; url: string } | null;
 
 function escapeHtml(s: string) {
@@ -25,6 +28,18 @@ function formatCurrency(amount: unknown, currency: string | null | undefined) {
   const cur = currency || 'CHF';
   try {
     return new Intl.NumberFormat('fr-CH', { style: 'currency', currency: cur }).format(value / 100);
+  } catch {
+    return `${(value / 100).toFixed(2)} ${cur}`.trim();
+  }
+}
+
+export function formatAmountForLocale(amount: unknown, currency: string | null | undefined, locale: EmailLocale) {
+  const value = typeof amount === 'number' ? amount : Number(amount || 0);
+  if (!Number.isFinite(value)) return '—';
+  const cur = String(currency || 'CHF').toUpperCase();
+  const tag = locale === 'fr' ? 'fr-CH' : locale === 'de' ? 'de-CH' : locale === 'it' ? 'it-CH' : 'en-CH';
+  try {
+    return new Intl.NumberFormat(tag, { style: 'currency', currency: cur }).format(value / 100);
   } catch {
     return `${(value / 100).toFixed(2)} ${cur}`.trim();
   }
@@ -328,4 +343,258 @@ export function renderTemplate(name: string, data: any) {
       return renderLayout({ title: data?.title || 'Notification', preheader: data?.preheader || undefined, contentHtml: content, cta: data?.cta || null });
     }
   }
+}
+
+// Compatibility wrapper expected by src/lib/email.ts
+export function renderEmailTemplate(
+  template: string,
+  options: { data?: any; locale?: string | null },
+): { subject: string; html: string } {
+  const data = options?.data || {};
+  const locale = (options?.locale || 'fr') as EmailLocale;
+  const brand = getBrand();
+
+  function subjectFor(): string {
+    const orderNumber = data?.order_number || data?.metadata?.order_number || data?.order?.order_number || '';
+    switch (template) {
+      case 'orders/admin-new-order':
+        return orderNumber ? `Nouvelle commande ${orderNumber}` : 'Nouvelle commande';
+      case 'orders/order-confirmation':
+        return orderNumber ? `Votre commande ${orderNumber} est confirmée` : 'Votre commande est confirmée';
+      case 'orders/order-update': {
+        const status = data?.new_status || data?.status || '';
+        const base = orderNumber ? `Mise à jour de votre commande ${orderNumber}` : 'Mise à jour de votre commande';
+        return status ? `${base} – ${status}` : base;
+      }
+      case 'orders/subscription-renewal':
+        return 'Renouvellement de votre abonnement';
+      case 'orders/subscription-cancelled':
+        return 'Votre abonnement a été annulé';
+      case 'subscription_update':
+        return 'Mise à jour de votre abonnement';
+      case 'auth/welcome':
+        return 'Bienvenue';
+      case 'auth/admin-new-user':
+        return data?.user_email ? `Nouveau compte: ${data.user_email}` : 'Nouveau compte créé';
+      case 'auth/reset-request':
+        return 'Réinitialisation du mot de passe';
+      case 'auth/password-changed':
+        return 'Mot de passe mis à jour';
+      case 'contact/contact-notification':
+        return 'Nouveau message de contact';
+      case 'contact/contact-confirmation':
+        return 'Nous avons bien reçu votre message';
+      case 'demo/demo-request':
+        return 'Nouvelle demande de démo';
+      case 'demo/demo-confirmation':
+        return 'Votre demande de démo';
+      case 'feedback/feedback':
+        return 'Nouveau retour client';
+      case 'support/admin-support':
+        return 'Nouveau ticket support';
+      case 'support/support-confirmation':
+        return 'Ticket reçu';
+      case 'deployment/project-published':
+        return 'Votre projet est prêt';
+      case 'deployment/admin-deployment':
+        return 'Déploiement terminé';
+      case 'deployment/project-delayed':
+        return 'Mise à jour du planning';
+      case 'system/system-alert':
+        return 'Alerte système';
+      default:
+        return data?.title || 'Notification';
+    }
+  }
+
+  function htmlFor(): string {
+    switch (template) {
+      case 'auth/welcome':
+        return renderTemplate('welcome', {
+          name: data?.user_name || data?.name || 'Bonjour',
+          verifyUrl: data?.verify_url || data?.verifyUrl || '',
+        });
+      case 'auth/reset-request':
+        return renderTemplate('password_reset', { resetUrl: data?.reset_url || data?.resetUrl || '' });
+      case 'auth/password-changed':
+        return renderTemplate('password_changed', {});
+      case 'orders/admin-new-order': {
+        const order = {
+          order_number: data?.order_number || data?.order?.order_number || '',
+          plan: data?.plan || data?.plan_name || data?.order?.plan || '',
+          template_key: data?.template_key || data?.template || data?.template_name || '',
+          amount_total:
+            typeof data?.amount_minor === 'number'
+              ? data.amount_minor
+              : typeof data?.amount_total === 'number'
+              ? data.amount_total
+              : Math.round(Number(data?.amount_value || 0) * 100),
+          currency: data?.amount_currency || data?.currency || 'CHF',
+          customer_name: data?.customer_name || data?.name || '',
+          customer_email: data?.customer_email || data?.email || '',
+          status: data?.payment_status || data?.status || '',
+          stripe_session_id: data?.stripe_session_id || '',
+          subscription_id: data?.subscription_id || '',
+          metadata: data?.metadata || {},
+        };
+        return renderTemplate('admin_notification', { order });
+      }
+      case 'orders/order-confirmation': {
+        const order = {
+          order_number: data?.order_number || data?.order?.order_number || '',
+          plan: data?.plan || data?.plan_name || data?.order?.plan || '',
+          template_key: data?.template_key || data?.template || data?.template_name || '',
+          amount_total:
+            typeof data?.amount_minor === 'number'
+              ? data.amount_minor
+              : typeof data?.amount_total === 'number'
+              ? data.amount_total
+              : Math.round(Number(data?.amount_value || 0) * 100),
+          currency: data?.amount_currency || data?.currency || 'CHF',
+          status: data?.payment_status || data?.status || '',
+          metadata: data?.metadata || {},
+        };
+        return renderTemplate('client_confirmation', { order });
+      }
+      case 'orders/order-update': {
+        const orderNumber = data?.order_number || '';
+        const status = data?.new_status || data?.status || '';
+        const pre = status ? `${orderNumber ? `Commande ${escapeHtml(orderNumber)} — ` : ''}${escapeHtml(status)}` : '';
+        const noteBlock =
+          typeof data?.note_block === 'string' && data.note_block
+            ? data.note_block
+            : data?.note
+            ? `<p style="margin:16px 0;"><strong>Commentaire :</strong> ${escapeHtml(String(data.note))}</p>`
+            : '';
+        const content = `
+          <p>Votre commande ${orderNumber ? `<strong>${escapeHtml(orderNumber)}</strong>` : ''} a été mise à jour.</p>
+          ${noteBlock}
+        `;
+        return renderLayout({ title: 'Mise à jour de votre commande', preheader: pre || undefined, contentHtml: content });
+      }
+      case 'orders/subscription-renewal': {
+        const rows = [
+          ['Numéro de facture', data?.invoice_number || '—'],
+          ['Période de renouvellement', data?.renewal_period || '—'],
+          ['Montant', data?.amount_formatted || formatAmountForLocale(data?.amount_minor, data?.amount_currency, locale)],
+        ]
+          .map(
+            ([label, value]) => `
+              <tr>
+                <td style="padding:6px 12px; font-weight:600; width:220px;">${label}</td>
+                <td style="padding:6px 12px;">${escapeHtml(String(value))}</td>
+              </tr>
+            `,
+          )
+          .join('');
+        const content = `
+          <p>Merci – votre abonnement a bien été renouvelé.</p>
+          <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%; border:1px solid #e2e8f0; border-radius:12px; overflow:hidden; font-size:14px; line-height:20px;">
+            <tbody>${rows}</tbody>
+          </table>
+        `;
+        return renderLayout({ title: 'Renouvellement de votre abonnement', contentHtml: content });
+      }
+      case 'orders/subscription-cancelled': {
+        const content = `
+          <p>Votre abonnement a été annulé${data?.canceled_at ? ` le <strong>${escapeHtml(String(data.canceled_at))}</strong>` : ''}.</p>
+          ${data?.cancellation_reason ? `<p>Motif : ${escapeHtml(String(data.cancellation_reason))}</p>` : ''}
+        `;
+        return renderLayout({ title: 'Abonnement annulé', contentHtml: content });
+      }
+      case 'subscription_update': {
+        return renderTemplate('subscription_update', data);
+      }
+      case 'contact/contact-notification': {
+        const rows = [
+          ['Nom', data?.sender_name || '—'],
+          ['Email', data?.sender_email || '—'],
+          ['Entreprise', data?.sender_company || '—'],
+          ['Source', data?.source || '—'],
+        ]
+          .map(
+            ([label, value]) => `
+              <tr>
+                <td style="padding:6px 12px; font-weight:600; width:180px;">${label}</td>
+                <td style="padding:6px 12px;">${escapeHtml(String(value))}</td>
+              </tr>
+            `,
+          )
+          .join('');
+        const content = `
+          <p>Nouveau message reçu :</p>
+          <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%; border:1px solid #e2e8f0; border-radius:12px; overflow:hidden; font-size:14px; line-height:20px;">
+            <tbody>${rows}</tbody>
+          </table>
+          ${data?.sender_message ? `<blockquote style=\"margin:16px 0; padding:12px 16px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px;\">${escapeHtml(String(data.sender_message))}</blockquote>` : ''}
+        `;
+        return renderLayout({ title: 'Nouveau message de contact', contentHtml: content });
+      }
+      case 'contact/contact-confirmation': {
+        const content = `
+          <p>Merci pour votre message${data?.sender_name ? `, ${escapeHtml(String(data.sender_name))}` : ''}.</p>
+          <p>Notre équipe vous répond sous 24 heures (jours ouvrés).</p>
+        `;
+        return renderLayout({ title: 'Message bien reçu', preheader: 'Nous revenons vite vers vous', contentHtml: content });
+      }
+      case 'feedback/feedback': {
+        return renderTemplate('feedback_notification', {
+          project: data?.project_name || data?.project || 'Projet',
+          author: data?.feedback_author || data?.author || '',
+          message: data?.feedback_message || data?.message || '',
+        });
+      }
+      case 'support/admin-support': {
+        return renderTemplate('support_ticket', {
+          ticketId: data?.ticket_id || data?.ticketId || '#',
+          summary: data?.ticket_summary || data?.summary || 'Nouveau ticket',
+          customerName: data?.customer_name || data?.customerName || '',
+          priority: data?.ticket_priority || data?.priority || 'normal',
+        });
+      }
+      case 'support/support-confirmation': {
+        const content = `
+          <p>Nous avons bien reçu votre demande${data?.ticket_id ? ` (#${escapeHtml(String(data.ticket_id))})` : ''}.</p>
+          <p>Notre équipe support revient vers vous dans les meilleurs délais.</p>
+        `;
+        return renderLayout({ title: 'Votre ticket a été reçu', contentHtml: content });
+      }
+      case 'deployment/project-published': {
+        return renderTemplate('project_ready', {
+          projectName: data?.project_name || data?.projectName || 'Votre projet',
+          previewUrl: data?.preview_url || data?.previewUrl || '',
+        });
+      }
+      case 'deployment/admin-deployment': {
+        const content = `
+          <p>Un déploiement vient de se terminer pour <strong>${escapeHtml(
+            data?.project_name || data?.projectName || 'Projet',
+          )}</strong>.</p>
+          ${data?.preview_url ? `<p><a href="${escapeHtml(String(data.preview_url))}" target="_blank" rel="noopener">Ouvrir l'aperçu →</a></p>` : ''}
+        `;
+        return renderLayout({ title: 'Déploiement terminé', contentHtml: content });
+      }
+      case 'deployment/project-delayed': {
+        return renderTemplate('project_delayed', {
+          projectName: data?.project_name || data?.projectName || 'Votre projet',
+          newEta: data?.new_eta || data?.newEta || 'bientôt',
+        });
+      }
+      case 'system/system-alert': {
+        const content = `
+          <p><strong>${escapeHtml(String(data?.alert_subject || 'Alerte'))}</strong></p>
+          <pre style="white-space:pre-wrap; background:#0f172a; color:#e2e8f0; padding:12px; border-radius:8px;">${escapeHtml(
+            String(data?.alert_body || JSON.stringify(data, null, 2)),
+          )}</pre>
+        `;
+        return renderLayout({ title: 'Alerte système', contentHtml: content });
+      }
+      default: {
+        const content = typeof data?.html === 'string' ? data.html : `<pre>${escapeHtml(JSON.stringify(data, null, 2))}</pre>`;
+        return renderLayout({ title: data?.title || 'Notification', preheader: data?.preheader || undefined, contentHtml: content, cta: data?.cta || null });
+      }
+    }
+  }
+
+  return { subject: subjectFor(), html: htmlFor() };
 }

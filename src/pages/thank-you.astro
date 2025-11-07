@@ -124,8 +124,7 @@ const hasSession = Boolean(sessionId);
   </section>
 
   {hasSession ? (
-    <script is:inline>
-      const copy = ${JSON.stringify(copy)};
+    <script is:inline define:vars={{ copy }}>
       const params = new URLSearchParams(location.search);
       const id = params.get('session_id');
       if (id) {

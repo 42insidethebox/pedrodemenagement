@@ -1,6 +1,7 @@
 import { ENV } from './env';
 import { logger } from './logger.js';
-import { EmailLocale, renderEmailTemplate, formatAmountForLocale } from './email-templates';
+import type { EmailLocale } from './email-templates';
+import { renderEmailTemplate, formatAmountForLocale, renderTemplate } from './email-templates';
 
 type SendResult = { ok: boolean; error?: string };
 
@@ -97,6 +98,11 @@ async function sendTransactionalEmail(
     logger.error(error, { where: 'sendTransactionalEmail' });
     return { ok: false, error: error?.message || 'Failed to send email' };
   }
+}
+
+// Small wrapper used by some codepaths to send a simple HTML with explicit subject
+function sendEmailInternal(subject: string, to: string, html: string): Promise<SendResult> {
+  return sendTransactionalEmail(to, subject, html, false);
 }
 
 type TemplateSendOptions = {
@@ -251,6 +257,27 @@ export async function sendSubscriptionCancelledEmail(order: any, subscription: a
     canceled_at: canceledAt,
   };
   return sendEmailTemplate({ template: 'orders/subscription-cancelled', to, locale, data, bccSupport: true });
+}
+
+// Backend subscription updates (price change, cancel at period end)
+export async function sendSubscriptionUpdateEmail({
+  to,
+  subscriptionId,
+  action,
+  locale,
+}: {
+  to: string;
+  subscriptionId: string;
+  action: 'updated' | 'canceled' | string;
+  locale?: string | null;
+}) {
+  return sendEmailTemplate({
+    template: 'subscription_update',
+    to,
+    locale,
+    data: { subscriptionId, action },
+    bccSupport: true,
+  });
 }
 
 export async function sendWelcomeEmail(to: string, name?: string | null, verifyUrl?: string | null, locale?: string | null) {
