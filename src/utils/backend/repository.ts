@@ -1,11 +1,11 @@
 // src/utils/backend/repository.ts
-import { adminClient } from '../supabase/admin';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 /**
  * Generic helper to fetch one record by ID from a Supabase table.
  */
-export async function getById(table: string, id: string) {
-  const { data, error } = await adminClient
+export async function getById(client: SupabaseClient, table: string, id: string) {
+  const { data, error } = await client
     .from(table)
     .select('*')
     .eq('id', id)
@@ -22,8 +22,8 @@ export async function getById(table: string, id: string) {
 /**
  * Generic helper to delete one record by ID.
  */
-export async function deleteById(table: string, id: string) {
-  const { error } = await adminClient.from(table).delete().eq('id', id);
+export async function deleteById(client: SupabaseClient, table: string, id: string) {
+  const { error } = await client.from(table).delete().eq('id', id);
   if (error) {
     console.error(`[repository] Failed to delete ${table}#${id}`, error);
     throw error;

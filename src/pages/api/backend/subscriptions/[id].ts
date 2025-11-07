@@ -1,20 +1,26 @@
 import type { APIRoute } from 'astro';
 
+import type { SupabaseClient } from '@supabase/supabase-js';
+
 import { sendSubscriptionUpdateEmail } from '~/lib/email';
 import { getStripe } from '~/lib/stripe';
 import { logAgencyActivity } from '~/utils/backend/activity';
 import { getAgencyContext } from '~/utils/backend/context';
 import { parseSubscriptionUpdatePayload } from '~/utils/backend/validation';
-import { getAdminClient } from '~/utils/supabase/admin';
 import { withAuth } from '~/utils/supabase/auth';
 
 export const prerender = false;
 
 const SUPABASE_ERROR = 'Supabase admin client is not configured';
 
-async function storeEvent(agencyId: string, subscriptionId: string, eventType: string, payload: Record<string, unknown>) {
+async function storeEvent(
+  client: SupabaseClient,
+  agencyId: string,
+  subscriptionId: string,
+  eventType: string,
+  payload: Record<string, unknown>,
+) {
   try {
-    const client = getAdminClient();
     await client.from('subscription_events').insert({
       agency_id: agencyId,
       subscription_id: subscriptionId,
@@ -43,7 +49,7 @@ export const PATCH: APIRoute = withAuth(async ({ locals, params, request }) => {
   }
 
   try {
-    const { agency } = await getAgencyContext(locals.user!);
+    const { agency, client } = await getAgencyContext(locals);
     const stripe = await getStripe();
     if (!stripe) {
       return new Response(JSON.stringify({ error: 'Stripe not configured' }), { status: 503 });
@@ -79,13 +85,13 @@ export const PATCH: APIRoute = withAuth(async ({ locals, params, request }) => {
 
     const updated = await stripe.subscriptions.update(subscriptionId, params);
 
-    await storeEvent(agency.id, subscriptionId, 'updated', {
+    await storeEvent(client, agency.id, subscriptionId, 'updated', {
       cancel_at_period_end: updated.cancel_at_period_end,
       price: payload.priceId ?? null,
       customer_email: updated.customer_email ?? null,
     });
 
-    await logAgencyActivity(agency.id, 'subscription_updated', 'subscription', subscriptionId, {
+    await logAgencyActivity(client, agency.id, 'subscription_updated', 'subscription', subscriptionId, {
       cancel_at_period_end: updated.cancel_at_period_end,
       price: payload.priceId ?? null,
     });
@@ -116,7 +122,7 @@ export const DELETE: APIRoute = withAuth(async ({ locals, params }) => {
   }
 
   try {
-    const { agency } = await getAgencyContext(locals.user!);
+    const { agency, client } = await getAgencyContext(locals);
     const stripe = await getStripe();
     if (!stripe) {
       return new Response(JSON.stringify({ error: 'Stripe not configured' }), { status: 503 });
@@ -124,12 +130,12 @@ export const DELETE: APIRoute = withAuth(async ({ locals, params }) => {
 
     const deleted = await stripe.subscriptions.cancel(subscriptionId, { invoice_now: false, prorate: false });
 
-    await storeEvent(agency.id, subscriptionId, 'canceled', {
+    await storeEvent(client, agency.id, subscriptionId, 'canceled', {
       cancel_at_period_end: deleted.cancel_at_period_end,
       customer_email: deleted.customer_email ?? null,
     });
 
-    await logAgencyActivity(agency.id, 'subscription_canceled', 'subscription', subscriptionId, {
+    await logAgencyActivity(client, agency.id, 'subscription_canceled', 'subscription', subscriptionId, {
       cancel_at_period_end: deleted.cancel_at_period_end,
     });
 

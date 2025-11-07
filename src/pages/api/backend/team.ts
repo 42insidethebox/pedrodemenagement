@@ -1,7 +1,6 @@
 import type { APIRoute } from 'astro';
 
 import { getAgencyContext } from '~/utils/backend/context';
-import { getAdminClient } from '~/utils/supabase/admin';
 import { withAuth } from '~/utils/supabase/auth';
 
 export const prerender = false;
@@ -10,8 +9,7 @@ const SUPABASE_ERROR = 'Supabase admin client is not configured';
 
 export const GET: APIRoute = withAuth(async ({ locals }) => {
   try {
-    const { agency } = await getAgencyContext(locals.user!);
-    const client = getAdminClient();
+    const { agency, client } = await getAgencyContext(locals);
     const { data, error } = await client
       .from('agency_members')
       .select('*')

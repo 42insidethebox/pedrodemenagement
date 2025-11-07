@@ -13,13 +13,13 @@ function parseLimit(url: URL) {
   return Math.min(Math.floor(value), 200);
 }
 
-export const GET: APIRoute = withAuth(async ({ request }) => {
+export const GET: APIRoute = withAuth(async ({ request, locals }) => {
   try {
     const url = new URL(request.url);
     const limit = parseLimit(url);
     const statusFilter = url.searchParams.get('status')?.trim().toLowerCase();
 
-    const client = getAdminClient();
+    const client = getAdminClient(locals);
     let query = client
       .from('orders')
       .select('*')
