@@ -2,7 +2,8 @@ import type { APIRoute } from 'astro';
 import { getSupabaseAdmin } from '~/lib/supabase';
 import { ENV } from '~/lib/env';
 import { logger } from '~/lib/logger.js';
-import { sendWelcomeEmail } from '~/lib/email';
+import { sendWelcomeEmail, sendNewUserAdminEmail } from '~/lib/email';
+import { detectRequestLocale } from '~/lib/locale';
 import { assertRateLimit } from '~/lib/rate-limit';
 
 export const prerender = false;
@@ -13,11 +14,13 @@ function isValidEmail(email: string) {
 
 export const POST: APIRoute = async ({ request }) => {
   assertRateLimit(request, { key: 'auth:signup', limit: 5, window: 300 });
+  const url = new URL(request.url);
   const payload = await request.json().catch(() => null);
   const email = typeof payload?.email === 'string' ? payload.email.trim().toLowerCase() : '';
   const password = typeof payload?.password === 'string' ? payload.password : '';
   const fullName = typeof payload?.name === 'string' ? payload.name.trim() : '';
   const phone = typeof payload?.phone === 'string' ? payload.phone.trim() : '';
+  const locale = detectRequestLocale(request, url);
 
   if (!isValidEmail(email) || password.length < 8) {
     return new Response(JSON.stringify({ error: 'Invalid email or password' }), { status: 400 });
@@ -58,10 +61,12 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     if (verifyUrl) {
-      await sendWelcomeEmail(email, fullName || null, verifyUrl);
+      await sendWelcomeEmail(email, fullName || null, verifyUrl, locale);
     } else {
-      await sendWelcomeEmail(email, fullName || null);
+      await sendWelcomeEmail(email, fullName || null, null, locale);
     }
+
+    await sendNewUserAdminEmail({ email, name: fullName || undefined, phone: phone || undefined, locale });
 
     return new Response(
       JSON.stringify({ id: data?.user?.id, email: data?.user?.email, status: 'pending_confirmation' }),

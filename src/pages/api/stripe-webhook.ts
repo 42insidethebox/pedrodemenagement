@@ -10,7 +10,12 @@ import {
   updateOrderStatusInSupabase,
   updateOrderStatusBySubscriptionId,
 } from '~/lib/orders';
-import { sendAdminNotificationEmail, sendClientConfirmationEmail } from '~/lib/email';
+import {
+  sendAdminNotificationEmail,
+  sendClientConfirmationEmail,
+  sendSubscriptionCancelledEmail,
+  sendSubscriptionRenewalEmail,
+} from '~/lib/email';
 import { triggerTemplateDeployment } from '~/lib/deployment.js';
 
 export const prerender = false;
@@ -81,13 +86,23 @@ export const POST: APIRoute = async ({ request }) => {
     if (event.type === 'invoice.paid') {
       const inv = event.data.object;
       if (inv.subscription) {
-        try { await updateOrderStatusBySubscriptionId(String(inv.subscription), 'paid'); } catch {}
+        try {
+          const order = await updateOrderStatusBySubscriptionId(String(inv.subscription), 'paid');
+          if (order) {
+            try { await sendSubscriptionRenewalEmail(order, inv); } catch {}
+          }
+        } catch {}
       }
     }
 
     if (event.type === 'customer.subscription.deleted') {
       const sub = event.data.object;
-      try { await updateOrderStatusBySubscriptionId(String(sub.id), 'cancelled'); } catch {}
+      try {
+        const order = await updateOrderStatusBySubscriptionId(String(sub.id), 'cancelled');
+        if (order) {
+          try { await sendSubscriptionCancelledEmail(order, sub); } catch {}
+        }
+      } catch {}
     }
 
     if (event.type === 'checkout.session.completed') {
