@@ -15,20 +15,52 @@ const supabaseServiceRoleKey =
   import.meta.env.SUPABASE_SERVICE_ROLE_KEY ||
   '';
 
+const supabaseAnonKey =
+  process.env.SUPABASE_ANON_KEY ||
+  process.env.PUBLIC_SUPABASE_ANON_KEY ||
+  import.meta.env.SUPABASE_ANON_KEY ||
+  import.meta.env.PUBLIC_SUPABASE_ANON_KEY ||
+  '';
+
 let cachedClient: SupabaseClient | null = null;
 
-export function getAdminClient(): SupabaseClient {
-  if (cachedClient) return cachedClient;
+type ClientContext = {
+  accessToken?: string;
+  supabase?: SupabaseClient | null;
+};
 
-  if (!supabaseUrl || !supabaseServiceRoleKey) {
+export function getAdminClient(locals?: ClientContext): SupabaseClient {
+  if (!supabaseUrl) {
     throw new Error('Supabase admin client is not configured');
   }
 
-  cachedClient = createClient(supabaseUrl, supabaseServiceRoleKey, {
-    auth: { persistSession: false, autoRefreshToken: false },
-  });
+  if (supabaseServiceRoleKey) {
+    if (cachedClient) return cachedClient;
 
-  return cachedClient;
+    cachedClient = createClient(supabaseUrl, supabaseServiceRoleKey, {
+      auth: { persistSession: false, autoRefreshToken: false },
+    });
+
+    return cachedClient;
+  }
+
+  if (locals?.supabase) {
+    return locals.supabase;
+  }
+
+  const token = locals?.accessToken;
+  if (!supabaseAnonKey || !token) {
+    throw new Error('Supabase admin client is not configured');
+  }
+
+  return createClient(supabaseUrl, supabaseAnonKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+    global: {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  });
 }
 
 export const adminClient = new Proxy(

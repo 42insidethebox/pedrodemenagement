@@ -1,7 +1,8 @@
 // src/utils/backend/activity.ts
-import { getAdminClient } from '../supabase/admin';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 export async function logAgencyActivity(
+  client: SupabaseClient,
   agencyId: string,
   action: string,
   entityType: string,
@@ -9,7 +10,6 @@ export async function logAgencyActivity(
   metadata: Record<string, unknown> = {},
 ) {
   try {
-    const client = getAdminClient();
     await client.from('activities').insert({
       agency_id: agencyId,
       action,

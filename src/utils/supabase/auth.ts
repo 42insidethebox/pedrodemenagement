@@ -24,6 +24,18 @@ const fallbackClient =
       })
     : null;
 
+function createRequestClient(token: string) {
+  if (!supabaseUrl || !supabaseAnonKey) return null;
+  return createClient(supabaseUrl, supabaseAnonKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+    global: {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  });
+}
+
 /**
  * Middleware wrapper to ensure user is authenticated.
  */
@@ -47,6 +59,11 @@ export function withAuth(handler: APIRoute): APIRoute {
     }
 
     context.locals.user = data.user;
+    context.locals.accessToken = token;
+    const requestClient = createRequestClient(token);
+    if (requestClient) {
+      context.locals.supabase = requestClient;
+    }
     return handler(context);
   };
 }

@@ -1,13 +1,12 @@
 import type { APIRoute } from 'astro';
 
 import { getAgencyContext } from '~/utils/backend/context';
-import { adminClient } from '~/utils/supabase/admin';
 import { withAuth } from '~/utils/supabase/auth';
 
 export const prerender = false;
 
 export const GET: APIRoute = withAuth(async ({ locals }) => {
-  const { agency, user } = await getAgencyContext(locals.user!);
+  const { agency, user, client } = await getAgencyContext(locals);
   const now = new Date();
   const nowIso = now.toISOString();
   const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString();
@@ -32,48 +31,48 @@ export const GET: APIRoute = withAuth(async ({ locals }) => {
     recentActivitiesResult,
   ] =
     await Promise.all([
-      adminClient
+      client
         .from('clients')
         .select('id', { count: 'exact', head: true })
         .eq('agency_id', agency.id),
-      adminClient
+      client
         .from('projects')
         .select('id', { count: 'exact', head: true })
         .eq('agency_id', agency.id)
         .neq('status', 'completed'),
-      adminClient
+      client
         .from('websites')
         .select('id', { count: 'exact', head: true })
         .eq('agency_id', agency.id)
         .eq('status', 'live'),
-      adminClient
+      client
         .from('tasks')
         .select('id', { count: 'exact', head: true })
         .eq('agency_id', agency.id)
         .not('status', 'eq', 'done')
         .not('due_date', 'is', null)
         .lt('due_date', nowIso),
-      adminClient
+      client
         .from('tasks')
         .select('id', { count: 'exact', head: true })
         .eq('agency_id', agency.id)
         .eq('status', 'blocked'),
-      adminClient
+      client
         .from('tasks')
         .select('id', { count: 'exact', head: true })
         .eq('agency_id', agency.id)
         .eq('status', 'in_progress'),
-      adminClient
+      client
         .from('invoices')
         .select('amount, status, issue_date, due_date')
         .eq('agency_id', agency.id),
-      adminClient
+      client
         .from('documents')
         .select('*')
         .eq('agency_id', agency.id)
         .order('created_at', { ascending: false })
         .limit(5),
-      adminClient
+      client
         .from('activities')
         .select('*')
         .eq('agency_id', agency.id)

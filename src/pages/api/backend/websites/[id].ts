@@ -1,5 +1,7 @@
 import type { APIRoute } from 'astro';
 
+import type { SupabaseClient } from '@supabase/supabase-js';
+
 import { getDocumentSections } from '~/lib/google-docs';
 import { sendProjectDelayedEmail, sendProjectReadyEmail } from '~/lib/email';
 import { logAgencyActivity } from '~/utils/backend/activity';
@@ -9,7 +11,6 @@ import {
   parseWebsiteSectionPayload,
   parseWebsiteSectionUpdatePayload,
 } from '~/utils/backend/validation';
-import { getAdminClient } from '~/utils/supabase/admin';
 import { withAuth } from '~/utils/supabase/auth';
 
 export const prerender = false;
@@ -26,8 +27,7 @@ function slugify(value: string) {
     .slice(0, 64) || 'section';
 }
 
-async function loadWebsite(agencyId: string, websiteId: string) {
-  const client = getAdminClient();
+async function loadWebsite(client: SupabaseClient, agencyId: string, websiteId: string) {
   const { data, error } = await client
     .from('websites')
     .select('*')
@@ -43,8 +43,7 @@ async function loadWebsite(agencyId: string, websiteId: string) {
   return data;
 }
 
-async function loadSections(websiteId: string) {
-  const client = getAdminClient();
+async function loadSections(client: SupabaseClient, websiteId: string) {
   const { data, error } = await client
     .from('website_sections')
     .select('*')
@@ -66,13 +65,13 @@ export const GET: APIRoute = withAuth(async ({ locals, params }) => {
   }
 
   try {
-    const { agency } = await getAgencyContext(locals.user!);
-    const website = await loadWebsite(agency.id, websiteId);
+    const { agency, client } = await getAgencyContext(locals);
+    const website = await loadWebsite(client, agency.id, websiteId);
     if (!website) {
       return new Response(JSON.stringify({ error: 'Website not found' }), { status: 404 });
     }
 
-    const sections = await loadSections(websiteId);
+    const sections = await loadSections(client, websiteId);
     return new Response(JSON.stringify({ website, sections }), { status: 200 });
   } catch (error) {
     if (error instanceof Error && error.message === SUPABASE_ERROR) {
@@ -165,10 +164,9 @@ export const PATCH: APIRoute = withAuth(async ({ locals, params, request }) => {
   }
 
   try {
-    const { agency } = await getAgencyContext(locals.user!);
-    const client = getAdminClient();
+    const { agency, client } = await getAgencyContext(locals);
 
-    const existing = await loadWebsite(agency.id, websiteId);
+    const existing = await loadWebsite(client, agency.id, websiteId);
     if (!existing) {
       return new Response(JSON.stringify({ error: 'Website not found' }), { status: 404 });
     }
@@ -190,7 +188,7 @@ export const PATCH: APIRoute = withAuth(async ({ locals, params, request }) => {
 
       updatedWebsite = data;
 
-      await logAgencyActivity(agency.id, 'website_updated', 'website', websiteId, {
+      await logAgencyActivity(client, agency.id, 'website_updated', 'website', websiteId, {
         before_status: existing.status,
         after_status: data.status,
       });
@@ -241,7 +239,7 @@ export const PATCH: APIRoute = withAuth(async ({ locals, params, request }) => {
             google_doc_heading: section.heading,
           })),
         );
-        await logAgencyActivity(agency.id, 'website_synced', 'website', websiteId, {
+        await logAgencyActivity(client, agency.id, 'website_synced', 'website', websiteId, {
           google_doc_id: updatedWebsite.google_doc_id,
           sections: docSections.length,
         });
@@ -279,7 +277,7 @@ export const PATCH: APIRoute = withAuth(async ({ locals, params, request }) => {
       }
     }
 
-    const sections = await loadSections(websiteId);
+    const sections = await loadSections(client, websiteId);
     return new Response(JSON.stringify({ website: updatedWebsite, sections }), { status: 200 });
   } catch (error) {
     if (error instanceof Error && error.message === SUPABASE_ERROR) {
@@ -300,10 +298,9 @@ export const DELETE: APIRoute = withAuth(async ({ locals, params }) => {
   }
 
   try {
-    const { agency } = await getAgencyContext(locals.user!);
-    const client = getAdminClient();
+    const { agency, client } = await getAgencyContext(locals);
 
-    const existing = await loadWebsite(agency.id, websiteId);
+    const existing = await loadWebsite(client, agency.id, websiteId);
     if (!existing) {
       return new Response(JSON.stringify({ error: 'Website not found' }), { status: 404 });
     }
@@ -319,7 +316,7 @@ export const DELETE: APIRoute = withAuth(async ({ locals, params }) => {
       return new Response(JSON.stringify({ error: 'Unable to delete website' }), { status: 500 });
     }
 
-    await logAgencyActivity(agency.id, 'website_deleted', 'website', websiteId, { name: existing.name });
+    await logAgencyActivity(client, agency.id, 'website_deleted', 'website', websiteId, { name: existing.name });
 
     return new Response(null, { status: 204 });
   } catch (error) {

@@ -4,7 +4,6 @@ import { provisionWebsiteWorkspace, getDocumentSections } from '~/lib/google-doc
 import { logAgencyActivity } from '~/utils/backend/activity';
 import { getAgencyContext } from '~/utils/backend/context';
 import { parseWebsitePayload, parseWebsiteSectionPayload } from '~/utils/backend/validation';
-import { getAdminClient } from '~/utils/supabase/admin';
 import { withAuth } from '~/utils/supabase/auth';
 
 export const prerender = false;
@@ -23,8 +22,7 @@ function slugify(value: string) {
 
 export const GET: APIRoute = withAuth(async ({ locals }) => {
   try {
-    const { agency } = await getAgencyContext(locals.user!);
-    const client = getAdminClient();
+    const { agency, client } = await getAgencyContext(locals);
 
     const { data: websites, error } = await client
       .from('websites')
@@ -94,8 +92,7 @@ export const POST: APIRoute = withAuth(async ({ locals, request }) => {
     : [];
 
   try {
-    const { agency } = await getAgencyContext(locals.user!);
-    const client = getAdminClient();
+    const { agency, client } = await getAgencyContext(locals);
 
     let googleDocId = websitePayload.google_doc_id;
     let googleFolderId = websitePayload.google_folder_id;
@@ -157,7 +154,7 @@ export const POST: APIRoute = withAuth(async ({ locals, request }) => {
       await client.from('website_sections').insert(sectionsToInsert);
     }
 
-    await logAgencyActivity(agency.id, 'website_created', 'website', website.id, {
+    await logAgencyActivity(client, agency.id, 'website_created', 'website', website.id, {
       name: website.name,
       status: website.status,
     });

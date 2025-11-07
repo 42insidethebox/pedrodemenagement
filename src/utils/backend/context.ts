@@ -1,10 +1,10 @@
 // src/utils/backend/context.ts
-import type { User } from '@supabase/supabase-js';
+import type { APIContext } from 'astro';
+import type { SupabaseClient, User } from '@supabase/supabase-js';
 
 import { getAdminClient } from '../supabase/admin';
 
-async function ensureAgency(user: User) {
-  const client = getAdminClient();
+async function ensureAgency(client: SupabaseClient, user: User) {
   const { data, error } = await client
     .from('agencies')
     .select('*')
@@ -33,8 +33,7 @@ async function ensureAgency(user: User) {
   return inserted;
 }
 
-async function syncAgencyMember(agencyId: string, user: User) {
-  const client = getAdminClient();
+async function syncAgencyMember(client: SupabaseClient, agencyId: string, user: User) {
   const payload = {
     agency_id: agencyId,
     user_id: user.id,
@@ -53,11 +52,15 @@ async function syncAgencyMember(agencyId: string, user: User) {
   }
 }
 
-export async function getAgencyContext(user: User) {
+type Locals = APIContext['locals'];
+
+export async function getAgencyContext(locals: Locals) {
+  const user = locals.user;
   if (!user?.id) throw new Error('Missing user');
 
-  const agency = await ensureAgency(user);
-  await syncAgencyMember(agency.id, user);
+  const client = getAdminClient(locals);
+  const agency = await ensureAgency(client, user);
+  await syncAgencyMember(client, agency.id, user);
 
-  return { agency, user };
+  return { agency, user, client };
 }

@@ -2,7 +2,6 @@ import type { APIRoute } from 'astro';
 
 import { getAgencyContext } from '~/utils/backend/context';
 import { logAgencyActivity } from '~/utils/backend/activity';
-import { getAdminClient } from '~/utils/supabase/admin';
 import { withAuth } from '~/utils/supabase/auth';
 
 export const prerender = false;
@@ -17,8 +16,7 @@ export const DELETE: APIRoute = withAuth(async ({ locals, params }) => {
   }
 
   try {
-    const { agency } = await getAgencyContext(locals.user!);
-    const client = getAdminClient();
+    const { agency, client } = await getAgencyContext(locals);
     const { data, error } = await client
       .from('clients')
       .delete()
@@ -33,7 +31,7 @@ export const DELETE: APIRoute = withAuth(async ({ locals, params }) => {
     }
 
     if (data) {
-      await logAgencyActivity(agency.id, 'client_deleted', 'client', data.id, {
+      await logAgencyActivity(client, agency.id, 'client_deleted', 'client', data.id, {
         company_name: data.company_name,
       });
     }

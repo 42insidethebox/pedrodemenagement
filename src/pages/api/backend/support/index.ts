@@ -6,7 +6,6 @@ import { detectRequestLocale } from '~/lib/locale';
 import { logAgencyActivity } from '~/utils/backend/activity';
 import { getAgencyContext } from '~/utils/backend/context';
 import { parseSupportRequestPayload } from '~/utils/backend/validation';
-import { getAdminClient } from '~/utils/supabase/admin';
 import { withAuth } from '~/utils/supabase/auth';
 
 export const prerender = false;
@@ -15,8 +14,7 @@ const SUPABASE_ERROR = 'Supabase admin client is not configured';
 
 export const GET: APIRoute = withAuth(async ({ locals }) => {
   try {
-    const { agency } = await getAgencyContext(locals.user!);
-    const client = getAdminClient();
+    const { agency, client } = await getAgencyContext(locals);
 
     const { data, error } = await client
       .from('support_requests')
@@ -52,8 +50,7 @@ export const POST: APIRoute = withAuth(async ({ locals, request }) => {
   }
 
   try {
-    const { agency } = await getAgencyContext(locals.user!);
-    const client = getAdminClient();
+    const { agency, client } = await getAgencyContext(locals);
 
     const insertPayload = { ...payload, agency_id: agency.id };
     const { data, error } = await client
@@ -67,7 +64,7 @@ export const POST: APIRoute = withAuth(async ({ locals, request }) => {
       return new Response(JSON.stringify({ error: 'Unable to create ticket' }), { status: 500 });
     }
 
-    await logAgencyActivity(agency.id, 'support_request_created', 'support_request', data.id, {
+    await logAgencyActivity(client, agency.id, 'support_request_created', 'support_request', data.id, {
       request_type: data.request_type,
       priority: data.priority,
     });

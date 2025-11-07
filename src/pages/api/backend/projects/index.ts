@@ -3,7 +3,6 @@ import type { APIRoute } from 'astro';
 import { getAgencyContext } from '~/utils/backend/context';
 import { logAgencyActivity } from '~/utils/backend/activity';
 import { parseProjectPayload } from '~/utils/backend/validation';
-import { getAdminClient } from '~/utils/supabase/admin';
 import { withAuth } from '~/utils/supabase/auth';
 
 export const prerender = false;
@@ -12,8 +11,7 @@ const SUPABASE_ERROR = 'Supabase admin client is not configured';
 
 export const GET: APIRoute = withAuth(async ({ locals }) => {
   try {
-    const { agency } = await getAgencyContext(locals.user!);
-    const client = getAdminClient();
+    const { agency, client } = await getAgencyContext(locals);
     const { data, error } = await client
       .from('projects')
       .select('*')
@@ -47,8 +45,7 @@ export const POST: APIRoute = withAuth(async ({ locals, request }) => {
   }
 
   try {
-    const { agency } = await getAgencyContext(locals.user!);
-    const client = getAdminClient();
+    const { agency, client } = await getAgencyContext(locals);
     const { data, error } = await client
       .from('projects')
       .insert({ ...payload, agency_id: agency.id })
@@ -60,7 +57,7 @@ export const POST: APIRoute = withAuth(async ({ locals, request }) => {
       return new Response(JSON.stringify({ error: 'Unable to save project' }), { status: 500 });
     }
 
-    await logAgencyActivity(agency.id, 'project_created', 'project', data.id, {
+    await logAgencyActivity(client, agency.id, 'project_created', 'project', data.id, {
       name: data.name,
       status: data.status,
     });

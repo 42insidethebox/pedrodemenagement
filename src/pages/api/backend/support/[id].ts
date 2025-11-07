@@ -1,17 +1,17 @@
 import type { APIRoute } from 'astro';
 
+import type { SupabaseClient } from '@supabase/supabase-js';
+
 import { logAgencyActivity } from '~/utils/backend/activity';
 import { getAgencyContext } from '~/utils/backend/context';
 import { parseSupportRequestUpdatePayload } from '~/utils/backend/validation';
-import { getAdminClient } from '~/utils/supabase/admin';
 import { withAuth } from '~/utils/supabase/auth';
 
 export const prerender = false;
 
 const SUPABASE_ERROR = 'Supabase admin client is not configured';
 
-async function loadSupportRequest(agencyId: string, id: string) {
-  const client = getAdminClient();
+async function loadSupportRequest(client: SupabaseClient, agencyId: string, id: string) {
   const { data, error } = await client
     .from('support_requests')
     .select('*')
@@ -43,10 +43,9 @@ export const PATCH: APIRoute = withAuth(async ({ locals, params, request }) => {
   }
 
   try {
-    const { agency } = await getAgencyContext(locals.user!);
-    const client = getAdminClient();
+    const { agency, client } = await getAgencyContext(locals);
 
-    const existing = await loadSupportRequest(agency.id, ticketId);
+    const existing = await loadSupportRequest(client, agency.id, ticketId);
     if (!existing) {
       return new Response(JSON.stringify({ error: 'Support request not found' }), { status: 404 });
     }
@@ -68,7 +67,7 @@ export const PATCH: APIRoute = withAuth(async ({ locals, params, request }) => {
       return new Response(JSON.stringify({ error: 'Unable to update ticket' }), { status: 500 });
     }
 
-    await logAgencyActivity(agency.id, 'support_request_updated', 'support_request', ticketId, {
+    await logAgencyActivity(client, agency.id, 'support_request_updated', 'support_request', ticketId, {
       before_status: existing.status,
       after_status: data.status,
       priority: data.priority,
@@ -94,10 +93,9 @@ export const DELETE: APIRoute = withAuth(async ({ locals, params }) => {
   }
 
   try {
-    const { agency } = await getAgencyContext(locals.user!);
-    const client = getAdminClient();
+    const { agency, client } = await getAgencyContext(locals);
 
-    const existing = await loadSupportRequest(agency.id, ticketId);
+    const existing = await loadSupportRequest(client, agency.id, ticketId);
     if (!existing) {
       return new Response(JSON.stringify({ error: 'Support request not found' }), { status: 404 });
     }
@@ -113,7 +111,7 @@ export const DELETE: APIRoute = withAuth(async ({ locals, params }) => {
       return new Response(JSON.stringify({ error: 'Unable to delete ticket' }), { status: 500 });
     }
 
-    await logAgencyActivity(agency.id, 'support_request_deleted', 'support_request', ticketId, {
+    await logAgencyActivity(client, agency.id, 'support_request_deleted', 'support_request', ticketId, {
       request_type: existing.request_type,
     });
 

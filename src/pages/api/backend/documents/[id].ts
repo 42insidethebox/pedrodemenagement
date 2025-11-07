@@ -1,8 +1,9 @@
 import type { APIRoute } from 'astro';
 
+import type { SupabaseClient } from '@supabase/supabase-js';
+
 import { getAgencyContext } from '~/utils/backend/context';
 import { parseDocumentUpdate, type DocumentInput } from '~/utils/backend/validation';
-import { getAdminClient } from '~/utils/supabase/admin';
 import { withAuth } from '~/utils/supabase/auth';
 
 export const prerender = false;
@@ -16,8 +17,7 @@ type DocumentRecord = DocumentInput & {
   updated_at?: string;
 };
 
-async function loadDocument(id: string, agencyId: string) {
-  const client = getAdminClient();
+async function loadDocument(client: SupabaseClient, id: string, agencyId: string) {
   const { data, error } = await client
     .from('documents')
     .select('*')
@@ -36,8 +36,8 @@ async function loadDocument(id: string, agencyId: string) {
 
 export const GET: APIRoute = withAuth(async ({ locals, params }) => {
   try {
-    const context = await getAgencyContext(locals.user!);
-    const document = await loadDocument(params.id!, context.agency.id);
+    const { agency, client } = await getAgencyContext(locals);
+    const document = await loadDocument(client, params.id!, agency.id);
 
     if (!document) {
       return new Response(JSON.stringify({ error: 'Document not found' }), {
@@ -61,8 +61,8 @@ export const GET: APIRoute = withAuth(async ({ locals, params }) => {
 
 export const PUT: APIRoute = withAuth(async ({ locals, params, request }) => {
   try {
-    const context = await getAgencyContext(locals.user!);
-    const existing = await loadDocument(params.id!, context.agency.id);
+    const { agency, client } = await getAgencyContext(locals);
+    const existing = await loadDocument(client, params.id!, agency.id);
 
     if (!existing) {
       return new Response(JSON.stringify({ error: 'Document not found' }), {
@@ -82,7 +82,6 @@ export const PUT: APIRoute = withAuth(async ({ locals, params, request }) => {
     }
 
     const metadata = payload.metadata ?? existing.metadata ?? {};
-    const client = getAdminClient();
 
     const { data, error } = await client
       .from('documents')
@@ -91,7 +90,7 @@ export const PUT: APIRoute = withAuth(async ({ locals, params, request }) => {
         metadata,
       })
       .eq('id', params.id!)
-      .eq('agency_id', context.agency.id)
+      .eq('agency_id', agency.id)
       .select('*')
       .single();
 
@@ -118,8 +117,8 @@ export const PUT: APIRoute = withAuth(async ({ locals, params, request }) => {
 
 export const DELETE: APIRoute = withAuth(async ({ locals, params }) => {
   try {
-    const context = await getAgencyContext(locals.user!);
-    const existing = await loadDocument(params.id!, context.agency.id);
+    const { agency, client } = await getAgencyContext(locals);
+    const existing = await loadDocument(client, params.id!, agency.id);
 
     if (!existing) {
       return new Response(JSON.stringify({ error: 'Document not found' }), {
@@ -128,12 +127,11 @@ export const DELETE: APIRoute = withAuth(async ({ locals, params }) => {
       });
     }
 
-    const client = getAdminClient();
     const { error } = await client
       .from('documents')
       .delete()
       .eq('id', params.id!)
-      .eq('agency_id', context.agency.id);
+      .eq('agency_id', agency.id);
 
     if (error) {
       console.error('Failed to delete document', error);

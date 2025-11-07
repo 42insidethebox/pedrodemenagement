@@ -393,6 +393,8 @@ declare global {
   namespace App {
     interface Locals {
       user?: import('@supabase/supabase-js').User;
+      accessToken?: string;
+      supabase?: import('@supabase/supabase-js').SupabaseClient | null;
     }
   }
 }
