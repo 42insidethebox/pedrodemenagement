@@ -3,6 +3,7 @@ import { getSupabaseAdmin } from '~/lib/supabase';
 import { ENV } from '~/lib/env';
 import { logger } from '~/lib/logger.js';
 import { sendPasswordResetEmail } from '~/lib/email';
+import { detectRequestLocale } from '~/lib/locale';
 import { assertRateLimit } from '~/lib/rate-limit';
 
 export const prerender = false;
@@ -11,10 +12,11 @@ function isValidEmail(email: string) {
   return /.+@.+\..+/.test(email);
 }
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, url }) => {
   assertRateLimit(request, { key: 'auth:forgot', limit: 5, window: 300 });
   const payload = await request.json().catch(() => null);
   const email = typeof payload?.email === 'string' ? payload.email.trim().toLowerCase() : '';
+  const locale = detectRequestLocale(request, url);
 
   if (!isValidEmail(email)) {
     return new Response(JSON.stringify({ error: 'Invalid email' }), { status: 400 });
@@ -41,7 +43,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     const resetUrl = data?.properties?.action_link;
     if (resetUrl) {
-      await sendPasswordResetEmail(email, resetUrl);
+      await sendPasswordResetEmail(email, resetUrl, locale);
     }
 
     return new Response(JSON.stringify({ success: true }), { status: 200 });

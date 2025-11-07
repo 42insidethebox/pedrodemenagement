@@ -1,7 +1,7 @@
 import { ENV } from './env';
 import { logger } from './logger.js';
 import { deployTemplate, waitForDeploymentStatus, attachDomainToDeployment, generatePreviewUrl, updateSupabaseWithPreviewUrl } from './vercel';
-import { sendDeploymentReadyEmail } from './email';
+import { sendDeploymentReadyEmail, sendAdminDeploymentEmail } from './email';
 
 export async function triggerTemplateDeployment(sessionOrOrder) {
   if (!ENV.DEPLOY_AUTOMATION_ENABLED) return null;
@@ -22,6 +22,12 @@ export async function triggerTemplateDeployment(sessionOrOrder) {
     }
 
     try { await sendDeploymentReadyEmail({ customer_email: sessionOrOrder?.customer_details?.email }, previewUrl); } catch {}
+    try {
+      await sendAdminDeploymentEmail({
+        projectName: md.projectName || md.name || md.template || 'Projet',
+        previewUrl,
+      });
+    } catch {}
     return { previewUrl };
   } catch (e) {
     logger.error(e, { where: 'triggerTemplateDeployment' });

@@ -1,7 +1,8 @@
 import type { APIRoute } from 'astro';
 
-import { sendSupportTicketEmail } from '~/lib/email';
+import { sendSupportTicketEmail, sendSupportConfirmationEmail } from '~/lib/email';
 import { ENV } from '~/lib/env';
+import { detectRequestLocale } from '~/lib/locale';
 import { logAgencyActivity } from '~/utils/backend/activity';
 import { getAgencyContext } from '~/utils/backend/context';
 import { parseSupportRequestPayload } from '~/utils/backend/validation';
@@ -71,6 +72,8 @@ export const POST: APIRoute = withAuth(async ({ locals, request }) => {
       priority: data.priority,
     });
 
+    const locale = detectRequestLocale(request, new URL(request.url));
+
     if (ENV.SUPPORT_EMAIL) {
       const summary = payload.description || payload.request_type;
       await sendSupportTicketEmail({
@@ -79,6 +82,17 @@ export const POST: APIRoute = withAuth(async ({ locals, request }) => {
         summary,
         customerName: payload.customer_name,
         priority: payload.priority,
+        locale,
+      });
+    }
+
+    if (payload.customer_email) {
+      const summary = payload.description || payload.request_type;
+      await sendSupportConfirmationEmail({
+        to: payload.customer_email,
+        ticketId: data.id,
+        summary,
+        locale,
       });
     }
 

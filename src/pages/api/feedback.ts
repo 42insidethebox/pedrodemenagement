@@ -3,13 +3,14 @@ import { getSupabaseAdmin } from '~/lib/supabase';
 import { ENV } from '~/lib/env';
 import { logger } from '~/lib/logger.js';
 import { sendFeedbackNotificationEmail } from '~/lib/email';
+import { detectRequestLocale } from '~/lib/locale';
 import { assertRateLimit } from '~/lib/rate-limit';
 
 export const prerender = false;
 
 const TABLE_NAME = 'project_feedback';
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, url }) => {
   assertRateLimit(request, { key: 'feedback', limit: 10, window: 60 });
   const payload = await request.json().catch(() => null);
   const message = typeof payload?.message === 'string' ? payload.message.trim() : '';
@@ -47,11 +48,14 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: 'Unable to store feedback' }), { status: 500 });
     }
 
+    const locale = detectRequestLocale(request, url);
+
     await sendFeedbackNotificationEmail({
       to: ENV.SUPPORT_EMAIL,
       message,
       project: projectId || `order-${orderId ?? data?.order_id ?? 'n/a'}`,
       author: authorName || authorEmail || undefined,
+      locale,
     });
 
     return new Response(JSON.stringify({ success: true, feedback: data }), { status: 201 });

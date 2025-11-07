@@ -2,16 +2,18 @@ import type { APIRoute } from 'astro';
 import { getSupabaseAnon, getSupabaseAdmin } from '~/lib/supabase';
 import { logger } from '~/lib/logger.js';
 import { sendPasswordChangedEmail } from '~/lib/email';
+import { detectRequestLocale } from '~/lib/locale';
 import { assertRateLimit } from '~/lib/rate-limit';
 
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, url }) => {
   assertRateLimit(request, { key: 'auth:reset', limit: 10, window: 300 });
   const payload = await request.json().catch(() => null);
   const token = typeof payload?.token === 'string' ? payload.token.trim() : '';
   const email = typeof payload?.email === 'string' ? payload.email.trim().toLowerCase() : '';
   const password = typeof payload?.password === 'string' ? payload.password : '';
+  const locale = detectRequestLocale(request, url);
 
   if (!token || !email || password.length < 8) {
     return new Response(JSON.stringify({ error: 'Invalid payload' }), { status: 400 });
@@ -41,7 +43,7 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: 'Unable to update password' }), { status: 400 });
     }
 
-    await sendPasswordChangedEmail(email);
+    await sendPasswordChangedEmail(email, locale);
 
     return new Response(JSON.stringify({ success: true }), { status: 200 });
   } catch (error: any) {

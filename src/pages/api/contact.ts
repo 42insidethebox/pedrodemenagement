@@ -1,7 +1,8 @@
 import type { APIRoute } from 'astro';
 import { ENV } from '~/lib/env';
 import { getSupabaseAdmin } from '~/lib/supabase';
-import { sendEmail } from '~/lib/email';
+import { sendContactConfirmationEmail, sendContactNotificationEmail } from '~/lib/email';
+import { detectRequestLocale } from '~/lib/locale';
 import { assertRateLimit } from '~/lib/rate-limit';
 
 export const prerender = false;
@@ -32,17 +33,22 @@ export const POST: APIRoute = async ({ request, url }) => {
       await sb.from('leads').insert({ name, email, company, message, source });
     }
 
+    const locale = detectRequestLocale(request, url);
+
     if (ENV.RESEND_API_KEY && email) {
-      await sendEmail({
-        to: ENV.SUPPORT_EMAIL!,
-        subject: `New contact lead: ${name || email}`,
-        html: `<p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p><strong>Company:</strong> ${company}</p><p>${message}</p>`,
+      await sendContactNotificationEmail({
+        name,
+        email,
+        company,
+        message,
+        source,
+        locale,
       });
-      // Acknowledge to client
-      await sendEmail({
+      await sendContactConfirmationEmail({
         to: email,
-        subject: 'We received your message',
-        html: `<p>Hi ${name || ''},</p><p>Thanks for reaching out to TonSiteWeb. We will get back to you shortly.</p>`,
+        name,
+        message,
+        locale,
       });
     }
 

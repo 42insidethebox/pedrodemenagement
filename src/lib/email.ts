@@ -1,156 +1,406 @@
 import { ENV } from './env';
 import { logger } from './logger.js';
-import { renderTemplate, renderLayout } from './email-templates';
+import { EmailLocale, renderEmailTemplate, formatAmountForLocale } from './email-templates';
 
-function isFullHtml(html: string) {
-  const s = (html || '').trim().toLowerCase();
-  return s.startsWith('<!doctype html') || s.startsWith('<html');
+type SendResult = { ok: boolean; error?: string };
+
+type Recipient = string | string[];
+
+type SendTransactionalOptions = {
+  replyTo?: Recipient;
+  cc?: Recipient;
+  bccSupport?: boolean;
+};
+
+const SUPPORTED_LOCALES: EmailLocale[] = ['fr', 'en', 'de', 'it'];
+
+function normalizeRecipient(recipient: Recipient | undefined | null): string[] {
+  if (!recipient) return [];
+  if (Array.isArray(recipient)) {
+    return recipient.map((item) => item.trim()).filter(Boolean);
+  }
+  return recipient
+    .split(',')
+    .map((item) => item.trim())
+    .filter(Boolean);
 }
 
-function stripTagsToText(html: string) {
-  return String(html || '')
-    .replace(/<\s*br\s*\/?>/gi, '\n')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
+export function resolveEmailLocale(locale?: string | null): EmailLocale {
+  if (!locale) return 'fr';
+  const lower = locale.toLowerCase();
+  if (SUPPORTED_LOCALES.includes(lower as EmailLocale)) {
+    return lower as EmailLocale;
+  }
+  return 'fr';
 }
 
-// Internal low-level sender used by helpers below
-async function sendEmailInternal(subject: string, to: string, html: string) {
+async function sendTransactionalEmail(
+  to: Recipient,
+  subject: string,
+  html: string,
+  bccSupport = true,
+  options: SendTransactionalOptions = {},
+): Promise<SendResult> {
   const key = ENV.RESEND_API_KEY;
-  if (!key) return { ok: false, error: 'RESEND_API_KEY missing' };
+  if (!key) {
+    const error = 'RESEND_API_KEY missing';
+    logger.error(new Error(error), { where: 'sendTransactionalEmail' });
+    return { ok: false, error };
+  }
+
+  const recipients = normalizeRecipient(to);
+  if (recipients.length === 0) {
+    return { ok: false, error: 'Missing recipient' };
+  }
+
+  const supportEmail = (ENV.SUPPORT_EMAIL || 'support@tonsiteweb.ch').trim();
+  const fromName = ENV.SENDER_NAME || 'TonSiteWeb.ch';
+  const from = `${fromName} <${supportEmail}>`;
+
+  const payload: Record<string, any> = {
+    from,
+    to: recipients,
+    subject,
+    html,
+  };
+
+  if (bccSupport && supportEmail && !recipients.includes(supportEmail)) {
+    payload.bcc = [supportEmail];
+  }
+
+  const ccList = normalizeRecipient(options.cc);
+  if (ccList.length > 0) {
+    payload.cc = ccList;
+  }
+
+  const replyToList = normalizeRecipient(options.replyTo);
+  if (replyToList.length > 0) {
+    payload.reply_to = replyToList.length === 1 ? replyToList[0] : replyToList;
+  }
+
   try {
-    // Always ensure a branded layout; if caller already passed a full HTML document, keep it.
-    const finalHtml = isFullHtml(html)
-      ? html
-      : renderLayout({
-          title: subject,
-          preheader: stripTagsToText(html).slice(0, 140),
-          contentHtml: html,
-        });
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${key}`,
+        Authorization: `Bearer ${key}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        from: `${ENV.SENDER_NAME} <${ENV.SUPPORT_EMAIL}>`,
-        to: [to],
-        subject,
-        html: finalHtml,
-      }),
+      body: JSON.stringify(payload),
     });
     if (!res.ok) {
       const text = await res.text();
+      logger.error(new Error(text), { where: 'sendTransactionalEmail', subject });
       return { ok: false, error: text };
     }
     return { ok: true };
-  } catch (e: any) {
-    logger.error(e, { where: 'sendEmail' });
-    return { ok: false, error: e?.message || 'Failed' };
+  } catch (error: any) {
+    logger.error(error, { where: 'sendTransactionalEmail' });
+    return { ok: false, error: error?.message || 'Failed to send email' };
   }
 }
 
-// Public API: matches usage across API routes
-export async function sendEmail({
-  to,
-  subject,
-  html,
-}: {
-  to: string;
-  subject: string;
-  html: string;
-}) {
-  return sendEmailInternal(subject, to, html);
+type TemplateSendOptions = {
+  template: string;
+  to: Recipient;
+  locale?: string | null;
+  data?: Record<string, any>;
+  bccSupport?: boolean;
+  replyTo?: Recipient;
+  cc?: Recipient;
+};
+
+export async function sendEmailTemplate(options: TemplateSendOptions): Promise<SendResult> {
+  const { template, to, locale, data, bccSupport = true, replyTo, cc } = options;
+  const rendered = renderEmailTemplate(template, { locale, data });
+  return sendTransactionalEmail(to, rendered.subject, rendered.html, bccSupport, { replyTo, cc });
+}
+
+function formatOrderAmount(amount: unknown, currency: string | null | undefined, locale: EmailLocale) {
+  return formatAmountForLocale(amount, currency, locale);
+}
+
+function formatDateForLocale(value: unknown, locale: EmailLocale) {
+  const numeric = typeof value === 'number' ? value : Number(value || 0);
+  if (!Number.isFinite(numeric) || numeric <= 0) return '';
+  try {
+    const date = new Date(numeric * 1000);
+    if (Number.isNaN(date.getTime())) return '';
+    const localeTag = locale === 'fr' ? 'fr-CH' : locale === 'de' ? 'de-CH' : locale === 'it' ? 'it-CH' : 'en-CH';
+    return new Intl.DateTimeFormat(localeTag, { day: '2-digit', month: '2-digit', year: 'numeric' }).format(date);
+  } catch {
+    return '';
+  }
+}
+
+function orderLocale(order: any): EmailLocale {
+  const metadata = order?.metadata || {};
+  const locale =
+    order?.locale ||
+    metadata.locale ||
+    metadata.lang ||
+    metadata.language ||
+    (typeof metadata.acceptLanguage === 'string' ? metadata.acceptLanguage.split(',')[0] : null);
+  return resolveEmailLocale(locale);
+}
+
+function buildOrderTemplateData(order: any, locale: EmailLocale) {
+  const metadata = order?.metadata || {};
+  const amount = typeof order?.amount_total === 'number' ? order.amount_total : Number(order?.amount_total || 0);
+  const currency = order?.currency || metadata.currency || 'CHF';
+  const formattedAmount = formatOrderAmount(amount, currency, locale);
+
+  return {
+    order_number: order?.order_number || metadata.order_number || '—',
+    customer_name: order?.customer_name || metadata.name || '',
+    customer_email: order?.customer_email || metadata.email || '',
+    plan_name: order?.plan || metadata.plan || '',
+    template_name: order?.template_key || metadata.template || '',
+    amount_formatted: formattedAmount,
+    amount_currency: String(currency || 'CHF').toUpperCase(),
+    amount_minor: amount,
+    amount_value: amount / 100,
+    payment_status: order?.status || metadata.status || '',
+    metadata,
+    support_email: ENV.SUPPORT_EMAIL || 'support@tonsiteweb.ch',
+  } as Record<string, any>;
 }
 
 export async function sendAdminNotificationEmail(order: any) {
-  const to = ENV.SUPPORT_EMAIL;
-  if (!to) return { ok: false, error: 'Missing support email' };
-  const subject = order?.order_number
-    ? `Nouvelle commande ${order.order_number}`
-    : 'Nouvelle commande';
-  const html = renderTemplate('admin_notification', { order });
-  return sendEmailInternal(subject, to, html);
+  const locale = orderLocale(order);
+  const data = buildOrderTemplateData(order, locale);
+  return sendEmailTemplate({
+    template: 'orders/admin-new-order',
+    to: ENV.SUPPORT_EMAIL || 'support@tonsiteweb.ch',
+    locale,
+    data,
+    bccSupport: false,
+  });
 }
 
 export async function sendClientConfirmationEmail(order: any) {
+  const locale = orderLocale(order);
   const to = order?.customer_email || order?.email;
   if (!to) return { ok: false, error: 'Missing recipient' };
-  const subject = order?.order_number
-    ? `Votre commande ${order.order_number} est confirmée`
-    : 'Votre commande est confirmée';
-  const html = renderTemplate('client_confirmation', { order });
-  return sendEmailInternal(subject, to, html);
+  const data = buildOrderTemplateData(order, locale);
+  return sendEmailTemplate({
+    template: 'orders/order-confirmation',
+    to,
+    locale,
+    data,
+    bccSupport: true,
+  });
 }
 
-export async function sendDeploymentReadyEmail(order: any, previewUrl: string) {
+export async function sendOrderUpdateEmail(order: any, update: { status: string; note?: string }) {
+  const locale = orderLocale(order);
   const to = order?.customer_email || order?.email;
   if (!to) return { ok: false, error: 'Missing recipient' };
-  const subject = 'Preview is ready';
-  const html = renderTemplate('project_ready', { projectName: order?.projectName || 'Votre site', previewUrl });
-  return sendEmailInternal(subject, to, html);
+  const data = {
+    ...buildOrderTemplateData(order, locale),
+    new_status: update.status,
+    note: update.note || '',
+    note_block: update.note
+      ? `<p style="margin:16px 0;"><strong>${locale === 'en' ? 'Comment' : locale === 'de' ? 'Kommentar' : locale === 'it' ? 'Commento' : 'Commentaire'} :</strong> ${update.note}</p>`
+      : '',
+  };
+  return sendEmailTemplate({ template: 'orders/order-update', to, locale, data, bccSupport: true });
 }
 
-export async function sendInvoiceOrReceiptEmail(_stripeData: any) {
-  return { ok: true };
-}
-
-export function renderEmailTemplate(_templateName: string, data: any) {
-  // Bridge to real templates
-  return renderTemplate(_templateName, data);
-}
-
-export async function sendWelcomeEmail(to: string, name?: string | null, verifyUrl?: string) {
+export async function sendSubscriptionRenewalEmail(order: any, invoice: any) {
+  const locale = orderLocale(order);
+  const to = order?.customer_email || order?.email;
   if (!to) return { ok: false, error: 'Missing recipient' };
-  const subject = 'Bienvenue chez TonSiteWeb';
-  const html = renderTemplate('welcome', { name, verifyUrl });
-  return sendEmailInternal(subject, to, html);
+  const amount = invoice?.amount_paid ?? order?.amount_total;
+  const currency = invoice?.currency || order?.currency;
+  const periodStart = formatDateForLocale(invoice?.lines?.data?.[0]?.period?.start, locale);
+  const periodEnd = formatDateForLocale(invoice?.lines?.data?.[0]?.period?.end, locale);
+  const renewalPeriod = periodStart && periodEnd ? `${periodStart} → ${periodEnd}` : '';
+  const data = {
+    ...buildOrderTemplateData(order, locale),
+    invoice_number: invoice?.number || '',
+    amount_formatted: formatOrderAmount(amount, currency, locale),
+    period_start: periodStart,
+    period_end: periodEnd,
+    renewal_period: renewalPeriod,
+  };
+  return sendEmailTemplate({ template: 'orders/subscription-renewal', to, locale, data, bccSupport: true });
 }
 
-export async function sendPasswordResetEmail(to: string, resetUrl: string) {
+export async function sendSubscriptionCancelledEmail(order: any, subscription: any) {
+  const locale = orderLocale(order);
+  const to = order?.customer_email || order?.email;
   if (!to) return { ok: false, error: 'Missing recipient' };
-  const subject = 'Réinitialisez votre mot de passe';
-  const html = renderTemplate('password_reset', { resetUrl });
-  return sendEmailInternal(subject, to, html);
+  const canceledAt = formatDateForLocale(subscription?.canceled_at, locale);
+  const data = {
+    ...buildOrderTemplateData(order, locale),
+    cancellation_reason: subscription?.cancellation_reason || '',
+    canceled_at: canceledAt,
+  };
+  return sendEmailTemplate({ template: 'orders/subscription-cancelled', to, locale, data, bccSupport: true });
 }
 
-export async function sendPasswordChangedEmail(to: string) {
+export async function sendWelcomeEmail(to: string, name?: string | null, verifyUrl?: string | null, locale?: string | null) {
   if (!to) return { ok: false, error: 'Missing recipient' };
-  const subject = 'Mot de passe mis à jour';
-  const html = renderTemplate('password_changed', {});
-  return sendEmailInternal(subject, to, html);
+  const verifySection = verifyUrl
+    ? `<p style="margin:16px 0;"><a href="${verifyUrl}" target="_blank">${locale === 'en' ? 'Confirm my email address' : locale === 'de' ? 'Meine E-Mail-Adresse bestätigen' : locale === 'it' ? 'Conferma il mio indirizzo email' : 'Confirmer mon adresse email'}</a></p>`
+    : '';
+  return sendEmailTemplate({
+    template: 'auth/welcome',
+    to,
+    locale,
+    data: {
+      user_name: name || '',
+      verify_url: verifyUrl || '',
+      verify_section: verifySection,
+    },
+    bccSupport: true,
+  });
 }
 
-export async function sendProjectReadyEmail({
-  to,
-  projectName,
-  previewUrl,
-}: {
-  to: string;
-  projectName: string;
-  previewUrl: string;
+export async function sendNewUserAdminEmail(payload: { email: string; name?: string; phone?: string; locale?: string | null }) {
+  const locale = resolveEmailLocale(payload.locale);
+  return sendEmailTemplate({
+    template: 'auth/admin-new-user',
+    to: ENV.SUPPORT_EMAIL || 'support@tonsiteweb.ch',
+    locale,
+    data: {
+      user_email: payload.email,
+      user_name: payload.name || '',
+      user_phone: payload.phone || '',
+    },
+    bccSupport: false,
+  });
+}
+
+export async function sendPasswordResetEmail(to: string, resetUrl: string, locale?: string | null) {
+  if (!to) return { ok: false, error: 'Missing recipient' };
+  return sendEmailTemplate({
+    template: 'auth/reset-request',
+    to,
+    locale,
+    data: {
+      reset_url: resetUrl,
+    },
+    bccSupport: false,
+  });
+}
+
+export async function sendPasswordChangedEmail(to: string, locale?: string | null) {
+  if (!to) return { ok: false, error: 'Missing recipient' };
+  return sendEmailTemplate({ template: 'auth/password-changed', to, locale, data: {}, bccSupport: false });
+}
+
+export async function sendContactNotificationEmail(data: {
+  name: string;
+  email: string;
+  company?: string;
+  message: string;
+  source?: string;
+  locale?: string | null;
 }) {
-  if (!to) return { ok: false, error: 'Missing recipient' };
-  const subject = `Votre site ${escapeHtml(projectName)} est prêt à être validé`;
-  const html = renderTemplate('project_ready', { projectName, previewUrl });
-  return sendEmailInternal(subject, to, html);
+  const locale = resolveEmailLocale(data.locale);
+  return sendEmailTemplate({
+    template: 'contact/contact-notification',
+    to: ENV.SUPPORT_EMAIL || 'support@tonsiteweb.ch',
+    locale,
+    data: {
+      sender_name: data.name,
+      sender_email: data.email,
+      sender_company: data.company || '',
+      sender_message: data.message,
+      source: data.source || 'contact',
+    },
+    bccSupport: false,
+    replyTo: data.email,
+  });
 }
 
-export async function sendProjectDelayedEmail({
-  to,
-  projectName,
-  newEta,
-}: {
+export async function sendContactConfirmationEmail(data: {
   to: string;
-  projectName: string;
-  newEta: string;
+  name?: string;
+  message?: string;
+  locale?: string | null;
 }) {
-  if (!to) return { ok: false, error: 'Missing recipient' };
-  const subject = `Mise à jour du planning pour ${escapeHtml(projectName)}`;
-  const html = renderTemplate('project_delayed', { projectName, newEta });
-  return sendEmailInternal(subject, to, html);
+  return sendEmailTemplate({
+    template: 'contact/contact-confirmation',
+    to: data.to,
+    locale: data.locale,
+    data: {
+      sender_name: data.name || '',
+      sender_message: data.message || '',
+    },
+    bccSupport: true,
+  });
+}
+
+export async function sendDemoRequestEmail(data: {
+  name: string;
+  email: string;
+  company?: string;
+  message?: string;
+  locale?: string | null;
+  timeslot?: string;
+}) {
+  const locale = resolveEmailLocale(data.locale);
+  return sendEmailTemplate({
+    template: 'demo/demo-request',
+    to: ENV.SUPPORT_EMAIL || 'support@tonsiteweb.ch',
+    locale,
+    data: {
+      requester_name: data.name,
+      requester_email: data.email,
+      requester_company: data.company || '',
+      requester_message: data.message || '',
+      preferred_timeslot: data.timeslot || '',
+    },
+    bccSupport: false,
+    replyTo: data.email,
+  });
+}
+
+export async function sendDemoConfirmationEmail(data: {
+  to: string;
+  name?: string;
+  locale?: string | null;
+  timeslot?: string;
+}) {
+  return sendEmailTemplate({
+    template: 'demo/demo-confirmation',
+    to: data.to,
+    locale: data.locale,
+    data: {
+      requester_name: data.name || '',
+      preferred_timeslot: data.timeslot || '',
+    },
+    bccSupport: true,
+  });
+}
+
+export async function sendFeedbackNotificationEmail({
+  to,
+  message,
+  project,
+  author,
+  locale,
+}: {
+  to?: string;
+  message: string;
+  project: string;
+  author?: string;
+  locale?: string | null;
+}) {
+  const recipient = to || ENV.SUPPORT_EMAIL || 'support@tonsiteweb.ch';
+  return sendEmailTemplate({
+    template: 'feedback/feedback',
+    to: recipient,
+    locale,
+    data: {
+      feedback_message: message,
+      project_name: project,
+      feedback_author: author || '',
+    },
+    bccSupport: !to,
+  });
 }
 
 export async function sendSupportTicketEmail({
@@ -159,51 +409,143 @@ export async function sendSupportTicketEmail({
   summary,
   customerName,
   priority,
+  locale,
 }: {
   to: string;
   ticketId: string;
   summary: string;
   customerName?: string | null;
   priority?: string | null;
+  locale?: string | null;
 }) {
-  if (!to) return { ok: false, error: 'Missing recipient' };
-  const subject = `Nouveau ticket #${escapeHtml(ticketId)} (${escapeHtml(priority || 'normal')})`;
-  const html = renderTemplate('support_ticket', { ticketId, summary, customerName, priority });
-  return sendEmailInternal(subject, to, html);
+  return sendEmailTemplate({
+    template: 'support/admin-support',
+    to,
+    locale,
+    data: {
+      ticket_id: ticketId,
+      ticket_summary: summary,
+      customer_name: customerName || '',
+      ticket_priority: priority || 'normal',
+    },
+    bccSupport: false,
+  });
 }
 
-export async function sendSubscriptionUpdateEmail({
+export async function sendSupportConfirmationEmail({
   to,
-  subscriptionId,
-  action,
+  ticketId,
+  summary,
+  locale,
 }: {
   to: string;
-  subscriptionId: string;
-  action: 'updated' | 'canceled';
+  ticketId: string;
+  summary: string;
+  locale?: string | null;
 }) {
-  if (!to) return { ok: false, error: 'Missing recipient' };
-  const subject = `Votre abonnement ${escapeHtml(subscriptionId)} a été ${action === 'updated' ? 'mis à jour' : 'annulé'}`;
-  const html = renderTemplate('subscription_update', { subscriptionId, action });
-  return sendEmailInternal(subject, to, html);
+  return sendEmailTemplate({
+    template: 'support/support-confirmation',
+    to,
+    locale,
+    data: {
+      ticket_id: ticketId,
+      ticket_summary: summary,
+    },
+    bccSupport: true,
+  });
 }
 
-export async function sendFeedbackNotificationEmail({
+export async function sendProjectReadyEmail({
   to,
-  message,
-  project,
-  author,
+  projectName,
+  previewUrl,
+  locale,
 }: {
   to: string;
-  message: string;
-  project: string;
-  author?: string;
+  projectName: string;
+  previewUrl: string;
+  locale?: string | null;
 }) {
-  if (!to) return { ok: false, error: 'Missing recipient' };
-  const subject = `Nouveau retour client sur ${project}`;
-  const html = renderTemplate('feedback_notification', { message, project, author });
-  return sendEmailInternal(subject, to, html);
+  return sendEmailTemplate({
+    template: 'deployment/project-published',
+    to,
+    locale,
+    data: {
+      project_name: projectName,
+      preview_url: previewUrl,
+    },
+    bccSupport: true,
+  });
 }
 
-function escapeHtml(s: string) {
-  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+export async function sendAdminDeploymentEmail({
+  projectName,
+  previewUrl,
+  locale,
+}: {
+  projectName: string;
+  previewUrl: string;
+  locale?: string | null;
+}) {
+  return sendEmailTemplate({
+    template: 'deployment/admin-deployment',
+    to: ENV.SUPPORT_EMAIL || 'support@tonsiteweb.ch',
+    locale,
+    data: {
+      project_name: projectName,
+      preview_url: previewUrl,
+    },
+    bccSupport: false,
+  });
+}
+
+export async function sendProjectDelayedEmail({
+  to,
+  projectName,
+  newEta,
+  locale,
+}: {
+  to: string;
+  projectName: string;
+  newEta: string;
+  locale?: string | null;
+}) {
+  return sendEmailTemplate({
+    template: 'deployment/project-delayed',
+    to,
+    locale,
+    data: {
+      project_name: projectName,
+      new_eta: newEta,
+    },
+    bccSupport: true,
+  });
+}
+
+export async function sendSystemAlertEmail(subject: string, details: Record<string, any>) {
+  return sendEmailTemplate({
+    template: 'system/system-alert',
+    to: ENV.SUPPORT_EMAIL || 'support@tonsiteweb.ch',
+    locale: 'fr',
+    data: {
+      alert_subject: subject,
+      alert_body: JSON.stringify(details, null, 2),
+    },
+    bccSupport: false,
+  });
+}
+
+export async function sendDeploymentReadyEmail(order: any, previewUrl: string) {
+  const locale = orderLocale(order || {});
+  const to = order?.customer_email || order?.email || order?.to || '';
+  if (!to) return { ok: false, error: 'Missing recipient' };
+  return sendProjectReadyEmail({ to, projectName: order?.projectName || 'Votre site', previewUrl, locale });
+}
+
+export async function sendInvoiceOrReceiptEmail(_stripeData: any) {
+  return { ok: true };
+}
+
+export function renderEmail(template: string, data: Record<string, any>, locale?: string | null) {
+  return renderEmailTemplate(template, { data, locale });
 }
