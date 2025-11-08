@@ -1,13 +1,11 @@
-import { g as getAgencyContext } from '../../../../chunks/context_DNXiXfuF.mjs';
+import { g as getAgencyContext } from '../../../../chunks/context_CJYV_HFi.mjs';
 import { a as parseDocumentUpdate } from '../../../../chunks/validation_B_1A_rZS.mjs';
-import { g as getAdminClient } from '../../../../chunks/admin_D2MILzzI.mjs';
-import { w as withAuth } from '../../../../chunks/auth_DDcfvRJZ.mjs';
+import { w as withAuth } from '../../../../chunks/auth_By5untnG.mjs';
 export { renderers } from '../../../../renderers.mjs';
 
 const prerender = false;
 const SUPABASE_ERROR = "Supabase admin client is not configured";
-async function loadDocument(id, agencyId) {
-  const client = getAdminClient();
+async function loadDocument(client, id, agencyId) {
   const { data, error } = await client.from("documents").select("*").eq("id", id).eq("agency_id", agencyId).maybeSingle();
   if (error) {
     console.error("Failed to load document", error);
@@ -18,8 +16,8 @@ async function loadDocument(id, agencyId) {
 }
 const GET = withAuth(async ({ locals, params }) => {
   try {
-    const context = await getAgencyContext(locals.user);
-    const document = await loadDocument(params.id, context.agency.id);
+    const { agency, client } = await getAgencyContext(locals);
+    const document = await loadDocument(client, params.id, agency.id);
     if (!document) {
       return new Response(JSON.stringify({ error: "Document not found" }), {
         status: 404,
@@ -40,8 +38,8 @@ const GET = withAuth(async ({ locals, params }) => {
 });
 const PUT = withAuth(async ({ locals, params, request }) => {
   try {
-    const context = await getAgencyContext(locals.user);
-    const existing = await loadDocument(params.id, context.agency.id);
+    const { agency, client } = await getAgencyContext(locals);
+    const existing = await loadDocument(client, params.id, agency.id);
     if (!existing) {
       return new Response(JSON.stringify({ error: "Document not found" }), {
         status: 404,
@@ -58,11 +56,10 @@ const PUT = withAuth(async ({ locals, params, request }) => {
       });
     }
     const metadata = payload.metadata ?? existing.metadata ?? {};
-    const client = getAdminClient();
     const { data, error } = await client.from("documents").update({
       ...payload,
       metadata
-    }).eq("id", params.id).eq("agency_id", context.agency.id).select("*").single();
+    }).eq("id", params.id).eq("agency_id", agency.id).select("*").single();
     if (error) {
       console.error("Failed to update document", error);
       return new Response(JSON.stringify({ error: "Unable to update document" }), {
@@ -84,16 +81,15 @@ const PUT = withAuth(async ({ locals, params, request }) => {
 });
 const DELETE = withAuth(async ({ locals, params }) => {
   try {
-    const context = await getAgencyContext(locals.user);
-    const existing = await loadDocument(params.id, context.agency.id);
+    const { agency, client } = await getAgencyContext(locals);
+    const existing = await loadDocument(client, params.id, agency.id);
     if (!existing) {
       return new Response(JSON.stringify({ error: "Document not found" }), {
         status: 404,
         headers: { "Content-Type": "application/json" }
       });
     }
-    const client = getAdminClient();
-    const { error } = await client.from("documents").delete().eq("id", params.id).eq("agency_id", context.agency.id);
+    const { error } = await client.from("documents").delete().eq("id", params.id).eq("agency_id", agency.id);
     if (error) {
       console.error("Failed to delete document", error);
       return new Response(JSON.stringify({ error: "Unable to delete document" }), {

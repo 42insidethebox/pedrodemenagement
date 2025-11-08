@@ -1,11 +1,10 @@
-import { g as getAgencyContext } from '../../../../chunks/context_DNXiXfuF.mjs';
-import { a as adminClient } from '../../../../chunks/admin_D2MILzzI.mjs';
-import { w as withAuth } from '../../../../chunks/auth_DDcfvRJZ.mjs';
+import { g as getAgencyContext } from '../../../../chunks/context_CJYV_HFi.mjs';
+import { w as withAuth } from '../../../../chunks/auth_By5untnG.mjs';
 export { renderers } from '../../../../renderers.mjs';
 
 const prerender = false;
 const GET = withAuth(async ({ locals }) => {
-  const { agency, user } = await getAgencyContext(locals.user);
+  const { agency, user, client } = await getAgencyContext(locals);
   const now = /* @__PURE__ */ new Date();
   const nowIso = now.toISOString();
   const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1e3).toISOString();
@@ -27,15 +26,15 @@ const GET = withAuth(async ({ locals }) => {
     recentDocumentsResult,
     recentActivitiesResult
   ] = await Promise.all([
-    adminClient.from("clients").select("id", { count: "exact", head: true }).eq("agency_id", agency.id),
-    adminClient.from("projects").select("id", { count: "exact", head: true }).eq("agency_id", agency.id).neq("status", "completed"),
-    adminClient.from("websites").select("id", { count: "exact", head: true }).eq("agency_id", agency.id).eq("status", "live"),
-    adminClient.from("tasks").select("id", { count: "exact", head: true }).eq("agency_id", agency.id).not("status", "eq", "done").not("due_date", "is", null).lt("due_date", nowIso),
-    adminClient.from("tasks").select("id", { count: "exact", head: true }).eq("agency_id", agency.id).eq("status", "blocked"),
-    adminClient.from("tasks").select("id", { count: "exact", head: true }).eq("agency_id", agency.id).eq("status", "in_progress"),
-    adminClient.from("invoices").select("amount, status, issue_date, due_date").eq("agency_id", agency.id),
-    adminClient.from("documents").select("*").eq("agency_id", agency.id).order("created_at", { ascending: false }).limit(5),
-    adminClient.from("activities").select("*").eq("agency_id", agency.id).order("created_at", { ascending: false }).limit(10)
+    client.from("clients").select("id", { count: "exact", head: true }).eq("agency_id", agency.id),
+    client.from("projects").select("id", { count: "exact", head: true }).eq("agency_id", agency.id).neq("status", "completed"),
+    client.from("websites").select("id", { count: "exact", head: true }).eq("agency_id", agency.id).eq("status", "live"),
+    client.from("tasks").select("id", { count: "exact", head: true }).eq("agency_id", agency.id).not("status", "eq", "done").not("due_date", "is", null).lt("due_date", nowIso),
+    client.from("tasks").select("id", { count: "exact", head: true }).eq("agency_id", agency.id).eq("status", "blocked"),
+    client.from("tasks").select("id", { count: "exact", head: true }).eq("agency_id", agency.id).eq("status", "in_progress"),
+    client.from("invoices").select("amount, status, issue_date, due_date").eq("agency_id", agency.id),
+    client.from("documents").select("*").eq("agency_id", agency.id).order("created_at", { ascending: false }).limit(5),
+    client.from("activities").select("*").eq("agency_id", agency.id).order("created_at", { ascending: false }).limit(10)
   ]);
   const clientsCount = parseCount("clients", clientsResult);
   const activeProjectsCount = parseCount("projects", activeProjectsResult);
