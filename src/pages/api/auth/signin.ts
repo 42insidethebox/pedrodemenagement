@@ -30,6 +30,10 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: 'Incorrect email or password' }), { status: 401 });
     }
 
+    if (!data.user?.email_confirmed_at) {
+      return new Response(JSON.stringify({ error: 'Please confirm your email before signing in.' }), { status: 403 });
+    }
+
     return new Response(
       JSON.stringify({
         user: data.user,

@@ -1,14 +1,27 @@
 import type { APIRoute } from 'astro';
 import { getSupabaseAdmin } from '~/lib/supabase';
-import { ENV } from '~/lib/env';
 import { logger } from '~/lib/logger.js';
 import { sendWelcomeEmail, sendAdminUserSignupEmail } from '~/lib/email';
 import { assertRateLimit } from '~/lib/rate-limit';
+import { resolveAppOrigin } from '~/utils/auth/origin';
 
 export const prerender = false;
 
 function isValidEmail(email: string) {
   return /.+@.+\..+/.test(email);
+}
+
+function checkPasswordPolicy(password: string) {
+  const rules: Array<{ test: RegExp; message: string }> = [
+    { test: /.{12,}/, message: 'Password must be at least 12 characters long' },
+    { test: /[a-z]/, message: 'Password must include a lowercase letter' },
+    { test: /[A-Z]/, message: 'Password must include an uppercase letter' },
+    { test: /\d/, message: 'Password must include a number' },
+    { test: /[^A-Za-z0-9]/, message: 'Password must include a symbol' },
+  ];
+
+  const failedRule = rules.find((rule) => !rule.test.test(password));
+  return failedRule?.message ?? '';
 }
 
 export const POST: APIRoute = async ({ request }) => {
@@ -20,9 +33,29 @@ export const POST: APIRoute = async ({ request }) => {
   const phone = typeof payload?.phone === 'string' ? payload.phone.trim() : '';
   const plan = typeof payload?.plan === 'string' ? payload.plan.trim() : '';
   const template = typeof payload?.template === 'string' ? payload.template.trim() : '';
+  const nextPath = typeof payload?.next === 'string' ? payload.next.trim() : '';
 
-  if (!isValidEmail(email) || password.length < 8) {
-    return new Response(JSON.stringify({ error: 'Invalid email or password' }), { status: 400 });
+  const baseOrigin = resolveAppOrigin(request);
+  let redirectTo = `${baseOrigin}/auth/callback`;
+  if (nextPath && /^\/[a-zA-Z0-9\-_/]*$/.test(nextPath) && !nextPath.includes('..')) {
+    try {
+      const url = new URL('/auth/callback', baseOrigin);
+      if (nextPath !== '/auth/callback') {
+        url.searchParams.set('next', nextPath);
+      }
+      redirectTo = url.toString();
+    } catch (error) {
+      logger.warn('Unable to compute redirect for signup confirmation', { error });
+    }
+  }
+
+  if (!isValidEmail(email)) {
+    return new Response(JSON.stringify({ error: 'Invalid email address' }), { status: 400 });
+  }
+
+  const passwordError = checkPasswordPolicy(password);
+  if (passwordError) {
+    return new Response(JSON.stringify({ error: passwordError }), { status: 400 });
   }
 
   const supabase = getSupabaseAdmin();
@@ -50,7 +83,7 @@ export const POST: APIRoute = async ({ request }) => {
         type: 'signup',
         email,
         password,
-        options: { redirectTo: `${ENV.ORIGIN}/auth/callback` },
+        options: { redirectTo },
       });
       if (!linkError) {
         verifyUrl = linkData?.properties?.action_link ?? '';
