@@ -13,6 +13,7 @@ export const POST: APIRoute = async ({ request }) => {
   const plan = String(data.plan || 'essential').toLowerCase();
   const templateRaw = String(data.template || '').trim();
   const template = isAllowedTemplate(templateRaw) ? templateRaw : '';
+  const agencyId = typeof data.agencyId === 'string' ? data.agencyId : data.agency_id;
   const origin = ENV.ORIGIN || request.headers.get('origin') || 'http://localhost:4321';
 
   const stripe = await getStripe();
@@ -29,7 +30,11 @@ export const POST: APIRoute = async ({ request }) => {
     line_items: [{ price: priceId, quantity: 1 }],
     success_url: buildSuccessUrl(origin),
     cancel_url: buildCancelUrl(origin),
-    metadata: serializeMetadata({ plan, template }),
+    metadata: serializeMetadata({
+      plan,
+      template,
+      agencyId,
+    }),
   });
 
   return new Response(JSON.stringify({ url: session.url }), { status: 200 });

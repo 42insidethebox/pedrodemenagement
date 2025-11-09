@@ -9,7 +9,7 @@ const ENV = {
     import.meta.env.SITE_URL ??
     import.meta.env.PUBLIC_SITE_URL ??
     import.meta.env.ORIGIN ??
-    'http://localhost:4321',
+    'https://www.tonsiteweb.ch',
 
   SUPABASE_URL:
     process.env.SUPABASE_URL ?? import.meta.env.SUPABASE_URL ?? '',
@@ -92,6 +92,11 @@ const ENV = {
     process.env.VERCEL_PROJECT_ID ?? import.meta.env.VERCEL_PROJECT_ID ?? '',
   VERCEL_TEAM_ID:
     process.env.VERCEL_TEAM_ID ?? import.meta.env.VERCEL_TEAM_ID ?? '',
+
+  GODADDY_API_KEY:
+    process.env.GODADDY_API_KEY ?? import.meta.env.GODADDY_API_KEY ?? '',
+  GODADDY_API_SECRET:
+    process.env.GODADDY_API_SECRET ?? import.meta.env.GODADDY_API_SECRET ?? '',
 
   DEPLOY_AUTOMATION_ENABLED:
     process.env.DEPLOY_AUTOMATION_ENABLED ?? import.meta.env.DEPLOY_AUTOMATION_ENABLED ?? '',

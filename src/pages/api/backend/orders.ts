@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 
 import { withAuth } from '~/utils/supabase/auth';
-import { getAdminClient } from '~/utils/supabase/admin';
+import { getAgencyContext } from '~/utils/backend/context';
 
 export const prerender = false;
 
@@ -19,10 +19,11 @@ export const GET: APIRoute = withAuth(async ({ request, locals }) => {
     const limit = parseLimit(url);
     const statusFilter = url.searchParams.get('status')?.trim().toLowerCase();
 
-    const client = getAdminClient(locals);
+    const { agency, client } = await getAgencyContext(locals);
     let query = client
       .from('orders')
       .select('*')
+      .eq('agency_id', agency.id)
       .order('created_at', { ascending: false })
       .limit(limit);
 

@@ -118,6 +118,18 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
       ? 'https://dashboard.stripe.com'
       : 'https://dashboard.stripe.com/test';
 
+  const statusOptions = [
+    { value: 'draft', label: 'Draft' },
+    { value: 'open', label: 'Open' },
+    { value: 'processing', label: 'Processing' },
+    { value: 'requires_action', label: 'Requires action' },
+    { value: 'paid', label: 'Paid' },
+    { value: 'complete', label: 'Complete' },
+    { value: 'cancelled', label: 'Cancelled' },
+    { value: 'refunded', label: 'Refunded' },
+    { value: 'failed', label: 'Failed' },
+  ];
+
   let cachedOrders = [];
 
   const formatCurrency = (amount, currency = 'CHF') => {
@@ -144,22 +156,6 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
     } catch (error) {
       console.error('Unable to format date', error);
       return value;
-    }
-  };
-
-  const badgeClass = (status) => {
-    const base = 'inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium';
-    switch (String(status || '').toLowerCase()) {
-      case 'paid':
-      case 'complete':
-        return `${base} bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300`;
-      case 'open':
-        return `${base} bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-300`;
-      case 'cancelled':
-      case 'canceled':
-        return `${base} bg-red-100 text-red-600 dark:bg-red-500/10 dark:text-red-300`;
-      default:
-        return `${base} bg-slate-100 text-slate-600 dark:bg-slate-700/50 dark:text-slate-200`;
     }
   };
 
@@ -206,6 +202,15 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
         : '';
       const plan = order.plan || order.metadata?.plan || '—';
       const template = order.template_key || order.metadata?.template || '—';
+      const normalizedStatusRaw = String(order.status || 'open').toLowerCase();
+      const normalizedStatus = normalizedStatusRaw === 'canceled' ? 'cancelled' : normalizedStatusRaw;
+      const statusSelect = `
+        <select data-status="${order.id}" data-prev="${normalizedStatus}" class="rounded-lg border border-slate-300 bg-white px-2 py-1 text-xs text-slate-700 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-700 dark:bg-slate-950 dark:text-white">
+          ${statusOptions
+            .map((option) => `<option value="${option.value}" ${normalizedStatus === option.value ? 'selected' : ''}>${option.label}</option>`)
+            .join('')}
+        </select>
+      `;
       row.innerHTML = `
         <td class="px-4 py-3 text-xs text-slate-500 dark:text-slate-300">${formatDate(order.created_at)}</td>
         <td class="px-4 py-3 text-xs font-mono text-slate-500 dark:text-slate-400">${order.order_number ?? '—'}</td>
@@ -219,11 +224,12 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
         </td>
         <td class="px-4 py-3 text-sm">${formatCurrency(order.amount_total, order.currency || 'CHF')}</td>
         <td class="px-4 py-3 text-xs capitalize text-slate-500 dark:text-slate-400">${order.mode ?? '—'}</td>
-        <td class="px-4 py-3"><span class="${badgeClass(order.status)}">${order.status ?? 'unknown'}</span></td>
+        <td class="px-4 py-3 text-xs text-slate-500 dark:text-slate-300">${statusSelect}</td>
         <td class="px-4 py-3 text-xs font-mono text-slate-500 dark:text-slate-400">${order.stripe_session_id ?? '—'}</td>
         <td class="px-4 py-3 text-xs font-mono text-slate-500 dark:text-slate-400">${order.subscription_id ?? '—'}</td>
         <td class="px-4 py-3 text-right">
           <div class="flex justify-end gap-2">
+            <button class="rounded-lg border border-red-200 px-3 py-1 text-xs text-red-600 transition hover:bg-red-50 dark:border-red-500/40 dark:text-red-300 dark:hover:bg-red-500/10" data-delete="${order.id}">Delete</button>
             <button class="rounded-lg border border-slate-300 px-3 py-1 text-xs text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800" data-action="detail" data-id="${order.id}">Details</button>
             ${stripeLink}
           </div>
@@ -371,10 +377,64 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
     exportAsCsv();
   });
 
-  tableBody?.addEventListener('click', (event) => {
-    const button = event.target.closest('[data-action="detail"]');
-    if (!button) return;
-    const id = button.getAttribute('data-id');
+  tableBody?.addEventListener('change', async (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLSelectElement)) return;
+    const orderId = target.getAttribute('data-status');
+    if (!orderId) return;
+
+    const previousValue = target.getAttribute('data-prev') || '';
+    target.classList.add('animate-pulse');
+    try {
+      const response = await authFetch(`/orders/${orderId}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status: target.value }),
+      });
+      const updatedStatusRaw = response?.order?.status ? String(response.order.status).toLowerCase() : target.value.toLowerCase();
+      const normalized = updatedStatusRaw === 'canceled' ? 'cancelled' : updatedStatusRaw;
+      target.setAttribute('data-prev', normalized);
+      await loadOrders();
+      renderDetail(null);
+    } catch (error) {
+      console.error(error);
+      target.value = previousValue || target.value;
+      if (errorLabel) {
+        errorLabel.textContent = error instanceof Error ? error.message : 'Unable to update order';
+        errorLabel.classList.remove('hidden');
+      }
+    } finally {
+      target.classList.remove('animate-pulse');
+    }
+  });
+
+  tableBody?.addEventListener('click', async (event) => {
+    const target = event.target instanceof HTMLElement ? event.target : null;
+    if (!target) return;
+
+    const deleteButton = target.closest('[data-delete]');
+    if (deleteButton instanceof HTMLElement) {
+      const deleteId = deleteButton.getAttribute('data-delete');
+      if (!deleteId) return;
+      deleteButton.classList.add('animate-pulse');
+      try {
+        await authFetch(`/orders/${deleteId}`, { method: 'DELETE', parseJson: false });
+        renderDetail(null);
+        await loadOrders();
+      } catch (error) {
+        console.error(error);
+        if (errorLabel) {
+          errorLabel.textContent = error instanceof Error ? error.message : 'Unable to delete order';
+          errorLabel.classList.remove('hidden');
+        }
+      } finally {
+        deleteButton.classList.remove('animate-pulse');
+      }
+      return;
+    }
+
+    const detailButton = target.closest('[data-action="detail"]');
+    if (!(detailButton instanceof HTMLElement)) return;
+    const id = detailButton.getAttribute('data-id');
     const order = cachedOrders.find((item) => String(item.id) === id);
     if (order) {
       renderDetail(order);

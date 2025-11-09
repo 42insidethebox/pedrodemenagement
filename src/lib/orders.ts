@@ -109,10 +109,11 @@ export function extractMetadataFromSession(session: any) {
       company: String(md.company || ''),
       phone: String(md.phone || ''),
       clientSlug: String(md.clientSlug || ''),
+      agencyId: String(md.agencyId || md.agency_id || ''),
     };
   } catch (e) {
     logger.error(e as any, { where: 'extractMetadataFromSession' });
-    return { plan: '', template: '', name: '', email: '', company: '', phone: '', clientSlug: '' };
+    return { plan: '', template: '', name: '', email: '', company: '', phone: '', clientSlug: '', agencyId: '' };
   }
 }
 
@@ -133,6 +134,7 @@ export function buildOrderDraftFromSession(session: any) {
     currency: session?.currency || null,
     mode: session?.mode || null,
     status: session?.payment_status || null,
+    agency_id: metadata.agencyId || null,
     metadata,
   };
 }
