@@ -1,15 +1,31 @@
 import type { APIRoute } from 'astro';
 
-import type { SupabaseClient } from '@supabase/supabase-js';
-
 import { getDocumentSections } from '~/lib/google-docs';
 import { sendProjectDelayedEmail, sendProjectReadyEmail } from '~/lib/email';
 import { logAgencyActivity } from '~/utils/backend/activity';
 import { getAgencyContext } from '~/utils/backend/context';
 import {
-  parseWebsiteUpdatePayload,
+  badRequest,
+  handleApiError,
+  noContent,
+  ok,
+  serviceUnavailable,
+} from '~/utils/backend/http';
+import {
+  deleteAllWebsiteSections,
+  deleteWebsite,
+  deleteWebsiteSections,
+  getWebsiteWithSections,
+  insertWebsiteSections,
+  listWebsiteSections,
+  replaceWebsiteSections,
+  updateWebsite,
+  updateWebsiteSection,
+} from '~/utils/backend/services/websites';
+import {
   parseWebsiteSectionPayload,
   parseWebsiteSectionUpdatePayload,
+  parseWebsiteUpdatePayload,
 } from '~/utils/backend/validation';
 import { withAuth } from '~/utils/supabase/auth';
 
@@ -27,104 +43,65 @@ function slugify(value: string) {
     .slice(0, 64) || 'section';
 }
 
-async function loadWebsite(client: SupabaseClient, agencyId: string, websiteId: string) {
-  const { data, error } = await client
-    .from('websites')
-    .select('*')
-    .eq('agency_id', agencyId)
-    .eq('id', websiteId)
-    .maybeSingle();
-
-  if (error) {
-    console.error('Failed to load website', error);
-    throw new Error('LOAD_FAILED');
-  }
-
-  return data;
-}
-
-async function loadSections(client: SupabaseClient, websiteId: string) {
-  const { data, error } = await client
-    .from('website_sections')
-    .select('*')
-    .eq('website_id', websiteId)
-    .order('created_at', { ascending: true });
-
-  if (error) {
-    console.error('Failed to load website sections', error);
-    throw new Error('LOAD_FAILED');
-  }
-
-  return data ?? [];
-}
-
 export const GET: APIRoute = withAuth(async ({ locals, params }) => {
-  const websiteId = String(params.id || '');
-  if (!websiteId) {
-    return new Response(JSON.stringify({ error: 'Missing website id' }), { status: 400 });
+  const id = params.id;
+
+  if (!id) {
+    return badRequest('Missing website id');
   }
 
   try {
     const { agency, client } = await getAgencyContext(locals);
-    const website = await loadWebsite(client, agency.id, websiteId);
-    if (!website) {
-      return new Response(JSON.stringify({ error: 'Website not found' }), { status: 404 });
-    }
+    const { website, sections } = await getWebsiteWithSections(client, agency.id, id);
 
-    const sections = await loadSections(client, websiteId);
-    return new Response(JSON.stringify({ website, sections }), { status: 200 });
+    return ok({ website, sections });
   } catch (error) {
     if (error instanceof Error && error.message === SUPABASE_ERROR) {
-      return new Response(JSON.stringify({ error: 'Supabase not configured' }), { status: 503 });
+      return serviceUnavailable('Supabase not configured');
     }
-    if (error instanceof Error && error.message === 'LOAD_FAILED') {
-      return new Response(JSON.stringify({ error: 'Unable to load website' }), { status: 500 });
-    }
-    console.error('Unexpected error in GET /api/backend/websites/[id]', error);
-    return new Response(JSON.stringify({ error: 'Unexpected server error' }), { status: 500 });
+    return handleApiError(error, 'Unexpected error in GET /api/backend/websites/[id]');
   }
 });
 
 export const PATCH: APIRoute = withAuth(async ({ locals, params, request }) => {
-  const websiteId = String(params.id || '');
-  if (!websiteId) {
-    return new Response(JSON.stringify({ error: 'Missing website id' }), { status: 400 });
+  const id = params.id;
+
+  if (!id) {
+    return badRequest('Missing website id');
   }
 
   let body: any;
   try {
     body = await request.json();
-  } catch (error) {
-    return new Response(JSON.stringify({ error: 'Invalid JSON payload' }), { status: 400 });
+  } catch {
+    return badRequest('Invalid JSON payload');
   }
 
   let updatePayload: ReturnType<typeof parseWebsiteUpdatePayload>;
   try {
     updatePayload = parseWebsiteUpdatePayload(body);
   } catch (error) {
-    return new Response(
-      JSON.stringify({ error: error instanceof Error ? error.message : 'Invalid website payload' }),
-      { status: 400 },
-    );
+    const message = error instanceof Error ? error.message : 'Invalid website payload';
+    return badRequest(message);
   }
 
   const syncFromDoc = Boolean(body?.syncFromDoc);
   const rawSections = syncFromDoc ? [] : Array.isArray(body?.sections) ? body.sections : [];
-  const sectionsToInsert: any[] = [];
+  const sectionsToInsert: ReturnType<typeof parseWebsiteSectionPayload>[] = [];
   const sectionsToUpdate: { id: string; data: ReturnType<typeof parseWebsiteSectionUpdatePayload> }[] = [];
   const sectionsToDelete: string[] = [];
 
   for (const rawSection of rawSections) {
     if (!rawSection || typeof rawSection !== 'object') continue;
     const action = typeof rawSection.action === 'string' ? rawSection.action : '';
-    const id = typeof rawSection.id === 'string' ? rawSection.id : '';
+    const sectionId = typeof rawSection.id === 'string' ? rawSection.id : '';
 
-    if (action === 'delete' && id) {
-      sectionsToDelete.push(id);
+    if (action === 'delete' && sectionId) {
+      sectionsToDelete.push(sectionId);
       continue;
     }
 
-    if (id) {
+    if (sectionId) {
       try {
         const payload = parseWebsiteSectionUpdatePayload(rawSection);
         if (Object.keys(payload).length > 0) {
@@ -133,7 +110,7 @@ export const PATCH: APIRoute = withAuth(async ({ locals, params, request }) => {
           } else if (payload.heading) {
             payload.section_key = slugify(payload.heading);
           }
-          sectionsToUpdate.push({ id, data: payload });
+          sectionsToUpdate.push({ id: sectionId, data: payload });
         }
       } catch (error) {
         console.warn('Skipping invalid website section update', error);
@@ -149,15 +126,7 @@ export const PATCH: APIRoute = withAuth(async ({ locals, params, request }) => {
           ? slugify(rawSection.heading)
           : slugify('section');
       const payload = parseWebsiteSectionPayload({ ...rawSection, section_key: sectionKey });
-      sectionsToInsert.push({
-        website_id: websiteId,
-        section_key: slugify(payload.section_key),
-        heading: payload.heading,
-        content: payload.content,
-        media: payload.media,
-        google_doc_id: payload.google_doc_id,
-        google_doc_heading: payload.google_doc_heading || payload.heading,
-      });
+      sectionsToInsert.push(payload);
     } catch (error) {
       console.warn('Skipping invalid website section payload', error);
     }
@@ -166,60 +135,44 @@ export const PATCH: APIRoute = withAuth(async ({ locals, params, request }) => {
   try {
     const { agency, client } = await getAgencyContext(locals);
 
-    const existing = await loadWebsite(client, agency.id, websiteId);
-    if (!existing) {
-      return new Response(JSON.stringify({ error: 'Website not found' }), { status: 404 });
-    }
+    const { website: existing } = await getWebsiteWithSections(client, agency.id, id);
 
     let updatedWebsite = existing;
     if (Object.keys(updatePayload).length > 0) {
-      const { data, error } = await client
-        .from('websites')
-        .update(updatePayload)
-        .eq('agency_id', agency.id)
-        .eq('id', websiteId)
-        .select('*')
-        .single();
+      updatedWebsite = await updateWebsite(client, agency.id, id, updatePayload);
 
-      if (error) {
-        console.error('Failed to update website', error);
-        return new Response(JSON.stringify({ error: 'Unable to update website' }), { status: 500 });
-      }
-
-      updatedWebsite = data;
-
-      await logAgencyActivity(client, agency.id, 'website_updated', 'website', websiteId, {
+      await logAgencyActivity(client, agency.id, 'website_updated', 'website', id, {
         before_status: existing.status,
-        after_status: data.status,
+        after_status: updatedWebsite.status,
       });
     }
 
     if (sectionsToInsert.length) {
-      await client.from('website_sections').insert(sectionsToInsert);
+      const prepared = sectionsToInsert.map((section) => ({
+        ...section,
+        section_key: slugify(section.section_key),
+        google_doc_id: section.google_doc_id ?? updatedWebsite.google_doc_id ?? null,
+        google_doc_heading: section.google_doc_heading ?? section.heading ?? null,
+      }));
+      await insertWebsiteSections(client, id, prepared);
     }
 
     for (const entry of sectionsToUpdate) {
-      const payload = { ...entry.data } as Record<string, unknown>;
+      const payload = { ...entry.data };
       if (payload.section_key) {
         payload.section_key = slugify(String(payload.section_key));
       }
-      const { error } = await client
-        .from('website_sections')
-        .update(payload)
-        .eq('website_id', websiteId)
-        .eq('id', entry.id);
-      if (error) {
+      try {
+        await updateWebsiteSection(client, id, entry.id, payload);
+      } catch (error) {
         console.error('Failed to update website section', { error, sectionId: entry.id });
       }
     }
 
     if (sectionsToDelete.length) {
-      const { error } = await client
-        .from('website_sections')
-        .delete()
-        .eq('website_id', websiteId)
-        .in('id', sectionsToDelete);
-      if (error) {
+      try {
+        await deleteWebsiteSections(client, id, sectionsToDelete);
+      } catch (error) {
         console.error('Failed to delete website sections', error);
       }
     }
@@ -227,19 +180,16 @@ export const PATCH: APIRoute = withAuth(async ({ locals, params, request }) => {
     if (syncFromDoc && updatedWebsite.google_doc_id) {
       const docSections = await getDocumentSections(updatedWebsite.google_doc_id);
       if (docSections.length) {
-        await client.from('website_sections').delete().eq('website_id', websiteId);
-        await client.from('website_sections').insert(
-          docSections.map((section) => ({
-            website_id: websiteId,
-            section_key: slugify(section.heading),
-            heading: section.heading,
-            content: section.content,
-            media: [],
-            google_doc_id: updatedWebsite.google_doc_id,
-            google_doc_heading: section.heading,
-          })),
-        );
-        await logAgencyActivity(client, agency.id, 'website_synced', 'website', websiteId, {
+        const normalizedSections = docSections.map((section) => ({
+          section_key: slugify(section.heading),
+          heading: section.heading,
+          content: section.content,
+          media: [],
+          google_doc_id: updatedWebsite.google_doc_id,
+          google_doc_heading: section.heading,
+        }));
+        await replaceWebsiteSections(client, id, normalizedSections);
+        await logAgencyActivity(client, agency.id, 'website_synced', 'website', id, {
           google_doc_id: updatedWebsite.google_doc_id,
           sections: docSections.length,
         });
@@ -277,57 +227,38 @@ export const PATCH: APIRoute = withAuth(async ({ locals, params, request }) => {
       }
     }
 
-    const sections = await loadSections(client, websiteId);
-    return new Response(JSON.stringify({ website: updatedWebsite, sections }), { status: 200 });
+    const sections = await listWebsiteSections(client, id);
+    return ok({ website: updatedWebsite, sections });
   } catch (error) {
     if (error instanceof Error && error.message === SUPABASE_ERROR) {
-      return new Response(JSON.stringify({ error: 'Supabase not configured' }), { status: 503 });
+      return serviceUnavailable('Supabase not configured');
     }
-    if (error instanceof Error && error.message === 'LOAD_FAILED') {
-      return new Response(JSON.stringify({ error: 'Unable to process website' }), { status: 500 });
-    }
-    console.error('Unexpected error in PATCH /api/backend/websites/[id]', error);
-    return new Response(JSON.stringify({ error: 'Unexpected server error' }), { status: 500 });
+    return handleApiError(error, 'Unexpected error in PATCH /api/backend/websites/[id]');
   }
 });
 
 export const DELETE: APIRoute = withAuth(async ({ locals, params }) => {
-  const websiteId = String(params.id || '');
-  if (!websiteId) {
-    return new Response(JSON.stringify({ error: 'Missing website id' }), { status: 400 });
+  const id = params.id;
+
+  if (!id) {
+    return badRequest('Missing website id');
   }
 
   try {
     const { agency, client } = await getAgencyContext(locals);
 
-    const existing = await loadWebsite(client, agency.id, websiteId);
-    if (!existing) {
-      return new Response(JSON.stringify({ error: 'Website not found' }), { status: 404 });
-    }
+    const { website: existing } = await getWebsiteWithSections(client, agency.id, id);
 
-    const { error } = await client
-      .from('websites')
-      .delete()
-      .eq('agency_id', agency.id)
-      .eq('id', websiteId);
+    await deleteAllWebsiteSections(client, id);
+    await deleteWebsite(client, agency.id, id);
 
-    if (error) {
-      console.error('Failed to delete website', error);
-      return new Response(JSON.stringify({ error: 'Unable to delete website' }), { status: 500 });
-    }
+    await logAgencyActivity(client, agency.id, 'website_deleted', 'website', id, { name: existing.name });
 
-    await logAgencyActivity(client, agency.id, 'website_deleted', 'website', websiteId, { name: existing.name });
-
-    return new Response(null, { status: 204 });
+    return noContent();
   } catch (error) {
     if (error instanceof Error && error.message === SUPABASE_ERROR) {
-      return new Response(JSON.stringify({ error: 'Supabase not configured' }), { status: 503 });
+      return serviceUnavailable('Supabase not configured');
     }
-    if (error instanceof Error && error.message === 'LOAD_FAILED') {
-      return new Response(JSON.stringify({ error: 'Unable to delete website' }), { status: 500 });
-    }
-    console.error('Unexpected error in DELETE /api/backend/websites/[id]', error);
-    return new Response(JSON.stringify({ error: 'Unexpected server error' }), { status: 500 });
+    return handleApiError(error, 'Unexpected error in DELETE /api/backend/websites/[id]');
   }
 });
-

@@ -1,9 +1,19 @@
 import type { APIRoute } from 'astro';
 
-import type { SupabaseClient } from '@supabase/supabase-js';
-
 import { logAgencyActivity } from '~/utils/backend/activity';
 import { getAgencyContext } from '~/utils/backend/context';
+import {
+  badRequest,
+  handleApiError,
+  noContent,
+  ok,
+  serviceUnavailable,
+} from '~/utils/backend/http';
+import {
+  deleteSupportRequest,
+  getSupportRequestById,
+  updateSupportRequest,
+} from '~/utils/backend/services/support';
 import { parseSupportRequestUpdatePayload } from '~/utils/backend/validation';
 import { withAuth } from '~/utils/supabase/auth';
 
@@ -11,120 +21,68 @@ export const prerender = false;
 
 const SUPABASE_ERROR = 'Supabase admin client is not configured';
 
-async function loadSupportRequest(client: SupabaseClient, agencyId: string, id: string) {
-  const { data, error } = await client
-    .from('support_requests')
-    .select('*')
-    .eq('agency_id', agencyId)
-    .eq('id', id)
-    .maybeSingle();
-
-  if (error) {
-    console.error('Failed to load support request', error);
-    throw new Error('LOAD_FAILED');
-  }
-
-  return data;
-}
-
 export const PATCH: APIRoute = withAuth(async ({ locals, params, request }) => {
   const ticketId = String(params.id || '');
   if (!ticketId) {
-    return new Response(JSON.stringify({ error: 'Missing ticket id' }), { status: 400 });
+    return badRequest('Missing ticket id');
   }
 
   let payload: ReturnType<typeof parseSupportRequestUpdatePayload>;
   try {
     payload = parseSupportRequestUpdatePayload(await request.json());
   } catch (error) {
-    return new Response(JSON.stringify({ error: error instanceof Error ? error.message : 'Invalid payload' }), {
-      status: 400,
-    });
+    const message = error instanceof Error ? error.message : 'Invalid payload';
+    return badRequest(message);
   }
 
   try {
     const { agency, client } = await getAgencyContext(locals);
 
-    const existing = await loadSupportRequest(client, agency.id, ticketId);
-    if (!existing) {
-      return new Response(JSON.stringify({ error: 'Support request not found' }), { status: 404 });
-    }
+    const existing = await getSupportRequestById(client, agency.id, ticketId);
 
     if (Object.keys(payload).length === 0) {
-      return new Response(JSON.stringify({ request: existing }), { status: 200 });
+      return ok({ request: existing });
     }
 
-    const { data, error } = await client
-      .from('support_requests')
-      .update(payload)
-      .eq('agency_id', agency.id)
-      .eq('id', ticketId)
-      .select('*')
-      .single();
-
-    if (error) {
-      console.error('Failed to update support request', error);
-      return new Response(JSON.stringify({ error: 'Unable to update ticket' }), { status: 500 });
-    }
+    const updated = await updateSupportRequest(client, agency.id, ticketId, payload);
 
     await logAgencyActivity(client, agency.id, 'support_request_updated', 'support_request', ticketId, {
       before_status: existing.status,
-      after_status: data.status,
-      priority: data.priority,
+      after_status: updated.status,
+      priority: updated.priority,
     });
 
-    return new Response(JSON.stringify({ request: data }), { status: 200 });
+    return ok({ request: updated });
   } catch (error) {
     if (error instanceof Error && error.message === SUPABASE_ERROR) {
-      return new Response(JSON.stringify({ error: 'Supabase not configured' }), { status: 503 });
+      return serviceUnavailable('Supabase not configured');
     }
-    if (error instanceof Error && error.message === 'LOAD_FAILED') {
-      return new Response(JSON.stringify({ error: 'Unable to process ticket' }), { status: 500 });
-    }
-    console.error('Unexpected error in PATCH /api/backend/support/[id]', error);
-    return new Response(JSON.stringify({ error: 'Unexpected server error' }), { status: 500 });
+    return handleApiError(error, 'Unexpected error in PATCH /api/backend/support/[id]');
   }
 });
 
 export const DELETE: APIRoute = withAuth(async ({ locals, params }) => {
   const ticketId = String(params.id || '');
   if (!ticketId) {
-    return new Response(JSON.stringify({ error: 'Missing ticket id' }), { status: 400 });
+    return badRequest('Missing ticket id');
   }
 
   try {
     const { agency, client } = await getAgencyContext(locals);
 
-    const existing = await loadSupportRequest(client, agency.id, ticketId);
-    if (!existing) {
-      return new Response(JSON.stringify({ error: 'Support request not found' }), { status: 404 });
-    }
-
-    const { error } = await client
-      .from('support_requests')
-      .delete()
-      .eq('agency_id', agency.id)
-      .eq('id', ticketId);
-
-    if (error) {
-      console.error('Failed to delete support request', error);
-      return new Response(JSON.stringify({ error: 'Unable to delete ticket' }), { status: 500 });
-    }
+    const deleted = await deleteSupportRequest(client, agency.id, ticketId);
 
     await logAgencyActivity(client, agency.id, 'support_request_deleted', 'support_request', ticketId, {
-      request_type: existing.request_type,
+      request_type: deleted.request_type,
+      status: deleted.status,
     });
 
-    return new Response(null, { status: 204 });
+    return noContent();
   } catch (error) {
     if (error instanceof Error && error.message === SUPABASE_ERROR) {
-      return new Response(JSON.stringify({ error: 'Supabase not configured' }), { status: 503 });
+      return serviceUnavailable('Supabase not configured');
     }
-    if (error instanceof Error && error.message === 'LOAD_FAILED') {
-      return new Response(JSON.stringify({ error: 'Unable to process ticket' }), { status: 500 });
-    }
-    console.error('Unexpected error in DELETE /api/backend/support/[id]', error);
-    return new Response(JSON.stringify({ error: 'Unexpected server error' }), { status: 500 });
+    return handleApiError(error, 'Unexpected error in DELETE /api/backend/support/[id]');
   }
 });
 

@@ -73,22 +73,19 @@ function ensureObject(value: unknown, field: string): Record<string, Primitive |
   return value as Record<string, Primitive | Primitive[] | Record<string, unknown>>;
 }
 
-const DOCUMENT_STATUSES = ['draft', 'sent', 'signed', 'archived'] as const;
-const DOCUMENT_TYPES = ['proposal', 'contract', 'brief', 'report', 'asset'] as const;
+export const DOCUMENT_STATUSES = ['draft', 'sent', 'signed', 'archived'] as const;
+export const DOCUMENT_TYPES = ['proposal', 'contract', 'brief', 'report', 'asset'] as const;
 export const CLIENT_STATUSES = ['lead', 'active', 'inactive'] as const;
 export const PROJECT_STATUSES = ['discovery', 'in_progress', 'on_hold', 'completed'] as const;
 export const TASK_STATUSES = ['todo', 'in_progress', 'blocked', 'done'] as const;
 export const TASK_PRIORITIES = ['low', 'medium', 'high', 'urgent'] as const;
 export const INVOICE_STATUSES = ['draft', 'sent', 'paid', 'overdue'] as const;
-<<<<<<< HEAD
-=======
 export const TEAM_ROLES = ['owner', 'admin', 'manager', 'member', 'contractor'] as const;
->>>>>>> origin/codex/redesign-backend-for-clients-crud-jzsxcd
-const WEBSITE_STATUSES = ['draft', 'content_review', 'ready', 'live', 'paused'] as const;
-const SUPPORT_STATUSES = ['open', 'in_progress', 'waiting', 'resolved', 'closed'] as const;
-const SUPPORT_PRIORITIES = ['low', 'normal', 'high', 'urgent'] as const;
-const SUPPORT_TYPES = ['bug', 'content_change', 'design', 'upgrade', 'billing', 'general'] as const;
-const ORDER_STATUSES = [
+export const WEBSITE_STATUSES = ['draft', 'content_review', 'ready', 'live', 'paused'] as const;
+export const SUPPORT_STATUSES = ['open', 'in_progress', 'waiting', 'resolved', 'closed'] as const;
+export const SUPPORT_PRIORITIES = ['low', 'normal', 'high', 'urgent'] as const;
+export const SUPPORT_TYPES = ['bug', 'content_change', 'design', 'upgrade', 'billing', 'general'] as const;
+export const ORDER_STATUSES = [
   'draft',
   'open',
   'processing',
