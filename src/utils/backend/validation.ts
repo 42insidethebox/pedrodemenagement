@@ -75,6 +75,17 @@ const WEBSITE_STATUSES = ['draft', 'content_review', 'ready', 'live', 'paused'] 
 const SUPPORT_STATUSES = ['open', 'in_progress', 'waiting', 'resolved', 'closed'] as const;
 const SUPPORT_PRIORITIES = ['low', 'normal', 'high', 'urgent'] as const;
 const SUPPORT_TYPES = ['bug', 'content_change', 'design', 'upgrade', 'billing', 'general'] as const;
+const ORDER_STATUSES = [
+  'draft',
+  'open',
+  'processing',
+  'requires_action',
+  'paid',
+  'complete',
+  'cancelled',
+  'refunded',
+  'failed',
+] as const;
 
 export type DocumentInput = {
   title: string;
@@ -518,6 +529,99 @@ export function parseSupportRequestUpdatePayload(payload: unknown): Partial<Supp
   if (body.priority !== undefined)
     result.priority = ensureEnum(body.priority, 'priority', SUPPORT_PRIORITIES, 'normal');
   if (body.metadata !== undefined) result.metadata = ensureObject(body.metadata, 'metadata');
+
+  return result;
+}
+
+export type OrderUpdateInput = {
+  order_number?: string;
+  status?: (typeof ORDER_STATUSES)[number];
+  customer_email?: string | null;
+  customer_name?: string | null;
+  company?: string | null;
+  phone?: string | null;
+  plan?: string | null;
+  template_key?: string | null;
+  amount_total?: number | null;
+  currency?: string | null;
+  metadata?: Record<string, unknown>;
+};
+
+function normalizeOrderStatus(value: unknown): (typeof ORDER_STATUSES)[number] {
+  if (typeof value !== 'string') {
+    throw new Error('Invalid order status');
+  }
+  const normalized = value.trim().toLowerCase();
+  if (normalized === 'canceled') {
+    return 'cancelled';
+  }
+  if (!ORDER_STATUSES.includes(normalized as (typeof ORDER_STATUSES)[number])) {
+    throw new Error('Invalid order status');
+  }
+  return normalized as (typeof ORDER_STATUSES)[number];
+}
+
+export function parseOrderUpdatePayload(payload: unknown): OrderUpdateInput {
+  if (!payload || typeof payload !== 'object') {
+    throw new Error('Invalid order payload');
+  }
+
+  const body = payload as Record<string, unknown>;
+  const result: OrderUpdateInput = {};
+
+  if (body.order_number !== undefined) {
+    result.order_number = ensureString(body.order_number, 'order_number');
+  }
+
+  if (body.status !== undefined) {
+    result.status = normalizeOrderStatus(body.status);
+  }
+
+  if (body.customer_email !== undefined) {
+    const email = ensureOptionalString(body.customer_email);
+    if (email && !/.+@.+\..+/.test(email)) {
+      throw new Error('Invalid customer email');
+    }
+    result.customer_email = email;
+  }
+
+  if (body.customer_name !== undefined) {
+    result.customer_name = ensureOptionalString(body.customer_name);
+  }
+
+  if (body.company !== undefined) {
+    result.company = ensureOptionalString(body.company);
+  }
+
+  if (body.phone !== undefined) {
+    result.phone = ensureOptionalString(body.phone);
+  }
+
+  if (body.plan !== undefined) {
+    result.plan = ensureOptionalString(body.plan);
+  }
+
+  if (body.template_key !== undefined) {
+    result.template_key = ensureOptionalString(body.template_key);
+  }
+
+  if (body.amount_total !== undefined) {
+    const amount = ensureOptionalNumber(body.amount_total);
+    result.amount_total = amount === null ? null : Math.round(amount);
+  }
+
+  if (body.currency !== undefined) {
+    const currency = ensureOptionalString(body.currency);
+    result.currency = currency ? currency.toUpperCase() : null;
+  }
+
+  if (body.metadata !== undefined) {
+    result.metadata = ensureObject(body.metadata, 'metadata');
+  }
+
+  if (Object.keys(result).length === 0) {
+    throw new Error('No updatable fields provided');
+  }
 
   return result;
 }
