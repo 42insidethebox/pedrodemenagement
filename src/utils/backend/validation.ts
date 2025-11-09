@@ -66,7 +66,7 @@ function ensureObject(value: unknown, field: string): Record<string, Primitive |
 
 const DOCUMENT_STATUSES = ['draft', 'sent', 'signed', 'archived'] as const;
 const DOCUMENT_TYPES = ['proposal', 'contract', 'brief', 'report', 'asset'] as const;
-const CLIENT_STATUSES = ['lead', 'active', 'inactive'] as const;
+export const CLIENT_STATUSES = ['lead', 'active', 'inactive'] as const;
 const PROJECT_STATUSES = ['discovery', 'in_progress', 'on_hold', 'completed'] as const;
 const TASK_STATUSES = ['todo', 'in_progress', 'blocked', 'done'] as const;
 const TASK_PRIORITIES = ['low', 'medium', 'high', 'urgent'] as const;
