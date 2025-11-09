@@ -1,0 +1,84 @@
+select:'*', { count: 'exact' }
+select:'id, project_id, status, due_date'
+select:'*'
+insert:{ ...payload, agency_id: agencyId }
+select:'*'
+update:updatePayload
+select:'*'
+update:{ project_id: null }
+select:'id'
+update:{ project_id: null }
+select:'id'
+select:'id, name'
+select:'*', { count: 'exact' }
+select:'status, amount, due_date, issue_date'
+select:'*'
+insert:{ ...payload, agency_id: agencyId }
+select:'*'
+update:updatePayload
+select:'*'
+select:'id, invoice_number'
+select:'*', { count: 'exact' }
+select:'*'
+select:'id'
+src/utils/backend/services/clients.ts:    .insert({
+select:'*'
+update:updatePayload
+select:'*'
+select:'id, company_name'
+select:'*', { count: 'exact' }
+select:'*'
+insert:insertPayload
+select:'*'
+update:updatePayload
+select:'*'
+select:'id, full_name, email, role'
+select:'*', { count: 'exact' }
+select:'*'
+select:'*'
+select:'*'
+insert:{ ...payload, agency_id: agencyId }
+select:'*'
+update:updatePayload
+select:'*'
+select:'id, name'
+insert:insertPayload
+select:'*'
+update:updatePayload
+select:'*'
+select:'*'
+select:'*'
+update:payload
+select:'*'
+select:'*'
+select:'id', { count: 'exact', head: true }
+select:'id', { count: 'exact', head: true }
+select:'amount_total'
+select:'*'
+select:'*', { count: 'exact' }
+src/utils/backend/services/subscriptions.ts:    await client.from('subscription_events').insert({
+select:'*', { count: 'exact' }
+select:'*'
+insert:{ ...payload, agency_id: agencyId }
+select:'*'
+update:updatePayload
+select:'*'
+select:'id, title, document_type'
+select:'*', { count: 'exact' }
+select:'status, count:id'
+select:'priority, count:id'
+select:'id, name, status, client_id'
+select:'user_id, full_name, email'
+select:'*'
+insert:{ ...payload, agency_id: agencyId }
+select:'*'
+update:updatePayload
+select:'*'
+select:'id, title'
+select:'*', { count: 'exact' }
+select:'*'
+insert:{ ...payload, agency_id: agencyId }
+select:'*'
+update:updatePayload
+select:'*'
+select:'id, request_type, status'
