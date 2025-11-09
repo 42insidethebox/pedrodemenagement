@@ -9,6 +9,15 @@ function ensureString(value: unknown, field: string): string {
   return value.trim();
 }
 
+function ensureUuid(value: unknown, field: string): string {
+  const result = ensureString(value, field);
+  const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  if (!uuidPattern.test(result)) {
+    throw new Error(`Invalid "${field}"`);
+  }
+  return result;
+}
+
 function ensureOptionalString(value: unknown): string | null {
   if (value === null || value === undefined || value === '') return null;
   if (typeof value !== 'string') {
@@ -66,11 +75,12 @@ function ensureObject(value: unknown, field: string): Record<string, Primitive |
 
 const DOCUMENT_STATUSES = ['draft', 'sent', 'signed', 'archived'] as const;
 const DOCUMENT_TYPES = ['proposal', 'contract', 'brief', 'report', 'asset'] as const;
-const CLIENT_STATUSES = ['lead', 'active', 'inactive'] as const;
-const PROJECT_STATUSES = ['discovery', 'in_progress', 'on_hold', 'completed'] as const;
-const TASK_STATUSES = ['todo', 'in_progress', 'blocked', 'done'] as const;
-const TASK_PRIORITIES = ['low', 'medium', 'high', 'urgent'] as const;
-const INVOICE_STATUSES = ['draft', 'sent', 'paid', 'overdue'] as const;
+export const CLIENT_STATUSES = ['lead', 'active', 'inactive'] as const;
+export const PROJECT_STATUSES = ['discovery', 'in_progress', 'on_hold', 'completed'] as const;
+export const TASK_STATUSES = ['todo', 'in_progress', 'blocked', 'done'] as const;
+export const TASK_PRIORITIES = ['low', 'medium', 'high', 'urgent'] as const;
+export const INVOICE_STATUSES = ['draft', 'sent', 'paid', 'overdue'] as const;
+export const TEAM_ROLES = ['owner', 'admin', 'manager', 'member', 'contractor'] as const;
 const WEBSITE_STATUSES = ['draft', 'content_review', 'ready', 'live', 'paused'] as const;
 const SUPPORT_STATUSES = ['open', 'in_progress', 'waiting', 'resolved', 'closed'] as const;
 const SUPPORT_PRIORITIES = ['low', 'normal', 'high', 'urgent'] as const;
@@ -209,6 +219,68 @@ export function parseClientUpdate(payload: unknown): Partial<ClientInput> {
 
   if (Object.keys(result).length === 0) {
     throw new Error('No updatable fields provided');
+  }
+
+  return result;
+}
+
+export type TeamMemberInput = {
+  user_id: string;
+  full_name: string | null;
+  email: string | null;
+  role: (typeof TEAM_ROLES)[number];
+  timezone: string | null;
+};
+
+export type TeamMemberUpdateInput = Partial<Omit<TeamMemberInput, 'user_id'>>;
+
+export function parseTeamMemberPayload(payload: unknown): TeamMemberInput {
+  if (!payload || typeof payload !== 'object') {
+    throw new Error('Invalid team member payload');
+  }
+
+  const body = payload as Record<string, unknown>;
+  const email = ensureOptionalString(body.email);
+
+  if (email && !/.+@.+\..+/.test(email)) {
+    throw new Error('Invalid email address');
+  }
+
+  return {
+    user_id: ensureUuid(body.user_id, 'user_id'),
+    full_name: ensureOptionalString(body.full_name),
+    email,
+    role: ensureEnum(body.role, 'role', TEAM_ROLES, 'member'),
+    timezone: ensureOptionalString(body.timezone),
+  };
+}
+
+export function parseTeamMemberUpdate(payload: unknown): TeamMemberUpdateInput {
+  if (!payload || typeof payload !== 'object') {
+    throw new Error('Invalid team member payload');
+  }
+
+  const body = payload as Record<string, unknown>;
+  const result: TeamMemberUpdateInput = {};
+
+  if (body.full_name !== undefined) {
+    result.full_name = ensureOptionalString(body.full_name);
+  }
+
+  if (body.email !== undefined) {
+    const email = ensureOptionalString(body.email);
+    if (email && !/.+@.+\..+/.test(email)) {
+      throw new Error('Invalid email address');
+    }
+    result.email = email;
+  }
+
+  if (body.role !== undefined) {
+    result.role = ensureEnum(body.role, 'role', TEAM_ROLES, 'member');
+  }
+
+  if (body.timezone !== undefined) {
+    result.timezone = ensureOptionalString(body.timezone);
   }
 
   return result;

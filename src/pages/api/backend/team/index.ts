@@ -2,9 +2,15 @@ import type { APIRoute } from 'astro';
 
 import { logAgencyActivity } from '~/utils/backend/activity';
 import { getAgencyContext } from '~/utils/backend/context';
-import { badRequest, created, handleApiError, ok, serviceUnavailable } from '~/utils/backend/http';
-import { createInvoice, listInvoices } from '~/utils/backend/services/invoices';
-import { INVOICE_STATUSES, parseInvoicePayload } from '~/utils/backend/validation';
+import {
+  badRequest,
+  created,
+  handleApiError,
+  ok,
+  serviceUnavailable,
+} from '~/utils/backend/http';
+import { createTeamMember, listTeamMembers } from '~/utils/backend/services/team';
+import { TEAM_ROLES, parseTeamMemberPayload } from '~/utils/backend/validation';
 import { withAuth } from '~/utils/supabase/auth';
 
 export const prerender = false;
@@ -26,39 +32,31 @@ function parsePageSize(value: string | null, fallback: number): number {
   return Math.min(parsed, MAX_PAGE_SIZE);
 }
 
-function normalizeStatus(value: string | null): string | undefined {
+function normalizeRole(value: string | null): string | undefined {
   if (!value) return undefined;
   const normalized = value.trim().toLowerCase();
-  return (INVOICE_STATUSES as readonly string[]).includes(normalized) ? normalized : undefined;
+  return (TEAM_ROLES as readonly string[]).includes(normalized) ? normalized : undefined;
 }
 
 export const GET: APIRoute = withAuth(async ({ locals, url }) => {
   try {
     const { agency, client } = await getAgencyContext(locals);
-
-    const searchParam = url.searchParams.get('search') ?? url.searchParams.get('q');
-    const search = searchParam ? searchParam.trim() : null;
+    const search = url.searchParams.get('search') ?? url.searchParams.get('q');
     const page = parsePositiveInteger(url.searchParams.get('page'), 1);
     const pageSize = parsePageSize(url.searchParams.get('pageSize'), DEFAULT_PAGE_SIZE);
-    const status = normalizeStatus(url.searchParams.get('status'));
-    const clientIdParam = url.searchParams.get('clientId') ?? url.searchParams.get('client_id');
-    const projectIdParam = url.searchParams.get('projectId') ?? url.searchParams.get('project_id');
-    const clientId = clientIdParam ? clientIdParam.trim() : '';
-    const projectId = projectIdParam ? projectIdParam.trim() : '';
+    const role = normalizeRole(url.searchParams.get('role'));
 
-    const { invoices, total } = await listInvoices(client, agency.id, {
+    const { members, total } = await listTeamMembers(client, agency.id, {
       page,
       pageSize,
-      status,
-      clientId: clientId.length ? clientId : undefined,
-      projectId: projectId.length ? projectId : undefined,
       search,
+      role,
     });
 
     const totalPages = total === 0 ? 0 : Math.ceil(total / pageSize);
 
     return ok({
-      invoices,
+      team: members,
       pagination: {
         page,
         pageSize,
@@ -70,15 +68,15 @@ export const GET: APIRoute = withAuth(async ({ locals, url }) => {
     if (error instanceof Error && error.message === SUPABASE_ERROR) {
       return serviceUnavailable('Supabase not configured');
     }
-    return handleApiError(error, 'Unexpected error in GET /api/backend/invoices');
+    return handleApiError(error, 'Unexpected error in GET /api/backend/team');
   }
 });
 
 export const POST: APIRoute = withAuth(async ({ locals, request }) => {
-  let payload: ReturnType<typeof parseInvoicePayload>;
+  let payload: ReturnType<typeof parseTeamMemberPayload>;
 
   try {
-    payload = parseInvoicePayload(await request.json());
+    payload = parseTeamMemberPayload(await request.json());
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Invalid payload';
     return badRequest(message);
@@ -86,19 +84,20 @@ export const POST: APIRoute = withAuth(async ({ locals, request }) => {
 
   try {
     const { agency, client } = await getAgencyContext(locals);
-    const record = await createInvoice(client, agency.id, payload);
+    const member = await createTeamMember(client, agency.id, payload);
 
-    await logAgencyActivity(client, agency.id, 'invoice_created', 'invoice', record.id, {
-      invoice_number: record.invoice_number,
-      status: record.status,
-      amount: record.amount,
+    await logAgencyActivity(client, agency.id, 'team_member_created', 'team_member', member.id, {
+      full_name: member.full_name,
+      email: member.email,
+      role: member.role,
     });
 
-    return created({ invoice: record });
+    return created({ member });
   } catch (error) {
     if (error instanceof Error && error.message === SUPABASE_ERROR) {
       return serviceUnavailable('Supabase not configured');
     }
-    return handleApiError(error, 'Unexpected error in POST /api/backend/invoices');
+    return handleApiError(error, 'Unexpected error in POST /api/backend/team');
   }
 });
+

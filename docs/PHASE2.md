@@ -26,7 +26,7 @@ This repo now includes a minimal backend scaffold that runs on Vercel using Astr
     - `GET/POST /api/backend/documents` plus `GET/PUT/DELETE /api/backend/documents/[id]`
     - `GET/POST /api/backend/invoices` & `DELETE /api/backend/invoices/[id]`
     - `GET /api/backend/dashboard/summary` → aggregates metrics for `/app`
-    - `GET /api/backend/team` → roster pulled from `agency_members`
+    - `GET/POST /api/backend/team` & `GET/PATCH/DELETE /api/backend/team/[id]` → roster management via `agency_members`
 - Utilities:
   - `src/lib/env.ts` → safe env access
   - `src/lib/supabase.ts` → Supabase admin/anon clients

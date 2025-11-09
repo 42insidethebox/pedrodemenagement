@@ -1,7 +1,9 @@
 import type { APIRoute } from 'astro';
 
-import { getAgencyContext } from '~/utils/backend/context';
 import { logAgencyActivity } from '~/utils/backend/activity';
+import { getAgencyContext } from '~/utils/backend/context';
+import { badRequest, handleApiError, noContent, ok, serviceUnavailable } from '~/utils/backend/http';
+import { deleteClient, getClientById, updateClient } from '~/utils/backend/services/clients';
 import { parseClientUpdate } from '~/utils/backend/validation';
 import { withAuth } from '~/utils/supabase/auth';
 
@@ -13,34 +15,19 @@ export const GET: APIRoute = withAuth(async ({ locals, params }) => {
   const id = params.id;
 
   if (!id) {
-    return new Response(JSON.stringify({ error: 'Missing client id' }), { status: 400 });
+    return badRequest('Missing client id');
   }
 
   try {
     const { agency, client } = await getAgencyContext(locals);
-    const { data, error } = await client
-      .from('clients')
-      .select('*')
-      .eq('id', id)
-      .eq('agency_id', agency.id)
-      .maybeSingle();
+    const record = await getClientById(client, agency.id, id);
 
-    if (error) {
-      console.error('Failed to load client', error);
-      return new Response(JSON.stringify({ error: 'Unable to load client' }), { status: 500 });
-    }
-
-    if (!data) {
-      return new Response(JSON.stringify({ error: 'Client not found' }), { status: 404 });
-    }
-
-    return new Response(JSON.stringify({ client: data }), { status: 200 });
+    return ok({ client: record });
   } catch (error) {
     if (error instanceof Error && error.message === SUPABASE_ERROR) {
-      return new Response(JSON.stringify({ error: 'Supabase not configured' }), { status: 503 });
+      return serviceUnavailable('Supabase not configured');
     }
-    console.error('Unexpected error in GET /api/backend/clients/[id]', error);
-    return new Response(JSON.stringify({ error: 'Unexpected server error' }), { status: 500 });
+    return handleApiError(error, 'Unexpected error in GET /api/backend/clients/[id]');
   }
 });
 
@@ -48,7 +35,7 @@ export const PATCH: APIRoute = withAuth(async ({ locals, params, request }) => {
   const id = params.id;
 
   if (!id) {
-    return new Response(JSON.stringify({ error: 'Missing client id' }), { status: 400 });
+    return badRequest('Missing client id');
   }
 
   let payload: ReturnType<typeof parseClientUpdate>;
@@ -56,42 +43,25 @@ export const PATCH: APIRoute = withAuth(async ({ locals, params, request }) => {
   try {
     payload = parseClientUpdate(await request.json());
   } catch (error) {
-    return new Response(JSON.stringify({ error: error instanceof Error ? error.message : 'Invalid payload' }), {
-      status: 400,
-    });
+    const message = error instanceof Error ? error.message : 'Invalid payload';
+    return badRequest(message);
   }
 
   try {
     const { agency, client } = await getAgencyContext(locals);
-    const { data, error } = await client
-      .from('clients')
-      .update({ ...payload, updated_at: new Date().toISOString() })
-      .eq('id', id)
-      .eq('agency_id', agency.id)
-      .select('*')
-      .maybeSingle();
+    const updated = await updateClient(client, agency.id, id, payload);
 
-    if (error) {
-      console.error('Failed to update client', error);
-      return new Response(JSON.stringify({ error: 'Unable to update client' }), { status: 500 });
-    }
-
-    if (!data) {
-      return new Response(JSON.stringify({ error: 'Client not found' }), { status: 404 });
-    }
-
-    await logAgencyActivity(client, agency.id, 'client_updated', 'client', data.id, {
-      company_name: data.company_name,
-      status: data.status,
+    await logAgencyActivity(client, agency.id, 'client_updated', 'client', updated.id, {
+      company_name: updated.company_name,
+      status: updated.status,
     });
 
-    return new Response(JSON.stringify({ client: data }), { status: 200 });
+    return ok({ client: updated });
   } catch (error) {
     if (error instanceof Error && error.message === SUPABASE_ERROR) {
-      return new Response(JSON.stringify({ error: 'Supabase not configured' }), { status: 503 });
+      return serviceUnavailable('Supabase not configured');
     }
-    console.error('Unexpected error in PATCH /api/backend/clients/[id]', error);
-    return new Response(JSON.stringify({ error: 'Unexpected server error' }), { status: 500 });
+    return handleApiError(error, 'Unexpected error in PATCH /api/backend/clients/[id]');
   }
 });
 
@@ -99,36 +69,22 @@ export const DELETE: APIRoute = withAuth(async ({ locals, params }) => {
   const id = params.id;
 
   if (!id) {
-    return new Response(JSON.stringify({ error: 'Missing client id' }), { status: 400 });
+    return badRequest('Missing client id');
   }
 
   try {
     const { agency, client } = await getAgencyContext(locals);
-    const { data, error } = await client
-      .from('clients')
-      .delete()
-      .eq('id', id)
-      .eq('agency_id', agency.id)
-      .select('id, company_name')
-      .maybeSingle();
+    const deleted = await deleteClient(client, agency.id, id);
 
-    if (error) {
-      console.error('Failed to delete client', error);
-      return new Response(JSON.stringify({ error: 'Unable to delete client' }), { status: 500 });
-    }
+    await logAgencyActivity(client, agency.id, 'client_deleted', 'client', deleted.id, {
+      company_name: deleted.company_name,
+    });
 
-    if (data) {
-      await logAgencyActivity(client, agency.id, 'client_deleted', 'client', data.id, {
-        company_name: data.company_name,
-      });
-    }
-
-    return new Response(null, { status: 204 });
+    return noContent();
   } catch (error) {
     if (error instanceof Error && error.message === SUPABASE_ERROR) {
-      return new Response(JSON.stringify({ error: 'Supabase not configured' }), { status: 503 });
+      return serviceUnavailable('Supabase not configured');
     }
-    console.error('Unexpected error in DELETE /api/backend/clients/[id]', error);
-    return new Response(JSON.stringify({ error: 'Unexpected server error' }), { status: 500 });
+    return handleApiError(error, 'Unexpected error in DELETE /api/backend/clients/[id]');
   }
 });
