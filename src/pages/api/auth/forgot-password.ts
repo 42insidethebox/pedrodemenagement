@@ -1,10 +1,10 @@
 import type { APIRoute } from 'astro';
 import { getSupabaseAdmin } from '~/lib/supabase';
-import { ENV } from '~/lib/env';
 import { logger } from '~/lib/logger.js';
 import { sendPasswordResetEmail } from '~/lib/email';
 import { detectRequestLocale } from '~/lib/locale';
 import { assertRateLimit } from '~/lib/rate-limit';
+import { resolveAppOrigin } from '~/utils/auth/origin';
 
 export const prerender = false;
 
@@ -28,7 +28,8 @@ export const POST: APIRoute = async ({ request, url }) => {
   }
 
   try {
-    const redirectTo = `${ENV.ORIGIN}/auth/reset`;
+    const baseOrigin = resolveAppOrigin(request);
+    const redirectTo = new URL('/auth/reset', baseOrigin).toString();
     const { data, error } = await supabase.auth.admin.generateLink({
       type: 'recovery',
       email,

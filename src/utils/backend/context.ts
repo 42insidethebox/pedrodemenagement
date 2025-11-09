@@ -52,15 +52,17 @@ async function syncAgencyMember(client: SupabaseClient, agencyId: string, user: 
   }
 }
 
-type Locals = APIContext['locals'];
+type Locals = APIContext['locals'] & { supabase?: SupabaseClient | null };
 
 export async function getAgencyContext(locals: Locals) {
   const user = locals.user;
   if (!user?.id) throw new Error('Missing user');
 
-  const client = getAdminClient(locals);
-  const agency = await ensureAgency(client, user);
-  await syncAgencyMember(client, agency.id, user);
+  const admin = getAdminClient(locals);
+  const tenantClient = locals.supabase ?? admin;
 
-  return { agency, user, client };
+  const agency = await ensureAgency(admin, user);
+  await syncAgencyMember(admin, agency.id, user);
+
+  return { agency, user, client: tenantClient, admin };
 }

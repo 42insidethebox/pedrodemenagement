@@ -152,6 +152,57 @@ export function parseClientPayload(payload: unknown): ClientInput {
   };
 }
 
+export function parseClientUpdate(payload: unknown): Partial<ClientInput> {
+  if (!payload || typeof payload !== 'object') {
+    throw new Error('Invalid client payload');
+  }
+
+  const body = payload as Record<string, unknown>;
+  const result: Partial<ClientInput> = {};
+
+  if (body.company_name !== undefined) {
+    result.company_name = ensureString(body.company_name, 'company_name');
+  }
+
+  if (body.primary_contact !== undefined) {
+    result.primary_contact = ensureOptionalString(body.primary_contact);
+  }
+
+  if (body.email !== undefined) {
+    const email = ensureOptionalString(body.email);
+    if (email && !/.+@.+\..+/.test(email)) {
+      throw new Error('Invalid email address');
+    }
+    result.email = email;
+  }
+
+  if (body.phone !== undefined) {
+    result.phone = ensureOptionalString(body.phone);
+  }
+
+  if (body.status !== undefined) {
+    result.status = ensureEnum(body.status, 'status', CLIENT_STATUSES, 'lead');
+  }
+
+  if (body.services !== undefined) {
+    result.services = ensureArrayOfStrings(body.services);
+  }
+
+  if (body.notes !== undefined) {
+    result.notes = ensureOptionalString(body.notes);
+  }
+
+  if (body.metadata !== undefined) {
+    result.metadata = ensureObject(body.metadata, 'metadata');
+  }
+
+  if (Object.keys(result).length === 0) {
+    throw new Error('No updatable fields provided');
+  }
+
+  return result;
+}
+
 export type ProjectInput = {
   name: string;
   client_id: string;
@@ -206,6 +257,49 @@ export function parseTaskPayload(payload: unknown): TaskInput {
     due_date: ensureDateString(body.due_date, 'due_date', true),
     description: ensureOptionalString(body.description),
   };
+}
+
+export function parseTaskUpdate(payload: unknown): Partial<TaskInput> {
+  if (!payload || typeof payload !== 'object') {
+    throw new Error('Invalid task payload');
+  }
+
+  const body = payload as Record<string, unknown>;
+  const result: Partial<TaskInput> = {};
+
+  if (body.title !== undefined) {
+    result.title = ensureString(body.title, 'title');
+  }
+
+  if (body.project_id !== undefined) {
+    result.project_id = ensureString(body.project_id, 'project_id');
+  }
+
+  if (body.assignee_id !== undefined) {
+    result.assignee_id = ensureOptionalString(body.assignee_id);
+  }
+
+  if (body.status !== undefined) {
+    result.status = ensureEnum(body.status, 'status', TASK_STATUSES, 'todo');
+  }
+
+  if (body.priority !== undefined) {
+    result.priority = ensureEnum(body.priority, 'priority', TASK_PRIORITIES, 'medium');
+  }
+
+  if (body.due_date !== undefined) {
+    result.due_date = ensureDateString(body.due_date, 'due_date', true);
+  }
+
+  if (body.description !== undefined) {
+    result.description = ensureOptionalString(body.description);
+  }
+
+  if (Object.keys(result).length === 0) {
+    throw new Error('No updatable fields provided');
+  }
+
+  return result;
 }
 
 export type InvoiceLineItem = {

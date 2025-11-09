@@ -56,7 +56,19 @@ const { language, textDirection } = I18N;
         </div>
         <div>
           <label class="block text-sm text-slate-600 dark:text-slate-300" for="password">Password</label>
-          <input id="password" name="password" type="password" minlength="8" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white" />
+          <input
+            id="password"
+            name="password"
+            type="password"
+            minlength="12"
+            pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{12,}"
+            required
+            aria-describedby="password-help"
+            class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"
+          />
+          <p id="password-help" class="mt-1 text-xs text-slate-500 dark:text-slate-400">
+            Use at least 12 characters with a mix of uppercase, lowercase, numbers, and symbols.
+          </p>
         </div>
         <button id="signup-submit" type="submit" class="w-full rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-blue-500/30 transition hover:bg-blue-500 disabled:opacity-70">Create account</button>
         <p id="signup-message" class="text-sm text-slate-600 dark:text-slate-400"></p>
@@ -89,6 +101,7 @@ const { language, textDirection } = I18N;
 
       form?.addEventListener('submit', async (e) => {
         e.preventDefault();
+        message?.classList.remove('text-red-400', 'text-blue-600', 'dark:text-blue-400');
         message.textContent = '';
         button?.classList.add('animate-pulse');
         button.disabled = true;
@@ -97,12 +110,14 @@ const { language, textDirection } = I18N;
         const url = new URL(location.href);
         const plan = url.searchParams.get('plan') || '';
         const template = url.searchParams.get('template') || '';
+        const next = url.searchParams.get('next') || '/app';
         const payload = {
           name: String(data.get('name') || ''),
           email: String(data.get('email') || ''),
           password: String(data.get('password') || ''),
           plan,
           template,
+          next,
         };
 
         try {

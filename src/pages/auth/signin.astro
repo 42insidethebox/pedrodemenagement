@@ -55,7 +55,13 @@ const { language, textDirection } = I18N;
           <input id="password" name="password" type="password" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white" />
         </div>
         <button id="signin-submit" type="submit" class="w-full rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-blue-500/30 transition hover:bg-blue-500 disabled:opacity-70">Sign in</button>
-        <p id="signin-message" class="text-sm text-slate-600 dark:text-slate-400"></p>
+        <p
+          id="signin-message"
+          class="mt-2 text-sm"
+          aria-live="polite"
+          role="status"
+          hidden
+        ></p>
       </form>
 
       <div class="mt-6 flex items-center justify-between text-sm">
@@ -80,18 +86,53 @@ const { language, textDirection } = I18N;
         if (!lang) return;
         a.setAttribute('href', computeLangHref(lang));
       });
-      import { setAuthSession } from '~/utils/backend/api';
-
       const params = new URLSearchParams(location.search);
-      const next = params.get('next') || '/app';
+
+      function sanitizeNext(value) {
+        if (!value) return '/app';
+        if (!/^\/[a-zA-Z0-9\-_/]*$/.test(value)) return '/app';
+        if (value.includes('..')) return '/app';
+        return value;
+      }
+
+      function setAuthSession(session) {
+        if (typeof window === 'undefined') return;
+        try {
+          window.localStorage.setItem('tonsiteweb:accessToken', session.accessToken);
+          if (session.refreshToken) {
+            window.localStorage.setItem('tonsiteweb:refreshToken', session.refreshToken);
+          }
+        } catch (storageError) {
+          console.warn('Unable to persist auth session', storageError);
+        }
+      }
+
+      const destination = sanitizeNext(params.get('next'));
 
       const form = document.getElementById('signin-form');
       const button = document.getElementById('signin-submit');
       const message = document.getElementById('signin-message');
 
+      function updateMessage(text, state = 'neutral') {
+        if (!message) return;
+        message.removeAttribute('hidden');
+        message.textContent = text;
+        const base = ['mt-2', 'text-sm'];
+        const variants = {
+          neutral: ['text-slate-600', 'dark:text-slate-400'],
+          error: ['text-red-500', 'dark:text-red-400'],
+          success: ['text-emerald-600', 'dark:text-emerald-400'],
+        };
+        const classes = variants[state] || variants.neutral;
+        message.className = [...base, ...classes].join(' ');
+        if (!text) {
+          message.setAttribute('hidden', '');
+        }
+      }
+
       form?.addEventListener('submit', async (e) => {
         e.preventDefault();
-        message.textContent = '';
+        updateMessage('', 'neutral');
         button?.classList.add('animate-pulse');
         button.disabled = true;
 
@@ -110,11 +151,21 @@ const { language, textDirection } = I18N;
           const json = await res.json();
           if (!res.ok) throw new Error(json?.error || 'Unable to sign in');
           setAuthSession({ accessToken: json.session.accessToken, refreshToken: json.session.refreshToken });
-          location.href = next;
+          updateMessage('Signed in successfully. Redirecting…', 'success');
+          setTimeout(() => {
+            try {
+              location.href = destination;
+            } catch (redirectError) {
+              console.error('Redirect failed', redirectError);
+            }
+          }, 400);
         } catch (err) {
           console.error(err);
-          message.classList.add('text-red-400');
-          message.textContent = err instanceof Error ? err.message : 'Failed to sign in';
+          if (err instanceof Error) {
+            updateMessage(err.message, 'error');
+          } else {
+            updateMessage('Failed to sign in', 'error');
+          }
         } finally {
           button?.classList.remove('animate-pulse');
           button.disabled = false;
