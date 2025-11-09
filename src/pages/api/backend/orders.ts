@@ -1,7 +1,10 @@
 import type { APIRoute } from 'astro';
 
-import { withAuth } from '~/utils/supabase/auth';
 import { getAgencyContext } from '~/utils/backend/context';
+import { handleApiError, ok, serviceUnavailable } from '~/utils/backend/http';
+import { computeOrderMetrics, listOrders } from '~/utils/backend/services/orders';
+import { ORDER_STATUSES } from '~/utils/backend/validation';
+import { withAuth } from '~/utils/supabase/auth';
 
 export const prerender = false;
 
@@ -13,55 +16,36 @@ function parseLimit(url: URL) {
   return Math.min(Math.floor(value), 200);
 }
 
+function normalizeStatusFilter(raw: string | null): string[] | undefined {
+  if (!raw) return undefined;
+  const normalized = raw.trim().toLowerCase();
+  const allowed = new Set<string>([...ORDER_STATUSES, 'canceled']);
+  if (!allowed.has(normalized)) return undefined;
+  if (normalized === 'cancelled' || normalized === 'canceled') {
+    return ['cancelled', 'canceled'];
+  }
+  return [normalized];
+}
+
 export const GET: APIRoute = withAuth(async ({ request, locals }) => {
   try {
     const url = new URL(request.url);
     const limit = parseLimit(url);
-    const statusFilter = url.searchParams.get('status')?.trim().toLowerCase();
+    const statusFilters = normalizeStatusFilter(url.searchParams.get('status'));
 
     const { agency, client } = await getAgencyContext(locals);
-    let query = client
-      .from('orders')
-      .select('*')
-      .eq('agency_id', agency.id)
-      .order('created_at', { ascending: false })
-      .limit(limit);
+    const orders = await listOrders(client, agency.id, { limit, statuses: statusFilters });
+    const metrics = await computeOrderMetrics(client, agency.id, statusFilters);
 
-    if (statusFilter) {
-      query = query.eq('status', statusFilter);
-    }
-
-    const { data, error } = await query;
-    if (error) {
-      console.error('Failed to load orders', error);
-      return new Response(JSON.stringify({ error: 'Unable to load orders' }), { status: 500 });
-    }
-
-    const orders = data ?? [];
-    const totalRevenue = orders
-      .filter((order) => ['paid', 'complete'].includes(String(order.status || '').toLowerCase()))
-      .reduce((sum, order) => sum + (Number(order.amount_total) || 0), 0);
-
-    const recurring = orders.filter((order) => String(order.mode || '').toLowerCase() === 'subscription');
-
-    return new Response(
-      JSON.stringify({
-        orders,
-        metrics: {
-          count: orders.length,
-          recurringCount: recurring.length,
-          revenue: totalRevenue,
-          latest: orders[0] ?? null,
-        },
-      }),
-      { status: 200 },
-    );
+    return ok({
+      orders,
+      metrics,
+    });
   } catch (error) {
     if (error instanceof Error && error.message === SUPABASE_ERROR) {
-      return new Response(JSON.stringify({ error: 'Supabase not configured' }), { status: 503 });
+      return serviceUnavailable('Supabase not configured');
     }
-    console.error('Unexpected error in GET /api/backend/orders', error);
-    return new Response(JSON.stringify({ error: 'Unexpected server error' }), { status: 500 });
+    return handleApiError(error, 'Unexpected error in GET /api/backend/orders');
   }
 });
 

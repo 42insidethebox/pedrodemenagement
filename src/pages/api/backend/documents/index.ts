@@ -1,35 +1,82 @@
 import type { APIRoute } from 'astro';
 
-import { getAgencyContext } from '~/utils/backend/context';
 import { logAgencyActivity } from '~/utils/backend/activity';
-import { parseDocumentPayload } from '~/utils/backend/validation';
+import { getAgencyContext } from '~/utils/backend/context';
+import {
+  badRequest,
+  created,
+  handleApiError,
+  ok,
+  serviceUnavailable,
+} from '~/utils/backend/http';
+import { createDocument, listDocuments } from '~/utils/backend/services/documents';
+import { DOCUMENT_STATUSES, DOCUMENT_TYPES, parseDocumentPayload } from '~/utils/backend/validation';
 import { withAuth } from '~/utils/supabase/auth';
 
 export const prerender = false;
 
 const SUPABASE_ERROR = 'Supabase admin client is not configured';
 
-export const GET: APIRoute = withAuth(async ({ locals }) => {
+const DEFAULT_PAGE_SIZE = 25;
+const MAX_PAGE_SIZE = 100;
+
+function parsePositiveInteger(value: string | null, fallback: number): number {
+  if (!value) return fallback;
+  const parsed = Number.parseInt(value, 10);
+  if (Number.isNaN(parsed) || parsed < 1) return fallback;
+  return parsed;
+}
+
+function parsePageSize(value: string | null, fallback: number): number {
+  const parsed = parsePositiveInteger(value, fallback);
+  return Math.min(parsed, MAX_PAGE_SIZE);
+}
+
+function normalizeEnum(value: string | null, allowed: readonly string[]): string | undefined {
+  if (!value) return undefined;
+  const normalized = value.trim().toLowerCase();
+  return allowed.includes(normalized) ? normalized : undefined;
+}
+
+function normalizeSearch(value: string | null): string | null {
+  if (!value) return null;
+  const trimmed = value.trim();
+  return trimmed.length ? trimmed : null;
+}
+
+export const GET: APIRoute = withAuth(async ({ locals, url }) => {
   try {
     const { agency, client } = await getAgencyContext(locals);
-    const { data, error } = await client
-      .from('documents')
-      .select('*')
-      .eq('agency_id', agency.id)
-      .order('created_at', { ascending: false });
+    const search = normalizeSearch(url.searchParams.get('search') ?? url.searchParams.get('q'));
+    const page = parsePositiveInteger(url.searchParams.get('page'), 1);
+    const pageSize = parsePageSize(url.searchParams.get('pageSize'), DEFAULT_PAGE_SIZE);
+    const status = normalizeEnum(url.searchParams.get('status'), DOCUMENT_STATUSES);
+    const type = normalizeEnum(url.searchParams.get('type') ?? url.searchParams.get('document_type'), DOCUMENT_TYPES);
 
-    if (error) {
-      console.error('Failed to load documents', error);
-      return new Response(JSON.stringify({ error: 'Unable to load documents' }), { status: 500 });
-    }
+    const { documents, total } = await listDocuments(client, agency.id, {
+      page,
+      pageSize,
+      search,
+      status,
+      type,
+    });
 
-    return new Response(JSON.stringify({ documents: data ?? [] }), { status: 200 });
+    const totalPages = total === 0 ? 0 : Math.ceil(total / pageSize);
+
+    return ok({
+      documents,
+      pagination: {
+        page,
+        pageSize,
+        total,
+        totalPages,
+      },
+    });
   } catch (error) {
     if (error instanceof Error && error.message === SUPABASE_ERROR) {
-      return new Response(JSON.stringify({ error: 'Supabase not configured' }), { status: 503 });
+      return serviceUnavailable('Supabase not configured');
     }
-    console.error('Unexpected error in GET /api/backend/documents', error);
-    return new Response(JSON.stringify({ error: 'Unexpected server error' }), { status: 500 });
+    return handleApiError(error, 'Unexpected error in GET /api/backend/documents');
   }
 });
 
@@ -39,35 +86,24 @@ export const POST: APIRoute = withAuth(async ({ locals, request }) => {
   try {
     payload = parseDocumentPayload(await request.json());
   } catch (error) {
-    return new Response(JSON.stringify({ error: error instanceof Error ? error.message : 'Invalid payload' }), {
-      status: 400,
-    });
+    const message = error instanceof Error ? error.message : 'Invalid payload';
+    return badRequest(message);
   }
 
   try {
     const { agency, client } = await getAgencyContext(locals);
-    const { data, error } = await client
-      .from('documents')
-      .insert({ ...payload, agency_id: agency.id })
-      .select('*')
-      .single();
+    const document = await createDocument(client, agency.id, payload);
 
-    if (error) {
-      console.error('Failed to create document', error);
-      return new Response(JSON.stringify({ error: 'Unable to save document' }), { status: 500 });
-    }
-
-    await logAgencyActivity(client, agency.id, 'document_created', 'document', data.id, {
-      title: data.title,
-      document_type: data.document_type,
+    await logAgencyActivity(client, agency.id, 'document_created', 'document', document.id, {
+      title: document.title,
+      document_type: document.document_type,
     });
 
-    return new Response(JSON.stringify({ document: data }), { status: 201 });
+    return created({ document });
   } catch (error) {
     if (error instanceof Error && error.message === SUPABASE_ERROR) {
-      return new Response(JSON.stringify({ error: 'Supabase not configured' }), { status: 503 });
+      return serviceUnavailable('Supabase not configured');
     }
-    console.error('Unexpected error in POST /api/backend/documents', error);
-    return new Response(JSON.stringify({ error: 'Unexpected server error' }), { status: 500 });
+    return handleApiError(error, 'Unexpected error in POST /api/backend/documents');
   }
 });

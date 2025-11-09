@@ -3,12 +3,62 @@ import type { APIRoute } from 'astro';
 import { provisionWebsiteWorkspace, getDocumentSections } from '~/lib/google-docs';
 import { logAgencyActivity } from '~/utils/backend/activity';
 import { getAgencyContext } from '~/utils/backend/context';
-import { parseWebsitePayload, parseWebsiteSectionPayload } from '~/utils/backend/validation';
+import {
+  badRequest,
+  created,
+  handleApiError,
+  ok,
+  serviceUnavailable,
+} from '~/utils/backend/http';
+import {
+  createWebsite,
+  deleteWebsite,
+  insertWebsiteSections,
+  listWebsites,
+} from '~/utils/backend/services/websites';
+import {
+  parseWebsitePayload,
+  parseWebsiteSectionPayload,
+  WEBSITE_STATUSES,
+} from '~/utils/backend/validation';
 import { withAuth } from '~/utils/supabase/auth';
 
 export const prerender = false;
 
 const SUPABASE_ERROR = 'Supabase admin client is not configured';
+
+const DEFAULT_PAGE_SIZE = 25;
+const MAX_PAGE_SIZE = 100;
+
+function parsePositiveInteger(value: string | null, fallback: number): number {
+  if (!value) return fallback;
+  const parsed = Number.parseInt(value, 10);
+  if (Number.isNaN(parsed) || parsed < 1) return fallback;
+  return parsed;
+}
+
+function parsePageSize(value: string | null, fallback: number): number {
+  const parsed = parsePositiveInteger(value, fallback);
+  return Math.min(parsed, MAX_PAGE_SIZE);
+}
+
+function normalizeEnum(value: string | null, allowed: readonly string[]): string | undefined {
+  if (!value) return undefined;
+  const normalized = value.trim().toLowerCase();
+  return allowed.includes(normalized) ? normalized : undefined;
+}
+
+function normalizeClientId(value: string | null): string | undefined {
+  if (!value) return undefined;
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : undefined;
+}
+
+function normalizeSearch(value: string | null): string | null {
+  if (!value) return null;
+  const trimmed = value.trim();
+  return trimmed.length ? trimmed : null;
+}
 
 function slugify(value: string) {
   return value
@@ -20,52 +70,55 @@ function slugify(value: string) {
     .slice(0, 64) || 'section';
 }
 
-export const GET: APIRoute = withAuth(async ({ locals }) => {
+function mapSectionInput(
+  section: ReturnType<typeof parseWebsiteSectionPayload>,
+  fallbackDocId: string | null,
+) {
+  const key = section.section_key ? slugify(section.section_key) : slugify(section.heading ?? 'section');
+  return {
+    ...section,
+    section_key: key,
+    google_doc_id: section.google_doc_id ?? fallbackDocId,
+    google_doc_heading: section.google_doc_heading ?? section.heading ?? null,
+  };
+}
+
+export const GET: APIRoute = withAuth(async ({ locals, url }) => {
   try {
     const { agency, client } = await getAgencyContext(locals);
+    const search = normalizeSearch(url.searchParams.get('search') ?? url.searchParams.get('q'));
+    const page = parsePositiveInteger(url.searchParams.get('page'), 1);
+    const pageSize = parsePageSize(url.searchParams.get('pageSize'), DEFAULT_PAGE_SIZE);
+    const status = normalizeEnum(url.searchParams.get('status'), WEBSITE_STATUSES);
+    const clientId =
+      normalizeClientId(url.searchParams.get('clientId')) ??
+      normalizeClientId(url.searchParams.get('client_id'));
 
-    const { data: websites, error } = await client
-      .from('websites')
-      .select('*')
-      .eq('agency_id', agency.id)
-      .order('created_at', { ascending: false });
+    const { websites, total } = await listWebsites(client, agency.id, {
+      page,
+      pageSize,
+      status,
+      clientId,
+      search,
+      includeSections: true,
+    });
 
-    if (error) {
-      console.error('Failed to load websites', error);
-      return new Response(JSON.stringify({ error: 'Unable to load websites' }), { status: 500 });
-    }
+    const totalPages = total === 0 ? 0 : Math.ceil(total / pageSize);
 
-    const ids = (websites ?? []).map((site) => site.id);
-    let sectionsMap: Record<string, unknown[]> = {};
-
-    if (ids.length > 0) {
-      const { data: sections, error: sectionError } = await client
-        .from('website_sections')
-        .select('*')
-        .in('website_id', ids);
-
-      if (!sectionError && sections) {
-        sectionsMap = sections.reduce<Record<string, unknown[]>>((acc, section) => {
-          const key = section.website_id;
-          if (!acc[key]) acc[key] = [];
-          acc[key].push(section);
-          return acc;
-        }, {});
-      }
-    }
-
-    const payload = (websites ?? []).map((site) => ({
-      ...site,
-      sections: sectionsMap[site.id] ?? [],
-    }));
-
-    return new Response(JSON.stringify({ websites: payload }), { status: 200 });
+    return ok({
+      websites,
+      pagination: {
+        page,
+        pageSize,
+        total,
+        totalPages,
+      },
+    });
   } catch (error) {
     if (error instanceof Error && error.message === SUPABASE_ERROR) {
-      return new Response(JSON.stringify({ error: 'Supabase not configured' }), { status: 503 });
+      return serviceUnavailable('Supabase not configured');
     }
-    console.error('Unexpected error in GET /api/backend/websites', error);
-    return new Response(JSON.stringify({ error: 'Unexpected server error' }), { status: 500 });
+    return handleApiError(error, 'Unexpected error in GET /api/backend/websites');
   }
 });
 
@@ -73,23 +126,27 @@ export const POST: APIRoute = withAuth(async ({ locals, request }) => {
   let body: any;
   try {
     body = await request.json();
-  } catch (error) {
-    return new Response(JSON.stringify({ error: 'Invalid JSON payload' }), { status: 400 });
+  } catch {
+    return badRequest('Invalid JSON payload');
   }
 
   let websitePayload: ReturnType<typeof parseWebsitePayload>;
   try {
     websitePayload = parseWebsitePayload(body);
   } catch (error) {
-    return new Response(
-      JSON.stringify({ error: error instanceof Error ? error.message : 'Invalid website payload' }),
-      { status: 400 },
-    );
+    const message = error instanceof Error ? error.message : 'Invalid website payload';
+    return badRequest(message);
   }
 
-  const sectionPayloads: ReturnType<typeof parseWebsiteSectionPayload>[] = Array.isArray(body?.sections)
-    ? body.sections.map((section: unknown) => parseWebsiteSectionPayload(section))
-    : [];
+  let sectionPayloads: ReturnType<typeof parseWebsiteSectionPayload>[] = [];
+  if (Array.isArray(body?.sections)) {
+    try {
+      sectionPayloads = body.sections.map((section: unknown) => parseWebsiteSectionPayload(section));
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Invalid section payload';
+      return badRequest(message);
+    }
+  }
 
   try {
     const { agency, client } = await getAgencyContext(locals);
@@ -103,43 +160,22 @@ export const POST: APIRoute = withAuth(async ({ locals, request }) => {
       if (workspace.folderId) googleFolderId = workspace.folderId;
     }
 
-    const insertPayload = {
+    const website = await createWebsite(client, agency.id, {
       ...websitePayload,
-      agency_id: agency.id,
       google_doc_id: googleDocId,
       google_folder_id: googleFolderId,
-    };
+    });
 
-    const { data: website, error } = await client
-      .from('websites')
-      .insert(insertPayload)
-      .select('*')
-      .single();
-
-    if (error) {
-      console.error('Failed to create website', error);
-      return new Response(JSON.stringify({ error: 'Unable to save website' }), { status: 500 });
-    }
-
-    const sectionsToInsert: any[] = [];
+    const sectionInputs: ReturnType<typeof mapSectionInput>[] = [];
 
     if (sectionPayloads.length) {
       sectionPayloads.forEach((section) => {
-        sectionsToInsert.push({
-          website_id: website.id,
-          section_key: section.section_key || slugify(section.heading || 'section'),
-          heading: section.heading,
-          content: section.content,
-          media: section.media,
-          google_doc_id: section.google_doc_id || googleDocId,
-          google_doc_heading: section.google_doc_heading || section.heading,
-        });
+        sectionInputs.push(mapSectionInput(section, googleDocId));
       });
     } else if (googleDocId) {
       const docSections = await getDocumentSections(googleDocId);
       docSections.forEach((section) => {
-        sectionsToInsert.push({
-          website_id: website.id,
+        sectionInputs.push({
           section_key: slugify(section.heading),
           heading: section.heading,
           content: section.content,
@@ -150,8 +186,16 @@ export const POST: APIRoute = withAuth(async ({ locals, request }) => {
       });
     }
 
-    if (sectionsToInsert.length) {
-      await client.from('website_sections').insert(sectionsToInsert);
+    let insertedSections;
+    try {
+      insertedSections = await insertWebsiteSections(client, website.id, sectionInputs);
+    } catch (error) {
+      try {
+        await deleteWebsite(client, agency.id, website.id);
+      } catch (cleanupError) {
+        console.error('Failed to rollback website creation after section error', cleanupError);
+      }
+      throw error;
     }
 
     await logAgencyActivity(client, agency.id, 'website_created', 'website', website.id, {
@@ -159,19 +203,14 @@ export const POST: APIRoute = withAuth(async ({ locals, request }) => {
       status: website.status,
     });
 
-    return new Response(
-      JSON.stringify({
-        website,
-        sections: sectionsToInsert,
-      }),
-      { status: 201 },
-    );
+    return created({
+      website,
+      sections: insertedSections,
+    });
   } catch (error) {
     if (error instanceof Error && error.message === SUPABASE_ERROR) {
-      return new Response(JSON.stringify({ error: 'Supabase not configured' }), { status: 503 });
+      return serviceUnavailable('Supabase not configured');
     }
-    console.error('Unexpected error in POST /api/backend/websites', error);
-    return new Response(JSON.stringify({ error: 'Unexpected server error' }), { status: 500 });
+    return handleApiError(error, 'Unexpected error in POST /api/backend/websites');
   }
 });
-
