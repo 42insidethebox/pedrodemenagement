@@ -32,6 +32,22 @@ function normalizeEnum(value: string | null, allowed: readonly string[]): string
   return allowed.includes(normalized) ? normalized : undefined;
 }
 
+function parseDateParam(value: string | null): string | null {
+  if (!value) return null;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  const date = new Date(trimmed);
+  return Number.isNaN(date.getTime()) ? null : date.toISOString();
+}
+
+function parseBooleanParam(value: string | null, fallback: boolean): boolean {
+  if (value === null) return fallback;
+  const normalized = value.trim().toLowerCase();
+  if (['true', '1', 'yes', 'on'].includes(normalized)) return true;
+  if (['false', '0', 'no', 'off'].includes(normalized)) return false;
+  return fallback;
+}
+
 export const GET: APIRoute = withAuth(async ({ locals, url }) => {
   try {
     const { agency, client } = await getAgencyContext(locals);
@@ -43,8 +59,11 @@ export const GET: APIRoute = withAuth(async ({ locals, url }) => {
     const priority = normalizeEnum(url.searchParams.get('priority'), TASK_PRIORITIES as readonly string[]);
     const projectId = url.searchParams.get('projectId') ?? url.searchParams.get('project_id') ?? undefined;
     const assigneeId = url.searchParams.get('assigneeId') ?? url.searchParams.get('assignee_id') ?? undefined;
+    const dueBefore = parseDateParam(url.searchParams.get('dueBefore') ?? url.searchParams.get('due_before'));
+    const dueAfter = parseDateParam(url.searchParams.get('dueAfter') ?? url.searchParams.get('due_after'));
+    const includeSummaries = parseBooleanParam(url.searchParams.get('summaries'), true);
 
-    const { tasks, total } = await listTasks(client, agency.id, {
+    const { tasks, total, summaries } = await listTasks(client, agency.id, {
       page,
       pageSize,
       status,
@@ -52,6 +71,9 @@ export const GET: APIRoute = withAuth(async ({ locals, url }) => {
       projectId: projectId ? projectId.trim() : undefined,
       assigneeId: assigneeId ? assigneeId.trim() : undefined,
       search,
+      dueBefore,
+      dueAfter,
+      includeSummaries,
     });
 
     const totalPages = total === 0 ? 0 : Math.ceil(total / pageSize);
@@ -64,6 +86,7 @@ export const GET: APIRoute = withAuth(async ({ locals, url }) => {
         total,
         totalPages,
       },
+      summaries: includeSummaries ? summaries ?? { statusCounts: {}, priorityCounts: {} } : undefined,
     });
   } catch (error) {
     if (error instanceof Error && error.message === SUPABASE_ERROR) {

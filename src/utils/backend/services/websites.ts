@@ -16,6 +16,19 @@ export interface WebsiteSectionRecord extends WebsiteSectionInput {
   website_id: string;
   created_at: string;
   updated_at: string;
+  order_index?: number | null;
+}
+
+export interface WebsiteDetailMetrics {
+  sectionCount: number;
+  linkedDocs: number;
+  lastUpdatedSection: string | null;
+}
+
+export interface WebsiteDetailResult {
+  website: WebsiteRecord;
+  sections: WebsiteSectionRecord[];
+  metrics: WebsiteDetailMetrics;
 }
 
 export interface ListWebsitesOptions {
@@ -145,10 +158,28 @@ export async function getWebsiteWithSections(
   client: SupabaseClient,
   agencyId: string,
   id: string,
-): Promise<{ website: WebsiteRecord; sections: WebsiteSectionRecord[] }> {
-  const website = await getWebsiteById(client, agencyId, id);
-  const sections = await listWebsiteSections(client, id);
-  return { website, sections };
+): Promise<WebsiteDetailResult> {
+  const [website, sections] = await Promise.all([
+    getWebsiteById(client, agencyId, id),
+    listWebsiteSections(client, id),
+  ]);
+
+  const sectionCount = sections.length;
+  const linkedDocs = sections.filter((section) => Boolean(section.google_doc_id)).length;
+  const lastUpdatedSection = sections
+    .map((section) => section.updated_at)
+    .filter((value): value is string => Boolean(value))
+    .sort((a, b) => (a > b ? -1 : 1))[0] ?? null;
+
+  return {
+    website,
+    sections,
+    metrics: {
+      sectionCount,
+      linkedDocs,
+      lastUpdatedSection,
+    },
+  };
 }
 
 export async function listWebsiteSections(

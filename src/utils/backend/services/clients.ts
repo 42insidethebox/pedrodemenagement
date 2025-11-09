@@ -35,6 +35,22 @@ function sanitizeSearchTerm(term: string): string {
   return term.replace(/[%_,]/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
+function normalizeServices(services: string[] | null | undefined): string[] {
+  if (!services || !services.length) return [];
+  const seen = new Set<string>();
+  const normalized: string[] = [];
+  for (const raw of services) {
+    if (typeof raw !== 'string') continue;
+    const value = raw.trim();
+    if (!value) continue;
+    const lower = value.toLowerCase();
+    if (seen.has(lower)) continue;
+    seen.add(lower);
+    normalized.push(value);
+  }
+  return normalized;
+}
+
 export async function listClients(
   client: SupabaseClient,
   agencyId: string,
@@ -110,9 +126,34 @@ export async function createClient(
   agencyId: string,
   payload: ClientInput,
 ): Promise<ClientRecord> {
+  const normalizedServices = normalizeServices(payload.services);
+
+  if (payload.email) {
+    const { data: existing, error: lookupError } = await client
+      .from('clients')
+      .select('id')
+      .eq('agency_id', agencyId)
+      .eq('email', payload.email)
+      .maybeSingle();
+
+    if (lookupError && lookupError.code !== 'PGRST116') {
+      console.error('Failed to verify existing client email', lookupError);
+      throw new ApiError(500, 'Unable to validate client');
+    }
+
+    if (existing) {
+      throw new ApiError(409, 'A client with this email already exists');
+    }
+  }
+
   const { data, error } = await client
     .from('clients')
-    .insert({ ...payload, agency_id: agencyId })
+    .insert({
+      ...payload,
+      services: normalizedServices,
+      metadata: payload.metadata ?? {},
+      agency_id: agencyId,
+    })
     .select('*')
     .single();
 
@@ -134,6 +175,14 @@ export async function updateClient(
     ...payload,
     updated_at: new Date().toISOString(),
   };
+
+  if (payload.services !== undefined) {
+    updatePayload.services = normalizeServices(payload.services);
+  }
+
+  if (payload.metadata !== undefined && payload.metadata === null) {
+    updatePayload.metadata = {};
+  }
 
   const { data, error } = await client
     .from('clients')

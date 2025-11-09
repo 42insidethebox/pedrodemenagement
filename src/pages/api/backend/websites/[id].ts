@@ -52,9 +52,9 @@ export const GET: APIRoute = withAuth(async ({ locals, params }) => {
 
   try {
     const { agency, client } = await getAgencyContext(locals);
-    const { website, sections } = await getWebsiteWithSections(client, agency.id, id);
+    const { website, sections, metrics } = await getWebsiteWithSections(client, agency.id, id);
 
-    return ok({ website, sections });
+    return ok({ website, sections, metrics });
   } catch (error) {
     if (error instanceof Error && error.message === SUPABASE_ERROR) {
       return serviceUnavailable('Supabase not configured');

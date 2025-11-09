@@ -29,8 +29,18 @@ export interface ListProjectsOptions {
 }
 
 export interface ListProjectsResult {
-  projects: ProjectRecord[];
+  projects: ProjectWithMetrics[];
   total: number;
+}
+
+export interface ProjectMetrics {
+  totalTasks: number;
+  inProgressTasks: number;
+  overdueTasks: number;
+}
+
+export interface ProjectWithMetrics extends ProjectRecord {
+  metrics?: ProjectMetrics;
 }
 
 function sanitizeSearchTerm(term: string): string {
@@ -80,8 +90,60 @@ export async function listProjects(
     throw new ApiError(500, 'Unable to load projects');
   }
 
+  const projects = (data ?? []) as ProjectRecord[];
+
+  if (!projects.length) {
+    return {
+      projects: [],
+      total: count ?? 0,
+    };
+  }
+
+  const projectIds = projects.map((project) => project.id);
+  const { data: taskRows, error: taskError } = await client
+    .from('tasks')
+    .select('id, project_id, status, due_date')
+    .in('project_id', projectIds)
+    .eq('agency_id', agencyId);
+
+  if (taskError) {
+    console.error('Failed to load project task metrics', taskError);
+    throw new ApiError(500, 'Unable to load projects');
+  }
+
+  const now = new Date();
+
+  const metricsMap = (taskRows ?? []).reduce<Record<string, ProjectMetrics>>((acc, task) => {
+    if (!task.project_id) return acc;
+    if (!acc[task.project_id]) {
+      acc[task.project_id] = {
+        totalTasks: 0,
+        inProgressTasks: 0,
+        overdueTasks: 0,
+      };
+    }
+
+    const metrics = acc[task.project_id];
+    metrics.totalTasks += 1;
+    if (task.status === 'in_progress') {
+      metrics.inProgressTasks += 1;
+    }
+
+    if (task.status !== 'done' && task.due_date) {
+      const dueDate = new Date(task.due_date);
+      if (!Number.isNaN(dueDate.getTime()) && dueDate < now) {
+        metrics.overdueTasks += 1;
+      }
+    }
+
+    return acc;
+  }, {});
+
   return {
-    projects: (data ?? []) as ProjectRecord[],
+    projects: projects.map((project) => ({
+      ...project,
+      metrics: metricsMap[project.id],
+    })),
     total: count ?? 0,
   };
 }
@@ -160,11 +222,44 @@ export async function updateProject(
   return data as ProjectRecord;
 }
 
+export interface DeleteProjectResult {
+  project: Pick<ProjectRecord, 'id' | 'name'>;
+  detached: {
+    tasks: number;
+    invoices: number;
+  };
+}
+
 export async function deleteProject(
   client: SupabaseClient,
   agencyId: string,
   id: string,
-): Promise<Pick<ProjectRecord, 'id' | 'name'>> {
+): Promise<DeleteProjectResult> {
+  const [tasksResult, invoicesResult] = await Promise.all([
+    client
+      .from('tasks')
+      .update({ project_id: null })
+      .eq('agency_id', agencyId)
+      .eq('project_id', id)
+      .select('id'),
+    client
+      .from('invoices')
+      .update({ project_id: null })
+      .eq('agency_id', agencyId)
+      .eq('project_id', id)
+      .select('id'),
+  ]);
+
+  if ('error' in tasksResult && tasksResult.error) {
+    console.error('Failed to detach project tasks before deletion', tasksResult.error);
+    throw new ApiError(500, 'Unable to delete project');
+  }
+
+  if ('error' in invoicesResult && invoicesResult.error) {
+    console.error('Failed to detach project invoices before deletion', invoicesResult.error);
+    throw new ApiError(500, 'Unable to delete project');
+  }
+
   const { data, error } = await client
     .from('projects')
     .delete()
@@ -182,5 +277,11 @@ export async function deleteProject(
     throw new ApiError(404, 'Project not found');
   }
 
-  return data as Pick<ProjectRecord, 'id' | 'name'>;
+  return {
+    project: data as Pick<ProjectRecord, 'id' | 'name'>,
+    detached: {
+      tasks: Array.isArray(tasksResult.data) ? tasksResult.data.length : 0,
+      invoices: Array.isArray(invoicesResult.data) ? invoicesResult.data.length : 0,
+    },
+  };
 }

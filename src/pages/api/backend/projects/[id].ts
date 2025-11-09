@@ -3,7 +3,11 @@ import type { APIRoute } from 'astro';
 import { logAgencyActivity } from '~/utils/backend/activity';
 import { getAgencyContext } from '~/utils/backend/context';
 import { badRequest, handleApiError, noContent, ok, serviceUnavailable } from '~/utils/backend/http';
-import { deleteProject, getProjectById, updateProject } from '~/utils/backend/services/projects';
+import {
+  deleteProject,
+  getProjectById,
+  updateProject,
+} from '~/utils/backend/services/projects';
 import { parseProjectUpdate } from '~/utils/backend/validation';
 import { withAuth } from '~/utils/supabase/auth';
 
@@ -77,11 +81,12 @@ export const DELETE: APIRoute = withAuth(async ({ locals, params }) => {
 
   try {
     const { agency, client } = await getAgencyContext(locals);
-    const existing = await getProjectById(client, agency.id, id);
-    await deleteProject(client, agency.id, id);
+    const { project, detached } = await deleteProject(client, agency.id, id);
 
-    await logAgencyActivity(client, agency.id, 'project_deleted', 'project', id, {
-      name: existing.name,
+    await logAgencyActivity(client, agency.id, 'project_deleted', 'project', project.id, {
+      name: project.name,
+      detached_tasks: detached.tasks,
+      detached_invoices: detached.invoices,
     });
 
     return noContent();
