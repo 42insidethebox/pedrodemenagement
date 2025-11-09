@@ -1,0 +1,10 @@
+src/pages/api/backend/clients/[id].ts:88:    return handleApiError(error, 'Unexpected error in DELETE /api/backend/clients/[id]');
+src/pages/api/backend/tasks/[id].ts:89:    return handleApiError(error, 'Unexpected error in DELETE /api/backend/tasks/[id]');
+src/pages/api/backend/invoices/[id].ts:91:    return handleApiError(error, 'Unexpected error in DELETE /api/backend/invoices/[id]');
+src/pages/api/backend/projects/[id].ts:92:    return handleApiError(error, 'Unexpected error in DELETE /api/backend/projects/[id]');
+src/pages/api/backend/subscriptions/[id].ts:134:    return handleApiError(error, 'Unexpected error in DELETE /api/backend/subscriptions/[id]');
+src/pages/api/backend/team/[id].ts:101:    return handleApiError(error, 'Unexpected error in DELETE /api/backend/team/[id]');
+src/pages/api/backend/support/[id].ts:85:    return handleApiError(error, 'Unexpected error in DELETE /api/backend/support/[id]');
+src/pages/api/backend/documents/[id].ts:103:    return handleApiError(error, 'Unexpected error in DELETE /api/backend/documents/[id]');
+src/pages/api/backend/orders/[id].ts:103:    return handleApiError(error, 'Unexpected error in DELETE /api/backend/orders/[id]');
+src/pages/api/backend/websites/[id].ts:262:    return handleApiError(error, 'Unexpected error in DELETE /api/backend/websites/[id]');
