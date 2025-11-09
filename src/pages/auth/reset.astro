@@ -79,17 +79,69 @@ const { language, textDirection } = I18N;
         if (!lang) return;
         a.setAttribute('href', computeLangHref(lang));
       });
-      const params = new URLSearchParams(location.search);
+      function collectAuthParams() {
+        const combined = new URLSearchParams(location.search);
+        const rawHash = (location.hash || '').replace(/^#/, '');
+        if (rawHash) {
+          const hashParams = new URLSearchParams(rawHash);
+          hashParams.forEach((value, key) => {
+            if (!combined.has(key)) {
+              combined.set(key, value);
+            } else if (
+              [
+                'access_token',
+                'refresh_token',
+                'expires_in',
+                'expires_at',
+                'token',
+                'email',
+                'type',
+                'user',
+              ].includes(key)
+            ) {
+              combined.set(key, value);
+            }
+          });
+        }
+        return combined;
+      }
+
+      function stripHashFragment() {
+        if (!location.hash) return;
+        try {
+          const url = new URL(location.href);
+          url.hash = '';
+          window.history.replaceState({}, '', url.toString());
+        } catch (error) {
+          console.warn('Unable to clean auth hash fragment', error);
+        }
+      }
+
+      const params = collectAuthParams();
       const token = params.get('token') || '';
-      const email = params.get('email') || '';
+      const accessToken = params.get('access_token') || '';
+      let email = params.get('email') || '';
       const type = params.get('type') || '';
+      const rawUser = params.get('user');
+      if (!email && rawUser) {
+        try {
+          const decoded = decodeURIComponent(rawUser);
+          const parsed = JSON.parse(decoded);
+          if (parsed && typeof parsed.email === 'string') {
+            email = parsed.email;
+          }
+        } catch (error) {
+          console.warn('Unable to parse user info from auth params', error);
+        }
+      }
+      stripHashFragment();
       const form = document.getElementById('reset-form');
       const button = document.getElementById('reset-submit');
       const message = document.getElementById('reset-message');
 
-      if (!token || !email) {
+      if (!token && !accessToken) {
         message.classList.add('text-red-400');
-        message.textContent = 'Missing token or email in URL';
+        message.textContent = 'Missing recovery credentials in URL';
       }
 
       form?.addEventListener('submit', async (e) => {
@@ -110,7 +162,7 @@ const { language, textDirection } = I18N;
           const res = await fetch('/api/auth/reset-password', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token, email, password }),
+            body: JSON.stringify({ token, email, password, accessToken }),
           });
           const json = await res.json();
           if (!res.ok) throw new Error(json?.error || 'Unable to reset password');

@@ -100,7 +100,46 @@ const { language, textDirection } = I18N;
         }
       }
 
-      const params = new URLSearchParams(location.search);
+      function collectAuthParams() {
+        const combined = new URLSearchParams(location.search);
+        const rawHash = (location.hash || '').replace(/^#/, '');
+        if (rawHash) {
+          const hashParams = new URLSearchParams(rawHash);
+          hashParams.forEach((value, key) => {
+            if (!combined.has(key)) {
+              combined.set(key, value);
+            } else if (
+              [
+                'access_token',
+                'refresh_token',
+                'expires_in',
+                'expires_at',
+                'token',
+                'email',
+                'type',
+                'next',
+              ].includes(key)
+            ) {
+              combined.set(key, value);
+            }
+          });
+        }
+        return combined;
+      }
+
+      function stripHashFragment() {
+        if (!location.hash) return;
+        try {
+          const url = new URL(location.href);
+          url.hash = '';
+          window.history.replaceState({}, '', url.toString());
+        } catch (error) {
+          console.warn('Unable to clean auth hash fragment', error);
+        }
+      }
+
+      const params = collectAuthParams();
+      stripHashFragment();
       const errorMessage =
         params.get('error_description') || params.get('error') || params.get('message') || params.get('error_code');
       const accessToken = params.get('access_token') || '';
