@@ -32,6 +32,22 @@ function normalizeStatus(value: string | null): string | undefined {
   return (INVOICE_STATUSES as readonly string[]).includes(normalized) ? normalized : undefined;
 }
 
+function parseDateParam(value: string | null): string | null {
+  if (!value) return null;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  const date = new Date(trimmed);
+  return Number.isNaN(date.getTime()) ? null : date.toISOString();
+}
+
+function parseBooleanParam(value: string | null, fallback: boolean): boolean {
+  if (value === null) return fallback;
+  const normalized = value.trim().toLowerCase();
+  if (['true', '1', 'yes', 'on'].includes(normalized)) return true;
+  if (['false', '0', 'no', 'off'].includes(normalized)) return false;
+  return fallback;
+}
+
 export const GET: APIRoute = withAuth(async ({ locals, url }) => {
   try {
     const { agency, client } = await getAgencyContext(locals);
@@ -45,14 +61,24 @@ export const GET: APIRoute = withAuth(async ({ locals, url }) => {
     const projectIdParam = url.searchParams.get('projectId') ?? url.searchParams.get('project_id');
     const clientId = clientIdParam ? clientIdParam.trim() : '';
     const projectId = projectIdParam ? projectIdParam.trim() : '';
+    const issuedBefore = parseDateParam(url.searchParams.get('issuedBefore') ?? url.searchParams.get('issued_before'));
+    const issuedAfter = parseDateParam(url.searchParams.get('issuedAfter') ?? url.searchParams.get('issued_after'));
+    const dueBefore = parseDateParam(url.searchParams.get('dueBefore') ?? url.searchParams.get('due_before'));
+    const dueAfter = parseDateParam(url.searchParams.get('dueAfter') ?? url.searchParams.get('due_after'));
+    const includeSummaries = parseBooleanParam(url.searchParams.get('summaries'), true);
 
-    const { invoices, total } = await listInvoices(client, agency.id, {
+    const { invoices, total, summaries } = await listInvoices(client, agency.id, {
       page,
       pageSize,
       status,
       clientId: clientId.length ? clientId : undefined,
       projectId: projectId.length ? projectId : undefined,
       search,
+      issuedBefore,
+      issuedAfter,
+      dueBefore,
+      dueAfter,
+      includeSummaries,
     });
 
     const totalPages = total === 0 ? 0 : Math.ceil(total / pageSize);
@@ -65,6 +91,9 @@ export const GET: APIRoute = withAuth(async ({ locals, url }) => {
         total,
         totalPages,
       },
+      summaries: includeSummaries
+        ? summaries ?? { statusCounts: {}, outstandingAmount: 0, overdueAmount: 0, totalAmount: 0 }
+        : undefined,
     });
   } catch (error) {
     if (error instanceof Error && error.message === SUPABASE_ERROR) {

@@ -18,6 +18,20 @@ export interface TaskRecord {
   updated_at: string;
 }
 
+export interface TaskWithRelations extends TaskRecord {
+  project?: {
+    id: string;
+    name: string;
+    status: string;
+    client_id: string | null;
+  } | null;
+  assignee?: {
+    user_id: string;
+    full_name: string | null;
+    email: string | null;
+  } | null;
+}
+
 export interface ListTasksOptions {
   page: number;
   pageSize: number;
@@ -26,15 +40,68 @@ export interface ListTasksOptions {
   projectId?: string;
   assigneeId?: string;
   search?: string | null;
+  dueBefore?: string | null;
+  dueAfter?: string | null;
+  includeSummaries?: boolean;
+}
+
+export interface TaskSummaries {
+  statusCounts: Record<string, number>;
+  priorityCounts: Record<string, number>;
 }
 
 export interface ListTasksResult {
-  tasks: TaskRecord[];
+  tasks: TaskWithRelations[];
   total: number;
+  summaries?: TaskSummaries;
 }
 
 function sanitizeSearchTerm(term: string): string {
   return term.replace(/[%_,]/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function applyTaskFilters(
+  query: any,
+  agencyId: string,
+  options: ListTasksOptions,
+) {
+  let builder = query.eq('agency_id', agencyId);
+
+  if (options.status) {
+    builder = builder.eq('status', options.status);
+  }
+
+  if (options.priority) {
+    builder = builder.eq('priority', options.priority);
+  }
+
+  if (options.projectId) {
+    builder = builder.eq('project_id', options.projectId);
+  }
+
+  if (options.assigneeId) {
+    builder = builder.eq('assignee_id', options.assigneeId);
+  }
+
+  if (options.dueBefore) {
+    builder = builder.lte('due_date', options.dueBefore);
+  }
+
+  if (options.dueAfter) {
+    builder = builder.gte('due_date', options.dueAfter);
+  }
+
+  if (options.search) {
+    const sanitized = sanitizeSearchTerm(options.search);
+    if (sanitized) {
+      const pattern = `%${sanitized.replace(/[%_]/g, '')}%`;
+      builder = builder.or(
+        ['title', 'description'].map((column) => `${column}.ilike.${pattern}`).join(','),
+      );
+    }
+  }
+
+  return builder;
 }
 
 export async function listTasks(
@@ -47,52 +114,159 @@ export async function listTasks(
   const from = (page - 1) * pageSize;
   const to = from + pageSize - 1;
 
-  let query = client
+  const baseQuery = client
     .from('tasks')
-    .select('*', { count: 'exact' })
-    .eq('agency_id', agencyId);
+    .select('*', { count: 'exact' });
 
-  if (options.status) {
-    query = query.eq('status', options.status);
-  }
-
-  if (options.priority) {
-    query = query.eq('priority', options.priority);
-  }
-
-  if (options.projectId) {
-    query = query.eq('project_id', options.projectId);
-  }
-
-  if (options.assigneeId) {
-    query = query.eq('assignee_id', options.assigneeId);
-  }
-
-  if (options.search) {
-    const sanitized = sanitizeSearchTerm(options.search);
-    if (sanitized) {
-      const pattern = `%${sanitized.replace(/[%_]/g, '')}%`;
-      query = query.or(
-        ['title', 'description']
-          .map((column) => `${column}.ilike.${pattern}`)
-          .join(','),
-      );
-    }
-  }
-
-  const { data, error, count } = await query
+  const pagedQuery = applyTaskFilters(baseQuery, agencyId, options)
     .order('due_date', { ascending: true, nullsFirst: false })
     .order('created_at', { ascending: false })
     .range(from, to);
 
-  if (error) {
-    console.error('Failed to list tasks', error);
+  const includeSummaries = options.includeSummaries !== false;
+
+  const [listResult, statusAggResult, priorityAggResult] = await Promise.all([
+    pagedQuery,
+    includeSummaries
+      ? applyTaskFilters(
+          client.from('tasks').select('status, count:id'),
+          agencyId,
+          options,
+        )
+          .group('status')
+          .order('status', { ascending: true })
+      : Promise.resolve({ data: null, error: null }),
+    includeSummaries
+      ? applyTaskFilters(
+          client.from('tasks').select('priority, count:id'),
+          agencyId,
+          options,
+        )
+          .group('priority')
+          .order('priority', { ascending: true })
+      : Promise.resolve({ data: null, error: null }),
+  ]);
+
+  if (listResult.error) {
+    console.error('Failed to list tasks', listResult.error);
     throw new ApiError(500, 'Unable to load tasks');
   }
 
+  const tasks = (listResult.data ?? []) as TaskRecord[];
+  const total = listResult.count ?? 0;
+
+  if (tasks.length === 0) {
+    return {
+      tasks: [],
+      total,
+      summaries:
+        includeSummaries
+          ? { statusCounts: {}, priorityCounts: {} }
+          : undefined,
+    };
+  }
+
+  const projectIds = Array.from(new Set(tasks.map((task) => task.project_id).filter(Boolean)));
+  const assigneeIds = Array.from(
+    new Set(tasks.map((task) => task.assignee_id).filter((value): value is string => Boolean(value))),
+  );
+
+  const [projectsResult, assigneesResult] = await Promise.all([
+    projectIds.length
+      ? client
+          .from('projects')
+          .select('id, name, status, client_id')
+          .in('id', projectIds)
+      : Promise.resolve({ data: [], error: null }),
+    assigneeIds.length
+      ? client
+          .from('agency_members')
+          .select('user_id, full_name, email')
+          .in('user_id', assigneeIds)
+      : Promise.resolve({ data: [], error: null }),
+  ]);
+
+  if (projectsResult.error) {
+    console.error('Failed to load related projects for tasks', projectsResult.error);
+    throw new ApiError(500, 'Unable to load tasks');
+  }
+
+  if (assigneesResult.error) {
+    console.error('Failed to load related assignees for tasks', assigneesResult.error);
+    throw new ApiError(500, 'Unable to load tasks');
+  }
+
+  const projectMap = (projectsResult.data ?? []).reduce<Record<string, TaskWithRelations['project']>>(
+    (acc, project) => {
+      acc[project.id] = {
+        id: project.id,
+        name: project.name,
+        status: project.status,
+        client_id: project.client_id,
+      };
+      return acc;
+    },
+    {},
+  );
+
+  const assigneeMap = (assigneesResult.data ?? []).reduce<
+    Record<string, TaskWithRelations['assignee']>
+  >((acc, member) => {
+    acc[member.user_id] = {
+      user_id: member.user_id,
+      full_name: member.full_name,
+      email: member.email,
+    };
+    return acc;
+  }, {});
+
+  const enrichedTasks: TaskWithRelations[] = tasks.map((task) => ({
+    ...task,
+    project: task.project_id ? projectMap[task.project_id] ?? null : null,
+    assignee: task.assignee_id ? assigneeMap[task.assignee_id] ?? null : null,
+  }));
+
+  let summaries: TaskSummaries | undefined;
+
+  if (includeSummaries) {
+    if (statusAggResult && 'error' in statusAggResult && statusAggResult.error) {
+      console.error('Failed to aggregate task status counts', statusAggResult.error);
+      throw new ApiError(500, 'Unable to summarize tasks');
+    }
+
+    if (priorityAggResult && 'error' in priorityAggResult && priorityAggResult.error) {
+      console.error('Failed to aggregate task priority counts', priorityAggResult.error);
+      throw new ApiError(500, 'Unable to summarize tasks');
+    }
+
+    const statusCounts = ((statusAggResult as { data: { status: string; count: number }[] | null })?.data ?? []).reduce<
+      Record<string, number>
+    >((acc, row) => {
+      if (row.status) {
+        acc[row.status] = row.count ?? 0;
+      }
+      return acc;
+    }, {});
+
+    const priorityCounts = ((
+      priorityAggResult as { data: { priority: string; count: number }[] | null }
+    )?.data ?? []).reduce<Record<string, number>>((acc, row) => {
+      if (row.priority) {
+        acc[row.priority] = row.count ?? 0;
+      }
+      return acc;
+    }, {});
+
+    summaries = {
+      statusCounts,
+      priorityCounts,
+    };
+  }
+
   return {
-    tasks: (data ?? []) as TaskRecord[],
-    total: count ?? 0,
+    tasks: enrichedTasks,
+    total,
+    summaries,
   };
 }
 
