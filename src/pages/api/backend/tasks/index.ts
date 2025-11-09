@@ -1,35 +1,75 @@
 import type { APIRoute } from 'astro';
 
-import { getAgencyContext } from '~/utils/backend/context';
 import { logAgencyActivity } from '~/utils/backend/activity';
-import { parseTaskPayload } from '~/utils/backend/validation';
+import { getAgencyContext } from '~/utils/backend/context';
+import { badRequest, created, handleApiError, ok, serviceUnavailable } from '~/utils/backend/http';
+import { createTask, listTasks } from '~/utils/backend/services/tasks';
+import { parseTaskPayload, TASK_PRIORITIES, TASK_STATUSES } from '~/utils/backend/validation';
 import { withAuth } from '~/utils/supabase/auth';
 
 export const prerender = false;
 
 const SUPABASE_ERROR = 'Supabase admin client is not configured';
 
-export const GET: APIRoute = withAuth(async ({ locals }) => {
+const DEFAULT_PAGE_SIZE = 25;
+const MAX_PAGE_SIZE = 100;
+
+function parsePositiveInteger(value: string | null, fallback: number): number {
+  if (!value) return fallback;
+  const parsed = Number.parseInt(value, 10);
+  if (Number.isNaN(parsed) || parsed < 1) return fallback;
+  return parsed;
+}
+
+function parsePageSize(value: string | null, fallback: number): number {
+  const parsed = parsePositiveInteger(value, fallback);
+  return Math.min(parsed, MAX_PAGE_SIZE);
+}
+
+function normalizeEnum(value: string | null, allowed: readonly string[]): string | undefined {
+  if (!value) return undefined;
+  const normalized = value.trim().toLowerCase();
+  return allowed.includes(normalized) ? normalized : undefined;
+}
+
+export const GET: APIRoute = withAuth(async ({ locals, url }) => {
   try {
     const { agency, client } = await getAgencyContext(locals);
-    const { data, error } = await client
-      .from('tasks')
-      .select('*')
-      .eq('agency_id', agency.id)
-      .order('created_at', { ascending: false });
 
-    if (error) {
-      console.error('Failed to load tasks', error);
-      return new Response(JSON.stringify({ error: 'Unable to load tasks' }), { status: 500 });
-    }
+    const search = url.searchParams.get('search') ?? url.searchParams.get('q');
+    const page = parsePositiveInteger(url.searchParams.get('page'), 1);
+    const pageSize = parsePageSize(url.searchParams.get('pageSize'), DEFAULT_PAGE_SIZE);
+    const status = normalizeEnum(url.searchParams.get('status'), TASK_STATUSES as readonly string[]);
+    const priority = normalizeEnum(url.searchParams.get('priority'), TASK_PRIORITIES as readonly string[]);
+    const projectId = url.searchParams.get('projectId') ?? url.searchParams.get('project_id') ?? undefined;
+    const assigneeId = url.searchParams.get('assigneeId') ?? url.searchParams.get('assignee_id') ?? undefined;
 
-    return new Response(JSON.stringify({ tasks: data ?? [] }), { status: 200 });
+    const { tasks, total } = await listTasks(client, agency.id, {
+      page,
+      pageSize,
+      status,
+      priority,
+      projectId: projectId ? projectId.trim() : undefined,
+      assigneeId: assigneeId ? assigneeId.trim() : undefined,
+      search,
+    });
+
+    const totalPages = total === 0 ? 0 : Math.ceil(total / pageSize);
+
+    return ok({
+      tasks,
+      pagination: {
+        page,
+        pageSize,
+        total,
+        totalPages,
+      },
+    });
   } catch (error) {
     if (error instanceof Error && error.message === SUPABASE_ERROR) {
-      return new Response(JSON.stringify({ error: 'Supabase not configured' }), { status: 503 });
+      return serviceUnavailable('Supabase not configured');
     }
-    console.error('Unexpected error in GET /api/backend/tasks', error);
-    return new Response(JSON.stringify({ error: 'Unexpected server error' }), { status: 500 });
+    return handleApiError(error, 'Unexpected error in GET /api/backend/tasks');
   }
 });
 
@@ -39,35 +79,25 @@ export const POST: APIRoute = withAuth(async ({ locals, request }) => {
   try {
     payload = parseTaskPayload(await request.json());
   } catch (error) {
-    return new Response(JSON.stringify({ error: error instanceof Error ? error.message : 'Invalid payload' }), {
-      status: 400,
-    });
+    const message = error instanceof Error ? error.message : 'Invalid payload';
+    return badRequest(message);
   }
 
   try {
     const { agency, client } = await getAgencyContext(locals);
-    const { data, error } = await client
-      .from('tasks')
-      .insert({ ...payload, agency_id: agency.id })
-      .select('*')
-      .single();
+    const record = await createTask(client, agency.id, payload);
 
-    if (error) {
-      console.error('Failed to create task', error);
-      return new Response(JSON.stringify({ error: 'Unable to save task' }), { status: 500 });
-    }
-
-    await logAgencyActivity(client, agency.id, 'task_created', 'task', data.id, {
-      title: data.title,
-      status: data.status,
+    await logAgencyActivity(client, agency.id, 'task_created', 'task', record.id, {
+      title: record.title,
+      status: record.status,
+      priority: record.priority,
     });
 
-    return new Response(JSON.stringify({ task: data }), { status: 201 });
+    return created({ task: record });
   } catch (error) {
     if (error instanceof Error && error.message === SUPABASE_ERROR) {
-      return new Response(JSON.stringify({ error: 'Supabase not configured' }), { status: 503 });
+      return serviceUnavailable('Supabase not configured');
     }
-    console.error('Unexpected error in POST /api/backend/tasks', error);
-    return new Response(JSON.stringify({ error: 'Unexpected server error' }), { status: 500 });
+    return handleApiError(error, 'Unexpected error in POST /api/backend/tasks');
   }
 });
