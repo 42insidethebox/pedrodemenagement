@@ -212,6 +212,7 @@ export type ProjectInput = {
   budget: number | null;
   currency: string | null;
   notes: string | null;
+  metadata: Record<string, unknown>;
 };
 
 export function parseProjectPayload(payload: unknown): ProjectInput {
@@ -229,7 +230,33 @@ export function parseProjectPayload(payload: unknown): ProjectInput {
     budget: ensureOptionalNumber(body.budget),
     currency: ensureOptionalString(body.currency),
     notes: ensureOptionalString(body.notes),
+    metadata: ensureObject(body.metadata, 'metadata'),
   };
+}
+
+export function parseProjectUpdate(payload: unknown): Partial<ProjectInput> {
+  if (!payload || typeof payload !== 'object') {
+    throw new Error('Invalid project payload');
+  }
+
+  const body = payload as Record<string, unknown>;
+  const result: Partial<ProjectInput> = {};
+
+  if (body.name !== undefined) result.name = ensureString(body.name, 'name');
+  if (body.client_id !== undefined) result.client_id = ensureString(body.client_id, 'client_id');
+  if (body.status !== undefined) result.status = ensureEnum(body.status, 'status', PROJECT_STATUSES, 'discovery');
+  if (body.start_date !== undefined) result.start_date = ensureDateString(body.start_date, 'start_date', true);
+  if (body.due_date !== undefined) result.due_date = ensureDateString(body.due_date, 'due_date', true);
+  if (body.budget !== undefined) result.budget = ensureOptionalNumber(body.budget);
+  if (body.currency !== undefined) result.currency = ensureOptionalString(body.currency);
+  if (body.notes !== undefined) result.notes = ensureOptionalString(body.notes);
+  if (body.metadata !== undefined) result.metadata = ensureObject(body.metadata, 'metadata');
+
+  if (Object.keys(result).length === 0) {
+    throw new Error('No updatable fields provided');
+  }
+
+  return result;
 }
 
 export type TaskInput = {
@@ -560,6 +587,52 @@ export function parseInvoicePayload(payload: unknown): InvoiceInput {
     line_items,
     notes: ensureOptionalString(body.notes),
   };
+}
+
+export function parseInvoiceUpdate(payload: unknown): Partial<InvoiceInput> {
+  if (!payload || typeof payload !== 'object') {
+    throw new Error('Invalid invoice payload');
+  }
+
+  const body = payload as Record<string, unknown>;
+  const result: Partial<InvoiceInput> = {};
+
+  if (body.invoice_number !== undefined) result.invoice_number = ensureString(body.invoice_number, 'invoice_number');
+  if (body.client_id !== undefined) result.client_id = ensureString(body.client_id, 'client_id');
+  if (body.project_id !== undefined) result.project_id = ensureOptionalString(body.project_id);
+  if (body.status !== undefined) result.status = ensureEnum(body.status, 'status', INVOICE_STATUSES, 'draft');
+  if (body.issue_date !== undefined) result.issue_date = ensureDateString(body.issue_date, 'issue_date')!;
+  if (body.due_date !== undefined) result.due_date = ensureDateString(body.due_date, 'due_date')!;
+  if (body.currency !== undefined) result.currency = ensureString(body.currency, 'currency').toUpperCase();
+  if (body.amount !== undefined) result.amount = ensureNumber(body.amount, 'amount');
+
+  if (body.line_items !== undefined) {
+    if (!Array.isArray(body.line_items)) {
+      throw new Error('Invalid line item list');
+    }
+    result.line_items = body.line_items.map((item, index) => {
+      if (!item || typeof item !== 'object') {
+        throw new Error(`Invalid line item at index ${index}`);
+      }
+      const row = item as Record<string, unknown>;
+      return {
+        description: ensureString(row.description, 'line_items.description'),
+        quantity: ensureNumber(row.quantity, 'line_items.quantity'),
+        unit_amount: ensureNumber(row.unit_amount, 'line_items.unit_amount'),
+      };
+    });
+    if (result.line_items.length && result.amount === undefined) {
+      result.amount = result.line_items.reduce((total, item) => total + item.quantity * item.unit_amount, 0);
+    }
+  }
+
+  if (body.notes !== undefined) result.notes = ensureOptionalString(body.notes);
+
+  if (Object.keys(result).length === 0) {
+    throw new Error('No updatable fields provided');
+  }
+
+  return result;
 }
 
 export function validateId(id: string | null | undefined): string {
