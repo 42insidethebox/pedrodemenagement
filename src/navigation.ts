@@ -69,9 +69,7 @@ export const headerDataFr: Navigation = {
       links: languageLinks,
     },
   ],
-  actions: [
-    { text: 'Demander une démo', href: getPermalink('/contact#form') },
-  ],
+  actions: [],
 };
 
 export const footerDataFr: FooterNavigation = {
@@ -135,7 +133,7 @@ export const headerDataEn: Navigation = {
     { text: 'FAQ', href: getPermalink('/en#faq') },
     { text: 'Language', links: languageLinks },
   ],
-  actions: [{ text: 'Request a demo', href: getPermalink('/en/contact#form') }],
+  actions: [],
 };
 
 export const footerDataEn: FooterNavigation = {
@@ -199,7 +197,7 @@ export const headerDataDe: Navigation = {
     { text: 'FAQ', href: getPermalink('/de#faq') },
     { text: 'Sprache', links: languageLinks },
   ],
-  actions: [{ text: 'Demo anfragen', href: getPermalink('/de/contact#form') }],
+  actions: [],
 };
 
 export const footerDataDe: FooterNavigation = {
@@ -263,7 +261,7 @@ export const headerDataIt: Navigation = {
     { text: 'FAQ', href: getPermalink('/it#faq') },
     { text: 'Lingua', links: languageLinks },
   ],
-  actions: [{ text: 'Richiedi una demo', href: getPermalink('/it/contact#form') }],
+  actions: [],
 };
 
 export const footerDataIt: FooterNavigation = {

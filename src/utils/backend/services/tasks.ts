@@ -15,7 +15,7 @@ export interface TaskRecord {
   assignee_id: string | null;
   due_date: string | null;
   created_at: string;
-  updated_at: string;
+  updated_at?: string;
 }
 
 export interface TaskWithRelations extends TaskRecord {
@@ -319,10 +319,7 @@ export async function updateTask(
   id: string,
   payload: Partial<TaskInput>,
 ): Promise<TaskRecord> {
-  const updatePayload = {
-    ...payload,
-    updated_at: new Date().toISOString(),
-  };
+  const updatePayload = { ...payload } as Record<string, unknown>;
 
   const { data, error } = await client
     .from('tasks')

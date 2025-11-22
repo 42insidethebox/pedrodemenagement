@@ -8,14 +8,14 @@ export function serializeMetadata(input) {
   const phone = normalizePhoneNumber(toStr(input?.phone));
   const template = toStr(input?.template);
   const plan = toStr(input?.plan).toLowerCase();
+  const locale = toStr(input?.locale).toLowerCase();
   const clientSlug = generateClientSlug(name, company);
   const agencyId = toStr(input?.agencyId || input?.agency_id);
 
-  const meta = { name, email, company, phone, template, plan, clientSlug, agencyId };
+  const meta = { name, email, company, phone, template, plan, locale, clientSlug, agencyId };
   return JSON.parse(JSON.stringify(meta));
 }
 
 function toStr(v) {
   return typeof v === 'string' ? v.trim() : '';
 }
-

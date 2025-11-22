@@ -14,6 +14,11 @@ export const POST: APIRoute = async ({ request }) => {
   const templateRaw = String(data.template || '').trim();
   const template = isAllowedTemplate(templateRaw) ? templateRaw : '';
   const agencyId = typeof data.agencyId === 'string' ? data.agencyId : data.agency_id;
+  const name = typeof data.name === 'string' ? data.name : '';
+  const email = typeof data.email === 'string' ? data.email : '';
+  const phone = typeof data.phone === 'string' ? data.phone : '';
+  const company = typeof data.company === 'string' ? data.company : '';
+  const locale = typeof data.locale === 'string' ? data.locale : '';
   const origin = ENV.ORIGIN || request.headers.get('origin') || 'http://localhost:4321';
 
   const stripe = await getStripe();
@@ -34,6 +39,11 @@ export const POST: APIRoute = async ({ request }) => {
       plan,
       template,
       agencyId,
+      name,
+      email,
+      phone,
+      company,
+      locale,
     }),
   });
 

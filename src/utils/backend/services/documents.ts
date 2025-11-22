@@ -8,7 +8,7 @@ export interface DocumentRecord extends DocumentInput {
   id: string;
   agency_id: string;
   created_at: string;
-  updated_at: string;
+  updated_at?: string;
 }
 
 export interface ListDocumentsOptions {
@@ -127,10 +127,7 @@ export async function updateDocument(
   id: string,
   payload: Partial<DocumentInput>,
 ): Promise<DocumentRecord> {
-  const updatePayload = {
-    ...payload,
-    updated_at: new Date().toISOString(),
-  };
+  const updatePayload = { ...payload } as Record<string, unknown>;
 
   const { data, error } = await client
     .from('documents')

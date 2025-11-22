@@ -9,6 +9,50 @@ import { UI } from 'astrowind:config';
 
   window.basic_script = true;
 
+  // If Supabase email links drop auth tokens on a non-auth page, bounce to the right auth handler preserving params.
+  (() => {
+    if (typeof window === 'undefined') return;
+    const path = window.location.pathname || '';
+    const isAuthPath = /^\/(fr|en|de|it)?\/auth\//.test(path) || path.startsWith('/auth/');
+    if (isAuthPath) return;
+
+    const search = window.location.search || '';
+    const hash = window.location.hash || '';
+    const blob = (search + hash).toLowerCase();
+    const params = new URLSearchParams((search + (hash.startsWith('#') ? hash.slice(1) : hash)) || '');
+
+    const hasAuthTokens = ['access_token', 'refresh_token', 'expires_at', 'expires_in', 'token', 'type', 'email'].some(
+      (key) => blob.includes(`${key}=`),
+    );
+    if (!hasAuthTokens) return;
+
+    const type = (params.get('type') || '').toLowerCase();
+    const target =
+      type === 'recovery' || type === 'password_recovery'
+        ? `/auth/reset${search}${hash}`
+        : `/auth/callback${search}${hash}`;
+
+    try {
+      window.location.replace(target);
+    } catch (_) {
+      // ignore redirect issues
+    }
+  })();
+
+  // Persist ?lang= selection if present
+  (() => {
+    try {
+      if (typeof window === 'undefined') return;
+      const url = new URL(window.location.href);
+      const lang = url.searchParams.get('lang');
+      if (lang) {
+        localStorage.setItem('preferredLang', lang);
+      }
+    } catch (_) {
+      // ignore storage issues
+    }
+  })();
+
   function applyTheme(theme) {
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
@@ -117,7 +161,7 @@ import { UI } from 'astrowind:config';
       newlink.click();
     });
 
-    const screenSize = window.matchMedia('(max-width: 767px)');
+    const screenSize = window.matchMedia('(max-width: 768px)');
     screenSize.addEventListener('change', function () {
       document.querySelector('[data-aw-toggle-menu]')?.classList.remove('expanded');
       document.body.classList.remove('overflow-hidden');

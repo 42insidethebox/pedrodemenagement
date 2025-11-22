@@ -8,7 +8,7 @@ export interface SupportRequestRecord extends SupportRequestInput {
   id: string;
   agency_id: string;
   created_at: string;
-  updated_at: string;
+  updated_at?: string;
 }
 
 export interface ListSupportRequestsOptions {
@@ -132,10 +132,7 @@ export async function updateSupportRequest(
   id: string,
   payload: Partial<SupportRequestInput>,
 ): Promise<SupportRequestRecord> {
-  const updatePayload = {
-    ...payload,
-    updated_at: new Date().toISOString(),
-  };
+  const updatePayload = { ...payload } as Record<string, unknown>;
 
   const { data, error } = await client
     .from('support_requests')

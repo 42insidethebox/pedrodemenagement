@@ -67,7 +67,6 @@ export const PATCH: APIRoute = withAuth(async ({ locals, params, request }) => {
     await logAgencyActivity(client, agency.id, 'order_updated', 'order', String(orderId), {
       before_status: existing.status ?? null,
       after_status: updated.status ?? null,
-      order_number: updated.order_number ?? null,
     });
 
     return ok({ order: updated });
@@ -91,9 +90,7 @@ export const DELETE: APIRoute = withAuth(async ({ locals, params }) => {
     const { agency, client } = await getAgencyContext(locals);
     const deleted = await deleteOrder(client, agency.id, orderId);
 
-    await logAgencyActivity(client, agency.id, 'order_deleted', 'order', String(orderId), {
-      order_number: deleted.order_number ?? null,
-    });
+    await logAgencyActivity(client, agency.id, 'order_deleted', 'order', String(orderId), {});
 
     return noContent();
   } catch (error) {

@@ -1,0 +1,11 @@
+src/pages/auth/forgot.astro:92:          const res = await fetch('/api/auth/forgot-password', {
+src/pages/auth/reset.astro:162:          const res = await fetch('/api/auth/reset-password', {
+src/pages/auth/callback.astro:206:          const response = await fetch('/api/auth/verify', {
+src/pages/auth/signup.astro:124:          const res = await fetch('/api/auth/signup', {
+src/pages/auth/signin.astro:146:          const res = await fetch('/api/auth/signin', {
+src/pages/it/thank-you.astro:38:        fetch(`/api/payment/session?session_id=${encodeURIComponent(id)}`)
+src/pages/api/contact.ts:58:        await fetch(ENV.ZAPIER_WEBHOOK_URL, {
+src/pages/api/domains/search.ts:42:  const response = await fetch(endpoint, {
+src/pages/de/thank-you.astro:38:        fetch(`/api/payment/session?session_id=${encodeURIComponent(id)}`)
+src/pages/thank-you.astro:131:        fetch(`/api/payment/session?session_id=${encodeURIComponent(id)}`)
+src/pages/en/thank-you.astro:38:        fetch(`/api/payment/session?session_id=${encodeURIComponent(id)}`)

@@ -1,0 +1,930 @@
+rc/pages/app/websites.astro:624:      const response = await authFetch(`/websites/${websiteId}`, {
+src/pages/app/websites.astro:645:  const handleSectionFormSubmit = async (formElement) => {
+src/pages/app/websites.astro:646:    const sectionId = formElement.getAttribute('data-section-form');
+src/pages/app/websites.astro:647:    const websiteId = formElement.getAttribute('data-website');
+src/pages/app/websites.astro:650:    const feedback = formElement.querySelector('[data-feedback]');
+src/pages/app/websites.astro:652:    const submit = formElement.querySelector('button[type="submit"]');
+src/pages/app/websites.astro:658:    const formData = new FormData(formElement);
+src/pages/app/websites.astro:659:    const heading = normalizeOptional(formData.get('heading'));
+src/pages/app/websites.astro:660:    const sectionKeyRaw = String(formData.get('section_key') ?? '').trim();
+src/pages/app/websites.astro:661:    const sectionKey = sectionKeyRaw ? slugify(sectionKeyRaw) : slugify(heading ?? `section-${Date.now()}`);
+src/pages/app/websites.astro:662:    const payload = {
+src/pages/app/websites.astro:676:      const response = await authFetch(`/websites/${websiteId}`, {
+src/pages/app/websites.astro:697:  const handleSectionCreate = async (formElement) => {
+src/pages/app/websites.astro:698:    const websiteId = formElement.getAttribute('data-section-create');
+src/pages/app/websites.astro:701:    const feedback = formElement.querySelector('[data-feedback]');
+src/pages/app/websites.astro:703:    const submit = formElement.querySelector('button[type="submit"]');
+src/pages/app/websites.astro:709:    const formData = new FormData(formElement);
+src/pages/app/websites.astro:710:    const heading = normalizeOptional(formData.get('heading'));
+src/pages/app/websites.astro:711:    const sectionKeyRaw = String(formData.get('section_key') ?? '').trim();
+src/pages/app/websites.astro:712:    const sectionKey = sectionKeyRaw ? slugify(sectionKeyRaw) : slugify(heading ?? `section-${Date.now()}`);
+src/pages/app/websites.astro:713:    const payload = {
+src/pages/app/websites.astro:727:      const response = await authFetch(`/websites/${websiteId}`, {
+src/pages/app/websites.astro:748:  const loadClients = async () => {
+src/pages/app/websites.astro:751:      const response = await authFetch('/clients');
+src/pages/app/websites.astro:752:      const clients = response.clients ?? [];
+src/pages/app/websites.astro:765:  const loadWebsites = async () => {
+src/pages/app/websites.astro:770:      const response = await authFetch('/websites');
+src/pages/app/websites.astro:790:    const formData = new FormData(form);
+src/pages/app/websites.astro:791:    const name = String(formData.get('name') ?? '').trim();
+src/pages/app/websites.astro:792:    const payload = {
+src/pages/app/websites.astro:836:    const target = event.target;
+src/pages/app/websites.astro:838:    const id = target.getAttribute('data-status');
+src/pages/app/websites.astro:842:      const response = await authFetch(`/websites/${id}`, {
+src/pages/app/websites.astro:858:    const formElement = event.target;
+src/pages/app/websites.astro:878:    const target = event.target;
+src/pages/app/websites.astro:881:    const deleteId = target.getAttribute('data-delete');
+src/pages/app/websites.astro:893:    const toggleId = target.getAttribute('data-toggle');
+src/pages/app/websites.astro:895:      const row = target.closest('tr');
+src/pages/app/websites.astro:896:      const container = row?.querySelector(`[data-sections="${toggleId}"]`);
+src/pages/app/websites.astro:908:        const response = await authFetch(`/websites/${toggleId}`);
+src/pages/app/websites.astro:917:    const sectionDeleteId = target.getAttribute('data-section-delete');
+src/pages/app/websites.astro:919:      const websiteId = target.getAttribute('data-website');
+src/pages/app/websites.astro:923:        const response = await authFetch(`/websites/${websiteId}`, {
+src/pages/app/websites.astro:934:        const row = target.closest('tr');
+src/pages/app/websites.astro:935:        const container = row?.querySelector(`[data-sections="${websiteId}"]`);
+src/pages/app/websites.astro:936:        const sectionForm = container?.querySelector(`[data-section-form="${sectionDeleteId}"]`);
+src/pages/app/websites.astro:937:        const feedback = sectionForm?.querySelector('[data-feedback]') ?? container?.querySelector('[data-section-global]');
+src/pages/app/websites.astro:947:    const syncId = target.getAttribute('data-sync');
+src/pages/app/websites.astro:951:        const response = await authFetch(`/websites/${syncId}`, {
+src/pages/app/projects.astro:90:  const form = document.getElementById('project-form');
+src/pages/app/projects.astro:91:  const message = document.getElementById('project-message');
+src/pages/app/projects.astro:92:  const submitButton = document.getElementById('project-submit');
+src/pages/app/projects.astro:93:  const tableBody = document.getElementById('project-table');
+src/pages/app/projects.astro:94:  const clientSelect = document.getElementById('client_id');
+src/pages/app/projects.astro:95:  const clientLookup = {};
+src/pages/app/projects.astro:97:  const formatBudget = (amount, currency) => {
+src/pages/app/projects.astro:99:    const formatter = new Intl.NumberFormat(undefined, {
+src/pages/app/projects.astro:107:  const loadClients = async () => {
+src/pages/app/projects.astro:112:      const response = await authFetch('/clients');
+src/pages/app/projects.astro:113:      const clients = response.clients ?? [];
+src/pages/app/projects.astro:130:  const renderProjects = (projects) => {
+src/pages/app/projects.astro:140:      const row = document.createElement('tr');
+src/pages/app/projects.astro:141:      const timeline = [project.start_date, project.due_date].filter(Boolean).join(' → ');
+src/pages/app/projects.astro:158:  const loadProjects = async () => {
+src/pages/app/projects.astro:160:      const response = await authFetch('/projects');
+src/pages/app/projects.astro:182:      const formData = new FormData(form);
+src/pages/app/projects.astro:183:      const payload = {
+src/pages/app/projects.astro:222:      const target = event.target;
+src/pages/app/projects.astro:224:      const deleteId = target.getAttribute('data-delete');
+src/pages/app/settings.astro:124:  const tableBody = document.getElementById('team-table');
+src/pages/app/settings.astro:125:  const refreshButton = document.getElementById('team-refresh');
+src/pages/app/settings.astro:126:  const teamForm = document.getElementById('team-form');
+src/pages/app/settings.astro:127:  const teamMessage = document.getElementById('team-message');
+src/pages/app/settings.astro:128:  const teamSubmit = document.getElementById('team-submit');
+src/pages/app/settings.astro:130:  const roleOptions = [
+src/pages/app/settings.astro:138:  const renderTeam = (team) => {
+src/pages/app/settings.astro:142:    const members = Array.isArray(team) ? team : [];
+src/pages/app/settings.astro:150:      const row = document.createElement('tr');
+src/pages/app/settings.astro:173:  const loadTeam = async () => {
+src/pages/app/settings.astro:178:      const response = await authFetch('/team');
+src/pages/app/settings.astro:200:    const formData = new FormData(teamForm);
+src/pages/app/settings.astro:201:    const payload = {
+src/pages/app/settings.astro:238:    const target = event.target;
+src/pages/app/settings.astro:240:    const memberId = target.getAttribute('data-role');
+src/pages/app/settings.astro:243:    const previous = target.getAttribute('data-prev') || target.value;
+src/pages/app/settings.astro:263:    const target = event.target;
+src/pages/app/settings.astro:266:    const deleteId = target.getAttribute('data-delete');
+src/pages/choose-template.astro:7:const plan = Astro.url.searchParams.get('plan') || '';
+src/pages/choose-template.astro:8:const templates: Tpl[] = [
+src/pages/choose-template.astro:17:const metadata = { title: 'Choisir un modèle' };
+src/pages/auth/forgot.astro:13:const { language, textDirection } = I18N;
+src/pages/auth/forgot.astro:66:        const path = location.pathname;
+src/pages/auth/forgot.astro:67:        const search = location.search || '';
+src/pages/auth/forgot.astro:68:        const hash = location.hash || '';
+src/pages/auth/forgot.astro:69:        const rawPath = path.replace(/^\/(fr|en|de|it)(?=\/|$)/, '') || '/';
+src/pages/auth/forgot.astro:70:        const base = rawPath === '/' ? '' : rawPath;
+src/pages/auth/forgot.astro:74:        const lang = a.getAttribute('data-lang');
+src/pages/auth/forgot.astro:78:      const form = document.getElementById('forgot-form');
+src/pages/auth/forgot.astro:79:      const button = document.getElementById('forgot-submit');
+src/pages/auth/forgot.astro:80:      const message = document.getElementById('forgot-message');
+src/pages/auth/forgot.astro:88:        const data = new FormData(form);
+src/pages/auth/forgot.astro:89:        const payload = { email: String(data.get('email') || '') };
+src/pages/auth/forgot.astro:92:          const res = await fetch('/api/auth/forgot-password', {
+src/pages/auth/reset.astro:13:const { language, textDirection } = I18N;
+src/pages/auth/reset.astro:70:        const path = location.pathname;
+src/pages/auth/reset.astro:71:        const search = location.search || '';
+src/pages/auth/reset.astro:72:        const hash = location.hash || '';
+src/pages/auth/reset.astro:73:        const rawPath = path.replace(/^\/(fr|en|de|it)(?=\/|$)/, '') || '/';
+src/pages/auth/reset.astro:74:        const base = rawPath === '/' ? '' : rawPath;
+src/pages/auth/reset.astro:78:        const lang = a.getAttribute('data-lang');
+src/pages/auth/reset.astro:83:        const combined = new URLSearchParams(location.search);
+src/pages/auth/reset.astro:84:        const rawHash = (location.hash || '').replace(/^#/, '');
+src/pages/auth/reset.astro:86:          const hashParams = new URLSearchParams(rawHash);
+src/pages/auth/reset.astro:112:          const url = new URL(location.href);
+src/pages/auth/reset.astro:120:      const params = collectAuthParams();
+src/pages/auth/reset.astro:121:      const token = params.get('token') || '';
+src/pages/auth/reset.astro:122:      const accessToken = params.get('access_token') || '';
+src/pages/auth/reset.astro:124:      const type = params.get('type') || '';
+src/pages/auth/reset.astro:125:      const rawUser = params.get('user');
+src/pages/auth/reset.astro:128:          const decoded = decodeURIComponent(rawUser);
+src/pages/auth/reset.astro:129:          const parsed = JSON.parse(decoded);
+src/pages/auth/reset.astro:138:      const form = document.getElementById('reset-form');
+src/pages/auth/reset.astro:139:      const button = document.getElementById('reset-submit');
+src/pages/auth/reset.astro:140:      const message = document.getElementById('reset-message');
+src/pages/auth/reset.astro:150:        const data = new FormData(form);
+src/pages/auth/reset.astro:151:        const password = String(data.get('password') || '');
+src/pages/auth/reset.astro:152:        const confirm = String(data.get('confirm') || '');
+src/pages/auth/reset.astro:162:          const res = await fetch('/api/auth/reset-password', {
+src/pages/auth/reset.astro:167:          const json = await res.json();
+src/pages/auth/callback.astro:13:const { language, textDirection } = I18N;
+src/pages/auth/callback.astro:74:        const path = location.pathname;
+src/pages/auth/callback.astro:75:        const search = location.search || '';
+src/pages/auth/callback.astro:76:        const hash = location.hash || '';
+src/pages/auth/callback.astro:77:        const rawPath = path.replace(/^\/(fr|en|de|it)(?=\/|$)/, '') || '/';
+src/pages/auth/callback.astro:78:        const base = rawPath === '/' ? '' : rawPath;
+src/pages/auth/callback.astro:82:        const lang = a.getAttribute('data-lang');
+src/pages/auth/callback.astro:86:      const status = document.getElementById('callback-status');
+src/pages/auth/callback.astro:87:      const message = document.getElementById('callback-message');
+src/pages/auth/callback.astro:88:      const primary = document.getElementById('callback-primary');
+src/pages/auth/callback.astro:89:      const secondary = document.getElementById('callback-secondary');
+src/pages/auth/callback.astro:104:        const combined = new URLSearchParams(location.search);
+src/pages/auth/callback.astro:105:        const rawHash = (location.hash || '').replace(/^#/, '');
+src/pages/auth/callback.astro:107:          const hashParams = new URLSearchParams(rawHash);
+src/pages/auth/callback.astro:133:          const url = new URL(location.href);
+src/pages/auth/callback.astro:141:      const params = collectAuthParams();
+src/pages/auth/callback.astro:143:      const errorMessage =
+src/pages/auth/callback.astro:145:      const accessToken = params.get('access_token') || '';
+src/pages/auth/callback.astro:146:      const refreshToken = params.get('refresh_token') || '';
+src/pages/auth/callback.astro:147:      const expiresAtParam = params.get('expires_at');
+src/pages/auth/callback.astro:148:      const expiresInParam = params.get('expires_in');
+src/pages/auth/callback.astro:149:      const otpToken = params.get('token') || '';
+src/pages/auth/callback.astro:150:      const email = params.get('email') || '';
+src/pages/auth/callback.astro:151:      const type = params.get('type') || 'signup';
+src/pages/auth/callback.astro:152:      const next = params.get('next') || '/app';
+src/pages/auth/callback.astro:163:          const sanitizedNext = sanitizeNext(cleanNext);
+src/pages/auth/callback.astro:164:          const url = new URL(location.href);
+src/pages/auth/callback.astro:189:        const expiresAt = expiresAtParam
+src/pages/auth/callback.astro:195:        const payload = {
+src/pages/auth/callback.astro:206:          const response = await fetch('/api/auth/verify', {
+src/pages/auth/callback.astro:211:          const data = await response.json().catch(() => ({}));
+src/pages/auth/callback.astro:224:          const destination = sanitizeNext(data?.next || next);
+src/pages/auth/signup.astro:13:const { language, textDirection } = I18N;
+src/pages/auth/signup.astro:86:        const path = location.pathname;
+src/pages/auth/signup.astro:87:        const search = location.search || '';
+src/pages/auth/signup.astro:88:        const hash = location.hash || '';
+src/pages/auth/signup.astro:89:        const rawPath = path.replace(/^\/(fr|en|de|it)(?=\/|$)/, '') || '/';
+src/pages/auth/signup.astro:90:        const base = rawPath === '/' ? '' : rawPath;
+src/pages/auth/signup.astro:94:        const lang = a.getAttribute('data-lang');
+src/pages/auth/signup.astro:98:      const form = document.getElementById('signup-form');
+src/pages/auth/signup.astro:99:      const button = document.getElementById('signup-submit');
+src/pages/auth/signup.astro:100:      const message = document.getElementById('signup-message');
+src/pages/auth/signup.astro:109:        const data = new FormData(form);
+src/pages/auth/signup.astro:110:        const url = new URL(location.href);
+src/pages/auth/signup.astro:111:        const plan = url.searchParams.get('plan') || '';
+src/pages/auth/signup.astro:112:        const template = url.searchParams.get('template') || '';
+src/pages/auth/signup.astro:113:        const next = url.searchParams.get('next') || '/app';
+src/pages/auth/signup.astro:114:        const payload = {
+src/pages/auth/signup.astro:124:          const res = await fetch('/api/auth/signup', {
+src/pages/auth/signup.astro:129:          const json = await res.json();
+src/pages/auth/signin.astro:13:const { language, textDirection } = I18N;
+src/pages/auth/signin.astro:77:        const path = location.pathname;
+src/pages/auth/signin.astro:78:        const search = location.search || '';
+src/pages/auth/signin.astro:79:        const hash = location.hash || '';
+src/pages/auth/signin.astro:80:        const rawPath = path.replace(/^\/(fr|en|de|it)(?=\/|$)/, '') || '/';
+src/pages/auth/signin.astro:81:        const base = rawPath === '/' ? '' : rawPath;
+src/pages/auth/signin.astro:85:        const lang = a.getAttribute('data-lang');
+src/pages/auth/signin.astro:89:      const params = new URLSearchParams(location.search);
+src/pages/auth/signin.astro:110:      const destination = sanitizeNext(params.get('next'));
+src/pages/auth/signin.astro:112:      const form = document.getElementById('signin-form');
+src/pages/auth/signin.astro:113:      const button = document.getElementById('signin-submit');
+src/pages/auth/signin.astro:114:      const message = document.getElementById('signin-message');
+src/pages/auth/signin.astro:120:        const base = ['mt-2', 'text-sm'];
+src/pages/auth/signin.astro:121:        const variants = {
+src/pages/auth/signin.astro:126:        const classes = variants[state] || variants.neutral;
+src/pages/auth/signin.astro:139:        const data = new FormData(form);
+src/pages/auth/signin.astro:140:        const payload = {
+src/pages/auth/signin.astro:146:          const res = await fetch('/api/auth/signin', {
+src/pages/auth/signin.astro:151:          const json = await res.json();
+src/pages/index.astro:14:const metadata = {
+src/pages/it/about.astro:11:const metadata = {
+src/pages/it/app/[...path].ts:3:export const prerender = false;
+src/pages/it/app/[...path].ts:5:export const GET: APIRoute = ({ params, request }) => {
+src/pages/it/app/[...path].ts:6:  const p = params.path as string[] | string | undefined;
+src/pages/it/app/[...path].ts:7:  const rest = Array.isArray(p) ? p.join('/') : (p ?? '');
+src/pages/it/app/[...path].ts:8:  const url = new URL(`/app/${rest}`, request.url);
+src/pages/it/choose-template.astro:8:const plan = Astro.url.searchParams.get('plan') || '';
+src/pages/it/choose-template.astro:9:const templates: Tpl[] = [
+src/pages/it/choose-template.astro:18:const metadata = { title: 'Scegli un modello' };
+src/pages/it/auth/[...path].ts:3:export const prerender = false;
+src/pages/it/auth/[...path].ts:5:export const GET: APIRoute = ({ params, request }) => {
+src/pages/it/auth/[...path].ts:6:  const p = params.path as string[] | string | undefined;
+src/pages/it/auth/[...path].ts:7:  const rest = Array.isArray(p) ? p.join('/') : (p ?? '');
+src/pages/it/auth/[...path].ts:8:  const url = new URL(`/auth/${rest}`, request.url);
+src/pages/it/index.astro:16:const metadata = {
+src/pages/it/services.astro:10:const metadata = {
+src/pages/it/contact.astro:9:const metadata = {
+src/pages/it/pricing.astro:13:const metadata = {
+src/pages/it/thank-you.astro:5:const metadata = { title: 'Grazie — TonSiteWeb.ch' };
+src/pages/it/thank-you.astro:6:const sessionId = Astro.url.searchParams.get('session_id') || '';
+src/pages/it/thank-you.astro:35:      const params = new URLSearchParams(location.search);
+src/pages/it/thank-you.astro:36:      const id = params.get('session_id');
+src/pages/it/thank-you.astro:41:            const f = new Intl.NumberFormat('it-CH', { style: 'currency', currency: data.currency || 'CHF' });
+src/pages/services.astro:8:const metadata = {
+src/pages/_rss.xml.ts.disabled:7:export const GET = async () => {
+src/pages/_rss.xml.ts.disabled:15:  const posts = await fetchPosts();
+src/pages/_rss.xml.ts.disabled:17:  const rss = await getRssString({
+src/pages/contact.astro:7:const metadata = {
+src/pages/api/contact.ts:8:export const prerender = false;
+src/pages/api/contact.ts:10:export const POST: APIRoute = async ({ request, url }) => {
+src/pages/api/contact.ts:13:    const ctype = request.headers.get('content-type') || '';
+src/pages/api/contact.ts:16:      const data = await request.json().catch(() => ({}));
+src/pages/api/contact.ts:23:      const form = await request.formData();
+src/pages/api/contact.ts:31:    const sb = getSupabaseAdmin();
+src/pages/api/contact.ts:36:    const locale = detectRequestLocale(request, url);
+src/pages/api/contact.ts:68:      const to = `${ENV.ORIGIN || url.origin}/thank-you`;
+src/pages/api/domains/search.ts:5:const DEFAULT_LIMIT = 10;
+src/pages/api/domains/search.ts:6:const MAX_LIMIT = 50;
+src/pages/api/domains/search.ts:8:export const prerender = false;
+src/pages/api/domains/search.ts:11:  const raw = Number(url.searchParams.get('limit') || DEFAULT_LIMIT);
+src/pages/api/domains/search.ts:17:  const raw = Number(url.searchParams.get('max'));
+src/pages/api/domains/search.ts:23:  const key = getEnv('GODADDY_API_KEY');
+src/pages/api/domains/search.ts:24:  const secret = getEnv('GODADDY_API_SECRET');
+src/pages/api/domains/search.ts:28:  const params = new URLSearchParams();
+src/pages/api/domains/search.ts:31:  const city = url.searchParams.get('city');
+src/pages/api/domains/search.ts:40:  const endpoint = `https://api.godaddy.com/v1/domains/suggest?${params.toString()}`;
+src/pages/api/domains/search.ts:42:  const response = await fetch(endpoint, {
+src/pages/api/domains/search.ts:52:    const text = await response.text();
+src/pages/api/domains/search.ts:56:  const payload = await response.json();
+src/pages/api/domains/search.ts:67:  const price = normalisePrice(raw.price);
+src/pages/api/domains/search.ts:89:export const GET: APIRoute = async ({ url }) => {
+src/pages/api/domains/search.ts:90:  const q = (url.searchParams.get('q') || '').trim();
+src/pages/api/domains/search.ts:91:  const maxPrice = parseMaxPrice(url);
+src/pages/api/domains/search.ts:100:    const data = await fetchFromGoDaddy(q, url);
+src/pages/api/domains/search.ts:101:    const list = (data ?? fallbackResults(q)).map(mapSuggestion).filter((item) => item.domain);
+src/pages/api/domains/search.ts:103:    const filtered = typeof maxPrice === 'number'
+src/pages/api/demo.ts:7:export const prerender = false;
+src/pages/api/demo.ts:9:export const POST: APIRoute = async ({ request, url }) => {
+src/pages/api/demo.ts:11:  const data = await request.json().catch(() => ({}));
+src/pages/api/demo.ts:12:  const name = String(data.name || '').trim();
+src/pages/api/demo.ts:13:  const email = String(data.email || '').trim();
+src/pages/api/demo.ts:14:  const company = String(data.company || '').trim();
+src/pages/api/demo.ts:15:  const details = String(data.details || '').trim();
+src/pages/api/demo.ts:16:  const timeslot = String(data.timeslot || '').trim();
+src/pages/api/demo.ts:17:  const locale = detectRequestLocale(request, url);
+src/pages/api/demo.ts:19:  const sb = getSupabaseAdmin();
+src/pages/api/auth/verify.ts:7:export const prerender = false;
+src/pages/api/auth/verify.ts:16:export const POST: APIRoute = async ({ request }) => {
+src/pages/api/auth/verify.ts:17:  const payload = await request.json().catch(() => null);
+src/pages/api/auth/verify.ts:22:  const accessToken = typeof payload.accessToken === 'string' ? payload.accessToken.trim() : '';
+src/pages/api/auth/verify.ts:23:  const refreshToken = typeof payload.refreshToken === 'string' ? payload.refreshToken.trim() : '';
+src/pages/api/auth/verify.ts:24:  const otpToken = typeof payload.token === 'string' ? payload.token.trim() : '';
+src/pages/api/auth/verify.ts:25:  const email = typeof payload.email === 'string' ? payload.email.trim().toLowerCase() : '';
+src/pages/api/auth/verify.ts:26:  const expiresAt = Number(payload.expiresAt) || null;
+src/pages/api/auth/verify.ts:27:  const requestedType = typeof payload.type === 'string' ? payload.type.trim() : 'signup';
+src/pages/api/auth/verify.ts:28:  const allowedTypes = ['signup', 'invite', 'magiclink', 'recovery', 'email_change'] as const;
+src/pages/api/auth/verify.ts:30:  const type: VerifyType = allowedTypes.includes(requestedType as VerifyType)
+src/pages/api/auth/verify.ts:33:  const next = normalizeNext((payload as Record<string, unknown>).next);
+src/pages/api/auth/verify.ts:35:  const supabase = getSupabaseAnon();
+src/pages/api/auth/verify.ts:49:      const { data, error } = await supabase.auth.getUser(accessToken);
+src/pages/api/auth/verify.ts:62:      const { data, error } = await supabase.auth.verifyOtp({ email, token: otpToken, type });
+src/pages/api/auth/verify.ts:79:    const admin = getSupabaseAdmin();
+src/pages/api/auth/verify.ts:81:      const currentUser = user;
+src/pages/api/auth/verify.ts:83:        const { data: updated, error: updateError } = await admin.auth.admin.updateUserById(currentUser.id, {
+src/pages/api/auth/forgot-password.ts:9:export const prerender = false;
+src/pages/api/auth/forgot-password.ts:15:export const POST: APIRoute = async ({ request, url }) => {
+src/pages/api/auth/forgot-password.ts:17:  const payload = await request.json().catch(() => null);
+src/pages/api/auth/forgot-password.ts:18:  const email = typeof payload?.email === 'string' ? payload.email.trim().toLowerCase() : '';
+src/pages/api/auth/forgot-password.ts:19:  const locale = detectRequestLocale(request, url);
+src/pages/api/auth/forgot-password.ts:25:  const supabase = getSupabaseAdmin();
+src/pages/api/auth/forgot-password.ts:31:    const baseOrigin = resolveAppOrigin(request);
+src/pages/api/auth/forgot-password.ts:32:    const redirectTo = new URL('/auth/reset', baseOrigin).toString();
+src/pages/api/auth/forgot-password.ts:33:    const { data, error } = await supabase.auth.admin.generateLink({
+src/pages/api/auth/forgot-password.ts:45:    const resetUrl = data?.properties?.action_link;
+src/pages/api/auth/session.ts:4:export const prerender = false;
+src/pages/api/auth/session.ts:6:export const GET: APIRoute = async ({ request }) => {
+src/pages/api/auth/session.ts:7:  const authHeader = request.headers.get('authorization') || request.headers.get('Authorization');
+src/pages/api/auth/session.ts:8:  const token = authHeader?.replace(/^Bearer\s+/i, '').trim();
+src/pages/api/auth/session.ts:14:  const supabase = getSupabaseAnon();
+src/pages/api/auth/session.ts:19:  const { data, error } = await supabase.auth.getUser(token);
+src/pages/api/auth/reset-password.ts:8:export const prerender = false;
+src/pages/api/auth/reset-password.ts:10:export const POST: APIRoute = async ({ request, url }) => {
+src/pages/api/auth/reset-password.ts:12:  const payload = await request.json().catch(() => null);
+src/pages/api/auth/reset-password.ts:13:  const token = typeof payload?.token === 'string' ? payload.token.trim() : '';
+src/pages/api/auth/reset-password.ts:14:  const accessToken = typeof payload?.accessToken === 'string' ? payload.accessToken.trim() : '';
+src/pages/api/auth/reset-password.ts:15:  const email = typeof payload?.email === 'string' ? payload.email.trim().toLowerCase() : '';
+src/pages/api/auth/reset-password.ts:16:  const password = typeof payload?.password === 'string' ? payload.password : '';
+src/pages/api/auth/reset-password.ts:17:  const locale = detectRequestLocale(request, url);
+src/pages/api/auth/reset-password.ts:27:  const anon = getSupabaseAnon();
+src/pages/api/auth/reset-password.ts:28:  const admin = getSupabaseAdmin();
+src/pages/api/auth/reset-password.ts:39:      const { data: verification, error: verifyError } = await anon.auth.verifyOtp({
+src/pages/api/auth/reset-password.ts:52:      const { data: sessionUser, error: sessionError } = await anon.auth.getUser(accessToken);
+src/pages/api/auth/reset-password.ts:65:    const { error: updateError } = await admin.auth.admin.updateUserById(userId, { password });
+src/pages/api/auth/signin.ts:6:export const prerender = false;
+src/pages/api/auth/signin.ts:12:export const POST: APIRoute = async ({ request }) => {
+src/pages/api/auth/signin.ts:14:  const payload = await request.json().catch(() => null);
+src/pages/api/auth/signin.ts:15:  const email = typeof payload?.email === 'string' ? payload.email.trim().toLowerCase() : '';
+src/pages/api/auth/signin.ts:16:  const password = typeof payload?.password === 'string' ? payload.password : '';
+src/pages/api/auth/signin.ts:22:  const supabase = getSupabaseAnon();
+src/pages/api/auth/signin.ts:28:    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+src/pages/api/auth/signup.ts:8:export const prerender = false;
+src/pages/api/auth/signup.ts:15:  const rules: Array<{ test: RegExp; message: string }> = [
+src/pages/api/auth/signup.ts:23:  const failedRule = rules.find((rule) => !rule.test.test(password));
+src/pages/api/auth/signup.ts:27:export const POST: APIRoute = async ({ request }) => {
+src/pages/api/auth/signup.ts:29:  const payload = await request.json().catch(() => null);
+src/pages/api/auth/signup.ts:30:  const email = typeof payload?.email === 'string' ? payload.email.trim().toLowerCase() : '';
+src/pages/api/auth/signup.ts:31:  const password = typeof payload?.password === 'string' ? payload.password : '';
+src/pages/api/auth/signup.ts:32:  const fullName = typeof payload?.name === 'string' ? payload.name.trim() : '';
+src/pages/api/auth/signup.ts:33:  const phone = typeof payload?.phone === 'string' ? payload.phone.trim() : '';
+src/pages/api/auth/signup.ts:34:  const plan = typeof payload?.plan === 'string' ? payload.plan.trim() : '';
+src/pages/api/auth/signup.ts:35:  const template = typeof payload?.template === 'string' ? payload.template.trim() : '';
+src/pages/api/auth/signup.ts:36:  const nextPath = typeof payload?.next === 'string' ? payload.next.trim() : '';
+src/pages/api/auth/signup.ts:38:  const baseOrigin = resolveAppOrigin(request);
+src/pages/api/auth/signup.ts:42:      const url = new URL('/auth/callback', baseOrigin);
+src/pages/api/auth/signup.ts:56:  const passwordError = checkPasswordPolicy(password);
+src/pages/api/auth/signup.ts:61:  const supabase = getSupabaseAdmin();
+src/pages/api/auth/signup.ts:67:    const { data, error } = await supabase.auth.admin.createUser({
+src/pages/api/auth/signup.ts:76:      const status = error.status === 409 ? 409 : 400;
+src/pages/api/auth/signup.ts:82:      const { data: linkData, error: linkError } = await supabase.auth.admin.generateLink({
+src/pages/api/payment/checkout.ts:9:export const prerender = false;
+src/pages/api/payment/checkout.ts:11:export const POST: APIRoute = async ({ request }) => {
+src/pages/api/payment/checkout.ts:12:  const data = await request.json().catch(() => ({}));
+src/pages/api/payment/checkout.ts:13:  const plan = String(data.plan || 'essential').toLowerCase();
+src/pages/api/payment/checkout.ts:14:  const templateRaw = String(data.template || '').trim();
+src/pages/api/payment/checkout.ts:15:  const template = isAllowedTemplate(templateRaw) ? templateRaw : '';
+src/pages/api/payment/checkout.ts:16:  const agencyId = typeof data.agencyId === 'string' ? data.agencyId : data.agency_id;
+src/pages/api/payment/checkout.ts:17:  const origin = ENV.ORIGIN || request.headers.get('origin') || 'http://localhost:4321';
+src/pages/api/payment/checkout.ts:19:  const stripe = await getStripe();
+src/pages/api/payment/checkout.ts:25:  const priceId = determineStripePriceId(plan, ENV);
+src/pages/api/payment/checkout.ts:28:  const session = await stripe.checkout.sessions.create({
+src/pages/api/payment/session.ts:5:export const prerender = false;
+src/pages/api/payment/session.ts:7:export const GET: APIRoute = async ({ url }) => {
+src/pages/api/payment/session.ts:8:  const sessionId = url.searchParams.get('session_id') || '';
+src/pages/api/payment/session.ts:11:  const stripe = await getStripe();
+src/pages/api/payment/session.ts:15:    const session = await stripe.checkout.sessions.retrieve(sessionId);
+src/pages/api/payment/session.ts:16:    const order = await fetchOrderBySessionId(sessionId);
+src/pages/api/payment/redirect.ts:9:export const prerender = false;
+src/pages/api/payment/redirect.ts:11:export const GET: APIRoute = async ({ request, url }) => {
+src/pages/api/payment/redirect.ts:12:  const plan = (url.searchParams.get('plan') || 'essential').toLowerCase();
+src/pages/api/payment/redirect.ts:13:  const templateRaw = (url.searchParams.get('template') || '').trim();
+src/pages/api/payment/redirect.ts:14:  const template = isAllowedTemplate(templateRaw) ? templateRaw : '';
+src/pages/api/payment/redirect.ts:15:  const origin = ENV.ORIGIN || request.headers.get('origin') || url.origin;
+src/pages/api/payment/redirect.ts:16:  const stripe = await getStripe();
+src/pages/api/payment/redirect.ts:30:      const prices = await stripe.prices.list({
+src/pages/api/payment/redirect.ts:46:  const isSubscription = isSubscriptionPlan(plan);
+src/pages/api/payment/redirect.ts:47:  const metadata = serializeMetadata({ plan, template });
+src/pages/api/payment/redirect.ts:48:  const session = await stripe.checkout.sessions.create({
+src/pages/api/payment/portal.ts:5:export const prerender = false;
+src/pages/api/payment/portal.ts:7:export const POST: APIRoute = async ({ request }) => {
+src/pages/api/payment/portal.ts:8:  const data = await request.json().catch(() => ({}));
+src/pages/api/payment/portal.ts:9:  const customerId = String(data.customerId || '');
+src/pages/api/payment/portal.ts:10:  const origin = ENV.ORIGIN || request.headers.get('origin') || 'http://localhost:4321';
+src/pages/api/payment/portal.ts:12:  const stripe = await getStripe();
+src/pages/api/payment/portal.ts:16:  const session = await stripe.billingPortal.sessions.create({ customer: customerId, return_url: `${origin}/account` });
+src/pages/api/backend/clients/[id].ts:10:export const prerender = false;
+src/pages/api/backend/clients/[id].ts:12:const SUPABASE_ERROR = 'Supabase admin client is not configured';
+src/pages/api/backend/clients/[id].ts:14:export const GET: APIRoute = withAuth(async ({ locals, params }) => {
+src/pages/api/backend/clients/[id].ts:15:  const id = params.id;
+src/pages/api/backend/clients/[id].ts:22:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/clients/[id].ts:23:    const record = await getClientById(client, agency.id, id);
+src/pages/api/backend/clients/[id].ts:34:export const PATCH: APIRoute = withAuth(async ({ locals, params, request }) => {
+src/pages/api/backend/clients/[id].ts:35:  const id = params.id;
+src/pages/api/backend/clients/[id].ts:46:    const message = error instanceof Error ? error.message : 'Invalid payload';
+src/pages/api/backend/clients/[id].ts:51:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/clients/[id].ts:52:    const updated = await updateClient(client, agency.id, id, payload);
+src/pages/api/backend/clients/[id].ts:68:export const DELETE: APIRoute = withAuth(async ({ locals, params }) => {
+src/pages/api/backend/clients/[id].ts:69:  const id = params.id;
+src/pages/api/backend/clients/[id].ts:76:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/clients/[id].ts:77:    const deleted = await deleteClient(client, agency.id, id);
+src/pages/api/backend/clients/index.ts:10:export const prerender = false;
+src/pages/api/backend/clients/index.ts:12:const SUPABASE_ERROR = 'Supabase admin client is not configured';
+src/pages/api/backend/clients/index.ts:14:const DEFAULT_PAGE_SIZE = 25;
+src/pages/api/backend/clients/index.ts:15:const MAX_PAGE_SIZE = 100;
+src/pages/api/backend/clients/index.ts:19:  const parsed = Number.parseInt(value, 10);
+src/pages/api/backend/clients/index.ts:25:  const parsed = parsePositiveInteger(value, fallback);
+src/pages/api/backend/clients/index.ts:31:  const normalized = value.trim().toLowerCase();
+src/pages/api/backend/clients/index.ts:35:export const GET: APIRoute = withAuth(async ({ locals, url }) => {
+src/pages/api/backend/clients/index.ts:37:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/clients/index.ts:38:    const search = url.searchParams.get('search') ?? url.searchParams.get('q');
+src/pages/api/backend/clients/index.ts:39:    const page = parsePositiveInteger(url.searchParams.get('page'), 1);
+src/pages/api/backend/clients/index.ts:40:    const pageSize = parsePageSize(url.searchParams.get('pageSize'), DEFAULT_PAGE_SIZE);
+src/pages/api/backend/clients/index.ts:41:    const status = normalizeStatus(url.searchParams.get('status'));
+src/pages/api/backend/clients/index.ts:43:    const { clients, total } = await listClients(client, agency.id, {
+src/pages/api/backend/clients/index.ts:50:    const totalPages = total === 0 ? 0 : Math.ceil(total / pageSize);
+src/pages/api/backend/clients/index.ts:69:export const POST: APIRoute = withAuth(async ({ locals, request }) => {
+src/pages/api/backend/clients/index.ts:75:    const message = error instanceof Error ? error.message : 'Invalid payload';
+src/pages/api/backend/clients/index.ts:80:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/clients/index.ts:81:    const record = await createClient(client, agency.id, payload);
+src/pages/api/backend/tasks/[id].ts:10:export const prerender = false;
+src/pages/api/backend/tasks/[id].ts:12:const SUPABASE_ERROR = 'Supabase admin client is not configured';
+src/pages/api/backend/tasks/[id].ts:14:export const GET: APIRoute = withAuth(async ({ locals, params }) => {
+src/pages/api/backend/tasks/[id].ts:15:  const id = params.id;
+src/pages/api/backend/tasks/[id].ts:22:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/tasks/[id].ts:23:    const record = await getTaskById(client, agency.id, id);
+src/pages/api/backend/tasks/[id].ts:34:export const PATCH: APIRoute = withAuth(async ({ locals, params, request }) => {
+src/pages/api/backend/tasks/[id].ts:35:  const id = params.id;
+src/pages/api/backend/tasks/[id].ts:46:    const message = error instanceof Error ? error.message : 'Invalid payload';
+src/pages/api/backend/tasks/[id].ts:51:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/tasks/[id].ts:52:    const updated = await updateTask(client, agency.id, id, payload);
+src/pages/api/backend/tasks/[id].ts:69:export const DELETE: APIRoute = withAuth(async ({ locals, params }) => {
+src/pages/api/backend/tasks/[id].ts:70:  const id = params.id;
+src/pages/api/backend/tasks/[id].ts:77:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/tasks/[id].ts:78:    const deleted = await deleteTask(client, agency.id, id);
+src/pages/api/backend/tasks/index.ts:10:export const prerender = false;
+src/pages/api/backend/tasks/index.ts:12:const SUPABASE_ERROR = 'Supabase admin client is not configured';
+src/pages/api/backend/tasks/index.ts:14:const DEFAULT_PAGE_SIZE = 25;
+src/pages/api/backend/tasks/index.ts:15:const MAX_PAGE_SIZE = 100;
+src/pages/api/backend/tasks/index.ts:19:  const parsed = Number.parseInt(value, 10);
+src/pages/api/backend/tasks/index.ts:25:  const parsed = parsePositiveInteger(value, fallback);
+src/pages/api/backend/tasks/index.ts:31:  const normalized = value.trim().toLowerCase();
+src/pages/api/backend/tasks/index.ts:37:  const trimmed = value.trim();
+src/pages/api/backend/tasks/index.ts:39:  const date = new Date(trimmed);
+src/pages/api/backend/tasks/index.ts:45:  const normalized = value.trim().toLowerCase();
+src/pages/api/backend/tasks/index.ts:51:export const GET: APIRoute = withAuth(async ({ locals, url }) => {
+src/pages/api/backend/tasks/index.ts:53:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/tasks/index.ts:55:    const search = url.searchParams.get('search') ?? url.searchParams.get('q');
+src/pages/api/backend/tasks/index.ts:56:    const page = parsePositiveInteger(url.searchParams.get('page'), 1);
+src/pages/api/backend/tasks/index.ts:57:    const pageSize = parsePageSize(url.searchParams.get('pageSize'), DEFAULT_PAGE_SIZE);
+src/pages/api/backend/tasks/index.ts:58:    const status = normalizeEnum(url.searchParams.get('status'), TASK_STATUSES as readonly string[]);
+src/pages/api/backend/tasks/index.ts:59:    const priority = normalizeEnum(url.searchParams.get('priority'), TASK_PRIORITIES as readonly string[]);
+src/pages/api/backend/tasks/index.ts:60:    const projectId = url.searchParams.get('projectId') ?? url.searchParams.get('project_id') ?? undefined;
+src/pages/api/backend/tasks/index.ts:61:    const assigneeId = url.searchParams.get('assigneeId') ?? url.searchParams.get('assignee_id') ?? undefined;
+src/pages/api/backend/tasks/index.ts:62:    const dueBefore = parseDateParam(url.searchParams.get('dueBefore') ?? url.searchParams.get('due_before'));
+src/pages/api/backend/tasks/index.ts:63:    const dueAfter = parseDateParam(url.searchParams.get('dueAfter') ?? url.searchParams.get('due_after'));
+src/pages/api/backend/tasks/index.ts:64:    const includeSummaries = parseBooleanParam(url.searchParams.get('summaries'), true);
+src/pages/api/backend/tasks/index.ts:66:    const { tasks, total, summaries } = await listTasks(client, agency.id, {
+src/pages/api/backend/tasks/index.ts:79:    const totalPages = total === 0 ? 0 : Math.ceil(total / pageSize);
+src/pages/api/backend/tasks/index.ts:99:export const POST: APIRoute = withAuth(async ({ locals, request }) => {
+src/pages/api/backend/tasks/index.ts:105:    const message = error instanceof Error ? error.message : 'Invalid payload';
+src/pages/api/backend/tasks/index.ts:110:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/tasks/index.ts:111:    const record = await createTask(client, agency.id, payload);
+src/pages/api/backend/invoices/[id].ts:10:export const prerender = false;
+src/pages/api/backend/invoices/[id].ts:12:const SUPABASE_ERROR = 'Supabase admin client is not configured';
+src/pages/api/backend/invoices/[id].ts:14:export const GET: APIRoute = withAuth(async ({ locals, params }) => {
+src/pages/api/backend/invoices/[id].ts:15:  const id = params.id;
+src/pages/api/backend/invoices/[id].ts:22:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/invoices/[id].ts:23:    const record = await getInvoiceById(client, agency.id, id);
+src/pages/api/backend/invoices/[id].ts:34:export const PATCH: APIRoute = withAuth(async ({ locals, params, request }) => {
+src/pages/api/backend/invoices/[id].ts:35:  const id = params.id;
+src/pages/api/backend/invoices/[id].ts:46:    const message = error instanceof Error ? error.message : 'Invalid payload';
+src/pages/api/backend/invoices/[id].ts:51:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/invoices/[id].ts:52:    const previous = await getInvoiceById(client, agency.id, id);
+src/pages/api/backend/invoices/[id].ts:53:    const updated = await updateInvoice(client, agency.id, id, payload);
+src/pages/api/backend/invoices/[id].ts:71:export const DELETE: APIRoute = withAuth(async ({ locals, params }) => {
+src/pages/api/backend/invoices/[id].ts:72:  const id = params.id;
+src/pages/api/backend/invoices/[id].ts:79:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/invoices/[id].ts:80:    const deleted = await deleteInvoice(client, agency.id, id);
+src/pages/api/backend/invoices/index.ts:10:export const prerender = false;
+src/pages/api/backend/invoices/index.ts:12:const SUPABASE_ERROR = 'Supabase admin client is not configured';
+src/pages/api/backend/invoices/index.ts:14:const DEFAULT_PAGE_SIZE = 25;
+src/pages/api/backend/invoices/index.ts:15:const MAX_PAGE_SIZE = 100;
+src/pages/api/backend/invoices/index.ts:19:  const parsed = Number.parseInt(value, 10);
+src/pages/api/backend/invoices/index.ts:25:  const parsed = parsePositiveInteger(value, fallback);
+src/pages/api/backend/invoices/index.ts:31:  const normalized = value.trim().toLowerCase();
+src/pages/api/backend/invoices/index.ts:37:  const trimmed = value.trim();
+src/pages/api/backend/invoices/index.ts:39:  const date = new Date(trimmed);
+src/pages/api/backend/invoices/index.ts:45:  const normalized = value.trim().toLowerCase();
+src/pages/api/backend/invoices/index.ts:51:export const GET: APIRoute = withAuth(async ({ locals, url }) => {
+src/pages/api/backend/invoices/index.ts:53:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/invoices/index.ts:55:    const searchParam = url.searchParams.get('search') ?? url.searchParams.get('q');
+src/pages/api/backend/invoices/index.ts:56:    const search = searchParam ? searchParam.trim() : null;
+src/pages/api/backend/invoices/index.ts:57:    const page = parsePositiveInteger(url.searchParams.get('page'), 1);
+src/pages/api/backend/invoices/index.ts:58:    const pageSize = parsePageSize(url.searchParams.get('pageSize'), DEFAULT_PAGE_SIZE);
+src/pages/api/backend/invoices/index.ts:59:    const status = normalizeStatus(url.searchParams.get('status'));
+src/pages/api/backend/invoices/index.ts:60:    const clientIdParam = url.searchParams.get('clientId') ?? url.searchParams.get('client_id');
+src/pages/api/backend/invoices/index.ts:61:    const projectIdParam = url.searchParams.get('projectId') ?? url.searchParams.get('project_id');
+src/pages/api/backend/invoices/index.ts:62:    const clientId = clientIdParam ? clientIdParam.trim() : '';
+src/pages/api/backend/invoices/index.ts:63:    const projectId = projectIdParam ? projectIdParam.trim() : '';
+src/pages/api/backend/invoices/index.ts:64:    const issuedBefore = parseDateParam(url.searchParams.get('issuedBefore') ?? url.searchParams.get('issued_before'));
+src/pages/api/backend/invoices/index.ts:65:    const issuedAfter = parseDateParam(url.searchParams.get('issuedAfter') ?? url.searchParams.get('issued_after'));
+src/pages/api/backend/invoices/index.ts:66:    const dueBefore = parseDateParam(url.searchParams.get('dueBefore') ?? url.searchParams.get('due_before'));
+src/pages/api/backend/invoices/index.ts:67:    const dueAfter = parseDateParam(url.searchParams.get('dueAfter') ?? url.searchParams.get('due_after'));
+src/pages/api/backend/invoices/index.ts:68:    const includeSummaries = parseBooleanParam(url.searchParams.get('summaries'), true);
+src/pages/api/backend/invoices/index.ts:70:    const { invoices, total, summaries } = await listInvoices(client, agency.id, {
+src/pages/api/backend/invoices/index.ts:84:    const totalPages = total === 0 ? 0 : Math.ceil(total / pageSize);
+src/pages/api/backend/invoices/index.ts:106:export const POST: APIRoute = withAuth(async ({ locals, request }) => {
+src/pages/api/backend/invoices/index.ts:112:    const message = error instanceof Error ? error.message : 'Invalid payload';
+src/pages/api/backend/invoices/index.ts:117:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/invoices/index.ts:118:    const record = await createInvoice(client, agency.id, payload);
+src/pages/api/backend/projects/[id].ts:14:export const prerender = false;
+src/pages/api/backend/projects/[id].ts:16:const SUPABASE_ERROR = 'Supabase admin client is not configured';
+src/pages/api/backend/projects/[id].ts:18:export const GET: APIRoute = withAuth(async ({ locals, params }) => {
+src/pages/api/backend/projects/[id].ts:19:  const id = params.id;
+src/pages/api/backend/projects/[id].ts:26:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/projects/[id].ts:27:    const project = await getProjectById(client, agency.id, id);
+src/pages/api/backend/projects/[id].ts:38:export const PATCH: APIRoute = withAuth(async ({ locals, params, request }) => {
+src/pages/api/backend/projects/[id].ts:39:  const id = params.id;
+src/pages/api/backend/projects/[id].ts:50:    const message = error instanceof Error ? error.message : 'Invalid payload';
+src/pages/api/backend/projects/[id].ts:55:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/projects/[id].ts:56:    const existing = await getProjectById(client, agency.id, id);
+src/pages/api/backend/projects/[id].ts:57:    const updated = await updateProject(client, agency.id, id, payload);
+src/pages/api/backend/projects/[id].ts:75:export const DELETE: APIRoute = withAuth(async ({ locals, params }) => {
+src/pages/api/backend/projects/[id].ts:76:  const id = params.id;
+src/pages/api/backend/projects/[id].ts:83:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/projects/[id].ts:84:    const { project, detached } = await deleteProject(client, agency.id, id);
+src/pages/api/backend/projects/index.ts:10:export const prerender = false;
+src/pages/api/backend/projects/index.ts:12:const SUPABASE_ERROR = 'Supabase admin client is not configured';
+src/pages/api/backend/projects/index.ts:14:const DEFAULT_PAGE_SIZE = 25;
+src/pages/api/backend/projects/index.ts:15:const MAX_PAGE_SIZE = 100;
+src/pages/api/backend/projects/index.ts:19:  const parsed = Number.parseInt(value, 10);
+src/pages/api/backend/projects/index.ts:25:  const parsed = parsePositiveInteger(value, fallback);
+src/pages/api/backend/projects/index.ts:31:  const normalized = value.trim().toLowerCase();
+src/pages/api/backend/projects/index.ts:37:  const trimmed = value.trim();
+src/pages/api/backend/projects/index.ts:41:export const GET: APIRoute = withAuth(async ({ locals, url }) => {
+src/pages/api/backend/projects/index.ts:43:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/projects/index.ts:44:    const search = url.searchParams.get('search') ?? url.searchParams.get('q');
+src/pages/api/backend/projects/index.ts:45:    const page = parsePositiveInteger(url.searchParams.get('page'), 1);
+src/pages/api/backend/projects/index.ts:46:    const pageSize = parsePageSize(url.searchParams.get('pageSize'), DEFAULT_PAGE_SIZE);
+src/pages/api/backend/projects/index.ts:47:    const status = normalizeStatus(url.searchParams.get('status'));
+src/pages/api/backend/projects/index.ts:48:    const clientId =
+src/pages/api/backend/projects/index.ts:52:    const { projects, total } = await listProjects(client, agency.id, {
+src/pages/api/backend/projects/index.ts:60:    const totalPages = total === 0 ? 0 : Math.ceil(total / pageSize);
+src/pages/api/backend/projects/index.ts:79:export const POST: APIRoute = withAuth(async ({ locals, request }) => {
+src/pages/api/backend/projects/index.ts:85:    const message = error instanceof Error ? error.message : 'Invalid payload';
+src/pages/api/backend/projects/index.ts:90:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/projects/index.ts:91:    const record = await createProject(client, agency.id, payload);
+src/pages/api/backend/subscriptions/[id].ts:12:export const prerender = false;
+src/pages/api/backend/subscriptions/[id].ts:14:const SUPABASE_ERROR = 'Supabase admin client is not configured';
+src/pages/api/backend/subscriptions/[id].ts:16:export const PATCH: APIRoute = withAuth(async ({ locals, params, request }) => {
+src/pages/api/backend/subscriptions/[id].ts:17:  const subscriptionId = String(params.id || '');
+src/pages/api/backend/subscriptions/[id].ts:26:    const message = error instanceof Error ? error.message : 'Invalid payload';
+src/pages/api/backend/subscriptions/[id].ts:31:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/subscriptions/[id].ts:32:    const stripe = await getStripe();
+src/pages/api/backend/subscriptions/[id].ts:37:    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+src/pages/api/backend/subscriptions/[id].ts:48:      const items = subscription.items?.data ?? [];
+src/pages/api/backend/subscriptions/[id].ts:49:      const firstItem = items[0];
+src/pages/api/backend/subscriptions/[id].ts:65:    const updated = await stripe.subscriptions.update(subscriptionId, params);
+src/pages/api/backend/subscriptions/[id].ts:78:    const recipient = updated.customer_email || subscription.customer_email || null;
+src/pages/api/backend/subscriptions/[id].ts:96:export const DELETE: APIRoute = withAuth(async ({ locals, params }) => {
+src/pages/api/backend/subscriptions/[id].ts:97:  const subscriptionId = String(params.id || '');
+src/pages/api/backend/subscriptions/[id].ts:103:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/subscriptions/[id].ts:104:    const stripe = await getStripe();
+src/pages/api/backend/subscriptions/[id].ts:109:    const deleted = await stripe.subscriptions.cancel(subscriptionId, { invoice_now: false, prorate: false });
+src/pages/api/backend/subscriptions/[id].ts:120:    const recipient = deleted.customer_email ?? null;
+src/pages/api/backend/subscriptions/index.ts:8:export const prerender = false;
+src/pages/api/backend/subscriptions/index.ts:10:const SUPABASE_ERROR = 'Supabase admin client is not configured';
+src/pages/api/backend/subscriptions/index.ts:12:const DEFAULT_PAGE_SIZE = 25;
+src/pages/api/backend/subscriptions/index.ts:13:const MAX_PAGE_SIZE = 100;
+src/pages/api/backend/subscriptions/index.ts:17:  const parsed = Number.parseInt(value, 10);
+src/pages/api/backend/subscriptions/index.ts:23:  const parsed = parsePositiveInteger(value, fallback);
+src/pages/api/backend/subscriptions/index.ts:29:  const trimmed = value.trim();
+src/pages/api/backend/subscriptions/index.ts:33:export const GET: APIRoute = withAuth(async ({ locals, url }) => {
+src/pages/api/backend/subscriptions/index.ts:35:    const page = parsePositiveInteger(url.searchParams.get('page'), 1);
+src/pages/api/backend/subscriptions/index.ts:36:    const pageSize = parsePageSize(url.searchParams.get('pageSize'), DEFAULT_PAGE_SIZE);
+src/pages/api/backend/subscriptions/index.ts:37:    const subscriptionId = normalizeOptional(url.searchParams.get('subscriptionId')) ??
+src/pages/api/backend/subscriptions/index.ts:39:    const eventType = normalizeOptional(url.searchParams.get('eventType')) ??
+src/pages/api/backend/subscriptions/index.ts:41:    const email = normalizeOptional(url.searchParams.get('email'));
+src/pages/api/backend/subscriptions/index.ts:42:    const search = normalizeOptional(url.searchParams.get('search')) ?? normalizeOptional(url.searchParams.get('q'));
+src/pages/api/backend/subscriptions/index.ts:44:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/subscriptions/index.ts:46:    const { events, total } = await listSubscriptionEvents(client, agency.id, {
+src/pages/api/backend/subscriptions/index.ts:55:    const totalPages = total === 0 ? 0 : Math.ceil(total / pageSize);
+src/pages/api/backend/dashboard/summary.ts:6:export const prerender = false;
+src/pages/api/backend/dashboard/summary.ts:8:export const GET: APIRoute = withAuth(async ({ locals }) => {
+src/pages/api/backend/dashboard/summary.ts:9:  const { agency, user, client } = await getAgencyContext(locals);
+src/pages/api/backend/dashboard/summary.ts:10:  const now = new Date();
+src/pages/api/backend/dashboard/summary.ts:11:  const nowIso = now.toISOString();
+src/pages/api/backend/dashboard/summary.ts:12:  const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString();
+src/pages/api/backend/dashboard/summary.ts:14:  const parseCount = (label: string, result: { count: number | null; error: unknown }) => {
+src/pages/api/backend/dashboard/summary.ts:83:  const clientsCount = parseCount('clients', clientsResult);
+src/pages/api/backend/dashboard/summary.ts:84:  const activeProjectsCount = parseCount('projects', activeProjectsResult);
+src/pages/api/backend/dashboard/summary.ts:85:  const liveWebsitesCount = parseCount('websites-live', liveWebsitesResult);
+src/pages/api/backend/dashboard/summary.ts:86:  const overdueTasksCount = parseCount('tasks-overdue', overdueTasksResult);
+src/pages/api/backend/dashboard/summary.ts:87:  const blockedTasksCount = parseCount('tasks-blocked', blockedTasksResult);
+src/pages/api/backend/dashboard/summary.ts:88:  const inProgressTasksCount = parseCount('tasks-in-progress', inProgressTasksResult);
+src/pages/api/backend/dashboard/summary.ts:90:  const invoices = invoicesResult.error ? [] : invoicesResult.data ?? [];
+src/pages/api/backend/dashboard/summary.ts:91:  const outstandingAmount = invoices
+src/pages/api/backend/dashboard/summary.ts:95:  const revenueLast30Days = invoices
+src/pages/api/backend/dashboard/summary.ts:99:  const documents = recentDocumentsResult.error ? [] : recentDocumentsResult.data ?? [];
+src/pages/api/backend/dashboard/summary.ts:100:  const activities = recentActivitiesResult.error ? [] : recentActivitiesResult.data ?? [];
+src/pages/api/backend/orders.ts:9:export const prerender = false;
+src/pages/api/backend/orders.ts:11:const SUPABASE_ERROR = 'Supabase admin client is not configured';
+src/pages/api/backend/orders.ts:14:  const value = Number(url.searchParams.get('limit') ?? '50');
+src/pages/api/backend/orders.ts:21:  const normalized = raw.trim().toLowerCase();
+src/pages/api/backend/orders.ts:22:  const allowed = new Set<string>([...ORDER_STATUSES, 'canceled']);
+src/pages/api/backend/orders.ts:30:export const GET: APIRoute = withAuth(async ({ request, locals }) => {
+src/pages/api/backend/orders.ts:32:    const url = new URL(request.url);
+src/pages/api/backend/orders.ts:33:    const limit = parseLimit(url);
+src/pages/api/backend/orders.ts:34:    const statusFilters = normalizeStatusFilter(url.searchParams.get('status'));
+src/pages/api/backend/orders.ts:36:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/orders.ts:37:    const orders = await listOrders(client, agency.id, { limit, statuses: statusFilters });
+src/pages/api/backend/orders.ts:38:    const metrics = await computeOrderMetrics(client, agency.id, statusFilters);
+src/pages/api/backend/team/[id].ts:20:export const prerender = false;
+src/pages/api/backend/team/[id].ts:22:const SUPABASE_ERROR = 'Supabase admin client is not configured';
+src/pages/api/backend/team/[id].ts:24:export const GET: APIRoute = withAuth(async ({ locals, params }) => {
+src/pages/api/backend/team/[id].ts:25:  const id = params.id;
+src/pages/api/backend/team/[id].ts:32:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/team/[id].ts:33:    const member = await getTeamMemberById(client, agency.id, id);
+src/pages/api/backend/team/[id].ts:44:export const PATCH: APIRoute = withAuth(async ({ locals, params, request }) => {
+src/pages/api/backend/team/[id].ts:45:  const id = params.id;
+src/pages/api/backend/team/[id].ts:56:    const message = error instanceof Error ? error.message : 'Invalid payload';
+src/pages/api/backend/team/[id].ts:61:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/team/[id].ts:62:    const member = await updateTeamMember(client, agency.id, id, payload);
+src/pages/api/backend/team/[id].ts:79:export const DELETE: APIRoute = withAuth(async ({ locals, params }) => {
+src/pages/api/backend/team/[id].ts:80:  const id = params.id;
+src/pages/api/backend/team/[id].ts:87:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/team/[id].ts:88:    const member = await deleteTeamMember(client, agency.id, id);
+src/pages/api/backend/team/index.ts:16:export const prerender = false;
+src/pages/api/backend/team/index.ts:18:const SUPABASE_ERROR = 'Supabase admin client is not configured';
+src/pages/api/backend/team/index.ts:20:const DEFAULT_PAGE_SIZE = 25;
+src/pages/api/backend/team/index.ts:21:const MAX_PAGE_SIZE = 100;
+src/pages/api/backend/team/index.ts:25:  const parsed = Number.parseInt(value, 10);
+src/pages/api/backend/team/index.ts:31:  const parsed = parsePositiveInteger(value, fallback);
+src/pages/api/backend/team/index.ts:37:  const normalized = value.trim().toLowerCase();
+src/pages/api/backend/team/index.ts:41:export const GET: APIRoute = withAuth(async ({ locals, url }) => {
+src/pages/api/backend/team/index.ts:43:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/team/index.ts:44:    const search = url.searchParams.get('search') ?? url.searchParams.get('q');
+src/pages/api/backend/team/index.ts:45:    const page = parsePositiveInteger(url.searchParams.get('page'), 1);
+src/pages/api/backend/team/index.ts:46:    const pageSize = parsePageSize(url.searchParams.get('pageSize'), DEFAULT_PAGE_SIZE);
+src/pages/api/backend/team/index.ts:47:    const role = normalizeRole(url.searchParams.get('role'));
+src/pages/api/backend/team/index.ts:49:    const { members, total } = await listTeamMembers(client, agency.id, {
+src/pages/api/backend/team/index.ts:56:    const totalPages = total === 0 ? 0 : Math.ceil(total / pageSize);
+src/pages/api/backend/team/index.ts:75:export const POST: APIRoute = withAuth(async ({ locals, request }) => {
+src/pages/api/backend/team/index.ts:81:    const message = error instanceof Error ? error.message : 'Invalid payload';
+src/pages/api/backend/team/index.ts:86:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/team/index.ts:87:    const member = await createTeamMember(client, agency.id, payload);
+src/pages/api/backend/support/[id].ts:20:export const prerender = false;
+src/pages/api/backend/support/[id].ts:22:const SUPABASE_ERROR = 'Supabase admin client is not configured';
+src/pages/api/backend/support/[id].ts:24:export const PATCH: APIRoute = withAuth(async ({ locals, params, request }) => {
+src/pages/api/backend/support/[id].ts:25:  const ticketId = String(params.id || '');
+src/pages/api/backend/support/[id].ts:34:    const message = error instanceof Error ? error.message : 'Invalid payload';
+src/pages/api/backend/support/[id].ts:39:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/support/[id].ts:41:    const existing = await getSupportRequestById(client, agency.id, ticketId);
+src/pages/api/backend/support/[id].ts:47:    const updated = await updateSupportRequest(client, agency.id, ticketId, payload);
+src/pages/api/backend/support/[id].ts:64:export const DELETE: APIRoute = withAuth(async ({ locals, params }) => {
+src/pages/api/backend/support/[id].ts:65:  const ticketId = String(params.id || '');
+src/pages/api/backend/support/[id].ts:71:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/support/[id].ts:73:    const deleted = await deleteSupportRequest(client, agency.id, ticketId);
+src/pages/api/backend/support/index.ts:26:export const prerender = false;
+src/pages/api/backend/support/index.ts:28:const SUPABASE_ERROR = 'Supabase admin client is not configured';
+src/pages/api/backend/support/index.ts:30:const DEFAULT_PAGE_SIZE = 25;
+src/pages/api/backend/support/index.ts:31:const MAX_PAGE_SIZE = 100;
+src/pages/api/backend/support/index.ts:35:  const parsed = Number.parseInt(value, 10);
+src/pages/api/backend/support/index.ts:41:  const parsed = parsePositiveInteger(value, fallback);
+src/pages/api/backend/support/index.ts:47:  const normalized = value.trim().toLowerCase();
+src/pages/api/backend/support/index.ts:53:  const trimmed = value.trim();
+src/pages/api/backend/support/index.ts:57:export const GET: APIRoute = withAuth(async ({ locals, url }) => {
+src/pages/api/backend/support/index.ts:59:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/support/index.ts:61:    const search = normalizeSearch(url.searchParams.get('search') ?? url.searchParams.get('q'));
+src/pages/api/backend/support/index.ts:62:    const page = parsePositiveInteger(url.searchParams.get('page'), 1);
+src/pages/api/backend/support/index.ts:63:    const pageSize = parsePageSize(url.searchParams.get('pageSize'), DEFAULT_PAGE_SIZE);
+src/pages/api/backend/support/index.ts:64:    const status = normalizeEnum(url.searchParams.get('status'), SUPPORT_STATUSES);
+src/pages/api/backend/support/index.ts:65:    const priority = normalizeEnum(url.searchParams.get('priority'), SUPPORT_PRIORITIES);
+src/pages/api/backend/support/index.ts:66:    const websiteId = url.searchParams.get('websiteId') ?? url.searchParams.get('website_id') ?? undefined;
+src/pages/api/backend/support/index.ts:68:    const { requests, total } = await listSupportRequests(client, agency.id, {
+src/pages/api/backend/support/index.ts:77:    const totalPages = total === 0 ? 0 : Math.ceil(total / pageSize);
+src/pages/api/backend/support/index.ts:96:export const POST: APIRoute = withAuth(async ({ locals, request }) => {
+src/pages/api/backend/support/index.ts:100:    const body = await request.json();
+src/pages/api/backend/support/index.ts:103:    const message = error instanceof Error ? error.message : 'Invalid payload';
+src/pages/api/backend/support/index.ts:108:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/support/index.ts:110:    const record = await createSupportRequest(client, agency.id, payload);
+src/pages/api/backend/support/index.ts:117:    const locale = detectRequestLocale(request, new URL(request.url));
+src/pages/api/backend/support/index.ts:120:      const summary = payload.description || payload.request_type;
+src/pages/api/backend/support/index.ts:132:      const summary = payload.description || payload.request_type;
+src/pages/api/backend/documents/[id].ts:20:export const prerender = false;
+src/pages/api/backend/documents/[id].ts:22:const SUPABASE_ERROR = 'Supabase admin client is not configured';
+src/pages/api/backend/documents/[id].ts:24:export const GET: APIRoute = withAuth(async ({ locals, params }) => {
+src/pages/api/backend/documents/[id].ts:25:  const id = params.id;
+src/pages/api/backend/documents/[id].ts:32:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/documents/[id].ts:33:    const document = await getDocumentById(client, agency.id, id);
+src/pages/api/backend/documents/[id].ts:44:export const PUT: APIRoute = withAuth(async ({ locals, params, request }) => {
+src/pages/api/backend/documents/[id].ts:45:  const id = params.id;
+src/pages/api/backend/documents/[id].ts:56:    const message = error instanceof Error ? error.message : 'Invalid payload';
+src/pages/api/backend/documents/[id].ts:61:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/documents/[id].ts:62:    const existing = await getDocumentById(client, agency.id, id);
+src/pages/api/backend/documents/[id].ts:64:    const metadata = payload.metadata ?? existing.metadata ?? {};
+src/pages/api/backend/documents/[id].ts:65:    const updated = await updateDocument(client, agency.id, id, { ...payload, metadata });
+src/pages/api/backend/documents/[id].ts:82:export const DELETE: APIRoute = withAuth(async ({ locals, params }) => {
+src/pages/api/backend/documents/[id].ts:83:  const id = params.id;
+src/pages/api/backend/documents/[id].ts:90:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/documents/[id].ts:91:    const deleted = await deleteDocument(client, agency.id, id);
+src/pages/api/backend/documents/index.ts:16:export const prerender = false;
+src/pages/api/backend/documents/index.ts:18:const SUPABASE_ERROR = 'Supabase admin client is not configured';
+src/pages/api/backend/documents/index.ts:20:const DEFAULT_PAGE_SIZE = 25;
+src/pages/api/backend/documents/index.ts:21:const MAX_PAGE_SIZE = 100;
+src/pages/api/backend/documents/index.ts:25:  const parsed = Number.parseInt(value, 10);
+src/pages/api/backend/documents/index.ts:31:  const parsed = parsePositiveInteger(value, fallback);
+src/pages/api/backend/documents/index.ts:37:  const normalized = value.trim().toLowerCase();
+src/pages/api/backend/documents/index.ts:43:  const trimmed = value.trim();
+src/pages/api/backend/documents/index.ts:47:export const GET: APIRoute = withAuth(async ({ locals, url }) => {
+src/pages/api/backend/documents/index.ts:49:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/documents/index.ts:50:    const search = normalizeSearch(url.searchParams.get('search') ?? url.searchParams.get('q'));
+src/pages/api/backend/documents/index.ts:51:    const page = parsePositiveInteger(url.searchParams.get('page'), 1);
+src/pages/api/backend/documents/index.ts:52:    const pageSize = parsePageSize(url.searchParams.get('pageSize'), DEFAULT_PAGE_SIZE);
+src/pages/api/backend/documents/index.ts:53:    const status = normalizeEnum(url.searchParams.get('status'), DOCUMENT_STATUSES);
+src/pages/api/backend/documents/index.ts:54:    const type = normalizeEnum(url.searchParams.get('type') ?? url.searchParams.get('document_type'), DOCUMENT_TYPES);
+src/pages/api/backend/documents/index.ts:56:    const { documents, total } = await listDocuments(client, agency.id, {
+src/pages/api/backend/documents/index.ts:64:    const totalPages = total === 0 ? 0 : Math.ceil(total / pageSize);
+src/pages/api/backend/documents/index.ts:83:export const POST: APIRoute = withAuth(async ({ locals, request }) => {
+src/pages/api/backend/documents/index.ts:89:    const message = error instanceof Error ? error.message : 'Invalid payload';
+src/pages/api/backend/documents/index.ts:94:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/documents/index.ts:95:    const document = await createDocument(client, agency.id, payload);
+src/pages/api/backend/orders/[id].ts:10:export const prerender = false;
+src/pages/api/backend/orders/[id].ts:12:const SUPABASE_ERROR = 'Supabase admin client is not configured';
+src/pages/api/backend/orders/[id].ts:18:  const numeric = Number(value);
+src/pages/api/backend/orders/[id].ts:25:export const GET: APIRoute = withAuth(async ({ locals, params }) => {
+src/pages/api/backend/orders/[id].ts:34:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/orders/[id].ts:35:    const order = await getOrderById(client, agency.id, orderId);
+src/pages/api/backend/orders/[id].ts:46:export const PATCH: APIRoute = withAuth(async ({ locals, params, request }) => {
+src/pages/api/backend/orders/[id].ts:58:    const message = error instanceof Error ? error.message : 'Invalid payload';
+src/pages/api/backend/orders/[id].ts:63:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/orders/[id].ts:64:    const existing = await getOrderById(client, agency.id, orderId);
+src/pages/api/backend/orders/[id].ts:65:    const updated = await updateOrder(client, agency.id, orderId, payload);
+src/pages/api/backend/orders/[id].ts:81:export const DELETE: APIRoute = withAuth(async ({ locals, params }) => {
+src/pages/api/backend/orders/[id].ts:90:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/orders/[id].ts:91:    const deleted = await deleteOrder(client, agency.id, orderId);
+src/pages/api/backend/websites/[id].ts:32:export const prerender = false;
+src/pages/api/backend/websites/[id].ts:34:const SUPABASE_ERROR = 'Supabase admin client is not configured';
+src/pages/api/backend/websites/[id].ts:46:export const GET: APIRoute = withAuth(async ({ locals, params }) => {
+src/pages/api/backend/websites/[id].ts:47:  const id = params.id;
+src/pages/api/backend/websites/[id].ts:54:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/websites/[id].ts:55:    const { website, sections, metrics } = await getWebsiteWithSections(client, agency.id, id);
+src/pages/api/backend/websites/[id].ts:66:export const PATCH: APIRoute = withAuth(async ({ locals, params, request }) => {
+src/pages/api/backend/websites/[id].ts:67:  const id = params.id;
+src/pages/api/backend/websites/[id].ts:84:    const message = error instanceof Error ? error.message : 'Invalid website payload';
+src/pages/api/backend/websites/[id].ts:88:  const syncFromDoc = Boolean(body?.syncFromDoc);
+src/pages/api/backend/websites/[id].ts:89:  const rawSections = syncFromDoc ? [] : Array.isArray(body?.sections) ? body.sections : [];
+src/pages/api/backend/websites/[id].ts:90:  const sectionsToInsert: ReturnType<typeof parseWebsiteSectionPayload>[] = [];
+src/pages/api/backend/websites/[id].ts:91:  const sectionsToUpdate: { id: string; data: ReturnType<typeof parseWebsiteSectionUpdatePayload> }[] = [];
+src/pages/api/backend/websites/[id].ts:92:  const sectionsToDelete: string[] = [];
+src/pages/api/backend/websites/[id].ts:96:    const action = typeof rawSection.action === 'string' ? rawSection.action : '';
+src/pages/api/backend/websites/[id].ts:97:    const sectionId = typeof rawSection.id === 'string' ? rawSection.id : '';
+src/pages/api/backend/websites/[id].ts:106:        const payload = parseWebsiteSectionUpdatePayload(rawSection);
+src/pages/api/backend/websites/[id].ts:122:      const sectionKey =
+src/pages/api/backend/websites/[id].ts:128:      const payload = parseWebsiteSectionPayload({ ...rawSection, section_key: sectionKey });
+src/pages/api/backend/websites/[id].ts:136:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/websites/[id].ts:138:    const { website: existing } = await getWebsiteWithSections(client, agency.id, id);
+src/pages/api/backend/websites/[id].ts:151:      const prepared = sectionsToInsert.map((section) => ({
+src/pages/api/backend/websites/[id].ts:161:      const payload = { ...entry.data };
+src/pages/api/backend/websites/[id].ts:181:      const docSections = await getDocumentSections(updatedWebsite.google_doc_id);
+src/pages/api/backend/websites/[id].ts:183:        const normalizedSections = docSections.map((section) => ({
+src/pages/api/backend/websites/[id].ts:200:      const { data: clientRecord } = await client
+src/pages/api/backend/websites/[id].ts:205:      const recipient = clientRecord?.email ?? null;
+src/pages/api/backend/websites/[id].ts:208:          const previewUrl = updatePayload.preview_url ?? updatedWebsite.preview_url ?? '';
+src/pages/api/backend/websites/[id].ts:217:          const metadata = (updatePayload.metadata ?? updatedWebsite.metadata ?? {}) as Record<string, unknown>;
+src/pages/api/backend/websites/[id].ts:218:          const eta = typeof metadata.delay_eta === 'string' ? (metadata.delay_eta as string) : '';
+src/pages/api/backend/websites/[id].ts:230:    const sections = await listWebsiteSections(client, id);
+src/pages/api/backend/websites/[id].ts:240:export const DELETE: APIRoute = withAuth(async ({ locals, params }) => {
+src/pages/api/backend/websites/[id].ts:241:  const id = params.id;
+src/pages/api/backend/websites/[id].ts:248:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/websites/[id].ts:250:    const { website: existing } = await getWebsiteWithSections(client, agency.id, id);
+src/pages/api/backend/websites/index.ts:26:export const prerender = false;
+src/pages/api/backend/websites/index.ts:28:const SUPABASE_ERROR = 'Supabase admin client is not configured';
+src/pages/api/backend/websites/index.ts:30:const DEFAULT_PAGE_SIZE = 25;
+src/pages/api/backend/websites/index.ts:31:const MAX_PAGE_SIZE = 100;
+src/pages/api/backend/websites/index.ts:35:  const parsed = Number.parseInt(value, 10);
+src/pages/api/backend/websites/index.ts:41:  const parsed = parsePositiveInteger(value, fallback);
+src/pages/api/backend/websites/index.ts:47:  const normalized = value.trim().toLowerCase();
+src/pages/api/backend/websites/index.ts:53:  const trimmed = value.trim();
+src/pages/api/backend/websites/index.ts:59:  const trimmed = value.trim();
+src/pages/api/backend/websites/index.ts:77:  const key = section.section_key ? slugify(section.section_key) : slugify(section.heading ?? 'section');
+src/pages/api/backend/websites/index.ts:86:export const GET: APIRoute = withAuth(async ({ locals, url }) => {
+src/pages/api/backend/websites/index.ts:88:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/websites/index.ts:89:    const search = normalizeSearch(url.searchParams.get('search') ?? url.searchParams.get('q'));
+src/pages/api/backend/websites/index.ts:90:    const page = parsePositiveInteger(url.searchParams.get('page'), 1);
+src/pages/api/backend/websites/index.ts:91:    const pageSize = parsePageSize(url.searchParams.get('pageSize'), DEFAULT_PAGE_SIZE);
+src/pages/api/backend/websites/index.ts:92:    const status = normalizeEnum(url.searchParams.get('status'), WEBSITE_STATUSES);
+src/pages/api/backend/websites/index.ts:93:    const clientId =
+src/pages/api/backend/websites/index.ts:97:    const { websites, total } = await listWebsites(client, agency.id, {
+src/pages/api/backend/websites/index.ts:106:    const totalPages = total === 0 ? 0 : Math.ceil(total / pageSize);
+src/pages/api/backend/websites/index.ts:125:export const POST: APIRoute = withAuth(async ({ locals, request }) => {
+src/pages/api/backend/websites/index.ts:137:    const message = error instanceof Error ? error.message : 'Invalid website payload';
+src/pages/api/backend/websites/index.ts:146:      const message = error instanceof Error ? error.message : 'Invalid section payload';
+src/pages/api/backend/websites/index.ts:152:    const { agency, client } = await getAgencyContext(locals);
+src/pages/api/backend/websites/index.ts:158:      const workspace = await provisionWebsiteWorkspace(websitePayload.name);
+src/pages/api/backend/websites/index.ts:163:    const website = await createWebsite(client, agency.id, {
+src/pages/api/backend/websites/index.ts:169:    const sectionInputs: ReturnType<typeof mapSectionInput>[] = [];
+src/pages/api/backend/websites/index.ts:176:      const docSections = await getDocumentSections(googleDocId);
+src/pages/api/subscriptions/[id].ts:7:export const prerender = false;
+src/pages/api/subscriptions/[id].ts:9:export const DELETE: APIRoute = withAuth(async ({ params }) => {
+src/pages/api/subscriptions/[id].ts:10:  const subscriptionId = params.id;
+src/pages/api/subscriptions/[id].ts:15:  const stripe = await getStripe();
+src/pages/api/subscriptions/[id].ts:21:    const canceled = await stripe.subscriptions.cancel(subscriptionId);
+src/pages/api/subscriptions/[id].ts:34:export const PATCH: APIRoute = withAuth(async ({ params, request }) => {
+src/pages/api/subscriptions/[id].ts:35:  const subscriptionId = params.id;
+src/pages/api/subscriptions/[id].ts:40:  const stripe = await getStripe();
+src/pages/api/subscriptions/[id].ts:45:  const payload = await request.json().catch(() => null);
+src/pages/api/subscriptions/[id].ts:46:  const priceId = typeof payload?.priceId === 'string' ? payload.priceId.trim() : '';
+src/pages/api/subscriptions/[id].ts:47:  const cancelAtPeriodEnd =
+src/pages/api/subscriptions/[id].ts:54:      const item = subscription.items.data[0];
+src/pages/api/feedback.ts:9:export const prerender = false;
+src/pages/api/feedback.ts:11:const TABLE_NAME = 'project_feedback';
+src/pages/api/feedback.ts:13:export const POST: APIRoute = async ({ request, url }) => {
+src/pages/api/feedback.ts:15:  const payload = await request.json().catch(() => null);
+src/pages/api/feedback.ts:16:  const message = typeof payload?.message === 'string' ? payload.message.trim() : '';
+src/pages/api/feedback.ts:17:  const projectId = typeof payload?.projectId === 'string' ? payload.projectId.trim() : '';
+src/pages/api/feedback.ts:24:  const authorName = typeof payload?.authorName === 'string' ? payload.authorName.trim() : '';
+src/pages/api/feedback.ts:25:  const authorEmail = typeof payload?.authorEmail === 'string' ? payload.authorEmail.trim() : '';
+src/pages/api/feedback.ts:31:  const supabase = getSupabaseAdmin();
+src/pages/api/feedback.ts:37:    const insertPayload = {
+src/pages/api/feedback.ts:45:    const { data, error } = await supabase.from(TABLE_NAME).insert(insertPayload).select('*').single();
+src/pages/api/feedback.ts:51:    const locale = detectRequestLocale(request, url);
+src/pages/api/health.ts:6:export const prerender = false;
+src/pages/api/health.ts:8:export const GET: APIRoute = async () => {
+src/pages/api/health.ts:9:  const out: any = {
+src/pages/api/health.ts:25:    const sb = getSupabaseAdmin();
+src/pages/api/health.ts:27:      const { error } = await sb.from('leads').select('id').limit(1);
+src/pages/api/health.ts:37:    const stripe = await getStripe();
+src/pages/api/health.ts:40:      const balance = await stripe.balance.retrieve().catch(() => null);
+src/pages/api/stripe-webhook.ts:18:export const prerender = false;
+src/pages/api/stripe-webhook.ts:20:export const POST: APIRoute = async ({ request }) => {
+src/pages/api/stripe-webhook.ts:21:  const stripe = await getStripe();
+src/pages/api/stripe-webhook.ts:24:  const sig = request.headers.get('stripe-signature');
+src/pages/api/stripe-webhook.ts:25:  const whSecret = ENV.STRIPE_WEBHOOK_SECRET;
+src/pages/api/stripe-webhook.ts:28:  const rawBody = await request.text();
+src/pages/api/stripe-webhook.ts:37:    const sb = getSupabaseAdmin();
+src/pages/api/stripe-webhook.ts:41:      const session = event.data.object;
+src/pages/api/stripe-webhook.ts:42:      const draft = buildOrderDraftFromSession(session);
+src/pages/api/stripe-webhook.ts:43:      const metadata = draft.metadata ?? extractMetadataFromSession(session);
+src/pages/api/stripe-webhook.ts:48:        const dbPayload = sanitizeOrderDbPayload(orderRecord);
+src/pages/api/stripe-webhook.ts:49:        const { data, error } = await sb.from('orders').insert(dbPayload).select('*').maybeSingle();
+src/pages/api/stripe-webhook.ts:55:      const emailOrder = {
+src/pages/api/stripe-webhook.ts:64:        const projectName = metadata?.company || metadata?.name || 'Projet TonSiteWeb';
+src/pages/api/stripe-webhook.ts:65:        const workspace = await provisionWebsiteWorkspace(`${projectName} – ${emailOrder.order_number || 'Projet'}`);
+src/pages/api/stripe-webhook.ts:80:      const inv = event.data.object;
+src/pages/api/stripe-webhook.ts:87:      const sub = event.data.object;
+src/pages/de/about.astro:11:const metadata = {
+src/pages/de/app/[...path].ts:3:export const prerender = false;
+src/pages/de/app/[...path].ts:5:export const GET: APIRoute = ({ params, request }) => {
+src/pages/de/app/[...path].ts:6:  const p = params.path as string[] | string | undefined;
+src/pages/de/app/[...path].ts:7:  const rest = Array.isArray(p) ? p.join('/') : (p ?? '');
+src/pages/de/app/[...path].ts:8:  const url = new URL(`/app/${rest}`, request.url);
+src/pages/de/choose-template.astro:8:const plan = Astro.url.searchParams.get('plan') || '';
+src/pages/de/choose-template.astro:9:const templates: Tpl[] = [
+src/pages/de/choose-template.astro:18:const metadata = { title: 'Vorlage wählen' };
+src/pages/de/auth/[...path].ts:3:export const prerender = false;
+src/pages/de/auth/[...path].ts:5:export const GET: APIRoute = ({ params, request }) => {
+src/pages/de/auth/[...path].ts:6:  const p = params.path as string[] | string | undefined;
+src/pages/de/auth/[...path].ts:7:  const rest = Array.isArray(p) ? p.join('/') : (p ?? '');
+src/pages/de/auth/[...path].ts:8:  const url = new URL(`/auth/${rest}`, request.url);
+src/pages/de/index.astro:16:const metadata = {
+src/pages/de/services.astro:10:const metadata = {
+src/pages/de/contact.astro:9:const metadata = {
+src/pages/de/pricing.astro:14:const metadata = {
+src/pages/de/thank-you.astro:5:const metadata = { title: 'Danke — TonSiteWeb.ch' };
+src/pages/de/thank-you.astro:6:const sessionId = Astro.url.searchParams.get('session_id') || '';
+src/pages/de/thank-you.astro:35:      const params = new URLSearchParams(location.search);
+src/pages/de/thank-you.astro:36:      const id = params.get('session_id');
+src/pages/de/thank-you.astro:41:            const f = new Intl.NumberFormat('de-CH', { style: 'currency', currency: data.currency || 'CHF' });
+src/pages/fr/app/[...path].ts:3:export const prerender = false;
+src/pages/fr/app/[...path].ts:5:export const GET: APIRoute = ({ params, request }) => {
+src/pages/fr/app/[...path].ts:6:  const p = params.path as string[] | string | undefined;
+src/pages/fr/app/[...path].ts:7:  const rest = Array.isArray(p) ? p.join('/') : (p ?? '');
+src/pages/fr/app/[...path].ts:8:  const url = new URL(`/app/${rest}`, request.url);
+src/pages/fr/auth/[...path].ts:3:export const prerender = false;
+src/pages/fr/auth/[...path].ts:5:export const GET: APIRoute = ({ params, request }) => {
+src/pages/fr/auth/[...path].ts:6:  const p = params.path as string[] | string | undefined;
+src/pages/fr/auth/[...path].ts:7:  const rest = Array.isArray(p) ? p.join('/') : (p ?? '');
+src/pages/fr/auth/[...path].ts:8:  const url = new URL(`/auth/${rest}`, request.url);
+src/pages/pricing.astro:12:const metadata = {
+src/pages/thank-you.astro:4:const SUPPORTED_LOCALES = ['fr', 'en', 'it', 'de'] as const;
+src/pages/thank-you.astro:7:  const query = Astro.url.searchParams.get('lang');
+src/pages/thank-you.astro:9:  const header = Astro.request.headers.get('accept-language') || '';
+src/pages/thank-you.astro:10:  const [raw] = header.split(',');
+src/pages/thank-you.astro:12:    const base = raw.split(';')[0]?.split('-')[0]?.toLowerCase();
+src/pages/thank-you.astro:18:const locale = resolveLocale();
+src/pages/thank-you.astro:20:const TEXT = {
+src/pages/thank-you.astro:95:const copy = TEXT[locale];
+src/pages/thank-you.astro:96:const metadata = { title: copy.metadataTitle };
+src/pages/thank-you.astro:97:const sessionId = Astro.url.searchParams.get('session_id') || '';
+src/pages/thank-you.astro:98:const hasSession = Boolean(sessionId);
+src/pages/thank-you.astro:128:      const params = new URLSearchParams(location.search);
+src/pages/thank-you.astro:129:      const id = params.get('session_id');
+src/pages/thank-you.astro:134:            const amountMinor = typeof data.amount_total_order === 'number' ? data.amount_total_order : data.amount_total;
+src/pages/thank-you.astro:135:            const currency = (data.currency || 'CHF').toUpperCase();
+src/pages/thank-you.astro:136:            const formatter = new Intl.NumberFormat(copy.currencyLocale, { style: 'currency', currency });
+src/pages/en/about.astro:11:const metadata = {
+src/pages/en/app/[...path].ts:3:export const prerender = false;
+src/pages/en/app/[...path].ts:5:export const GET: APIRoute = ({ params, request }) => {
+src/pages/en/app/[...path].ts:6:  const p = params.path as string[] | string | undefined;
+src/pages/en/app/[...path].ts:7:  const rest = Array.isArray(p) ? p.join('/') : (p ?? '');
+src/pages/en/app/[...path].ts:8:  const url = new URL(`/app/${rest}`, request.url);
+src/pages/en/choose-template.astro:8:const plan = Astro.url.searchParams.get('plan') || '';
+src/pages/en/choose-template.astro:9:const templates: Tpl[] = [
+src/pages/en/choose-template.astro:18:const metadata = { title: 'Choose a template' };
+src/pages/en/auth/[...path].ts:3:export const prerender = false;
+src/pages/en/auth/[...path].ts:5:export const GET: APIRoute = ({ params, request }) => {
+src/pages/en/auth/[...path].ts:6:  const p = params.path as string[] | string | undefined;
+src/pages/en/auth/[...path].ts:7:  const rest = Array.isArray(p) ? p.join('/') : (p ?? '');
+src/pages/en/auth/[...path].ts:8:  const url = new URL(`/auth/${rest}`, request.url);
+src/pages/en/index.astro:16:const metadata = {
+src/pages/en/services.astro:10:const metadata = {
+src/pages/en/contact.astro:9:const metadata = {
+src/pages/en/pricing.astro:14:const metadata = {
+src/pages/en/thank-you.astro:5:const metadata = { title: 'Thank you — TonSiteWeb.ch' };
+src/pages/en/thank-you.astro:6:const sessionId = Astro.url.searchParams.get('session_id') || '';
+src/pages/en/thank-you.astro:35:      const params = new URLSearchParams(location.search);
+src/pages/en/thank-you.astro:36:      const id = params.get('session_id');
+src/pages/en/thank-you.astro:41:            const f = new Intl.NumberFormat('en-CH', { style: 'currency', currency: data.currency || 'CHF' });
+src/pages/[...blog]/[tag]/[...page].astro:10:export const prerender = true;
+src/pages/[...blog]/[tag]/[...page].astro:12:export const getStaticPaths = (async ({ paginate }) => {
+src/pages/[...blog]/[tag]/[...page].astro:18:const { page, tag } = Astro.props as Props;
+src/pages/[...blog]/[tag]/[...page].astro:20:const currentPage = page.currentPage ?? 1;
+src/pages/[...blog]/[tag]/[...page].astro:22:const metadata = {
+src/pages/[...blog]/index.astro:16:export const prerender = true;
+src/pages/[...blog]/index.astro:18:export const getStaticPaths = (async () => {
+src/pages/[...blog]/index.astro:24:const { post } = Astro.props as Props;
+src/pages/[...blog]/index.astro:26:const url = getCanonical(getPermalink(post.permalink, 'post'));
+src/pages/[...blog]/index.astro:27:const image = (await findImage(post.image)) as ImageMetadata | string | undefined;
+src/pages/[...blog]/index.astro:29:const metadata = merge(
+src/pages/[...blog]/[category]/[...page].astro:10:export const prerender = true;
+src/pages/[...blog]/[category]/[...page].astro:12:export const getStaticPaths = (async ({ paginate }) => {
+src/pages/[...blog]/[category]/[...page].astro:18:const { page, category } = Astro.props as Props;
+src/pages/[...blog]/[category]/[...page].astro:20:const currentPage = page.currentPage ?? 1;
+src/pages/[...blog]/[category]/[...page].astro:22:const metadata = {
+src/pages/[...blog]/[...page].astro:12:export const prerender = true;
+src/pages/[...blog]/[...page].astro:14:export const getStaticPaths = (async ({ paginate }) => {
+src/pages/[...blog]/[...page].astro:20:const { page } = Astro.props as Props;
+src/pages/[...blog]/[...page].astro:21:const currentPage = page.currentPage ?? 1;
+src/pages/[...blog]/[...page].astro:23:// const allCategories = await findCategories();
+src/pages/[...blog]/[...page].astro:24:// const allTags = await findTags();
+src/pages/[...blog]/[...page].astro:26:const metadata = {

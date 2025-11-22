@@ -71,12 +71,27 @@ const authLabels = {
 const t = authLabels[currentLang as keyof typeof authLabels] || authLabels.fr;
 const signinHref = `${langPrefix}/auth/signin`;
 const signupHref = `${langPrefix}/auth/signup`;
+
+// Extract language menu from navigation links so we can render it near auth controls
+const isLanguageMenu = (link: any) => {
+  const label = String(link?.text || '').toLowerCase();
+  return label.includes('langue') || label.includes('language') || label.includes('sprache') || label.includes('lingua');
+};
+const languageLink = links.find((link) => isLanguageMenu(link));
+const filteredLinks = links.filter((link) => !isLanguageMenu(link));
+const languageOptions = [
+  { code: 'fr', label: 'Français', href: buildLangHref('fr') },
+  { code: 'en', label: 'English', href: buildLangHref('en') },
+  { code: 'de', label: 'Deutsch', href: buildLangHref('de') },
+  { code: 'it', label: 'Italiano', href: buildLangHref('it') },
+];
+const langLabel = languageOptions.find((l) => l.code === currentLang)?.label || 'Langue';
 ---
 
 <header
   class:list={[
     { sticky: isSticky, relative: !isSticky, dark: isDark },
-    'top-0 z-40 flex-none mx-auto w-full border-b border-gray-50/0 transition-[opacity] ease-in-out',
+    'top-0 z-40 flex-none mx-auto w-full border-b border-gray-50/0 transition-[opacity] ease-in-out aw-header',
   ]}
   {...isSticky ? { 'data-aw-sticky-header': true } : {}}
   {...id ? { id } : {}}
@@ -89,14 +104,15 @@ const signupHref = `${langPrefix}/auth/signup`;
         'md:flex md:justify-between': position !== 'center',
       },
       {
-        'md:grid md:grid-cols-3 md:items-center': position === 'center',
-      },
+  'md:flex md:items-center md:justify-between': position === 'center',
+},
+,
       {
         'max-w-7xl': !isFullWidth,
       },
     ]}
   >
-    <div class:list={[{ 'mr-auto rtl:mr-0 rtl:ml-auto': position === 'right' }, 'flex justify-between']}>
+    <div class:list={[{ 'mr-auto rtl:mr-0 rtl:ml-auto': position === 'right' }, 'flex justify-between md:flex-shrink-0']}>
       <a class="flex items-center" href={getHomePermalink()}>
         <Logo />
       </a>
@@ -105,14 +121,14 @@ const signupHref = `${langPrefix}/auth/signup`;
       </div>
     </div>
     <nav
-      class="items-center w-full md:w-auto hidden md:flex md:mx-5 text-default overflow-y-auto overflow-x-hidden md:overflow-y-visible md:overflow-x-auto md:justify-self-center"
+      class="items-center w-full md:flex-1 md:min-w-0 hidden md:flex md:mx-4 text-default overflow-y-auto overflow-x-hidden md:overflow-y-visible md:overflow-x-auto md:justify-self-center"
       aria-label="Main navigation"
     >
       <ul
-        class="flex flex-col md:flex-row md:self-center w-full md:w-auto text-xl md:text-[0.9375rem] tracking-[0.01rem] font-medium md:justify-center flex-wrap min-[1100px]:flex-nowrap"
+        class="flex flex-col md:flex-row md:flex-wrap xl:flex-nowrap md:self-center w-full md:w-auto text-xl md:text-[0.9375rem] tracking-[0.01rem] font-medium md:justify-center md:gap-1 md:min-w-0"
       >
         {
-          links.map(({ text, href, links }) => (
+          filteredLinks.map(({ text, href, links }) => (
             <li class={links?.length ? 'dropdown' : ''}>
               {links?.length ? (
                 <>
@@ -177,7 +193,7 @@ const signupHref = `${langPrefix}/auth/signup`;
     <div
       class:list={[
         { 'ml-auto rtl:ml-0 rtl:mr-auto': position === 'left' },
-        'hidden md:self-center md:flex items-center md:mb-0 fixed w-full md:w-auto md:static justify-end left-0 rtl:left-auto rtl:right-0 bottom-0 p-3 md:p-0 md:justify-self-end',
+        'hidden md:self-center md:flex items-center md:mb-0 fixed w-full md:w-auto md:static justify-end left-0 rtl:left-auto rtl:right-0 bottom-0 p-3 md:p-0 md:justify-self-end md:flex-shrink-0',
       ]}
     >
       <div class="items-center flex justify-between w-full md:w-auto">
@@ -197,6 +213,34 @@ const signupHref = `${langPrefix}/auth/signup`;
         </div>
         {/* Auth controls */}
         <div class="ml-2 flex items-center gap-2">
+          {languageLink && (
+            <div class="relative dropdown">
+              <button
+                type="button"
+                class="flex items-center whitespace-nowrap rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+                aria-label="Language switcher"
+              >
+                {langLabel}
+                <Icon name="tabler:chevron-down" class="w-4 h-4 ml-1" />
+              </button>
+              <ul class="dropdown-menu md:backdrop-blur-md dark:md:bg-dark rounded md:absolute hidden md:hidden pl-0 md:pl-0 md:min-w-[180px] font-medium md:bg-white/90 drop-shadow-xl">
+                {languageOptions.map((opt) => (
+                  <li>
+                    <a
+                      href={opt.href}
+                      data-lang={opt.code}
+                      class:list={[
+                        'first:rounded-t last:rounded-b md:hover:bg-gray-100 hover:text-link dark:hover:text-white dark:hover:bg-gray-700 py-2 px-4 block whitespace-no-wrap',
+                        { 'aw-link-active': opt.code === currentLang },
+                      ]}
+                    >
+                      {opt.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
           <a
             href={signinHref}
             class="hidden sm:inline-flex items-center rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"

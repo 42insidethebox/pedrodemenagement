@@ -8,14 +8,14 @@ export interface WebsiteRecord extends WebsiteInput {
   id: string;
   agency_id: string;
   created_at: string;
-  updated_at: string;
+  updated_at?: string;
 }
 
 export interface WebsiteSectionRecord extends WebsiteSectionInput {
   id: string;
   website_id: string;
   created_at: string;
-  updated_at: string;
+  updated_at?: string;
   order_index?: number | null;
 }
 
@@ -227,7 +227,6 @@ export async function updateWebsite(
 ): Promise<WebsiteRecord> {
   const updatePayload = {
     ...payload,
-    updated_at: new Date().toISOString(),
   } as Record<string, unknown>;
 
   const { data, error } = await client
@@ -310,7 +309,6 @@ export async function updateWebsiteSection(
 ): Promise<WebsiteSectionRecord> {
   const updatePayload = {
     ...payload,
-    updated_at: new Date().toISOString(),
   } as Record<string, unknown>;
 
   const { data, error } = await client

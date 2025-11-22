@@ -9,6 +9,7 @@ import {
   logSystemEvent,
   updateOrderStatusInSupabase,
   updateOrderStatusBySubscriptionId,
+  sanitizeOrderDbPayload,
 } from '~/lib/orders';
 import { provisionWebsiteWorkspace, shareFileWithEmail } from '~/lib/google-docs';
 import { sendAdminNotificationEmail, sendClientConfirmationEmail } from '~/lib/email';
@@ -41,28 +42,23 @@ export const POST: APIRoute = async ({ request }) => {
       const draft = buildOrderDraftFromSession(session);
       const metadata = draft.metadata ?? extractMetadataFromSession(session);
 
-      let orderRecord = { ...draft, order_number: await generateOrderNumber() } as any;
+      let orderRecord = {
+        ...draft,
+        order_number: draft.order_number || (await generateOrderNumber()),
+        plan: draft.plan || metadata.plan || null,
+        template_key: draft.template_key || metadata.template || null,
+        customer_name: draft.customer_name || metadata.name || null,
+        company: draft.company || metadata.company || null,
+        phone: draft.phone || metadata.phone || null,
+      } as any;
 
       if (sb) {
-        for (let attempt = 0; attempt < 5; attempt += 1) {
-          const payload = { ...orderRecord, order_number: attempt === 0 ? orderRecord.order_number : await generateOrderNumber() };
-          const { data, error } = await sb.from('orders').insert(payload).select('*').maybeSingle();
-          if (!error && data) {
-            orderRecord = data;
-            break;
-          }
-          if (!error) {
-            orderRecord = { ...payload };
-            break;
-          }
-          if (error && String(error.code) === '23505') {
-            orderRecord = { ...payload };
-            continue;
-          }
-          if (error) {
-            orderRecord = { ...payload };
-            break;
-          }
+        const dbPayload = sanitizeOrderDbPayload(orderRecord);
+        const { data, error } = await sb.from('orders').insert(dbPayload).select('*').maybeSingle();
+        if (error) {
+          console.error('Failed to insert order from Stripe webhook', { error, dbPayload });
+        } else if (data) {
+          orderRecord = { ...orderRecord, ...data };
         }
       }
 
@@ -93,20 +89,25 @@ export const POST: APIRoute = async ({ request }) => {
     if (event.type === 'invoice.paid') {
       const inv = event.data.object;
       if (inv.subscription) {
-        try { await updateOrderStatusBySubscriptionId(String(inv.subscription), 'paid'); } catch {}
+        try { await updateOrderStatusBySubscriptionId(String(inv.subscription), 'paid'); } catch (err) {
+          console.error('Failed to mark order paid from invoice.paid', err);
+        }
       }
     }
 
     if (event.type === 'customer.subscription.deleted') {
       const sub = event.data.object;
-      try { await updateOrderStatusBySubscriptionId(String(sub.id), 'cancelled'); } catch {}
+      try { await updateOrderStatusBySubscriptionId(String(sub.id), 'cancelled'); } catch (err) {
+        console.error('Failed to mark order cancelled from subscription.deleted', err);
+      }
     }
 
     if (event.type === 'checkout.session.completed') {
       try { await triggerTemplateDeployment(event.data.object); } catch {}
     }
   } catch (e) {
-    // ignore to prevent retries storms
+    console.error('Stripe webhook handler failed', e);
+    return new Response('error', { status: 500 });
   }
 
   return new Response('ok');

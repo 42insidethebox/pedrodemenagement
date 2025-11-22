@@ -18,7 +18,7 @@ export interface InvoiceRecord {
   line_items: InvoiceInput['line_items'] | null;
   notes: string | null;
   created_at: string;
-  updated_at: string;
+  updated_at?: string;
 }
 
 export interface ListInvoicesOptions {
@@ -238,10 +238,7 @@ export async function updateInvoice(
   id: string,
   payload: Partial<InvoiceInput>,
 ): Promise<InvoiceRecord> {
-  const updatePayload = {
-    ...payload,
-    updated_at: new Date().toISOString(),
-  };
+  const updatePayload: any = { ...payload };
 
   if (payload.line_items !== undefined && payload.line_items.length) {
     updatePayload.amount = payload.line_items.reduce(

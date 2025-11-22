@@ -16,7 +16,7 @@ export interface ClientRecord {
   notes: string | null;
   metadata: Record<string, unknown> | null;
   created_at: string;
-  updated_at: string;
+  updated_at?: string;
 }
 
 export interface ListClientsOptions {
@@ -171,9 +171,8 @@ export async function updateClient(
   id: string,
   payload: Partial<ClientInput>,
 ): Promise<ClientRecord> {
-  const updatePayload = {
+  const updatePayload: any = {
     ...payload,
-    updated_at: new Date().toISOString(),
   };
 
   if (payload.services !== undefined) {

@@ -11,6 +11,11 @@ export const prerender = false;
 export const GET: APIRoute = async ({ request, url }) => {
   const plan = (url.searchParams.get('plan') || 'essential').toLowerCase();
   const templateRaw = (url.searchParams.get('template') || '').trim();
+  const name = (url.searchParams.get('name') || '').trim();
+  const email = (url.searchParams.get('email') || '').trim();
+  const phone = (url.searchParams.get('phone') || '').trim();
+  const company = (url.searchParams.get('company') || '').trim();
+  const agencyId = (url.searchParams.get('agencyId') || url.searchParams.get('agency_id') || '').trim();
   const template = isAllowedTemplate(templateRaw) ? templateRaw : '';
   const origin = ENV.ORIGIN || request.headers.get('origin') || url.origin;
   const stripe = await getStripe();
@@ -44,7 +49,7 @@ export const GET: APIRoute = async ({ request, url }) => {
 
   // Step 4: Create the checkout session
   const isSubscription = isSubscriptionPlan(plan);
-  const metadata = serializeMetadata({ plan, template });
+  const metadata = serializeMetadata({ plan, template, name, email, phone, company, agencyId });
   const session = await stripe.checkout.sessions.create({
     mode: isSubscription ? 'subscription' : 'payment',
     line_items: [{ price: priceId, quantity: 1 }],

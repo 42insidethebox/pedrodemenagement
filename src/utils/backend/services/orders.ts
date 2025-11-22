@@ -7,21 +7,13 @@ import { ORDER_STATUSES, type OrderUpdateInput } from '../validation';
 export interface OrderRecord {
   id: number;
   created_at: string;
-  order_number: string;
-  agency_id: string | null;
   stripe_session_id: string | null;
   subscription_id: string | null;
   customer_email: string | null;
-  customer_name: string | null;
-  company: string | null;
-  phone: string | null;
-  plan: string | null;
-  template_key: string | null;
   amount_total: number | null;
   currency: string | null;
   mode: string | null;
   status: string | null;
-  metadata: Record<string, unknown> | null;
 }
 
 export interface ListOrdersOptions {
@@ -35,6 +27,16 @@ export interface OrderMetrics {
   revenue: number;
   latest: OrderRecord | null;
 }
+
+const ORDER_DB_COLUMNS = new Set([
+  'stripe_session_id',
+  'subscription_id',
+  'customer_email',
+  'amount_total',
+  'currency',
+  'mode',
+  'status',
+]);
 
 function normalizeStatusesForQuery(statuses?: readonly string[]): string[] | undefined {
   if (!statuses || statuses.length === 0) return undefined;
@@ -85,7 +87,7 @@ export async function listOrders(
       client
         .from('orders')
         .select('*')
-        .eq('agency_id', agencyId)
+        .or(`agency_id.is.null,agency_id.eq.${agencyId}`)
         .order('created_at', { ascending: false })
         .limit(limit),
       options.statuses,
@@ -115,8 +117,8 @@ export async function getOrderById(
   const { data, error } = await client
     .from('orders')
     .select('*')
-    .eq('agency_id', agencyId)
     .eq('id', id)
+    .or(`agency_id.is.null,agency_id.eq.${agencyId}`)
     .maybeSingle();
 
   if (error) {
@@ -137,11 +139,15 @@ export async function updateOrder(
   id: number,
   payload: OrderUpdateInput,
 ): Promise<OrderRecord> {
+  const updatePayload = Object.fromEntries(
+    Object.entries(payload).filter(([k]) => ORDER_DB_COLUMNS.has(k)),
+  );
+
   const { data, error } = await client
     .from('orders')
-    .update(payload)
-    .eq('agency_id', agencyId)
+    .update(updatePayload)
     .eq('id', id)
+    .or(`agency_id.is.null,agency_id.eq.${agencyId}`)
     .select('*')
     .maybeSingle();
 
@@ -165,8 +171,8 @@ export async function deleteOrder(
   const { data, error } = await client
     .from('orders')
     .delete()
-    .eq('agency_id', agencyId)
     .eq('id', id)
+    .or(`agency_id.is.null,agency_id.eq.${agencyId}`)
     .select('*')
     .maybeSingle();
 
@@ -192,26 +198,32 @@ export async function computeOrderMetrics(
   try {
     const [totalResult, recurringResult, revenueResult, latestResult] = await Promise.all([
       applyStatusFilters(
-        client.from('orders').select('id', { count: 'exact', head: true }).eq('agency_id', agencyId),
+        client
+          .from('orders')
+          .select('id', { count: 'exact', head: true })
+          .or(`agency_id.is.null,agency_id.eq.${agencyId}`),
         normalized,
       ),
       applyStatusFilters(
         client
           .from('orders')
           .select('id', { count: 'exact', head: true })
-          .eq('agency_id', agencyId)
+          .or(`agency_id.is.null,agency_id.eq.${agencyId}`)
           .eq('mode', 'subscription'),
         normalized,
       ),
       applyStatusFilters(
-        client.from('orders').select('amount_total').eq('agency_id', agencyId),
+        client
+          .from('orders')
+          .select('amount_total')
+          .or(`agency_id.is.null,agency_id.eq.${agencyId}`),
         normalized,
       ).in('status', ['paid', 'complete']),
       applyStatusFilters(
         client
           .from('orders')
           .select('*')
-          .eq('agency_id', agencyId)
+          .or(`agency_id.is.null,agency_id.eq.${agencyId}`)
           .order('created_at', { ascending: false })
           .limit(1),
         normalized,
@@ -245,4 +257,3 @@ export async function computeOrderMetrics(
     return { count: 0, recurringCount: 0, revenue: 0, latest: null };
   }
 }
-

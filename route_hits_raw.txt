@@ -1,0 +1,59 @@
+src/pages/app/orders.astro:100:  import { authFetch } from '~/utils/backend/api';
+src/pages/app/orders.astro:347:      const response = await authFetch(`/orders?${params.toString()}`);
+src/pages/app/orders.astro:389:      const response = await authFetch(`/orders/${orderId}`, {
+src/pages/app/orders.astro:420:        await authFetch(`/orders/${deleteId}`, { method: 'DELETE', parseJson: false });
+src/pages/app/index.astro:101:  import { authFetch } from '~/utils/backend/api';
+src/pages/app/index.astro:179:    const data = await authFetch('/dashboard/summary');
+src/pages/app/documents.astro:77:  import { authFetch } from '~/utils/backend/api';
+src/pages/app/documents.astro:125:      const response = await authFetch('/documents');
+src/pages/app/documents.astro:158:        await authFetch('/documents', {
+src/pages/app/documents.astro:192:        await authFetch(`/documents/${deleteId}`, {
+src/pages/app/subscriptions.astro:156:  import { authFetch } from '~/utils/backend/api';
+src/pages/app/subscriptions.astro:277:      const response = await authFetch(`/subscriptions?${params.toString()}`);
+src/pages/app/subscriptions.astro:305:      await authFetch(`/subscriptions/${id}`, { method: 'PATCH', body: JSON.stringify(payload) });
+src/pages/app/subscriptions.astro:318:      await authFetch(`/subscriptions/${id}`, { method: 'DELETE', parseJson: false });
+src/pages/app/invoices.astro:100:  import { authFetch } from '~/utils/backend/api';
+src/pages/app/invoices.astro:116:      const response = await authFetch('/clients');
+src/pages/app/invoices.astro:138:      const response = await authFetch('/projects');
+src/pages/app/invoices.astro:181:      const response = await authFetch('/invoices');
+src/pages/app/invoices.astro:228:        await authFetch('/invoices', {
+src/pages/app/invoices.astro:262:        await authFetch(`/invoices/${deleteId}`, {
+src/pages/app/clients.astro:79:  import { authFetch } from '~/utils/backend/api';
+src/pages/app/clients.astro:115:      const response = await authFetch('/clients');
+src/pages/app/clients.astro:153:        await authFetch('/clients', {
+src/pages/app/clients.astro:187:        await authFetch(`/clients/${deleteId}`, {
+src/pages/app/tasks.astro:90:  import { authFetch } from '~/utils/backend/api';
+src/pages/app/tasks.astro:107:      const response = await authFetch('/projects');
+src/pages/app/tasks.astro:130:      const response = await authFetch('/team');
+src/pages/app/tasks.astro:174:      const response = await authFetch('/tasks');
+src/pages/app/tasks.astro:208:        await authFetch('/tasks', {
+src/pages/app/tasks.astro:242:        await authFetch(`/tasks/${deleteId}`, {
+src/pages/app/support.astro:122:  import { authFetch } from '~/utils/backend/api';
+src/pages/app/support.astro:175:      const response = await authFetch('/websites');
+src/pages/app/support.astro:193:      const response = await authFetch('/support');
+src/pages/app/support.astro:222:      await authFetch('/support', {
+src/pages/app/support.astro:251:      await authFetch(`/support/${id}`, {
+src/pages/app/support.astro:270:        await authFetch(`/support/${deleteId}`, { method: 'DELETE', parseJson: false });
+src/pages/app/support.astro:282:        await authFetch(`/support/${closeId}`, {
+src/pages/app/websites.astro:127:  import { authFetch } from '~/utils/backend/api';
+src/pages/app/websites.astro:624:      const response = await authFetch(`/websites/${websiteId}`, {
+src/pages/app/websites.astro:676:      const response = await authFetch(`/websites/${websiteId}`, {
+src/pages/app/websites.astro:727:      const response = await authFetch(`/websites/${websiteId}`, {
+src/pages/app/websites.astro:751:      const response = await authFetch('/clients');
+src/pages/app/websites.astro:770:      const response = await authFetch('/websites');
+src/pages/app/websites.astro:813:      await authFetch('/websites', {
+src/pages/app/websites.astro:842:      const response = await authFetch(`/websites/${id}`, {
+src/pages/app/websites.astro:885:        await authFetch(`/websites/${deleteId}`, { method: 'DELETE', parseJson: false });
+src/pages/app/websites.astro:908:        const response = await authFetch(`/websites/${toggleId}`);
+src/pages/app/websites.astro:923:        const response = await authFetch(`/websites/${websiteId}`, {
+src/pages/app/websites.astro:951:        const response = await authFetch(`/websites/${syncId}`, {
+src/pages/app/projects.astro:88:  import { authFetch } from '~/utils/backend/api';
+src/pages/app/projects.astro:112:      const response = await authFetch('/clients');
+src/pages/app/projects.astro:160:      const response = await authFetch('/projects');
+src/pages/app/projects.astro:195:        await authFetch('/projects', {
+src/pages/app/projects.astro:229:        await authFetch(`/projects/${deleteId}`, {
+src/pages/app/settings.astro:122:  import { authFetch } from '~/utils/backend/api';
+src/pages/app/settings.astro:178:      const response = await authFetch('/team');
+src/pages/app/settings.astro:213:      await authFetch('/team', {
+src/pages/app/settings.astro:248:      await authFetch(`/team/${memberId}`, {
+src/pages/app/settings.astro:273:      await authFetch(`/team/${deleteId}`, {

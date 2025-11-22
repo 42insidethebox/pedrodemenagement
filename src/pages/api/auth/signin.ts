@@ -26,12 +26,19 @@ export const POST: APIRoute = async ({ request }) => {
 
   try {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error || !data?.session) {
-      return new Response(JSON.stringify({ error: 'Incorrect email or password' }), { status: 401 });
+
+    // Handle unconfirmed emails explicitly so the user sees the right call-to-action
+    const isUnconfirmed =
+      (error?.code && String(error.code).includes('confirm')) ||
+      (error?.message && error.message.toLowerCase().includes('confirm')) ||
+      (!!data?.user && !data.user.email_confirmed_at);
+
+    if (isUnconfirmed) {
+      return new Response(JSON.stringify({ error: 'Please confirm your email before signing in.' }), { status: 403 });
     }
 
-    if (!data.user?.email_confirmed_at) {
-      return new Response(JSON.stringify({ error: 'Please confirm your email before signing in.' }), { status: 403 });
+    if (error || !data?.session) {
+      return new Response(JSON.stringify({ error: 'Incorrect email or password' }), { status: 401 });
     }
 
     return new Response(

@@ -25,31 +25,49 @@ function randomOrderSuffix(length: number) {
 
 export async function generateOrderNumber() {
   const base = `${ORDER_PREFIX}-${formatUtcDatePart(new Date())}`;
-  const client = getSupabaseAdmin();
-
+  // No DB uniqueness check since 'order_number' is not persisted in the live schema.
+  // Use a sufficiently random suffix to minimize collisions for display-only purposes.
   for (let attempt = 0; attempt < 5; attempt += 1) {
     const suffix = randomOrderSuffix(4 + attempt);
     const candidate = `${base}-${suffix}`;
-    if (!client) return candidate;
-
-    const { data } = await client.from('orders').select('id').eq('order_number', candidate).maybeSingle();
-    if (!data) return candidate;
+    return candidate;
   }
-
-  // As a final fallback, include a timestamp-based suffix to avoid blocking order creation.
-  const fallback = `${base}-${Date.now().toString(36).toUpperCase()}`;
-  return fallback;
+  return `${base}-${Date.now().toString(36).toUpperCase()}`;
 }
 
 export type OrderStatus = 'pending' | 'paid' | 'active' | 'cancelled' | 'unpaid' | 'refunded';
 
+// Columns currently present in live Supabase 'orders' table
+const ORDER_DB_COLUMNS = new Set([
+  'order_number',
+  'agency_id',
+  'stripe_session_id',
+  'subscription_id',
+  'customer_email',
+  'customer_name',
+  'company',
+  'phone',
+  'plan',
+  'template_key',
+  'amount_total',
+  'currency',
+  'mode',
+  'status',
+  'metadata',
+]);
+
+export function sanitizeOrderDbPayload(obj: Record<string, any>) {
+  const out: Record<string, any> = {};
+  for (const k of Object.keys(obj || {})) {
+    if (ORDER_DB_COLUMNS.has(k)) out[k] = obj[k];
+  }
+  return out;
+}
+
 export async function insertOrder(data: Record<string, any>) {
   const sb = getSupabaseAdmin();
   if (!sb) return null;
-  const payload = { ...data };
-  if (!payload.order_number) {
-    payload.order_number = await generateOrderNumber();
-  }
+  const payload = sanitizeOrderDbPayload({ ...data });
   const { data: row, error } = await sb.from('orders').insert(payload).select('*').single();
   if (error) throw error;
   return row;
@@ -58,7 +76,8 @@ export async function insertOrder(data: Record<string, any>) {
 export async function updateOrder(orderId: number | string, fields: Record<string, any>) {
   const sb = getSupabaseAdmin();
   if (!sb) return null;
-  const { data: row, error } = await sb.from('orders').update(fields).eq('id', orderId).select('*').single();
+  const update = sanitizeOrderDbPayload(fields);
+  const { data: row, error } = await sb.from('orders').update(update).eq('id', orderId).select('*').single();
   if (error) throw error;
   return row;
 }
@@ -73,7 +92,7 @@ export async function fetchOrderBySessionId(sessionId: string) {
 export async function updateOrderStatusInSupabase(sessionId: string, status: OrderStatus, extra?: Record<string, any>) {
   const sb = getSupabaseAdmin();
   if (!sb) return null;
-  const update = { status, ...(extra || {}) } as any;
+  const update = sanitizeOrderDbPayload({ status, ...(extra || {}) });
   const { data: row, error } = await sb
     .from('orders')
     .update(update)
@@ -87,7 +106,7 @@ export async function updateOrderStatusInSupabase(sessionId: string, status: Ord
 export async function updateOrderStatusBySubscriptionId(subscriptionId: string, status: OrderStatus, extra?: Record<string, any>) {
   const sb = getSupabaseAdmin();
   if (!sb) return null;
-  const update = { status, ...(extra || {}) } as any;
+  const update = sanitizeOrderDbPayload({ status, ...(extra || {}) });
   const { data: row, error } = await sb
     .from('orders')
     .update(update)
@@ -122,6 +141,8 @@ export function buildOrderDraftFromSession(session: any) {
   const amount = typeof session?.amount_total === 'number' ? session.amount_total : null;
 
   return {
+    order_number: null,
+    agency_id: metadata.agencyId || null,
     stripe_session_id: session?.id ?? null,
     subscription_id: (session as any)?.subscription ?? null,
     customer_email: metadata.email || session?.customer_details?.email || null,
@@ -134,7 +155,6 @@ export function buildOrderDraftFromSession(session: any) {
     currency: session?.currency || null,
     mode: session?.mode || null,
     status: session?.payment_status || null,
-    agency_id: metadata.agencyId || null,
     metadata,
   };
 }

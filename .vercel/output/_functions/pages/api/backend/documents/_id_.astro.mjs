@@ -1,109 +1,77 @@
-import { g as getAgencyContext } from '../../../../chunks/context_CJYV_HFi.mjs';
-import { a as parseDocumentUpdate } from '../../../../chunks/validation_B_1A_rZS.mjs';
-import { w as withAuth } from '../../../../chunks/auth_By5untnG.mjs';
+import { l as logAgencyActivity } from '../../../../chunks/activity__EFcq8Am.mjs';
+import { g as getAgencyContext } from '../../../../chunks/context_C5WovHz2.mjs';
+import { b as badRequest, o as ok, s as serviceUnavailable, h as handleApiError, n as noContent } from '../../../../chunks/http_DzTdw9sP.mjs';
+import { g as getDocumentById, u as updateDocument, d as deleteDocument } from '../../../../chunks/documents_BjVsGtHw.mjs';
+import { b as parseDocumentUpdate } from '../../../../chunks/validation_DDAwkv1e.mjs';
+import { w as withAuth } from '../../../../chunks/auth_DY46_O_j.mjs';
 export { renderers } from '../../../../renderers.mjs';
 
 const prerender = false;
 const SUPABASE_ERROR = "Supabase admin client is not configured";
-async function loadDocument(client, id, agencyId) {
-  const { data, error } = await client.from("documents").select("*").eq("id", id).eq("agency_id", agencyId).maybeSingle();
-  if (error) {
-    console.error("Failed to load document", error);
-    throw error;
-  }
-  if (!data) return null;
-  return data;
-}
 const GET = withAuth(async ({ locals, params }) => {
+  const id = params.id;
+  if (!id) {
+    return badRequest("Missing document id");
+  }
   try {
     const { agency, client } = await getAgencyContext(locals);
-    const document = await loadDocument(client, params.id, agency.id);
-    if (!document) {
-      return new Response(JSON.stringify({ error: "Document not found" }), {
-        status: 404,
-        headers: { "Content-Type": "application/json" }
-      });
-    }
-    return new Response(JSON.stringify({ document }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" }
-    });
+    const document = await getDocumentById(client, agency.id, id);
+    return ok({ document });
   } catch (error) {
     if (error instanceof Error && error.message === SUPABASE_ERROR) {
-      return new Response(JSON.stringify({ error: "Supabase not configured" }), { status: 503 });
+      return serviceUnavailable("Supabase not configured");
     }
-    console.error("Unexpected error in GET /api/backend/documents/[id]", error);
-    return new Response(JSON.stringify({ error: "Unexpected server error" }), { status: 500 });
+    return handleApiError(error, "Unexpected error in GET /api/backend/documents/[id]");
   }
 });
 const PUT = withAuth(async ({ locals, params, request }) => {
+  const id = params.id;
+  if (!id) {
+    return badRequest("Missing document id");
+  }
+  let payload;
+  try {
+    payload = parseDocumentUpdate(await request.json());
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Invalid payload";
+    return badRequest(message);
+  }
   try {
     const { agency, client } = await getAgencyContext(locals);
-    const existing = await loadDocument(client, params.id, agency.id);
-    if (!existing) {
-      return new Response(JSON.stringify({ error: "Document not found" }), {
-        status: 404,
-        headers: { "Content-Type": "application/json" }
-      });
-    }
-    let payload;
-    try {
-      payload = parseDocumentUpdate(await request.json());
-    } catch (error2) {
-      return new Response(JSON.stringify({ error: error2 instanceof Error ? error2.message : "Invalid payload" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" }
-      });
-    }
+    const existing = await getDocumentById(client, agency.id, id);
     const metadata = payload.metadata ?? existing.metadata ?? {};
-    const { data, error } = await client.from("documents").update({
-      ...payload,
-      metadata
-    }).eq("id", params.id).eq("agency_id", agency.id).select("*").single();
-    if (error) {
-      console.error("Failed to update document", error);
-      return new Response(JSON.stringify({ error: "Unable to update document" }), {
-        status: 500,
-        headers: { "Content-Type": "application/json" }
-      });
-    }
-    return new Response(JSON.stringify({ document: data }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" }
+    const updated = await updateDocument(client, agency.id, id, { ...payload, metadata });
+    await logAgencyActivity(client, agency.id, "document_updated", "document", updated.id, {
+      title: updated.title,
+      document_type: updated.document_type,
+      status: updated.status
     });
+    return ok({ document: updated });
   } catch (error) {
     if (error instanceof Error && error.message === SUPABASE_ERROR) {
-      return new Response(JSON.stringify({ error: "Supabase not configured" }), { status: 503 });
+      return serviceUnavailable("Supabase not configured");
     }
-    console.error("Unexpected error in PUT /api/backend/documents/[id]", error);
-    return new Response(JSON.stringify({ error: "Unexpected server error" }), { status: 500 });
+    return handleApiError(error, "Unexpected error in PUT /api/backend/documents/[id]");
   }
 });
 const DELETE = withAuth(async ({ locals, params }) => {
+  const id = params.id;
+  if (!id) {
+    return badRequest("Missing document id");
+  }
   try {
     const { agency, client } = await getAgencyContext(locals);
-    const existing = await loadDocument(client, params.id, agency.id);
-    if (!existing) {
-      return new Response(JSON.stringify({ error: "Document not found" }), {
-        status: 404,
-        headers: { "Content-Type": "application/json" }
-      });
-    }
-    const { error } = await client.from("documents").delete().eq("id", params.id).eq("agency_id", agency.id);
-    if (error) {
-      console.error("Failed to delete document", error);
-      return new Response(JSON.stringify({ error: "Unable to delete document" }), {
-        status: 500,
-        headers: { "Content-Type": "application/json" }
-      });
-    }
-    return new Response(null, { status: 204 });
+    const deleted = await deleteDocument(client, agency.id, id);
+    await logAgencyActivity(client, agency.id, "document_deleted", "document", deleted.id, {
+      title: deleted.title,
+      document_type: deleted.document_type
+    });
+    return noContent();
   } catch (error) {
     if (error instanceof Error && error.message === SUPABASE_ERROR) {
-      return new Response(JSON.stringify({ error: "Supabase not configured" }), { status: 503 });
+      return serviceUnavailable("Supabase not configured");
     }
-    console.error("Unexpected error in DELETE /api/backend/documents/[id]", error);
-    return new Response(JSON.stringify({ error: "Unexpected server error" }), { status: 500 });
+    return handleApiError(error, "Unexpected error in DELETE /api/backend/documents/[id]");
   }
 });
 

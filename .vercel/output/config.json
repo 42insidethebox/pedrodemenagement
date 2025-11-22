@@ -431,6 +431,10 @@
 			"dest": "_render"
 		},
 		{
+			"src": "^\\/api\\/auth\\/register$",
+			"dest": "_render"
+		},
+		{
 			"src": "^\\/api\\/auth\\/reset-password$",
 			"dest": "_render"
 		},
@@ -443,7 +447,7 @@
 			"dest": "_render"
 		},
 		{
-			"src": "^\\/api\\/auth\\/signup$",
+			"src": "^\\/api\\/auth\\/verify$",
 			"dest": "_render"
 		},
 		{
@@ -475,6 +479,10 @@
 			"dest": "_render"
 		},
 		{
+			"src": "^\\/api\\/backend\\/orders\\/([^/]+?)$",
+			"dest": "_render"
+		},
+		{
 			"src": "^\\/api\\/backend\\/orders$",
 			"dest": "_render"
 		},
@@ -491,6 +499,10 @@
 			"dest": "_render"
 		},
 		{
+			"src": "^\\/api\\/backend\\/subscriptions$",
+			"dest": "_render"
+		},
+		{
 			"src": "^\\/api\\/backend\\/support\\/([^/]+?)$",
 			"dest": "_render"
 		},
@@ -504,6 +516,10 @@
 		},
 		{
 			"src": "^\\/api\\/backend\\/tasks$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/api\\/backend\\/team\\/([^/]+?)$",
 			"dest": "_render"
 		},
 		{

@@ -17,6 +17,10 @@ const { textDirection } = I18N;
 const path = Astro.url?.pathname || '/';
 const match = path.match(/^\/(fr|en|de|it)(?=\/|$)/);
 const language = (match && match[1]) || 'fr';
+const search = Astro.url?.search || '';
+const rawPath = path.replace(/^\/(fr|en|de|it)(?=\/|$)/, '') || '/';
+const baseSuffix = rawPath.startsWith('/') ? rawPath : `/${rawPath}`;
+const buildLangHref = (lang: 'fr' | 'en' | 'de' | 'it') => `/${lang}${baseSuffix}${search}`;
 ---
 
 <html lang={language} dir={textDirection} class="2xl:text-[20px]">
@@ -36,17 +40,17 @@ const language = (match && match[1]) || 'fr';
     <aside class="w-full border-b border-slate-200 bg-white/90 px-4 py-3 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-white/70 dark:border-slate-800 dark:bg-slate-900/90 dark:shadow-lg">
       <div class="container mx-auto flex items-center justify-between gap-4">
         <nav class="flex items-center gap-2 text-sm">
-          <a href="/app" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app">Overview</a>
-          <a href="/app/clients" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/clients">Clients</a>
-          <a href="/app/projects" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/projects">Projects</a>
-          <a href="/app/websites" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/websites">Websites</a>
-          <a href="/app/tasks" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/tasks">Tasks</a>
-          <a href="/app/documents" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/documents">Documents</a>
-          <a href="/app/invoices" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/invoices">Invoices</a>
-          <a href="/app/orders" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/orders">Orders</a>
-          <a href="/app/support" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/support">Support</a>
-          <a href="/app/subscriptions" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/subscriptions">Subscriptions</a>
-          <a href="/app/settings" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/settings">Settings</a>
+          <a href="/app" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app" data-i18n="nav.overview">Overview</a>
+          <a href="/app/clients" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/clients" data-i18n="nav.clients">Clients</a>
+          <a href="/app/projects" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/projects" data-i18n="nav.projects">Projects</a>
+          <a href="/app/websites" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/websites" data-i18n="nav.websites">Websites</a>
+          <a href="/app/tasks" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/tasks" data-i18n="nav.tasks">Tasks</a>
+          <a href="/app/documents" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/documents" data-i18n="nav.documents">Documents</a>
+          <a href="/app/invoices" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/invoices" data-i18n="nav.invoices">Invoices</a>
+          <a href="/app/orders" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/orders" data-i18n="nav.orders">Orders</a>
+          <a href="/app/support" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/support" data-i18n="nav.support">Support</a>
+          <a href="/app/subscriptions" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/subscriptions" data-i18n="nav.subscriptions">Subscriptions</a>
+          <a href="/app/settings" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/settings" data-i18n="nav.settings">Settings</a>
         </nav>
         <div class="flex items-center gap-3">
           <div class="hidden md:block">
@@ -54,20 +58,20 @@ const language = (match && match[1]) || 'fr';
           </div>
           <div class="relative dropdown hidden md:block">
             <button type="button" class="flex items-center whitespace-nowrap rounded-md px-3 py-2.5 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" aria-label="Language">
-              Lingua
+              <span data-i18n="nav.languageLabel">Langue</span>
               <svg width="1em" height="1em" viewBox="0 0 24 24" class="w-3.5 h-3.5 ml-0.5 rtl:ml-0 rtl:mr-0.5 hidden md:inline" data-icon="tabler:chevron-down">
                 <path fill="currentColor" d="M7 10l5 5l5-5" />
               </svg>
             </button>
             <ul class="dropdown-menu md:backdrop-blur-md dark:md:bg-dark rounded md:absolute pl-4 md:pl-0 md:hidden font-medium md:bg-white/90 md:min-w-[200px] drop-shadow-xl">
-              <li><a class="first:rounded-t last:rounded-b md:hover:bg-gray-100 hover:text-link dark:hover:text-white dark:hover:bg-gray-700 py-2 px-5 block whitespace-no-wrap" href="#" data-lang="fr"> Français </a></li>
-              <li><a class="first:rounded-t last:rounded-b md:hover:bg-gray-100 hover:text-link dark:hover:text-white dark:hover:bg-gray-700 py-2 px-5 block whitespace-no-wrap" href="#" data-lang="en"> English </a></li>
-              <li><a class="first:rounded-t last:rounded-b md:hover:bg-gray-100 hover:text-link dark:hover:text-white dark:hover:bg-gray-700 py-2 px-5 block whitespace-no-wrap" href="#" data-lang="de"> Deutsch </a></li>
-              <li><a class="first:rounded-t last:rounded-b md:hover:bg-gray-100 hover:text-link dark:hover:text-white dark:hover:bg-gray-700 py-2 px-5 block whitespace-no-wrap" href="#" data-lang="it"> Italiano </a></li>
+              <li><a class="first:rounded-t last:rounded-b md:hover:bg-gray-100 hover:text-link dark:hover:text-white dark:hover:bg-gray-700 py-2 px-5 block whitespace-no-wrap" href={buildLangHref('fr')} data-lang="fr"> Français </a></li>
+              <li><a class="first:rounded-t last:rounded-b md:hover:bg-gray-100 hover:text-link dark:hover:text-white dark:hover:bg-gray-700 py-2 px-5 block whitespace-no-wrap" href={buildLangHref('en')} data-lang="en"> English </a></li>
+              <li><a class="first:rounded-t last:rounded-b md:hover:bg-gray-100 hover:text-link dark:hover:text-white dark:hover:bg-gray-700 py-2 px-5 block whitespace-no-wrap" href={buildLangHref('de')} data-lang="de"> Deutsch </a></li>
+              <li><a class="first:rounded-t last:rounded-b md:hover:bg-gray-100 hover:text-link dark:hover:text-white dark:hover:bg-gray-700 py-2 px-5 block whitespace-no-wrap" href={buildLangHref('it')} data-lang="it"> Italiano </a></li>
             </ul>
           </div>
-          <span id="auth-user" class="text-xs text-slate-500 dark:text-slate-400">Checking session…</span>
-          <button id="signout" class="rounded-md border border-slate-300 px-3 py-1.5 text-xs text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">Sign out</button>
+          <span id="auth-user" class="text-xs text-slate-500 dark:text-slate-400" data-i18n="auth.checking">Checking session…</span>
+          <button id="signout" class="rounded-md border border-slate-300 px-3 py-1.5 text-xs text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800" data-i18n="auth.signout">Sign out</button>
         </div>
       </div>
     </aside>
@@ -82,10 +86,17 @@ const language = (match && match[1]) || 'fr';
     <BasicScripts />
     <script type="module">
       import { clearAuthSession } from '~/utils/backend/api';
+      import { applyTranslations, getLanguageLabel, getPreferredLocale, setPreferredLocale } from '~/utils/i18n';
 
       const ACCESS_TOKEN_KEY = 'tonsiteweb:accessToken';
       const userLabel = document.getElementById('auth-user');
       const signout = document.getElementById('signout');
+      const langLabel = document.querySelector('[data-i18n="nav.languageLabel"]');
+      const langLinks = document.querySelectorAll('a[data-lang]');
+
+      const locale = getPreferredLocale();
+      applyTranslations(locale);
+      if (langLabel) langLabel.textContent = getLanguageLabel(locale);
 
       // Highlight active nav
       const currentPath = location.pathname;
@@ -123,20 +134,44 @@ const language = (match && match[1]) || 'fr';
         }
       }
 
-      signout?.addEventListener('click', () => {
+      signout?.addEventListener('click', async () => {
         clearAuthSession();
+        try {
+          await fetch('/api/auth/session', { method: 'DELETE' });
+        } catch (_) {
+          // ignore network issues on logout
+        }
         location.href = '/auth/signin';
+      });
+
+      langLinks.forEach((a) => {
+        a.addEventListener('click', (event) => {
+          const code = a.getAttribute('data-lang');
+          if (!code) return;
+          event.preventDefault();
+          setPreferredLocale(code);
+          applyTranslations(getPreferredLocale());
+          if (langLabel) langLabel.textContent = getLanguageLabel(getPreferredLocale());
+          const href = computeLangHref(code);
+          if (href) {
+            try {
+              window.location.assign(href);
+            } catch (_) {
+              // ignore navigation issues
+            }
+          }
+        });
       });
 
       ensureSession();
       // Language switch: always use localized URLs similar to marketing pages
       function computeLangHref(lang) {
-        const path = location.pathname;
+        const path = location.pathname || '/';
         const search = location.search || '';
         const hash = location.hash || '';
         const rawPath = path.replace(/^\/(fr|en|de|it)(?=\/|$)/, '') || '/';
-        const base = rawPath === '/' ? '' : rawPath;
-        return lang === 'fr' ? `${base}${search}${hash}` : `/${lang}${base}${search}${hash}`;
+        const base = rawPath.startsWith('/') ? rawPath : `/${rawPath}`;
+        return `/${lang}${base}${search}${hash}`;
       }
 
       document.querySelectorAll('[data-lang]').forEach((a) => {

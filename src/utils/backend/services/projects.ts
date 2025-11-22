@@ -17,7 +17,7 @@ export interface ProjectRecord {
   notes: string | null;
   metadata: Record<string, unknown>;
   created_at: string;
-  updated_at: string;
+  updated_at?: string;
 }
 
 export interface ListProjectsOptions {
@@ -197,10 +197,7 @@ export async function updateProject(
   id: string,
   payload: Partial<ProjectInput>,
 ): Promise<ProjectRecord> {
-  const updatePayload: Record<string, unknown> = {
-    ...payload,
-    updated_at: new Date().toISOString(),
-  };
+  const updatePayload: Record<string, unknown> = { ...payload };
 
   const { data, error } = await client
     .from('projects')
