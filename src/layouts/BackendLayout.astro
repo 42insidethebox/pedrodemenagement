@@ -17,10 +17,12 @@ const { textDirection } = I18N;
 const path = Astro.url?.pathname || '/';
 const match = path.match(/^\/(fr|en|de|it)(?=\/|$)/);
 const language = (match && match[1]) || 'fr';
+const localePrefix = match ? `/${language}` : '';
 const search = Astro.url?.search || '';
 const rawPath = path.replace(/^\/(fr|en|de|it)(?=\/|$)/, '') || '/';
 const baseSuffix = rawPath.startsWith('/') ? rawPath : `/${rawPath}`;
 const buildLangHref = (lang: 'fr' | 'en' | 'de' | 'it') => `/${lang}${baseSuffix}${search}`;
+const navHref = (href: string) => `${localePrefix}${href}`;
 ---
 
 <html lang={language} dir={textDirection} class="2xl:text-[20px]">
@@ -39,18 +41,19 @@ const buildLangHref = (lang: 'fr' | 'en' | 'de' | 'it') => `/${lang}${baseSuffix
   <body class="min-h-screen flex flex-col antialiased text-default bg-page tracking-tight">
     <aside class="w-full border-b border-slate-200 bg-white/90 px-4 py-3 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-white/70 dark:border-slate-800 dark:bg-slate-900/90 dark:shadow-lg">
       <div class="container mx-auto flex items-center justify-between gap-4">
+        
         <nav class="flex items-center gap-2 text-sm">
-          <a href="/app" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app" data-i18n="nav.overview">Overview</a>
-          <a href="/app/clients" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/clients" data-i18n="nav.clients">Clients</a>
-          <a href="/app/projects" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/projects" data-i18n="nav.projects">Projects</a>
-          <a href="/app/websites" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/websites" data-i18n="nav.websites">Websites</a>
-          <a href="/app/tasks" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/tasks" data-i18n="nav.tasks">Tasks</a>
-          <a href="/app/documents" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/documents" data-i18n="nav.documents">Documents</a>
-          <a href="/app/invoices" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/invoices" data-i18n="nav.invoices">Invoices</a>
-          <a href="/app/orders" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/orders" data-i18n="nav.orders">Orders</a>
-          <a href="/app/support" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/support" data-i18n="nav.support">Support</a>
-          <a href="/app/subscriptions" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/subscriptions" data-i18n="nav.subscriptions">Subscriptions</a>
-          <a href="/app/settings" class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav="/app/settings" data-i18n="nav.settings">Settings</a>
+          <a href={navHref('/app')} class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav={navHref('/app')} data-i18n="nav.overview">Overview</a>
+          <a href={navHref('/app/clients')} class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav={navHref('/app/clients')} data-i18n="nav.clients">Clients</a>
+          <a href={navHref('/app/projects')} class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav={navHref('/app/projects')} data-i18n="nav.projects">Projects</a>
+          <a href={navHref('/app/websites')} class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav={navHref('/app/websites')} data-i18n="nav.websites">Websites</a>
+          <a href={navHref('/app/tasks')} class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav={navHref('/app/tasks')} data-i18n="nav.tasks">Tasks</a>
+          <a href={navHref('/app/documents')} class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav={navHref('/app/documents')} data-i18n="nav.documents">Documents</a>
+          <a href={navHref('/app/invoices')} class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav={navHref('/app/invoices')} data-i18n="nav.invoices">Invoices</a>
+          <a href={navHref('/app/orders')} class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav={navHref('/app/orders')} data-i18n="nav.orders">Orders</a>
+          <a href={navHref('/app/support')} class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav={navHref('/app/support')} data-i18n="nav.support">Support</a>
+          <a href={navHref('/app/subscriptions')} class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav={navHref('/app/subscriptions')} data-i18n="nav.subscriptions">Subscriptions</a>
+          <a href={navHref('/app/settings')} class="rounded-md px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white" data-nav={navHref('/app/settings')} data-i18n="nav.settings">Settings</a>
         </nav>
         <div class="flex items-center gap-3">
           <div class="hidden md:block">
