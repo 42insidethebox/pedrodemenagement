@@ -81,19 +81,26 @@ export async function listOrders(
   options: ListOrdersOptions,
 ): Promise<OrderRecord[]> {
   const limit = Math.max(1, Math.min(options.limit, 200));
+  const baseQuery = () =>
+    client
+      .from('orders')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(limit);
 
   try {
-    const query = applyStatusFilters(
-      client
-        .from('orders')
-        .select('*')
-        .or(`agency_id.is.null,agency_id.eq.${agencyId}`)
-        .order('created_at', { ascending: false })
-        .limit(limit),
+    const queryWithAgency = applyStatusFilters(
+      baseQuery().or(`agency_id.is.null,agency_id.eq.${agencyId}`),
       options.statuses,
     );
+    let { data, error } = await queryWithAgency;
 
-    const { data, error } = await query;
+    // If the column agency_id does not exist in the live table, retry without the filter.
+    if (error && String(error.message || '').toLowerCase().includes('agency_id')) {
+      const fallbackQuery = applyStatusFilters(baseQuery(), options.statuses);
+      ({ data, error } = await fallbackQuery);
+    }
+
     if (error) {
       console.error('Failed to list orders', error);
       throw new ApiError(500, 'Unable to load orders');
@@ -194,34 +201,27 @@ export async function computeOrderMetrics(
   statuses?: readonly string[],
 ): Promise<OrderMetrics> {
   const normalized = normalizeStatusesForQuery(statuses);
+  const base = client.from('orders');
 
   try {
     const [totalResult, recurringResult, revenueResult, latestResult] = await Promise.all([
       applyStatusFilters(
-        client
-          .from('orders')
-          .select('id', { count: 'exact', head: true })
-          .or(`agency_id.is.null,agency_id.eq.${agencyId}`),
+        base.select('id', { count: 'exact', head: true }).or(`agency_id.is.null,agency_id.eq.${agencyId}`),
         normalized,
       ),
       applyStatusFilters(
-        client
-          .from('orders')
+        base
           .select('id', { count: 'exact', head: true })
           .or(`agency_id.is.null,agency_id.eq.${agencyId}`)
           .eq('mode', 'subscription'),
         normalized,
       ),
       applyStatusFilters(
-        client
-          .from('orders')
-          .select('amount_total')
-          .or(`agency_id.is.null,agency_id.eq.${agencyId}`),
+        base.select('amount_total').or(`agency_id.is.null,agency_id.eq.${agencyId}`),
         normalized,
       ).in('status', ['paid', 'complete']),
       applyStatusFilters(
-        client
-          .from('orders')
+        base
           .select('*')
           .or(`agency_id.is.null,agency_id.eq.${agencyId}`)
           .order('created_at', { ascending: false })
@@ -229,6 +229,30 @@ export async function computeOrderMetrics(
         normalized,
       ).maybeSingle(),
     ]);
+
+    const missingAgencyColumn =
+      (totalResult.error && String(totalResult.error.message || '').toLowerCase().includes('agency_id')) ||
+      (recurringResult.error && String(recurringResult.error.message || '').toLowerCase().includes('agency_id')) ||
+      (revenueResult.error && String(revenueResult.error.message || '').toLowerCase().includes('agency_id')) ||
+      (latestResult.error && String(latestResult.error.message || '').toLowerCase().includes('agency_id'));
+
+    if (missingAgencyColumn) {
+      const [totalFallback, recurringFallback, revenueFallback, latestFallback] = await Promise.all([
+        applyStatusFilters(base.select('id', { count: 'exact', head: true }), normalized),
+        applyStatusFilters(base.select('id', { count: 'exact', head: true }).eq('mode', 'subscription'), normalized),
+        applyStatusFilters(base.select('amount_total'), normalized).in('status', ['paid', 'complete']),
+        applyStatusFilters(base.select('*').order('created_at', { ascending: false }).limit(1), normalized).maybeSingle(),
+      ]);
+
+      totalResult.error = totalFallback.error;
+      totalResult.count = totalFallback.count;
+      recurringResult.error = recurringFallback.error;
+      recurringResult.count = recurringFallback.count;
+      revenueResult.error = revenueFallback.error;
+      revenueResult.data = revenueFallback.data;
+      latestResult.error = latestFallback.error;
+      latestResult.data = latestFallback.data;
+    }
 
     if (totalResult.error) {
       console.error('Failed to compute order count', totalResult.error);

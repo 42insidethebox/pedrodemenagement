@@ -33,9 +33,10 @@ export const GET: APIRoute = withAuth(async ({ request, locals }) => {
     const limit = parseLimit(url);
     const statusFilters = normalizeStatusFilter(url.searchParams.get('status'));
 
-    const { agency, client } = await getAgencyContext(locals);
-    const orders = await listOrders(client, agency.id, { limit, statuses: statusFilters });
-    const metrics = await computeOrderMetrics(client, agency.id, statusFilters);
+    const { agency, client, admin } = await getAgencyContext(locals);
+    const db = admin ?? client;
+    const orders = await listOrders(db, agency.id, { limit, statuses: statusFilters });
+    const metrics = await computeOrderMetrics(db, agency.id, statusFilters);
 
     return ok({
       orders,
@@ -48,4 +49,3 @@ export const GET: APIRoute = withAuth(async ({ request, locals }) => {
     return handleApiError(error, 'Unexpected error in GET /api/backend/orders');
   }
 });
-
