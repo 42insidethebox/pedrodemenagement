@@ -151,6 +151,50 @@ const { language, textDirection } = I18N;
       const type = params.get('type') || 'signup';
       const next = params.get('next') || '/app';
 
+      const clientPayload = (() => {
+        const companyName = params.get('company_name');
+        const primaryContact = params.get('primary_contact');
+        const clientEmail = params.get('email') || email;
+        const phone = params.get('phone');
+        const status = params.get('status');
+        const servicesRaw = params.get('services') || '';
+        const notes = params.get('notes');
+
+        const services = servicesRaw
+          .split(',')
+          .map((item) => item.trim())
+          .filter(Boolean);
+
+        const hasCompany = typeof companyName === 'string' && companyName.trim().length > 0;
+        if (!hasCompany) return null;
+
+        return {
+          company_name: companyName,
+          primary_contact: primaryContact || null,
+          email: clientEmail || null,
+          phone: phone || null,
+          status: status || 'lead',
+          services,
+          notes: notes || null,
+        };
+      })();
+
+      function loadStoredSession() {
+        if (typeof window === 'undefined') return null;
+        try {
+          const storedAccess = window.localStorage.getItem('tonsiteweb:accessToken') || '';
+          const storedRefresh = window.localStorage.getItem('tonsiteweb:refreshToken') || '';
+          if (!storedAccess) return null;
+          return {
+            accessToken: storedAccess,
+            refreshToken: storedRefresh,
+          };
+        } catch (error) {
+          console.warn('Unable to restore saved auth session', error);
+          return null;
+        }
+      }
+
       function sanitizeNext(value) {
         if (!value) return '/app';
         if (!/^\/[a-zA-Z0-9\-_/]*$/.test(value)) return '/app';
@@ -177,8 +221,22 @@ const { language, textDirection } = I18N;
       }
 
       async function verify() {
+        const storedSession = loadStoredSession();
+        const effectiveAccessToken = accessToken || storedSession?.accessToken || '';
+        const effectiveRefreshToken = refreshToken || storedSession?.refreshToken || '';
+
         if (errorMessage) {
           showError(errorMessage);
+          return;
+        }
+
+        if (!accessToken && !otpToken && storedSession?.accessToken) {
+          if (status) status.textContent = 'Restoring your session…';
+          if (message) message.textContent = 'We found your existing sign-in and are reconnecting you now.';
+        }
+
+        if (!effectiveAccessToken && !otpToken) {
+          showError('Verification link is missing sign-in details. Please start from your latest email.');
           return;
         }
 
@@ -193,13 +251,14 @@ const { language, textDirection } = I18N;
           : null;
 
         const payload = {
-          accessToken,
-          refreshToken,
+          accessToken: effectiveAccessToken,
+          refreshToken: effectiveRefreshToken,
           token: otpToken,
           email,
           type,
           expiresAt,
           next,
+          client: clientPayload,
         };
 
         try {

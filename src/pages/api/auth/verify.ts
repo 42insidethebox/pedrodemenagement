@@ -1,8 +1,11 @@
 import type { APIRoute } from 'astro';
-import type { User } from '@supabase/supabase-js';
+import type { SupabaseClient, User } from '@supabase/supabase-js';
 
 import { getSupabaseAnon, getSupabaseAdmin } from '~/lib/supabase';
 import { logger } from '~/lib/logger.js';
+import { createClient as createClientRecord } from '~/utils/backend/services/clients';
+import { parseClientPayload } from '~/utils/backend/validation';
+import { ApiError } from '~/utils/backend/http';
 
 export const prerender = false;
 
@@ -11,6 +14,61 @@ function normalizeNext(value: unknown) {
   if (!/^\/[a-zA-Z0-9\-_/]*$/.test(value)) return null;
   if (value.includes('..')) return null;
   return value || null;
+}
+
+async function ensureAgency(client: SupabaseClient, user: User) {
+  const { data, error } = await client
+    .from('agencies')
+    .select('*')
+    .eq('owner_id', user.id)
+    .maybeSingle();
+
+  if (error) throw error;
+  if (data) return data;
+
+  const name = String(user.user_metadata?.full_name || user.email || 'TonSiteWeb Agency');
+  const { data: inserted, error: insertError } = await client
+    .from('agencies')
+    .insert({ owner_id: user.id, name })
+    .select('*')
+    .single();
+
+  if (insertError) throw insertError;
+  return inserted;
+}
+
+async function syncAgencyMember(client: SupabaseClient, agencyId: string, user: User) {
+  const payload = {
+    agency_id: agencyId,
+    user_id: user.id,
+    full_name: user.user_metadata?.full_name ?? null,
+    email: user.email ?? null,
+    role: 'owner',
+  };
+
+  const { error } = await client.from('agency_members').upsert(payload, { onConflict: 'agency_id,user_id' });
+  if (error) throw error;
+}
+
+async function createClientFromPayload(admin: SupabaseClient, user: User, raw: unknown) {
+  if (!raw || typeof raw !== 'object') return null;
+
+  const rawBody = raw as Record<string, unknown>;
+  const hasCompany = typeof rawBody.company_name === 'string' && rawBody.company_name.trim().length > 0;
+  if (!hasCompany) return null;
+
+  const normalized = { ...rawBody };
+  if (typeof rawBody.services === 'string') {
+    normalized.services = (rawBody.services as string)
+      .split(',')
+      .map((item) => item.trim())
+      .filter(Boolean);
+  }
+
+  const agency = await ensureAgency(admin, user);
+  await syncAgencyMember(admin, agency.id, user);
+  const payload = parseClientPayload(normalized);
+  return createClientRecord(admin, agency.id, payload);
 }
 
 export const POST: APIRoute = async ({ request }) => {
@@ -44,6 +102,7 @@ export const POST: APIRoute = async ({ request }) => {
       refreshToken: string | null;
       expiresAt: number | null;
     } | null = null;
+    let clientRecord: Record<string, unknown> | null = null;
 
     if (accessToken) {
       const { data, error } = await supabase.auth.getUser(accessToken);
@@ -91,11 +150,22 @@ export const POST: APIRoute = async ({ request }) => {
       }
     }
 
+    if (admin && user && payload.client) {
+      try {
+        clientRecord = await createClientFromPayload(admin, user, payload.client);
+      } catch (error: any) {
+        const status = error instanceof ApiError ? error.status : 500;
+        const message = error instanceof Error ? error.message : 'Unable to save client';
+        return new Response(JSON.stringify({ error: message }), { status });
+      }
+    }
+
     return new Response(
       JSON.stringify({
         user,
         session,
         next: next ?? '/app',
+        client: clientRecord,
       }),
       { status: 200 },
     );
