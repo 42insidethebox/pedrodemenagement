@@ -18,6 +18,13 @@ const path = Astro.url?.pathname || '/';
 const match = path.match(/^\/(fr|en|de|it)(?=\/|$)/);
 const language = (match && match[1]) || 'fr';
 const localePrefix = match ? `/${language}` : '';
+const authLabels: Record<string, { checking: string; signout: string }> = {
+  fr: { checking: 'Vérification de session…', signout: 'Se déconnecter' },
+  en: { checking: 'Checking session…', signout: 'Sign out' },
+  de: { checking: 'Sitzung wird geprüft…', signout: 'Abmelden' },
+  it: { checking: 'Verifica sessione…', signout: 'Disconnetti' },
+};
+const authText = authLabels[language] || authLabels.fr;
 const search = Astro.url?.search || '';
 const rawPath = path.replace(/^\/(fr|en|de|it)(?=\/|$)/, '') || '/';
 const baseSuffix = rawPath.startsWith('/') ? rawPath : `/${rawPath}`;
@@ -73,8 +80,8 @@ const navHref = (href: string) => `${localePrefix}${href}`;
               <li><a class="first:rounded-t last:rounded-b md:hover:bg-gray-100 hover:text-link dark:hover:text-white dark:hover:bg-gray-700 py-2 px-5 block whitespace-no-wrap" href={buildLangHref('it')} data-lang="it"> Italiano </a></li>
             </ul>
           </div>
-          <span id="auth-user" class="text-xs text-slate-500 dark:text-slate-400" data-i18n="auth.checking">Checking session…</span>
-          <button id="signout" class="rounded-md border border-slate-300 px-3 py-1.5 text-xs text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800" data-i18n="auth.signout">Sign out</button>
+          <span id="auth-user" class="text-xs text-slate-500 dark:text-slate-400" data-i18n="auth.checking">{authText.checking}</span>
+          <button id="signout" class="rounded-md border border-slate-300 px-3 py-1.5 text-xs text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800" data-i18n="auth.signout">{authText.signout}</button>
         </div>
       </div>
     </aside>
@@ -96,6 +103,8 @@ const navHref = (href: string) => `${localePrefix}${href}`;
       const signout = document.getElementById('signout');
       const langLabel = document.querySelector('[data-i18n="nav.languageLabel"]');
       const langLinks = document.querySelectorAll('a[data-lang]');
+      const langPrefix = (location.pathname.match(/^\/(fr|en|de|it)(?=\/|$)/)?.[0]) || '';
+      const signInBase = `${langPrefix || ''}/auth/signin`;
 
       const locale = getPreferredLocale();
       applyTranslations(locale);
@@ -123,7 +132,7 @@ const navHref = (href: string) => `${localePrefix}${href}`;
       async function ensureSession() {
         const token = getToken();
         if (!token) {
-          location.href = `/auth/signin?next=${encodeURIComponent(location.pathname)}`;
+          location.href = `${signInBase}?next=${encodeURIComponent(location.pathname)}`;
           return;
         }
         try {
@@ -133,18 +142,26 @@ const navHref = (href: string) => `${localePrefix}${href}`;
           if (userLabel) userLabel.textContent = data?.user?.email || 'Signed in';
         } catch (e) {
           clearAuthSession();
-          location.href = `/auth/signin?next=${encodeURIComponent(location.pathname)}`;
+          location.href = `${signInBase}?next=${encodeURIComponent(location.pathname)}`;
         }
       }
 
       signout?.addEventListener('click', async () => {
+        const token = getToken();
         clearAuthSession();
         try {
-          await fetch('/api/auth/session', { method: 'DELETE' });
+          await fetch('/api/auth/session', {
+            method: 'DELETE',
+            headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+          });
         } catch (_) {
           // ignore network issues on logout
         }
-        location.href = '/auth/signin';
+        try {
+          window.location.replace(signInBase);
+        } catch (_) {
+          location.href = signInBase;
+        }
       });
 
       langLinks.forEach((a) => {

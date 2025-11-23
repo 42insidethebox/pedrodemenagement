@@ -6,7 +6,8 @@ import { withAuth } from '~/utils/supabase/auth';
 export const prerender = false;
 
 export const GET: APIRoute = withAuth(async ({ locals }) => {
-  const { agency, user, client } = await getAgencyContext(locals);
+  const { agency, user, client, admin } = await getAgencyContext(locals);
+  const db = admin ?? client;
   const now = new Date();
   const nowIso = now.toISOString();
   const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString();
@@ -27,52 +28,70 @@ export const GET: APIRoute = withAuth(async ({ locals }) => {
     blockedTasksResult,
     inProgressTasksResult,
     invoicesResult,
+    membersResult,
+    payingOrdersResult,
+    paidOrdersLast30Result,
     recentDocumentsResult,
     recentActivitiesResult,
   ] =
     await Promise.all([
-      client
+      db
         .from('clients')
         .select('id', { count: 'exact', head: true })
         .eq('agency_id', agency.id),
-      client
+      db
         .from('projects')
         .select('id', { count: 'exact', head: true })
         .eq('agency_id', agency.id)
         .neq('status', 'completed'),
-      client
+      db
         .from('websites')
         .select('id', { count: 'exact', head: true })
         .eq('agency_id', agency.id)
         .eq('status', 'live'),
-      client
+      db
         .from('tasks')
         .select('id', { count: 'exact', head: true })
         .eq('agency_id', agency.id)
         .not('status', 'eq', 'done')
         .not('due_date', 'is', null)
         .lt('due_date', nowIso),
-      client
+      db
         .from('tasks')
         .select('id', { count: 'exact', head: true })
         .eq('agency_id', agency.id)
         .eq('status', 'blocked'),
-      client
+      db
         .from('tasks')
         .select('id', { count: 'exact', head: true })
         .eq('agency_id', agency.id)
         .eq('status', 'in_progress'),
-      client
+      db
         .from('invoices')
         .select('amount, status, issue_date, due_date')
         .eq('agency_id', agency.id),
-      client
+      db
+        .from('agency_members')
+        .select('id', { count: 'exact', head: true })
+        .eq('agency_id', agency.id),
+      db
+        .from('orders')
+        .select('customer_email')
+        .or(`agency_id.is.null,agency_id.eq.${agency.id}`)
+        .in('status', ['paid', 'complete']),
+      db
+        .from('orders')
+        .select('amount_total, currency, created_at')
+        .or(`agency_id.is.null,agency_id.eq.${agency.id}`)
+        .in('status', ['paid', 'complete'])
+        .gte('created_at', thirtyDaysAgo),
+      db
         .from('documents')
         .select('*')
         .eq('agency_id', agency.id)
         .order('created_at', { ascending: false })
         .limit(5),
-      client
+      db
         .from('activities')
         .select('*')
         .eq('agency_id', agency.id)
@@ -86,6 +105,7 @@ export const GET: APIRoute = withAuth(async ({ locals }) => {
   const overdueTasksCount = parseCount('tasks-overdue', overdueTasksResult);
   const blockedTasksCount = parseCount('tasks-blocked', blockedTasksResult);
   const inProgressTasksCount = parseCount('tasks-in-progress', inProgressTasksResult);
+  const membersCount = parseCount('members', membersResult);
 
   const invoices = invoicesResult.error ? [] : invoicesResult.data ?? [];
   const outstandingAmount = invoices
@@ -98,17 +118,33 @@ export const GET: APIRoute = withAuth(async ({ locals }) => {
 
   const documents = recentDocumentsResult.error ? [] : recentDocumentsResult.data ?? [];
   const activities = recentActivitiesResult.error ? [] : recentActivitiesResult.data ?? [];
+  const payingOrders = payingOrdersResult.error ? [] : payingOrdersResult.data ?? [];
+  const payingCustomersCount = Array.from(
+    new Set(
+      payingOrders
+        .map((order) => (order?.customer_email || order?.customer_name || '').trim().toLowerCase())
+        .filter((email) => email.length),
+    ),
+  ).length;
+  const paidOrdersLast30 = paidOrdersLast30Result.error ? [] : paidOrdersLast30Result.data ?? [];
+  const revenueLast30DaysOrders = paidOrdersLast30.reduce((total, order) => {
+    const amount = typeof order.amount_total === 'number' ? order.amount_total : 0;
+    return total + amount / 100;
+  }, 0);
 
   return new Response(
     JSON.stringify({
       agency,
       user,
       metrics: {
+        members: membersCount,
         clients: clientsCount,
         activeProjects: activeProjectsCount,
         liveWebsites: liveWebsitesCount,
         outstandingAmount,
         revenueLast30Days,
+        payingCustomers: payingCustomersCount,
+        revenueLast30DaysOrders,
       },
       tasks: {
         overdue: overdueTasksCount,

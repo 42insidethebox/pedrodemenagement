@@ -157,9 +157,11 @@ create table if not exists public.orders (
 );
 
 alter table public.orders
+  add column if not exists order_number text,
   add column if not exists agency_id uuid references public.agencies(id) on delete set null;
 
 create index if not exists orders_agency_id_idx on public.orders(agency_id);
+create index if not exists orders_order_number_idx on public.orders(order_number);
 create index if not exists agencies_owner_id_idx on public.agencies(owner_id);
 create index if not exists agency_members_user_idx on public.agency_members(user_id);
 create index if not exists clients_agency_id_idx on public.clients(agency_id);
@@ -524,5 +526,4 @@ create table if not exists public.subscription_events (
   event_type text not null,
   payload jsonb default '{}'::jsonb
 );
-
 

@@ -23,3 +23,8 @@ export const GET: APIRoute = async ({ request }) => {
 
   return new Response(JSON.stringify({ user: data.user }), { status: 200 });
 };
+
+export const DELETE: APIRoute = async () => {
+  // Tokens are stored client-side; respond 204 so the client can clear them and redirect.
+  return new Response(null, { status: 204, headers: { 'Cache-Control': 'no-store' } });
+};
