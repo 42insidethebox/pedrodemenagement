@@ -1,5 +1,5 @@
-// Simple smoke tests for TonSiteWeb backend
-// Usage: SITE_URL=https://tonsiteweb.ch node scripts/smoke.mjs
+// Simple smoke tests for Pedro Demenagement backend
+// Usage: SITE_URL=https://pedrodemenagement.ch node scripts/smoke.mjs
 
 const SITE = process.env.SITE_URL || 'http://localhost:4321';
 
@@ -33,16 +33,16 @@ async function get(path) {
   // Contact (JSON)
   results.contact = await postJSON('/api/contact', {
     name: 'Smoke Test',
-    email: 'smoke@tonsiteweb.ch',
-    company: 'TonSiteWeb',
+    email: 'smoke@pedrodemenagement.ch',
+    company: 'Pedro Demenagement',
     message: 'This is a test lead from smoke tests.'
   });
 
   // Demo (JSON)
   results.demo = await postJSON('/api/demo', {
     name: 'Smoke Demo',
-    email: 'smoke-demo@tonsiteweb.ch',
-    company: 'TonSiteWeb',
+    email: 'smoke-demo@pedrodemenagement.ch',
+    company: 'Pedro Demenagement',
     details: 'Demo request.'
   });
 

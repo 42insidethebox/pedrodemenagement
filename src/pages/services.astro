@@ -6,212 +6,117 @@ import Hero from '~/components/widgets/Hero.astro';
 import Layout from '~/layouts/PageLayout.astro';
 
 const metadata = {
-  title: 'Services',
+  title: 'Services de déménagement',
 };
 ---
 
 <Layout metadata={metadata}>
-  <!-- Hero Widget ******************* -->
-
   <Hero
     id="services"
     tagline="Nos services"
-    title="Des sites vitrines clé-en-main, pensés pour les PME romandes"
-    subtitle="TonSiteWeb.ch combine automatisation et expertise humaine pour livrer des sites haut de gamme."
-    actions={[{ variant: 'primary', text: 'Voir les packs', href: '/pricing' }]}
+    title="Déménagements soignés partout en Suisse romande"
+    subtitle="Appartement, maison, bureau ou longue distance : nous préparons, protégeons et transportons vos biens avec une équipe locale."
+    actions={[{ variant: 'primary', text: 'Obtenir un devis', href: '/contact#form' }]}
   >
     <Fragment slot="image">
       <div class="relative aspect-[5/3] overflow-hidden rounded-2xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-left text-white shadow-2xl">
-        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Services automatisés</p>
-        <h4 class="mt-4 text-4xl font-semibold">Design · Contenu · Maintenance</h4>
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Interventions planifiées</p>
+        <h4 class="mt-4 text-4xl font-semibold">Protection · Transport · Installation</h4>
         <p class="mt-6 max-w-xl text-lg text-blue-100/90">
-          Une plateforme propriétaire qui orchestre la production pendant que nos experts se concentrent sur la qualité et la relation client.
+          Camions 20–30 m³, protections complètes et chef d’équipe dédié pour un jour J sans stress.
         </p>
       </div>
     </Fragment>
   </Hero>
 
-  <!-- Features2 Widget ************** -->
-
   <Features2
-    title="Trois offres, une même exigence"
-    subtitle="Choisissez la formule qui correspond à votre rythme de croissance."
+    title="Prestations principales"
+    subtitle="Choisissez le format adapté à votre déménagement"
     columns={3}
     items={[
-      {
-        title: 'Essentiel',
-        description:
-          'Site vitrine de 5 sections, intégration de vos contenus et mise en ligne accompagnée.',
-        icon: 'tabler:layout',
-      },
-      {
-        title: 'Automatisation',
-        description:
-          'Formulaires, prises de rendez‑vous et intégrations API sur devis pour automatiser vos flux.',
-        icon: 'tabler:api',
-      },
-      {
-        title: 'Maintenance sécurité',
-        description:
-          'Mises à jour techniques, sauvegardes, gestion d’emails pro et support planifié à 79 CHF/mois.',
-        icon: 'tabler:shield-check',
-      },
+      { title: 'Appartement', description: 'Studios et 2-3 pièces avec gestion des ascenseurs et parkings.', icon: 'tabler:building' },
+      { title: 'Maisons & villas', description: 'Volumes plus importants avec démontage/remontage inclus.', icon: 'tabler:home' },
+      { title: 'Longue distance', description: 'Trajets en Suisse et vers l’étranger avec planning ajusté.', icon: 'tabler:road' },
+      { title: 'Emballage & déballage', description: 'Cartons, penderies, protections vaisselle et emballage complet.', icon: 'tabler:package' },
+      { title: 'Objets lourds', description: 'Pianos, coffres, frigos américains, machines sensibles.', icon: 'tabler:weight' },
+      { title: 'Monte-meubles', description: 'Accès étroits ou étages élevés avec opérateur dédié.', icon: 'tabler:stairs-up' },
     ]}
   />
 
-  <!-- Content Widget **************** -->
-
   <Content
-    id="content"
+    id="appartement"
     isReversed
     items={[
-      {
-        title: 'Production automatisée',
-        description:
-          'Notre pipeline assemble votre site en s’appuyant sur des gabarits sectoriels que nous adaptons à votre identité.',
-        icon: 'tabler:cube',
-      },
-      {
-        title: 'Contrôle humain',
-        description:
-          'Designers, rédacteurs et experts SEO valident chaque livrable pour garantir cohérence et conformité.',
-        icon: 'tabler:shield-check',
-      },
-      {
-        title: 'Livraison planifiée',
-        description:
-          'Nous partageons un rétroplanning clair et adaptons la mise en ligne selon vos contraintes métier.',
-        icon: 'tabler:inbox',
-      },
-      {
-        title: 'Suivi essentiel',
-        description:
-          'Points de contrôle réguliers, assistance pour vos mises à jour et recommandations pragmatiques.',
-        icon: 'tabler:report-analytics',
-      },
+      { title: 'Repérage des accès', description: 'Ascenseur, couloirs, parkings et autorisations municipales si besoin.', icon: 'tabler:map-pin' },
+      { title: 'Protection systématique', description: 'Sols, murs, portes, meubles et électroménagers protégés avant le chargement.', icon: 'tabler:shield-check' },
+      { title: 'Chargement optimisé', description: 'Camion adapté au volume, arrimage des meubles et inventaire des éléments sensibles.', icon: 'tabler:truck' },
+      { title: 'Remontage soigné', description: 'Remise en place dans les bonnes pièces, remontage des lits et armoires essentiels.', icon: 'tabler:tools' },
     ]}
   >
     <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Notre méthodologie hybride</h3>
-      Automatisation pour la vitesse, experts pour la qualité.
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Déménagement résidentiel</h3>
+      Du studio à la maison familiale, nous gérons l’ensemble des étapes avec du matériel adapté et une équipe dimensionnée.
     </Fragment>
 
     <Fragment slot="image">
       <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl">
-        <h4 class="text-3xl font-semibold">Pipeline supervisé</h4>
+        <h4 class="text-3xl font-semibold">Arc lémanique & Suisse</h4>
         <p class="mt-6 max-w-sm text-blue-100/90">
-          Chaque projet suit un contrôle humain complet&nbsp;: contenus, design, conformité RGPD et tests de navigation.
+          Genève, Lausanne, Vevey, Montreux, Valais et déplacements longue distance selon vos besoins.
         </p>
       </div>
     </Fragment>
   </Content>
 
-  <!-- Content Widget **************** -->
-
   <Content
-    id="seo"
+    id="emballage"
     isAfterContent
     items={[
-      {
-        title: 'Balises on‑page',
-        description:
-          'Titres et méta‑descriptions de base.',
-        icon: 'tabler:map-pin',
-      },
-      {
-        title: 'Contenus visuels',
-        description:
-          'Sélection de visuels libres de droits ou coordination avec vos prestataires locaux pour un rendu cohérent.',
-        icon: 'tabler:photo',
-      },
-      {
-        title: 'Campagnes d’acquisition',
-        description:
-          'Landing pages, formulaires et scénarios email automatisés sur devis selon vos objectifs.',
-        icon: 'tabler:send',
-      },
-      {
-        title: 'Processus simple',
-        description:
-          'Échanges par email et validations par étapes. Pas d’espace client à gérer.',
-        icon: 'tabler:layout-dashboard',
-      },
+      { title: 'Cartons & penderies', description: 'Fourniture de cartons, penderies et protections vaisselle.', icon: 'tabler:box' },
+      { title: 'Démontage/remontage', description: 'Meubles, dressing, literie et luminaires démontés puis remontés.', icon: 'tabler:screwdriver' },
+      { title: 'Nettoyage de sortie', description: 'Option ménage pour rendre votre logement en ordre.', icon: 'tabler:broom' },
+      { title: 'Stockage temporaire', description: 'Solution courte durée pour lisser vos délais de remise des clés.', icon: 'tabler:building-warehouse' },
     ]}
   >
     <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Des leviers pour durer</h3>
-      Nous activons les bons outils pour générer des résultats mesurables.
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Services complémentaires</h3>
+      Sélectionnez seulement ce dont vous avez besoin : emballage complet, monte-meubles, stockage ou nettoyage.
     </Fragment>
 
     <Fragment slot="image">
-      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-left text-white shadow-xl">
-        <h4 class="text-3xl font-semibold">Acquisition maîtrisée</h4>
+      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
+        <h4 class="text-3xl font-semibold">Options flexibles</h4>
         <p class="mt-6 max-w-sm text-blue-100/90">
-          Nous vous aidons à prioriser les leviers efficaces et à mesurer les résultats réellement utiles à votre activité.
+          Nous adaptons l’équipe, le matériel et les créneaux horaires à vos contraintes de bail, d’ascenseur ou de route.
         </p>
       </div>
     </Fragment>
   </Content>
 
-  <!-- Features2 Widget ************** -->
-
   <Features2
     id="support"
-    title="Support & maintenance"
-    subtitle="Restez concentrés sur votre métier, nous gérons le reste."
+    title="Ce qui est toujours inclus"
+    subtitle="Des bases solides pour chaque déménagement"
     columns={3}
     items={[
-      {
-        title: 'Support planifié',
-        description: 'Réponses sous un jour ouvré par email ou téléphone, suivi via votre espace client.',
-        icon: 'tabler:headset',
-      },
-      {
-        title: 'Surveillance essentielle',
-        description: 'Vérifications régulières des performances et alertes en cas de problème détecté.',
-        icon: 'tabler:antenna',
-      },
-      {
-        title: 'Mises à jour sécurité',
-        description: 'Application des correctifs critiques, sauvegardes et restauration si nécessaire.',
-        icon: 'tabler:tools',
-      },
-      {
-        title: 'Conformité RGPD',
-        description: 'Politique de cookies, mentions légales et bannière de consentement adaptées à la Suisse.',
-        icon: 'tabler:shield-check',
-      },
-      {
-        title: 'Gestion des emails',
-        description: 'Configuration et support de vos comptes @votredomaine.ch avec SPF/DKIM.',
-        icon: 'tabler:mail',
-      },
-      {
-        title: 'Évolutions sur devis',
-        description: 'Ajout de pages, modules ou automatisations supplémentaires selon vos objectifs.',
-        icon: 'tabler:arrows-left-right',
-      },
+      { title: 'Chef d’équipe dédié', description: 'Un interlocuteur qui coordonne les horaires et les accès.', icon: 'tabler:headset' },
+      { title: 'Assurance RC pro', description: 'Responsabilité civile professionnelle incluse.', icon: 'tabler:shield-lock' },
+      { title: 'Protections complètes', description: 'Housses matelas, couvertures, sangles, chariots, outillage.', icon: 'tabler:box' },
+      { title: 'Check-list accès', description: 'Vérification des parkings, ascenseurs et autorisations.', icon: 'tabler:clipboard-check' },
+      { title: 'Créneaux fiables', description: 'Arrivée confirmée 48h avant, créneau matin ou après-midi.', icon: 'tabler:calendar-time' },
+      { title: 'Facturation claire', description: 'Prix en CHF, TVA incluse et sans frais cachés.', icon: 'tabler:receipt' },
     ]}
   />
 
-  <!-- CallToAction Widget *********** -->
-
   <CallToAction
     actions={[
-      {
-        variant: 'primary',
-        text: 'Planifier une démo',
-        href: '/contact#form',
-        icon: 'tabler:device-desktop-analytics',
-      },
+      { variant: 'primary', text: 'Planifier mon déménagement', href: '/contact#form', icon: 'tabler:mail-forward' },
+      { text: 'Voir les tarifs', href: '/pricing' },
     ]}
   >
-    <Fragment slot="title">
-      Discutons de votre prochaine mise en ligne
-    </Fragment>
-
+    <Fragment slot="title">Discutons de votre déménagement</Fragment>
     <Fragment slot="subtitle">
-      Partagez vos objectifs; nous préparons un plan de lancement pragmatique avec TonSiteWeb.ch.
+      Expliquez votre volume, vos adresses et la date souhaitée : nous revenons avec un plan clair et une équipe dédiée.
     </Fragment>
   </CallToAction>
 </Layout>

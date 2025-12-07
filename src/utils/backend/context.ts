@@ -18,7 +18,7 @@ async function ensureAgency(client: SupabaseClient, user: User) {
 
   if (data) return data;
 
-  const name = String(user.user_metadata?.full_name || user.email || 'TonSiteWeb Agency');
+  const name = String(user.user_metadata?.full_name || user.email || 'Pedro Déménagement');
   const { data: inserted, error: insertError } = await client
     .from('agencies')
     .insert({ owner_id: user.id, name })

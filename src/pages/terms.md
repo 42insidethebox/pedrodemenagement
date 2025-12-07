@@ -5,65 +5,68 @@ layout: '~/layouts/MarkdownLayout.astro'
 
 _Mise à jour : février 2024_
 
-Les présentes conditions générales (les « Conditions ») régissent les prestations fournies par **TonSiteWeb.ch**, marque exploitée par TonSiteWeb Sàrl.
+Les présentes conditions générales (les « Conditions ») régissent les prestations de déménagement fournies par **Pedro Déménagement**.
 
 ## 1. Objet
 
-TonSiteWeb.ch conçoit, déploie et maintient des sites vitrines pour des entreprises et indépendants. Les Conditions décrivent les droits et obligations applicables à toute commande passée via notre site, par e-mail ou par signature électronique d'une offre.
+Pedro Déménagement organise et réalise des déménagements résidentiels et professionnels en Suisse romande et, sur demande, en longue distance. Les Conditions décrivent les droits et obligations applicables à toute commande passée via notre site, par e-mail ou après signature d’un devis.
 
-## 2. Commande et processus
+## 2. Processus de commande
 
-1. Vous complétez le formulaire de brief ou répondez à notre diagnostic téléphonique.
-2. Nous validons ensemble le périmètre (structure, contenus fournis, options d'automatisation).
-3. Vous recevez une confirmation de commande détaillant prix, délais estimés et livrables.
-4. Le projet démarre après réception du paiement initial et des éléments nécessaires (textes, visuels, accès techniques).
+1. Vous partagez vos informations clés (adresses, volume estimé, date souhaitée, options).
+2. Nous vous transmettons un devis détaillé (prix, prestations incluses, options, créneaux possibles).
+3. La date est réservée après acceptation du devis et versement de l’acompte indiqué.
+4. Le déménagement est réalisé à la date convenue, avec l’équipe et le matériel prévus.
 
-Toute modification majeure du périmètre validé fera l'objet d'un avenant chiffré et d'un nouveau délai indicatif.
+Toute modification significative (date, volume, accès, options) peut entraîner un ajustement de prix et/ou de planning, soumis à votre accord.
 
 ## 3. Tarifs et paiement
 
-- **Pack Essentiel** : CHF 999.-, livré sur la base de notre thème propriétaire adapté à votre identité.
-- **Option maintenance & sécurité** : CHF 79.- / mois comprenant mises à jour logicielles, monitoring et gestion des boîtes e-mail professionnelles.
-- **Automatisations Zapier / Make** : à partir de CHF 1'200.- (CHF 1'500.- dès trois scénarios). Un devis spécifique est transmis avant tout développement.
+- Les tarifs dépendent du volume, des accès (ascenseur, escaliers, distance de portage), des adresses et des options (emballage, monte-meubles, nettoyage, stockage, objets lourds).
+- Sauf indication contraire, les montants sont exprimés en CHF, TVA incluse.
+- Un acompte (généralement 30–50 %) est demandé pour réserver la date ; le solde est dû à l’issue de la prestation, sauf stipulation contraire sur le devis.
 
-Sauf mention contraire, les montants sont exprimés hors TVA. Un acompte de 50 % est dû à la commande ; le solde est payable à la livraison du site. Les abonnements sont facturés mensuellement ou annuellement d'avance.
+## 4. Délais et accès
 
-## 4. Délais
+Les horaires communiqués sont indicatifs et confirmés 48h avant le jour J. Ils supposent que les accès soient disponibles (parkings, ascenseurs, autorisations communales). Les retards liés à l’indisponibilité des accès ou à des informations incomplètes peuvent entraîner des frais supplémentaires raisonnables (temps d’attente, dépose/pose de monte-meubles, deuxième passage).
 
-Nos délais de livraison sont indicatifs. Ils débutent uniquement lorsque l'acompte, les contenus nécessaires et les accès techniques ont été fournis. Tout retard imputable au client suspend les échéances communiquées. Les demandes urgentes font l'objet d'une validation écrite préalable.
+## 5. Responsabilités du client
 
-## 5. Contenus et responsabilités
+Vous vous engagez à :
 
-Vous garantissez disposer des droits nécessaires sur l'ensemble des textes, images et données que vous nous confiez. TonSiteWeb.ch décline toute responsabilité en cas de réclamation liée à des contenus illicites ou portant atteinte à des droits de tiers. Nous pouvons refuser un projet contraire à notre éthique ou à la législation suisse.
+- fournir des informations exactes sur le volume, les objets lourds et les contraintes d’accès ;
+- préparer les biens conformément au périmètre convenu (emballage par vos soins si l’option n’est pas incluse) ;
+- obtenir les autorisations de stationnement si nécessaire ou demander leur gestion en option.
 
-## 6. Maintenance et support
+Pedro Déménagement ne peut être tenu responsable des dommages résultant d’un emballage insuffisant réalisé par le client ou d’informations inexactes ayant empêché la mise en place des moyens adaptés.
 
-La maintenance inclut la surveillance technique, l'application des correctifs de sécurité, la gestion des sauvegardes et jusqu'à deux demandes mineures de contenu par mois (texte ou visuel). Les évolutions structurelles ou le développement de nouvelles fonctionnalités sont devisés séparément. Sans abonnement, toute intervention post-livraison est facturée sur la base d'un tarif horaire de CHF 140.-.
+## 6. Assurance et protection
 
-## 7. Hébergement et domaine
+Une assurance responsabilité civile professionnelle est incluse pour couvrir les dommages directs causés par notre équipe pendant la prestation. Les biens de valeur exceptionnelle ou objets sensibles doivent être déclarés avant le jour J afin d’évaluer des garanties complémentaires éventuelles. Nous utilisons protections (couvertures, housses, sangles) et outillage adaptés pour limiter les risques.
 
-Sauf accord différent, l'hébergement est assuré auprès de fournisseurs cloud certifiés. Vous restez propriétaire de votre nom de domaine ; TonSiteWeb.ch peut en assurer la gestion technique sur mandat écrit.
+## 7. Annulation et report
 
-## 8. Propriété intellectuelle
+Toute annulation ou report doit être communiqué dès que possible :
 
-Le design final, le code spécifique produit et les contenus livrés restent notre propriété jusqu'au paiement complet des montants dus. Après règlement intégral, vous bénéficiez d'un droit d'utilisation non exclusif sur le site livré. Les éléments open source restent soumis à leurs licences respectives.
+- plus de 7 jours avant la date prévue : l’acompte peut être conservé en partie pour couvrir les frais engagés ;
+- à moins de 7 jours : l’acompte est conservé ; des frais supplémentaires peuvent s’appliquer si des ressources externes ont été réservées (monte-meubles, stockage).
 
-## 9. Résiliation
+## 8. Réclamations
 
-Chaque partie peut mettre fin au projet pour juste motif si l'autre ne respecte pas ses obligations malgré une mise en demeure écrite. Les prestations réalisées jusqu'à la date de résiliation restent dues. Les abonnements peuvent être résiliés en tout temps avec un préavis de 30 jours avant la prochaine échéance.
+Toute réclamation doit être signalée immédiatement sur place lorsque c’est possible, puis confirmée par écrit dans les 48h avec photos à l’appui. Passé ce délai, les demandes pourront être analysées mais pourraient ne pas être prises en compte si les faits ne peuvent être vérifiés.
 
-## 10. Protection des données
+## 9. Protection des données
 
-Notre [Politique de confidentialité](/privacy) décrit les traitements que nous réalisons en tant que responsable de traitement. En acceptant ces Conditions, vous reconnaissez l'avoir lue et comprise.
+Notre [Politique de confidentialité](/privacy) décrit les traitements de données personnelles. En acceptant ces Conditions, vous reconnaissez l’avoir lue et comprise.
 
-## 11. Limitation de responsabilité
+## 10. Limitation de responsabilité
 
-Notre responsabilité est limitée aux dommages directs et prouvés résultant d'une faute grave ou intentionnelle. En tout état de cause, elle n'excèdera pas le montant total payé pour la prestation concernée. Nous déclinons toute responsabilité pour les pertes de chiffre d'affaires, d'image ou de données causées par des événements indépendants de notre contrôle (panne d'un fournisseur, cyberattaque, force majeure).
+Notre responsabilité est limitée aux dommages directs et prouvés résultant d’une faute grave ou intentionnelle. Elle n’excèdera pas le montant total payé pour la prestation concernée. Nous déclinons toute responsabilité pour les pertes indirectes (chiffre d’affaires, immatériel) ou pour les événements de force majeure (intempéries, panne d’un fournisseur tiers, blocage d’accès).
 
-## 12. Droit applicable et for
+## 11. Droit applicable et for
 
-Les présentes Conditions sont régies par le droit suisse. Tout litige sera soumis aux tribunaux compétents du canton de Vaud, sous réserve d'un recours obligatoire à une médiation amiable préalablement engagée.
+Les présentes Conditions sont régies par le droit suisse. Tout litige sera soumis aux tribunaux compétents du canton de Vaud, après tentative de médiation amiable.
 
-## 13. Contact
+## 12. Contact
 
-Pour toute question, contactez-nous à **support@tonsiteweb.ch** ou au **+41 21 555 24 24** (du lundi au vendredi, 9h–18h).
+Pour toute question, contactez-nous à **hello@pedrodemenagement.ch** ou au **+41 21 555 24 24** (du lundi au samedi, 8h–18h).

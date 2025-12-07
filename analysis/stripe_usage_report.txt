@@ -1,8 +1,0 @@
-src/pages/api/payment/checkout.ts:import { getStripe } from '~/lib/stripe';
-src/pages/api/payment/session.ts:import { getStripe } from '~/lib/stripe';
-src/pages/api/payment/redirect.ts:import { getStripe } from '~/lib/stripe';
-src/pages/api/payment/portal.ts:import { getStripe } from '~/lib/stripe';
-src/pages/api/backend/subscriptions/[id].ts:import { getStripe } from '~/lib/stripe';
-src/pages/api/subscriptions/[id].ts:import { getStripe } from '~/lib/stripe';
-src/pages/api/health.ts:import { getStripe } from '~/lib/stripe';
-src/pages/api/stripe-webhook.ts:import { getStripe } from '~/lib/stripe';

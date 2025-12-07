@@ -12,130 +12,100 @@ import Stats from '~/components/widgets/Stats.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 
 const metadata = {
-  title: 'TonSiteWeb.ch — Sites vitrines suisses pour l’Arc lémanique',
+  title: 'Pedro Déménagement — Déménagement rapide en Suisse romande',
   ignoreTitleTemplate: true,
+  description: 'Équipe locale, protection du mobilier et planning maîtrisé pour déménager sereinement en Suisse romande.',
 };
- 
 ---
 
 <Layout metadata={metadata}>
-  <!-- Hero Widget ******************* -->
-
   <Hero
     id="process"
     actions={[
-      {
-        variant: 'primary',
-        text: 'Voir les offres',
-        href: '/pricing',
-        icon: 'tabler:arrow-right',
-      },
-      { text: 'Parler à un expert', href: '/contact#form' },
+      { variant: 'primary', text: 'Obtenir un devis', href: '/contact#form', icon: 'tabler:arrow-right' },
+      { text: 'Appeler le +41 21 555 24 24', href: 'tel:+41215552424' },
     ]}
-    image={{ src: '~/assets/images/hero-image.png', alt: 'Interface TonSiteWeb.ch' }}
   >
-    <Fragment slot="title">
-      Votre site clé-en-main, pensé pour le marché lémanique
+    <Fragment slot="title">Déménagement rapide, efficace et sans stress</Fragment>
+    <Fragment slot="subtitle">
+      Camions, protections et équipe basés en Suisse romande. Nous planifions, emballons et transportons vos biens avec
+      soin, que ce soit pour un appartement, une maison ou un bureau.
     </Fragment>
 
-    <Fragment slot="subtitle">
-      Design suisse, performance maîtrisée. TonSiteWeb.ch combine automatisation et expertise locale pour livrer des sites vitrines
-      fiables aux PME et indépendants de l'Arc lémanique, sans promesse irréaliste ni surcharge technique.
+    <Fragment slot="image">
+      <div class="relative aspect-[4/3] overflow-hidden rounded-2xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-left text-white shadow-2xl">
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Jour J maîtrisé</p>
+        <h4 class="mt-4 text-3xl font-semibold">Planification → Protection → Transport</h4>
+        <p class="mt-6 max-w-xl text-lg text-blue-100/90">
+          Chef d’équipe dédié, check-list des accès et protections sol/murs pour un déménagement sans surprises.
+        </p>
+      </div>
     </Fragment>
   </Hero>
 
-  <!-- Note Widget ******************* -->
-
-  <Note
-    title="Engagement"
-    description="Service local, support humain et orchestrations automatisées pour un résultat impeccable sans effort."
-  />
-
-  
-
-  <!-- Features Widget *************** -->
+  <Note title="Engagement local" description="Entreprise lémanique, assurance RC pro incluse et planning transparent. Nous intervenons entre Genève, Lausanne, Vevey et toute la Suisse romande." />
 
   <Features
     id="features"
     tagline="Pourquoi nous choisir"
-    title="La précision suisse appliquée au digital"
-    subtitle="Chaque projet suit un cadre clair&nbsp;: collecte des informations, conception, validation et mise en ligne accompagnée."
+    title="La précision suisse appliquée à votre déménagement"
+    subtitle="Une équipe locale, un matériel adapté et une organisation claire pour protéger vos biens."
     items={[
       {
-        title: 'Délai maîtrisé',
-        description:
-          'Brief, design et mise en ligne sont réalisés en moyenne sous cinq jours ouvrés, selon la complexité de vos contenus et intégrations.',
-        icon: 'tabler:calendar-time',
+        title: 'Équipe lémanique',
+        description: 'Déménageurs basés entre Genève et Lausanne, disponibles en semaine et le samedi.',
+        icon: 'tabler:users',
       },
       {
-        title: 'Design premium sur mesure',
-        description:
-          'Charte typographique Inter/Montserrat, palettes sobres et animations légères pour un rendu haut de gamme et cohérent.',
-        icon: 'tabler:sparkles',
+        title: 'Protection du mobilier',
+        description: 'Housses, couvertures, sangles et cartons renforcés pour limiter tout risque de casse.',
+        icon: 'tabler:shield-check',
       },
       {
-        title: 'Balises de base',
-        description:
-          'Titres et méta-descriptions de base pour un affichage propre sur les moteurs de recherche (sans prestation SEO).',
+        title: 'Accès & autorisations',
+        description: 'Repérage des parkings, réservations de places et coordination ascenseur/monte-meubles.',
         icon: 'tabler:map-pin',
       },
       {
-        title: 'Hébergement inclus 1ʳᵉ année',
-        description:
-          'Hébergement & SSL inclus pendant 12 mois. Ensuite, renouvellement hébergement + maintenance à 150 CHF/an (plan care mensuel en option).',
-        icon: 'tabler:server',
+        title: 'Objets lourds',
+        description: 'Pianos, frigos américains ou armoires lourdes gérés avec équipements adaptés.',
+        icon: 'tabler:armchair',
       },
       {
-        title: 'Facturation suisse transparente',
-        description:
-          'Contrats clairs, TVA incluse et paiement en francs suisses via les principaux moyens helvétiques.',
+        title: 'Assurance incluse',
+        description: 'Responsabilité civile professionnelle incluse pour chaque intervention.',
         icon: 'tabler:receipt',
       },
       {
-        title: 'Support humain local',
-        description:
-          'Nos experts basés sur l’Arc lémanique vous répondent sous un jour ouvré par email ou téléphone, avec suivi planifié.',
+        title: 'Suivi unique',
+        description: 'Un interlocuteur qui coordonne la date, l’équipe et les éventuels imprévus.',
         icon: 'tabler:headset',
       },
     ]}
   />
 
-  <!-- Content Widget **************** -->
-
   <Content
     isReversed
     tagline="Processus"
-    title="Une orchestration en 3 temps"
+    title="Votre déménagement en 3 temps"
     items={[
-      {
-        title: 'Brief structuré',
-        description:
-          'Un questionnaire ciblé collecte vos services, horaires, témoignages et visuels pour alimenter notre IA propriétaire.',
-      },
-      {
-        title: 'Design & intégration',
-        description:
-          'Nos designers adaptent les sections, calibrent la typographie et intègrent vos contenus, médias et appels à l’action.',
-      },
-      {
-        title: 'Contrôle qualité',
-        description:
-          'Relecture humaine, tests de performance et checklist RGPD avant validation finale et mise en ligne.',
-      },
+      { title: 'Préparation & devis', description: 'Visio ou visite express pour estimer le volume, les accès et le matériel nécessaire.' },
+      { title: 'Emballage & protection', description: 'Cartons, housses matelas, démontage du mobilier et protection des sols/murs.' },
+      { title: 'Transport & installation', description: 'Chargement sécurisé, trajet optimisé, remontage et reprise des protections.' },
     ]}
   >
     <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Votre site prêt sans stress</h3>
-      Trois étapes automatisées, validées par un expert local.
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Un chef d’équipe dédié</h3>
+      Vous savez qui vient, avec quel camion et à quelle heure. Nous validons chaque étape avant le jour J.
     </Fragment>
 
     <Fragment slot="image">
       <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl">
-        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Workflow maîtrisé</p>
-        <h4 class="mt-4 text-3xl font-semibold">Brief → Création → Mise en ligne</h4>
-          <p class="mt-6 max-w-xs text-base text-blue-100/90">
-            Brief clair, intégration de vos contenus et validations par email.
-          </p>
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Planning</p>
+        <h4 class="mt-4 text-3xl font-semibold">Rendez-vous confirmé 48h avant</h4>
+        <p class="mt-6 max-w-xs text-base text-blue-100/90">
+          Check-list d’accès, confirmation du créneau et rappel des points clés.
+        </p>
       </div>
     </Fragment>
 
@@ -144,80 +114,60 @@ const metadata = {
     </Fragment>
   </Content>
 
-  <!-- Steps Widget ****************** -->
-
-    <Steps
-      title="Notre méthode encadrée"
-      tagline="Parcours client"
-      items={[
-        {
-          title: 'Signature en ligne',
-          description: 'Choisissez votre pack, signez électroniquement et recevez votre accès client pour lancer le brief.',
-          icon: 'tabler:edit',
-        },
-        {
-          title: 'Onboarding guidé',
-          description: 'Notre assistant collecte vos informations clés et propose une arborescence adaptée à votre métier.',
-          icon: 'tabler:clipboard-list',
-        },
-        {
-          title: 'Production supervisée',
-          description: 'Nos pipelines génèrent le site, intègrent vos contenus et notifient notre équipe pour relecture.',
-          icon: 'tabler:robot',
-        },
-        {
-          title: 'Validation & lancement',
-          description: 'Vous validez la version finale, recevez votre guide vidéo et programmez la mise en ligne selon vos besoins.',
-          icon: 'tabler:rocket',
-        },
-      ]}
-    >
-      <Fragment slot="image">
-        <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
-          <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Timeline</p>
-          <p class="mt-6 max-w-xs text-base text-blue-100/90">
-            Délai typique&nbsp;: cinq jours ouvrés après réception des contenus. Nous ajustons le planning selon vos priorités.
-          </p>
-        </div>
-      </Fragment>
-    </Steps>
-
-  <!-- Content Widget **************** -->
+  <Steps
+    title="Notre accompagnement"
+    tagline="Parcours client"
+    items={[
+      {
+        title: '1. Échange rapide',
+        description: 'Un appel ou une visio pour comprendre votre logement, vos dates et vos contraintes.',
+        icon: 'tabler:phone',
+      },
+      {
+        title: '2. Devis détaillé',
+        description: 'Volume estimé, accès, options (emballage, monte-meubles, stockage) et planning.',
+        icon: 'tabler:file-description',
+      },
+      {
+        title: '3. Jour J',
+        description: 'Arrivée de l’équipe, protection des zones de passage, chargement et transport sécurisé.',
+        icon: 'tabler:truck',
+      },
+      {
+        title: '4. Installation',
+        description: 'Remontage, mise en place dans les pièces souhaitées et reprise des emballages principaux.',
+        icon: 'tabler:home',
+      },
+    ]}
+  >
+    <Fragment slot="image">
+      <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Disponibilité</p>
+        <p class="mt-6 max-w-xs text-base text-blue-100/90">
+          Interventions sur l’Arc lémanique et déplacements longue distance sur demande.
+        </p>
+      </div>
+    </Fragment>
+  </Steps>
 
   <Content
     isAfterContent
     items={[
-      {
-        title: 'Contenus multilingues',
-        description:
-          'Français en standard, option anglaise ou allemande sur devis pour accompagner votre croissance régionale.',
-      },
-      {
-        title: 'Performance optimisée',
-        description:
-          'Architecture Astro, hébergement rapide en Suisse et optimisation d’images pour charger vite sur mobile.',
-      },
-      {
-        title: 'Fonctionnalités essentielles',
-        description:
-          'Formulaire de contact et prise de rendez-vous. Pour les grands projets, intégrations API possibles sur devis.',
-      },
-      {
-        title: 'Formation express',
-        description:
-          'Un guide vidéo personnalisé pour vous approprier votre site et publier en autonomie.',
-      },
+      { title: 'Zones desservies', description: 'Genève, Lausanne, Vevey, Montreux, Valais et trajets longue distance sur demande.' },
+      { title: 'Matériel fourni', description: 'Cartons, housses, adhésif, protections sol/mur, chariots, sangles et couvertures.' },
+      { title: 'Options clés', description: 'Démontage/remontage, nettoyage de sortie, stockage temporaire, reprise des cartons.' },
+      { title: 'Disponibilité', description: 'Semaine et samedi, créneaux matin ou après-midi selon vos contraintes.' },
     ]}
   >
-    <Fragment slot="content">Une présence en ligne qui reflète la précision de votre entreprise.</Fragment>
+    <Fragment slot="content">Tout le nécessaire pour un déménagement soigné, sans charge mentale.</Fragment>
 
     <Fragment slot="image">
       <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
-        <h4 class="text-3xl font-semibold">Performances maîtrisées</h4>
+        <h4 class="text-3xl font-semibold">Prêt pour le jour J</h4>
         <ul class="mt-6 space-y-3 text-left text-blue-100/90">
-          <li>✓ Conception mobile-first</li>
-          <li>✓ Temps de chargement optimisé</li>
-          <li>✓ Hébergement inclus 12 mois</li>
+          <li>✓ Chef d’équipe identifié</li>
+          <li>✓ Camion adapté au volume</li>
+          <li>✓ Protections et outillage fournis</li>
         </ul>
       </div>
     </Fragment>
@@ -227,39 +177,18 @@ const metadata = {
     </Fragment>
   </Content>
 
-  <!-- Features2 Widget ************** -->
-
   <Features2
     id="included"
-    title="Ce que peut inclure votre projet"
-    subtitle="Selon le pack choisi et vos besoins"
-    tagline="Exemples d’options"
+    title="Options utiles"
+    subtitle="Selon votre logement et vos contraintes"
+    tagline="Services complémentaires"
     items={[
-      {
-        title: 'Emails professionnels',
-        description: 'Comptes email @votredomaine.ch configurés lors de l’option maintenance (79 CHF/mois).',
-        icon: 'tabler:mail',
-      },
-      {
-        title: 'Balises on‑page',
-        description: 'Titres et méta‑descriptions de base.',
-        icon: 'tabler:map-pin',
-      },
-      {
-        title: 'Support planifié',
-        description: 'Accompagnement par email et visio, réponses sous un jour ouvré pour chaque demande.',
-        icon: 'tabler:message',
-      },
-      {
-        title: 'Formation & guide',
-        description: 'Session vidéo enregistrée et documentation simplifiée pour rester autonome.',
-        icon: 'tabler:video',
-      },
-      {
-        title: 'Modules évolutifs',
-        description: 'Ajout de pages ou formulaires avancés sur devis dédié.',
-        icon: 'tabler:puzzle',
-      },
+      { title: 'Emballage & déballage', description: 'Cartons, penderies, protections vaisselle et emballage des objets fragiles.', icon: 'tabler:package' },
+      { title: 'Démontage / remontage', description: 'Meubles, lits, armoires et dressing remontés proprement à l’arrivée.', icon: 'tabler:tools' },
+      { title: 'Monte-meubles', description: 'Pour les accès étroits ou les étages élevés, avec opérateur dédié.', icon: 'tabler:stairs-up' },
+      { title: 'Objets lourds', description: 'Pianos, coffres, frigos américains ou machines sensibles.', icon: 'tabler:weight' },
+      { title: 'Stockage temporaire', description: 'Solution de garde-meuble court terme en Suisse romande.', icon: 'tabler:building-warehouse' },
+      { title: 'Nettoyage de sortie', description: 'Option ménage de fin de bail pour rendre votre logement en ordre.', icon: 'tabler:broom' },
     ]}
   >
     <Fragment slot="bg">
@@ -267,75 +196,56 @@ const metadata = {
     </Fragment>
   </Features2>
 
-  <!-- Stats Widget ****************** -->
-
   <Stats
-    title="Des repères clairs pour décider"
+    title="Repères rapides"
     stats={[
-      { title: 'Délai typique', amount: '5 jours ouvrés' },
-      { title: 'Pack site vitrine', amount: '999 CHF' },
-      { title: 'Maintenance', amount: 'dès 79 CHF/mois' },
-      { title: 'Intégrations avancées', amount: 'sur devis' },
+      { title: 'Réponse devis', amount: 'sous 24h' },
+      { title: 'Zone', amount: 'Arc lémanique' },
+      { title: 'Équipe', amount: '3 à 6 déménageurs' },
+      { title: 'Camions', amount: '20–30 m³' },
     ]}
   />
-
-  <!-- FAQs Widget ******************* -->
 
   <FAQs
     id="faq"
     title="Questions fréquentes"
-    subtitle="Transparence totale sur notre façon de travailler."
+    subtitle="Transparence sur l’organisation et la facture."
     tagline="FAQ"
     classes={{ container: 'max-w-6xl' }}
     items={[
       {
-        title: 'Quel est le délai de livraison ?',
-        description:
-          'Après réception des contenus, nous livrons généralement la première version en cinq jours ouvrés. Les projets avec automatisations peuvent nécessiter davantage de temps, annoncé dès le devis.',
+        title: 'Quel est le délai pour obtenir un devis ?',
+        description: 'Nous répondons sous 24h avec un prix indicatif basé sur le volume, les accès et la date souhaitée.',
       },
       {
-        title: 'Le contenu est-il inclus ?',
-        description:
-          'Oui, nous rédigeons ou retravaillons vos textes en français avec une optimisation locale de base. Les versions anglaise ou allemande sont proposées sur devis.',
+        title: 'Pouvez-vous emballer pour nous ?',
+        description: 'Oui. Nous pouvons fournir cartons, penderies, protections vaisselle et réaliser tout l’emballage/déballage.',
       },
       {
-        title: 'Quels sont les niveaux de maintenance ?',
-        description:
-          'Maintenance dès 79 CHF/mois avec mises à jour et sauvegardes. Options additionnelles selon vos besoins.',
+        title: 'Gérez-vous les pianos ou objets lourds ?',
+        description: 'Oui, nous utilisons sangles, diables spécifiques et monte-meubles si nécessaire pour sécuriser les objets lourds.',
       },
       {
-        title: 'Proposez-vous des intégrations ?',
-        description:
-          'Oui. Les intégrations simples (formulaire, rendez‑vous) sont incluses. Pour des connexions API ou workflows complexes, nous établissons un devis dédié.',
+        title: 'Intervenez-vous le week-end ?',
+        description: 'Le samedi est possible selon disponibilité. Pour le dimanche, nous étudions au cas par cas.',
       },
       {
-        title: 'Comment se déroule le support après la mise en ligne ?',
-        description:
-          'Vous disposez d’un accès à notre espace client pour ouvrir des tickets. Les réponses sont apportées sous un jour ouvré via email ou visio planifiée.',
+        title: 'L’assurance est-elle incluse ?',
+        description: 'Une responsabilité civile professionnelle est incluse. Des couvertures complémentaires sont possibles sur demande.',
       },
     ]}
   />
 
-  <!-- CallToAction Widget *********** -->
-
   <CallToAction
     actions={[
-      {
-        variant: 'primary',
-        text: 'Demander une proposition',
-        href: '/contact#form',
-        icon: 'tabler:mail-forward',
-      },
-      {
-        text: 'Découvrir nos tarifs',
-        href: '/pricing',
-      },
+      { variant: 'primary', text: 'Demander un devis', href: '/contact#form', icon: 'tabler:mail-forward' },
+      { text: 'Voir les tarifs', href: '/pricing' },
     ]}
   >
-    <Fragment slot="title">Prêts à clarifier votre présence en ligne ?</Fragment>
+    <Fragment slot="title">Prêt à planifier votre déménagement ?</Fragment>
 
     <Fragment slot="subtitle">
-      Nous analysons vos besoins et proposons un plan d’action réaliste pour votre activité dans la région avec TonSiteWeb.ch.
+      Expliquez votre volume, vos dates et vos adresses. Nous envoyons une proposition claire avec planning et options.
     </Fragment>
   </CallToAction>
 </Layout>

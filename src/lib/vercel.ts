@@ -17,7 +17,7 @@ function buildHeaders() {
   return {
     Authorization: `Bearer ${ENV.VERCEL_TOKEN}`,
     'Content-Type': 'application/json',
-    'User-Agent': 'TonSiteWeb-Automation/1.0',
+      'User-Agent': 'PedroDemenagement-Automation/1.0',
   };
 }
 
@@ -51,7 +51,7 @@ async function fetchJson(path: string, init: RequestInit = {}) {
 }
 
 function buildDeploymentPayload(template: string, clientSlug: string) {
-  const slug = clientSlug?.trim() || 'tonsiteweb-client';
+  const slug = clientSlug?.trim() || 'pedrodemenagement-client';
   const metadata = {
     template: template || 'default',
     clientSlug: slug,

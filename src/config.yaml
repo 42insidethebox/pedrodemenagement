@@ -1,6 +1,6 @@
 site:
-  name: TonSiteWeb.ch
-  site: 'https://tonsiteweb.ch'
+  name: Pedro Déménagement
+  site: 'https://pedrodemenagement.ch'
   base: '/'
   trailingSlash: false
 
@@ -9,14 +9,14 @@ site:
 # Default SEO metadata
 metadata:
   title:
-    default: TonSiteWeb.ch
-    template: '%s — TonSiteWeb.ch'
-  description: "Agence digitale suisse : sites vitrines clés-en-main pour PME et indépendants de l'Arc lémanique, avec un accompagnement transparent."
+    default: Pedro Déménagement
+    template: '%s — Pedro Déménagement'
+  description: "Entreprise de déménagement en Suisse romande : camion, équipe locale et prestations complètes pour un déménagement rapide et maîtrisé."
   robots:
     index: true
     follow: true
   openGraph:
-    site_name: TonSiteWeb.ch
+    site_name: Pedro Déménagement
     images:
       - url: '~/assets/images/default.png'
         width: 1200
@@ -33,7 +33,7 @@ i18n:
 
 apps:
   blog:
-    isEnabled: true
+    isEnabled: false
     postsPerPage: 6
 
     post:

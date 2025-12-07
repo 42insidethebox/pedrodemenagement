@@ -1,6 +1,6 @@
 // src/utils/backend/api.ts
-const ACCESS_TOKEN_KEY = 'tonsiteweb:accessToken';
-const REFRESH_TOKEN_KEY = 'tonsiteweb:refreshToken';
+const ACCESS_TOKEN_KEY = 'pedrodemenagement:accessToken';
+const REFRESH_TOKEN_KEY = 'pedrodemenagement:refreshToken';
 
 export type AuthFetchOptions = RequestInit & {
   parseJson?: boolean;

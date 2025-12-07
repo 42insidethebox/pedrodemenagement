@@ -1,4 +1,4 @@
-# TonSiteWeb – Phase 2 Backend & Automation
+# Pedro Demenagement – Phase 2 Backend & Automation
 
 This repo now includes a minimal backend scaffold that runs on Vercel using Astro API routes.
 
@@ -59,8 +59,8 @@ This repo now includes a minimal backend scaffold that runs on Vercel using Astr
 7) Run `node -r dotenv/config scripts/runtime_check.js` locally to validate connectivity before deploy.
 8) When using the `/app` portal locally, store the Supabase session returned by `/api/auth/signin`:
    ```js
-   localStorage.setItem('tonsiteweb:accessToken', '<access_token>');
-   localStorage.setItem('tonsiteweb:refreshToken', '<refresh_token>');
+   localStorage.setItem('pedrodemenagement:accessToken', '<access_token>');
+   localStorage.setItem('pedrodemenagement:refreshToken', '<refresh_token>');
    ```
    (The helper in `src/utils/backend/api.ts` reads these keys for every authenticated fetch.)
 

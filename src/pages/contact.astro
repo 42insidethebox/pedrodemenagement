@@ -10,84 +10,50 @@ const metadata = {
 ---
 
 <Layout metadata={metadata}>
-  <!-- HeroText Widget ******************* -->
-
-  <HeroText tagline="Contact" title="Parlons de votre site clé-en-main" subtitle="Un expert TonSiteWeb.ch vous répond sous un jour ouvré." />
+  <HeroText tagline="Contact" title="Parlons de votre déménagement" subtitle="Un conseiller Pedro Déménagement vous répond sous 24h." />
 
   <ContactUs
     id="form"
-    title="Demander une démo ou un devis"
-    subtitle="Remplissez le formulaire, nous vous recontactons par téléphone ou visio pour préparer votre mise en ligne (délai typique&nbsp;: 5 jours ouvrés)."
+    title="Obtenir un devis"
+    subtitle="Indiquez vos adresses, votre volume et la date souhaitée. Nous revenons avec un chiffrage clair."
     inputs={[
-      {
-        type: 'text',
-        name: 'name',
-        label: 'Nom et prénom',
-      },
-      {
-        type: 'email',
-        name: 'email',
-        label: 'Email professionnel',
-      },
-      {
-        type: 'text',
-        name: 'company',
-        label: 'Entreprise',
-      },
+      { type: 'text', name: 'name', label: 'Nom et prénom' },
+      { type: 'tel', name: 'phone', label: 'Téléphone' },
+      { type: 'text', name: 'from', label: 'Adresse de départ' },
+      { type: 'text', name: 'to', label: 'Adresse d’arrivée' },
+      { type: 'date', name: 'date', label: 'Date souhaitée' },
       {
         type: 'select',
-        name: 'service',
-        label: 'Pack souhaité',
+        name: 'size',
+        label: 'Taille du logement',
         options: [
-          { label: 'Essentiel', value: 'essentiel' },
-          { label: 'Automatisation', value: 'automation' },
-          { label: 'Maintenance sécurité', value: 'maintenance' },
-          { label: 'Autre / à définir', value: 'custom' },
+          { label: 'Studio / 1 pièce', value: 'studio' },
+          { label: '2-3 pièces', value: '2-3' },
+          { label: '4 pièces et +', value: '4+' },
+          { label: 'Bureau / commerce', value: 'business' },
         ],
       },
     ]}
     textarea={{
-      label: 'Votre projet',
-      placeholder: 'Présentez votre activité, vos objectifs et vos délais.',
+      label: 'Détails utiles',
+      placeholder: 'Objets lourds, besoin d’emballage, contraintes d’accès, dates flexibles...',
+      name: 'message',
     }}
     disclaimer={{
-      label:
-        'En envoyant ce formulaire, vous acceptez que TonSiteWeb.ch traite vos données pour répondre à votre demande, conformément à notre politique de confidentialité.',
+      label: 'En envoyant ce formulaire, j’accepte le traitement de mes données pour être recontacté.',
     }}
-    description="Nos bureaux sont ouverts du lundi au vendredi, 9h-17h. Nous parlons français, anglais et allemand."
+    description="Nous intervenons en Suisse romande et sur demande pour les trajets longue distance."
   />
-
-  <!-- Features2 Widget ************** -->
 
   <Features2
     title="Contact direct"
     subtitle="Choisissez le canal qui vous convient le mieux."
     items={[
-      {
-        title: 'Téléphone',
-        description: '+41 21 555 24 24',
-        icon: 'tabler:phone',
-      },
-      {
-        title: 'Email',
-        description: 'support@tonsiteweb.ch',
-        icon: 'tabler:mail',
-      },
-      {
-        title: 'Adresse',
-        description: 'Rue du Grand-Chêne 8, 1003 Lausanne',
-        icon: 'tabler:map-pin',
-      },
-      {
-        title: 'Disponibilité',
-        description: 'Du lundi au vendredi, 9h00 – 17h00',
-        icon: 'tabler:calendar-time',
-      },
-      {
-        title: 'Support client',
-        description: 'support@tonsiteweb.ch — réponse sous un jour ouvré',
-        icon: 'tabler:help',
-      },
+      { title: 'Téléphone', description: '+41 76 798 27 93', icon: 'tabler:phone' },
+      { title: 'Email', description: 'pedro@pedrodemenagement.ch', icon: 'tabler:mail' },
+      { title: 'Adresse', description: '1003 Lausanne', icon: 'tabler:map-pin' },
+      { title: 'Disponibilité', description: 'Du lundi au samedi, 8h00 – 18h00', icon: 'tabler:calendar-time' },
+      { title: 'Zone', description: 'Lausanne, Riviera, Genève, Valais et longue distance sur demande', icon: 'tabler:world' },
     ]}
   />
 </Layout>

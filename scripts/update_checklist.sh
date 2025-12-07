@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-CHECKLIST="01_tonsiteweb_index.md"
-TEMP="01_tonsiteweb_index.md.tmp"
+CHECKLIST="01_pedrodemenagement_index.md"
+TEMP="01_pedrodemenagement_index.md.tmp"
 
 cp "$CHECKLIST" "$TEMP"
 

@@ -1,7 +1,0 @@
-src/pages/api/domains/search.ts:    // if (!key || !secret) throw new Error('GoDaddy API not configured');
-src/pages/api/backend/support/[id].ts:    throw new Error('LOAD_FAILED');
-src/pages/api/backend/websites/[id].ts:    throw new Error('LOAD_FAILED');
-src/pages/api/backend/websites/[id].ts:    throw new Error('LOAD_FAILED');
-src/lib/logger.js:    console.log(`[${level}] ${message}`);
-src/lib/env.ts:    throw new Error(`❌ Missing required environment variable: ${name}`);
-src/lib/vercel.ts:  throw new Error(`Deployment ${deployId} did not become ready in time`);

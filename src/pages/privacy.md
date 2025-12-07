@@ -5,35 +5,35 @@ layout: '~/layouts/MarkdownLayout.astro'
 
 _Mise à jour : février 2024_
 
-Cette politique décrit la manière dont **TonSiteWeb.ch** collecte et traite les données personnelles de ses clients et prospects.
+Cette politique décrit la manière dont **Pedro Déménagement** collecte et traite les données personnelles de ses clients et prospects dans le cadre de ses prestations de déménagement en Suisse romande.
 
 ## 1. Responsable de traitement
 
-TonSiteWeb Sàrl est responsable des traitements décrits dans ce document. Vous pouvez nous contacter à **support@tonsiteweb.ch**.
+Pedro Déménagement est responsable des traitements décrits dans ce document. Vous pouvez nous contacter à **hello@pedrodemenagement.ch**.
 
 ## 2. Données collectées
 
 Nous collectons uniquement les informations nécessaires à la préparation, la réalisation et le suivi de nos prestations :
 
-- Identité et coordonnées (nom, prénom, entreprise, e-mail, téléphone, adresse de facturation)
-- Informations liées au projet (secteur, objectifs, contenus fournis)
+- Identité et coordonnées (nom, prénom, e-mail, téléphone, adresses de départ/arrivée)
+- Informations liées au déménagement (volume estimé, date souhaitée, contraintes d’accès, options choisies)
 - Données de facturation et d'historique commercial
-- Logs techniques indispensables à la maintenance (adresse IP, événements serveur, horodatages)
+- Logs techniques indispensables au fonctionnement du site (adresse IP, événements serveur, horodatages)
 
 ## 3. Finalités
 
 Vos données sont utilisées pour :
 
-1. répondre à vos demandes et établir des offres personnalisées ;
-2. exécuter nos obligations contractuelles et assurer le support technique ;
+1. répondre à vos demandes et établir des devis personnalisés ;
+2. organiser et réaliser le déménagement, puis assurer le suivi client ;
 3. émettre les factures et suivre la relation client ;
-4. mesurer l'utilisation de nos services et améliorer nos produits (statistiques anonymisées).
+4. mesurer l'utilisation du site et améliorer nos services (statistiques anonymisées).
 
 Nous n'envoyons pas de newsletters marketing sans votre accord explicite.
 
 ## 4. Bases légales
 
-Les traitements sont fondés sur votre consentement (prise de contact), l'exécution du contrat (production du site, maintenance) ou notre intérêt légitime à sécuriser nos infrastructures.
+Les traitements sont fondés sur votre consentement (prise de contact), l'exécution du contrat (organisation du déménagement) ou notre intérêt légitime à sécuriser nos infrastructures.
 
 ## 5. Hébergement et conservation
 
@@ -52,7 +52,7 @@ Vous pouvez à tout moment :
 - obtenir une copie des informations que vous nous avez fournies dans un format structuré (portabilité) ;
 - retirer votre consentement lorsque celui-ci est la base légale.
 
-Pour exercer ces droits, écrivez-nous à **support@tonsiteweb.ch**. Nous répondrons sous 30 jours.
+Pour exercer ces droits, écrivez-nous à **hello@pedrodemenagement.ch**. Nous répondrons sous 30 jours.
 
 ## 8. Sécurité
 
@@ -64,8 +64,8 @@ Notre site utilise uniquement des cookies essentiels au fonctionnement et des ou
 
 ## 10. Évolutions de la politique
 
-Nous pouvons mettre à jour cette politique pour refléter l'évolution de la législation ou de nos services. La date de mise à jour figure en haut de page. Nous vous informerons de tout changement matériel par e-mail ou lors de votre prochaine connexion à l'espace client.
+Nous pouvons mettre à jour cette politique pour refléter l'évolution de la législation ou de nos services. La date de mise à jour figure en haut de page. Nous vous informerons de tout changement matériel par e-mail ou via notre site.
 
 ## 11. Contact
 
-Pour toute question relative à la protection des données, contactez **support@tonsiteweb.ch**.
+Pour toute question relative à la protection des données, contactez **hello@pedrodemenagement.ch**.

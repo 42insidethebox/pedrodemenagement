@@ -45,47 +45,8 @@ const {
 } = Astro.props;
 
 const urlObj = new URL(Astro.url);
-const currentPath = `/${trimSlash(urlObj.pathname)}`;
-const currentSearch = urlObj.search || '';
-const currentHash = urlObj.hash || '';
-
-const locales = ['en', 'de', 'it'];
-const suffixPath = currentPath.replace(/^\/(fr|en|de|it)(?=\/|$)/, '') || '/';
-const buildLangHref = (lang: 'fr' | 'en' | 'de' | 'it') => {
-  if (lang === 'fr') {
-    return `${suffixPath}${currentSearch}${currentHash}`;
-  }
-  const base = suffixPath === '/' ? '' : suffixPath;
-  return `/${lang}${base}${currentSearch}${currentHash}`;
-};
-
-// Determine current language from path and build localized auth links
-const currentLang = (locales.find((l) => currentPath.startsWith('/' + l)) as 'en' | 'de' | 'it' | undefined) || 'fr';
-const langPrefix = currentLang === 'fr' ? '' : `/${currentLang}`;
-const authLabels = {
-  fr: { signIn: 'Se connecter', signUp: 'Créer un compte' },
-  en: { signIn: 'Sign in', signUp: 'Sign up' },
-  de: { signIn: 'Anmelden', signUp: 'Registrieren' },
-  it: { signIn: 'Accedi', signUp: 'Registrati' },
-} as const;
-const t = authLabels[currentLang as keyof typeof authLabels] || authLabels.fr;
-const signinHref = `${langPrefix}/auth/signin`;
-const signupHref = `${langPrefix}/auth/signup`;
-
-// Extract language menu from navigation links so we can render it near auth controls
-const isLanguageMenu = (link: any) => {
-  const label = String(link?.text || '').toLowerCase();
-  return label.includes('langue') || label.includes('language') || label.includes('sprache') || label.includes('lingua');
-};
-const languageLink = links.find((link) => isLanguageMenu(link));
-const filteredLinks = links.filter((link) => !isLanguageMenu(link));
-const languageOptions = [
-  { code: 'fr', label: 'Français', href: buildLangHref('fr') },
-  { code: 'en', label: 'English', href: buildLangHref('en') },
-  { code: 'de', label: 'Deutsch', href: buildLangHref('de') },
-  { code: 'it', label: 'Italiano', href: buildLangHref('it') },
-];
-const langLabel = languageOptions.find((l) => l.code === currentLang)?.label || 'Langue';
+const currentPath = `/${trimSlash(urlObj.pathname)}` || '/';
+const filteredLinks = links ?? [];
 ---
 
 <header
@@ -129,55 +90,36 @@ const langLabel = languageOptions.find((l) => l.code === currentLang)?.label || 
       >
         {
           filteredLinks.map(({ text, href, links }) => (
-            <li class={links?.length ? 'dropdown' : ''}>
-              {links?.length ? (
-                <>
-                  <button
-                    type="button"
-                    class="hover:text-link dark:hover:text-white px-3 min-[1100px]:px-4 py-3 flex items-center whitespace-nowrap"
-                  >
-                    {text}{' '}
-                    <Icon name="tabler:chevron-down" class="w-3.5 h-3.5 ml-0.5 rtl:ml-0 rtl:mr-0.5 hidden md:inline" />
-                  </button>
-                  {(() => {
-                    // Detect language menu and compute same-page lang links
-                    const isLangMenu = Array.isArray(links) && links.length >= 3 && links.every((l: any) => {
-                      const t = (l?.text || '').toLowerCase();
-                      const h = l?.href || '';
-                      return ['français','english','deutsch','italiano'].includes(t) || ['/', '/en', '/de', '/it'].includes(h);
-                    });
-                    const langItems = isLangMenu
-                      ? [
-                          { text: 'Français', href: buildLangHref('fr'), code: 'fr' },
-                          { text: 'English', href: buildLangHref('en'), code: 'en' },
-                          { text: 'Deutsch', href: buildLangHref('de'), code: 'de' },
-                          { text: 'Italiano', href: buildLangHref('it'), code: 'it' },
-                        ]
-                      : links;
-                    return (
-                      <ul class="dropdown-menu md:backdrop-blur-md dark:md:bg-dark rounded md:absolute pl-4 md:pl-0 md:hidden font-medium md:bg-white/90 md:min-w-[200px] drop-shadow-xl">
-                        {langItems.map(({ text: text2, href: href2, code }) => (
-                          <li>
-                            <a
-                              class:list={[
-                                'first:rounded-t last:rounded-b md:hover:bg-gray-100 hover:text-link dark:hover:text-white dark:hover:bg-gray-700 py-2 px-5 block whitespace-no-wrap',
-                                { 'aw-link-active': href2 === currentPath },
-                              ]}
-                              href={href2}
-                              {...(code ? { 'data-lang': code } : {})}
-                            >
-                              {text2}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    );
-                  })()}
-                </>
-              ) : (
-                <a
-                  class:list={[
-                    'hover:text-link dark:hover:text-white px-3 min-[1100px]:px-4 py-3 flex items-center whitespace-nowrap',
+          <li class={links?.length ? 'dropdown' : ''}>
+            {links?.length ? (
+              <>
+                <button
+                  type="button"
+                  class="hover:text-link dark:hover:text-white px-3 min-[1100px]:px-4 py-3 flex items-center whitespace-nowrap"
+                >
+                  {text}{' '}
+                  <Icon name="tabler:chevron-down" class="w-3.5 h-3.5 ml-0.5 rtl:ml-0 rtl:mr-0.5 hidden md:inline" />
+                </button>
+                <ul class="dropdown-menu md:backdrop-blur-md dark:md:bg-dark rounded md:absolute pl-4 md:pl-0 md:hidden font-medium md:bg-white/90 md:min-w-[200px] drop-shadow-xl">
+                  {(links || []).map(({ text: text2, href: href2 }) => (
+                    <li>
+                      <a
+                        class:list={[
+                          'first:rounded-t last:rounded-b md:hover:bg-gray-100 hover:text-link dark:hover:text-white dark:hover:bg-gray-700 py-2 px-5 block whitespace-no-wrap',
+                          { 'aw-link-active': href2 === currentPath },
+                        ]}
+                        href={href2}
+                      >
+                        {text2}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <a
+                class:list={[
+                  'hover:text-link dark:hover:text-white px-3 min-[1100px]:px-4 py-3 flex items-center whitespace-nowrap',
                     { 'aw-link-active': href === currentPath },
                   ]}
                   href={href}
@@ -211,60 +153,15 @@ const langLabel = languageOptions.find((l) => l.code === currentLang)?.label || 
             )
           }
         </div>
-        {/* Auth controls */}
-        <div class="ml-2 flex items-center gap-2">
-          {languageLink && (
-            <div class="relative dropdown">
-              <button
-                type="button"
-                class="flex items-center whitespace-nowrap rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
-                aria-label="Language switcher"
-              >
-                {langLabel}
-                <Icon name="tabler:chevron-down" class="w-4 h-4 ml-1" />
-              </button>
-              <ul class="dropdown-menu md:backdrop-blur-md dark:md:bg-dark rounded md:absolute hidden md:hidden pl-0 md:pl-0 md:min-w-[180px] font-medium md:bg-white/90 drop-shadow-xl">
-                {languageOptions.map((opt) => (
-                  <li>
-                    <a
-                      href={opt.href}
-                      data-lang={opt.code}
-                      class:list={[
-                        'first:rounded-t last:rounded-b md:hover:bg-gray-100 hover:text-link dark:hover:text-white dark:hover:bg-gray-700 py-2 px-4 block whitespace-no-wrap',
-                        { 'aw-link-active': opt.code === currentLang },
-                      ]}
-                    >
-                      {opt.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-          <a
-            href={signinHref}
-            class="hidden sm:inline-flex items-center rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
-          >
-            {t.signIn}
-          </a>
-          <a
-            href={signupHref}
-            class="inline-flex items-center rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm shadow-blue-500/40 transition hover:bg-blue-500"
-          >
-            {t.signUp}
-          </a>
-        </div>
-        {
-          actions?.length ? (
-            <span class="ml-4 rtl:ml-0 rtl:mr-4">
-              {actions.map((btnProps) => (
-                <Button {...btnProps} class="ml-2 py-2.5 px-5.5 md:px-6 font-semibold shadow-none text-sm w-auto" />
-              ))}
-            </span>
-          ) : (
-            ''
-          )
-        }
+        {actions?.length ? (
+          <span class="ml-4 rtl:ml-0 rtl:mr-4">
+            {actions.map((btnProps) => (
+              <Button {...btnProps} class="ml-2 py-2.5 px-5.5 md:px-6 font-semibold shadow-none text-sm w-auto" />
+            ))}
+          </span>
+        ) : (
+          ''
+        )}
       </div>
     </div>
   </div>

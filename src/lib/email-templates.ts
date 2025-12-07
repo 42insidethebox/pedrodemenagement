@@ -47,9 +47,9 @@ export function formatAmountForLocale(amount: unknown, currency: string | null |
 
 function getBrand() {
   const brand = {
-    name: ENV.SENDER_NAME || 'TonSiteWeb',
-    supportEmail: ENV.SUPPORT_EMAIL || 'support@tonsiteweb.ch',
-    origin: ENV.ORIGIN || 'https://tonsiteweb.ch',
+    name: ENV.SENDER_NAME || 'Pedro Déménagement',
+    supportEmail: ENV.SUPPORT_EMAIL || 'hello@pedrodemenagement.ch',
+    origin: ENV.ORIGIN || 'https://pedrodemenagement.ch',
     // palette — lightweight, email‑safe
     bg: '#f6f9fc',
     cardBg: '#ffffff',
@@ -247,7 +247,7 @@ export function renderTemplate(name: string, data: any) {
         ['Numéro de commande', order.order_number || '—'],
         [
           'Client',
-          `${escapeHtml(order.customer_name || metadata.name || 'Client TonSiteWeb')} (${escapeHtml(
+          `${escapeHtml(order.customer_name || metadata.name || 'Client Pedro Déménagement')} (${escapeHtml(
             order.customer_email || metadata.email || brand.supportEmail,
           )})`,
         ],

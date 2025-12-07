@@ -1,6 +1,6 @@
 # Operations checklist
 
-TonSiteWeb now connects the Astro admin portal with Supabase, Stripe, Google Docs/Drive and Resend. This document lists the
+Pedro Demenagement now connects the Astro admin portal with Supabase, Stripe, Google Docs/Drive and Resend. This document lists the
 manual plumbing required before onboarding paying customers.
 
 ## 1. Environment variables
@@ -19,7 +19,7 @@ Set these variables in `.env`, on your hosting provider and in GitHub/Vercel/Net
 | `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY` | Private key (replace `\n` with real newlines). |
 | `GOOGLE_DRIVE_PARENT_FOLDER_ID` | Folder where client workspaces are provisioned. |
 | `GOOGLE_DOCS_SECTION_TEMPLATE_ID` | Optional doc template duplicated for each site (leave blank to create empty docs). |
-| `SUPPORT_EMAIL` | Outbound email used for ticket notifications (defaults to support@tonsiteweb.ch). |
+| `SUPPORT_EMAIL` | Outbound email used for ticket notifications (defaults to support@pedrodemenagement.ch). |
 | `SENDER_NAME` | Display name for transactional emails. |
 
 Run `npm run check` locally after updating the environment to validate required keys.
@@ -30,7 +30,7 @@ Run `npm run check` locally after updating the environment to validate required 
    support requests and subscription events.
 2. In the **Auth** settings, enable email/password signups and supply your custom SMTP (or leave Supabase defaults if you want
    Supabase to deliver confirmation emails). Our API still sends branded emails via Resend.
-3. Under **Authentication → Redirect URLs**, whitelist `https://tonsiteweb.ch/auth/callback` and your local URL
+3. Under **Authentication → Redirect URLs**, whitelist `https://pedrodemenagement.ch/auth/callback` and your local URL
    `http://localhost:4321/auth/callback`.
 4. Add Row Level Security policies allowing service role access for the backend tables if you are using RLS (the schema keeps it
    simple by assuming the service role key is used server-side).
@@ -49,7 +49,7 @@ Run `npm run check` locally after updating the environment to validate required 
 ## 4. Stripe plumbing
 
 * Configure products/prices inside Stripe that map to the IDs used in the sales flow (see `ENV.PRICE_*` entries).
-* Add the `STRIPE_WEBHOOK_SECRET` from your webhook endpoint (e.g. `https://tonsiteweb.ch/api/stripe-webhook`). The backend now
+* Add the `STRIPE_WEBHOOK_SECRET` from your webhook endpoint (e.g. `https://pedrodemenagement.ch/api/stripe-webhook`). The backend now
   exposes `/api/backend/subscriptions/:id` for cancel/update flows from the dashboard and stores audit events in Supabase.
 * Test subscription updates by running `npm run dev` and using the dashboard (route `/app/subscriptions`).
 

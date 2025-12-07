@@ -14,7 +14,7 @@ const TEST_TO = (() => {
 const DRY = process.argv.includes('--dry');
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
-const FROM = `${process.env.SENDER_NAME || 'TonSiteWeb'} <${process.env.SENDER_EMAIL || process.env.SUPPORT_EMAIL || 'support@tonsiteweb.ch'}>`;
+const FROM = `${process.env.SENDER_NAME || 'Pedro Demenagement'} <${process.env.SENDER_EMAIL || process.env.SUPPORT_EMAIL || 'hello@pedrodemenagement.ch'}>`;
 
 if (!DRY && !RESEND_API_KEY) {
   console.error('Missing RESEND_API_KEY in env. Use --dry to preview only.');
@@ -23,7 +23,7 @@ if (!DRY && !RESEND_API_KEY) {
 
 function formatSubject(key) {
   const map = {
-    welcome: 'Bienvenue chez TonSiteWeb',
+    welcome: 'Bienvenue chez Pedro Demenagement',
     password_reset: 'Réinitialisez votre mot de passe',
     password_changed: 'Mot de passe mis à jour',
     project_ready: 'Votre maquette est prête',
@@ -51,7 +51,7 @@ async function sendResend(to, subject, html) {
   try { return { ok: res.ok, ...(JSON.parse(text)) }; } catch { return { ok: res.ok, response: text }; }
 }
 
-const ORIGIN = process.env.SITE_URL || process.env.ORIGIN || 'https://tonsiteweb.ch';
+const ORIGIN = process.env.SITE_URL || process.env.ORIGIN || 'https://pedrodemenagement.ch';
 const sampleOrder = {
   order_number: 'TSW-20240609-ABCD',
   customer_name: 'Jean Dupont',

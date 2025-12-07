@@ -54,8 +54,8 @@ async function sendTransactionalEmail(
     return { ok: false, error: 'Missing recipient' };
   }
 
-  const supportEmail = (ENV.SUPPORT_EMAIL || 'support@tonsiteweb.ch').trim();
-  const fromName = ENV.SENDER_NAME || 'TonSiteWeb.ch';
+  const supportEmail = (ENV.SUPPORT_EMAIL || 'hello@pedrodemenagement.ch').trim();
+  const fromName = ENV.SENDER_NAME || 'Pedro Déménagement';
   const from = `${fromName} <${supportEmail}>`;
 
   const payload: Record<string, any> = {
@@ -167,7 +167,7 @@ function buildOrderTemplateData(order: any, locale: EmailLocale) {
     amount_value: amount / 100,
     payment_status: order?.status || metadata.status || '',
     metadata,
-    support_email: ENV.SUPPORT_EMAIL || 'support@tonsiteweb.ch',
+    support_email: ENV.SUPPORT_EMAIL || 'hello@pedrodemenagement.ch',
   } as Record<string, any>;
 }
 
@@ -176,7 +176,7 @@ export async function sendAdminNotificationEmail(order: any) {
   const data = buildOrderTemplateData(order, locale);
   return sendEmailTemplate({
     template: 'orders/admin-new-order',
-    to: ENV.SUPPORT_EMAIL || 'support@tonsiteweb.ch',
+    to: ENV.SUPPORT_EMAIL || 'hello@pedrodemenagement.ch',
     locale,
     data,
     bccSupport: false,
@@ -302,7 +302,7 @@ export async function sendNewUserAdminEmail(payload: { email: string; name?: str
   const locale = resolveEmailLocale(payload.locale);
   return sendEmailTemplate({
     template: 'auth/admin-new-user',
-    to: ENV.SUPPORT_EMAIL || 'support@tonsiteweb.ch',
+    to: ENV.SUPPORT_EMAIL || 'hello@pedrodemenagement.ch',
     locale,
     data: {
       user_email: payload.email,
@@ -342,7 +342,7 @@ export async function sendContactNotificationEmail(data: {
   const locale = resolveEmailLocale(data.locale);
   return sendEmailTemplate({
     template: 'contact/contact-notification',
-    to: ENV.SUPPORT_EMAIL || 'support@tonsiteweb.ch',
+    to: ENV.SUPPORT_EMAIL || 'hello@pedrodemenagement.ch',
     locale,
     data: {
       sender_name: data.name,
@@ -385,7 +385,7 @@ export async function sendDemoRequestEmail(data: {
   const locale = resolveEmailLocale(data.locale);
   return sendEmailTemplate({
     template: 'demo/demo-request',
-    to: ENV.SUPPORT_EMAIL || 'support@tonsiteweb.ch',
+    to: ENV.SUPPORT_EMAIL || 'hello@pedrodemenagement.ch',
     locale,
     data: {
       requester_name: data.name,
@@ -430,7 +430,7 @@ export async function sendFeedbackNotificationEmail({
   author?: string;
   locale?: string | null;
 }) {
-  const recipient = to || ENV.SUPPORT_EMAIL || 'support@tonsiteweb.ch';
+  const recipient = to || ENV.SUPPORT_EMAIL || 'hello@pedrodemenagement.ch';
   return sendEmailTemplate({
     template: 'feedback/feedback',
     to: recipient,
@@ -530,7 +530,7 @@ export async function sendAdminDeploymentEmail({
 }) {
   return sendEmailTemplate({
     template: 'deployment/admin-deployment',
-    to: ENV.SUPPORT_EMAIL || 'support@tonsiteweb.ch',
+    to: ENV.SUPPORT_EMAIL || 'hello@pedrodemenagement.ch',
     locale,
     data: {
       project_name: projectName,
@@ -566,7 +566,7 @@ export async function sendProjectDelayedEmail({
 export async function sendSystemAlertEmail(subject: string, details: Record<string, any>) {
   return sendEmailTemplate({
     template: 'system/system-alert',
-    to: ENV.SUPPORT_EMAIL || 'support@tonsiteweb.ch',
+    to: ENV.SUPPORT_EMAIL || 'hello@pedrodemenagement.ch',
     locale: 'fr',
     data: {
       alert_subject: subject,

@@ -2,10 +2,19 @@
 import type { Form as Props } from '~/types';
 import Button from '~/components/ui/Button.astro';
 
-const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } = Astro.props;
+const {
+  inputs,
+  textarea,
+  disclaimer,
+  button = 'Envoyer',
+  description = '',
+  action = 'mailto:pedro@pedrodemenagement.ch',
+  method = 'post',
+  encType = 'text/plain',
+} = Astro.props as Props & { action?: string; method?: string; encType?: string };
 ---
 
-<form method="post" action="/api/contact">
+<form method={method} action={action} {...(encType ? { enctype: encType } : {})}>
   {
     inputs &&
       inputs.map((field) => {

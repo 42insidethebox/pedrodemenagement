@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * tonsiteweb route opener
+ * pedrodemenagement route opener
  * Opens all major routes in browser for manual visual test
  */
 

@@ -12,110 +12,91 @@ const metadata = {
 ---
 
 <Layout metadata={metadata}>
-  <!-- Hero Widget ******************* -->
-
-  <Hero tagline="À propos de TonSiteWeb.ch">
-    <Fragment slot="title">
-      Une équipe lémanique qui marie automatisation et service humain
-    </Fragment>
+  <Hero tagline="À propos de Pedro Déménagement">
+    <Fragment slot="title">Une équipe lémanique pour des déménagements soignés</Fragment>
 
     <Fragment slot="subtitle">
-      TonSiteWeb.ch est née à Lausanne pour offrir aux PME et indépendants un site web haut de gamme, livré rapidement et sans
-      sacrifier la précision ni l’accompagnement. Nous combinons une technologie propriétaire et des experts locaux pour garantir
-      un résultat impeccable.
+      Basés à Lausanne et actifs sur tout l’Arc lémanique, nous orchestrons des déménagements résidentiels et professionnels
+      avec un chef d’équipe dédié, du matériel de protection complet et une communication claire avant le jour J.
     </Fragment>
 
     <Fragment slot="image">
       <div class="relative aspect-[5/3] overflow-hidden rounded-2xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-left text-white shadow-2xl">
-        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Arc Lémanique</p>
-        <h4 class="mt-4 text-4xl font-semibold">Lausanne · Genève · Vevey · Montreux</h4>
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Arc lémanique</p>
+        <h4 class="mt-4 text-4xl font-semibold">Genève · Lausanne · Riviera · Valais</h4>
         <p class="mt-6 max-w-xl text-lg text-blue-100/90">
-          Des spécialistes du digital, du contenu et de la performance web réunis autour d’un objectif&nbsp;: créer des sites irréprochables pour les acteurs locaux.
+          Camions 20–30 m³, protections, sangles et chariots adaptés pour appartements, maisons et bureaux.
         </p>
       </div>
     </Fragment>
   </Hero>
 
-  <!-- Stats Widget ****************** -->
-
   <Stats
     title="Nos repères"
     stats={[
-      { title: 'Approche', amount: 'Automatisation + humain' },
-      { title: 'Maintenance', amount: 'dès 79 CHF/mois' },
+      { title: 'Expérience', amount: '8+ ans' },
+      { title: 'Zone', amount: 'Suisse romande' },
+      { title: 'Délai devis', amount: 'sous 24h' },
     ]}
   />
 
-  <!-- Features3 Widget ************** -->
-
   <Features3
-    title="Nos piliers"
-    subtitle="Nous appliquons la rigueur suisse à chaque projet livré."
+    title="Notre manière de travailler"
+    subtitle="Organisation claire, matériel adapté et communication transparente."
     columns={3}
     isBeforeContent={true}
     items={[
       {
-        title: 'Automatisation maîtrisée',
-        description:
-          'Nos pipelines propriétaires orchestrent contenus, design et déploiement pour accélérer chaque projet sans sacrifier la qualité.',
-        icon: 'tabler:cpu',
+        title: 'Planification',
+        description: 'Repérage des accès, estimation du volume, choix du camion et de l’équipe.',
+        icon: 'tabler:calendar-time',
       },
       {
-        title: 'Design minimaliste',
-        description:
-          'Inspirés par les codes helvétiques, nous misons sur des mises en page aérées, typographies nettes et contrastes précis.',
-        icon: 'tabler:layout-grid',
+        title: 'Protection',
+        description: 'Housses matelas, couvertures, sangles, chariots, diables et outillage complet.',
+        icon: 'tabler:shield-check',
       },
       {
-        title: 'Relation de proximité',
-        description:
-          'Nos chefs de projet sont disponibles par téléphone ou WhatsApp pour un suivi attentif, même après la mise en ligne.',
-        icon: 'tabler:users',
+        title: 'Suivi dédié',
+        description: 'Un interlocuteur unique avant et pendant le déménagement pour éviter les surprises.',
+        icon: 'tabler:headset',
       },
     ]}
   />
-
-  <!-- Features3 Widget ************** -->
 
   <Features3
     columns={3}
     isAfterContent={true}
     items={[
       {
-        title: 'Tech suisse + mondiale',
-        description:
-          'Stack Astro, Tailwind et hébergement basé en Suisse pour conjuguer souveraineté et performance internationale.',
-        icon: 'tabler:world',
+        title: 'Équipe locale',
+        description: 'Déménageurs basés entre Genève et Lausanne, disponibles en semaine et le samedi.',
+        icon: 'tabler:users',
       },
       {
-        title: 'Partenaires terrain',
-        description:
-          'Réseau de photographes, rédacteurs et consultants basés entre Genève et Montreux selon les besoins des projets.',
-        icon: 'tabler:briefcase',
+        title: 'Accès difficiles',
+        description: 'Monte-meubles, réservations de places de parc et coordination ascenseur.',
+        icon: 'tabler:stairs-up',
       },
       {
-        title: 'Culture de la mesure',
-        description:
-          'Nous analysons l’impact de chaque livraison et proposons des pistes d’amélioration adaptées à votre activité.',
-        icon: 'tabler:chart-dots',
+        title: 'Objets lourds',
+        description: 'Pianos, coffres, frigos américains ou armoires massives gérés avec soin.',
+        icon: 'tabler:weight',
       },
       {
-        title: 'Support multilingue',
-        description:
-          'Nous répondons en français, anglais ou allemand selon la préférence de vos équipes.',
-        icon: 'tabler:language',
+        title: 'Assurance RC pro',
+        description: 'Responsabilité civile professionnelle incluse, options complémentaires sur demande.',
+        icon: 'tabler:receipt',
       },
       {
-        title: 'Respect du RGPD suisse/UE',
-        description:
-          'Documentation juridique fournie, consentements gérés et données hébergées sur territoire helvétique.',
-        icon: 'tabler:shield-lock',
+        title: 'Communication claire',
+        description: 'Créneau confirmé 48h avant, rappel des accès et des points sensibles.',
+        icon: 'tabler:message-circle',
       },
       {
-        title: 'Esprit durable',
-        description:
-          'Sélection de partenaires responsables et optimisation des ressources pour réduire l’empreinte carbone de chaque site.',
-        icon: 'tabler:leaf',
+        title: 'Éco-gestes',
+        description: 'Réutilisation des protections, tri et reprise des cartons quand c’est possible.',
+        icon: 'tabler:recycle',
       },
     ]}
   >
@@ -123,41 +104,28 @@ const metadata = {
       <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
         <p class="text-sm uppercase tracking-[0.3em] text-blue-200/80">Présence locale</p>
         <p class="mt-4 max-w-sm text-lg text-blue-100/90">
-          Nous opérons depuis Lausanne, Genève, Vevey et Montreux pour rester au plus proche des réalités terrain de nos clients.
+          Une équipe basée en Suisse romande, habituée aux accès urbains comme aux routes alpines.
         </p>
       </div>
     </Fragment>
   </Features3>
 
-  <!-- Steps2 Widget ****************** -->
-
   <Steps2
     title="Nos valeurs"
-    subtitle="Nous croyons à une technologie qui sert le business local, avec transparence et fiabilité."
+    subtitle="Fiabilité, proximité et transparence pour chaque déménagement."
     items={[
       {
         title: 'Précision',
-        description:
-          'Chaque ligne de contenu et chaque pixel sont vérifiés par un contrôle qualité humain avant mise en production.',
+        description: 'Check-list des accès, protections adaptées et respect des horaires convenus.',
       },
       {
         title: 'Clarté',
-        description:
-          'Des offres tout inclus, des factures suisses et des indicateurs partagés en temps réel avec nos clients.',
+        description: 'Devis détaillé, TVA incluse et suivi simple par téléphone ou email.',
       },
       {
         title: 'Proximité',
-        description:
-          'Nous accompagnons nos clients sur la durée avec un interlocuteur dédié et des points trimestriels offerts.',
+        description: 'Chef d’équipe identifié, capable de décider rapidement en cas d’imprévu.',
       },
     ]}
   />
-
-  <!-- Steps2 Widget ****************** -->
-
-  
-
-  <!-- Features2 Widget ************** -->
-
-  
 </Layout>

@@ -9,7 +9,7 @@ const ENV = {
     import.meta.env.SITE_URL ??
     import.meta.env.PUBLIC_SITE_URL ??
     import.meta.env.ORIGIN ??
-    'https://www.tonsiteweb.ch',
+    'https://pedrodemenagement.ch',
 
   SUPABASE_URL:
     process.env.SUPABASE_URL ?? import.meta.env.SUPABASE_URL ?? '',
@@ -51,10 +51,10 @@ const ENV = {
   SUPPORT_EMAIL:
     process.env.SENDER_EMAIL ??
     import.meta.env.SENDER_EMAIL ??
-    'support@tonsiteweb.ch',
+    'hello@pedrodemenagement.ch',
 
   SENDER_NAME:
-    process.env.SENDER_NAME ?? import.meta.env.SENDER_NAME ?? 'TonSiteWeb',
+    process.env.SENDER_NAME ?? import.meta.env.SENDER_NAME ?? 'Pedro Déménagement',
 
   ZAPIER_WEBHOOK_URL:
     process.env.ZAPIER_WEBHOOK_URL ?? import.meta.env.ZAPIER_WEBHOOK_URL ?? '',
