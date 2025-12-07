@@ -526,4 +526,3 @@ create table if not exists public.subscription_events (
   event_type text not null,
   payload jsonb default '{}'::jsonb
 );
-

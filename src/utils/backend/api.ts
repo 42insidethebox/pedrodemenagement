@@ -6,6 +6,15 @@ export type AuthFetchOptions = RequestInit & {
   parseJson?: boolean;
 };
 
+function buildApiUrl(path: string) {
+  const normalized = path.startsWith('/') ? path : `/${path}`;
+  // Allow callers to pass full backend paths without double-prefixing
+  if (normalized.startsWith('/api/')) {
+    return normalized;
+  }
+  return `/api/backend${normalized}`;
+}
+
 function getStoredToken(key: string) {
   if (typeof window === 'undefined') return null;
   try {
@@ -39,7 +48,7 @@ export async function authFetch(path: string, options: AuthFetchOptions = {}) {
   }
 
   const { parseJson = true, headers, ...rest } = options;
-  const response = await fetch(`/api/backend${path}`, {
+  const response = await fetch(buildApiUrl(path), {
     ...rest,
     headers: {
       'Content-Type': 'application/json',
