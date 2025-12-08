@@ -1,6 +1,9 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "functions": {
+    "runtime": "nodejs20.x"
+  },
   "headers": [
     {
       "source": "/_astro/(.*)",

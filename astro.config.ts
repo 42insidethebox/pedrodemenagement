@@ -1,6 +1,6 @@
 // astro.config.ts
 import { defineConfig } from "astro/config";
-import vercel from "@astrojs/vercel";
+import vercel from "@astrojs/vercel/serverless";
 import icon from "astro-icon";
 import tailwind from "@astrojs/tailwind";
 import path from "path";
@@ -13,8 +13,11 @@ export default defineConfig({
   base: "/",
   trailingSlash: "never",
   output: "server",
-  adapter: vercel(),
-  prerender: true,
+  adapter: vercel({
+    runtime: "nodejs20.x",
+  }),
+  // prerender is typically disabled when using serverless output
+  // prerender: true,
   integrations: [tailwind({ applyBaseStyles: false }), icon()],
   vite: {
     resolve: {
