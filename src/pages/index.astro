@@ -17,33 +17,53 @@ const metadata = {
   description: 'Équipe locale, protection du mobilier et planning maîtrisé pour déménager sereinement en Suisse romande.',
 };
 ---
-
 <Layout metadata={metadata}>
   <Hero
     id="process"
+    class="hero-bg"
     actions={[
       { variant: 'primary', text: 'Obtenir un devis', href: '/contact#form', icon: 'tabler:arrow-right' },
-      { text: 'Appeler le +41 21 555 24 24', href: 'tel:+41215552424' },
+{ 
+  icon: 'tabler:brand-whatsapp',
+  text: '+41 76 798 27 93', 
+  href: 'https://wa.me/41767982793'
+},
     ]}
   >
-    <Fragment slot="title">Déménagement rapide, efficace et sans stress</Fragment>
-    <Fragment slot="subtitle">
-      Camions, protections et équipe basés en Suisse romande. Nous planifions, emballons et transportons vos biens avec
-      soin, que ce soit pour un appartement, une maison ou un bureau.
+
+    <!-- 🌄 THIS IS THE CORRECT BACKGROUND IMAGE -->
+    <Fragment slot="bg">
+      <img
+        src="https://cdn.midjourney.com/38f6c900-29b6-4cc3-a859-1513ce5cad93/0_1.png"
+        alt="Hero background"
+        class="absolute inset-0 w-full h-full object-cover"
+      />
+      <div class="absolute inset-0 bg-white/20"></div>
     </Fragment>
 
-    <Fragment slot="image">
-      <div class="relative aspect-[4/3] overflow-hidden rounded-2xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-left text-white shadow-2xl">
-        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Jour J maîtrisé</p>
-        <h4 class="mt-4 text-3xl font-semibold">Planification → Protection → Transport</h4>
-        <p class="mt-6 max-w-xl text-lg text-blue-100/90">
-          Chef d’équipe dédié, check-list des accès et protections sol/murs pour un déménagement sans surprises.
-        </p>
-      </div>
+    <Fragment slot="title">
+      Déménagement rapide, efficace et sans stress
     </Fragment>
+
+    <Fragment slot="subtitle">
+      Équipe basée en Suisse romande. Nous planifions, emballons et transportons vos biens avec soin, que ce soit pour un appartement, une maison ou un bureau.
+    </Fragment>
+
+<Fragment slot="image">
+  <div class="relative aspect-[4/3] overflow-hidden rounded-2xl
+              bg-gradient-to-br from-blue-700/70 via-slate-900/70 to-slate-800/70
+              p-10 text-left text-white shadow-2xl backdrop-blur-sm">
+    <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Jour J maîtrisé</p>
+    <h4 class="mt-4 text-3xl font-semibold">Planification → Protection → Transport</h4>
+    <p class="mt-6 max-w-xl text-lg text-blue-100/90">
+      Chef d’équipe dédié, check-list des accès et protections sol/murs pour un déménagement sans surprises.
+    </p>
+  </div>
+</Fragment>
+
+
   </Hero>
 
-  <Note title="Engagement local" description="Entreprise lémanique, assurance RC pro incluse et planning transparent. Nous intervenons entre Genève, Lausanne, Vevey et toute la Suisse romande." />
 
   <Features
     id="features"
@@ -99,15 +119,31 @@ const metadata = {
       Vous savez qui vient, avec quel camion et à quelle heure. Nous validons chaque étape avant le jour J.
     </Fragment>
 
-    <Fragment slot="image">
-      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl">
-        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Planning</p>
-        <h4 class="mt-4 text-3xl font-semibold">Rendez-vous confirmé 48h avant</h4>
-        <p class="mt-6 max-w-xs text-base text-blue-100/90">
-          Check-list d’accès, confirmation du créneau et rappel des points clés.
-        </p>
-      </div>
-    </Fragment>
+<Fragment slot="image">
+  <div class="relative aspect-[4/3] overflow-hidden rounded-xl shadow-xl">
+
+    <!-- Background image for this specific card -->
+    <img
+      src="https://cdn.midjourney.com/a9b9537f-0b48-4664-8f73-6a955efc0123/0_3.png"
+      class="absolute inset-0 w-full h-full object-cover"
+      alt="Planning background"
+    />
+
+    <!-- Semi-transparent blue gradient overlay (same style as card #1) -->
+    <div class="absolute inset-0 bg-gradient-to-br
+                from-blue-600/70 via-slate-900/70 to-slate-800/70
+                backdrop-blur-sm"></div>
+
+    <!-- Card content stays crisp -->
+    <div class="relative p-10 text-left text-white">
+      <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Planning</p>
+      <h4 class="mt-4 text-3xl font-semibold">Rendez-vous confirmé 48h avant</h4>
+      <p class="mt-6 max-w-xs text-base text-blue-100/90">
+        Check-list d’accès, confirmation du créneau et rappel des points clés.
+      </p>
+    </div>
+  </div>
+</Fragment>
 
     <Fragment slot="bg">
       <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
@@ -140,14 +176,31 @@ const metadata = {
       },
     ]}
   >
-    <Fragment slot="image">
-      <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
-        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Disponibilité</p>
-        <p class="mt-6 max-w-xs text-base text-blue-100/90">
-          Interventions sur l’Arc lémanique et déplacements longue distance sur demande.
-        </p>
-      </div>
-    </Fragment>
+<Fragment slot="image">
+  <div class="relative aspect-[3/4] overflow-hidden rounded-xl shadow-xl">
+
+    <!-- Background image -->
+    <img
+      src="https://cdn.midjourney.com/8fb2760d-3cd8-4d48-a430-b4c143f548e6/0_3.png"
+      alt="Disponibilité background"
+      class="absolute inset-0 w-full h-full object-cover"
+    />
+
+    <!-- Semi-transparent blue/black gradient overlay -->
+    <div class="absolute inset-0 bg-gradient-to-br
+                from-slate-900/70 via-slate-800/70 to-blue-700/70
+                backdrop-blur-sm"></div>
+
+    <!-- Foreground content (text) -->
+    <div class="relative p-10 text-white">
+      <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Disponibilité</p>
+      <p class="mt-6 max-w-xs text-base text-blue-100/90">
+        Interventions sur l’Arc lémanique et déplacements longue distance sur demande.
+      </p>
+    </div>
+  </div>
+</Fragment>
+
   </Steps>
 
   <Content
@@ -161,16 +214,23 @@ const metadata = {
   >
     <Fragment slot="content">Tout le nécessaire pour un déménagement soigné, sans charge mentale.</Fragment>
 
-    <Fragment slot="image">
-      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
-        <h4 class="text-3xl font-semibold">Prêt pour le jour J</h4>
-        <ul class="mt-6 space-y-3 text-left text-blue-100/90">
-          <li>✓ Chef d’équipe identifié</li>
-          <li>✓ Camion adapté au volume</li>
-          <li>✓ Protections et outillage fournis</li>
-        </ul>
-      </div>
-    </Fragment>
+<Fragment slot="image">
+  <div
+    class="relative aspect-[4/3] overflow-hidden rounded-xl p-10 text-white shadow-xl bg-cover bg-center"
+    style="
+      background-image:
+        linear-gradient(to bottom right, rgba(15, 23, 42, 0.65), rgba(30, 41, 59, 0.55), rgba(29, 78, 216, 0.45)),
+        url('https://cdn.midjourney.com/22c7cfae-6033-4dbb-a044-216b23d2504b/0_3.png');
+    "
+  >
+    <h4 class="text-3xl font-semibold">Prêt pour le jour J</h4>
+    <ul class="mt-6 space-y-3 text-left text-blue-100/90">
+      <li>✓ Chef d’équipe identifié</li>
+      <li>✓ Camion adapté au volume</li>
+      <li>✓ Protections et outillage fournis</li>
+    </ul>
+  </div>
+</Fragment>
 
     <Fragment slot="bg">
       <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
@@ -185,26 +245,14 @@ const metadata = {
     items={[
       { title: 'Emballage & déballage', description: 'Cartons, penderies, protections vaisselle et emballage des objets fragiles.', icon: 'tabler:package' },
       { title: 'Démontage / remontage', description: 'Meubles, lits, armoires et dressing remontés proprement à l’arrivée.', icon: 'tabler:tools' },
-      { title: 'Monte-meubles', description: 'Pour les accès étroits ou les étages élevés, avec opérateur dédié.', icon: 'tabler:stairs-up' },
       { title: 'Objets lourds', description: 'Pianos, coffres, frigos américains ou machines sensibles.', icon: 'tabler:weight' },
-      { title: 'Stockage temporaire', description: 'Solution de garde-meuble court terme en Suisse romande.', icon: 'tabler:building-warehouse' },
-      { title: 'Nettoyage de sortie', description: 'Option ménage de fin de bail pour rendre votre logement en ordre.', icon: 'tabler:broom' },
+      { title: 'Nettoyage de sortie', description: 'Option ménage de fin de bail pour rendre votre logement en ordre.', icon: 'tabler:sparkles' },
     ]}
   >
     <Fragment slot="bg">
       <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
     </Fragment>
   </Features2>
-
-  <Stats
-    title="Repères rapides"
-    stats={[
-      { title: 'Réponse devis', amount: 'sous 24h' },
-      { title: 'Zone', amount: 'Arc lémanique' },
-      { title: 'Équipe', amount: '3 à 6 déménageurs' },
-      { title: 'Camions', amount: '20–30 m³' },
-    ]}
-  />
 
   <FAQs
     id="faq"

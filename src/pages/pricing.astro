@@ -13,11 +13,30 @@ const metadata = {
 ---
 
 <Layout metadata={metadata}>
-  <HeroText
-    tagline="Tarifs"
-    title="Des fourchettes claires, en francs suisses"
-    subtitle="Les prix varient selon le volume, les accès et les options (emballage, monte-meubles, nettoyage, longue distance)."
-  />
+<div
+  class="relative overflow-hidden"
+  style="
+    background-image:
+      linear-gradient(
+        to bottom right,
+       rgba(168, 169, 171, 0.44),
+          rgba(238, 242, 248, 0.65),
+          rgba(2, 6, 23, 0.29)
+      ),
+      url('https://cdn.midjourney.com/a77566b7-f74c-4618-b6a8-4192337a9249/0_1.png');
+    background-size: cover;
+    background-position: center;
+  "
+>
+  <div class="relative z-10 py-20">
+    <HeroText
+      tagline="Tarifs"
+      title="Des fourchettes claires, en francs suisses"
+      subtitle="Les prix varient selon le volume, les accès et les options (emballage, monte-meubles, nettoyage, longue distance)."
+    />
+  </div>
+</div>
+
 
   <Prices
     title="Nos repères tarifaires"
@@ -33,7 +52,7 @@ const metadata = {
           { description: 'Protection des meubles et matelas' },
           { description: 'Chargement + transport + installation' },
         ],
-        callToAction: '<a class="btn btn-primary" href="/contact#form">Demander un devis</a>',
+        callToAction: '<a class="btn btn-primary" href="/contact#form">Réserver ma date</a>',
       },
       {
         title: 'Déménagement moyen',
@@ -41,7 +60,7 @@ const metadata = {
         price: '1500–2800',
         period: 'fourchette typique',
         items: [
-          { description: 'Camion 30 m³ + 3-4 déménageurs' },
+          { description: 'Camion 20 m³ + 2-3 déménageurs' },
           { description: 'Démontage/remontage essentiel' },
           { description: 'Emballage fragile en option' },
         ],
@@ -59,7 +78,7 @@ const metadata = {
           { description: 'Monte-meubles ou double camion si besoin' },
           { description: 'Emballage complet disponible' },
         ],
-        callToAction: '<a class="btn btn-primary" href="/contact#form">Fixer une visite</a>',
+        callToAction: '<a class="btn btn-primary" href="/contact#form">Demander un devis</a>',
       },
     ]}
   />
@@ -74,7 +93,7 @@ const metadata = {
       { title: 'Emballage & déballage', description: 'Cartons, penderies, vaisselle et emballage fragile si demandé.', icon: 'tabler:package' },
       { title: 'Objets lourds', description: 'Pianos, coffres, frigos américains ou armoires massives.', icon: 'tabler:weight' },
       { title: 'Monte-meubles', description: 'Gestion des accès difficiles avec opérateur dédié.', icon: 'tabler:stairs-up' },
-      { title: 'Nettoyage de sortie', description: 'Option ménage pour rendre le logement en ordre.', icon: 'tabler:broom' },
+      { title: 'Nettoyage de sortie', description: 'Option ménage pour rendre le logement en ordre.', icon: 'tabler:sparkles' },
     ]}
     classes={{ container: 'max-w-5xl' }}
   />
@@ -106,14 +125,28 @@ const metadata = {
       },
     ]}
   >
-    <Fragment slot="image">
-      <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-white shadow-xl">
-        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Transparence</p>
-        <p class="mt-6 max-w-xs text-base text-blue-100/90">
-          Prix en CHF, TVA incluse, sans frais cachés. Ajustements si le volume diffère le jour J.
-        </p>
-      </div>
-    </Fragment>
+<Fragment slot="image">
+  <div
+    class="relative aspect-[3/4] overflow-hidden rounded-xl p-10 text-white shadow-xl bg-center bg-cover"
+    style="
+      background-image:
+        linear-gradient(
+          to bottom right,
+          rgba(15, 23, 42, 0.7),
+          rgba(30, 41, 59, 0.65),
+          rgba(2, 6, 23, 0.5)
+        ),
+        url('https://cdn.midjourney.com/13fe8721-e114-4be1-9fa2-67065ee5822b/0_0.png');
+    "
+  >
+    <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Transparence</p>
+
+    <p class="mt-6 max-w-xs text-base text-blue-100/90">
+      Prix en CHF, TVA incluse, sans frais cachés. Ajustements si le volume diffère le jour J.
+    </p>
+  </div>
+</Fragment>
+
   </Steps>
 
   <FAQs

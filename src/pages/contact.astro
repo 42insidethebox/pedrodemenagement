@@ -10,7 +10,32 @@ const metadata = {
 ---
 
 <Layout metadata={metadata}>
-  <HeroText tagline="Contact" title="Parlons de votre déménagement" subtitle="Un conseiller Pedro Déménagement vous répond sous 24h." />
+<div
+  class="relative overflow-hidden py-20
+         [&_h1]:text-blue-500
+         [&_h2]:text-blue-500
+         [&_p]:text-white
+         [&_.tagline]:text-blue-500"
+  style="
+    background-image:
+      linear-gradient(
+        to bottom right,
+        rgba(15, 23, 42, 0.55),
+        rgba(30, 41, 59, 0.50),
+        rgba(2, 6, 23, 0.40)
+      ),
+      url('https://cdn.midjourney.com/b3fc4c04-1daa-4974-a323-3e514c50c433/0_1.png');
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+  "
+>
+  <HeroText
+    tagline="Contact"
+    title="Parlons de votre déménagement"
+    subtitle="Un conseiller Pedro Déménagement vous répond sous 24h."
+  />
+</div>
 
   <ContactUs
     id="form"
@@ -53,7 +78,7 @@ const metadata = {
       { title: 'Email', description: 'pedro@pedrodemenagement.ch', icon: 'tabler:mail' },
       { title: 'Adresse', description: '1003 Lausanne', icon: 'tabler:map-pin' },
       { title: 'Disponibilité', description: 'Du lundi au samedi, 8h00 – 18h00', icon: 'tabler:calendar-time' },
-      { title: 'Zone', description: 'Lausanne, Riviera, Genève, Valais et longue distance sur demande', icon: 'tabler:world' },
+      { title: 'Zone', description: 'Lausanne, Riviera,Genève, Valais et longue distance sur demande', icon: 'tabler:world' },
     ]}
   />
 </Layout>

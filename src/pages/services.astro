@@ -18,15 +18,28 @@ const metadata = {
     subtitle="Appartement, maison, bureau ou longue distance : nous préparons, protégeons et transportons vos biens avec une équipe locale."
     actions={[{ variant: 'primary', text: 'Obtenir un devis', href: '/contact#form' }]}
   >
-    <Fragment slot="image">
-      <div class="relative aspect-[5/3] overflow-hidden rounded-2xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-left text-white shadow-2xl">
-        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Interventions planifiées</p>
-        <h4 class="mt-4 text-4xl font-semibold">Protection · Transport · Installation</h4>
-        <p class="mt-6 max-w-xl text-lg text-blue-100/90">
-          Camions 20–30 m³, protections complètes et chef d’équipe dédié pour un jour J sans stress.
-        </p>
-      </div>
-    </Fragment>
+<Fragment slot="image">
+  <div
+    class="relative aspect-[5/3] overflow-hidden rounded-2xl p-10 text-left text-white shadow-2xl bg-cover bg-center"
+    style="
+      background-image:
+        linear-gradient(
+          to bottom right,
+          rgba(29, 78, 216, 0.55),
+          rgba(15, 23, 42, 0.55),
+          rgba(2, 6, 23, 0.55)
+        ),
+        url('https://cdn.midjourney.com/3d5f08bc-a2ad-4e7d-accb-aa52b19417b9/0_0.png');
+    "
+  >
+    <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Interventions planifiées</p>
+    <h4 class="mt-4 text-4xl font-semibold">Protection · Transport · Installation</h4>
+    <p class="mt-6 max-w-xl text-lg text-blue-100/90">
+      Camions 20–30 m³, protections complètes et chef d’équipe dédié pour un jour J sans stress.
+    </p>
+  </div>
+</Fragment>
+
   </Hero>
 
   <Features2
@@ -58,14 +71,27 @@ const metadata = {
       Du studio à la maison familiale, nous gérons l’ensemble des étapes avec du matériel adapté et une équipe dimensionnée.
     </Fragment>
 
-    <Fragment slot="image">
-      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl">
-        <h4 class="text-3xl font-semibold">Arc lémanique & Suisse</h4>
-        <p class="mt-6 max-w-sm text-blue-100/90">
-          Genève, Lausanne, Vevey, Montreux, Valais et déplacements longue distance selon vos besoins.
-        </p>
-      </div>
-    </Fragment>
+<Fragment slot="image">
+  <div
+    class="relative aspect-[4/3] overflow-hidden rounded-xl p-10 text-left text-white shadow-xl bg-cover bg-center"
+    style="
+      background-image:
+        linear-gradient(
+          to bottom right,
+          rgba(29, 78, 216, 0.55),
+          rgba(15, 23, 42, 0.55),
+          rgba(2, 6, 23, 0.55)
+        ),
+        url('https://cdn.midjourney.com/862dd141-8959-4426-ac28-2f9949466e4c/0_0.png');
+    "
+  >
+    <h4 class="text-3xl font-semibold">Arc lémanique & Suisse</h4>
+    <p class="mt-6 max-w-sm text-blue-100/90">
+      Genève, Lausanne, Vevey, Montreux, Valais et déplacements longue distance selon vos besoins.
+    </p>
+  </div>
+</Fragment>
+
   </Content>
 
   <Content
@@ -73,8 +99,8 @@ const metadata = {
     isAfterContent
     items={[
       { title: 'Cartons & penderies', description: 'Fourniture de cartons, penderies et protections vaisselle.', icon: 'tabler:box' },
-      { title: 'Démontage/remontage', description: 'Meubles, dressing, literie et luminaires démontés puis remontés.', icon: 'tabler:screwdriver' },
-      { title: 'Nettoyage de sortie', description: 'Option ménage pour rendre votre logement en ordre.', icon: 'tabler:broom' },
+      { title: 'Démontage/remontage', description: 'Meubles, dressing, literie et luminaires démontés puis remontés.', icon: 'tabler:tools' },
+      { title: 'Nettoyage de sortie', description: 'Option ménage pour rendre votre logement en ordre.', icon: 'tabler:sparkles' },
       { title: 'Stockage temporaire', description: 'Solution courte durée pour lisser vos délais de remise des clés.', icon: 'tabler:building-warehouse' },
     ]}
   >
@@ -83,14 +109,27 @@ const metadata = {
       Sélectionnez seulement ce dont vous avez besoin : emballage complet, monte-meubles, stockage ou nettoyage.
     </Fragment>
 
-    <Fragment slot="image">
-      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
-        <h4 class="text-3xl font-semibold">Options flexibles</h4>
-        <p class="mt-6 max-w-sm text-blue-100/90">
-          Nous adaptons l’équipe, le matériel et les créneaux horaires à vos contraintes de bail, d’ascenseur ou de route.
-        </p>
-      </div>
-    </Fragment>
+<Fragment slot="image">
+  <div
+    class="relative aspect-[4/3] overflow-hidden rounded-xl p-10 text-white shadow-xl bg-cover bg-center"
+    style="
+      background-image:
+        linear-gradient(
+          to bottom right,
+          rgba(29, 78, 216, 0.55),
+          rgba(15, 23, 42, 0.55),
+          rgba(2, 6, 23, 0.55)
+        ),
+        url('https://cdn.midjourney.com/c8f8f7ac-5224-4c0e-9c23-226281654774/0_3.png');
+    "
+  >
+    <h4 class="text-3xl font-semibold">Options flexibles</h4>
+    <p class="mt-6 max-w-sm text-blue-100/90">
+      Nous adaptons l’équipe, le matériel et les créneaux horaires à vos contraintes de bail, d’ascenseur ou de route.
+    </p>
+  </div>
+</Fragment>
+
   </Content>
 
   <Features2
@@ -100,11 +139,8 @@ const metadata = {
     columns={3}
     items={[
       { title: 'Chef d’équipe dédié', description: 'Un interlocuteur qui coordonne les horaires et les accès.', icon: 'tabler:headset' },
-      { title: 'Assurance RC pro', description: 'Responsabilité civile professionnelle incluse.', icon: 'tabler:shield-lock' },
       { title: 'Protections complètes', description: 'Housses matelas, couvertures, sangles, chariots, outillage.', icon: 'tabler:box' },
-      { title: 'Check-list accès', description: 'Vérification des parkings, ascenseurs et autorisations.', icon: 'tabler:clipboard-check' },
       { title: 'Créneaux fiables', description: 'Arrivée confirmée 48h avant, créneau matin ou après-midi.', icon: 'tabler:calendar-time' },
-      { title: 'Facturation claire', description: 'Prix en CHF, TVA incluse et sans frais cachés.', icon: 'tabler:receipt' },
     ]}
   />
 

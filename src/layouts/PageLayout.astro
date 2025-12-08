@@ -3,7 +3,9 @@ import Layout from '~/layouts/Layout.astro';
 import Header from '~/components/widgets/Header.astro';
 import Footer from '~/components/widgets/Footer.astro';
 
-import { headerData, footerData } from '~/navigation';
+import { buildHeaderData, buildFooterData } from '~/navigation';
+import { getBrandFromHost } from '~/lib/brand';
+import { BRANDS } from '~/lib/brands.config';
 
 import type { MetaData } from '~/types';
 
@@ -12,18 +14,24 @@ export interface Props {
   header?: typeof headerData;
   footer?: typeof footerData;
 }
-const { metadata, header = headerData, footer = footerData } = Astro.props as Props;
+const host = Astro.request.headers.get('host');
+const brandKey = getBrandFromHost(host);
+const brand = BRANDS[brandKey];
+
+const resolvedHeader = Astro.props.header ?? buildHeaderData(brand);
+const resolvedFooter = Astro.props.footer ?? buildFooterData(brand);
+const { metadata } = Astro.props as Props;
 ---
 
 <Layout metadata={metadata}>
   <slot name="announcement"></slot>
   <slot name="header">
-    <Header {...header} isSticky showToggleTheme />
+    <Header {...resolvedHeader} isSticky showToggleTheme />
   </slot>
   <main>
     <slot />
   </main>
   <slot name="footer">
-    <Footer {...footer} />
+    <Footer {...resolvedFooter} />
   </slot>
 </Layout>
