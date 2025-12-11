@@ -5,6 +5,7 @@ import { BRANDS } from './lib/brands.config';
 type Navigation = {
   links: { text: string; href: string }[];
   actions: { text: string; href: string }[];
+  brandName?: string;
 };
 
 type FooterNavigation = {
@@ -16,7 +17,7 @@ type FooterNavigation = {
 
 type NavigationBrand = Pick<BrandProfile, 'name' | 'email' | 'phone' | 'legalOperator'>;
 
-export const buildHeaderData = (_brand: NavigationBrand): Navigation => ({
+export const buildHeaderData = (brand: NavigationBrand): Navigation => ({
   links: [
     { text: 'Accueil', href: getPermalink('/') },
     { text: 'Services', href: getPermalink('/services') },
@@ -24,6 +25,7 @@ export const buildHeaderData = (_brand: NavigationBrand): Navigation => ({
     { text: 'Contact', href: getPermalink('/contact') },
   ],
   actions: [{ text: 'Réserver un déménagement', href: getPermalink('/contact#form') }],
+  brandName: brand.name,
 });
 
 export const buildFooterData = (brand: NavigationBrand): FooterNavigation => ({

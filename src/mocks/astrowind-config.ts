@@ -10,7 +10,7 @@ export const SITE = {
   googleSiteVerificationId: "",
 };
 
-export const UI = { theme: "dark" };
+export const UI = { theme: "light" };
 
 export const I18N = {
   language: "fr",
