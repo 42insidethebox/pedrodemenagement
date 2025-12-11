@@ -19,9 +19,9 @@ const metadata = {
     background-image:
       linear-gradient(
         to bottom right,
-       rgba(168, 169, 171, 0.44),
-          rgba(238, 242, 248, 0.65),
-          rgba(2, 6, 23, 0.29)
+       rgba(168, 169, 171, 0.33),
+          rgba(238, 242, 248, 0.3),
+          rgba(2, 6, 23, 0.35)
       ),
       url('https://cdn.midjourney.com/a77566b7-f74c-4618-b6a8-4192337a9249/0_1.png');
     background-size: cover;
@@ -103,11 +103,11 @@ const metadata = {
     tagline="Processus"
     isReversed={true}
     items={[
-      {
-        title: '1. Estimation du volume',
-        description: 'Visio ou visite selon le projet : meubles, cartons, objets lourds.',
-        icon: 'tabler:ruler',
-      },
+    {
+		title: '1. Estimation du volume',
+		description: 'Idéalement via formulaire pour gagner du temps, mais une visio ou une visite sur place reste possible si nécessaire.',
+		icon: 'tabler:ruler',
+		},
       {
         title: '2. Accès et contraintes',
         description: 'Étages, ascenseurs, parkings, distance à pied, autorisations.',
@@ -132,9 +132,9 @@ const metadata = {
       background-image:
         linear-gradient(
           to bottom right,
-          rgba(15, 23, 42, 0.7),
-          rgba(30, 41, 59, 0.65),
-          rgba(2, 6, 23, 0.5)
+    rgba(29, 78, 216, 0.55),
+          rgba(15, 23, 42, 0.55),
+          rgba(2, 6, 23, 0.55)
         ),
         url('https://cdn.midjourney.com/13fe8721-e114-4be1-9fa2-67065ee5822b/0_0.png');
     "
@@ -154,9 +154,14 @@ const metadata = {
     subtitle="Des réponses claires avant d’accepter notre devis."
     items={[
       { title: 'Le prix est-il fixe ?', description: 'Oui après validation du devis. Seuls les volumes ou options ajoutées le jour J peuvent ajuster le montant.' },
-      { title: 'Proposez-vous des visites ?', description: 'Pour les volumes moyens/grands, nous planifions une visio ou une visite sur place.' },
-      { title: 'Quid des péages/autoroutes ?', description: 'Inclus dans le devis. Pour les trajets internationaux, nous détaillons les coûts éventuels.' },
-      { title: 'Pouvez-vous stocker mes affaires ?', description: 'Oui, nous proposons une solution de stockage courte durée sur demande.' },
+{
+  title: 'Proposez-vous des visites ?',
+  description: 'Oui, une visite sur place est possible (service payant). Dans la majorité des cas, le formulaire suffit pour établir un devis précis.',
+},
+{
+  title: 'Quid des péages / autoroutes ?',
+  description: '150 km sont inclus (trajet Lausanne → point A → point B). Au-delà, les kilomètres supplémentaires et péages éventuels sont facturés de manière transparente.',
+},
       { title: 'Acceptez-vous les déménagements urgents ?', description: 'Selon disponibilités, nous pouvons mobiliser une équipe sous 72h.' },
     ]}
   />

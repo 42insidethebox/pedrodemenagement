@@ -20,11 +20,11 @@ const metadata = {
     background-image:
       linear-gradient(
         to bottom right,
-        rgba(15, 23, 42, 0.55),
-        rgba(30, 41, 59, 0.50),
-        rgba(2, 6, 23, 0.40)
+        rgba(29, 78, 216, 0.55),
+          rgba(15, 23, 42, 0.55),
+          rgba(2, 6, 23, 0.55)
       ),
-      url('https://cdn.midjourney.com/b3fc4c04-1daa-4974-a323-3e514c50c433/0_1.png');
+      url('https://cdn.midjourney.com/9a556e23-12cc-473e-a2b2-8b7462dd7d45/0_2.png');
     background-size: 100%;
     background-position: center;
     background-repeat: no-repeat;
@@ -39,46 +39,515 @@ const metadata = {
 
   <ContactUs
     id="form"
-    title="Obtenir un devis"
-    subtitle="Indiquez vos adresses, votre volume et la date souhaitée. Nous revenons avec un chiffrage clair."
+    title="Obtenir un devis précis"
+    subtitle="Formulaire complet pour un chiffrage clair dès le premier échange."
     inputs={[
-      { type: 'text', name: 'name', label: 'Nom et prénom' },
-      { type: 'tel', name: 'phone', label: 'Téléphone' },
-      { type: 'text', name: 'from', label: 'Adresse de départ' },
-      { type: 'text', name: 'to', label: 'Adresse d’arrivée' },
-      { type: 'date', name: 'date', label: 'Date souhaitée' },
+      { type: 'section', name: 'section_essentiel', label: '1. Infos essentielles' },
+      { type: 'text', name: 'name', label: 'Nom et prénom', required: true, requiredMessage: 'Nous avons besoin de votre nom pour vous contacter.' },
+      { type: 'tel', name: 'phone', label: 'Téléphone', required: true, requiredMessage: 'Un numéro permet de confirmer les accès et l’horaire.' },
+      { type: 'email', name: 'email', label: 'Email', required: true, requiredMessage: 'Email pour envoyer votre devis.' },
+
+      { type: 'section', name: 'section_depart', label: '2. Adresse de départ' },
+      { type: 'text', name: 'from', label: 'Adresse de départ (rue + n°)', required: true, requiredMessage: 'Adresse nécessaire pour estimer accès et distance.' },
+      { type: 'text', name: 'from_zip', label: 'Code postal (départ)', required: true },
+      { type: 'text', name: 'from_city', label: 'Ville (départ)', required: true },
+      { type: 'date', name: 'date', label: 'Date souhaitée', required: true },
+      {
+        type: 'select',
+        name: 'flexibility',
+        label: 'Flexibilité',
+        required: true,
+        options: [
+          { label: 'Fixe', value: 'fixed' },
+          { label: '± 1 jour', value: '1day' },
+          { label: '± 3 jours', value: '3day' },
+          { label: 'Flexible', value: 'flex' },
+        ],
+      },
+      {
+        type: 'select',
+        name: 'time_window',
+        label: 'Flexibilité horaire le jour J',
+        options: [
+          { label: 'Arrivée fixe', value: 'fixed' },
+          { label: 'Créneau matin', value: 'morning' },
+          { label: 'Créneau après-midi', value: 'afternoon' },
+          { label: 'Flexible', value: 'flex' },
+        ],
+      },
+      {
+        type: 'select',
+        name: 'parking_from',
+        label: 'Parking camion (départ)',
+        required: true,
+        helper: 'Permet de prévoir le temps de portage.',
+        options: [
+          { label: 'Facile devant', value: 'easy' },
+          { label: 'Moyen (rue/parking)', value: 'medium' },
+          { label: 'Difficile (rue étroite/loin)', value: 'hard' },
+        ],
+      },
+      {
+        type: 'select',
+        name: 'parking_legality',
+        label: 'Stationnement autorisé devant l’immeuble ?',
+        options: [
+          { label: 'Oui', value: 'yes' },
+          { label: 'Non / incertain', value: 'no' },
+        ],
+      },
+      {
+        type: 'select',
+        name: 'permit',
+        label: 'Besoin de permis communal pour le camion ?',
+        options: [
+          { label: 'Non', value: 'no' },
+          { label: 'Oui', value: 'yes' },
+        ],
+      },
+      {
+        type: 'select',
+        name: 'access_from',
+        label: 'Ascenseur / étage (départ)',
+        required: true,
+        helper: 'Pour prévoir temps et protections.',
+        options: [
+          { label: 'Ascenseur grand', value: 'big' },
+          { label: 'Ascenseur petit', value: 'small' },
+          { label: 'Pas d’ascenseur', value: 'none' },
+        ],
+      },
+      {
+        type: 'text',
+        name: 'elevator_dimensions',
+        label: 'Dimensions ascenseur (si petit)',
+        placeholder: 'Ex: 195 cm x 80 cm',
+        helper: 'Pour savoir si un canapé/armoire passe.',
+        conditional: { source: 'access_from', showOn: ['small'] },
+      },
+      { type: 'number', name: 'floor_from', label: 'Étage (départ)', placeholder: 'Ex: 3', required: true },
+      {
+        type: 'select',
+        name: 'walk_from',
+        label: 'Distance à pied (départ)',
+        required: true,
+        helper: 'Portage extérieur jusqu’au camion.',
+        options: [
+          { label: '0–10 m', value: '0-10' },
+          { label: '10–40 m', value: '10-40' },
+          { label: '40 m +', value: '40+' },
+        ],
+      },
+      {
+        type: 'select',
+        name: 'stairs_from',
+        label: 'Escaliers (départ)',
+        required: true,
+        helper: 'Étroit/tournant augmente le temps.',
+        options: [
+          { label: 'Escaliers larges', value: 'wide' },
+          { label: 'Étroit / tournant', value: 'tight' },
+          { label: 'Colimaçon', value: 'spiral' },
+        ],
+      },
+      {
+        type: 'select',
+        name: 'hall_from',
+        label: 'Distance dans le bâtiment (départ)',
+        required: true,
+        helper: 'Couloirs / halls intérieurs.',
+        options: [
+          { label: '0–10 m', value: '0-10' },
+          { label: '10–30 m', value: '10-30' },
+          { label: '30 m +', value: '30+' },
+        ],
+      },
+      {
+        type: 'text',
+        name: 'area_events_from',
+        label: 'Rue fermée / marché / travaux (départ) ?',
+        placeholder: 'Ex: Marché samedi, rue fermée',
+      },
+      {
+        type: 'select',
+        name: 'access_person_from',
+        label: 'Quelqu’un sur place (départ) ?',
+        options: [
+          { label: 'Oui', value: 'yes' },
+          { label: 'Non – code / clé / concierge', value: 'no' },
+        ],
+      },
+
+      { type: 'section', name: 'section_arrivee', label: '3. Adresse d’arrivée' },
+      { type: 'text', name: 'to', label: 'Adresse d’arrivée (rue + n°)', required: true, requiredMessage: 'Adresse nécessaire pour estimer accès et distance.' },
+      { type: 'text', name: 'to_zip', label: 'Code postal (arrivée)', required: true },
+      { type: 'text', name: 'to_city', label: 'Ville (arrivée)', required: true },
+      {
+        type: 'select',
+        name: 'parking_to',
+        label: 'Parking camion (arrivée)',
+        required: true,
+        helper: 'Permet de prévoir le temps de portage.',
+        options: [
+          { label: 'Facile devant', value: 'easy' },
+          { label: 'Moyen (rue/parking)', value: 'medium' },
+          { label: 'Difficile (rue étroite/loin)', value: 'hard' },
+        ],
+      },
+      {
+        type: 'select',
+        name: 'access_to',
+        label: 'Ascenseur / étage (arrivée)',
+        required: true,
+        options: [
+          { label: 'Ascenseur grand', value: 'big' },
+          { label: 'Ascenseur petit', value: 'small' },
+          { label: 'Pas d’ascenseur', value: 'none' },
+        ],
+      },
+      {
+        type: 'text',
+        name: 'elevator_dimensions_to',
+        label: 'Dimensions ascenseur (arrivée, si petit)',
+        placeholder: 'Ex: 200 cm x 85 cm',
+        helper: 'Pour savoir si un canapé/armoire passe.',
+        conditional: { source: 'access_to', showOn: ['small'] },
+      },
+      { type: 'number', name: 'floor_to', label: 'Étage (arrivée)', placeholder: 'Ex: 2', required: true },
+      {
+        type: 'select',
+        name: 'walk_to',
+        label: 'Distance à pied (arrivée)',
+        required: true,
+        options: [
+          { label: '0–10 m', value: '0-10' },
+          { label: '10–40 m', value: '10-40' },
+          { label: '40 m +', value: '40+' },
+        ],
+      },
+      {
+        type: 'select',
+        name: 'stairs_to',
+        label: 'Escaliers (arrivée)',
+        required: true,
+        options: [
+          { label: 'Escaliers larges', value: 'wide' },
+          { label: 'Étroit / tournant', value: 'tight' },
+          { label: 'Colimaçon', value: 'spiral' },
+        ],
+      },
+      {
+        type: 'select',
+        name: 'hall_to',
+        label: 'Distance dans le bâtiment (arrivée)',
+        required: true,
+        options: [
+          { label: '0–10 m', value: '0-10' },
+          { label: '10–30 m', value: '10-30' },
+          { label: '30 m +', value: '30+' },
+        ],
+      },
+      {
+        type: 'text',
+        name: 'area_events_to',
+        label: 'Rue fermée / marché / travaux (arrivée) ?',
+        placeholder: 'Ex: Marché samedi, rue fermée',
+      },
+      {
+        type: 'select',
+        name: 'access_person',
+        label: 'Quelqu’un sur place (arrivée) ?',
+        options: [
+          { label: 'Oui', value: 'yes' },
+          { label: 'Non – code / clé / concierge', value: 'no' },
+        ],
+      },
+
+      { type: 'section', name: 'section_volume', label: '4. Volume principal' },
       {
         type: 'select',
         name: 'size',
         label: 'Taille du logement',
+        required: true,
         options: [
-          { label: 'Studio / 1 pièce', value: 'studio' },
-          { label: '2-3 pièces', value: '2-3' },
-          { label: '4 pièces et +', value: '4+' },
+          { label: 'Studio / 1 pièce', value: '1' },
+          { label: '2–3 pièces', value: '2-3' },
+          { label: '4–4.5 pièces', value: '4-4.5' },
+          { label: '5 pièces et +', value: '5+' },
           { label: 'Bureau / commerce', value: 'business' },
         ],
       },
+      { type: 'number', name: 'people', label: 'Personnes dans le foyer (approx.)', required: true },
+      { type: 'number', name: 'boxes', label: 'Cartons / sacs (approx.)', required: true },
+      { type: 'number', name: 'furniture_big', label: 'Grands meubles (canapé, lit, armoire, table...)', required: true },
+      { type: 'number', name: 'sofa_two', label: 'Canapés 2 places', placeholder: 'Ex: 1' },
+      { type: 'number', name: 'sofa_three', label: 'Canapés 3 places', placeholder: 'Ex: 1' },
+      { type: 'number', name: 'sofa_corner', label: 'Canapés angle / 5 places', placeholder: 'Ex: 1' },
+      { type: 'number', name: 'beds_double', label: 'Lits doubles', placeholder: 'Ex: 2' },
+      { type: 'number', name: 'beds_single', label: 'Lits simples', placeholder: 'Ex: 1' },
+      { type: 'number', name: 'wardrobes_large', label: 'Armoires / penderies (grandes)', placeholder: 'Ex: 2' },
+      { type: 'number', name: 'tables_large', label: 'Tables > 6 personnes', placeholder: 'Ex: 1' },
+
+      { type: 'section', name: 'section_secondaire', label: '5. Espaces secondaires' },
+      {
+        type: 'select',
+        name: 'balcony',
+        label: 'Terrasse / balcon',
+        required: true,
+        options: [
+          { label: 'Non', value: 'no' },
+          { label: 'Oui – peu d’objets', value: 'small' },
+          { label: 'Oui – beaucoup d’objets / plantes', value: 'large' },
+        ],
+      },
+      {
+        type: 'select',
+        name: 'cave',
+        label: 'Cave / grenier',
+        required: true,
+        options: [
+          { label: 'Aucun', value: 'none' },
+          { label: '25% rempli', value: '25' },
+          { label: '50% rempli', value: '50' },
+          { label: '75% rempli', value: '75' },
+          { label: '100% rempli', value: '100' },
+        ],
+      },
+      {
+        type: 'select',
+        name: 'storage_needed',
+        label: 'Besoin d’un stockage temporaire ?',
+        options: [
+          { label: 'Non', value: 'no' },
+          { label: 'Oui – court terme', value: 'short' },
+          { label: 'Oui – long terme', value: 'long' },
+        ],
+      },
+
+      { type: 'section', name: 'section_objets', label: '6. Objets lourds & fragiles' },
+      {
+        type: 'checkbox',
+        name: 'heavy',
+        label: 'Objets lourds',
+        required: true,
+        helper: 'Sélectionnez "Aucun" si rien ne s’applique. Poids max 200 kg.',
+        options: [
+          { label: 'Aucun', value: 'none' },
+          { label: 'Machine à laver / sèche-linge', value: 'laundry' },
+          { label: 'Frigo / congélateur', value: 'fridge' },
+          { label: 'Frigo américain', value: 'bigfridge' },
+          { label: 'Aquarium / coffre-fort', value: 'safe' },
+          { label: 'Piano', value: 'piano' },
+        ],
+      },
+      {
+        type: 'number',
+        name: 'heavy_count',
+        label: 'Nombre total d’objets lourds',
+        placeholder: 'Ex: 2',
+        conditional: { source: 'heavy[]', showIfAnyNot: ['none'] },
+      },
+      {
+        type: 'checkbox',
+        name: 'fragile',
+        label: 'Objets fragiles',
+        required: true,
+        helper: 'Pour prévoir protections spécifiques.',
+        options: [
+          { label: 'Aucun', value: 'none' },
+          { label: 'Table en verre / miroirs', value: 'glass' },
+          { label: 'Œuvres d’art', value: 'art' },
+          { label: 'TV > 65\"', value: 'tv' },
+          { label: 'Plantes > 1m', value: 'plants' },
+        ],
+      },
+      {
+        type: 'text',
+        name: 'bulky_dimensions',
+        label: 'Dimensions objets très volumineux (si applicable)',
+        placeholder: 'Ex: armoire PAX 240 x 100 x 60 cm',
+        conditional: { source: 'heavy[]', showIfAnyNot: ['none'] },
+      },
+      {
+        type: 'text',
+        name: 'long_items',
+        label: 'Objets longs (> 2 m)',
+        placeholder: 'Ex: Matelas 180x200, table 220 cm, miroir 2 m',
+        helper: 'Les objets longs compliquent les escaliers.',
+      },
+      {
+        type: 'checkbox',
+        name: 'high_value',
+        label: 'Objets de valeur (> CHF 2’000)',
+        options: [
+          { label: 'Aucun', value: 'none' },
+          { label: 'Tableaux / sculptures', value: 'art' },
+          { label: 'High-tech premium', value: 'tech' },
+          { label: 'Collections / vinyles', value: 'collection' },
+        ],
+      },
+      {
+        type: 'text',
+        name: 'value_estimate',
+        label: 'Valeur estimée / assurance souhaitée (si objet de valeur)',
+        conditional: { source: 'high_value[]', showIfAnyNot: ['none'] },
+      },
+      {
+        type: 'number',
+        name: 'value_amount',
+        label: 'Valeur totale estimée des objets de valeur (CHF)',
+        placeholder: 'Ex: 5000',
+        conditional: { source: 'high_value[]', showIfAnyNot: ['none'] },
+      },
+
+      { type: 'section', name: 'section_demontage', label: '7. Démontage & emballage' },
+      {
+        type: 'checkbox',
+        name: 'dismantling',
+        label: 'Démontage / remontage',
+        required: true,
+        options: [
+          { label: 'Lits / armoires', value: 'beds-wardrobe' },
+          { label: 'Tables / bureaux', value: 'tables-desks' },
+          { label: 'Canapés', value: 'sofas' },
+          { label: 'Autres', value: 'other' },
+        ],
+      },
+      {
+        type: 'number',
+        name: 'dismantling_beds',
+        label: 'Combien de lits / armoires ?',
+        placeholder: 'Ex: 2',
+        conditional: { source: 'dismantling[]', showOn: ['beds-wardrobe'] },
+      },
+      {
+        type: 'number',
+        name: 'dismantling_tables',
+        label: 'Combien de tables / bureaux ?',
+        placeholder: 'Ex: 1',
+        conditional: { source: 'dismantling[]', showOn: ['tables-desks'] },
+      },
+      {
+        type: 'number',
+        name: 'dismantling_sofas',
+        label: 'Combien de canapés ?',
+        placeholder: 'Ex: 1',
+        conditional: { source: 'dismantling[]', showOn: ['sofas'] },
+      },
+      {
+        type: 'text',
+        name: 'dismantling_other',
+        label: 'Autres éléments à démonter (précisez)',
+        placeholder: 'Quoi ?',
+        conditional: { source: 'dismantling[]', showOn: ['other'] },
+      },
+      {
+        type: 'select',
+        name: 'packing',
+        label: 'Emballage',
+        options: [
+          { label: 'Tout est emballé', value: 'ready' },
+          { label: 'Partiel (aide nécessaire)', value: 'partial' },
+          { label: 'Emballage complet requis', value: 'full' },
+        ],
+      },
+      {
+        type: 'checkbox',
+        name: 'materials',
+        label: 'Fourniture de matériel',
+        options: [
+          { label: 'Cartons', value: 'cartons' },
+          { label: 'Protections / bulles', value: 'bubble' },
+          { label: 'Housses canapé/lit', value: 'covers' },
+        ],
+      },
+
+      { type: 'section', name: 'section_options', label: '8. Options & contraintes' },
+      {
+        type: 'select',
+        name: 'outdoor_path',
+        label: 'Chemin extérieur',
+        required: true,
+        options: [
+          { label: 'Plat', value: 'flat' },
+          { label: 'En pente', value: 'slope' },
+          { label: 'Escaliers extérieurs', value: 'stairs' },
+        ],
+      },
+      {
+        type: 'select',
+        name: 'truck_access',
+        label: 'Accès camion',
+        required: true,
+        options: [
+          { label: 'Accès normal', value: 'normal' },
+          { label: 'Limité (hauteur/largeur)', value: 'limited' },
+          { label: 'Pas d’accès camion', value: 'no-access' },
+        ],
+      },
+      {
+        type: 'select',
+        name: 'extra_stop',
+        label: 'Adresse supplémentaire',
+        options: [
+          { label: 'Non', value: 'none' },
+          { label: 'Oui – une adresse', value: 'one' },
+          { label: 'Oui – deux adresses', value: 'two' },
+        ],
+      },
+      { type: 'text', name: 'photos', label: 'Lien photos (Drive / WhatsApp / upload)' },
+      { type: 'text', name: 'time_constraints', label: 'Contraintes horaires (immeuble / syndic)', placeholder: 'Ex: Pas après 17h, ascenseur réservé' },
+      {
+        type: 'select',
+        name: 'pets_children',
+        label: 'Enfants / animaux sur place pendant le déménagement ?',
+        options: [
+          { label: 'Non', value: 'no' },
+          { label: 'Oui', value: 'yes' },
+        ],
+      },
+
+      { type: 'section', name: 'section_consent', label: '9. Consentements & assurance' },
+      {
+        type: 'checkbox',
+        name: 'consent_weight',
+        label: 'Poids maximum',
+        required: true,
+        options: [{ label: 'Je confirme qu’aucun objet ne dépasse 200 kg (sinon service spécialisé).', value: 'ok' }],
+      },
+      {
+        type: 'checkbox',
+        name: 'consent_paid',
+        label: 'Options payantes',
+        required: true,
+        options: [{ label: 'Je comprends que démontage/remontage, nettoyage, stockage et cartons sont des options payantes.', value: 'ok' }],
+      },
+      {
+        type: 'checkbox',
+        name: 'insurance_consent',
+        label: 'Assurance',
+        required: true,
+        options: [{ label: 'Je comprends que certains objets nécessitent une assurance supplémentaire.', value: 'ok' }],
+      },
     ]}
     textarea={{
-      label: 'Détails utiles',
-      placeholder: 'Objets lourds, besoin d’emballage, contraintes d’accès, dates flexibles...',
+      label: 'Notes ou détails supplémentaires',
+      placeholder: 'Escaliers étroits, objets très lourds, contraintes horaires, etc.',
       name: 'message',
     }}
     disclaimer={{
       label: 'En envoyant ce formulaire, j’accepte le traitement de mes données pour être recontacté.',
     }}
-    description="Nous intervenons en Suisse romande et sur demande pour les trajets longue distance."
+    description="Aucun engagement — devis gratuit sous 24h. Nous confirmons sous 1 jour ouvré."
   />
 
   <Features2
     title="Contact direct"
     subtitle="Choisissez le canal qui vous convient le mieux."
     items={[
-      { title: 'Téléphone', description: '+41 76 798 27 93', icon: 'tabler:phone' },
+      { title: 'WhatsApp', description: '+41 76 798 27 93', icon: 'tabler:phone' },
       { title: 'Email', description: 'pedro@pedrodemenagement.ch', icon: 'tabler:mail' },
-      { title: 'Adresse', description: '1003 Lausanne', icon: 'tabler:map-pin' },
       { title: 'Disponibilité', description: 'Du lundi au samedi, 8h00 – 18h00', icon: 'tabler:calendar-time' },
-      { title: 'Zone', description: 'Lausanne, Riviera,Genève, Valais et longue distance sur demande', icon: 'tabler:world' },
     ]}
   />
 </Layout>

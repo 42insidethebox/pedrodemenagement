@@ -162,12 +162,22 @@ export interface Testimonial {
 }
 
 export interface Input {
-  type: HTMLInputTypeAttribute | 'select';
+  type: HTMLInputTypeAttribute | 'select' | 'checkbox' | 'section';
   name: string;
   label?: string;
   autocomplete?: string;
   placeholder?: string;
   options?: Array<{ label?: string; value: string }>;
+  multiple?: boolean;
+  required?: boolean;
+  helper?: string;
+  requiredMessage?: string;
+  conditional?: {
+    source: string;
+    showOn?: string[];
+    hideOn?: string[];
+    showIfAnyNot?: string[];
+  };
 }
 
 export interface Textarea {
@@ -175,6 +185,7 @@ export interface Textarea {
   name?: string;
   placeholder?: string;
   rows?: number;
+  required?: boolean;
 }
 
 export interface Disclaimer {

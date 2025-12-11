@@ -40,10 +40,6 @@ Vous vous engagez à :
 
 Pedro Déménagement ne peut être tenu responsable des dommages résultant d’un emballage insuffisant réalisé par le client ou d’informations inexactes ayant empêché la mise en place des moyens adaptés.
 
-## 6. Assurance et protection
-
-Une assurance responsabilité civile professionnelle est incluse pour couvrir les dommages directs causés par notre équipe pendant la prestation. Les biens de valeur exceptionnelle ou objets sensibles doivent être déclarés avant le jour J afin d’évaluer des garanties complémentaires éventuelles. Nous utilisons protections (couvertures, housses, sangles) et outillage adaptés pour limiter les risques.
-
 ## 7. Annulation et report
 
 Toute annulation ou report doit être communiqué dès que possible :
@@ -69,4 +65,4 @@ Les présentes Conditions sont régies par le droit suisse. Tout litige sera sou
 
 ## 12. Contact
 
-Pour toute question, contactez-nous à **hello@pedrodemenagement.ch** ou au **+41 21 555 24 24** (du lundi au samedi, 8h–18h).
+Pour toute question, contactez-nous à **pedro@pedrodemenagement.ch** ou au **+41 76 798 27 93** (du lundi au samedi, 8h–18h).

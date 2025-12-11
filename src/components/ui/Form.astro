@@ -14,7 +14,13 @@ const {
 } = Astro.props as Props & { action?: string; method?: string; encType?: string };
 ---
 
-<form method={method} action={action} {...(encType ? { enctype: encType } : {})}>
+<form
+  method={method}
+  action={action}
+  {...(encType ? { enctype: encType } : {})}
+  data-enhanced="true"
+  class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8"
+>
   {
     inputs &&
       inputs.map((field) => {
@@ -26,21 +32,50 @@ const {
           autocomplete = 'on',
           placeholder = '',
           options = [],
+          multiple = false,
+          required = false,
+          helper = '',
+          requiredMessage = '',
+          conditional,
         } = field;
 
+        if (type === 'section') {
+          return (
+            <div class="col-span-1 md:col-span-2 pt-12 pb-5 border-t border-gray-200 dark:border-gray-700 mt-8 bg-gray-50/70 dark:bg-slate-800/70 rounded-xl px-5 shadow-sm">
+              {label && <h3 class="text-lg md:text-xl font-semibold tracking-tight text-slate-900 dark:text-white">{label}</h3>}
+            </div>
+          );
+        }
+
         return (
-          <div class="mb-6">
+          <div
+            class="space-y-2"
+            data-field-wrapper
+            data-conditional-source={conditional?.source}
+            data-conditional-show={conditional?.showOn?.join(',')}
+            data-conditional-hide={conditional?.hideOn?.join(',')}
+            data-conditional-anynot={conditional?.showIfAnyNot?.join(',')}
+          >
             {label && (
-              <label for={name} class="block text-sm font-medium">
-                {label}
+              <label for={name} class="block text-sm font-medium text-slate-800 dark:text-slate-100">
+                {label} {required ? <span class="text-red-500" aria-hidden="true">*</span> : null}
               </label>
             )}
+            {helper && (
+              <p class="text-xs text-gray-500 helper-text">
+                {helper}
+              </p>
+            )}
+            {required && requiredMessage && <p class="text-xs text-red-500 required-msg hidden">{requiredMessage}</p>}
 
             {type === 'select' ? (
               <select
                 name={name}
                 id={name}
-                class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900"
+                multiple={multiple}
+                required={required}
+                title={required && requiredMessage ? requiredMessage : undefined}
+                class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
               >
                 {(options.length ? options : [{ value: '', label: 'Select an option' }]).map((option) => (
                   <option value={option.value}>
@@ -48,6 +83,22 @@ const {
                   </option>
                 ))}
               </select>
+            ) : type === 'checkbox' ? (
+              <div class="space-y-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50/70 dark:bg-slate-800/70 px-4 py-3">
+                {(options.length ? options : [{ value: 'yes', label: 'Oui' }]).map((option, index) => (
+                  <label class="flex items-center gap-2 text-sm text-slate-800 dark:text-slate-100">
+                    <input
+                      type="checkbox"
+                      name={`${name}[]`}
+                      value={option.value}
+                      required={required && index === 0}
+                      title={required && requiredMessage ? requiredMessage : undefined}
+                      class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary focus:ring-2"
+                    />
+                    <span>{option.label ?? option.value}</span>
+                  </label>
+                ))}
+              </div>
             ) : (
               <input
                 type={type}
@@ -55,7 +106,9 @@ const {
                 id={name}
                 autocomplete={autocomplete}
                 placeholder={placeholder}
-                class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900"
+                required={required}
+                title={required && requiredMessage ? requiredMessage : undefined}
+                class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
               />
             )}
           </div>
@@ -65,16 +118,17 @@ const {
 
   {
     textarea && (
-      <div>
-        <label for="textarea" class="block text-sm font-medium">
-          {textarea.label}
+      <div class="col-span-1 md:col-span-2 space-y-2" data-field-wrapper>
+        <label for="textarea" class="block text-sm font-medium text-slate-800 dark:text-slate-100">
+          {textarea.label} {textarea.required ? <span class="text-red-500" aria-hidden="true">*</span> : null}
         </label>
         <textarea
           id="textarea"
           name={textarea.name ? textarea.name : 'message'}
           rows={textarea.rows ? textarea.rows : 4}
           placeholder={textarea.placeholder}
-          class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900"
+          {...(textarea as any)?.required ? { required: true } : {}}
+          class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
         />
       </div>
     )
@@ -82,13 +136,13 @@ const {
 
   {
     disclaimer && (
-      <div class="mt-3 flex items-start">
+      <div class="col-span-1 md:col-span-2 mt-3 flex items-start space-x-3">
         <div class="flex mt-0.5">
           <input
             id="disclaimer"
             name="disclaimer"
             type="checkbox"
-            class="cursor-pointer mt-1 py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900"
+            class="cursor-pointer h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
           />
         </div>
         <div class="ml-3">
@@ -102,7 +156,7 @@ const {
 
   {
     button && (
-      <div class="mt-10 grid">
+      <div class="col-span-1 md:col-span-2 mt-10 grid">
         <Button variant="primary" type="submit">
           {button}
         </Button>
@@ -112,9 +166,119 @@ const {
 
   {
     description && (
-      <div class="mt-3 text-center">
+      <div class="col-span-1 md:col-span-2 mt-3 text-center">
         <p class="text-sm text-gray-600 dark:text-gray-400">{description}</p>
       </div>
     )
   }
 </form>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const applyConditional = () => {
+      document.querySelectorAll('[data-conditional-source]').forEach((el) => {
+        const sourceName = el.dataset.conditionalSource;
+        if (!sourceName) return;
+        const showValues = (el.dataset.conditionalShow || '').split(',').filter(Boolean);
+        const hideValues = (el.dataset.conditionalHide || '').split(',').filter(Boolean);
+        const anyNot = (el.dataset.conditionalAnynot || '').split(',').filter(Boolean);
+        const sourceInputs = document.querySelectorAll(`[name="${sourceName}"], [name="${sourceName}[]"]`);
+        if (!sourceInputs.length) return;
+
+        const values = [];
+        sourceInputs.forEach((input: any) => {
+          if (input.type === 'checkbox') {
+            if (input.checked) values.push(input.value);
+          } else if (input.tagName === 'SELECT') {
+            values.push(input.value);
+          } else if (input.value) {
+            values.push(input.value);
+          }
+        });
+
+        let shouldShow = true;
+        if (showValues.length) {
+          shouldShow = values.some((v) => showValues.includes(v));
+        }
+        if (hideValues.length && values.some((v) => hideValues.includes(v))) {
+          shouldShow = false;
+        }
+        if (anyNot.length) {
+          const hasNon = values.some((v) => !anyNot.includes(v));
+          shouldShow = hasNon;
+        }
+
+        const requiredEls = el.querySelectorAll('[required]');
+        if (shouldShow) {
+          (el as HTMLElement).style.display = '';
+          requiredEls.forEach((r: any) => {
+            r.dataset.wasRequired = 'true';
+            r.required = true;
+          });
+        } else {
+          (el as HTMLElement).style.display = 'none';
+          requiredEls.forEach((r: any) => {
+            if (r.dataset.wasRequired) {
+              r.required = false;
+            }
+          });
+        }
+      });
+    };
+
+    document.addEventListener('change', (event) => {
+      const target = event.target as HTMLInputElement;
+      if (!target?.name) return;
+      applyConditional();
+    });
+
+    applyConditional();
+
+    document.querySelectorAll('form[data-enhanced="true"]').forEach((form) => {
+      form.addEventListener('submit', (event) => {
+        let firstError = null;
+
+        form.querySelectorAll('[data-field-wrapper]').forEach((wrapper) => {
+          const requiredElements = wrapper.querySelectorAll('[required]');
+          let valid = true;
+
+          requiredElements.forEach((input) => {
+            if (input.type === 'checkbox') {
+              const groupName = input.name;
+              const group = form.querySelectorAll(`input[type="checkbox"][name="${groupName}"]`);
+              const checked = Array.from(group).some((g) => (g as HTMLInputElement).checked);
+              if (!checked) valid = false;
+            } else if (input.tagName === 'SELECT' || input.tagName === 'TEXTAREA' || input.tagName === 'INPUT') {
+              const value = (input as HTMLInputElement).value;
+              if (!value || value.trim() === '') valid = false;
+            }
+          });
+
+          const helperEls = wrapper.querySelectorAll('.helper-text');
+          const msg = wrapper.querySelector('.required-msg');
+          if (!valid) {
+            (wrapper as HTMLElement).dataset.error = 'true';
+            helperEls.forEach((h) => {
+              h.classList.remove('text-gray-500');
+              h.classList.add('text-red-500');
+            });
+            if (msg) msg.classList.remove('hidden');
+            if (!firstError) firstError = wrapper;
+          } else {
+            (wrapper as HTMLElement).dataset.error = '';
+            helperEls.forEach((h) => {
+              h.classList.remove('text-red-500');
+              h.classList.add('text-gray-500');
+            });
+            if (msg) msg.classList.add('hidden');
+          }
+        });
+
+        if (firstError) {
+          event.preventDefault();
+          (firstError as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+    });
+  });
+</script>

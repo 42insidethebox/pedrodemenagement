@@ -20,7 +20,7 @@ const metadata = {
 <Layout metadata={metadata}>
   <Hero
     id="process"
-    class="hero-bg"
+    class="hero-bg hero-bg-green"
     actions={[
       { variant: 'primary', text: 'Obtenir un devis', href: '/contact#form', icon: 'tabler:arrow-right' },
 { 
@@ -85,16 +85,6 @@ const metadata = {
         title: 'Accès & autorisations',
         description: 'Repérage des parkings, réservations de places et coordination ascenseur/monte-meubles.',
         icon: 'tabler:map-pin',
-      },
-      {
-        title: 'Objets lourds',
-        description: 'Pianos, frigos américains ou armoires lourdes gérés avec équipements adaptés.',
-        icon: 'tabler:armchair',
-      },
-      {
-        title: 'Assurance incluse',
-        description: 'Responsabilité civile professionnelle incluse pour chaque intervention.',
-        icon: 'tabler:receipt',
       },
       {
         title: 'Suivi unique',
@@ -208,7 +198,7 @@ const metadata = {
     items={[
       { title: 'Zones desservies', description: 'Genève, Lausanne, Vevey, Montreux, Valais et trajets longue distance sur demande.' },
       { title: 'Matériel fourni', description: 'Cartons, housses, adhésif, protections sol/mur, chariots, sangles et couvertures.' },
-      { title: 'Options clés', description: 'Démontage/remontage, nettoyage de sortie, stockage temporaire, reprise des cartons.' },
+      { title: 'Options clés (services supplémentaires payants)', description: 'Démontage/remontage, nettoyage de sortie, stockage temporaire, reprise des cartons.' },
       { title: 'Disponibilité', description: 'Semaine et samedi, créneaux matin ou après-midi selon vos contraintes.' },
     ]}
   >
@@ -245,7 +235,6 @@ const metadata = {
     items={[
       { title: 'Emballage & déballage', description: 'Cartons, penderies, protections vaisselle et emballage des objets fragiles.', icon: 'tabler:package' },
       { title: 'Démontage / remontage', description: 'Meubles, lits, armoires et dressing remontés proprement à l’arrivée.', icon: 'tabler:tools' },
-      { title: 'Objets lourds', description: 'Pianos, coffres, frigos américains ou machines sensibles.', icon: 'tabler:weight' },
       { title: 'Nettoyage de sortie', description: 'Option ménage de fin de bail pour rendre votre logement en ordre.', icon: 'tabler:sparkles' },
     ]}
   >
@@ -270,16 +259,13 @@ const metadata = {
         description: 'Oui. Nous pouvons fournir cartons, penderies, protections vaisselle et réaliser tout l’emballage/déballage.',
       },
       {
-        title: 'Gérez-vous les pianos ou objets lourds ?',
-        description: 'Oui, nous utilisons sangles, diables spécifiques et monte-meubles si nécessaire pour sécuriser les objets lourds.',
-      },
+		title: 'Gérez-vous les pianos ou objets lourds ?',
+  		description: 'Nous pouvons déplacer des objets jusqu’à 200 kg maximum. Au-delà, il faudra faire appel à un service spécialisé.',
+	  },
+
       {
         title: 'Intervenez-vous le week-end ?',
         description: 'Le samedi est possible selon disponibilité. Pour le dimanche, nous étudions au cas par cas.',
-      },
-      {
-        title: 'L’assurance est-elle incluse ?',
-        description: 'Une responsabilité civile professionnelle est incluse. Des couvertures complémentaires sont possibles sur demande.',
       },
     ]}
   />

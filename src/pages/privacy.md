@@ -9,7 +9,7 @@ Cette politique décrit la manière dont **Pedro Déménagement** collecte et tr
 
 ## 1. Responsable de traitement
 
-Pedro Déménagement est responsable des traitements décrits dans ce document. Vous pouvez nous contacter à **hello@pedrodemenagement.ch**.
+Pedro Déménagement est responsable des traitements décrits dans ce document. Vous pouvez nous contacter à **pedro@pedrodemenagement.ch**.
 
 ## 2. Données collectées
 
@@ -68,4 +68,4 @@ Nous pouvons mettre à jour cette politique pour refléter l'évolution de la l�
 
 ## 11. Contact
 
-Pour toute question relative à la protection des données, contactez **hello@pedrodemenagement.ch**.
+Pour toute question relative à la protection des données, contactez **pedro@pedrodemenagement.ch**.
