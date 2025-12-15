@@ -49,7 +49,7 @@ function getBrand() {
   const brand = {
     name: ENV.SENDER_NAME || 'Pedro Déménagement',
     supportEmail: ENV.SUPPORT_EMAIL || 'hello@pedrodemenagement.ch',
-    origin: ENV.ORIGIN || 'https://pedrodemenagement.ch',
+    origin: ENV.ORIGIN || 'http://www.pedrodemenagement.ch',
     // palette — lightweight, email‑safe
     bg: '#f6f9fc',
     cardBg: '#ffffff',

@@ -1,180 +1,842 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
-import HeroText from '~/components/widgets/HeroText.astro';
 import Prices from '~/components/widgets/Pricing.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import Steps from '~/components/widgets/Steps.astro';
 import Features3 from '~/components/widgets/Features3.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
+import { getBrandFromHost } from '~/lib/brand';
+import { BRANDS } from '~/lib/brands.config';
+import { getImage } from '~/data/imageInventory';
+import type { ImageId } from '~/data/imageInventory';
 
-const metadata = {
-  title: 'Tarifs déménagement',
+const host = Astro.request.headers.get('host');
+const brandKey = getBrandFromHost(host);
+const isUrgent = brandKey === 'urgent';
+const brandType =
+  isUrgent
+    ? 'urgent'
+    : brandKey === 'transport'
+      ? 'transport'
+      : brandKey === 'debarras'
+        ? 'debarras'
+        : brandKey === 'videmaison'
+          ? 'videmaison'
+          : brandKey === 'videsuccession'
+            ? 'videsuccession'
+            : brandKey === 'nettoyagesuccession' || brandKey === 'lausannenettoyage'
+              ? 'clean'
+              : brandKey === 'etatdeslieux'
+                ? 'etatdeslieux'
+                : 'move';
+const brand = BRANDS[brandKey];
+const whatsapp = brand.whatsapp || 'https://wa.me/41767982793';
+const img = (id: ImageId) => getImage(id);
+const heroToneClass = 'pricing-hero-light';
+
+const metadata = isUrgent
+  ? {
+      title: 'Tarifs déménagement urgent',
+      description: 'Intervention express, majoration horaire selon créneau. Confirmation en 15 minutes.',
+      ignoreTitleTemplate: true,
+    }
+  : brandKey === 'transport'
+    ? { title: 'Tarifs transport de meubles', description: 'Créneaux précis, arrimage renforcé et protections premium.' }
+    : brandKey === 'debarras'
+      ? { title: 'Tarifs débarras', description: 'Estimation selon volume, accès et tri (réemploi, recyclage, évacuation).' }
+      : brandKey === 'videmaison'
+        ? { title: 'Tarifs vide maison', description: 'Fourchettes selon surface, accès et options nettoyage/remise propre.' }
+        : brandKey === 'videsuccession'
+          ? { title: 'Tarifs vide succession', description: 'Gestion sensible avec tri, évacuation et remise propre.' }
+          : brandKey === 'nettoyagesuccession' || brandKey === 'lausannenettoyage'
+            ? { title: 'Tarifs nettoyage', description: 'Nettoyages complets, vitres, sols et contrôle qualité.' }
+            : brandKey === 'etatdeslieux'
+              ? { title: 'Tarifs état des lieux', description: 'Constats, photos et rapport envoyé sous 24h.' }
+              : {
+                  title: 'Tarifs déménagement',
+                };
+const views = {
+  move: {
+    hero: {
+      tagline: 'Tarifs déménagement',
+      title: 'Fourchettes claires selon volume et accès',
+      subtitle: 'Prix indicatifs en CHF, ajustés après validation des accès, options (emballage, monte-meubles, nettoyage) et distance.',
+      background: `linear-gradient(135deg, rgba(15,23,42,0.72), rgba(30,64,175,0.62), rgba(12,18,36,0.7)), url('${img('swiss_town_cat_e_truck_pallets')}')`,
+      overlayClass: 'bg-gradient-to-br from-slate-900/40 via-blue-900/38 to-slate-800/42',
+      chips: ['Volume & pièces', 'Accès & distance', 'Options choisies'],
+      tone: 'dark',
+    },
+    priceTitle: 'Repères déménagement',
+    priceSubtitle: 'Indications pour préparer votre budget. Chaque devis est ajusté après un échange rapide.',
+    factors: [
+      { title: 'Volume & pièces', description: 'Studio à maison, cartons, meubles principaux.', icon: 'tabler:ruler' },
+      { title: 'Accès & portage', description: 'Ascenseur, étages, distance à pied et autorisations parking.', icon: 'tabler:stairs' },
+      { title: 'Options', description: 'Emballage/déballage, monte-meubles, nettoyage, stockage.', icon: 'tabler:package' },
+      { title: 'Distance', description: 'Kilométrage et temps de trajet aller/retour.', icon: 'tabler:route' },
+    ],
+    steps: [
+      { title: '1. Estimation du volume', description: 'Formulaire complet ou visio express si besoin.', icon: 'tabler:ruler' },
+      { title: '2. Accès & contraintes', description: 'Ascenseur, parkings, distance de portage, autorisations.', icon: 'tabler:map-pin' },
+      { title: '3. Options retenues', description: 'Emballage, monte-meubles, nettoyage ou longue distance.', icon: 'tabler:check' },
+      { title: '4. Planning & équipe', description: 'Créneau, chef d’équipe, matériel prévu.', icon: 'tabler:calendar-time' },
+    ],
+    faqs: [
+      { title: 'Le prix est-il fixe ?', description: 'Oui après validation du devis. Seuls un volume très différent ou des options ajoutées ajustent le montant.' },
+      { title: 'Proposez-vous des visites ?', description: 'Oui. Le formulaire suffit souvent, mais la visite est possible (service payant) si contexte complexe.' },
+      { title: 'Péages / km ?', description: '150 km inclus (Lausanne → A → B). Au-delà, km et péages sont détaillés séparément.' },
+      { title: 'Objets lourds ?', description: 'Oui jusqu’à ~200 kg selon accès. Monte-meubles si nécessaire.', },
+    ],
+    stepsBg: img('operator_pallet_unloading'),
+    accent: 'from-blue-500/25 via-slate-900/35 to-slate-900/60',
+    cta: {
+      title: 'Besoin d’un chiffrage précis ?',
+      subtitle: 'Indiquez vos adresses, le volume estimé et la date souhaitée : réponse sous 24h.',
+      actions: [
+        { variant: 'primary', text: 'Recevoir un devis', href: '/contact#form', icon: 'tabler:mail-forward' },
+        { text: 'Parler à un conseiller', href: '/contact' },
+      ],
+    },
+  },
+  urgent: {
+    hero: {
+      tagline: 'Tarifs urgence',
+      title: 'Intervention express, majoration transparente',
+      subtitle: 'Créneau du jour / lendemain selon disponibilité. Départ 60–90 min, protections incluses.',
+      background: `linear-gradient(135deg, rgba(185,28,28,0.85), rgba(239,68,68,0.72), rgba(249,115,22,0.58)), url('${img('men_packing_bedroom')}')`,
+      overlayClass: 'bg-gradient-to-br from-red-900/38 via-red-800/36 to-orange-600/32 backdrop-blur-[1px]',
+      chips: ['Réponse < 5 min', 'Départ 60–90 min', 'Livraison directe'],
+      tone: 'dark',
+    },
+    priceTitle: 'Repères urgents',
+    priceSubtitle: 'Majoration selon créneau (soir/week-end) et complexité des accès.',
+    factors: [
+      { title: 'Horaire', description: 'Jour, soir ou week-end, impacte la majoration.', icon: 'tabler:clock-bolt' },
+      { title: 'Volume & accès', description: 'Ascenseurs, portage, objets lourds.', icon: 'tabler:stairs-up' },
+      { title: 'Disponibilité', description: 'Monte-meubles ou équipe renforcée si nécessaire.', icon: 'tabler:users' },
+      { title: 'Trajet', description: 'Itinéraire direct, pas de stockage.', icon: 'tabler:route' },
+    ],
+    steps: [
+      { title: '1. Volume & accès', description: 'Appel immédiat ou formulaire express.', icon: 'tabler:phone' },
+      { title: '2. Créneau urgent', description: 'Confirmation en 15 minutes avec majoration éventuelle.', icon: 'tabler:clock-bolt' },
+      { title: '3. Options express', description: 'Monte-meubles si dispo, emballage rapide.', icon: 'tabler:package' },
+      { title: '4. Départ', description: 'Arrimage renforcé, livraison directe.', icon: 'tabler:truck-delivery' },
+    ],
+    faqs: [
+      { title: 'Le prix est-il fixe ?', description: 'Oui après validation du devis express. Majoration précisée selon horaire et accès.' },
+      { title: 'Délais ?', description: 'En général 60–90 minutes selon trafic et disponibilité.' },
+      { title: 'Objets lourds ?', description: 'Oui si < 200 kg et accès compatibles. Monte-meubles si dispo.' },
+      { title: 'Paiement ?', description: 'Twint, carte, virement immédiat. Facture après validation.' },
+    ],
+    stepsBg: img('van_moving_swiss_town_raining_motion_blur'),
+    accent: 'from-red-600/30 via-red-800/35 to-orange-600/35',
+    cta: {
+      title: 'Besoin d’un prix express ?',
+      subtitle: 'Envoyez vos adresses et contraintes : devis flash en 15 minutes selon disponibilité.',
+      actions: [
+        { variant: 'primary', text: 'Intervention express', href: '/contact#form', icon: 'tabler:bolt' },
+        { text: 'Appeler maintenant', href: whatsapp, icon: 'tabler:phone' },
+      ],
+    },
+  },
+  transport: {
+    hero: {
+      tagline: 'Tarifs transport',
+      title: 'Transport premium pour pièces sensibles',
+      subtitle: 'Fenêtre horaire serrée, conditionnement, arrimage renforcé et suivi chauffeur.',
+      background: `linear-gradient(120deg, rgba(76,29,149,0.7), rgba(17,24,39,0.82), rgba(245,158,11,0.42)), url('${img('professional_van_5')}')`,
+      overlayClass: 'bg-gradient-to-br from-purple-900/40 via-slate-900/42 to-amber-500/28',
+      chips: ['Fenêtre horaire serrée', 'Arrimage renforcé', 'Suivi direct'],
+      tone: 'dark',
+    },
+    priceTitle: 'Repères transport',
+    priceSubtitle: 'Pensé pour mobilier design, électroménager ou bureaux.',
+    factors: [
+      { title: 'Conditionnement', description: 'Filmage, housses, coins mousse.', icon: 'tabler:package' },
+      { title: 'Fenêtre horaire', description: 'Passage à l’heure convenue, chauffeur joignable.', icon: 'tabler:clock' },
+      { title: 'Distance & étage', description: 'Trajet, portage, ascenseurs/escaliers.', icon: 'tabler:stairs' },
+      { title: 'Valeur déclarée', description: 'Assurance spécifique si haute valeur.', icon: 'tabler:shield-check' },
+    ],
+    steps: [
+      { title: '1. Qualification du volume', description: 'Dimensions, fragilité, adresses.', icon: 'tabler:ruler' },
+      { title: '2. Créneau verrouillé', description: 'Fenêtre horaire courte, chauffeur identifié.', icon: 'tabler:calendar-event' },
+      { title: '3. Protection & arrimage', description: 'Calage, sangles, coins mousse.', icon: 'tabler:anchor' },
+      { title: '4. Livraison', description: 'Placement précis, reprise des protections.', icon: 'tabler:map-pin-check' },
+    ],
+    faqs: [
+      { title: 'Assurance ?', description: 'RC pro incluse. Assurance spécifique sur demande pour très haute valeur.' },
+      { title: 'Fenêtre horaire ?', description: 'Nous visons un passage à l’heure précise ou une fenêtre courte.' },
+      { title: 'Objets lourds ?', description: 'Oui jusqu’à 200 kg si accès compatibles.' },
+      { title: 'Emballage fourni ?', description: 'Oui, protections standard incluses. Options premium disponibles.', },
+    ],
+    stepsBg: img('van_inside_objects_boxes_3'),
+    accent: 'from-purple-500/25 via-slate-900/35 to-amber-400/25',
+    cta: {
+      title: 'Prêt à réserver un créneau ?',
+      subtitle: 'Décrivez la pièce, les adresses et la date souhaitée.',
+      actions: [
+        { variant: 'primary', text: 'Planifier un transport', href: '/contact#form', icon: 'tabler:truck' },
+        { text: 'Parler logistique', href: whatsapp, icon: 'tabler:phone' },
+      ],
+    },
+  },
+  debarras: {
+    hero: {
+      tagline: 'Tarifs débarras',
+      title: 'Débarras complet, trié et valorisé',
+      subtitle: 'Volume, tri réemploi/recyclage, protection des communs et remise propre.',
+      background: `linear-gradient(135deg, rgba(6,95,70,0.78), rgba(16,185,129,0.58), rgba(15,23,42,0.6)), url('${img('van_inside_objects_boxes_2')}')`,
+      overlayClass: 'bg-gradient-to-br from-emerald-900/35 via-emerald-800/32 to-slate-900/32',
+      chips: ['Tri & dons', 'Protection communs', 'Rapport photo'],
+      tone: 'dark',
+    },
+    priceTitle: 'Repères débarras',
+    priceSubtitle: 'Fourchettes selon volume, tri et accès.',
+    factors: [
+      { title: 'Volume & pièces', description: 'Studio, cave, appartement ou locaux.', icon: 'tabler:ruler' },
+      { title: 'Tri & valorisation', description: 'Dons, recyclage avant évacuation.', icon: 'tabler:recycle' },
+      { title: 'Accès & portage', description: 'Ascenseur, escaliers, distance à pied.', icon: 'tabler:stairs' },
+      { title: 'Options', description: 'Nettoyage final, transport d’objets gardés.', icon: 'tabler:sparkles' },
+    ],
+    steps: [
+      { title: '1. Évaluation', description: 'Photos ou visite rapide pour estimer le volume.', icon: 'tabler:camera' },
+      { title: '2. Tri & démontage', description: 'Séparation réemploi / recyclage, démontage si besoin.', icon: 'tabler:tools' },
+      { title: '3. Évacuation', description: 'Centre agréé, protection des communs.', icon: 'tabler:truck' },
+      { title: '4. Remise propre', description: 'Balayage ou option ménage, rapport photo.', icon: 'tabler:photo-check' },
+    ],
+    faqs: [
+      { title: 'Traitez-vous électroménager ?', description: 'Oui, vers les filières adéquates.' },
+      { title: 'Pouvez-vous donner / recycler ?', description: 'Oui, priorité réemploi et reporting succinct.' },
+      { title: 'Intervention week-end ?', description: 'Oui selon volume et voisinage (possible majoration).' },
+      { title: 'Petites surfaces ?', description: 'Oui, dès un studio ou une cave.', },
+    ],
+    stepsBg: img('van_inside_objects_boxes_3'),
+    accent: 'from-emerald-500/25 via-emerald-800/30 to-slate-900/40',
+    cta: {
+      title: 'Prêt pour un débarras cadré ?',
+      subtitle: 'Envoyez quelques photos ou organisez une visite express.',
+      actions: [
+        { variant: 'primary', text: 'Planifier un débarras', href: '/contact#form', icon: 'tabler:calendar-up' },
+        { text: 'Appeler', href: whatsapp, icon: 'tabler:phone' },
+      ],
+    },
+  },
+  videmaison: {
+    hero: {
+      tagline: 'Tarifs vide maison',
+      title: 'Vide maison complet et ordonné',
+      subtitle: 'Tri, dons, recyclage et évacuation en une seule équipe. Remise propre incluse ou option ménage.',
+      background: `linear-gradient(135deg, rgba(249,115,22,0.62), rgba(180,83,9,0.7), rgba(124,45,18,0.55)), url('${img('strong_man_packing_2')}')`,
+      overlayClass: 'bg-gradient-to-br from-amber-900/35 via-orange-700/32 to-amber-500/30',
+      chips: ['Orientation dons', 'Respect des lieux', 'Remise propre'],
+      tone: 'dark',
+    },
+    priceTitle: 'Repères vide maison',
+    priceSubtitle: 'Fourchettes selon surface, accès et options nettoyage/remise.',
+    factors: [
+      { title: 'Surface & volume', description: 'Studio, appartement, maison.', icon: 'tabler:ruler' },
+      { title: 'Tri & dons', description: 'Réemploi avant déchetterie.', icon: 'tabler:heart-handshake' },
+      { title: 'Accès', description: 'Ascenseurs, escaliers, distance de portage.', icon: 'tabler:stairs-up' },
+      { title: 'Remise', description: 'Balayage ou ménage complet.', icon: 'tabler:sparkles' },
+    ],
+    steps: [
+      { title: '1. Évaluation', description: 'Photos ou visite rapide pour estimer le volume et les accès.', icon: 'tabler:camera' },
+      { title: '2. Tri & évacuation', description: 'Dons, recyclage, centres agréés.', icon: 'tabler:recycle' },
+      { title: '3. Nettoyage', description: 'Balayage ou option ménage pour remise des clés.', icon: 'tabler:sparkles' },
+      { title: '4. Rapport', description: 'Photos avant/après si demandé.', icon: 'tabler:photo-check' },
+    ],
+    faqs: [
+      { title: 'Combien de temps ?', description: 'Un appartement peut être vidé en 1 journée selon volume.' },
+      { title: 'Où vont les objets ?', description: 'Priorité dons, recyclage, puis centre agréé.' },
+      { title: 'Aide administrative ?', description: 'Reporting succinct pour bailleurs/assurances possible.' },
+      { title: 'Nettoyage ?', description: 'Oui, option ménage pour remise des clés.' },
+    ],
+    stepsBg: img('strong_man_packing_1'),
+    accent: 'from-amber-500/25 via-orange-700/30 to-amber-900/35',
+    cta: {
+      title: 'Besoin de vider une maison ?',
+      subtitle: 'Expliquez le volume et la date souhaitée, on s’occupe du reste.',
+      actions: [
+        { variant: 'primary', text: 'Organiser un vide maison', href: '/contact#form', icon: 'tabler:home-heart' },
+        { text: 'Parler à un conseiller', href: whatsapp, icon: 'tabler:phone' },
+      ],
+    },
+  },
+  videsuccession: {
+    hero: {
+      tagline: 'Tarifs vide succession',
+      title: 'Gestion discrète et documentée',
+      subtitle: 'Tri, inventaire succinct, évacuation et remise propre avec reporting aux héritiers/notaire.',
+      background: `linear-gradient(135deg, rgba(15,17,27,0.9), rgba(217,119,6,0.52), rgba(0,0,0,0.72)), url('${img('empty_apartment_5')}')`,
+      overlayClass: 'bg-gradient-to-br from-gray-950/42 via-gray-900/38 to-amber-600/28',
+      chips: ['Discrétion', 'Inventaire succinct', 'Reporting photo'],
+      tone: 'dark',
+    },
+    priceTitle: 'Repères vide succession',
+    priceSubtitle: 'Gestion sensible : coordination héritiers, tri et remise propre.',
+    factors: [
+      { title: 'Consignes héritiers', description: 'Objets à conserver, à mettre de côté.', icon: 'tabler:users' },
+      { title: 'Volume & accès', description: 'Surface, escaliers/ascenseurs, distance de portage.', icon: 'tabler:stairs' },
+      { title: 'Remise propre', description: 'Nettoyage léger ou complet selon consignes.', icon: 'tabler:sparkles' },
+      { title: 'Reporting', description: 'Photos et liste succincte des pièces clés.', icon: 'tabler:photo' },
+    ],
+    steps: [
+      { title: '1. Cadrage', description: 'Attentes des héritiers/notaire, objets à conserver.', icon: 'tabler:clipboard' },
+      { title: '2. Tri & évacuation', description: 'Séparation, démontage, évacuation contrôlée.', icon: 'tabler:truck' },
+      { title: '3. Remise propre', description: 'Nettoyage léger ou complet.', icon: 'tabler:sparkles' },
+      { title: '4. Rapport', description: 'Photos + liste succincte pour les parties.', icon: 'tabler:photo-check' },
+    ],
+    faqs: [
+      { title: 'Pouvez-vous lister les objets ?', description: 'Inventaire succinct possible avec photos clés.' },
+      { title: 'Coordination avec notaire ?', description: 'Oui, partage planning et reporting.' },
+      { title: 'Intervention rapide ?', description: 'Oui sous quelques jours selon volume.' },
+      { title: 'Objets de valeur ?', description: 'Mis de côté selon consignes, assurance spécifique possible.' },
+    ],
+    stepsBg: img('empty_apartment_9'),
+    accent: 'from-amber-500/20 via-amber-700/30 to-slate-900/45',
+    cta: {
+      title: 'Besoin d’un vide succession cadré ?',
+      subtitle: 'Expliquez le contexte, on vous envoie un plan clair et un calendrier.',
+      actions: [
+        { variant: 'primary', text: 'Planifier un vide succession', href: '/contact#form', icon: 'tabler:scale' },
+        { text: 'Appeler en direct', href: whatsapp, icon: 'tabler:phone' },
+      ],
+    },
+  },
+  clean: {
+    hero: {
+      tagline: 'Tarifs nettoyage',
+      title: 'Propreté maîtrisée, délais rapides',
+      subtitle: 'Checklist pro, vitres/sols, option désinfection. Rapport photo sur demande.',
+      background: `linear-gradient(135deg, rgba(34,211,238,0.52), rgba(14,165,233,0.55), rgba(15,23,42,0.7)), url('${img('man_vaccuming')}')`,
+      overlayClass: 'bg-gradient-to-br from-cyan-200/24 via-cyan-500/26 to-slate-900/36',
+      chips: ['Checklist bailleur', 'Matériel pro', 'Photos sur demande'],
+      tone: 'dark',
+    },
+    priceTitle: 'Repères nettoyage',
+    priceSubtitle: 'Forfaits selon surface, vitres et checklist prioritaire.',
+    factors: [
+      { title: 'Surface & pièces', description: 'Nombre de pièces, sanitaires, cuisine.', icon: 'tabler:ruler' },
+      { title: 'Vitres & hauteur', description: 'Vitres standard ou hauteur avec matériel.', icon: 'tabler:building' },
+      { title: 'Options odeurs', description: 'Traitement ciblé ou désinfection.', icon: 'tabler:wind' },
+      { title: 'Délai', description: 'Créneau serré possible après débarras.', icon: 'tabler:clock' },
+    ],
+    steps: [
+      { title: '1. Brief rapide', description: 'Surface, priorités, délais.', icon: 'tabler:clipboard-check' },
+      { title: '2. Intervention', description: 'Nettoyage complet, vitres, sols et sanitaires.', icon: 'tabler:sparkles' },
+      { title: '3. Contrôle', description: 'Photos, retouches si besoin.', icon: 'tabler:photo-check' },
+      { title: '4. Rapport', description: 'Facture détaillée et options odeur si demandé.', icon: 'tabler:receipt' },
+    ],
+    faqs: [
+      { title: 'Pouvez-vous passer après débarras ?', description: 'Oui, créneau serré possible pour enchaîner.' },
+      { title: 'Produits ?', description: 'Gamme pro adaptés aux surfaces, option sans parfum.' },
+      { title: 'Photos ?', description: 'Oui, avant/après sur demande.' },
+      { title: 'Facture ?', description: 'Facture détaillée possible pour bailleurs/assurances.' },
+    ],
+    stepsBg: img('mop_cleaning_closeup'),
+    accent: 'from-cyan-300/25 via-cyan-500/25 to-slate-900/45',
+    cta: {
+      title: 'Besoin d’un nettoyage rapide ?',
+      subtitle: 'Planifions un créneau et la checklist adaptée à votre bien.',
+      actions: [
+        { variant: 'primary', text: 'Programmer un nettoyage', href: '/contact#form', icon: 'tabler:sparkles' },
+        { text: 'Appeler', href: whatsapp, icon: 'tabler:phone' },
+      ],
+    },
+  },
+  etatdeslieux: {
+    hero: {
+      tagline: 'Tarifs état des lieux',
+      title: 'Constats précis, rapports photo',
+      subtitle: 'Entrée ou sortie : check-list bail, photos horodatées et rapport envoyé rapidement.',
+      background: `linear-gradient(135deg, rgba(14,165,233,0.65), rgba(15,23,42,0.8), rgba(7,10,20,0.85)), url('${img('empty_apartment_6')}')`,
+      overlayClass: 'bg-gradient-to-br from-sky-500/24 via-slate-900/42 to-slate-900/46',
+      chips: ['Rapport < 24h', 'Check-list bailleur', 'Photos horodatées'],
+      tone: 'dark',
+    },
+    priceTitle: 'Repères état des lieux',
+    priceSubtitle: 'Tarifs selon type (entrée/sortie), surface et délai de remise du rapport.',
+    factors: [
+      { title: 'Type', description: 'Entrée ou sortie, logement ou bureau.', icon: 'tabler:clipboard-check' },
+      { title: 'Surface & équipements', description: 'Pièces, équipements à vérifier, relevés éventuels.', icon: 'tabler:ruler' },
+      { title: 'Délai rapport', description: 'Standard < 24h, option express.', icon: 'tabler:clock' },
+      { title: 'Options', description: 'Mesures, suivi correctifs, nettoyage/débarras.', icon: 'tabler:list-check' },
+    ],
+    steps: [
+      { title: '1. Planification', description: 'Créneau confirmé, accès validés.', icon: 'tabler:calendar' },
+      { title: '2. Relevés sur place', description: 'Photos, mesures, checklist complète.', icon: 'tabler:camera' },
+      { title: '3. Rapport & envoi', description: 'PDF + galerie photo, partage aux parties.', icon: 'tabler:share' },
+      { title: '4. Suivi', description: 'Questions/réponses, options correctifs.', icon: 'tabler:message' },
+    ],
+    faqs: [
+      { title: 'Délai de remise du rapport ?', description: 'Sous 24h après constat (souvent le jour même).' },
+      { title: 'Format ?', description: 'PDF + lien galerie photo.' },
+      { title: 'Entrée ou sortie ?', description: 'Nous faisons les deux, avec check-list adaptée.' },
+      { title: 'Coordination régie ?', description: 'Oui, nous pouvons partager le rapport directement.' },
+    ],
+    stepsBg: img('empty_apartment_9'),
+    accent: 'from-sky-400/25 via-slate-900/40 to-slate-900/55',
+    cta: {
+      title: 'Programmer un état des lieux',
+      subtitle: 'Choisissez la date et dites-nous si régie/propriétaire doit être en copie.',
+      actions: [
+        { variant: 'primary', text: 'Réserver un créneau', href: '/contact#form', icon: 'tabler:clipboard-check' },
+        { text: 'Parler à un expert', href: whatsapp, icon: 'tabler:phone' },
+      ],
+    },
+  },
 };
----
 
-<Layout metadata={metadata}>
-<div
-  class="relative overflow-hidden"
-  style="
-    background-image:
-      linear-gradient(
-        to bottom right,
-       rgba(168, 169, 171, 0.33),
-          rgba(238, 242, 248, 0.3),
-          rgba(2, 6, 23, 0.35)
-      ),
-      url('https://cdn.midjourney.com/a77566b7-f74c-4618-b6a8-4192337a9249/0_1.png');
-    background-size: cover;
-    background-position: center;
-  "
->
-  <div class="relative z-10 py-20">
-    <HeroText
-      tagline="Tarifs"
-      title="Des fourchettes claires, en francs suisses"
-      subtitle="Les prix varient selon le volume, les accès et les options (emballage, monte-meubles, nettoyage, longue distance)."
-    />
-  </div>
-</div>
-
-
-  <Prices
-    title="Nos repères tarifaires"
-    subtitle="Indications pour préparer votre budget. Chaque devis est ajusté après un appel ou une visite."
-    prices={[
+const view = views[brandType];
+const priceList = (() => {
+  if (isUrgent) {
+    return [
       {
-        title: 'Petit déménagement',
-        subtitle: 'Studio / 1 pièce',
-        price: '1000–1200',
-        period: 'fourchette typique',
+        title: 'Intervention express',
+        subtitle: 'Petits volumes',
+        price: 'dès 690',
+        period: 'CHF',
         items: [
-          { description: 'Camion 20 m³ + 2-3 déménageurs' },
-          { description: 'Protection des meubles et matelas' },
-          { description: 'Chargement + transport + installation' },
+          { description: 'Camion + 2 déménageurs' },
+          { description: 'Protections incluses' },
+          { description: 'Départ 60–90 min si disponible' },
         ],
-        callToAction: '<a class="btn btn-primary" href="/contact#form">Réserver ma date</a>',
+        callToAction: '<a class="btn btn-primary" href="/contact#form">Intervention express</a>',
       },
       {
-        title: 'Déménagement moyen',
-        subtitle: '2–3 pièces',
-        price: '1500–2800',
+        title: 'Soir / week-end',
+        subtitle: 'Créneau hors horaires',
+        price: 'dès 990',
+        period: 'CHF',
+        items: [
+          { description: '2–3 déménageurs' },
+          { description: 'Majoration selon horaire' },
+          { description: 'Trajet direct, arrimage renforcé' },
+        ],
+        hasRibbon: true,
+        ribbonTitle: 'Plus fréquent',
+        callToAction: '<a class="btn btn-primary" href="/contact#form">Réserver un créneau</a>',
+      },
+      {
+        title: 'Gros volume urgent',
+        subtitle: 'Maison / 4 pièces +',
+        price: 'Sur devis',
+        period: '< 2h',
+        items: [
+          { description: '3–4 déménageurs' },
+          { description: 'Monte-meubles si dispo' },
+          { description: 'Livraison directe, pas de stockage' },
+        ],
+        callToAction: '<a class="btn btn-primary" href="/contact#form">Devis express</a>',
+      },
+    ];
+  }
+  if (brandKey === 'transport') {
+    return [
+      {
+        title: 'Transport pièce unique',
+        subtitle: 'Mobilier design / électroménager',
+        price: 'dès 250',
+        period: 'CHF',
+        items: [
+          { description: 'Protection + arrimage renforcé' },
+          { description: 'Fenêtre horaire serrée' },
+          { description: 'Chef de bord / suivi direct' },
+        ],
+        callToAction: '<a class="btn btn-primary" href="/contact#form">Planifier</a>',
+      },
+      {
+        title: 'Petit lot',
+        subtitle: '3–6 pièces sensibles',
+        price: '450–800',
+        period: 'CHF typique',
+        items: [
+          { description: 'Filmage + calage' },
+          { description: 'Livraison étage/ascenseur' },
+          { description: 'Arrimage premium' },
+        ],
+        hasRibbon: true,
+        ribbonTitle: 'Le plus fréquent',
+        callToAction: '<a class="btn btn-primary" href="/contact#form">Réserver</a>',
+      },
+      {
+        title: 'Bureau / Showroom',
+        subtitle: 'Mobilier + équipements',
+        price: 'Sur devis',
+        period: '',
+        items: [
+          { description: 'Fenêtre horaire dédiée' },
+          { description: 'Protection complète' },
+          { description: 'Team dédiée + suivi' },
+        ],
+        callToAction: '<a class="btn btn-primary" href="/contact#form">Devis transport</a>',
+      },
+    ];
+  }
+  if (brandKey === 'debarras') {
+    return [
+      {
+        title: 'Studio / cave',
+        subtitle: 'Volume réduit',
+        price: 'dès 690',
+        period: 'CHF',
+        items: [
+          { description: 'Tri réemploi / recyclage' },
+          { description: 'Protection des communs' },
+          { description: 'Évacuation contrôlée' },
+        ],
+      },
+      {
+        title: 'Appartement 2–3 p',
+        subtitle: 'Volume moyen',
+        price: '900–1400',
         period: 'fourchette typique',
         items: [
-          { description: 'Camion 20 m³ + 2-3 déménageurs' },
-          { description: 'Démontage/remontage essentiel' },
-          { description: 'Emballage fragile en option' },
+          { description: 'Tri + démontage léger' },
+          { description: 'Rapport photo avant/après' },
+          { description: 'Option nettoyage' },
+        ],
+        hasRibbon: true,
+        ribbonTitle: 'Fréquent',
+      },
+      {
+        title: 'Grand volume',
+        subtitle: 'Maison / locaux',
+        price: 'Sur devis',
+        period: '',
+        items: [
+          { description: 'Planification équipe renforcée' },
+          { description: 'Tri complet + évacuation' },
+          { description: 'Remise propre' },
+        ],
+      },
+    ];
+  }
+  if (brandKey === 'videmaison') {
+    return [
+      {
+        title: 'Petit vide',
+        subtitle: 'Studio / cave',
+        price: 'dès 750',
+        period: 'CHF',
+        items: [
+          { description: 'Tri + évacuation' },
+          { description: 'Protection des communs' },
+          { description: 'Option nettoyage' },
+        ],
+      },
+      {
+        title: 'Appartement',
+        subtitle: '2–4 pièces',
+        price: '1000–1600',
+        period: 'fourchette typique',
+        items: [
+          { description: 'Tri, dons/recyclage' },
+          { description: 'Rapport photo' },
+          { description: 'Nettoyage léger inclus' },
         ],
         hasRibbon: true,
         ribbonTitle: 'Le plus demandé',
-        callToAction: '<a class="btn btn-primary" href="/contact#form">Réserver ma date</a>',
       },
       {
-        title: 'Grand déménagement',
-        subtitle: '4 pièces et + / maison',
-        price: '3000–8000+',
-        period: 'selon volume et accès',
+        title: 'Maison',
+        subtitle: 'Grand volume',
+        price: 'Sur devis',
+        period: '',
         items: [
-          { description: 'Planification d’équipe dédiée' },
-          { description: 'Monte-meubles ou double camion si besoin' },
-          { description: 'Emballage complet disponible' },
+          { description: 'Équipe renforcée' },
+          { description: 'Remise propre' },
+          { description: 'Options retouches' },
         ],
-        callToAction: '<a class="btn btn-primary" href="/contact#form">Demander un devis</a>',
       },
-    ]}
-  />
+    ];
+  }
+  if (brandKey === 'videsuccession') {
+    return [
+      {
+        title: 'Appartement',
+        subtitle: 'Volume moyen',
+        price: 'dès 1200',
+        period: 'CHF',
+        items: [
+          { description: 'Tri sensible + mise à part' },
+          { description: 'Évacuation contrôlée' },
+          { description: 'Remise propre' },
+        ],
+      },
+      {
+        title: 'Maison',
+        subtitle: 'Multi-niveaux',
+        price: 'Sur devis',
+        period: '',
+        items: [
+          { description: 'Coordination héritiers' },
+          { description: 'Rapport photo succinct' },
+          { description: 'Options nettoyage complet' },
+        ],
+        hasRibbon: true,
+        ribbonTitle: 'Fréquent',
+      },
+      {
+        title: 'Archives / annexes',
+        subtitle: 'Lot spécifique',
+        price: 'Sur devis',
+        period: '',
+        items: [
+          { description: 'Triage ciblé' },
+          { description: 'Protection des accès' },
+          { description: 'Équipe dédiée' },
+        ],
+      },
+    ];
+  }
+  if (brandKey === 'nettoyagesuccession' || brandKey === 'lausannenettoyage') {
+    return [
+      {
+        title: 'Appartements',
+        subtitle: 'Jusqu’à 3 pièces',
+        price: '350–750',
+        period: 'CHF typique',
+        items: [
+          { description: 'Sols, sdb, cuisine' },
+          { description: 'Vitres standard' },
+          { description: 'Contrôle qualité' },
+        ],
+      },
+      {
+        title: 'Grand logement / bureaux',
+        subtitle: '4 pièces et +',
+        price: 'Sur devis',
+        period: '',
+        items: [
+          { description: 'Vitres, sols, sanitaires' },
+          { description: 'Options odeur / désinfection' },
+          { description: 'Rapport photo' },
+        ],
+        hasRibbon: true,
+        ribbonTitle: 'Plus demandé',
+      },
+      {
+        title: 'Fin de chantier',
+        subtitle: 'Selon surface',
+        price: 'Sur devis',
+        period: '',
+        items: [
+          { description: 'Dépoussiérage complet' },
+          { description: 'Vitres hauteur si demandé' },
+          { description: 'Retouches possibles' },
+        ],
+      },
+    ];
+  }
+  if (brandKey === 'etatdeslieux') {
+    return [
+      {
+        title: 'État des lieux entrée',
+        subtitle: 'Appartement standard',
+        price: 'dès 250',
+        period: 'CHF',
+        items: [
+          { description: 'Check-list + photos' },
+          { description: 'Rapport PDF' },
+          { description: 'Envoi sous 24h' },
+        ],
+      },
+      {
+        title: 'État des lieux sortie',
+        subtitle: 'Appartement / maison',
+        price: '350–650',
+        period: 'fourchette typique',
+        items: [
+          { description: 'Photos + remarques' },
+          { description: 'Priorisation des correctifs' },
+          { description: 'Partage régie/proprio' },
+        ],
+        hasRibbon: true,
+        ribbonTitle: 'Le plus demandé',
+      },
+      {
+        title: 'Express / week-end',
+        subtitle: 'Sous 24h',
+        price: 'Sur devis',
+        period: '',
+        items: [
+          { description: 'Créneau serré' },
+          { description: 'Rapport accéléré' },
+          { description: 'Envoi multi-parties' },
+        ],
+      },
+    ];
+  }
+  return [
+    {
+      title: 'Petit déménagement',
+      subtitle: 'Studio / 1 pièce',
+      price: '1000–1200',
+      period: 'fourchette typique',
+      items: [
+        { description: 'Camion 20 m³ + 2-3 déménageurs' },
+        { description: 'Protection des meubles et matelas' },
+        { description: 'Chargement + transport + installation' },
+      ],
+      callToAction: '<a class="btn btn-primary" href="/contact#form">Réserver ma date</a>',
+    },
+    {
+      title: 'Déménagement moyen',
+      subtitle: '2–3 pièces',
+      price: '1500–2800',
+      period: 'fourchette typique',
+      items: [
+        { description: 'Camion 20 m³ + 2-3 déménageurs' },
+        { description: 'Démontage/remontage essentiel' },
+        { description: 'Emballage fragile en option' },
+      ],
+      hasRibbon: true,
+      ribbonTitle: 'Le plus demandé',
+      callToAction: '<a class="btn btn-primary" href="/contact#form">Réserver ma date</a>',
+    },
+    {
+      title: 'Grand déménagement',
+      subtitle: '4 pièces et + / maison',
+      price: '3000–8000+',
+      period: 'selon volume et accès',
+      items: [
+        { description: 'Planification d’équipe dédiée' },
+        { description: 'Monte-meubles ou double camion si besoin' },
+        { description: 'Emballage complet disponible' },
+      ],
+      callToAction: '<a class="btn btn-primary" href="/contact#form">Demander un devis</a>',
+    },
+  ];
+})();
+const toneStrong = view.hero.tone === 'dark' ? 'text-white' : 'text-slate-900';
+const toneMuted = view.hero.tone === 'dark' ? 'text-white/85' : 'text-slate-600';
+---
+
+<Layout metadata={metadata}>
+<section
+  class={`relative overflow-hidden brand-${brandKey} ${heroToneClass}`}
+  style={`background-image:${view.hero.background}; background-size: cover; background-position: center;`}
+>
+    <div class={`absolute inset-0 ${view.hero.overlayClass}`}></div>
+    <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-18 space-y-8">
+      <div class="flex flex-wrap gap-3">
+        {view.hero.chips.map((chip) => (
+          <span class="hero-chip rounded-full px-4 py-2 text-sm font-semibold bg-white/15 border border-white/20 text-white backdrop-blur">
+            {chip}
+          </span>
+        ))}
+      </div>
+      <div class="grid gap-10 md:grid-cols-[1.15fr_0.85fr] items-start">
+        <div class="space-y-5">
+          <p class={`text-sm uppercase tracking-[0.32em] ${toneMuted}`}>{view.hero.tagline}</p>
+          <h1 class={`text-4xl md:text-5xl font-semibold leading-tight ${toneStrong}`}>{view.hero.title}</h1>
+          <p class={`text-lg md:text-xl max-w-3xl ${toneMuted}`}>{view.hero.subtitle}</p>
+        </div>
+        <div class="relative">
+          <div class={`absolute -inset-6 blur-3xl opacity-70 bg-gradient-to-br ${view.accent}`}></div>
+          <div class="relative rounded-3xl border border-white/20 bg-white/10 backdrop-blur-lg shadow-2xl p-8 space-y-3 text-white">
+            <p class="text-xs uppercase tracking-[0.3em] text-white/70">Repères rapides</p>
+            <p class="text-2xl font-semibold">{view.priceTitle}</p>
+            <p class="text-white/85 text-sm leading-relaxed">{view.priceSubtitle}</p>
+            <div class="grid sm:grid-cols-2 gap-3 pt-2 text-sm text-white/85">
+              <div class="rounded-xl border border-white/15 bg-white/10 px-3 py-2 break-words">Téléphone<br /><span class="text-white font-semibold">{brand.phone}</span></div>
+              <div class="rounded-xl border border-white/15 bg-white/10 px-3 py-2 break-words">Email<br /><span class="text-white font-semibold break-words">{brand.email}</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="relative py-14 md:py-18 bg-gradient-to-b from-white/90 via-white/95 to-white dark:from-slate-950/60 dark:via-slate-950/65 dark:to-slate-950/60">
+    <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid gap-10 lg:gap-12 md:grid-cols-[0.95fr_1.05fr] items-start">
+      <div class="rounded-3xl border border-slate-200/70 dark:border-slate-800/70 bg-white/85 dark:bg-slate-900/85 shadow-xl p-8 md:p-10 space-y-4">
+        <p class="text-sm uppercase tracking-[0.28em] text-slate-500 dark:text-slate-300">Comment on calcule</p>
+        <h3 class="text-2xl md:text-3xl font-semibold text-slate-900 dark:text-white">{view.priceTitle}</h3>
+        <p class="text-slate-600 dark:text-slate-300">{view.priceSubtitle}</p>
+        <div class="space-y-3">
+          {view.factors.slice(0, 3).map((item) => (
+            <div class="p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-slate-50/80 dark:bg-white/5 shadow-sm">
+              <p class="text-base font-semibold text-slate-900 dark:text-white">{item.title}</p>
+              <p class="text-slate-600 dark:text-slate-300 text-sm mt-1">{item.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div class="relative">
+        <div class="absolute -inset-4 blur-3xl opacity-60 bg-white/60 dark:bg-slate-900/40"></div>
+        <div class="relative rounded-3xl shadow-2xl border border-slate-200/80 dark:border-slate-800/70 bg-white/95 dark:bg-slate-900/90">
+          <Prices title={view.priceTitle} subtitle={view.priceSubtitle} prices={priceList} classes={{ container: 'max-w-full md:px-8' }} />
+        </div>
+      </div>
+    </div>
+  </section>
 
   <Features3
-    title="Ce que peut inclure votre devis"
-    subtitle="Nous adaptons l’équipe, le camion et les options"
+    title="Ce qui joue sur le prix"
+    subtitle={view.priceSubtitle}
     columns={2}
-    items={[
-      { title: 'Chef d’équipe dédié', description: 'Un interlocuteur avant et pendant le jour J.', icon: 'tabler:headset' },
-      { title: 'Protections complètes', description: 'Housses matelas, couvertures, sangles, chariots et outillage.', icon: 'tabler:box' },
-      { title: 'Emballage & déballage', description: 'Cartons, penderies, vaisselle et emballage fragile si demandé.', icon: 'tabler:package' },
-      { title: 'Objets lourds', description: 'Pianos, coffres, frigos américains ou armoires massives.', icon: 'tabler:weight' },
-      { title: 'Monte-meubles', description: 'Gestion des accès difficiles avec opérateur dédié.', icon: 'tabler:stairs-up' },
-      { title: 'Nettoyage de sortie', description: 'Option ménage pour rendre le logement en ordre.', icon: 'tabler:sparkles' },
-    ]}
+    items={view.factors}
     classes={{ container: 'max-w-5xl' }}
   />
 
   <Steps
     title="Comment nous calculons"
     tagline="Processus"
-    isReversed={true}
-    items={[
-    {
-		title: '1. Estimation du volume',
-		description: 'Idéalement via formulaire pour gagner du temps, mais une visio ou une visite sur place reste possible si nécessaire.',
-		icon: 'tabler:ruler',
-		},
-      {
-        title: '2. Accès et contraintes',
-        description: 'Étages, ascenseurs, parkings, distance à pied, autorisations.',
-        icon: 'tabler:map-pin',
-      },
-      {
-        title: '3. Options retenues',
-        description: 'Emballage, monte-meubles, nettoyage, stockage ou longue distance.',
-        icon: 'tabler:check',
-      },
-      {
-        title: '4. Planning et équipe',
-        description: 'Créneau confirmé, chef d’équipe dédié et matériel adapté.',
-        icon: 'tabler:calendar-time',
-      },
-    ]}
+    isReversed={['urgent', 'transport', 'debarras', 'videsuccession', 'videmaison'].includes(brandType)}
+    items={view.steps}
   >
-<Fragment slot="image">
-  <div
-    class="relative aspect-[3/4] overflow-hidden rounded-xl p-10 text-white shadow-xl bg-center bg-cover"
-    style="
-      background-image:
-        linear-gradient(
-          to bottom right,
-    rgba(29, 78, 216, 0.55),
-          rgba(15, 23, 42, 0.55),
-          rgba(2, 6, 23, 0.55)
-        ),
-        url('https://cdn.midjourney.com/13fe8721-e114-4be1-9fa2-67065ee5822b/0_0.png');
-    "
-  >
-    <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Transparence</p>
-
-    <p class="mt-6 max-w-xs text-base text-blue-100/90">
-      Prix en CHF, TVA incluse, sans frais cachés. Ajustements si le volume diffère le jour J.
-    </p>
-  </div>
-</Fragment>
-
+    <Fragment slot="image">
+      <div
+        class="relative aspect-[3/4] overflow-hidden rounded-xl p-10 text-white shadow-xl bg-center bg-cover"
+        style={`background-image: linear-gradient(135deg, rgba(0,0,0,0.45), rgba(0,0,0,0.35)), url('${view.stepsBg}');`}
+      >
+        <p class="text-sm uppercase tracking-[0.35em] text-white/80">
+          Transparence
+        </p>
+        <p class="mt-6 max-w-xs text-base text-white/90">
+          Prix en CHF, TVA incluse, sans frais cachés. Ajustements seulement si volume ou options changent.
+        </p>
+      </div>
+    </Fragment>
   </Steps>
 
-  <FAQs
-    title="Questions sur les tarifs"
-    subtitle="Des réponses claires avant d’accepter notre devis."
-    items={[
-      { title: 'Le prix est-il fixe ?', description: 'Oui après validation du devis. Seuls les volumes ou options ajoutées le jour J peuvent ajuster le montant.' },
-{
-  title: 'Proposez-vous des visites ?',
-  description: 'Oui, une visite sur place est possible (service payant). Dans la majorité des cas, le formulaire suffit pour établir un devis précis.',
-},
-{
-  title: 'Quid des péages / autoroutes ?',
-  description: '150 km sont inclus (trajet Lausanne → point A → point B). Au-delà, les kilomètres supplémentaires et péages éventuels sont facturés de manière transparente.',
-},
-      { title: 'Acceptez-vous les déménagements urgents ?', description: 'Selon disponibilités, nous pouvons mobiliser une équipe sous 72h.' },
-    ]}
-  />
+  <FAQs title={`Questions sur les tarifs ${view.hero.tagline.toLowerCase()}`} subtitle={view.priceSubtitle} items={view.faqs} />
 
-  <CallToAction
-    actions={[
-      { variant: 'primary', text: 'Recevoir un devis', href: '/contact#form', icon: 'tabler:mail-forward' },
-      { text: 'Parler à un conseiller', href: '/contact' },
-    ]}
-  >
-    <Fragment slot="title">Besoin d’un chiffrage précis ?</Fragment>
+  <CallToAction actions={view.cta.actions}>
+    <Fragment slot="title">
+      {view.cta.title}
+    </Fragment>
     <Fragment slot="subtitle">
-      Indiquez vos adresses, le volume estimé et la date souhaitée : nous envoyons une proposition claire sous 24h.
+      {view.cta.subtitle}
     </Fragment>
   </CallToAction>
 </Layout>
+
+<style>
+  :global(.pricing-hero-light h1),
+  :global(.pricing-hero-light h2),
+  :global(.pricing-hero-light h3),
+  :global(.pricing-hero-light h4),
+  :global(.pricing-hero-light h5),
+  :global(.pricing-hero-light h6),
+  :global(.pricing-hero-light .text-muted),
+  :global(.pricing-hero-light .text-secondary),
+  :global(.pricing-hero-light p),
+  :global(.pricing-hero-light .tagline) {
+    color: rgba(255, 255, 255, 0.92) !important;
+  }
+  :global(.pricing-hero-light .text-muted) {
+    color: rgba(255, 255, 255, 0.84) !important;
+  }
+  :global(.pricing-hero-light .hero-chip) {
+    color: #0b1220;
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.9);
+  }
+  :global(.pricing-hero-light .btn-secondary) {
+    color: #0b1220;
+    background: rgba(255, 255, 255, 0.92);
+    border-color: rgba(255, 255, 255, 0.92);
+  }
+</style>

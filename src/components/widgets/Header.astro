@@ -4,6 +4,7 @@ import Logo from '~/components/Logo.astro';
 import ToggleTheme from '~/components/common/ToggleTheme.astro';
 import ToggleMenu from '~/components/common/ToggleMenu.astro';
 import Button from '~/components/ui/Button.astro';
+import { twMerge } from 'tailwind-merge';
 
 import { getHomePermalink } from '~/utils/permalinks';
 import { trimSlash, getAsset } from '~/utils/permalinks';
@@ -25,6 +26,7 @@ export interface Props {
   links?: Array<MenuLink>;
   actions?: Array<CallToAction>;
   brandName?: string;
+  brandKey?: string;
   isSticky?: boolean;
   isDark?: boolean;
   isFullWidth?: boolean;
@@ -38,6 +40,7 @@ const {
   links = [],
   actions = [],
   brandName = undefined,
+  brandKey = 'pedro',
   isSticky = false,
   isDark = false,
   isFullWidth = false,
@@ -49,12 +52,16 @@ const {
 const urlObj = new URL(Astro.url);
 const currentPath = `/${trimSlash(urlObj.pathname)}` || '/';
 const filteredLinks = links ?? [];
+const isUrgent = brandKey === 'urgent';
+const toneClass = brandKey === 'videsuccession' || brandKey === 'pedro' ? 'header-tone-light' : 'header-tone-white';
 ---
 
 <header
   class:list={[
     { sticky: isSticky, relative: !isSticky, dark: isDark },
     'top-0 z-40 flex-none mx-auto w-full border-b border-gray-50/0 transition-[opacity] ease-in-out aw-header',
+    toneClass,
+    isUrgent ? 'bg-gradient-to-r from-red-900 via-red-700 to-orange-500 text-white shadow-lg' : '',
   ]}
   {...isSticky ? { 'data-aw-sticky-header': true } : {}}
   {...id ? { id } : {}}
@@ -97,7 +104,10 @@ const filteredLinks = links ?? [];
               <>
                 <button
                   type="button"
-                  class="hover:text-link dark:hover:text-white px-3 min-[1100px]:px-4 py-3 flex items-center whitespace-nowrap"
+                  class:list={[
+                    'hover:text-link dark:hover:text-white px-3 min-[1100px]:px-4 py-3 flex items-center whitespace-nowrap',
+                    isUrgent ? 'text-white hover:text-orange-100' : '',
+                  ]}
                 >
                   {text}{' '}
                   <Icon name="tabler:chevron-down" class="w-3.5 h-3.5 ml-0.5 rtl:ml-0 rtl:mr-0.5 hidden md:inline" />
@@ -108,6 +118,7 @@ const filteredLinks = links ?? [];
                       <a
                         class:list={[
                           'first:rounded-t last:rounded-b md:hover:bg-gray-100 hover:text-link dark:hover:text-white dark:hover:bg-gray-700 py-2 px-5 block whitespace-no-wrap',
+                          isUrgent ? 'md:text-slate-900' : '',
                           { 'aw-link-active': href2 === currentPath },
                         ]}
                         href={href2}
@@ -122,12 +133,14 @@ const filteredLinks = links ?? [];
               <a
                 class:list={[
                   'hover:text-link dark:hover:text-white px-3 min-[1100px]:px-4 py-3 flex items-center whitespace-nowrap',
-                    { 'aw-link-active': href === currentPath },
-                  ]}
-                  href={href}
-                >
-                  {text}
-                </a>
+                  isUrgent ? 'text-white hover:text-orange-100' : '',
+                  toneClass === 'header-tone-light' ? 'text-slate-900 hover:text-slate-700' : 'text-white hover:text-slate-100',
+                  { 'aw-link-active': href === currentPath },
+                ]}
+                href={href}
+              >
+                {text}
+              </a>
               )}
             </li>
           ))
@@ -158,7 +171,18 @@ const filteredLinks = links ?? [];
         {actions?.length ? (
           <span class="ml-4 rtl:ml-0 rtl:mr-4">
             {actions.map((btnProps) => (
-              <Button {...btnProps} class="ml-2 py-2.5 px-5.5 md:px-6 font-semibold shadow-none text-sm w-auto" />
+              <Button
+                {...btnProps}
+                variant={isUrgent ? 'primary' : btnProps.variant}
+                class={twMerge(
+                  'ml-2 py-2.5 px-5.5 md:px-6 font-semibold text-sm w-auto',
+                  isUrgent
+                    ? 'bg-red-600 hover:bg-orange-500 text-white shadow-red-500/30 border-transparent'
+                    : toneClass === 'header-tone-light'
+                      ? 'bg-white text-slate-900 hover:bg-slate-100 border border-slate-200 shadow-sm'
+                      : 'bg-white text-slate-900 hover:bg-slate-100 border-transparent shadow-sm'
+                )}
+              />
             ))}
           </span>
         ) : (
@@ -168,3 +192,22 @@ const filteredLinks = links ?? [];
     </div>
   </div>
 </header>
+
+<style>
+  :global(.aw-header.header-tone-light) {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.88));
+    color: #0f172a;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+    backdrop-filter: blur(12px);
+  }
+  :global(.aw-header.header-tone-light a) {
+    color: #0f172a;
+  }
+  :global(.aw-header.header-tone-white) {
+    color: #f8fafc;
+    backdrop-filter: blur(10px);
+  }
+  :global(.aw-header.header-tone-white a) {
+    color: #f8fafc;
+  }
+</style>

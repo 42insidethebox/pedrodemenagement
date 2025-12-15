@@ -1,12 +1,12 @@
 import { ENV } from '~/lib/env';
 
 const LOCALHOST_PATTERN = /^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])$/i;
-const DEFAULT_PUBLIC_ORIGIN = 'https://pedrodemenagement.ch';
+const DEFAULT_PUBLIC_ORIGIN = 'http://www.pedrodemenagement.ch';
 
 export function normalizeOrigin(value: string) {
   if (!value) return '';
   try {
-    const url = value.includes('://') ? new URL(value) : new URL(`https://${value}`);
+    const url = value.includes('://') ? new URL(value) : new URL(`http://${value}`);
     return url.origin;
   } catch {
     return '';

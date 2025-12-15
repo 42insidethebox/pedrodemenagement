@@ -4,38 +4,544 @@ import Content from '~/components/widgets/Content.astro';
 import Features2 from '~/components/widgets/Features2.astro';
 import Hero from '~/components/widgets/Hero.astro';
 import Layout from '~/layouts/PageLayout.astro';
+import { getBrandFromHost } from '~/lib/brand';
+import { BRANDS } from '~/lib/brands.config';
+import { getImage, getImageAlt } from '~/data/imageInventory';
 
-const metadata = {
-  title: 'Services de déménagement',
-};
+const host = Astro.request.headers.get('host');
+const brandKey = getBrandFromHost(host);
+const isUrgent = brandKey === 'urgent';
+const isTransport = brandKey === 'transport';
+const brandType =
+  isUrgent
+    ? 'urgent'
+    : isTransport
+      ? 'transport'
+      : brandKey === 'debarras'
+        ? 'debarras'
+        : brandKey === 'videmaison'
+          ? 'videmaison'
+          : brandKey === 'videsuccession'
+            ? 'videsuccession'
+            : brandKey === 'nettoyagesuccession' || brandKey === 'lausannenettoyage'
+              ? 'clean'
+              : brandKey === 'etatdeslieux'
+                ? 'etatdeslieux'
+                : 'move';
+const brand = BRANDS[brandKey];
+const whatsapp = brand.whatsapp || 'https://wa.me/41767982793';
+const heroImageId =
+  isUrgent
+    ? 'e_cat_truck_mountains_lake_00'
+    : isTransport
+      ? 'professional_van_1'
+      : brandKey === 'debarras'
+        ? 'van_inside_objects_boxes_1'
+        : brandKey === 'videmaison'
+          ? 'strong_man_packing_1'
+          : brandKey === 'videsuccession'
+            ? 'empty_apartment_3'
+            : brandKey === 'nettoyagesuccession' || brandKey === 'lausannenettoyage'
+              ? 'professional_cleanerd_floor'
+              : brandKey === 'etatdeslieux'
+                ? 'empty_apartment_2'
+                : 'hero_happy_boxes_plants';
+const heroImage = getImage(heroImageId);
+const heroAlt = getImageAlt(heroImageId);
+const heroOverlay = isUrgent
+  ? 'bg-black/35'
+  : isTransport
+    ? 'bg-gradient-to-br from-purple-900/45 via-slate-900/40 to-amber-500/30'
+    : brandKey === 'debarras'
+      ? 'bg-gradient-to-br from-emerald-900/35 via-emerald-800/35 to-slate-900/35'
+      : brandKey === 'videmaison'
+        ? 'bg-gradient-to-br from-amber-900/35 via-orange-700/35 to-amber-500/30'
+        : brandKey === 'videsuccession'
+          ? 'bg-gradient-to-br from-slate-900/40 via-gray-900/35 to-amber-600/30'
+          : brandKey === 'nettoyagesuccession' || brandKey === 'lausannenettoyage'
+            ? 'bg-gradient-to-br from-sky-300/30 via-sky-500/25 to-slate-900/35 backdrop-blur-[2px]'
+            : brandKey === 'etatdeslieux'
+              ? 'bg-gradient-to-br from-sky-500/30 via-slate-900/40 to-slate-900/45'
+              : 'bg-white/15';
+const heroCardImage = getImage(
+  isUrgent
+    ? 'e_cat_truck_mountains_lake_01'
+    : brandKey === 'transport'
+      ? 'professional_van_2'
+      : brandKey === 'debarras'
+        ? 'men_loading_van_1'
+        : brandKey === 'videmaison'
+          ? 'strong_man_packing_2'
+          : brandKey === 'videsuccession'
+            ? 'empty_apartment_4'
+            : brandKey === 'nettoyagesuccession' || brandKey === 'lausannenettoyage'
+              ? 'man_cleaning'
+              : brandKey === 'etatdeslieux'
+                ? 'empty_apartment_5'
+                : 'men_loading_e_cat_truck'
+);
+const processImage = getImage(
+  isUrgent
+    ? 'men_moving_furniture_montreux_stairs'
+    : brandKey === 'transport'
+      ? 'van_inside_objects_boxes_3'
+      : brandKey === 'debarras'
+        ? 'van_inside_objects_boxes_2'
+        : brandKey === 'videmaison'
+          ? 'strong_man_packing_1'
+          : brandKey === 'videsuccession'
+            ? 'empty_apartment_6'
+            : brandKey === 'nettoyagesuccession' || brandKey === 'lausannenettoyage'
+              ? 'mop_cleaning_closeup'
+              : brandKey === 'etatdeslieux'
+                ? 'empty_apartment_9'
+                : 'high_luxury_swiss_balcony_leman'
+);
+const optionsImage = getImage(
+  isUrgent
+    ? 'van_moving_swiss_town_raining_motion_blur'
+    : brandKey === 'transport'
+      ? 'professional_van_4'
+      : brandKey === 'debarras'
+        ? 'van_inside_objects_boxes_4'
+        : brandKey === 'videmaison'
+          ? 'strong_man_packing_2'
+          : brandKey === 'videsuccession'
+            ? 'empty_apartment_8'
+            : brandKey === 'nettoyagesuccession' || brandKey === 'lausannenettoyage'
+              ? 'mop_closeup_luxury_apartment'
+              : brandKey === 'etatdeslieux'
+                ? 'empty_apartment_11'
+                : 'high_end_luxury_apartment_lakeside'
+);
+
+const metadata = isUrgent
+  ? {
+      title: 'Déménagement Urgent — Services express',
+      description: 'Intervention 60–90 min, protections incluses, livraisons directes. Arc lémanique et CH sur demande.',
+      ignoreTitleTemplate: true,
+    }
+  : brandKey === 'transport'
+    ? { title: 'Services de transport de meubles', description: 'Protection premium, arrimage renforcé et créneaux précis.' }
+    : brandKey === 'debarras'
+      ? { title: 'Services de débarras', description: 'Tri, dons/recyclage, évacuation contrôlée et remise propre.' }
+      : brandKey === 'videmaison'
+        ? { title: 'Services de vide maison', description: 'Vidage complet, tri, évacuation et remise en ordre.' }
+        : brandKey === 'videsuccession'
+          ? { title: 'Services de vide succession', description: 'Gestion sensible, tri, évacuation et propreté finale.' }
+          : brandKey === 'nettoyagesuccession' || brandKey === 'lausannenettoyage'
+            ? { title: 'Services de nettoyage', description: 'Nettoyages complets, vitres, sols et contrôle qualité.' }
+            : brandKey === 'etatdeslieux'
+              ? { title: 'Services état des lieux', description: 'Constats détaillés, photos, rapports rapides.' }
+              : { title: 'Services de déménagement' };
+
+const view = (() => {
+  switch (brandType) {
+    case 'transport':
+      return {
+        tagline: 'Transport spécialisé',
+        title: 'Transport premium, créneaux verrouillés',
+        subtitle: 'Protection, arrimage renforcé, contact chauffeur et fenêtres horaires serrées.',
+        actions: [
+          { variant: 'primary', text: 'Planifier un transport', href: '/contact#form', icon: 'tabler:truck' },
+          { text: 'Parler logistique', href: whatsapp, icon: 'tabler:phone' },
+        ],
+        featureTitle: 'Prestations transport',
+        featureSubtitle: 'Pensées pour vos pièces sensibles ou volumineuses.',
+        featureItems: [
+          { title: 'Conditionnement', description: 'Filmage, housses, calage sur mesure.', icon: 'tabler:package' },
+          { title: 'Arrimage renforcé', description: 'Sangles, anti-glisse, calage dédié.', icon: 'tabler:anchor' },
+          { title: 'Fenêtre serrée', description: 'Passage à l’heure convenue.', icon: 'tabler:clock' },
+        ],
+        content1Title: 'Transport haut de gamme',
+        content1Subtitle: 'Coordination et protection premium pour éviter toute casse.',
+        content1Items: [
+          { title: 'Brief volume', description: 'Dimensions, fragilité, accès départ/arrivée.', icon: 'tabler:ruler' },
+          { title: 'Protection renforcée', description: 'Coins mousse, couvertures, filmage.', icon: 'tabler:shield-lock' },
+          { title: 'Livraison précise', description: 'Placement, reprise des protections.', icon: 'tabler:map-pin-check' },
+        ],
+        content2Title: 'Options transport',
+        content2Subtitle: 'Sélectionnez les modules adaptés.',
+        content2Items: [
+          { title: 'Emballage premium', description: 'Caisse carton renforcée, coins mousse.', icon: 'tabler:hexagon' },
+          { title: 'Livraison étage', description: 'Escaliers/ascenseurs gérés.', icon: 'tabler:stairs' },
+          { title: 'Transport duo', description: 'Équipe renforcée pour charges lourdes.', icon: 'tabler:users' },
+        ],
+        supportTitle: 'Inclus',
+        supportSubtitle: 'Ce qui ne change jamais.',
+        supportItems: [
+          { title: 'Chef de bord', description: 'Un contact pour piloter le trajet.', icon: 'tabler:headset' },
+          { title: 'Suivi direct', description: 'Contact chauffeur + mises à jour.', icon: 'tabler:message' },
+          { title: 'Assurance', description: 'RC pro incluse, précision sur la valeur.', icon: 'tabler:shield-check' },
+        ],
+        ctaTitle: 'Prêt à réserver un créneau ?',
+        ctaSubtitle: 'Décrivez la pièce, les adresses et la date souhaitée.',
+        ctaActions: [
+          { variant: 'primary', text: 'Planifier un transport', href: '/contact#form', icon: 'tabler:truck' },
+          { text: 'Parler logistique', href: whatsapp, icon: 'tabler:phone' },
+        ],
+      };
+    case 'debarras':
+      return {
+        tagline: 'Débarras & désencombrement',
+        title: 'Débarras complet, trié et valorisé',
+        subtitle: 'Tri, dons/recyclage, évacuation contrôlée et remise propre, sans coordonner plusieurs équipes.',
+        actions: [
+          { variant: 'primary', text: 'Planifier un débarras', href: '/contact#form', icon: 'tabler:calendar-up' },
+          { text: 'Appeler', href: whatsapp, icon: 'tabler:phone' },
+        ],
+        featureTitle: 'Pourquoi nous appeler',
+        featureSubtitle: 'Un débarras cadré, rapide et documenté.',
+        featureItems: [
+          { title: 'Tri & dons', description: 'Réemploi, dons, recyclage avant évacuation.', icon: 'tabler:recycle' },
+          { title: 'Protection', description: 'Sols et parties communes préservés.', icon: 'tabler:shield-check' },
+          { title: 'Reporting', description: 'Avant/après pour bailleurs ou agences.', icon: 'tabler:photo-check' },
+        ],
+        content1Title: 'Débarras cadré',
+        content1Subtitle: 'Objectif : remettre propre sans friction.',
+        content1Items: [
+          { title: 'Évaluation', description: 'Photos ou visite rapide.', icon: 'tabler:camera' },
+          { title: 'Tri & démontage', description: 'Séparation réemploi / recyclage.', icon: 'tabler:tools' },
+          { title: 'Évacuation', description: 'Centres agréés, remise propre.', icon: 'tabler:route' },
+        ],
+        content2Title: 'Options associées',
+        content2Subtitle: 'Selon le bien et les délais.',
+        content2Items: [
+          { title: 'Nettoyage de sortie', description: 'Remise propre après débarras.', icon: 'tabler:sparkles' },
+          { title: 'Transport pièces gardées', description: 'Livraison des meubles conservés.', icon: 'tabler:truck' },
+          { title: 'Petit entretien', description: 'Retrait chevilles, rebouchage léger.', icon: 'tabler:tools' },
+        ],
+        supportTitle: 'Ce qui est inclus',
+        supportSubtitle: 'Base de chaque intervention.',
+        supportItems: [
+          { title: 'Protection', description: 'Commun et accès sécurisés.', icon: 'tabler:shield-check' },
+          { title: 'Chef d’équipe', description: 'Un seul interlocuteur.', icon: 'tabler:headset' },
+          { title: 'Planning clair', description: 'Créneau et périmètre verrouillés.', icon: 'tabler:calendar' },
+        ],
+        ctaTitle: 'Prêt pour un débarras cadré ?',
+        ctaSubtitle: 'Envoyez quelques photos ou organisez une visite express.',
+        ctaActions: [
+          { variant: 'primary', text: 'Planifier un débarras', href: '/contact#form', icon: 'tabler:calendar-up' },
+          { text: 'Appeler', href: whatsapp, icon: 'tabler:phone' },
+        ],
+      };
+    case 'videmaison':
+      return {
+        tagline: 'Vide maison',
+        title: 'Vide maison complet et ordonné',
+        subtitle: 'Tri, dons, recyclage et évacuation en une seule équipe. Rapport photo et remise propre.',
+        actions: [
+          { variant: 'primary', text: 'Organiser un vide maison', href: '/contact#form', icon: 'tabler:home-heart' },
+          { text: 'Parler à un conseiller', href: whatsapp, icon: 'tabler:phone' },
+        ],
+        featureTitle: 'Pourquoi nous choisir',
+        featureSubtitle: 'Un interlocuteur unique pour tout vider.',
+        featureItems: [
+          { title: 'Tri & dons', description: 'Orientation vers dons/recyclage avant évacuation.', icon: 'tabler:heart-handshake' },
+          { title: 'Respect des lieux', description: 'Sols/murs protégés, voisins prévenus.', icon: 'tabler:shield-check' },
+          { title: 'Rapport photo', description: 'Avant / après pour bailleurs ou famille.', icon: 'tabler:photo-check' },
+        ],
+        content1Title: 'Vide maison maîtrisé',
+        content1Subtitle: 'Visite/Photos → Tri → Évacuation → Remise propre.',
+        content1Items: [
+          { title: 'Visite / photos', description: 'Évaluation rapide et repérage.', icon: 'tabler:camera' },
+          { title: 'Débarras & tri', description: 'Dons, recyclage, centres agréés.', icon: 'tabler:recycle' },
+          { title: 'Remise des clés', description: 'Nettoyage léger, photos finales.', icon: 'tabler:key' },
+        ],
+        content2Title: 'Services associés',
+        content2Subtitle: 'Pour finaliser la remise.',
+        content2Items: [
+          { title: 'Nettoyage complet', description: 'Avant état des lieux.', icon: 'tabler:sparkles' },
+          { title: 'Transport pièces gardées', description: 'Livraison des meubles conservés.', icon: 'tabler:truck' },
+          { title: 'Petit entretien', description: 'Retrait chevilles, rebouchage léger.', icon: 'tabler:tools' },
+        ],
+        supportTitle: 'Inclus',
+        supportSubtitle: 'Base de chaque vide maison.',
+        supportItems: [
+          { title: 'Protection', description: 'Commun et accès sécurisés.', icon: 'tabler:shield-check' },
+          { title: 'Chef d’équipe', description: 'Un seul interlocuteur.', icon: 'tabler:headset' },
+          { title: 'Créneau clair', description: 'Calendrier verrouillé.', icon: 'tabler:calendar' },
+        ],
+        ctaTitle: 'Besoin de vider une maison ?',
+        ctaSubtitle: 'Expliquez le volume et la date souhaitée, on s’occupe du reste.',
+        ctaActions: [
+          { variant: 'primary', text: 'Organiser un vide maison', href: '/contact#form', icon: 'tabler:home-heart' },
+          { text: 'Parler à un conseiller', href: whatsapp, icon: 'tabler:phone' },
+        ],
+      };
+    case 'videsuccession':
+      return {
+        tagline: 'Vide succession',
+        title: 'Gestion discrète des biens successoraux',
+        subtitle: 'Tri, inventaire succinct, évacuation et remise propre. Coordination héritiers et notaires.',
+        actions: [
+          { variant: 'primary', text: 'Planifier un vide succession', href: '/contact#form', icon: 'tabler:scale' },
+          { text: 'Appeler en direct', href: whatsapp, icon: 'tabler:phone' },
+        ],
+        featureTitle: 'Discrétion et traçabilité',
+        featureSubtitle: 'Pour vider et remettre un bien sans friction.',
+        featureItems: [
+          { title: 'Coordination héritiers', description: 'Un contact unique, comptes rendus réguliers.', icon: 'tabler:users' },
+          { title: 'Respect & tri', description: 'Objets sensibles mis de côté sur consignes.', icon: 'tabler:lock' },
+          { title: 'Reporting', description: 'Photos avant/après, liste sommaire.', icon: 'tabler:photo' },
+        ],
+        content1Title: 'Vide succession cadré',
+        content1Subtitle: 'Cadrage → Tri → Évacuation → Remise propre.',
+        content1Items: [
+          { title: 'Cadrage', description: 'Consignes héritiers/notaire.', icon: 'tabler:clipboard' },
+          { title: 'Tri & évacuation', description: 'Séparation, démontage, centres agréés.', icon: 'tabler:route' },
+          { title: 'Remise propre', description: 'Nettoyage léger ou complet, photos finales.', icon: 'tabler:sparkles' },
+        ],
+        content2Title: 'Services connexes',
+        content2Subtitle: 'Pour sécuriser la remise du bien.',
+        content2Items: [
+          { title: 'Nettoyage complet', description: 'Avant remise des clés ou état des lieux.', icon: 'tabler:sparkles' },
+          { title: 'Transport objets gardés', description: 'Livraison à plusieurs adresses.', icon: 'tabler:truck' },
+          { title: 'Archivage léger', description: 'Triage et conditionnement de documents.', icon: 'tabler:archive' },
+        ],
+        supportTitle: 'Inclus',
+        supportSubtitle: 'Base de chaque intervention.',
+        supportItems: [
+          { title: 'Chef d’équipe', description: 'Un seul interlocuteur.', icon: 'tabler:headset' },
+          { title: 'Protection', description: 'Accès sécurisés, respect des lieux.', icon: 'tabler:shield-check' },
+          { title: 'Planning clair', description: 'Créneau et périmètre verrouillés.', icon: 'tabler:calendar' },
+        ],
+        ctaTitle: 'Besoin d’un vide succession cadré ?',
+        ctaSubtitle: 'Expliquez le contexte, on vous envoie un plan clair et un calendrier.',
+        ctaActions: [
+          { variant: 'primary', text: 'Planifier un vide succession', href: '/contact#form', icon: 'tabler:scale' },
+          { text: 'Appeler en direct', href: whatsapp, icon: 'tabler:phone' },
+        ],
+      };
+    case 'clean':
+      return {
+        tagline: 'Nettoyage',
+        title: brandKey === 'lausannenettoyage' ? 'Propreté maîtrisée, délais rapides' : 'Remise en état après débarras ou succession',
+        subtitle:
+          brandKey === 'lausannenettoyage'
+            ? 'Appartements, bureaux ou fin de chantier : checklist pro, produits adaptés et contrôle qualité.'
+            : 'Nettoyage complet, vitres, sols et sanitaires. Rapport photo pour bailleurs et agences.',
+        actions: [
+          { variant: 'primary', text: 'Programmer un nettoyage', href: '/contact#form', icon: 'tabler:sparkles' },
+          { text: 'Appeler', href: whatsapp, icon: 'tabler:phone' },
+        ],
+        featureTitle: 'Propreté documentée',
+        featureSubtitle: 'Idéal après un débarras ou pour préparer un état des lieux.',
+        featureItems: [
+          { title: 'Checklist critique', description: 'Cuisine, sdb, vitres priorisées.', icon: 'tabler:list-check' },
+          { title: 'Matériel pro', description: 'Monobrosse / aspirateurs HEPA.', icon: 'tabler:spray' },
+          { title: 'Rapport photo', description: 'Avant/après disponible.', icon: 'tabler:photo-check' },
+        ],
+        content1Title: 'Remise propre en 3 étapes',
+        content1Subtitle: 'Cadrage → Intervention → Contrôle.',
+        content1Items: [
+          { title: 'Cadrage', description: 'Surface, zones sensibles, délais.', icon: 'tabler:clipboard-check' },
+          { title: 'Intervention', description: 'Nettoyage complet + vitres, odeurs traitées.', icon: 'tabler:sparkles' },
+          { title: 'Contrôle', description: 'Photos, retouches si nécessaire.', icon: 'tabler:photo-check' },
+        ],
+        content2Title: 'Compléments utiles',
+        content2Subtitle: 'Pour une remise impeccable.',
+        content2Items: [
+          { title: 'Odeur & désinfection', description: 'Traitement ciblé des odeurs.', icon: 'tabler:wind' },
+          { title: 'Petites retouches', description: 'Rebouchage léger via partenaires.', icon: 'tabler:tools' },
+          { title: 'Vitres hauteur', description: 'Vitres difficiles avec matériel adapté.', icon: 'tabler:building' },
+        ],
+        supportTitle: 'Inclus',
+        supportSubtitle: 'Base de chaque nettoyage.',
+        supportItems: [
+          { title: 'Chef d’équipe', description: 'Un seul interlocuteur.', icon: 'tabler:headset' },
+          { title: 'Checklist', description: 'Priorités validées avant passage.', icon: 'tabler:list' },
+          { title: 'Contrôle qualité', description: 'Reprises si besoin.', icon: 'tabler:check' },
+        ],
+        ctaTitle: 'Besoin d’une remise propre ?',
+        ctaSubtitle: 'Planifions un créneau et la checklist adaptée.',
+        ctaActions: [
+          { variant: 'primary', text: 'Programmer un nettoyage', href: '/contact#form', icon: 'tabler:sparkles' },
+          { text: 'Appeler', href: whatsapp, icon: 'tabler:phone' },
+        ],
+      };
+    case 'etatdeslieux':
+      return {
+        tagline: 'État des lieux',
+        title: 'Constats précis, rapports photo, délais serrés',
+        subtitle: 'Entrée ou sortie : relevés détaillés, photos, check-list bail. Communication avec régie ou propriétaire.',
+        actions: [
+          { variant: 'primary', text: 'Programmer un état des lieux', href: '/contact#form', icon: 'tabler:clipboard-check' },
+          { text: 'Contacter', href: whatsapp, icon: 'tabler:phone' },
+        ],
+        featureTitle: 'État des lieux structuré',
+        featureSubtitle: 'Rapport clair pour éviter les contestations.',
+        featureItems: [
+          { title: 'Check-list bailleur', description: 'Pièces, murs, sols, équipements vérifiés.', icon: 'tabler:checkbox' },
+          { title: 'Photos horodatées', description: 'Série photo et remarques précises.', icon: 'tabler:photo-check' },
+          { title: 'Remarques actionnables', description: 'Liste des points à corriger.', icon: 'tabler:list-check' },
+        ],
+        content1Title: 'Constat rapide, rapport clair',
+        content1Subtitle: 'Planification → Relevés → Rapport.',
+        content1Items: [
+          { title: 'Planification', description: 'Infos régie/bailleur, type entrée/sortie.', icon: 'tabler:calendar' },
+          { title: 'Relevés sur place', description: 'Photos, mesures, checklist complète.', icon: 'tabler:clipboard-check' },
+          { title: 'Rapport & envoi', description: 'PDF + galerie photo, partage aux parties.', icon: 'tabler:share' },
+        ],
+        content2Title: 'Modules complémentaires',
+        content2Subtitle: 'Pour compléter le constat.',
+        content2Items: [
+          { title: 'Mesures & plans', description: 'Relevé métrique simple.', icon: 'tabler:ruler' },
+          { title: 'Suivi correctifs', description: 'Liste des actions et validation photo.', icon: 'tabler:checkup-list' },
+          { title: 'Nettoyage / débarras', description: 'Activation de nos équipes partenaires.', icon: 'tabler:users' },
+        ],
+        supportTitle: 'Inclus',
+        supportSubtitle: 'Base de chaque constat.',
+        supportItems: [
+          { title: 'Check-list', description: 'Bailleur/locataire adaptée.', icon: 'tabler:list' },
+          { title: 'Photos', description: 'Horodatées, archivées.', icon: 'tabler:photo' },
+          { title: 'Rapport', description: 'Envoi sous 24h', icon: 'tabler:clock' },
+        ],
+        ctaTitle: 'Programmer un état des lieux',
+        ctaSubtitle: 'Choisissez la date et dites-nous si régie/propriétaire doit être en copie.',
+        ctaActions: [
+          { variant: 'primary', text: 'Réserver un créneau', href: '/contact#form', icon: 'tabler:clipboard-check' },
+          { text: 'Parler à un expert', href: whatsapp, icon: 'tabler:phone' },
+        ],
+      };
+    default:
+      return {
+        tagline: 'Nos services',
+        title: 'Déménagements soignés partout en Suisse romande',
+        subtitle: 'Appartement, maison, bureau ou longue distance : nous préparons, protégeons et transportons vos biens avec une équipe locale.',
+        actions: [{ variant: 'primary', text: 'Obtenir un devis', href: '/contact#form' }],
+        featureTitle: 'Prestations principales',
+        featureSubtitle: 'Choisissez le format adapté à votre déménagement.',
+        featureItems: [
+          { title: 'Appartement', description: 'Studios et 2-4.5 pièces avec gestion ascenseurs/parkings.', icon: 'tabler:building' },
+          { title: 'Maisons & villas', description: 'Volumes importants, démontage/remontage inclus.', icon: 'tabler:home' },
+          { title: 'Emballage & déballage', description: 'Cartons, penderies, protections vaisselle et emballage complet.', icon: 'tabler:package' },
+        ],
+        content1Title: 'Déménagement résidentiel',
+        content1Subtitle: 'Du studio à la maison familiale, matériel adapté et équipe dimensionnée.',
+        content1Items: [
+          { title: 'Repérage des accès', description: 'Ascenseur, parkings, autorisations municipales.', icon: 'tabler:map-pin' },
+          { title: 'Protection systématique', description: 'Sols, murs, portes, meubles protégés.', icon: 'tabler:shield-check' },
+          { title: 'Remontage soigné', description: 'Remise en place dans les bonnes pièces.', icon: 'tabler:tools' },
+        ],
+        content2Title: 'Services complémentaires',
+        content2Subtitle: 'Sélectionnez uniquement ce dont vous avez besoin.',
+        content2Items: [
+          { title: 'Emballage & déballage', description: 'Protection fragile, penderies, vaisselle.', icon: 'tabler:package' },
+          { title: 'Démontage/remontage', description: 'Meubles, dressing, literie et luminaires.', icon: 'tabler:tools' },
+          { title: 'Nettoyage de sortie', description: 'Option ménage pour rendre le logement en ordre.', icon: 'tabler:sparkles' },
+        ],
+        supportTitle: 'Ce qui est inclus',
+        supportSubtitle: 'Bases solides pour chaque déménagement.',
+        supportItems: [
+          { title: 'Chef d’équipe dédié', description: 'Coordonne horaires et accès.', icon: 'tabler:headset' },
+          { title: 'Protections complètes', description: 'Housses, couvertures, sangles, chariots.', icon: 'tabler:box' },
+          { title: 'Créneaux fiables', description: 'Arrivée confirmée, créneau matin/après-midi.', icon: 'tabler:calendar-time' },
+        ],
+        ctaTitle: 'Discutons de votre déménagement',
+        ctaSubtitle: 'Expliquez votre volume, vos adresses et la date souhaitée : nous revenons avec un plan clair.',
+        ctaActions: [
+          { variant: 'primary', text: 'Planifier mon déménagement', href: '/contact#form', icon: 'tabler:mail-forward' },
+          { text: 'Voir les tarifs', href: '/pricing' },
+        ],
+      };
+  }
+})();
+
+const accentClass =
+  brandType === 'urgent'
+    ? 'text-orange-100/90'
+    : brandType === 'transport'
+      ? 'text-amber-200/90'
+      : brandType === 'debarras'
+        ? 'text-emerald-100/90'
+        : brandType === 'videmaison'
+          ? 'text-amber-200/90'
+          : brandType === 'videsuccession'
+            ? 'text-amber-100/90'
+            : brandType === 'clean'
+              ? 'text-sky-100/90'
+      : brandType === 'etatdeslieux'
+        ? 'text-sky-100/90'
+        : 'text-blue-200/80';
+
+const heroToneClass = ['urgent', 'transport', 'debarras', 'videmaison', 'videsuccession', 'clean', 'etatdeslieux'].includes(
+  brandType
+)
+  ? 'hero-light'
+  : '';
+
+const contentGradient = (() => {
+  switch (brandType) {
+    case 'urgent':
+      return 'rgba(185, 28, 28, 0.45), rgba(239, 68, 68, 0.42), rgba(249, 115, 22, 0.38)';
+    case 'transport':
+      return 'rgba(76,29,149,0.42), rgba(17,24,39,0.40), rgba(245,158,11,0.32)';
+    case 'debarras':
+      return 'rgba(16,185,129,0.38), rgba(6,95,70,0.34), rgba(15,23,42,0.34)';
+    case 'videmaison':
+      return 'rgba(180,83,9,0.40), rgba(249,115,22,0.38), rgba(124,45,18,0.32)';
+    case 'videsuccession':
+      return 'rgba(15,15,20,0.50), rgba(217,119,6,0.36), rgba(0,0,0,0.38)';
+    case 'clean':
+      return 'rgba(34,211,238,0.34), rgba(15,118,110,0.36), rgba(15,23,42,0.32)';
+    case 'etatdeslieux':
+      return 'rgba(14,165,233,0.36), rgba(15,23,42,0.42), rgba(0,6,16,0.40)';
+    default:
+      return 'rgba(148,149,153,0.40), rgba(15,23,42,0.40), rgba(2,6,23,0.38)';
+  }
+})();
+
+const optionsGradient = contentGradient;
+
 ---
 
 <Layout metadata={metadata}>
   <Hero
     id="services"
-    tagline="Nos services"
-    title="Déménagements soignés partout en Suisse romande"
-    subtitle="Appartement, maison, bureau ou longue distance : nous préparons, protégeons et transportons vos biens avec une équipe locale."
-    actions={[{ variant: 'primary', text: 'Obtenir un devis', href: '/contact#form' }]}
+    tagline={view.tagline}
+    title={view.title}
+    subtitle={view.subtitle}
+    actions={view.actions}
+    class={`${heroToneClass} services-hero`}
   >
+    <Fragment slot="bg">
+      <img src={heroImage} alt={heroAlt || 'Hero background'} class="absolute inset-0 w-full h-full object-cover" />
+      <div class={`absolute inset-0 ${heroOverlay}`}></div>
+    </Fragment>
 <Fragment slot="image">
   <div
     class="relative aspect-[5/3] overflow-hidden rounded-2xl p-10 text-left text-white shadow-2xl bg-cover bg-center"
-    style="
+    style={
+      isUrgent
+        ? `
       background-image:
         linear-gradient(
           to bottom right,
-          rgba(29, 78, 216, 0.55),
+          rgba(185, 28, 28, 0.72),
+          rgba(239, 68, 68, 0.68),
+          rgba(249, 115, 22, 0.62)
+        ),
+        url('${heroCardImage}');`
+        : `
+      background-image:
+        linear-gradient(
+          to bottom right,
+          rgba(148, 149, 153, 0.55),
           rgba(15, 23, 42, 0.55),
           rgba(2, 6, 23, 0.55)
         ),
-        url('https://cdn.midjourney.com/3d5f08bc-a2ad-4e7d-accb-aa52b19417b9/0_0.png');
-    "
+        url('${heroCardImage}');`
+    }
   >
-    <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Interventions planifiées</p>
-    <h4 class="mt-4 text-4xl font-semibold">Protection · Transport · Installation</h4>
-    <p class="mt-6 max-w-xl text-lg text-blue-100/90">
-      Camions, protections complètes et chef d’équipe dédié pour un jour J sans stress.
+    <p class={`text-sm uppercase tracking-[0.35em] ${accentClass}`}>
+      {view.tagline}
+    </p>
+    <h4 class="mt-4 text-4xl font-semibold">
+      {view.title}
+    </h4>
+    <p class={`mt-6 max-w-xl text-lg ${isUrgent ? 'text-orange-50/90' : 'text-white/90'}`}>
+      {view.subtitle}
     </p>
   </div>
 </Fragment>
@@ -43,48 +549,57 @@ const metadata = {
   </Hero>
 
   <Features2
-    title="Prestations principales"
-    subtitle="Choisissez le format adapté à votre déménagement"
+    title={view.featureTitle}
+    subtitle={view.featureSubtitle}
     columns={3}
-    items={[
-      { title: 'Appartement', description: 'Studios et 2-4.5 pièces avec gestion des ascenseurs et parkings.', icon: 'tabler:building' },
-      { title: 'Maisons & villas', description: 'Volumes plus importants avec démontage/remontage inclus.', icon: 'tabler:home' },
-      { title: 'Emballage & déballage', description: 'Cartons, penderies, protections vaisselle et emballage complet.', icon: 'tabler:package' },
-    ]}
+    classes={
+      brandType === 'urgent'
+        ? { items: { panel: 'card' }, container: 'urgent-grid' }
+      : brandType === 'transport'
+        ? { container: 'max-w-6xl', items: { panel: 'panel-grid rounded-2xl p-6 gap-4 text-white border border-amber-200/20' } }
+      : brandType === 'debarras'
+        ? { items: { panel: 'panel-surface rounded-2xl p-6 gap-4 text-emerald-950' } }
+      : brandType === 'videsuccession'
+        ? { items: { panel: 'panel-contrast rounded-2xl p-6 gap-4 text-amber-100' } }
+      : brandType === 'clean'
+        ? { items: { panel: 'panel-surface rounded-2xl p-6 gap-4 border border-cyan-200/40 text-slate-900' } }
+      : brandType === 'etatdeslieux'
+        ? { items: { panel: 'panel-grid rounded-2xl p-6 gap-4 text-sky-50 border border-sky-200/20' } }
+        : brandType === 'videmaison'
+          ? { items: { panel: 'panel-surface rounded-2xl p-6 gap-4 text-amber-950 border border-amber-200/30' } }
+          : {}
+    }
+    items={view.featureItems}
   />
 
   <Content
     id="appartement"
     isReversed
-    items={[
-      { title: 'Repérage des accès', description: 'Ascenseur, couloirs, parkings et autorisations municipales si besoin.', icon: 'tabler:map-pin' },
-      { title: 'Protection systématique', description: 'Sols, murs, portes, meubles et électroménagers protégés avant le chargement.', icon: 'tabler:shield-check' },
-      { title: 'Chargement optimisé', description: 'Camion adapté au volume, arrimage des meubles et inventaire des éléments sensibles.', icon: 'tabler:truck' },
-      { title: 'Remontage soigné', description: 'Remise en place dans les bonnes pièces, remontage des lits et armoires essentiels.', icon: 'tabler:tools' },
-    ]}
+    items={view.content1Items}
   >
     <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Déménagement résidentiel</h3>
-      Du studio à la maison familiale, nous gérons l’ensemble des étapes avec du matériel adapté et une équipe dimensionnée.
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
+        {view.content1Title}
+      </h3>
+      {view.content1Subtitle}
     </Fragment>
 
 <Fragment slot="image">
   <div
     class="relative aspect-[4/3] overflow-hidden rounded-xl p-10 text-left text-white shadow-xl bg-cover bg-center"
-    style="
+    style={
+      `
       background-image:
         linear-gradient(
           to bottom right,
-          rgba(29, 78, 216, 0.55),
-          rgba(15, 23, 42, 0.55),
-          rgba(2, 6, 23, 0.55)
+          ${contentGradient}
         ),
-        url('https://cdn.midjourney.com/862dd141-8959-4426-ac28-2f9949466e4c/0_0.png');
-    "
+        url('${processImage}');`
+    }
   >
     <h4 class="text-3xl font-semibold">Arc lémanique & Suisse</h4>
-    <p class="mt-6 max-w-sm text-blue-100/90">
-      Genève, Lausanne, Vevey, Montreux, Valais et déplacements longue distance selon vos besoins.
+    <p class={`mt-6 max-w-sm ${isUrgent ? 'text-orange-50/90' : 'text-white/90'}`}>
+      {view.content1Subtitle}
     </p>
   </div>
 </Fragment>
@@ -94,35 +609,41 @@ const metadata = {
   <Content
     id="emballage"
     isAfterContent
-    items={[
-      { title: 'Cartons & penderies', description: 'Fourniture de cartons, penderies et protections vaisselle.', icon: 'tabler:box' },
-      { title: 'Démontage/remontage', description: 'Meubles, dressing, literie et luminaires démontés puis remontés.', icon: 'tabler:tools' },
-      { title: 'Nettoyage de sortie', description: 'Option ménage pour rendre votre logement en ordre.', icon: 'tabler:sparkles' },
-      { title: 'Stockage temporaire', description: 'Solution courte durée pour lisser vos délais de remise des clés.', icon: 'tabler:building-warehouse' },
-    ]}
+    items={view.content2Items}
   >
     <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Services complémentaires</h3>
-      Sélectionnez seulement ce dont vous avez besoin : emballage complet, monte-meubles, stockage ou nettoyage.
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
+        {view.content2Title}
+      </h3>
+      {view.content2Subtitle}
     </Fragment>
 
 <Fragment slot="image">
   <div
     class="relative aspect-[4/3] overflow-hidden rounded-xl p-10 text-white shadow-xl bg-cover bg-center"
-    style="
+    style={
+      isUrgent
+        ? `
       background-image:
         linear-gradient(
           to bottom right,
-          rgba(29, 78, 216, 0.55),
-          rgba(15, 23, 42, 0.55),
-          rgba(2, 6, 23, 0.55)
+          ${optionsGradient}
         ),
-        url('https://cdn.midjourney.com/c8f8f7ac-5224-4c0e-9c23-226281654774/0_3.png');
-    "
+        url('${optionsImage}');`
+        : `
+      background-image:
+        linear-gradient(
+          to bottom right,
+          ${optionsGradient}
+        ),
+        url('${optionsImage}');`
+    }
   >
     <h4 class="text-3xl font-semibold">Options flexibles</h4>
-    <p class="mt-6 max-w-sm text-blue-100/90">
-      Nous adaptons l’équipe, le matériel et les créneaux horaires à vos contraintes de bail, d’ascenseur ou de route.
+    <p class={`mt-6 max-w-sm ${isUrgent ? 'text-orange-50/90' : 'text-blue-100/90'}`}>
+      {isUrgent
+        ? 'Nous ajustons l’équipe, le matériel et le créneau pour limiter le temps sur place.'
+        : 'Nous adaptons l’équipe, le matériel et les créneaux horaires à vos contraintes de bail, d’ascenseur ou de route.'}
     </p>
   </div>
 </Fragment>
@@ -131,26 +652,74 @@ const metadata = {
 
   <Features2
     id="support"
-    title="Ce qui est toujours inclus"
-    subtitle="Des bases solides pour chaque déménagement"
+    title={view.supportTitle}
+    subtitle={view.supportSubtitle}
+    classes={
+      brandType === 'urgent'
+        ? { items: { panel: 'card' }, container: 'urgent-grid' }
+      : brandType === 'transport'
+        ? { container: 'max-w-6xl', items: { panel: 'panel-grid rounded-2xl p-6 gap-4 text-white border border-amber-200/20' } }
+      : brandType === 'debarras'
+        ? { items: { panel: 'panel-surface rounded-2xl p-6 gap-4 text-emerald-950' } }
+      : brandType === 'videsuccession'
+        ? { items: { panel: 'panel-contrast rounded-2xl p-6 gap-4 text-amber-100' } }
+      : brandType === 'clean'
+        ? { items: { panel: 'panel-surface rounded-2xl p-6 gap-4 border border-cyan-200/40 text-slate-900' } }
+      : brandType === 'etatdeslieux'
+        ? { items: { panel: 'panel-grid rounded-2xl p-6 gap-4 text-sky-50 border border-sky-200/20' } }
+        : brandType === 'videmaison'
+          ? { items: { panel: 'panel-surface rounded-2xl p-6 gap-4 text-amber-950 border border-amber-200/30' } }
+          : {}
+    }
     columns={3}
-    items={[
-      { title: 'Chef d’équipe dédié', description: 'Un interlocuteur qui coordonne les horaires et les accès.', icon: 'tabler:headset' },
-      { title: 'Protections complètes', description: 'Housses matelas, couvertures, sangles, chariots, outillage.', icon: 'tabler:box' },
-      { title: 'Créneaux fiables', description: 'Arrivée confirmée 48h avant, créneau matin ou après-midi.', icon: 'tabler:calendar-time' },
-      { title: 'Facturation claire', description: 'Prix en CHF, TVA incluse et sans frais cachés.', icon: 'tabler:receipt' },
-    ]}
+    items={view.supportItems}
   />
 
-  <CallToAction
-    actions={[
-      { variant: 'primary', text: 'Planifier mon déménagement', href: '/contact#form', icon: 'tabler:mail-forward' },
-      { text: 'Voir les tarifs', href: '/pricing' },
-    ]}
-  >
-    <Fragment slot="title">Discutons de votre déménagement</Fragment>
+  <CallToAction actions={view.ctaActions}>
+    <Fragment slot="title">
+      {view.ctaTitle}
+    </Fragment>
     <Fragment slot="subtitle">
-      Expliquez votre volume, vos adresses et la date souhaitée : nous revenons avec un plan clair et une équipe dédiée.
+      {view.ctaSubtitle}
     </Fragment>
   </CallToAction>
 </Layout>
+
+<style>
+  :global(.hero-light h1),
+  :global(.hero-light h2),
+  :global(.hero-light h3),
+  :global(.hero-light h4),
+  :global(.hero-light h5),
+  :global(.hero-light h6),
+  :global(.hero-light .text-muted),
+  :global(.hero-light .text-secondary) {
+    color: rgba(255, 255, 255, 0.92) !important;
+  }
+  :global(.hero-light p) {
+    color: rgba(255, 255, 255, 0.9);
+  }
+  :global(.hero-light .btn-secondary) {
+    color: #0b1220;
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.9);
+  }
+  :global(.services-hero h1),
+  :global(.services-hero h2),
+  :global(.services-hero h3),
+  :global(.services-hero h4),
+  :global(.services-hero h5),
+  :global(.services-hero h6) {
+    color: #e5e7eb !important;
+  }
+  :global(.services-hero p),
+  :global(.services-hero .text-muted),
+  :global(.services-hero .tagline) {
+    color: #e2e8f0 !important;
+  }
+  :global(.services-hero .btn-secondary) {
+    color: #0b1220;
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.9);
+  }
+</style>

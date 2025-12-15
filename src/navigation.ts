@@ -1,11 +1,13 @@
 import { getPermalink } from './utils/permalinks';
 import type { BrandProfile } from './lib/brands.config';
 import { BRANDS } from './lib/brands.config';
+import type { BrandKey } from './lib/brand';
 
 type Navigation = {
   links: { text: string; href: string }[];
   actions: { text: string; href: string }[];
   brandName?: string;
+  brandKey?: BrandKey;
 };
 
 type FooterNavigation = {
@@ -17,7 +19,7 @@ type FooterNavigation = {
 
 type NavigationBrand = Pick<BrandProfile, 'name' | 'email' | 'phone' | 'legalOperator'>;
 
-export const buildHeaderData = (brand: NavigationBrand): Navigation => ({
+export const buildHeaderData = (brand: NavigationBrand & { key?: BrandKey }): Navigation => ({
   links: [
     { text: 'Accueil', href: getPermalink('/') },
     { text: 'Services', href: getPermalink('/services') },
@@ -26,6 +28,7 @@ export const buildHeaderData = (brand: NavigationBrand): Navigation => ({
   ],
   actions: [{ text: 'Réserver un déménagement', href: getPermalink('/contact#form') }],
   brandName: brand.name,
+  brandKey: brand.key,
 });
 
 export const buildFooterData = (brand: NavigationBrand): FooterNavigation => ({

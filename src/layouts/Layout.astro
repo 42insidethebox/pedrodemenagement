@@ -19,9 +19,11 @@ import type { MetaData as MetaDataType } from '~/types';
 
 export interface Props {
   metadata?: MetaDataType;
+  brandKey?: string;
+  styleVars?: Record<string, string>;
 }
 
-const { metadata = {} } = Astro.props;
+const { metadata = {}, brandKey = 'pedro', styleVars = {} } = Astro.props;
 const { textDirection } = I18N;
 const path = Astro.url?.pathname || '/';
 const match = path.match(/^\/(fr|en|de|it)(?=\/|$)/);
@@ -43,7 +45,7 @@ const language = (match && match[1]) || 'fr';
     <ClientRouter fallback="swap" />
   </head>
 
-  <body class="antialiased text-default bg-page tracking-tight">
+  <body class={`antialiased text-default bg-page tracking-tight brand-${brandKey}`} style={styleVars}>
     <slot />
 
     <BasicScripts />

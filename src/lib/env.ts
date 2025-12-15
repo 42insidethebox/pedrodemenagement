@@ -9,7 +9,7 @@ const ENV = {
     import.meta.env.SITE_URL ??
     import.meta.env.PUBLIC_SITE_URL ??
     import.meta.env.ORIGIN ??
-    'https://pedrodemenagement.ch',
+    'http://www.pedrodemenagement.ch',
 
   SUPABASE_URL:
     process.env.SUPABASE_URL ?? import.meta.env.SUPABASE_URL ?? '',

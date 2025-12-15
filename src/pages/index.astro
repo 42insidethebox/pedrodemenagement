@@ -1,76 +1,110 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
+import { getBrandFromHost } from '~/lib/brand';
+import { BRANDS } from '~/lib/brands.config';
 
 import Hero from '~/components/widgets/Hero.astro';
-import Note from '~/components/widgets/Note.astro';
 import Features from '~/components/widgets/Features.astro';
 import Features2 from '~/components/widgets/Features2.astro';
 import Steps from '~/components/widgets/Steps.astro';
 import Content from '~/components/widgets/Content.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
-import Stats from '~/components/widgets/Stats.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
+import { getImage } from '~/data/imageInventory';
+import type { ImageId } from '~/data/imageInventory';
 
-const metadata = {
-  title: 'Pedro Déménagement — Déménagement rapide en Suisse romande',
-  ignoreTitleTemplate: true,
-  description: 'Équipe locale, protection du mobilier et planning maîtrisé pour déménager sereinement en Suisse romande.',
+import type { MetaData } from '~/types';
+import type { BrandKey } from '~/lib/brand';
+
+type SimpleItem = { title: string; description: string; icon?: string };
+
+type HeroView = {
+  title: string;
+  subtitle: string;
+  tagline: string;
+  actions: { variant?: string; text: string; href: string; icon?: string }[];
+  background: string;
+  overlayClass?: string;
+  className?: string;
+  card?: {
+    badge?: string;
+    title: string;
+    description: string;
+    background?: string;
+    overlayClass?: string;
+    className?: string;
+  };
 };
----
-<Layout metadata={metadata}>
-  <Hero
-    id="process"
-    class="hero-bg hero-bg-green"
-    actions={[
+
+type SectionView = {
+  title: string;
+  subtitle?: string;
+  tagline?: string;
+  items: SimpleItem[];
+  variant?: 'tiles' | 'stacked';
+  classes?: Record<string, unknown>;
+  bgClass?: string;
+};
+
+type ProcessView = SectionView & {
+  content?: string;
+  image?: { src: string; overlayClass?: string; badge?: string };
+  isReversed?: boolean;
+};
+
+type BrandView = {
+  metadata: MetaData;
+  hero: HeroView;
+  features: SectionView;
+  process: ProcessView;
+  steps: SectionView & { image?: { src: string; overlayClass?: string; badge?: string } };
+  options: SectionView;
+  faqs: { title: string; subtitle: string; items: SimpleItem[] };
+  cta: { title: string; subtitle: string; actions: { variant?: string; text: string; href: string; icon?: string }[] };
+};
+
+const host = Astro.request.headers.get('host');
+const brandKey = getBrandFromHost(host);
+const brand = BRANDS[brandKey];
+const img = (id: ImageId) => getImage(id);
+const isUrgent = brandKey === 'urgent';
+const isTransport = brandKey === 'transport';
+const whatsapp = brand.whatsapp || 'https://wa.me/41767982793';
+
+const baseMove: BrandView = {
+  metadata: {
+    title: 'Pedro Déménagement — Déménagement rapide en Suisse romande',
+    ignoreTitleTemplate: true,
+    description: 'Équipe locale, protection du mobilier et planning maîtrisé pour déménager sereinement en Suisse romande.',
+  },
+  hero: {
+    tagline: 'Déménagement',
+    title: 'Déménagement rapide, efficace et sans stress',
+    subtitle:
+      "Équipe basée en Suisse romande. Nous planifions, emballons et transportons vos biens avec soin, que ce soit pour un appartement, une maison ou un bureau.",
+    actions: [
       { variant: 'primary', text: 'Obtenir un devis', href: '/contact#form', icon: 'tabler:arrow-right' },
-{ 
-  icon: 'tabler:brand-whatsapp',
-  text: '+41 76 798 27 93', 
-  href: 'https://wa.me/41767982793'
-},
-    ]}
-  >
-
-    <!-- 🌄 THIS IS THE CORRECT BACKGROUND IMAGE -->
-    <Fragment slot="bg">
-      <img
-        src="https://cdn.midjourney.com/38f6c900-29b6-4cc3-a859-1513ce5cad93/0_1.png"
-        alt="Hero background"
-        class="absolute inset-0 w-full h-full object-cover"
-      />
-      <div class="absolute inset-0 bg-white/20"></div>
-    </Fragment>
-
-    <Fragment slot="title">
-      Déménagement rapide, efficace et sans stress
-    </Fragment>
-
-    <Fragment slot="subtitle">
-      Équipe basée en Suisse romande. Nous planifions, emballons et transportons vos biens avec soin, que ce soit pour un appartement, une maison ou un bureau.
-    </Fragment>
-
-<Fragment slot="image">
-  <div class="relative aspect-[4/3] overflow-hidden rounded-2xl
-              bg-gradient-to-br from-blue-700/70 via-slate-900/70 to-slate-800/70
-              p-10 text-left text-white shadow-2xl backdrop-blur-sm">
-    <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Jour J maîtrisé</p>
-    <h4 class="mt-4 text-3xl font-semibold">Planification → Protection → Transport</h4>
-    <p class="mt-6 max-w-xl text-lg text-blue-100/90">
-      Chef d’équipe dédié, check-list des accès et protections sol/murs pour un déménagement sans surprises.
-    </p>
-  </div>
-</Fragment>
-
-
-  </Hero>
-
-
-  <Features
-    id="features"
-    tagline="Pourquoi nous choisir"
-    title="La précision suisse appliquée à votre déménagement"
-    subtitle="Une équipe locale, un matériel adapté et une organisation claire pour protéger vos biens."
-    items={[
+      { icon: 'tabler:brand-whatsapp', text: brand.phone || '+41 76 798 27 93', href: whatsapp },
+    ],
+    background:
+      `linear-gradient(135deg, rgba(248,250,252,0.96), rgba(226,232,240,0.9)), url('${img('hero_happy_boxes_plants')}')`,
+    overlayClass: 'bg-white/70',
+    className: 'pedro-hero',
+    card: {
+      badge: 'Jour J maîtrisé',
+      title: 'Planification → Protection → Transport',
+      description: 'Chef d’équipe dédié, check-list des accès et protections sol/murs pour un déménagement sans surprises.',
+      background:
+        `linear-gradient(135deg, rgba(255,255,255,0.92), rgba(226,232,240,0.9)), url('${img('men_loading_e_cat_truck')}')`,
+      overlayClass: 'bg-white/60',
+      className: 'panel-surface text-slate-900',
+    },
+  },
+  features: {
+    tagline: 'Pourquoi nous choisir',
+    title: 'La précision suisse appliquée à votre déménagement',
+    subtitle: 'Une équipe locale, un matériel adapté et une organisation claire pour protéger vos biens.',
+    items: [
       {
         title: 'Équipe lémanique',
         description: 'Déménageurs basés entre Genève et Lausanne, disponibles en semaine et le samedi.',
@@ -91,165 +125,62 @@ const metadata = {
         description: 'Un interlocuteur qui coordonne la date, l’équipe et les éventuels imprévus.',
         icon: 'tabler:headset',
       },
-    ]}
-  />
-
-  <Content
-    isReversed
-    tagline="Processus"
-    title="Votre déménagement en 3 temps"
-    items={[
-      { title: 'Préparation & devis', description: 'Visio ou visite express pour estimer le volume, les accès et le matériel nécessaire.' },
-      { title: 'Emballage & protection', description: 'Cartons, housses matelas, démontage du mobilier et protection des sols/murs.' },
-      { title: 'Transport & installation', description: 'Chargement sécurisé, trajet optimisé, remontage et reprise des protections.' },
-    ]}
-  >
-    <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Un chef d’équipe dédié</h3>
-      Vous savez qui vient, avec quel camion et à quelle heure. Nous validons chaque étape avant le jour J.
-    </Fragment>
-
-<Fragment slot="image">
-  <div class="relative aspect-[4/3] overflow-hidden rounded-xl shadow-xl">
-
-    <!-- Background image for this specific card -->
-    <img
-      src="https://cdn.midjourney.com/a9b9537f-0b48-4664-8f73-6a955efc0123/0_3.png"
-      class="absolute inset-0 w-full h-full object-cover"
-      alt="Planning background"
-    />
-
-    <!-- Semi-transparent blue gradient overlay (same style as card #1) -->
-    <div class="absolute inset-0 bg-gradient-to-br
-                from-blue-600/70 via-slate-900/70 to-slate-800/70
-                backdrop-blur-sm"></div>
-
-    <!-- Card content stays crisp -->
-    <div class="relative p-10 text-left text-white">
-      <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Planning</p>
-      <h4 class="mt-4 text-3xl font-semibold">Rendez-vous confirmé 48h avant</h4>
-      <p class="mt-6 max-w-xs text-base text-blue-100/90">
-        Check-list d’accès, confirmation du créneau et rappel des points clés.
-      </p>
-    </div>
-  </div>
-</Fragment>
-
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
-    </Fragment>
-  </Content>
-
-  <Steps
-    title="Notre accompagnement"
-    tagline="Parcours client"
-    items={[
-      {
-        title: '1. Échange rapide',
-        description: 'Un appel ou une visio pour comprendre votre logement, vos dates et vos contraintes.',
-        icon: 'tabler:phone',
+    ],
+    bgClass: 'bg-white',
+    classes: { container: 'max-w-6xl', items: { panel: 'bg-white text-slate-900 rounded-2xl p-6 gap-4 shadow-sm border border-slate-100' } },
+  },
+    process: {
+      tagline: 'Processus',
+      title: 'Votre déménagement en 3 temps',
+      items: [
+        { title: 'Préparation & devis', description: 'Visio ou visite express pour estimer le volume, les accès et le matériel nécessaire.' },
+        { title: 'Emballage & protection', description: 'Cartons, housses matelas, démontage du mobilier et protection des sols/murs.' },
+        { title: 'Transport & installation', description: 'Chargement sécurisé, trajet optimisé, remontage et reprise des protections.' },
+      ],
+      content: 'Vous savez qui vient, avec quel camion et à quelle heure. Nous validons chaque étape avant le jour J.',
+      image: {
+        src: img('professional_van_5'),
+        overlayClass: 'bg-gradient-to-br from-blue-100/70 via-blue-200/60 to-slate-100/70',
+        badge: 'Planning',
       },
-      {
-        title: '2. Devis détaillé',
-        description: 'Volume estimé, accès, options (emballage, monte-meubles, stockage) et planning.',
-        icon: 'tabler:file-description',
+      classes: { container: 'bg-gradient-to-br from-indigo-50 via-blue-50 to-slate-100 rounded-3xl shadow-sm px-6 md:px-10 py-10' },
+      isReversed: true,
+    },
+  steps: {
+    title: 'Notre accompagnement',
+    tagline: 'Parcours client',
+      items: [
+        { title: '1. Échange rapide', description: 'Un appel ou une visio pour comprendre vos dates et contraintes.', icon: 'tabler:phone' },
+        { title: '2. Devis détaillé', description: 'Volume estimé, accès, options et planning.', icon: 'tabler:file-description' },
+        { title: '3. Jour J', description: 'Protection des zones de passage, chargement et transport sécurisé.', icon: 'tabler:truck' },
+        { title: '4. Installation', description: 'Remontage, mise en place et reprise des emballages principaux.', icon: 'tabler:home' },
+      ],
+      classes: {
+        container: 'bg-white rounded-3xl shadow-sm px-6 md:px-10 py-10',
+        headline: { title: 'text-slate-900', subtitle: 'text-slate-600' },
+        items: { title: 'text-slate-900', description: 'text-slate-600' },
       },
-      {
-        title: '3. Jour J',
-        description: 'Arrivée de l’équipe, protection des zones de passage, chargement et transport sécurisé.',
-        icon: 'tabler:truck',
+      image: {
+        src: img('professional_van_3'),
+        overlayClass: 'bg-gradient-to-br from-slate-200/70 via-blue-200/60 to-blue-100/60',
+        badge: 'Disponibilité',
       },
-      {
-        title: '4. Installation',
-        description: 'Remontage, mise en place dans les pièces souhaitées et reprise des emballages principaux.',
-        icon: 'tabler:home',
-      },
-    ]}
-  >
-<Fragment slot="image">
-  <div class="relative aspect-[3/4] overflow-hidden rounded-xl shadow-xl">
-
-    <!-- Background image -->
-    <img
-      src="https://cdn.midjourney.com/8fb2760d-3cd8-4d48-a430-b4c143f548e6/0_3.png"
-      alt="Disponibilité background"
-      class="absolute inset-0 w-full h-full object-cover"
-    />
-
-    <!-- Semi-transparent blue/black gradient overlay -->
-    <div class="absolute inset-0 bg-gradient-to-br
-                from-slate-900/70 via-slate-800/70 to-blue-700/70
-                backdrop-blur-sm"></div>
-
-    <!-- Foreground content (text) -->
-    <div class="relative p-10 text-white">
-      <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Disponibilité</p>
-      <p class="mt-6 max-w-xs text-base text-blue-100/90">
-        Interventions sur l’Arc lémanique et déplacements longue distance sur demande.
-      </p>
-    </div>
-  </div>
-</Fragment>
-
-  </Steps>
-
-  <Content
-    isAfterContent
-    items={[
-      { title: 'Zones desservies', description: 'Genève, Lausanne, Vevey, Montreux, Valais et trajets longue distance sur demande.' },
-      { title: 'Matériel fourni', description: 'Cartons, housses, adhésif, protections sol/mur, chariots, sangles et couvertures.' },
-      { title: 'Options clés (services supplémentaires payants)', description: 'Démontage/remontage, nettoyage de sortie, stockage temporaire, reprise des cartons.' },
-      { title: 'Disponibilité', description: 'Semaine et samedi, créneaux matin ou après-midi selon vos contraintes.' },
-    ]}
-  >
-    <Fragment slot="content">Tout le nécessaire pour un déménagement soigné, sans charge mentale.</Fragment>
-
-<Fragment slot="image">
-  <div
-    class="relative aspect-[4/3] overflow-hidden rounded-xl p-10 text-white shadow-xl bg-cover bg-center"
-    style="
-      background-image:
-        linear-gradient(to bottom right, rgba(15, 23, 42, 0.65), rgba(30, 41, 59, 0.55), rgba(29, 78, 216, 0.45)),
-        url('https://cdn.midjourney.com/22c7cfae-6033-4dbb-a044-216b23d2504b/0_3.png');
-    "
-  >
-    <h4 class="text-3xl font-semibold">Prêt pour le jour J</h4>
-    <ul class="mt-6 space-y-3 text-left text-blue-100/90">
-      <li>✓ Chef d’équipe identifié</li>
-      <li>✓ Camion adapté au volume</li>
-      <li>✓ Protections et outillage fournis</li>
-    </ul>
-  </div>
-</Fragment>
-
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
-    </Fragment>
-  </Content>
-
-  <Features2
-    id="included"
-    title="Options utiles"
-    subtitle="Selon votre logement et vos contraintes"
-    tagline="Services complémentaires"
-    items={[
+    },
+  options: {
+    tagline: 'Services complémentaires',
+    title: 'Options utiles',
+    subtitle: 'Selon votre logement et vos contraintes',
+    variant: 'tiles',
+    items: [
       { title: 'Emballage & déballage', description: 'Cartons, penderies, protections vaisselle et emballage des objets fragiles.', icon: 'tabler:package' },
       { title: 'Démontage / remontage', description: 'Meubles, lits, armoires et dressing remontés proprement à l’arrivée.', icon: 'tabler:tools' },
       { title: 'Nettoyage de sortie', description: 'Option ménage de fin de bail pour rendre votre logement en ordre.', icon: 'tabler:sparkles' },
-    ]}
-  >
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
-    </Fragment>
-  </Features2>
-
-  <FAQs
-    id="faq"
-    title="Questions fréquentes"
-    subtitle="Transparence sur l’organisation et la facture."
-    tagline="FAQ"
-    classes={{ container: 'max-w-6xl' }}
-    items={[
+    ],
+  },
+  faqs: {
+    title: 'Questions fréquentes',
+    subtitle: 'Transparence sur l’organisation et la facture.',
+    items: [
       {
         title: 'Quel est le délai pour obtenir un devis ?',
         description: 'Nous répondons sous 24h avec un prix indicatif basé sur le volume, les accès et la date souhaitée.',
@@ -259,27 +190,1312 @@ const metadata = {
         description: 'Oui. Nous pouvons fournir cartons, penderies, protections vaisselle et réaliser tout l’emballage/déballage.',
       },
       {
-		title: 'Gérez-vous les pianos ou objets lourds ?',
-  		description: 'Nous pouvons déplacer des objets jusqu’à 200 kg maximum. Au-delà, il faudra faire appel à un service spécialisé.',
-	  },
-
+        title: 'Gérez-vous les pianos ou objets lourds ?',
+        description: 'Nous pouvons déplacer des objets jusqu’à 200 kg maximum. Au-delà, il faudra faire appel à un service spécialisé.',
+      },
       {
         title: 'Intervenez-vous le week-end ?',
         description: 'Le samedi est possible selon disponibilité. Pour le dimanche, nous étudions au cas par cas.',
       },
-    ]}
-  />
-
-  <CallToAction
-    actions={[
+    ],
+  },
+  cta: {
+    title: 'Prêt à planifier votre déménagement ?',
+    subtitle: 'Expliquez votre volume, vos dates et vos adresses. Nous envoyons une proposition claire avec planning et options.',
+    actions: [
       { variant: 'primary', text: 'Demander un devis', href: '/contact#form', icon: 'tabler:mail-forward' },
       { text: 'Voir les tarifs', href: '/pricing' },
-    ]}
-  >
-    <Fragment slot="title">Prêt à planifier votre déménagement ?</Fragment>
+    ],
+  },
+};
 
-    <Fragment slot="subtitle">
-      Expliquez votre volume, vos dates et vos adresses. Nous envoyons une proposition claire avec planning et options.
-    </Fragment>
-  </CallToAction>
+const views: Record<BrandKey, BrandView> = {
+  pedro: baseMove,
+  lausanne: {
+    ...baseMove,
+    metadata: {
+      title: 'Déménagement Lausanne — Votre déménagement local',
+      description:
+        'Déménagement Lausanne & Vaud : accès en ville assurés, protections professionnelles, service transparent et fiable.',
+      ignoreTitleTemplate: true,
+    },
+    hero: {
+      ...baseMove.hero,
+      tagline: 'Déménagement Lausanne',
+      title: 'Départs depuis Lausanne et toute la Riviera',
+      subtitle:
+        'Accès urbains gérés, autorisations parking et coordination ascenseur/monte-meubles pour un jour J fluide.',
+      background:
+        "linear-gradient(135deg, rgba(14,165,233,0.72), rgba(30,58,138,0.75)), url('https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=1400&q=80')",
+      card: {
+        ...baseMove.hero.card!,
+        title: 'Accès urbains, timing précis',
+        description: 'Repérage des parkings, créneaux ascenseur, coordination syndic et concierge avant passage.',
+        background:
+          "linear-gradient(135deg, rgba(14,165,233,0.8), rgba(30,58,138,0.85)), url('https://images.unsplash.com/photo-1529429617124-aee78b477660?auto=format&fit=crop&w=1200&q=80')",
+        className: 'panel-surface text-white border border-blue-200/30',
+      },
+    },
+    features: {
+      ...baseMove.features,
+      title: 'Prêt pour Lausanne et l’Arc lémanique',
+      items: [
+        { title: 'Accès en ville', description: 'Autorisations parking et créneaux ascenseur gérés pour vous.', icon: 'tabler:map-pin' },
+        { title: 'Proximité', description: 'Équipe basée entre Lausanne et Genève pour limiter les trajets à vide.', icon: 'tabler:route' },
+        { title: 'Protections', description: 'Couvertures, housses matelas, sols/murs protégés.', icon: 'tabler:shield-check' },
+        { title: 'Suivi unique', description: 'Un chef d’équipe qui coordonne les imprévus et la remise des clés.', icon: 'tabler:headset' },
+      ],
+    },
+  },
+  urgent: {
+    ...baseMove,
+    metadata: {
+      title: 'Déménagement Urgent — Intervention express en Suisse romande',
+      ignoreTitleTemplate: true,
+      description: 'Intervention express, confirmation en 15 minutes et équipe prête. Créneaux du jour / lendemain selon disponibilité.',
+    },
+    hero: {
+      tagline: 'Intervention express',
+      title: 'Appel → Confirmation 15 min → Équipe en route',
+      subtitle: 'Créneau du jour ou du lendemain selon disponibilité. Protections incluses, accès vérifiés avant départ.',
+      actions: [
+        { variant: 'primary', text: 'Intervention express', href: '/contact#form', icon: 'tabler:bolt' },
+        { variant: 'secondary', text: 'Appeler maintenant', href: whatsapp, icon: 'tabler:phone' },
+      ],
+      background:
+        `linear-gradient(135deg, rgba(185,28,28,0.85), rgba(249,115,22,0.7)), url('${img('men_loading_van_2')}')`,
+      overlayClass: 'bg-gradient-to-br from-red-900/55 via-red-800/55 to-orange-600/55',
+      className: 'brand-urgent',
+      card: {
+        badge: 'Prioritaire',
+        title: 'Départ 60–90 min',
+        description: 'Équipe dédiée, protections prêtes, camion adapté. Communication directe pendant le trajet.',
+        background:
+          `linear-gradient(135deg, rgba(239,68,68,0.75), rgba(249,115,22,0.7)), url('${img('inside_truck_unloading_couch')}')`,
+        overlayClass: 'bg-gradient-to-br from-red-800/70 via-red-700/70 to-orange-500/60',
+        className: 'panel-contrast text-white',
+      },
+    },
+    features: {
+      tagline: 'Pourquoi en urgence ?',
+      title: 'Intervention express, accès gérés, équipe prête',
+      subtitle: 'Créneau du jour ou du lendemain selon disponibilité. Confirmation en 15 minutes, protections et accès gérés.',
+      variant: 'tiles',
+      classes: { container: 'urgent-grid', items: { panel: 'card rounded-2xl p-6' } },
+      items: [
+        { title: 'Réponse < 5 min', description: 'Validation des accès, du volume et des contraintes avant de partir.', icon: 'tabler:clock-bolt' },
+        { title: 'Départ 60–90 min', description: 'Équipe dédiée, protections prêtes, camion adapté.', icon: 'tabler:truck-delivery' },
+        { title: 'Hors horaires', description: 'Créneaux soir/week-end possibles avec majoration.', icon: 'tabler:moon-stars' },
+        { title: 'Chef d’équipe urgence', description: 'Coordination terrain et suivi WhatsApp en direct.', icon: 'tabler:headset' },
+        { title: 'Assurance incluse', description: 'RC pro incluse, objets fragiles sous contrôle.', icon: 'tabler:shield-check' },
+        { title: 'Livraison directe', description: 'Pas de stockage : trajet optimisé jusqu’à l’arrivée.', icon: 'tabler:route' },
+      ],
+    },
+    process: {
+      tagline: 'Processus express',
+      title: 'Intervention urgente en 3 étapes',
+      items: [
+        { title: '1. Appel immédiat', description: 'On décroche en < 5 min, validation des accès et du volume.' },
+        { title: '2. Équipe dépêchée', description: 'Départ en 60–90 minutes selon trafic et disponibilité.' },
+        { title: '3. Chargement sécurisé', description: 'Protections, arrimage, livraison directe sans stockage.' },
+      ],
+      content: 'Coordination minute par minute, protections prêtes, communication directe pendant le trajet.',
+      image: {
+        src: img('men_loading_van_4'),
+        overlayClass: 'bg-gradient-to-br from-red-800/70 via-red-700/70 to-orange-500/60',
+        badge: 'Urgence',
+      },
+      isReversed: true,
+    },
+    steps: {
+      title: 'Accompagnement express',
+      tagline: 'Parcours client',
+      items: [
+        { title: '1. Appel immédiat', description: 'Validation du volume, des accès et du créneau.', icon: 'tabler:phone' },
+        { title: '2. Devis flash', description: 'Confirmation en 15 minutes avec majoration éventuelle (soir/week-end).', icon: 'tabler:file-time' },
+        { title: '3. Intervention', description: 'Départ 60–90 minutes, protections complètes, arrimage renforcé.', icon: 'tabler:truck-delivery' },
+        { title: '4. Livraison directe', description: 'Pas de stockage, communication en direct pendant le trajet.', icon: 'tabler:map' },
+      ],
+      image: {
+        src: img('men_loading_van_3'),
+        overlayClass: 'bg-gradient-to-br from-red-900/70 via-red-800/70 to-orange-600/60',
+        badge: 'Disponibilité immédiate',
+      },
+    },
+    options: {
+      tagline: 'Services express',
+      title: 'Options urgentes',
+      subtitle: 'Selon votre volume et l’horaire',
+      variant: 'tiles',
+      classes: { container: 'urgent-grid', items: { panel: 'card rounded-2xl p-6' } },
+      items: [
+        { title: 'Livraison directe', description: 'Pas de stockage. Trajet optimisé jusqu’à l’arrivée.', icon: 'tabler:route' },
+        { title: 'Monte-meubles si dispo', description: 'Selon disponibilité et accès le jour J.', icon: 'tabler:stairs-up' },
+        { title: 'Emballage rapide', description: 'Protection fragile et matelas même en urgence.', icon: 'tabler:package' },
+      ],
+    },
+    faqs: {
+      title: 'FAQ Urgence',
+      subtitle: 'Réponses rapides pour organiser votre déménagement express.',
+      items: [
+        { title: 'Sous combien de temps intervenez-vous ?', description: 'En général 60–90 minutes selon trafic et disponibilité.' },
+        { title: 'Y a-t-il une majoration ?', description: 'Oui selon le créneau (soir/week-end) et le niveau d’urgence.' },
+        { title: 'Objets lourds ?', description: 'Oui si < 200 kg et accès compatibles. Monte-meubles si disponible.' },
+        { title: 'Zone couverte ?', description: 'Arc lémanique prioritaire, autres trajets CH sur demande rapide.' },
+      ],
+    },
+    cta: {
+      title: 'Besoin d’une équipe tout de suite ?',
+      subtitle: 'Appelez ou remplissez le formulaire. Confirmation en 15 minutes selon disponibilité.',
+      actions: [
+        { variant: 'primary', text: 'Intervention express', href: '/contact#form', icon: 'tabler:bolt' },
+        { text: 'Appeler maintenant', href: whatsapp, icon: 'tabler:phone' },
+      ],
+    },
+  },
+  debarras: {
+    ...baseMove,
+    metadata: {
+      title: 'Débarras Lausanne — Service complet et rapide',
+      ignoreTitleTemplate: true,
+      description: 'Débarras d’appartements, caves et locaux à Lausanne et environs. Tri, manutention et évacuation rapides.',
+    },
+    hero: {
+      tagline: 'Débarras & désencombrement',
+      title: 'Débarras complet, trié et valorisé',
+      subtitle: 'Appartements, caves, bureaux, locaux commerciaux. Tri, valorisation, évacuation contrôlée et remise propre.',
+      actions: [
+        { variant: 'primary', text: 'Planifier un débarras', href: '/contact#form', icon: 'tabler:calendar-up' },
+        { text: 'Appeler', href: whatsapp, icon: 'tabler:phone' },
+      ],
+      background:
+        `linear-gradient(135deg, rgba(15,118,110,0.78), rgba(6,95,70,0.78)), url('${img('men_moving_heavy_couch_block')}')`,
+      overlayClass: 'bg-gradient-to-br from-emerald-900/60 via-emerald-800/60 to-slate-900/60',
+      card: {
+        badge: 'Tri & valorisation',
+        title: 'Réemploi avant évacuation',
+        description: 'Don, recyclage, centre de tri. Rapport photo avant/après.',
+        background:
+          `linear-gradient(135deg, rgba(16,185,129,0.8), rgba(6,95,70,0.85)), url('${img('men_loading_van_1')}')`,
+        overlayClass: 'bg-gradient-to-br from-emerald-900/70 via-emerald-800/70 to-emerald-700/65',
+        className: 'panel-surface text-white',
+      },
+    },
+    features: {
+      tagline: 'Pourquoi nous appeler',
+      title: 'Un débarras cadré et rapide',
+      subtitle: 'Tri, sécurité et remise propre sans que vous ayez à coordonner plusieurs équipes.',
+      variant: 'tiles',
+      items: [
+        { title: 'Tri sur place', description: 'Réemploi, dons, recyclage avant évacuation.', icon: 'tabler:recycle' },
+        { title: 'Manutention sécurisée', description: 'Protection des parties communes, sol/murs.', icon: 'tabler:shield-check' },
+        { title: 'Reporting photo', description: 'Avant/après pour propriétaires ou agences.', icon: 'tabler:photo-check' },
+        { title: 'Calendrier court', description: 'Créneau sous quelques jours selon volume.', icon: 'tabler:calendar' },
+      ],
+      classes: { container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-6 gap-4 border border-emerald-200/25 bg-emerald-900/10 text-emerald-50' } },
+      bgClass: 'bg-gradient-to-br from-emerald-900/20 via-emerald-800/20 to-slate-900/25',
+    },
+    process: {
+      tagline: 'Processus',
+      title: 'Débarras en 3 étapes',
+      items: [
+        { title: '1. Évaluation', description: 'Photos ou visite rapide pour estimer le volume.' },
+        { title: '2. Tri & démontage', description: 'Séparation réemploi / recyclage, démontage mobilier si besoin.' },
+        { title: '3. Évacuation & nettoyage', description: 'Centre de tri, remise propre, rapport photo.' },
+      ],
+      content: 'Vous obtenez une remise en état nette, sans gestion de prestataires multiples.',
+      image: {
+        src: img('van_inside_objects_boxes_1'),
+        overlayClass: 'bg-gradient-to-br from-emerald-900/70 via-emerald-800/70 to-slate-900/70',
+        badge: 'Débarras',
+      },
+      isReversed: true,
+    },
+    steps: {
+      title: 'Parcours express',
+      tagline: 'Organisation',
+      items: [
+        { title: 'Visite ou photos', description: 'Repérage des accès et volumes.', icon: 'tabler:camera' },
+        { title: 'Devis clair', description: 'Volume, tri, évacuation, remise propre.', icon: 'tabler:file-description' },
+        { title: 'Débarras', description: 'Intervention planifiée, protections et reporting.', icon: 'tabler:sparkles' },
+        { title: 'Remise', description: 'Local rendu propre, photos et remise des clés.', icon: 'tabler:key' },
+      ],
+      image: {
+        src: 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=1000&q=80',
+        overlayClass: 'bg-gradient-to-br from-green-900/70 via-emerald-800/70 to-emerald-600/60',
+        badge: 'Reporting',
+      },
+    },
+    options: {
+      tagline: 'Options',
+      title: 'Prestations associées',
+      subtitle: 'Pour remettre un bien en conformité',
+      variant: 'tiles',
+      bgClass: 'bg-gradient-to-br from-emerald-900/15 via-emerald-800/15 to-slate-900/20',
+      classes: { container: 'max-w-5xl', items: { panel: 'panel-surface rounded-2xl p-6 gap-4 border border-emerald-200/25 text-emerald-50' } },
+      items: [
+        { title: 'Nettoyage de sortie', description: 'Remise propre après débarras.', icon: 'tabler:sparkles' },
+        { title: 'Débarras cave/archives', description: 'Évacuation lourde et sécurisée.', icon: 'tabler:archive' },
+        { title: 'Transport pièces lourdes', description: 'Jusqu’à 200 kg, accès validés.', icon: 'tabler:weight' },
+      ],
+    },
+    faqs: {
+      title: 'FAQ Débarras',
+      subtitle: 'Ce qu’il faut savoir avant d’intervenir.',
+      items: [
+        { title: 'Traitez-vous électroménager ?', description: 'Oui, nous évacuons frigos, machines et encombrants vers les filières adéquates.' },
+        { title: 'Pouvez-vous donner / recycler ?', description: 'Nous priorisons le réemploi et fournissons un reporting succinct.' },
+        { title: 'Intervention le week-end ?', description: 'Oui selon volume et voisinage. Majorations possibles.' },
+        { title: 'Faites-vous des petites surfaces ?', description: 'Oui, dès un studio ou une cave, devis rapide.' },
+      ],
+    },
+    cta: {
+      title: 'Prêt pour un débarras cadré ?',
+      subtitle: 'Envoyez quelques photos ou organisez une visite express.',
+      actions: [
+        { variant: 'primary', text: 'Planifier un débarras', href: '/contact#form', icon: 'tabler:calendar-up' },
+        { text: 'Appeler', href: whatsapp, icon: 'tabler:phone' },
+      ],
+    },
+  },
+  transport: {
+    ...baseMove,
+    metadata: {
+      title: 'Transport de meubles — Suisse romande',
+      ignoreTitleTemplate: true,
+      description: 'Transport sécurisé de meubles, emballage et arrimage renforcé.',
+    },
+    hero: {
+      tagline: 'Transport de meubles',
+      title: 'Transport premium pour vos pièces volumineuses',
+      subtitle: 'Conditionnement, arrimage renforcé, créneaux précis. Idéal pour meubles design, électroménager, bureaux.',
+      actions: [
+        { variant: 'primary', text: 'Planifier un transport', href: '/contact#form', icon: 'tabler:truck' },
+        { text: 'Discuter du volume', href: whatsapp, icon: 'tabler:phone' },
+      ],
+      background:
+        `linear-gradient(135deg, rgba(124,58,237,0.25), rgba(17,24,39,0.15)), url('${img('professional_van_2')}')`,
+      overlayClass: 'bg-gradient-to-br from-purple-900/60 via-slate-900/70 to-amber-500/30',
+      className: 'brand-transport',
+      card: {
+        badge: 'Arrimage & protection',
+        title: 'Meubles, électroménager, pièces uniques',
+        description: 'Emballage, sangles, couvertures renforcées. Créneau précis, suivi en direct.',
+        background:
+          `linear-gradient(135deg, rgba(91,33,182,0.25), rgba(245,158,11,0.5)), url('${img('professional_van_1')}')`,
+        overlayClass: 'bg-gradient-to-br from-purple-900/70 via-purple-800/70 to-amber-500/50',
+        className: 'panel-grid text-white',
+      },
+    },
+    features: {
+      tagline: 'Pourquoi nous choisir',
+      title: 'Transport précis et sécurisé',
+      subtitle: 'Pensé pour les pièces uniques, le mobilier design ou l’électroménager fragile.',
+      items: [
+        { title: 'Conditionnement', description: 'Housses, couvertures, coins mousse, filmage.', icon: 'tabler:package' },
+        { title: 'Arrimage renforcé', description: 'Sangles, anti-glisse, calage sur mesure.', icon: 'tabler:anchor' },
+        { title: 'Créneau précis', description: 'Passage à l’heure convenue, fenêtre courte.', icon: 'tabler:clock' },
+        { title: 'Suivi direct', description: 'Contact chauffeur + point d’avancement.', icon: 'tabler:headset' },
+      ],
+      classes: { items: { panel: 'panel-grid rounded-2xl p-6 gap-4 text-white border border-amber-200/20' } },
+    },
+    process: {
+      tagline: 'Processus',
+      title: 'Transport en 3 mouvements',
+      items: [
+        { title: '1. Brief volume', description: 'Dimensions, fragilité, accès départ/arrivée.' },
+        { title: '2. Protection & chargement', description: 'Filmage, housses, calage, arrimage.' },
+        { title: '3. Livraison', description: 'Placement précis, reprise des protections principales.' },
+      ],
+      content: 'Un seul interlocuteur. Suivi temps réel pour vos pièces sensibles.',
+      image: {
+        src: img('van_inside_objects_boxes_3'),
+        overlayClass: 'bg-gradient-to-br from-purple-900/70 via-slate-900/70 to-amber-500/40',
+        badge: 'Transport',
+      },
+      isReversed: true,
+    },
+    steps: {
+      title: 'Parcours client',
+      tagline: 'Coordination',
+      items: [
+        { title: 'Qualification', description: 'Volume, fragilité, adresses et délais.', icon: 'tabler:clipboard-check' },
+        { title: 'Créneau verrouillé', description: 'Fenêtre horaire serrée, chauffeur dédié.', icon: 'tabler:calendar-event' },
+        { title: 'Protection', description: 'Conditionnement, arrimage, contrôle.', icon: 'tabler:shield-lock' },
+        { title: 'Livraison', description: 'Installation sur place, retour d’état.', icon: 'tabler:map-pin-check' },
+      ],
+      image: {
+        src: img('van_inside_objects_boxes_4'),
+        overlayClass: 'bg-gradient-to-br from-purple-900/70 via-slate-900/70 to-amber-500/45',
+        badge: 'Fenêtre courte',
+      },
+    },
+    options: {
+      tagline: 'Services associés',
+      title: 'Options transport',
+      subtitle: 'Pour sécuriser vos pièces uniques',
+      variant: 'tiles',
+      items: [
+        { title: 'Emballage premium', description: 'Coins mousse, caisse carton renforcée.', icon: 'tabler:hexagon' },
+        { title: 'Livraison étage', description: 'Escaliers/ascenseurs gérés, repérage en amont.', icon: 'tabler:stairs' },
+        { title: 'Transport duo', description: 'Deux équipiers pour charges lourdes.', icon: 'tabler:users' },
+      ],
+    },
+    faqs: {
+      title: 'FAQ Transport',
+      subtitle: 'Sécurité et délais',
+      items: [
+        { title: 'Assurance ? ', description: 'RC pro incluse. Pour pièces très haute valeur, assurance spécifique sur demande.' },
+        { title: 'Objets lourds ?', description: 'Oui jusqu’à 200 kg si accès compatibles.' },
+        { title: 'Fenêtre horaire ?', description: 'Nous visons une fenêtre courte avec contact direct chauffeur.' },
+        { title: 'Emballage fourni ?', description: 'Oui, protections standard incluses. Options premium disponibles.' },
+      ],
+    },
+    cta: {
+      title: 'Prêt à réserver un créneau ?',
+      subtitle: 'Décrivez la pièce, les adresses et la date souhaitée.',
+      actions: [
+        { variant: 'primary', text: 'Planifier un transport', href: '/contact#form', icon: 'tabler:truck' },
+        { text: 'Appeler', href: whatsapp, icon: 'tabler:phone' },
+      ],
+    },
+  },
+  videmaison: {
+    ...baseMove,
+    metadata: {
+      title: 'Vide maison — Désencombrement complet',
+      ignoreTitleTemplate: true,
+      description: 'Vidage complet, tri et évacuation rapide, protections incluses.',
+    },
+    hero: {
+      tagline: 'Vide maison',
+      title: 'Vide maison complet et ordonné',
+      subtitle: 'Tri, dons, recyclage et évacuation en une seule équipe. Rapport photo et remise propre.',
+      actions: [
+        { variant: 'primary', text: 'Organiser un vide maison', href: '/contact#form', icon: 'tabler:home-heart' },
+        { text: 'Parler à un conseiller', href: whatsapp, icon: 'tabler:phone' },
+      ],
+      background:
+        `linear-gradient(135deg, rgba(249,115,22,0.10), rgba(180,83,9,0.25)), url('${img('strong_man_packing_1')}')`,
+      overlayClass: 'bg-gradient-to-br from-amber-900/60 via-amber-700/60 to-orange-500/55',
+      className: 'brand-videmaison',
+      card: {
+        badge: 'Maison vidée',
+        title: 'Tri, dons, recyclage',
+        description: 'Priorité au réemploi, évacuation contrôlée, pièces prêtes pour l’état des lieux.',
+        background:
+          `linear-gradient(135deg, rgba(248, 248, 248, 0.9), rgba(255, 255, 255, 0.65)), url('${img('strong_man_packing_2')}')`,
+        overlayClass: 'bg-gradient-to-br from-amber-900/40 via-orange-700/50 to-amber-500/45',
+        className: 'panel-surface text-amber-950',
+      },
+    },
+    features: {
+      tagline: 'Pourquoi nous choisir',
+      title: 'Un seul interlocuteur pour tout vider',
+      subtitle: 'Nous vidons, trions et remettons propre sans mobiliser plusieurs prestataires.',
+      variant: 'tiles',
+      items: [
+        { title: 'Tri & dons', description: 'Orientation vers dons/recyclage avant évacuation.', icon: 'tabler:heart-handshake' },
+        { title: 'Respect des lieux', description: 'Sols et murs protégés, voisins prévenus.', icon: 'tabler:shield-check' },
+        { title: 'Rapport photo', description: 'Avant / après pour bailleurs ou famille.', icon: 'tabler:photo-check' },
+        { title: 'Délais courts', description: 'Planifié sous quelques jours selon volume.', icon: 'tabler:calendar' },
+      ],
+      classes: { container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-6 gap-4 border border-amber-200/40 bg-amber-50/80 text-amber-950' } },
+      bgClass: 'bg-gradient-to-br from-amber-900/10 via-orange-700/10 to-amber-500/15',
+    },
+    process: {
+      tagline: 'Processus',
+      title: 'Vide maison en 3 étapes',
+      items: [
+        { title: '1. Évaluation', description: 'Photos ou visite rapide pour estimer le volume et les accès.' },
+        { title: '2. Tri & évacuation', description: 'Dons, recyclage, centres agréés. Meubles démontés si besoin.' },
+        { title: '3. Nettoyage', description: 'Balayage ou option ménage pour remise des clés.', },
+      ],
+      content: 'Vous récupérez une maison nette, prête pour une vente, une location ou un état des lieux.',
+      image: {
+        src: 'https://images.unsplash.com/photo-1523419400524-2230f3ad0c7b?auto=format&fit=crop&w=1200&q=80',
+        overlayClass: 'bg-gradient-to-br from-amber-900/60 via-orange-800/60 to-amber-500/50',
+        badge: 'Remise propre',
+      },
+      isReversed: true,
+    },
+    steps: {
+      title: 'Organisation',
+      tagline: 'Parcours',
+      items: [
+        { title: 'Visite / photos', description: 'Évaluation rapide et repérage.', icon: 'tabler:camera' },
+        { title: 'Calendrier', description: 'Créneau fixé, notification aux voisins si besoin.', icon: 'tabler:calendar-event' },
+        { title: 'Débarras & tri', description: 'Équipe sur place, protections et évacuation.', icon: 'tabler:box' },
+        { title: 'Remise des clés', description: 'Pièces vidées, nettoyage léger, photos finales.', icon: 'tabler:key' },
+      ],
+      image: {
+        src: 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=1000&q=80',
+        overlayClass: 'bg-gradient-to-br from-amber-900/60 via-orange-800/60 to-amber-500/50',
+        badge: 'Clés remises',
+      },
+    },
+    options: {
+      tagline: 'Options',
+      title: 'Services associés',
+      subtitle: 'Pour finaliser la remise',
+      variant: 'tiles',
+      classes: { container: 'max-w-5xl', items: { panel: 'panel-surface rounded-2xl p-6 gap-4 border border-amber-200/40 bg-amber-50/90 text-amber-950' } },
+      bgClass: 'bg-gradient-to-br from-amber-900/10 via-orange-700/12 to-amber-500/12',
+      items: [
+        { title: 'Nettoyage complet', description: 'Ménage approfondi avant état des lieux.', icon: 'tabler:sparkles' },
+        { title: 'Transport pièces gardées', description: 'Livraison des meubles conservés.', icon: 'tabler:truck' },
+        { title: 'Petit entretien', description: 'Retrait chevilles, rebouchage léger.', icon: 'tabler:tools' },
+      ],
+    },
+    faqs: {
+      title: 'FAQ Vide maison',
+      subtitle: 'Pour avancer vite et proprement',
+      items: [
+        { title: 'Combien de temps ?', description: 'Un appartement peut être vidé en 1 journée selon volume.' },
+        { title: 'Où vont les objets ?', description: 'Priorité dons, recyclage, puis déchetterie agréée.' },
+        { title: 'Aide administrative ?', description: 'Nous pouvons documenter pour assurances ou bailleurs.' },
+        { title: 'Pouvez-vous nettoyer ?', description: 'Oui, option ménage pour remise des clés.' },
+      ],
+    },
+    cta: {
+      title: 'Besoin de vider une maison ?',
+      subtitle: 'Expliquez le volume et la date souhaitée, on s’occupe du reste.',
+      actions: [
+        { variant: 'primary', text: 'Organiser un vide maison', href: '/contact#form', icon: 'tabler:home-heart' },
+        { text: 'Parler à un conseiller', href: whatsapp, icon: 'tabler:phone' },
+      ],
+    },
+  },
+  videsuccession: {
+    ...baseMove,
+    metadata: {
+      title: 'Vide succession — Gestion délicate et rapide',
+      ignoreTitleTemplate: true,
+      description: 'Tri, débarras et coordination administrative pour successions.',
+    },
+    hero: {
+      tagline: 'Vide succession',
+      title: 'Gestion discrète des biens successoraux',
+      subtitle: 'Tri, inventaire succinct, évacuation et remise propre. Coordination héritiers et notaires.',
+      actions: [
+        { variant: 'primary', text: 'Planifier un vide succession', href: '/contact#form', icon: 'tabler:scale' },
+        { text: 'Appeler en direct', href: whatsapp, icon: 'tabler:phone' },
+      ],
+      background:
+        `linear-gradient(135deg, rgba(15,17,27,0.30), rgba(217,119,6,0.20)), url('${img('empty_apartment_7')}')`,
+      overlayClass: 'bg-gradient-to-br from-gray-950/70 via-gray-900/70 to-amber-600/40',
+      className: 'brand-videsuccession',
+      card: {
+        badge: 'Discrétion',
+        title: 'Inventaire, tri, évacuation',
+        description: 'Communication claire aux héritiers, respect des lieux et des objets sensibles.',
+        background:
+          `linear-gradient(135deg, rgba(15,17,27,0.9), rgba(217,119,6,0.45)), url('${img('empty_apartment_8')}')`,
+        overlayClass: 'bg-gradient-to-br from-gray-900/80 via-gray-800/75 to-amber-600/50',
+        className: 'panel-contrast text-amber-100',
+      },
+    },
+    features: {
+      tagline: 'Pourquoi nous choisir',
+      title: 'Discrétion et traçabilité',
+      subtitle: 'Pour vider et remettre un bien sans friction entre parties prenantes.',
+      variant: 'tiles',
+      items: [
+        { title: 'Coordination héritiers', description: 'Un contact unique, comptes rendus réguliers.', icon: 'tabler:users' },
+        { title: 'Respect et tri', description: 'Objets sensibles mis de côté sur consignes.', icon: 'tabler:lock' },
+        { title: 'Reporting', description: 'Photos avant/après, liste sommaire des pièces clés.', icon: 'tabler:photo' },
+        { title: 'Délais courts', description: 'Créneau planifié rapidement pour libérer le bien.', icon: 'tabler:clock' },
+      ],
+      classes: { container: 'max-w-6xl', items: { panel: 'panel-contrast rounded-2xl p-6 gap-4 text-amber-100 border border-amber-500/20' } },
+      bgClass: 'bg-gradient-to-br from-amber-800/20 via-slate-900/45 to-black/60',
+    },
+    process: {
+      tagline: 'Processus',
+      title: 'Vide succession en 3 actes',
+      items: [
+        { title: '1. Cadrage', description: 'Attentes des héritiers/notaire, objets à conserver.' },
+        { title: '2. Tri & évacuation', description: 'Séparation, démontage, évacuation contrôlée.' },
+        { title: '3. Remise propre', description: 'Nettoyage léger ou complet, photos finales.' },
+      ],
+      content: 'Nous restons votre seul interlocuteur et documentons chaque étape utile.',
+      image: {
+        src: img('empty_apartment_6'),
+        overlayClass: 'bg-gradient-to-br from-gray-900/70 via-gray-800/70 to-amber-600/45',
+        badge: 'Respect',
+      },
+      isReversed: true,
+    },
+    steps: {
+      title: 'Parcours client',
+      tagline: 'Coordination',
+      items: [
+        { title: 'Cadrage', description: 'Consignes des héritiers / notaire.', icon: 'tabler:clipboard' },
+        { title: 'Devis clair', description: 'Volume, tri, options ménage ou transport.', icon: 'tabler:file-description' },
+        { title: 'Intervention', description: 'Équipe dédiée, objets sensibles mis à part.', icon: 'tabler:briefcase' },
+        { title: 'Remise', description: 'Photos, nettoyage et restitution des clés.', icon: 'tabler:key' },
+      ],
+      image: {
+        src: img('empty_apartment_9'),
+        overlayClass: 'bg-gradient-to-br from-gray-900/70 via-gray-800/70 to-amber-600/50',
+        badge: 'Traçabilité',
+      },
+    },
+    options: {
+      tagline: 'Options',
+      title: 'Services connexes',
+      subtitle: 'Pour sécuriser la remise du bien',
+      variant: 'tiles',
+      classes: { container: 'max-w-5xl', items: { panel: 'panel-contrast rounded-2xl p-6 gap-4 text-amber-100 border border-amber-500/25' } },
+      bgClass: 'bg-gradient-to-br from-amber-800/15 via-slate-900/45 to-black/60',
+      items: [
+        { title: 'Nettoyage complet', description: 'Avant remise des clés ou état des lieux.', icon: 'tabler:sparkles' },
+        { title: 'Transport objets gardés', description: 'Livraison à plusieurs adresses.', icon: 'tabler:truck' },
+        { title: 'Archivage léger', description: 'Triage et conditionnement de documents.', icon: 'tabler:archive' },
+      ],
+    },
+    faqs: {
+      title: 'FAQ Vide succession',
+      subtitle: 'Gestion sensible',
+      items: [
+        { title: 'Pouvez-vous lister les objets ?', description: 'Nous réalisons un inventaire succinct accompagné de photos clés.' },
+        { title: 'Coordination avec le notaire ?', description: 'Oui, nous pouvons partager le planning et le reporting.' },
+        { title: 'Intervention rapide ?', description: 'Oui, sous quelques jours selon volume.' },
+        { title: 'Objets de valeur ?', description: 'Nous les mettons de côté selon vos consignes; assurance spécifique possible.' },
+      ],
+    },
+    cta: {
+      title: 'Besoin d’un vide succession cadré ?',
+      subtitle: 'Expliquez le contexte, on vous envoie un plan clair et un calendrier.',
+      actions: [
+        { variant: 'primary', text: 'Planifier un vide succession', href: '/contact#form', icon: 'tabler:scale' },
+        { text: 'Appeler en direct', href: whatsapp, icon: 'tabler:phone' },
+      ],
+    },
+  },
+  nettoyagesuccession: {
+    ...baseMove,
+    metadata: {
+      title: 'Nettoyage succession — Remise en état complète',
+      ignoreTitleTemplate: true,
+      description: 'Nettoyage complet après succession, remise en état prête à louer/vendre.',
+    },
+    hero: {
+      tagline: 'Nettoyage succession',
+      title: 'Remise en état après débarras ou succession',
+      subtitle: 'Nettoyage complet, vitres, sols et sanitaires. Rapport photo pour bailleurs et agences.',
+      actions: [
+        { variant: 'primary', text: 'Programmer un nettoyage', href: '/contact#form', icon: 'tabler:sparkles' },
+        { text: 'Appeler', href: whatsapp, icon: 'tabler:phone' },
+      ],
+      background:
+        `linear-gradient(135deg, rgba(34,211,238,0.15), rgba(15,118,110,0.15)), url('${img('man_cleaning')}')`,
+      overlayClass: 'bg-gradient-to-br from-cyan-200/24 via-cyan-400/24 to-slate-900/42 backdrop-blur-sm',
+      className: 'brand-nettoyagesuccession',
+      card: {
+        badge: 'Remise en état',
+        title: 'Ménage complet, rapport photo',
+        description: 'Sols, vitres, sanitaires, odeurs. Option remise peinture légère avec partenaires.',
+        background:
+          `linear-gradient(135deg, rgba(34,211,238,0.05), rgba(15,118,110,0.05)), url('${img('woman_mopping')}')`,
+        overlayClass: 'bg-gradient-to-br from-cyan-400/60 via-teal-700/60 to-slate-900/60',
+        className: 'panel-surface text-cyan-950',
+      },
+    },
+    features: {
+      tagline: 'Pourquoi nous choisir',
+      title: 'Propreté documentée',
+      subtitle: 'Idéal après un débarras ou pour préparer un état des lieux.',
+      variant: 'tiles',
+      items: [
+        { title: 'Checklist bailleur', description: 'Zones critiques (cuisine, sdb, vitres) priorisées.', icon: 'tabler:list-check' },
+        { title: 'Matériel pro', description: 'Monobrosse/aspirateurs HEPA selon besoin.', icon: 'tabler:spray' },
+        { title: 'Rapport photo', description: 'Avant/après + remarques si dégâts constatés.', icon: 'tabler:photo' },
+        { title: 'Délais serrés', description: 'Nettoyage rapide après débarras pour rendre le bien.', icon: 'tabler:clock' },
+      ],
+      classes: { container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-6 gap-4 border border-cyan-200/40 bg-white text-cyan-950' } },
+      bgClass: 'bg-gradient-to-br from-cyan-200/15 via-cyan-400/15 to-slate-900/15',
+    },
+    process: {
+      tagline: 'Processus',
+      title: 'Remise propre en 3 étapes',
+      items: [
+        { title: '1. Cadrage', description: 'Surface, zones sensibles, délais bailleur.' },
+        { title: '2. Intervention', description: 'Nettoyage complet + vitres, odeurs traitées.' },
+        { title: '3. Contrôle', description: 'Photos, retouches si nécessaire.', },
+      ],
+      content: 'Objectif : remise des clés sans remarques sur la propreté.',
+      image: {
+        src: img('mop_cleaning_closeup'),
+        overlayClass: 'bg-gradient-to-br from-cyan-400/60 via-teal-700/60 to-slate-900/60',
+        badge: 'Checklist propre',
+      },
+      isReversed: true,
+    },
+    steps: {
+      title: 'Parcours client',
+      tagline: 'Coordination',
+      items: [
+        { title: 'Brief rapide', description: 'Surface et priorités.', icon: 'tabler:clipboard-check' },
+        { title: 'Devis + créneau', description: 'Fenêtre courte pour remise clés.', icon: 'tabler:calendar-event' },
+        { title: 'Nettoyage', description: 'Équipe pro, produits adaptés.', icon: 'tabler:sparkles' },
+        { title: 'Rapport', description: 'Photos après intervention.', icon: 'tabler:photo-check' },
+      ],
+      image: {
+        src: img('shades_of_white_man_mopping_yellow_accent'),
+        overlayClass: 'bg-gradient-to-br from-cyan-400/60 via-teal-700/60 to-slate-900/60',
+        badge: 'Propreté validée',
+      },
+    },
+    options: {
+      tagline: 'Options',
+      title: 'Compléments utiles',
+      subtitle: 'Pour une remise impeccable',
+      variant: 'tiles',
+      classes: { container: 'max-w-5xl', items: { panel: 'panel-surface rounded-2xl p-6 gap-4 border border-cyan-200/35 bg-white text-cyan-950' } },
+      bgClass: 'bg-gradient-to-br from-cyan-200/15 via-cyan-400/20 to-slate-900/15',
+      items: [
+        { title: 'Odeur & désinfection', description: 'Traitement ciblé des odeurs persistantes.', icon: 'tabler:wind' },
+        { title: 'Petits réajustements', description: 'Rebouchage léger, joints silicone via partenaires.', icon: 'tabler:paint' },
+        { title: 'Vitres hauteur', description: 'Vitres difficiles avec matériel adapté.', icon: 'tabler:building' },
+      ],
+    },
+    faqs: {
+      title: 'FAQ Nettoyage',
+      subtitle: 'Pour une remise sans friction',
+      items: [
+        { title: 'Pouvez-vous passer juste après un débarras ?', description: 'Oui, nous bloquons un créneau serré pour enchaîner.' },
+        { title: 'Produits utilisés ?', description: 'Gamme pro, adaptés aux surfaces, possibilité sans parfum.' },
+        { title: 'Et si dégâts existants ?', description: 'Nous les signalons avec photos pour vos démarches.' },
+        { title: 'Facture pour assurance ?', description: 'Oui, facture détaillée sur demande.', },
+      ],
+    },
+    cta: {
+      title: 'Besoin d’une remise propre ?',
+      subtitle: 'Planifions un nettoyage aligné sur la remise des clés.',
+      actions: [
+        { variant: 'primary', text: 'Programmer un nettoyage', href: '/contact#form', icon: 'tabler:sparkles' },
+        { text: 'Appeler', href: whatsapp, icon: 'tabler:phone' },
+      ],
+    },
+  },
+  lausannenettoyage: {
+    ...baseMove,
+    metadata: {
+      title: 'Nettoyage Lausanne — Appartements, bureaux, fin de chantier',
+      ignoreTitleTemplate: true,
+      description: 'Nettoyage complet et contrôlé à Lausanne : remises en état, bureaux et fins de chantier, avec contrôle qualité.',
+    },
+    hero: {
+      tagline: 'Nettoyage Lausanne',
+      title: 'Propreté maîtrisée, délais rapides',
+      subtitle: 'Appartements, bureaux ou fin de chantier : checklist pro, produits adaptés et contrôle qualité systématique.',
+      actions: [
+        { variant: 'primary', text: 'Programmer un nettoyage', href: '/contact#form', icon: 'tabler:sparkles' },
+        { text: 'Appeler', href: whatsapp, icon: 'tabler:phone' },
+      ],
+      background:
+        `linear-gradient(135deg, rgba(14,165,233,0.28), rgba(15,23,42,0.18)), url('${img('shades_of_white_man_vaccum')}')`,
+      overlayClass: 'bg-gradient-to-br from-sky-300/28 via-sky-500/30 to-slate-900/46 backdrop-blur-sm',
+      className: 'brand-lausannenettoyage',
+      card: {
+        badge: 'Contrôle qualité',
+        title: 'Checklist, photos, retouches',
+        description: 'Zones critiques (cuisine, sdb, vitres) priorisées. Rapport photo sur demande.',
+        background:
+          `linear-gradient(135deg, rgba(14,165,233,0.0), rgba(15,23,42,0.05)), url('${img('shades_of_white_man_mopping_yellow_accent')}')`,
+        overlayClass: 'bg-gradient-to-br from-sky-500/55 via-slate-900/70 to-slate-900/70',
+        className: 'panel-surface text-sky-900',
+      },
+    },
+    features: {
+      tagline: 'Pourquoi nous choisir',
+      title: 'Nettoyage précis et documenté',
+      subtitle: 'Adapté aux bailleurs, bureaux ou après travaux.',
+      variant: 'tiles',
+      items: [
+        { title: 'Checklist ciblée', description: 'Cuisine, sdb, vitres et sols traités en priorité.', icon: 'tabler:list-check' },
+        { title: 'Matériel pro', description: 'Monobrosse, aspirateurs HEPA, produits adaptés.', icon: 'tabler:spray' },
+        { title: 'Rapport photo', description: 'Avant/après disponible pour bailleurs ou régies.', icon: 'tabler:photo-check' },
+        { title: 'Délais rapides', description: 'Créneau rapide après débarras ou travaux.', icon: 'tabler:clock' },
+      ],
+      classes: { container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-6 gap-4 border border-sky-200/40 bg-white text-sky-900' } },
+      bgClass: 'bg-gradient-to-br from-sky-200/15 via-sky-300/20 to-slate-900/15',
+    },
+    process: {
+      tagline: 'Processus',
+      title: 'Remise propre en 3 étapes',
+      items: [
+        { title: '1. Cadrage', description: 'Surface, zones sensibles et délais.' },
+        { title: '2. Intervention', description: 'Nettoyage complet, vitres, sols et sanitaires.' },
+        { title: '3. Contrôle', description: 'Photos, retouches si besoin, validation.' },
+      ],
+      content: 'Objectif : remise des clés ou ouverture de bureau sans remarques sur la propreté.',
+      image: {
+        src: img('man_vaccuming'),
+        overlayClass: 'bg-gradient-to-br from-sky-400/55 via-sky-500/55 to-slate-900/70',
+        badge: 'Propreté validée',
+      },
+      isReversed: true,
+    },
+    steps: {
+      title: 'Parcours client',
+      tagline: 'Coordination',
+      items: [
+        { title: 'Brief rapide', description: 'Surface, type de bien, priorités.', icon: 'tabler:clipboard-check' },
+        { title: 'Devis + créneau', description: 'Fenêtre courte pour remise ou ouverture.', icon: 'tabler:calendar-event' },
+        { title: 'Nettoyage', description: 'Équipe pro, produits adaptés.', icon: 'tabler:sparkles' },
+        { title: 'Rapport', description: 'Photos et validation.', icon: 'tabler:photo-check' },
+      ],
+      image: {
+        src: img('mop_closeup_luxury_apartment'),
+        overlayClass: 'bg-gradient-to-br from-sky-400/55 via-sky-500/55 to-slate-900/70',
+        badge: 'Contrôle',
+      },
+    },
+    options: {
+      tagline: 'Options',
+      title: 'Compléments',
+      subtitle: 'Pour une remise impeccable',
+      variant: 'tiles',
+      classes: { container: 'max-w-5xl', items: { panel: 'panel-surface rounded-2xl p-6 gap-4 border border-sky-200/40 bg-white text-sky-900' } },
+      bgClass: 'bg-gradient-to-br from-sky-200/15 via-sky-300/20 to-slate-900/15',
+      items: [
+        { title: 'Vitres hauteur', description: 'Vitres difficiles avec matériel adapté.', icon: 'tabler:building' },
+        { title: 'Odeur & désinfection', description: 'Traitement ciblé des odeurs persistantes.', icon: 'tabler:wind' },
+        { title: 'Petites retouches', description: 'Rebouchage léger via partenaires.', icon: 'tabler:tools' },
+      ],
+    },
+    faqs: {
+      title: 'FAQ Nettoyage Lausanne',
+      subtitle: 'Pour une remise sans friction',
+      items: [
+        { title: 'Pouvez-vous passer après débarras ?', description: 'Oui, créneau serré possible pour enchaîner.' },
+        { title: 'Produits ?', description: 'Gamme pro, adaptés aux surfaces, option sans parfum.' },
+        { title: 'Photos ?', description: 'Oui, avant/après sur demande.' },
+        { title: 'Facture ?', description: 'Facture détaillée possible pour bailleurs/assurances.', },
+      ],
+    },
+    cta: {
+      title: 'Besoin d’un nettoyage rapide ?',
+      subtitle: 'Planifions un créneau et la checklist adaptée à votre bien.',
+      actions: [
+        { variant: 'primary', text: 'Programmer un nettoyage', href: '/contact#form', icon: 'tabler:sparkles' },
+        { text: 'Appeler', href: whatsapp, icon: 'tabler:phone' },
+      ],
+    },
+  },
+  etatdeslieux: {
+    ...baseMove,
+    metadata: {
+      title: 'État des lieux Lausanne — Constat précis et rapide',
+      ignoreTitleTemplate: true,
+      description: 'États des lieux locatifs, rapports photo et délai court.',
+    },
+    hero: {
+      tagline: 'État des lieux',
+      title: 'Constats précis, rapports photo, délais serrés',
+      subtitle: 'Entrée ou sortie : relevés détaillés, photos, check-list bail. Communication avec régie ou propriétaire.',
+      actions: [
+        { variant: 'primary', text: 'Programmer un état des lieux', href: '/contact#form', icon: 'tabler:clipboard-check' },
+        { text: 'Contacter', href: whatsapp, icon: 'tabler:phone' },
+      ],
+      background:
+        `linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(15,23,42,0.15)), url('${img('empty_apartment_11')}')`,
+      overlayClass: 'bg-gradient-to-br from-sky-500/45 via-slate-900/70 to-slate-900/70',
+      className: 'brand-etatdeslieux',
+      card: {
+        badge: 'Rapport photo',
+        title: 'Check-list complète',
+        description: 'Relevés, photos, remarques et actions correctives listées clairement.',
+        background:
+          `linear-gradient(135deg, rgba(14,165,233,0.38), rgba(15,23,42,0.28)), url('${img('empty_apartment_10')}')`,
+        overlayClass: 'bg-gradient-to-br from-sky-500/50 via-slate-900/70 to-slate-900/70',
+        className: 'panel-grid text-sky-50',
+      },
+    },
+    features: {
+      tagline: 'Ce que vous obtenez',
+      title: 'État des lieux structuré',
+      subtitle: 'Rapport clair pour éviter les contestations.',
+      variant: 'tiles',
+      items: [
+        { title: 'Check-list bailleur', description: 'Pièces, murs, sols, équipements vérifiés.', icon: 'tabler:checkbox' },
+        { title: 'Photos horodatées', description: 'Série photo et remarques précises.', icon: 'tabler:photo-check' },
+        { title: 'Remarques actionnables', description: 'Liste des points à corriger avec priorités.', icon: 'tabler:list-check' },
+        { title: 'Remise clés coordonnée', description: 'Contact régie/propriétaire, rapport envoyé.', icon: 'tabler:key' },
+      ],
+      classes: { container: 'max-w-6xl', items: { panel: 'panel-grid rounded-2xl p-6 gap-4 text-sky-50 border border-sky-200/20' } },
+      bgClass: 'bg-gradient-to-br from-sky-500/15 via-slate-900/35 to-slate-900/55',
+    },
+    process: {
+      tagline: 'Processus',
+      title: 'Constat rapide, rapport clair',
+      items: [
+        { title: '1. Planification', description: 'Prise de rendez-vous, infos régie/bailleur.' },
+        { title: '2. Relevés sur place', description: 'Photos, mesures, checklist complète.' },
+        { title: '3. Rapport & envoi', description: 'PDF + galerie photo, partage aux parties.' },
+      ],
+      content: 'Objectif : un document solide et neutre pour sécuriser l’entrée ou la sortie.',
+      image: {
+        src: img('empty_apartment_9'),
+        overlayClass: 'bg-gradient-to-br from-sky-500/40 via-slate-900/70 to-slate-900/70',
+        badge: 'Constat',
+      },
+      isReversed: true,
+    },
+    steps: {
+      title: 'Parcours client',
+      tagline: 'Coordination',
+      items: [
+        { title: 'Brief', description: 'Type (entrée/sortie), contraintes.', icon: 'tabler:message' },
+        { title: 'Rendez-vous', description: 'Créneau confirmé, accès validés.', icon: 'tabler:calendar' },
+        { title: 'Constat', description: 'Photos, check-list, relevés.', icon: 'tabler:clipboard-check' },
+        { title: 'Rapport', description: 'Envoi aux parties, suivi si questions.', icon: 'tabler:share' },
+      ],
+      image: {
+        src: img('empty_apartment_4'),
+        overlayClass: 'bg-gradient-to-br from-sky-500/40 via-slate-900/70 to-slate-900/70',
+        badge: 'Rapidité',
+      },
+    },
+    options: {
+      tagline: 'Options',
+      title: 'Modules complémentaires',
+      subtitle: 'Pour compléter le constat',
+      variant: 'tiles',
+      classes: { container: 'max-w-5xl', items: { panel: 'panel-grid rounded-2xl p-6 gap-4 text-sky-50 border border-sky-200/20' } },
+      bgClass: 'bg-gradient-to-br from-sky-500/15 via-slate-900/35 to-slate-900/55',
+      items: [
+        { title: 'Mesures & plans', description: 'Relevé métrique simple.', icon: 'tabler:ruler' },
+        { title: 'Suivi correctifs', description: 'Liste des actions et validation photo.', icon: 'tabler:checkup-list' },
+        { title: 'Nettoyage / débarras', description: 'Activation de nos équipes partenaires.', icon: 'tabler:users' },
+      ],
+    },
+    faqs: {
+      title: 'FAQ État des lieux',
+      subtitle: 'Process clair',
+      items: [
+        { title: 'Délai de remise du rapport ?', description: 'Sous 24h après constat (souvent le jour même).' },
+        { title: 'Format ?', description: 'PDF + lien galerie photo.' },
+        { title: 'Entrée ou sortie ?', description: 'Nous faisons les deux, avec check-list adaptée.' },
+        { title: 'Coordination régie ?', description: 'Oui, nous pouvons partager le rapport directement.' },
+      ],
+    },
+    cta: {
+      title: 'Programmer un état des lieux',
+      subtitle: 'Choisissez la date et dites-nous si régie/propriétaire doit être en copie.',
+      actions: [
+        { variant: 'primary', text: 'Réserver un créneau', href: '/contact#form', icon: 'tabler:clipboard-check' },
+        { text: 'Parler à un expert', href: whatsapp, icon: 'tabler:phone' },
+      ],
+    },
+  },
+};
+
+const view = views[brandKey] || baseMove;
+const metadata = view.metadata;
+---
+
+<Layout metadata={metadata}>
+  {isUrgent ? (
+    <>
+      <Hero id="hero" class="brand-urgent urgent-hero" actions={[
+        { variant: 'primary', text: 'Intervention express', href: '/contact#form', icon: 'tabler:bolt' },
+        { variant: 'secondary', text: 'Appeler maintenant', href: whatsapp, icon: 'tabler:phone' },
+      ]}>
+        <Fragment slot="bg">
+          <div
+            class="absolute inset-0"
+            style={`background-image: linear-gradient(135deg, rgba(185,28,28,0.85), rgba(239,68,68,0.75), rgba(249,115,22,0.65)), url('${img('men_loading_van_2')}'); background-size: cover; background-position: center;`}
+          ></div>
+          <div class="absolute inset-0 bg-gradient-to-br from-red-900/60 via-red-800/55 to-orange-600/55 backdrop-blur-[2px]"></div>
+        </Fragment>
+
+        <Fragment slot="title">
+          Appel → Confirmation 15 min → Équipe en route
+        </Fragment>
+
+        <Fragment slot="subtitle">
+          Créneau du jour ou du lendemain selon disponibilité. Protections incluses, accès vérifiés avant départ.
+        </Fragment>
+
+        <Fragment slot="content">
+          <div class="text-sm uppercase tracking-[0.35em] text-orange-100/80 mb-3">Urgence prioritaire</div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-left text-white/90 text-sm">
+            <div class="rounded-xl bg-white/5 border border-white/10 px-4 py-3">Réponse <span class="font-semibold">5 min</span></div>
+            <div class="rounded-xl bg-white/5 border border-white/10 px-4 py-3">Départ <span class="font-semibold">60–90 min</span></div>
+            <div class="rounded-xl bg-white/5 border border-white/10 px-4 py-3">Zone <span class="font-semibold">Arc lémanique</span></div>
+            <div class="rounded-xl bg-white/5 border border-white/10 px-4 py-3">Livraison <span class="font-semibold">directe</span></div>
+          </div>
+        </Fragment>
+
+        <Fragment slot="image">
+          <div
+            class="relative aspect-[4/3] overflow-hidden rounded-3xl panel-contrast text-white"
+            style={`background-image: linear-gradient(135deg, rgba(239,68,68,0.75), rgba(249,115,22,0.65)), url('${img('inside_truck_unloading_couch')}'); background-size: cover; background-position: center;`}
+          >
+            <div class="absolute inset-0 bg-gradient-to-br from-red-900/70 via-red-700/65 to-orange-500/55"></div>
+            <div class="relative h-full p-8 flex flex-col justify-end gap-3">
+              <p class="text-xs uppercase tracking-[0.35em] text-orange-100/80">Départ confirmé</p>
+              <h4 class="text-3xl font-semibold leading-tight">Équipe prête, protections incluses</h4>
+              <p class="text-white/85 max-w-xl">Chef d’équipe urgence, arrimage renforcé, communication en direct jusqu’à la livraison.</p>
+            </div>
+          </div>
+        </Fragment>
+      </Hero>
+
+      <Features2
+        id="urgent-benefits"
+        title="Intervention express, accès gérés"
+        subtitle="Confirmation en 15 minutes, protections et itinéraire verrouillés."
+        classes={{ container: 'urgent-grid', items: { panel: 'card rounded-2xl p-6' } }}
+        items={[
+          { title: 'Réponse < 5 min', description: 'Validation des accès, du volume et des contraintes avant de partir.', icon: 'tabler:clock-bolt' },
+          { title: 'Départ 60–90 min', description: 'Équipe dédiée, protections prêtes, camion adapté.', icon: 'tabler:truck-delivery' },
+          { title: 'Hors horaires', description: 'Créneaux soir/week-end possibles avec majoration.', icon: 'tabler:moon-stars' },
+          { title: 'Chef d’équipe urgence', description: 'Coordination terrain et suivi WhatsApp en direct.', icon: 'tabler:headset' },
+          { title: 'Assurance incluse', description: 'RC pro incluse, objets fragiles sous contrôle.', icon: 'tabler:shield-check' },
+          { title: 'Livraison directe', description: 'Pas de stockage : trajet optimisé jusqu’à l’arrivée.', icon: 'tabler:route' },
+        ]}
+      />
+
+      <Content
+        id="urgent-process"
+        isReversed
+        title="Intervention urgente en 3 étapes"
+        subtitle="Coordination minute par minute pour éviter toute friction."
+        items={[
+          { title: '1. Appel immédiat', description: 'On décroche en < 5 min, validation des accès et du volume.' },
+          { title: '2. Équipe dépêchée', description: 'Départ en 60–90 minutes selon trafic et disponibilité.' },
+          { title: '3. Chargement sécurisé', description: 'Protections, arrimage, livraison directe sans stockage.' },
+        ]}
+      >
+        <Fragment slot="content">
+          Coordination en direct, protections prêtes, itinéraire optimisé. On ajuste l’équipe et le matériel selon accès et volume.
+        </Fragment>
+        <Fragment slot="image">
+          <div
+            class="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl"
+            style={`background-image: linear-gradient(135deg, rgba(185,28,28,0.7), rgba(239,68,68,0.65), rgba(249,115,22,0.6)), url('${img('men_loading_van_4')}'); background-size: cover; background-position: center;`}
+          >
+            <div class="absolute inset-0 bg-gradient-to-br from-red-900/65 via-red-800/60 to-orange-500/55"></div>
+            <div class="relative p-8 text-white">
+              <p class="text-xs uppercase tracking-[0.35em] text-orange-100/80">Urgence</p>
+              <p class="mt-4 max-w-lg text-lg text-white/90">Départ prioritaire, protections complètes, communication directe pendant le trajet.</p>
+            </div>
+          </div>
+        </Fragment>
+      </Content>
+
+      <Features2
+        id="urgent-support"
+        title="Ce qui est toujours inclus"
+        subtitle="Même en express, on protège et on coordonne."
+        classes={{ container: 'urgent-grid', items: { panel: 'card rounded-2xl p-6' } }}
+        items={[
+          { title: 'Chef d’équipe urgence', description: 'Coordination terrain et suivi en direct.', icon: 'tabler:headset' },
+          { title: 'Protections complètes', description: 'Housses, couvertures, sangles, arrimage renforcé.', icon: 'tabler:box' },
+          { title: 'Créneau confirmé', description: 'Appel + confirmation en 15 minutes.', icon: 'tabler:calendar-time' },
+          { title: 'Facturation claire', description: 'Majoration selon horaire (soir/week-end) expliquée à l’avance.', icon: 'tabler:receipt' },
+        ]}
+      />
+
+      <CallToAction
+        actions={[
+          { variant: 'primary', text: 'Intervention express', href: '/contact#form', icon: 'tabler:bolt' },
+          { text: 'Appeler maintenant', href: whatsapp, icon: 'tabler:phone' },
+        ]}
+      >
+        <Fragment slot="title">
+          Besoin d’une équipe tout de suite ?
+        </Fragment>
+        <Fragment slot="subtitle">
+          Remplissez le formulaire ou appelez-nous. Confirmation en 15 minutes selon disponibilité.
+        </Fragment>
+      </CallToAction>
+    </>
+  ) : isTransport ? (
+    <>
+      <Hero id="hero" class="brand-transport transport-hero" actions={[
+        { variant: 'primary', text: 'Planifier un transport', href: '/contact#form', icon: 'tabler:truck' },
+        { text: 'Parler logistique', href: whatsapp, icon: 'tabler:phone' },
+      ]}>
+        <Fragment slot="bg">
+          <div
+            class="absolute inset-0"
+            style={`background-image: linear-gradient(120deg, rgba(76,29,149,0.25), rgba(17,24,39,0.15), rgba(245,158,11,0.25)), url('${img('professional_van_2')}'); background-size: cover; background-position: center;`}
+          ></div>
+          <div class="absolute inset-0 bg-gradient-to-br from-purple-900/70 via-slate-900/70 to-amber-500/35 backdrop-blur-[2px]"></div>
+        </Fragment>
+
+        <Fragment slot="title">
+          Transport premium pour vos pièces volumineuses
+        </Fragment>
+
+        <Fragment slot="subtitle">
+          Conditionnement, arrimage renforcé, créneaux précis. Idéal pour meubles design, électroménager, bureaux.
+        </Fragment>
+
+        <Fragment slot="content">
+          <div class="text-sm uppercase tracking-[0.35em] text-amber-200/85 mb-3">Specs clés</div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-left text-white/90 text-sm">
+            <div class="rounded-xl bg-white/5 border border-white/10 px-4 py-3">Fenêtre <span class="font-semibold">serrée</span></div>
+            <div class="rounded-xl bg-white/5 border border-white/10 px-4 py-3">Arrimage <span class="font-semibold">renforcé</span></div>
+            <div class="rounded-xl bg-white/5 border border-white/10 px-4 py-3">Protection <span class="font-semibold">premium</span></div>
+            <div class="rounded-xl bg-white/5 border border-white/10 px-4 py-3">Suivi <span class="font-semibold">direct</span></div>
+          </div>
+        </Fragment>
+
+        <Fragment slot="image">
+          <div
+            class="relative aspect-[4/3] overflow-hidden rounded-3xl panel-grid text-white border border-amber-200/20"
+            style={`background-image: linear-gradient(135deg, rgba(91,33,182,0.85), rgba(245,158,11,0.55)), url('${img('professional_van_1')}'); background-size: cover; background-position: center;`}
+          >
+            <div class="absolute inset-0 bg-gradient-to-br from-purple-900/65 via-slate-900/60 to-amber-500/40"></div>
+            <div class="relative h-full p-8 flex flex-col justify-end gap-3">
+              <p class="text-xs uppercase tracking-[0.3em] text-amber-100/80">Arrimage & protection</p>
+              <h4 class="text-3xl font-semibold leading-tight">Pièces uniques, livrées à l’heure</h4>
+              <p class="text-white/80 max-w-xl">Filmage, calage, sangles et créneau verrouillé. Chauffeur contactable.</p>
+            </div>
+          </div>
+        </Fragment>
+      </Hero>
+
+      <Features2
+        id="transport-benefits"
+        title="Transport précis et sécurisé"
+        subtitle="Pensé pour les pièces uniques, le mobilier design ou l’électroménager fragile."
+        classes={{ container: 'max-w-6xl', items: { panel: 'panel-grid rounded-2xl p-6 gap-4 text-white border border-amber-200/20' } }}
+        items={[
+          { title: 'Conditionnement', description: 'Housses, couvertures, coins mousse, filmage.', icon: 'tabler:package' },
+          { title: 'Arrimage renforcé', description: 'Sangles, anti-glisse, calage sur mesure.', icon: 'tabler:anchor' },
+          { title: 'Créneau précis', description: 'Passage à l’heure convenue, fenêtre courte.', icon: 'tabler:clock' },
+          { title: 'Suivi direct', description: 'Contact chauffeur + point d’avancement.', icon: 'tabler:headset' },
+        ]}
+      />
+
+      <Content
+        id="transport-process"
+        isReversed
+        title="Transport en 3 mouvements"
+        subtitle="Spécial pièces sensibles ou volumineuses."
+        items={[
+          { title: '1. Brief volume', description: 'Dimensions, fragilité, accès départ/arrivée.' },
+          { title: '2. Protection & chargement', description: 'Filmage, housses, calage, arrimage.' },
+          { title: '3. Livraison', description: 'Placement précis, reprise des protections principales.' },
+        ]}
+      >
+        <Fragment slot="content">
+          Un seul interlocuteur. Fenêtre horaire serrée, chauffeur joignable, arrimage premium pour éviter toute casse.
+        </Fragment>
+        <Fragment slot="image">
+          <div
+            class="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl"
+            style={`background-image: linear-gradient(135deg, rgba(76,29,149,0.65), rgba(17,24,39,0.7), rgba(245,158,11,0.4)), url('${img('van_inside_objects_boxes_3')}'); background-size: cover; background-position: center;`}
+          >
+            <div class="absolute inset-0 bg-gradient-to-br from-purple-900/65 via-slate-900/65 to-amber-500/35"></div>
+            <div class="relative p-8 text-white">
+              <p class="text-xs uppercase tracking-[0.3em] text-amber-100/80">Transport</p>
+              <p class="mt-4 max-w-lg text-lg text-white/90">Calage, arrimage, et timing verrouillé pour vos pièces haut de gamme.</p>
+            </div>
+          </div>
+        </Fragment>
+      </Content>
+
+      <Features2
+        id="transport-options"
+        title="Options transport"
+        subtitle="Pour sécuriser vos pièces uniques"
+        classes={{ container: 'max-w-6xl', items: { panel: 'panel-grid rounded-2xl p-6 gap-4 text-white border border-amber-200/20' } }}
+        items={[
+          { title: 'Emballage premium', description: 'Coins mousse, caisse carton renforcée.', icon: 'tabler:hexagon' },
+          { title: 'Livraison étage', description: 'Escaliers/ascenseurs gérés, repérage en amont.', icon: 'tabler:stairs' },
+          { title: 'Transport duo', description: 'Deux équipiers pour charges lourdes.', icon: 'tabler:users' },
+        ]}
+      />
+
+      <CallToAction
+        actions={[
+          { variant: 'primary', text: 'Planifier un transport', href: '/contact#form', icon: 'tabler:truck' },
+          { text: 'Parler logistique', href: whatsapp, icon: 'tabler:phone' },
+        ]}
+      >
+        <Fragment slot="title">
+          Prêt à réserver un créneau ?
+        </Fragment>
+        <Fragment slot="subtitle">
+          Décrivez la pièce, les adresses et la date souhaitée. On verrouille un créneau précis.
+        </Fragment>
+      </CallToAction>
+    </>
+  ) : (
+    <>
+  <Hero id="hero" class={view.hero.className} actions={view.hero.actions}>
+        <Fragment slot="bg">
+          <div
+            class="absolute inset-0"
+            style={`background-image:${view.hero.background}; background-size: cover; background-position: center;`}
+          ></div>
+          {view.hero.overlayClass ? <div class={`absolute inset-0 ${view.hero.overlayClass}`}></div> : null}
+        </Fragment>
+
+        <Fragment slot="title">
+          {view.hero.title}
+        </Fragment>
+
+        <Fragment slot="subtitle">
+          {view.hero.subtitle}
+        </Fragment>
+
+        <Fragment slot="content">
+          <p class="text-base uppercase tracking-[0.35em] text-primary/80">{view.hero.tagline}</p>
+        </Fragment>
+
+        <Fragment slot="image">
+          {view.hero.card ? (
+            <div
+              class={`relative aspect-[4/3] overflow-hidden rounded-2xl ${view.hero.card.className ?? ''}`}
+              style={
+                view.hero.card.background
+                  ? `background-image:${view.hero.card.background}; background-size: cover; background-position: center;`
+                  : undefined
+              }
+            >
+              <div class={`absolute inset-0 ${view.hero.card.overlayClass || ''}`}></div>
+              <div class="relative h-full p-8 text-left">
+                {view.hero.card.badge ? (
+                  <p class="text-xs uppercase tracking-[0.3em] opacity-80">{view.hero.card.badge}</p>
+                ) : null}
+                <h4 class="mt-4 text-3xl font-semibold leading-tight">{view.hero.card.title}</h4>
+                <p class="mt-5 max-w-xl text-lg/7 opacity-90">{view.hero.card.description}</p>
+              </div>
+            </div>
+          ) : null}
+        </Fragment>
+      </Hero>
+
+      {view.features.variant === 'tiles' ? (
+        <Features2
+          id="features"
+          tagline={view.features.tagline}
+          title={view.features.title}
+          subtitle={view.features.subtitle}
+          classes={view.features.classes}
+          items={view.features.items}
+        >
+          {view.features.bgClass ? (
+            <Fragment slot="bg">
+              <div class={`absolute inset-0 ${view.features.bgClass}`}></div>
+            </Fragment>
+          ) : null}
+        </Features2>
+      ) : (
+        <Features
+          id="features"
+          tagline={view.features.tagline}
+          title={view.features.title}
+          subtitle={view.features.subtitle}
+          classes={view.features.classes}
+          items={view.features.items}
+        />
+      )}
+
+      <Content
+        id="process"
+        isReversed={view.process.isReversed}
+        tagline={view.process.tagline}
+        title={view.process.title}
+        items={view.process.items}
+      >
+        <Fragment slot="content">
+          {view.process.content}
+        </Fragment>
+
+        {view.process.image ? (
+          <Fragment slot="image">
+            <div
+              class="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl"
+              style={`background-image: url('${view.process.image.src}'); background-size: cover; background-position: center;`}
+            >
+              <div class={`absolute inset-0 ${view.process.image.overlayClass || ''}`}></div>
+              <div class="relative p-8 text-white">
+                {view.process.image.badge ? (
+                  <p class="text-xs uppercase tracking-[0.3em] text-white/80">{view.process.image.badge}</p>
+                ) : null}
+                <p class="mt-4 max-w-lg text-lg text-white/90">{view.process.content}</p>
+              </div>
+            </div>
+          </Fragment>
+        ) : null}
+      </Content>
+
+      <Steps
+        id="steps"
+        title={view.steps.title}
+        tagline={view.steps.tagline}
+        items={view.steps.items}
+      >
+        {view.steps.image ? (
+          <Fragment slot="image">
+            <div
+              class="relative aspect-[3/4] overflow-hidden rounded-2xl shadow-2xl"
+              style={`background-image: url('${view.steps.image.src}'); background-size: cover; background-position: center;`}
+            >
+              <div class={`absolute inset-0 ${view.steps.image.overlayClass || ''}`}></div>
+              <div class="relative p-8 text-white">
+                {view.steps.image.badge ? (
+                  <p class="text-xs uppercase tracking-[0.3em] text-white/80">{view.steps.image.badge}</p>
+                ) : null}
+              </div>
+            </div>
+          </Fragment>
+        ) : null}
+      </Steps>
+
+      {view.options.variant === 'tiles' ? (
+        <Features2
+          id="options"
+          tagline={view.options.tagline}
+          title={view.options.title}
+          subtitle={view.options.subtitle}
+          items={view.options.items}
+          classes={view.options.classes}
+        >
+          {view.options.bgClass ? (
+            <Fragment slot="bg">
+              <div class={`absolute inset-0 ${view.options.bgClass}`}></div>
+            </Fragment>
+          ) : null}
+        </Features2>
+      ) : (
+        <Features
+          id="options"
+          tagline={view.options.tagline}
+          title={view.options.title}
+          subtitle={view.options.subtitle}
+          items={view.options.items}
+          classes={view.options.classes}
+        />
+      )}
+
+      <FAQs
+        id="faq"
+        title={view.faqs.title}
+        subtitle={view.faqs.subtitle}
+        tagline="FAQ"
+        classes={{ container: 'max-w-6xl' }}
+        items={view.faqs.items}
+      />
+
+      <CallToAction actions={view.cta.actions}>
+        <Fragment slot="title">
+          {view.cta.title}
+        </Fragment>
+
+        <Fragment slot="subtitle">
+          {view.cta.subtitle}
+        </Fragment>
+      </CallToAction>
+    </>
+  )}
 </Layout>

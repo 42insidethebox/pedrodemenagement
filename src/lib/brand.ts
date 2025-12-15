@@ -1,4 +1,14 @@
-export type BrandKey = 'pedro' | 'lausanne' | 'urgent' | 'debarras';
+export type BrandKey =
+  | 'pedro'
+  | 'lausanne'
+  | 'urgent'
+  | 'debarras'
+  | 'transport'
+  | 'videmaison'
+  | 'videsuccession'
+  | 'nettoyagesuccession'
+  | 'etatdeslieux'
+  | 'lausannenettoyage';
 
 /**
  * Map request host to a brand key. Default to "pedro" if unknown.
@@ -10,5 +20,11 @@ export function getBrandFromHost(host: string | null | undefined): BrandKey {
   if (value.includes('lausannedemenagement.ch')) return 'lausanne';
   if (value.includes('demenagementurgent.ch')) return 'urgent';
   if (value.includes('debarraslausanne.ch')) return 'debarras';
+  if (value.includes('transportmeubles.ch')) return 'transport';
+  if (value.includes('videmaison.ch')) return 'videmaison';
+  if (value.includes('videsuccession.ch')) return 'videsuccession';
+  if (value.includes('nettoyagesuccession.ch')) return 'nettoyagesuccession';
+  if (value.includes('etatdeslieuxlausanne.ch')) return 'etatdeslieux';
+  if (value.includes('lausannenettoyage.ch')) return 'lausannenettoyage';
   return 'pedro';
 }

@@ -17,13 +17,29 @@ export interface Props {
 const host = Astro.request.headers.get('host');
 const brandKey = getBrandFromHost(host);
 const brand = BRANDS[brandKey];
+const themeVars: Record<string, string> = {
+  '--brand-primary': brand.primaryColor || '#0f172a',
+  '--brand-secondary': brand.secondaryColor || '#1e40af',
+  '--brand-accent': brand.theme?.accent || brand.secondaryColor || brand.primaryColor || '#2563eb',
+};
+
+if (brand.theme?.bg) themeVars['--brand-bg'] = brand.theme.bg;
+if (brand.theme?.gradient) themeVars['--brand-gradient'] = brand.theme.gradient;
+if (brand.theme?.surface) themeVars['--brand-surface'] = brand.theme.surface;
+if (brand.theme?.card) themeVars['--brand-card'] = brand.theme.card;
+if (brand.theme?.shadow) themeVars['--brand-shadow'] = brand.theme.shadow;
+if (brand.theme?.pattern) themeVars['--brand-pattern'] = brand.theme.pattern;
+
+if (brand.fonts?.sans) themeVars['--aw-font-sans'] = brand.fonts.sans;
+if (brand.fonts?.serif) themeVars['--aw-font-serif'] = brand.fonts.serif;
+if (brand.fonts?.heading) themeVars['--aw-font-heading'] = brand.fonts.heading;
 
 const resolvedHeader = Astro.props.header ?? buildHeaderData(brand);
 const resolvedFooter = Astro.props.footer ?? buildFooterData(brand);
 const { metadata } = Astro.props as Props;
 ---
 
-<Layout metadata={metadata}>
+<Layout metadata={metadata} brandKey={brandKey} styleVars={themeVars}>
   <slot name="announcement"></slot>
   <slot name="header">
     <Header {...resolvedHeader} isSticky showToggleTheme />
