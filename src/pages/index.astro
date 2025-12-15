@@ -40,7 +40,7 @@ type SectionView = {
   title: string;
   subtitle?: string;
   tagline?: string;
-  items: SimpleItem[];
+  items: SimpxleItem[];
   variant?: 'tiles' | 'stacked';
   classes?: Record<string, unknown>;
   bgClass?: string;
@@ -226,13 +226,13 @@ const views: Record<BrandKey, BrandView> = {
       subtitle:
         'Accès urbains gérés, autorisations parking et coordination ascenseur/monte-meubles pour un jour J fluide.',
       background:
-        "linear-gradient(135deg, rgba(14,165,233,0.72), rgba(30,58,138,0.75)), url('https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=1400&q=80')",
+        "linear-gradient(135deg, rgba(14,165,233,0.32), rgba(30,58,138,0.25)), url('https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=1400&q=80')",
       card: {
         ...baseMove.hero.card!,
         title: 'Accès urbains, timing précis',
         description: 'Repérage des parkings, créneaux ascenseur, coordination syndic et concierge avant passage.',
         background:
-          "linear-gradient(135deg, rgba(14,165,233,0.8), rgba(30,58,138,0.85)), url('https://images.unsplash.com/photo-1529429617124-aee78b477660?auto=format&fit=crop&w=1200&q=80')",
+          "linear-gradient(135deg, rgba(14,165,233,0.28), rgba(30,58,138,0.15)), url('https://images.unsplash.com/photo-1529429617124-aee78b477660?auto=format&fit=crop&w=1200&q=80')",
         className: 'panel-surface text-white border border-blue-200/30',
       },
     },
@@ -263,7 +263,7 @@ const views: Record<BrandKey, BrandView> = {
         { variant: 'secondary', text: 'Appeler maintenant', href: whatsapp, icon: 'tabler:phone' },
       ],
       background:
-        `linear-gradient(135deg, rgba(185,28,28,0.85), rgba(249,115,22,0.7)), url('${img('men_loading_van_2')}')`,
+        `linear-gradient(135deg, rgba(185,28,28,0.25), rgba(249,115,22,0.17)), url('${img('men_loading_van_2')}')`,
       overlayClass: 'bg-gradient-to-br from-red-900/55 via-red-800/55 to-orange-600/55',
       className: 'brand-urgent',
       card: {
@@ -271,7 +271,7 @@ const views: Record<BrandKey, BrandView> = {
         title: 'Départ 60–90 min',
         description: 'Équipe dédiée, protections prêtes, camion adapté. Communication directe pendant le trajet.',
         background:
-          `linear-gradient(135deg, rgba(239,68,68,0.75), rgba(249,115,22,0.7)), url('${img('inside_truck_unloading_couch')}')`,
+          `linear-gradient(135deg, rgba(239,68,68,0.35), rgba(249,115,22,0.47)), url('${img('inside_truck_unloading_couch')}')`,
         overlayClass: 'bg-gradient-to-br from-red-800/70 via-red-700/70 to-orange-500/60',
         className: 'panel-contrast text-white',
       },
@@ -369,14 +369,14 @@ const views: Record<BrandKey, BrandView> = {
         { text: 'Appeler', href: whatsapp, icon: 'tabler:phone' },
       ],
       background:
-        `linear-gradient(135deg, rgba(15,118,110,0.78), rgba(6,95,70,0.78)), url('${img('men_moving_heavy_couch_block')}')`,
+        `linear-gradient(135deg, rgba(15,118,110,0.38), rgba(6,95,70,0.28)), url('${img('men_moving_heavy_couch_block')}')`,
       overlayClass: 'bg-gradient-to-br from-emerald-900/60 via-emerald-800/60 to-slate-900/60',
       card: {
         badge: 'Tri & valorisation',
         title: 'Réemploi avant évacuation',
         description: 'Don, recyclage, centre de tri. Rapport photo avant/après.',
         background:
-          `linear-gradient(135deg, rgba(16,185,129,0.8), rgba(6,95,70,0.85)), url('${img('men_loading_van_1')}')`,
+          `linear-gradient(135deg, rgba(16,185,129,0.28), rgba(6,95,70,0.15)), url('${img('men_loading_van_1')}')`,
         overlayClass: 'bg-gradient-to-br from-emerald-900/70 via-emerald-800/70 to-emerald-700/65',
         className: 'panel-surface text-white',
       },
@@ -1106,7 +1106,7 @@ const metadata = view.metadata;
         <Fragment slot="bg">
           <div
             class="absolute inset-0"
-            style={`background-image: linear-gradient(135deg, rgba(185,28,28,0.85), rgba(239,68,68,0.75), rgba(249,115,22,0.65)), url('${img('men_loading_van_2')}'); background-size: cover; background-position: center;`}
+            style={`background-image: linear-gradient(135deg, rgba(185,28,28,0.35), rgba(239,68,68,0.25), rgba(249,115,22,0.25)), url('${img('men_loading_van_2')}'); background-size: cover; background-position: center;`}
           ></div>
           <div class="absolute inset-0 bg-gradient-to-br from-red-900/60 via-red-800/55 to-orange-600/55 backdrop-blur-[2px]"></div>
         </Fragment>
@@ -1132,7 +1132,7 @@ const metadata = view.metadata;
         <Fragment slot="image">
           <div
             class="relative aspect-[4/3] overflow-hidden rounded-3xl panel-contrast text-white"
-            style={`background-image: linear-gradient(135deg, rgba(239,68,68,0.75), rgba(249,115,22,0.65)), url('${img('inside_truck_unloading_couch')}'); background-size: cover; background-position: center;`}
+            style={`background-image: linear-gradient(135deg, rgba(239,68,68,0.35), rgba(249,115,22,0.25)), url('${img('inside_truck_unloading_couch')}'); background-size: cover; background-position: center;`}
           >
             <div class="absolute inset-0 bg-gradient-to-br from-red-900/70 via-red-700/65 to-orange-500/55"></div>
             <div class="relative h-full p-8 flex flex-col justify-end gap-3">
@@ -1176,7 +1176,7 @@ const metadata = view.metadata;
         <Fragment slot="image">
           <div
             class="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl"
-            style={`background-image: linear-gradient(135deg, rgba(185,28,28,0.7), rgba(239,68,68,0.65), rgba(249,115,22,0.6)), url('${img('men_loading_van_4')}'); background-size: cover; background-position: center;`}
+            style={`background-image: linear-gradient(135deg, rgba(185,28,28,0.27), rgba(239,68,68,0.15), rgba(249,115,22,0.16)), url('${img('men_loading_van_4')}'); background-size: cover; background-position: center;`}
           >
             <div class="absolute inset-0 bg-gradient-to-br from-red-900/65 via-red-800/60 to-orange-500/55"></div>
             <div class="relative p-8 text-white">
@@ -1249,7 +1249,7 @@ const metadata = view.metadata;
         <Fragment slot="image">
           <div
             class="relative aspect-[4/3] overflow-hidden rounded-3xl panel-grid text-white border border-amber-200/20"
-            style={`background-image: linear-gradient(135deg, rgba(91,33,182,0.85), rgba(245,158,11,0.55)), url('${img('professional_van_1')}'); background-size: cover; background-position: center;`}
+            style={`background-image: linear-gradient(135deg, rgba(91,33,182,0.35), rgba(245,158,11,0.25)), url('${img('professional_van_1')}'); background-size: cover; background-position: center;`}
           >
             <div class="absolute inset-0 bg-gradient-to-br from-purple-900/65 via-slate-900/60 to-amber-500/40"></div>
             <div class="relative h-full p-8 flex flex-col justify-end gap-3">
@@ -1291,7 +1291,7 @@ const metadata = view.metadata;
         <Fragment slot="image">
           <div
             class="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl"
-            style={`background-image: linear-gradient(135deg, rgba(76,29,149,0.65), rgba(17,24,39,0.7), rgba(245,158,11,0.4)), url('${img('van_inside_objects_boxes_3')}'); background-size: cover; background-position: center;`}
+            style={`background-image: linear-gradient(135deg, rgba(76,29,149,0.35), rgba(17,24,39,0.27), rgba(245,158,11,0.24)), url('${img('van_inside_objects_boxes_3')}'); background-size: cover; background-position: center;`}
           >
             <div class="absolute inset-0 bg-gradient-to-br from-purple-900/65 via-slate-900/65 to-amber-500/35"></div>
             <div class="relative p-8 text-white">
