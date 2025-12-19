@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Sends a copy of every transactional email template to a test address via Resend
- * Usage: node scripts/send_test_emails.mjs [--to test@example.com] [--dry]
+ * Usage: node scripts/send_test_emails.mjs [--to contact@lausannedemenagement.ch] [--dry]
  */
 
 import { renderTemplate } from './email_templates.js';
@@ -9,12 +9,12 @@ import { renderTemplate } from './email_templates.js';
 const TEST_TO = (() => {
   const i = process.argv.indexOf('--to');
   if (i >= 0 && process.argv[i + 1]) return process.argv[i + 1];
-  return process.env.TEST_TO || '42insidethebox@gmail.com';
+  return process.env.TEST_TO || 'contact@lausannedemenagement.ch';
 })();
 const DRY = process.argv.includes('--dry');
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
-const FROM = `${process.env.SENDER_NAME || 'Pedro Demenagement'} <${process.env.SENDER_EMAIL || process.env.SUPPORT_EMAIL || 'hello@pedrodemenagement.ch'}>`;
+const FROM = `${process.env.SENDER_NAME || 'Pedro Demenagement'} <${process.env.SENDER_EMAIL || process.env.SUPPORT_EMAIL || 'contact@lausannedemenagement.ch'}>`;
 
 if (!DRY && !RESEND_API_KEY) {
   console.error('Missing RESEND_API_KEY in env. Use --dry to preview only.');

@@ -3,6 +3,7 @@ import Layout from '~/layouts/PageLayout.astro';
 import Prices from '~/components/widgets/Pricing.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import Steps from '~/components/widgets/Steps.astro';
+import Features2 from '~/components/widgets/Features2.astro';
 import Features3 from '~/components/widgets/Features3.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 import { getBrandFromHost } from '~/lib/brand';
@@ -13,26 +14,37 @@ import type { ImageId } from '~/data/imageInventory';
 const host = Astro.request.headers.get('host');
 const brandKey = getBrandFromHost(host);
 const isUrgent = brandKey === 'urgent';
+const isUrgentPricing = isUrgent;
 const brandType =
   isUrgent
     ? 'urgent'
     : brandKey === 'transport'
       ? 'transport'
-      : brandKey === 'debarras'
-        ? 'debarras'
-        : brandKey === 'videmaison'
-          ? 'videmaison'
-          : brandKey === 'videsuccession'
-            ? 'videsuccession'
-            : brandKey === 'nettoyagesuccession' || brandKey === 'lausannenettoyage'
-              ? 'clean'
-              : brandKey === 'etatdeslieux'
-                ? 'etatdeslieux'
+    : brandKey === 'debarras'
+      ? 'debarras'
+      : brandKey === 'videmaison'
+        ? 'videmaison'
+        : brandKey === 'videsuccession'
+          ? 'videsuccession'
+          : brandKey === 'nettoyagesuccession' || brandKey === 'lausannenettoyage'
+            ? 'clean'
+            : brandKey === 'etatdeslieux'
+              ? 'etatdeslieux'
+              : brandKey === 'laclemanexperience'
+                ? 'experience'
                 : 'move';
-const brand = BRANDS[brandKey];
-const whatsapp = brand.whatsapp || 'https://wa.me/41767982793';
+const brand = BRANDS[brandKey] || BRANDS.pedro;
+const whatsapp = brand?.whatsapp || 'https://wa.me/41767982793';
 const img = (id: ImageId) => getImage(id);
 const heroToneClass = 'pricing-hero-light';
+const isEtat = brandKey === 'etatdeslieux';
+const isExperience = brandKey === 'laclemanexperience';
+
+const experiencePriceNotes = [
+  { title: 'Inclus', description: 'Privatisation (bateau / cave / table), conciergerie, partenaires premium, TVA.' },
+  { title: 'Variables', description: 'Saison (sunset, vendanges, hiver), durée, options (sommellerie, photo, chef).' },
+  { title: 'Pas de frais cachés', description: 'Ajustement uniquement si le périmètre change.' },
+];
 
 const metadata = isUrgent
   ? {
@@ -52,9 +64,14 @@ const metadata = isUrgent
             ? { title: 'Tarifs nettoyage', description: 'Nettoyages complets, vitres, sols et contrôle qualité.' }
             : brandKey === 'etatdeslieux'
               ? { title: 'Tarifs état des lieux', description: 'Constats, photos et rapport envoyé sous 24h.' }
-              : {
-                  title: 'Tarifs déménagement',
-                };
+              : brandKey === 'laclemanexperience'
+                ? {
+                    title: 'Tarifs expériences Lac Léman',
+                    description: 'Privatisations bateau, vignobles UNESCO, tables d’hôtes et échappées alpines.',
+                  }
+                : {
+                    title: 'Tarifs déménagement',
+                  };
 const views = {
   move: {
     hero: {
@@ -83,7 +100,7 @@ const views = {
     faqs: [
       { title: 'Le prix est-il fixe ?', description: 'Oui après validation du devis. Seuls un volume très différent ou des options ajoutées ajustent le montant.' },
       { title: 'Proposez-vous des visites ?', description: 'Oui. Le formulaire suffit souvent, mais la visite est possible (service payant) si contexte complexe.' },
-      { title: 'Péages / km ?', description: '150 km inclus (Lausanne → A → B). Au-delà, km et péages sont détaillés séparément.' },
+      { title: 'Péages / km ?', description: '50 km inclus (Lausanne → A → B). Au-delà, km et péages sont détaillés séparément.' },
       { title: 'Objets lourds ?', description: 'Oui jusqu’à ~200 kg selon accès. Monte-meubles si nécessaire.', },
     ],
     stepsBg: img('operator_pallet_unloading'),
@@ -103,7 +120,7 @@ const views = {
       title: 'Intervention express, majoration transparente',
       subtitle: 'Créneau du jour / lendemain selon disponibilité. Départ 60–90 min, protections incluses.',
       background: `linear-gradient(135deg, rgba(185,28,28,0.85), rgba(239,68,68,0.72), rgba(249,115,22,0.58)), url('${img('men_packing_bedroom')}')`,
-      overlayClass: 'bg-gradient-to-br from-red-900/38 via-red-800/36 to-orange-600/32 backdrop-blur-[1px]',
+      overlayClass: 'bg-gradient-to-br from-red-900/26 via-red-800/24 to-orange-600/20 backdrop-blur-[1px]',
       chips: ['Réponse < 5 min', 'Départ 60–90 min', 'Livraison directe'],
       tone: 'dark',
     },
@@ -143,8 +160,8 @@ const views = {
       tagline: 'Tarifs transport',
       title: 'Transport premium pour pièces sensibles',
       subtitle: 'Fenêtre horaire serrée, conditionnement, arrimage renforcé et suivi chauffeur.',
-      background: `linear-gradient(120deg, rgba(76,29,149,0.7), rgba(17,24,39,0.82), rgba(245,158,11,0.42)), url('${img('professional_van_5')}')`,
-      overlayClass: 'bg-gradient-to-br from-purple-900/40 via-slate-900/42 to-amber-500/28',
+      background: `linear-gradient(120deg, rgba(12,18,32,0.88), rgba(31,42,68,0.82), rgba(242,176,69,0.24)), url('${img('professional_van_5')}')`,
+      overlayClass: 'bg-gradient-to-br from-slate-950/52 via-slate-900/50 to-amber-200/20',
       chips: ['Fenêtre horaire serrée', 'Arrimage renforcé', 'Suivi direct'],
       tone: 'dark',
     },
@@ -169,7 +186,7 @@ const views = {
       { title: 'Emballage fourni ?', description: 'Oui, protections standard incluses. Options premium disponibles.', },
     ],
     stepsBg: img('van_inside_objects_boxes_3'),
-    accent: 'from-purple-500/25 via-slate-900/35 to-amber-400/25',
+    accent: 'from-amber-200/18 via-slate-800/35 to-slate-950/55',
     cta: {
       title: 'Prêt à réserver un créneau ?',
       subtitle: 'Décrivez la pièce, les adresses et la date souhaitée.',
@@ -220,13 +237,54 @@ const views = {
       ],
     },
   },
+  experience: {
+    hero: {
+      tagline: 'Tarifs expériences',
+      title: 'Conciergerie Lac Léman',
+      subtitle: 'Croisières privées, vignobles UNESCO, tables d’hôtes et échappées alpines. Tarifs indicatifs privatisation + service.',
+      background: `linear-gradient(135deg, rgba(15,118,110,0.30), rgba(30,41,59,0.34), rgba(253,230,138,0.22)), url('${img('leman_horizon_minimal_1')}')`,
+      overlayClass: 'bg-gradient-to-br from-emerald-950/30 via-slate-900/38 to-amber-100/22',
+      chips: ['Conciergerie dédiée', 'Partenaires triés', 'Privatisations'],
+      tone: 'dark',
+    },
+    priceTitle: 'Repères expériences',
+    priceSubtitle: 'Privatisations, partenaires premium, transferts et sommellerie.',
+    factors: [
+      { title: 'Format', description: 'Privatisation bateau, cave ou table d’hôtes.', icon: 'tabler:sailboat' },
+      { title: 'Saisonnalité', description: 'Horaires sunset, météo et alternatives prévues.', icon: 'tabler:calendar' },
+      { title: 'Transferts', description: 'Chauffeur privé ou bateau-taxi selon parcours.', icon: 'tabler:car' },
+      { title: 'Options', description: 'Sommelière, chef invité, photo/vidéo.', icon: 'tabler:sparkles' },
+    ],
+    steps: [
+      { title: '1. Brief', description: 'Dates, envies, budget, contraintes.', icon: 'tabler:message' },
+      { title: '2. Proposition', description: 'Sélection verrouillée avec horaires.', icon: 'tabler:clipboard-check' },
+      { title: '3. Confirmation', description: 'Privatisation, acomptes, transferts.', icon: 'tabler:check' },
+      { title: '4. Jour J', description: 'Concierge et partenaires alignés.', icon: 'tabler:map-pin' },
+    ],
+    faqs: [
+      { title: 'Quel délai ?', description: '7–10 jours idéalement, accélération possible selon disponibilité.' },
+      { title: 'Privatisation ?', description: 'Oui pour bateaux, caves, tables d’hôtes (ou semi-privé si demandé).' },
+      { title: 'Météo ?', description: 'Plan B prévu pour navigation et dégustations extérieures.' },
+      { title: 'Transferts ?', description: 'Chauffeur privé ou bateau-taxi avec horaires verrouillés.' },
+    ],
+    stepsBg: img('high_end_luxury_apartment_lakeside'),
+    accent: 'from-emerald-200/30 via-emerald-800/22 to-amber-100/30',
+    cta: {
+      title: 'Prêt pour une expérience Léman ?',
+      subtitle: 'Dites-nous vos dates et le format souhaité, on orchestre le reste.',
+      actions: [
+        { variant: 'primary', text: 'Réserver une expérience', href: '/contact#form', icon: 'tabler:mail-forward' },
+        { text: 'Parler à un concierge', href: whatsapp, icon: 'tabler:phone' },
+      ],
+    },
+  },
   videmaison: {
     hero: {
       tagline: 'Tarifs vide maison',
       title: 'Vide maison complet et ordonné',
       subtitle: 'Tri, dons, recyclage et évacuation en une seule équipe. Remise propre incluse ou option ménage.',
-      background: `linear-gradient(135deg, rgba(249,115,22,0.62), rgba(180,83,9,0.7), rgba(124,45,18,0.55)), url('${img('strong_man_packing_2')}')`,
-      overlayClass: 'bg-gradient-to-br from-amber-900/35 via-orange-700/32 to-amber-500/30',
+      background: `linear-gradient(135deg, rgba(197,143,85,0.26), rgba(160,112,70,0.3), rgba(117,78,45,0.2)), url('${img('strong_man_packing_2')}')`,
+      overlayClass: 'bg-gradient-to-br from-[#3b2a18]/12 via-[#5a3b1f]/10 to-[#8c6136]/10',
       chips: ['Orientation dons', 'Respect des lieux', 'Remise propre'],
       tone: 'dark',
     },
@@ -348,10 +406,10 @@ const views = {
       tagline: 'Tarifs état des lieux',
       title: 'Constats précis, rapports photo',
       subtitle: 'Entrée ou sortie : check-list bail, photos horodatées et rapport envoyé rapidement.',
-      background: `linear-gradient(135deg, rgba(14,165,233,0.65), rgba(15,23,42,0.8), rgba(7,10,20,0.85)), url('${img('empty_apartment_6')}')`,
-      overlayClass: 'bg-gradient-to-br from-sky-500/24 via-slate-900/42 to-slate-900/46',
+      background: `linear-gradient(135deg, rgba(255,255,255,0.25), rgba(224,242,254,0.25)), url('${img('empty_apartment_6')}')`,
+      overlayClass: 'bg-gradient-to-br from-sky-800/08 via-white/18 to-white/30',
       chips: ['Rapport < 24h', 'Check-list bailleur', 'Photos horodatées'],
-      tone: 'dark',
+      tone: 'light',
     },
     priceTitle: 'Repères état des lieux',
     priceSubtitle: 'Tarifs selon type (entrée/sortie), surface et délai de remise du rapport.',
@@ -374,7 +432,7 @@ const views = {
       { title: 'Coordination régie ?', description: 'Oui, nous pouvons partager le rapport directement.' },
     ],
     stepsBg: img('empty_apartment_9'),
-    accent: 'from-sky-400/25 via-slate-900/40 to-slate-900/55',
+    accent: 'from-sky-200/35 via-white/70 to-white/85',
     cta: {
       title: 'Programmer un état des lieux',
       subtitle: 'Choisissez la date et dites-nous si régie/propriétaire doit être en copie.',
@@ -508,6 +566,48 @@ const priceList = (() => {
           { description: 'Tri complet + évacuation' },
           { description: 'Remise propre' },
         ],
+      },
+    ];
+  }
+  if (brandKey === 'laclemanexperience') {
+    return [
+      {
+        title: 'Croisière sunset privée',
+        subtitle: 'Lac Léman',
+        price: 'dès 1900',
+        period: 'CHF',
+        items: [
+          { description: 'Bateau privatisé 2–3h' },
+          { description: 'Sommelière / accords vins-fromages' },
+          { description: 'Transferts et horaires verrouillés' },
+        ],
+        callToAction: '<a class="btn btn-primary" href="/contact#form">Réserver</a>',
+      },
+      {
+        title: 'Vignobles UNESCO',
+        subtitle: 'Cave + dégustation privée',
+        price: '1500–2800',
+        period: 'CHF typique',
+        items: [
+          { description: 'Visite avec vigneron hôte' },
+          { description: 'Accords mets & vins en cave voûtée' },
+          { description: 'Chauffeur privé ou bateau + chauffeur' },
+        ],
+        hasRibbon: true,
+        ribbonTitle: 'Plus fréquent',
+        callToAction: '<a class="btn btn-primary" href="/contact#form">Sélectionner</a>',
+      },
+      {
+        title: 'Table d’hôtes / Chalet',
+        subtitle: 'Montagne ou vignoble',
+        price: 'dès 2400',
+        period: 'CHF',
+        items: [
+          { description: 'Chef invité, menu lac + alpages' },
+          { description: 'Privatisation ou semi-privé' },
+          { description: 'Options photo/vidéo et sommellerie' },
+        ],
+        callToAction: '<a class="btn btn-primary" href="/contact#form">Composer</a>',
       },
     ];
   }
@@ -669,11 +769,12 @@ const priceList = (() => {
   }
   return [
     {
-      title: 'Petit déménagement',
-      subtitle: 'Studio / 1 pièce',
-      price: '1000–1200',
-      period: 'fourchette typique',
+      title: 'Studio / 1 pièce',
+      subtitle: '~10–12 m³',
+      price: '550–1000',
+      period: 'déménagement local',
       items: [
+        { description: 'Longue distance (~200 km): 1500–2500 CHF' },
         { description: 'Camion 20 m³ + 2-3 déménageurs' },
         { description: 'Protection des meubles et matelas' },
         { description: 'Chargement + transport + installation' },
@@ -681,11 +782,12 @@ const priceList = (() => {
       callToAction: '<a class="btn btn-primary" href="/contact#form">Réserver ma date</a>',
     },
     {
-      title: 'Déménagement moyen',
-      subtitle: '2–3 pièces',
-      price: '1500–2800',
-      period: 'fourchette typique',
+      title: '2–3 pièces',
+      subtitle: '~20 m³',
+      price: '800–1300',
+      period: 'déménagement local',
       items: [
+        { description: 'Longue distance (~200 km): 1800–3000 CHF' },
         { description: 'Camion 20 m³ + 2-3 déménageurs' },
         { description: 'Démontage/remontage essentiel' },
         { description: 'Emballage fragile en option' },
@@ -695,11 +797,25 @@ const priceList = (() => {
       callToAction: '<a class="btn btn-primary" href="/contact#form">Réserver ma date</a>',
     },
     {
-      title: 'Grand déménagement',
-      subtitle: '4 pièces et + / maison',
-      price: '3000–8000+',
-      period: 'selon volume et accès',
+      title: '3–4 pièces',
+      subtitle: '~30–35 m³',
+      price: '1100–1450',
+      period: 'déménagement local',
       items: [
+        { description: 'Longue distance (~200 km): 2300–3400 CHF' },
+        { description: 'Planification d’équipe dédiée' },
+        { description: 'Monte-meubles ou double camion si besoin' },
+        { description: 'Emballage complet disponible' },
+      ],
+      callToAction: '<a class="btn btn-primary" href="/contact#form">Réserver ma date</a>',
+    },
+    {
+      title: 'Maison / 5 pièces +',
+      subtitle: '40–45 m³+',
+      price: '1500–2500',
+      period: 'déménagement local',
+      items: [
+        { description: 'Longue distance (~200 km): 2000–4500 CHF' },
         { description: 'Planification d’équipe dédiée' },
         { description: 'Monte-meubles ou double camion si besoin' },
         { description: 'Emballage complet disponible' },
@@ -715,32 +831,60 @@ const toneMuted = view.hero.tone === 'dark' ? 'text-white/85' : 'text-slate-600'
 <Layout metadata={metadata}>
 <section
   class={`relative overflow-hidden brand-${brandKey} ${heroToneClass}`}
-  style={`background-image:${view.hero.background}; background-size: cover; background-position: center;`}
+  style={`background-image:${isUrgentPricing ? 'none' : view.hero.background}; background-size: cover; background-position: center;`}
 >
-    <div class={`absolute inset-0 ${view.hero.overlayClass}`}></div>
-    <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-18 space-y-8">
+    <div class={`absolute inset-0 ${isUrgentPricing ? 'bg-white' : view.hero.overlayClass}`}></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-18 space-y-8">
       <div class="flex flex-wrap gap-3">
         {view.hero.chips.map((chip) => (
-          <span class="hero-chip rounded-full px-4 py-2 text-sm font-semibold bg-white/15 border border-white/20 text-white backdrop-blur">
+          <span
+            class={`hero-chip rounded-full px-4 py-2 text-sm font-semibold ${
+              isEtat
+                ? 'bg-white border border-slate-200 text-slate-900'
+                : 'bg-white/15 border border-white/20 text-white backdrop-blur'
+            }`}
+          >
             {chip}
           </span>
         ))}
       </div>
-      <div class="grid gap-10 md:grid-cols-[1.15fr_0.85fr] items-start">
+      <div class="grid gap-10 md:grid-cols-[1fr_1fr] lg:grid-cols-[0.95fr_1.05fr] items-start">
         <div class="space-y-5">
           <p class={`text-sm uppercase tracking-[0.32em] ${toneMuted}`}>{view.hero.tagline}</p>
-          <h1 class={`text-4xl md:text-5xl font-semibold leading-tight ${toneStrong}`}>{view.hero.title}</h1>
-          <p class={`text-lg md:text-xl max-w-3xl ${toneMuted}`}>{view.hero.subtitle}</p>
+          <h1 class={`text-3xl md:text-4xl font-semibold leading-snug ${toneStrong}`}>{view.hero.title}</h1>
+          <p class={`text-lg md:text-lg max-w-3xl ${toneMuted}`}>{view.hero.subtitle}</p>
         </div>
         <div class="relative">
           <div class={`absolute -inset-6 blur-3xl opacity-70 bg-gradient-to-br ${view.accent}`}></div>
-          <div class="relative rounded-3xl border border-white/20 bg-white/10 backdrop-blur-lg shadow-2xl p-8 space-y-3 text-white">
-            <p class="text-xs uppercase tracking-[0.3em] text-white/70">Repères rapides</p>
+          <div
+            class={`relative rounded-3xl backdrop-blur-lg shadow-2xl p-8 space-y-3 ${
+              isEtat ? 'border border-slate-200/70 bg-white/92 text-slate-900' : 'border border-white/20 bg-white/10 text-white'
+            }`}
+          >
+            <p class={`text-xs uppercase tracking-[0.3em] ${isEtat ? 'text-slate-500' : 'text-white/70'}`}>Repères rapides</p>
             <p class="text-2xl font-semibold">{view.priceTitle}</p>
-            <p class="text-white/85 text-sm leading-relaxed">{view.priceSubtitle}</p>
-            <div class="grid sm:grid-cols-2 gap-3 pt-2 text-sm text-white/85">
-              <div class="rounded-xl border border-white/15 bg-white/10 px-3 py-2 break-words">Téléphone<br /><span class="text-white font-semibold">{brand.phone}</span></div>
-              <div class="rounded-xl border border-white/15 bg-white/10 px-3 py-2 break-words">Email<br /><span class="text-white font-semibold break-words">{brand.email}</span></div>
+            <p class={`${isEtat ? 'text-slate-700' : 'text-white/85'} text-base leading-relaxed`}>{view.priceSubtitle}</p>
+            <div
+              class={`grid sm:grid-cols-[0.85fr_1.15fr] gap-3 pt-2 text-xs sm:text-sm ${
+                isEtat ? 'text-slate-700' : 'text-white/85'
+              }`}
+            >
+              <div
+                class={`rounded-xl px-3 py-2 ${
+                  isEtat ? 'border border-slate-200 bg-white' : 'border border-white/15 bg-white/10'
+                }`}
+              >
+                Téléphone<br />
+                <span class={`${isEtat ? 'text-slate-900' : 'text-white'} font-semibold block whitespace-nowrap`}>{brand.phone}</span>
+              </div>
+              <div
+                class={`rounded-xl px-3 py-2 ${
+                  isEtat ? 'border border-slate-200 bg-white' : 'border border-white/15 bg-white/10'
+                }`}
+              >
+                Email<br />
+                <span class={`${isEtat ? 'text-slate-900' : 'text-white'} font-semibold block whitespace-nowrap`}>{brand.email}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -749,7 +893,19 @@ const toneMuted = view.hero.tone === 'dark' ? 'text-white/85' : 'text-slate-600'
   </section>
 
   <section class="relative py-14 md:py-18 bg-gradient-to-b from-white/90 via-white/95 to-white dark:from-slate-950/60 dark:via-slate-950/65 dark:to-slate-950/60">
-    <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid gap-10 lg:gap-12 md:grid-cols-[0.95fr_1.05fr] items-start">
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid gap-10 lg:gap-12 items-start">
+        <div class="relative">
+          <div class="absolute -inset-4 blur-3xl opacity-60 bg-white/60 dark:bg-slate-900/40"></div>
+          <div class="relative rounded-3xl shadow-2xl border border-slate-200/80 dark:border-slate-800/70 bg-white/95 dark:bg-slate-900/90 pricing-card">
+            <Prices
+              title={view.priceTitle}
+              subtitle={view.priceSubtitle}
+              prices={priceList}
+              columns={isEtat ? 2 : brandKey === 'lausanne' ? 4 : 3}
+            classes={{ container: 'max-w-full md:px-8' }}
+          />
+        </div>
+      </div>
       <div class="rounded-3xl border border-slate-200/70 dark:border-slate-800/70 bg-white/85 dark:bg-slate-900/85 shadow-xl p-8 md:p-10 space-y-4">
         <p class="text-sm uppercase tracking-[0.28em] text-slate-500 dark:text-slate-300">Comment on calcule</p>
         <h3 class="text-2xl md:text-3xl font-semibold text-slate-900 dark:text-white">{view.priceTitle}</h3>
@@ -763,14 +919,19 @@ const toneMuted = view.hero.tone === 'dark' ? 'text-white/85' : 'text-slate-600'
           ))}
         </div>
       </div>
-      <div class="relative">
-        <div class="absolute -inset-4 blur-3xl opacity-60 bg-white/60 dark:bg-slate-900/40"></div>
-        <div class="relative rounded-3xl shadow-2xl border border-slate-200/80 dark:border-slate-800/70 bg-white/95 dark:bg-slate-900/90">
-          <Prices title={view.priceTitle} subtitle={view.priceSubtitle} prices={priceList} classes={{ container: 'max-w-full md:px-8' }} />
-        </div>
-      </div>
     </div>
   </section>
+
+  {isExperience && (
+    <Features2
+      id="experience-pricing-notes"
+      title="Comment lire nos tarifs"
+      subtitle="Logique transparente et sans frais cachés"
+      columns={3}
+      classes={{ container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-5 gap-3 border border-emerald-200/35 bg-white/94 text-slate-900' } }}
+      items={experiencePriceNotes}
+    />
+  )}
 
   <Features3
     title="Ce qui joue sur le prix"
@@ -812,6 +973,19 @@ const toneMuted = view.hero.tone === 'dark' ? 'text-white/85' : 'text-slate-600'
     </Fragment>
   </CallToAction>
 </Layout>
+
+<style>
+  :global(.brand-etatdeslieux .pricing-hero-light h1),
+  :global(.brand-etatdeslieux .pricing-hero-light h2),
+  :global(.brand-etatdeslieux .pricing-hero-light h3),
+  :global(.brand-etatdeslieux .pricing-hero-light h4) {
+    color: #0f172a !important;
+  }
+  :global(.brand-etatdeslieux .pricing-hero-light p),
+  :global(.brand-etatdeslieux .pricing-hero-light .text-secondary) {
+    color: #1f2937 !important;
+  }
+</style>
 
 <style>
   :global(.pricing-hero-light h1),

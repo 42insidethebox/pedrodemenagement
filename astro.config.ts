@@ -59,6 +59,8 @@ export default defineConfig({
         "www.etatdeslieuxlausanne.ch",
         "lausannenettoyage.ch",
         "www.lausannenettoyage.ch",
+        "laclemanexperience.ch",
+        "www.laclemanexperience.ch",
       ],
     },
   },

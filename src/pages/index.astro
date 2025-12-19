@@ -65,11 +65,38 @@ type BrandView = {
 
 const host = Astro.request.headers.get('host');
 const brandKey = getBrandFromHost(host);
-const brand = BRANDS[brandKey];
+const brand = BRANDS[brandKey] || BRANDS.pedro;
 const img = (id: ImageId) => getImage(id);
 const isUrgent = brandKey === 'urgent';
 const isTransport = brandKey === 'transport';
-const whatsapp = brand.whatsapp || 'https://wa.me/41767982793';
+const whatsapp = brand?.whatsapp || 'https://wa.me/41767982793';
+const isExperience = brandKey === 'laclemanexperience';
+
+const experienceFormats = [
+  { title: 'Demi-journée', description: '2–4h · 2–6 pers. · Couples, VIP visiteurs', icon: 'tabler:clock-hour-4' },
+  { title: 'Journée', description: '5–8h · 2–8 pers. · Découverte complète', icon: 'tabler:calendar-time' },
+  { title: 'Soirée signature', description: '3–4h · 2–10 pers. · Dîner, célébration', icon: 'tabler:moon-stars' },
+  { title: 'Immersion', description: '2–3 jours · 2–6 pers. · UHNW, corporate', icon: 'tabler:route' },
+];
+
+const experienceConcierge = [
+  { title: 'Interlocuteur unique', description: 'WhatsApp + téléphone, réponse rapide J-7 → J+1', icon: 'tabler:headset' },
+  { title: 'Brief écrit', description: 'Partagé aux bateliers, vignerons, chefs locaux. Pas d’improvisation.', icon: 'tabler:clipboard-list' },
+  { title: 'Plan B météo', description: 'Validé à l’avance, expérience maintenue sans perte de qualité.', icon: 'tabler:cloud-check' },
+];
+
+const experienceLogistics = [
+  { title: 'Créneaux verrouillés', description: 'Sunset, transferts porte-à-porte, tampons horaires intégrés.', icon: 'tabler:clock-check' },
+  { title: 'Transferts privés', description: 'Mercedes V/E, bateau-taxi si pertinent, chauffeurs brieffés.', icon: 'tabler:car' },
+  { title: 'Autorisations & privatisations', description: 'Caves, bateaux, tables d’hôtes réellement privatisés.', icon: 'tabler:lock-square-rounded' },
+];
+
+const experienceCommitments = [
+  { title: 'Privatisation réelle', description: 'Jamais de mélange de groupes.', icon: 'tabler:shield-lock' },
+  { title: 'Horaires respectés', description: 'Ou compensation si décalage.', icon: 'tabler:clock-bolt' },
+  { title: 'Partenaires directs', description: 'Bateliers, vignerons, chefs locaux, sans intermédiaire.', icon: 'tabler:users' },
+  { title: 'Plan B météo', description: 'Alternatives prêtes et validées.', icon: 'tabler:umbrella' },
+];
 
 const baseMove: BrandView = {
   metadata: {
@@ -87,16 +114,16 @@ const baseMove: BrandView = {
       { icon: 'tabler:brand-whatsapp', text: brand.phone || '+41 76 798 27 93', href: whatsapp },
     ],
     background:
-      `linear-gradient(135deg, rgba(248,250,252,0.96), rgba(226,232,240,0.9)), url('${img('hero_happy_boxes_plants')}')`,
-    overlayClass: 'bg-white/70',
+      `linear-gradient(135deg, rgba(248,250,252,0.06), rgba(226,232,240,0.02)), url('${img('hero_happy_boxes_plants')}')`,
+    overlayClass: 'bg-white/20',
     className: 'pedro-hero',
     card: {
       badge: 'Jour J maîtrisé',
       title: 'Planification → Protection → Transport',
       description: 'Chef d’équipe dédié, check-list des accès et protections sol/murs pour un déménagement sans surprises.',
       background:
-        `linear-gradient(135deg, rgba(255,255,255,0.92), rgba(226,232,240,0.9)), url('${img('men_loading_e_cat_truck')}')`,
-      overlayClass: 'bg-white/60',
+        `linear-gradient(135deg, rgba(255,255,255,0.12), rgba(226,232,240,0.19)), url('${img('men_loading_e_cat_truck')}')`,
+      overlayClass: 'bg-white/50',
       className: 'panel-surface text-slate-900',
     },
   },
@@ -140,10 +167,10 @@ const baseMove: BrandView = {
       content: 'Vous savez qui vient, avec quel camion et à quelle heure. Nous validons chaque étape avant le jour J.',
       image: {
         src: img('professional_van_5'),
-        overlayClass: 'bg-gradient-to-br from-blue-100/70 via-blue-200/60 to-slate-100/70',
+        overlayClass: 'bg-gradient-to-br from-blue-100/70 via-blue-100/60 to-slate-100/70',
         badge: 'Planning',
       },
-      classes: { container: 'bg-gradient-to-br from-indigo-50 via-blue-50 to-slate-100 rounded-3xl shadow-sm px-6 md:px-10 py-10' },
+      classes: { container: 'bg-gradient-to-br from-indigo-80 via-blue-80 to-slate-100 rounded-3xl shadow-sm px-6 md:px-10 py-10' },
       isReversed: true,
     },
   steps: {
@@ -162,7 +189,7 @@ const baseMove: BrandView = {
       },
       image: {
         src: img('professional_van_3'),
-        overlayClass: 'bg-gradient-to-br from-slate-200/70 via-blue-200/60 to-blue-100/60',
+        overlayClass: 'bg-gradient-to-br from-slate-900/25 via-slate-900/15 to-white/15',
         badge: 'Disponibilité',
       },
     },
@@ -211,6 +238,118 @@ const baseMove: BrandView = {
 
 const views: Record<BrandKey, BrandView> = {
   pedro: baseMove,
+  laclemanexperience: {
+    ...baseMove,
+    metadata: {
+      title: 'Lac Léman Experience — Croisières, vignobles et tables d’hôtes',
+      ignoreTitleTemplate: true,
+      description:
+        'Expériences privées autour du Léman : croisières sunset, vignobles UNESCO, tables d’hôtes et échappées alpines.',
+    },
+    hero: {
+      tagline: 'Expériences Léman',
+      title: 'Croisières privées, vignobles UNESCO, tables d’hôtes',
+      subtitle: 'Un concierge dédié, des partenaires locaux et des itinéraires adaptés après brief écrit entre lac, montagnes et villes.',
+      actions: [
+        { variant: 'primary', text: 'Réserver une expérience', href: '/contact#form', icon: 'tabler:mail-forward' },
+        { text: 'Parler à un concierge', href: whatsapp, icon: 'tabler:phone' },
+      ],
+      background:
+        `linear-gradient(135deg, rgba(15,118,110,0.22), rgba(30,41,59,0.28), rgba(253,230,138,0.16)), url('${img('silent_boat_still_lake')}')`,
+      overlayClass: 'bg-gradient-to-br from-emerald-950/35 via-slate-900/45 to-amber-100/20',
+      className: 'brand-laclemanexperience hero-light',
+      card: {
+        badge: 'Conciergerie',
+        title: 'Itinéraires saisonniers',
+        description: 'Lac au printemps, vignobles UNESCO en été, tables d’hôtes en automne, bains alpins en hiver.',
+        background:
+          `linear-gradient(135deg, rgba(255,255,255,0.14), rgba(226,232,240,0.18)), url('${img('quiet_luxury_lake_lifestyle')}')`,
+        overlayClass: 'bg-gradient-to-br from-emerald-900/25 via-slate-900/25 to-white/18',
+        className: 'panel-surface text-slate-900',
+      },
+    },
+    features: {
+      tagline: 'Pourquoi Lac Léman Experience',
+      title: 'Expériences privées, partenaires locaux',
+      subtitle: 'Nous combinons lac, montagne et ville avec des artisans et vignerons triés sur le volet.',
+      variant: 'tiles',
+      columns: 4,
+      items: [
+        { title: 'Concierge dédié', description: 'Un interlocuteur unique pour l’itinéraire, la logistique et les surprises.', icon: 'tabler:headset' },
+        { title: 'Partenaires directs', description: 'Bateliers privés, vignerons UNESCO, chefs locaux, sans intermédiaire.', icon: 'tabler:medal' },
+        { title: 'Saisonnalité', description: 'Programme qui suit la météo, la vigne et les festivals locaux.', icon: 'tabler:calendar' },
+        { title: 'Logistique verrouillée', description: 'Transferts, horaires précis, brief discret des équipes.', icon: 'tabler:clock' },
+      ],
+      classes: { container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-6 gap-4 border border-emerald-200/40 bg-white/85 text-slate-900' } },
+      bgClass: 'bg-gradient-to-br from-emerald-50/60 via-amber-50/35 to-white',
+    },
+    process: {
+      tagline: 'Processus',
+      title: 'Processus sans friction',
+      items: [
+        { title: '1. Brief (10 min)', description: 'Dates, envies, budget, contraintes. Call/WhatsApp.' },
+        { title: '2. Proposition PDF', description: 'Itinéraire, horaires, transferts, prix. Envoyé sous 24h.' },
+        { title: '3. Confirmation', description: 'Acompte, privatisations, brief partenaires et plan B météo.' },
+        { title: '4. Jour J', description: 'Concierge joignable, équipes alignées, confirmations la veille.' },
+      ],
+      content: 'Tout est verrouillé avant votre arrivée : transferts, hôtes, météo, plan B discret si besoin.',
+      image: {
+        src: img('leman_horizon_minimal_2'),
+        overlayClass: 'bg-gradient-to-br from-emerald-900/22 via-slate-900/22 to-amber-50/26',
+        badge: 'Conciergerie',
+      },
+      classes: { container: 'bg-gradient-to-br from-emerald-50/70 via-white to-white rounded-3xl shadow-sm px-6 md:px-10 py-10 text-slate-900' },
+      isReversed: true,
+    },
+    steps: {
+      title: 'Parcours client',
+      tagline: 'Coordination',
+      items: [
+        { title: 'Brief express', description: '10 minutes pour comprendre vos attentes.', icon: 'tabler:message' },
+        { title: 'Proposition verrouillée', description: 'Timing, lieux, transferts, budget.', icon: 'tabler:clipboard-check' },
+        { title: 'Expérience sur place', description: 'Hôtes briefés, transferts et horaires maîtrisés.', icon: 'tabler:map-pin' },
+        { title: 'Suivi', description: 'Photos, recommandations, réservations suivantes.', icon: 'tabler:sparkles' },
+      ],
+      classes: { container: 'bg-white rounded-3xl shadow-sm px-6 md:px-10 py-10 text-slate-900' },
+      image: {
+        src: img('wine_glass_lavaux'),
+        overlayClass: 'bg-gradient-to-br from-emerald-900/22 via-slate-900/18 to-amber-50/22',
+        badge: 'Ready',
+      },
+    },
+    options: {
+      tagline: 'Expériences signature',
+      title: 'Sélection Léman',
+      subtitle: 'Privatisées, orchestrées, saisonnières',
+      variant: 'tiles',
+      classes: { container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-6 gap-4 border border-emerald-200/40 bg-white/92 text-slate-900' } },
+      bgClass: 'bg-gradient-to-br from-emerald-50/70 via-white to-white',
+      items: [
+        { title: 'Croisière sunset', description: 'Bateau privé, sommelière à bord, plateau fromages.', icon: 'tabler:sailboat' },
+        { title: 'Vignobles UNESCO', description: 'Vigneron hôte, cave voûtée, accords vins-fromages.', icon: 'tabler:glass-full' },
+        { title: 'Table d’hôtes', description: 'Chef local, chalet privatisé, produits lac + alpages.', icon: 'tabler:snowflake' },
+        { title: 'Échappée alpine', description: 'Train panoramique, bains thermaux, dîner en altitude.', icon: 'tabler:mountain' },
+      ],
+    },
+    faqs: {
+      title: 'FAQ Lac Léman Experience',
+      subtitle: 'Pour un déroulé sans friction',
+      items: [
+        { title: 'Combien de temps à l’avance ?', description: 'Idéalement 7–10 jours. Nous pouvons accélérer selon disponibilité partenaires.' },
+        { title: 'Météo ?', description: 'Plan B discret prévu pour la navigation et les dégustations extérieures.' },
+        { title: 'Privatisation ?', description: 'Oui. Bateaux, caves et tables d’hôtes sont privatisés ou semi-privatisés selon le format.' },
+        { title: 'Transferts ?', description: 'Chauffeur privé ou bateau-taxi selon parcours. Horaires verrouillés.' },
+      ],
+    },
+    cta: {
+      title: 'Prêt pour une expérience Léman ?',
+      subtitle: 'Dites-nous vos dates et vos envies (lac, vignobles, montagne). On orchestre le reste.',
+      actions: [
+        { variant: 'primary', text: 'Réserver une expérience', href: '/contact#form', icon: 'tabler:mail-forward' },
+        { text: 'Parler à un concierge', href: whatsapp, icon: 'tabler:phone' },
+      ],
+    },
+  },
   lausanne: {
     ...baseMove,
     metadata: {
@@ -225,14 +364,26 @@ const views: Record<BrandKey, BrandView> = {
       title: 'Départs depuis Lausanne et toute la Riviera',
       subtitle:
         'Accès urbains gérés, autorisations parking et coordination ascenseur/monte-meubles pour un jour J fluide.',
+      className: 'pedro-hero lausanne-hero-light',
+      actions: [
+        { variant: 'primary', text: 'Obtenir un devis', href: '/contact#form', icon: 'tabler:arrow-right' },
+        {
+          icon: 'tabler:brand-whatsapp',
+          text: brand.phone || '+41 76 798 27 93',
+          href: whatsapp,
+          class: 'bg-white text-slate-900 border border-white/70 hover:bg-transparent hover:text-white hover:border-white/80',
+        },
+      ],
       background:
-        "linear-gradient(135deg, rgba(14,165,233,0.32), rgba(30,58,138,0.25)), url('https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=1400&q=80')",
+        `linear-gradient(135deg, rgba(14,165,233,0.18), rgba(30,58,138,0.22)), url('${img('professional_van_5')}')`,
+      overlayClass: 'bg-gradient-to-br from-blue-900/25 via-blue-900/15 to-white/10',
       card: {
         ...baseMove.hero.card!,
         title: 'Accès urbains, timing précis',
         description: 'Repérage des parkings, créneaux ascenseur, coordination syndic et concierge avant passage.',
         background:
-          "linear-gradient(135deg, rgba(14,165,233,0.28), rgba(30,58,138,0.15)), url('https://images.unsplash.com/photo-1529429617124-aee78b477660?auto=format&fit=crop&w=1200&q=80')",
+          `linear-gradient(135deg, rgba(14,165,233,0.38), rgba(30,58,138,0.35)), url('${img('strong_man_packing_1')}')`,
+        overlayClass: 'bg-slate-900/25',
         className: 'panel-surface text-white border border-blue-200/30',
       },
     },
@@ -245,6 +396,17 @@ const views: Record<BrandKey, BrandView> = {
         { title: 'Protections', description: 'Couvertures, housses matelas, sols/murs protégés.', icon: 'tabler:shield-check' },
         { title: 'Suivi unique', description: 'Un chef d’équipe qui coordonne les imprévus et la remise des clés.', icon: 'tabler:headset' },
       ],
+    },
+    process: {
+      ...baseMove.process,
+      image: {
+        src: img('professional_van_5'),
+        overlayClass: 'bg-gradient-to-br from-slate-900/35 via-slate-900/25 to-white/10',
+        badge: 'Planning',
+      },
+    },
+    steps: {
+      ...baseMove.steps,
     },
   },
   urgent: {
@@ -281,7 +443,7 @@ const views: Record<BrandKey, BrandView> = {
       title: 'Intervention express, accès gérés, équipe prête',
       subtitle: 'Créneau du jour ou du lendemain selon disponibilité. Confirmation en 15 minutes, protections et accès gérés.',
       variant: 'tiles',
-      classes: { container: 'urgent-grid', items: { panel: 'card rounded-2xl p-6' } },
+      classes: { container: 'urgent-grid', items: { panel: 'card rounded-2xl p-6 text-slate-900' }, bgClass: 'bg-white' },
       items: [
         { title: 'Réponse < 5 min', description: 'Validation des accès, du volume et des contraintes avant de partir.', icon: 'tabler:clock-bolt' },
         { title: 'Départ 60–90 min', description: 'Équipe dédiée, protections prêtes, camion adapté.', icon: 'tabler:truck-delivery' },
@@ -344,15 +506,15 @@ const views: Record<BrandKey, BrandView> = {
         { title: 'Zone couverte ?', description: 'Arc lémanique prioritaire, autres trajets CH sur demande rapide.' },
       ],
     },
-    cta: {
-      title: 'Besoin d’une équipe tout de suite ?',
-      subtitle: 'Appelez ou remplissez le formulaire. Confirmation en 15 minutes selon disponibilité.',
-      actions: [
-        { variant: 'primary', text: 'Intervention express', href: '/contact#form', icon: 'tabler:bolt' },
-        { text: 'Appeler maintenant', href: whatsapp, icon: 'tabler:phone' },
-      ],
+      cta: {
+        title: 'Besoin d’une équipe tout de suite ?',
+        subtitle: 'Appelez ou remplissez le formulaire. Confirmation en 15 minutes selon disponibilité.',
+        actions: [
+          { variant: 'primary', text: 'Intervention express', href: '/contact#form', icon: 'tabler:bolt' },
+          { text: 'Appeler maintenant', href: whatsapp, icon: 'tabler:phone' },
+        ],
+      },
     },
-  },
   debarras: {
     ...baseMove,
     metadata: {
@@ -421,7 +583,7 @@ const views: Record<BrandKey, BrandView> = {
         { title: 'Remise', description: 'Local rendu propre, photos et remise des clés.', icon: 'tabler:key' },
       ],
       image: {
-        src: 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=1000&q=80',
+        src: 'https://cdn.midjourney.com/af142b95-ae9e-44f8-a1b3-daf94d7be718/0_0.png',
         overlayClass: 'bg-gradient-to-br from-green-900/70 via-emerald-800/70 to-emerald-600/60',
         badge: 'Reporting',
       },
@@ -474,16 +636,16 @@ const views: Record<BrandKey, BrandView> = {
         { text: 'Discuter du volume', href: whatsapp, icon: 'tabler:phone' },
       ],
       background:
-        `linear-gradient(135deg, rgba(124,58,237,0.25), rgba(17,24,39,0.15)), url('${img('professional_van_2')}')`,
-      overlayClass: 'bg-gradient-to-br from-purple-900/60 via-slate-900/70 to-amber-500/30',
+        `linear-gradient(135deg, rgba(12,18,32,0.82), rgba(31,42,68,0.75), rgba(242,176,69,0.18)), url('${img('professional_van_2')}')`,
+      overlayClass: 'bg-gradient-to-br from-slate-950/58 via-slate-900/55 to-amber-200/18',
       className: 'brand-transport',
       card: {
         badge: 'Arrimage & protection',
         title: 'Meubles, électroménager, pièces uniques',
         description: 'Emballage, sangles, couvertures renforcées. Créneau précis, suivi en direct.',
         background:
-          `linear-gradient(135deg, rgba(91,33,182,0.25), rgba(245,158,11,0.5)), url('${img('professional_van_1')}')`,
-        overlayClass: 'bg-gradient-to-br from-purple-900/70 via-purple-800/70 to-amber-500/50',
+          `linear-gradient(135deg, rgba(12,18,32,0.82), rgba(31,42,68,0.72), rgba(242,176,69,0.22)), url('${img('professional_van_1')}')`,
+        overlayClass: 'bg-gradient-to-br from-slate-950/65 via-slate-900/62 to-amber-200/24',
         className: 'panel-grid text-white',
       },
     },
@@ -510,7 +672,7 @@ const views: Record<BrandKey, BrandView> = {
       content: 'Un seul interlocuteur. Suivi temps réel pour vos pièces sensibles.',
       image: {
         src: img('van_inside_objects_boxes_3'),
-        overlayClass: 'bg-gradient-to-br from-purple-900/70 via-slate-900/70 to-amber-500/40',
+        overlayClass: 'bg-gradient-to-br from-slate-950/60 via-slate-900/60 to-amber-200/24',
         badge: 'Transport',
       },
       isReversed: true,
@@ -526,7 +688,7 @@ const views: Record<BrandKey, BrandView> = {
       ],
       image: {
         src: img('van_inside_objects_boxes_4'),
-        overlayClass: 'bg-gradient-to-br from-purple-900/70 via-slate-900/70 to-amber-500/45',
+        overlayClass: 'bg-gradient-to-br from-slate-950/58 via-slate-900/58 to-amber-200/26',
         badge: 'Fenêtre courte',
       },
     },
@@ -576,16 +738,16 @@ const views: Record<BrandKey, BrandView> = {
         { text: 'Parler à un conseiller', href: whatsapp, icon: 'tabler:phone' },
       ],
       background:
-        `linear-gradient(135deg, rgba(249,115,22,0.10), rgba(180,83,9,0.25)), url('${img('strong_man_packing_1')}')`,
-      overlayClass: 'bg-gradient-to-br from-amber-900/60 via-amber-700/60 to-orange-500/55',
-      className: 'brand-videmaison',
+        `linear-gradient(135deg, rgba(197,143,85,0.12), rgba(160,112,70,0.14)), url('${img('strong_man_packing_1')}')`,
+      overlayClass: 'bg-gradient-to-br from-[#3b2a18]/14 via-[#5a3b1f]/12 to-[#8c6136]/10',
+      className: 'brand-videmaison hero-light videmaison-hero',
       card: {
         badge: 'Maison vidée',
         title: 'Tri, dons, recyclage',
         description: 'Priorité au réemploi, évacuation contrôlée, pièces prêtes pour l’état des lieux.',
         background:
           `linear-gradient(135deg, rgba(248, 248, 248, 0.9), rgba(255, 255, 255, 0.65)), url('${img('strong_man_packing_2')}')`,
-        overlayClass: 'bg-gradient-to-br from-amber-900/40 via-orange-700/50 to-amber-500/45',
+        overlayClass: 'bg-gradient-to-br from-[#3b2a18]/10 via-[#5a3b1f]/10 to-[#8c6136]/10',
         className: 'panel-surface text-amber-950',
       },
     },
@@ -613,8 +775,8 @@ const views: Record<BrandKey, BrandView> = {
       ],
       content: 'Vous récupérez une maison nette, prête pour une vente, une location ou un état des lieux.',
       image: {
-        src: 'https://images.unsplash.com/photo-1523419400524-2230f3ad0c7b?auto=format&fit=crop&w=1200&q=80',
-        overlayClass: 'bg-gradient-to-br from-amber-900/60 via-orange-800/60 to-amber-500/50',
+        src: 'https://cdn.midjourney.com/af142b95-ae9e-44f8-a1b3-daf94d7be718/0_1.png',
+        overlayClass: 'bg-gradient-to-br from-[#3b2a18]/12 via-[#5a3b1f]/10 to-[#8c6136]/10',
         badge: 'Remise propre',
       },
       isReversed: true,
@@ -629,8 +791,8 @@ const views: Record<BrandKey, BrandView> = {
         { title: 'Remise des clés', description: 'Pièces vidées, nettoyage léger, photos finales.', icon: 'tabler:key' },
       ],
       image: {
-        src: 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=1000&q=80',
-        overlayClass: 'bg-gradient-to-br from-amber-900/60 via-orange-800/60 to-amber-500/50',
+        src: 'https://cdn.midjourney.com/af142b95-ae9e-44f8-a1b3-daf94d7be718/0_0.png',
+        overlayClass: 'bg-gradient-to-br from-[#3b2a18]/12 via-[#5a3b1f]/10 to-[#8c6136]/10',
         badge: 'Clés remises',
       },
     },
@@ -1000,17 +1162,17 @@ const views: Record<BrandKey, BrandView> = {
         { text: 'Contacter', href: whatsapp, icon: 'tabler:phone' },
       ],
       background:
-        `linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(15,23,42,0.15)), url('${img('empty_apartment_11')}')`,
-      overlayClass: 'bg-gradient-to-br from-sky-500/45 via-slate-900/70 to-slate-900/70',
+        `linear-gradient(135deg, rgba(255, 255, 255, 0.55), rgba(224,242,254,0.45)), url('${img('empty_apartment_11')}')`,
+      overlayClass: 'bg-gradient-to-br from-sky-700/12 via-white/28 to-white/40',
       className: 'brand-etatdeslieux',
       card: {
         badge: 'Rapport photo',
         title: 'Check-list complète',
         description: 'Relevés, photos, remarques et actions correctives listées clairement.',
         background:
-          `linear-gradient(135deg, rgba(14,165,233,0.38), rgba(15,23,42,0.28)), url('${img('empty_apartment_10')}')`,
-        overlayClass: 'bg-gradient-to-br from-sky-500/50 via-slate-900/70 to-slate-900/70',
-        className: 'panel-grid text-sky-50',
+          `linear-gradient(135deg, rgba(255,255,255, 0.05), rgba(255,255,255, 0.05)), url('${img('empty_apartment_10')}')`,
+        overlayClass: 'bg-gradient-to-br from-sky-700/10 via-white/25 to-white/35',
+        className: 'panel-grid text-slate-900',
       },
     },
     features: {
@@ -1018,14 +1180,15 @@ const views: Record<BrandKey, BrandView> = {
       title: 'État des lieux structuré',
       subtitle: 'Rapport clair pour éviter les contestations.',
       variant: 'tiles',
+      columns: 4,
       items: [
         { title: 'Check-list bailleur', description: 'Pièces, murs, sols, équipements vérifiés.', icon: 'tabler:checkbox' },
         { title: 'Photos horodatées', description: 'Série photo et remarques précises.', icon: 'tabler:photo-check' },
         { title: 'Remarques actionnables', description: 'Liste des points à corriger avec priorités.', icon: 'tabler:list-check' },
         { title: 'Remise clés coordonnée', description: 'Contact régie/propriétaire, rapport envoyé.', icon: 'tabler:key' },
       ],
-      classes: { container: 'max-w-6xl', items: { panel: 'panel-grid rounded-2xl p-6 gap-4 text-sky-50 border border-sky-200/20' } },
-      bgClass: 'bg-gradient-to-br from-sky-500/15 via-slate-900/35 to-slate-900/55',
+      classes: { container: 'max-w-6xl', items: { panel: 'panel-grid rounded-2xl p-6 gap-4 text-slate-900 border border-sky-200/40 bg-white/85' } },
+      bgClass: 'bg-gradient-to-br from-white via-sky-50/60 to-white',
     },
     process: {
       tagline: 'Processus',
@@ -1038,9 +1201,10 @@ const views: Record<BrandKey, BrandView> = {
       content: 'Objectif : un document solide et neutre pour sécuriser l’entrée ou la sortie.',
       image: {
         src: img('empty_apartment_9'),
-        overlayClass: 'bg-gradient-to-br from-sky-500/40 via-slate-900/70 to-slate-900/70',
+        overlayClass: 'bg-gradient-to-br from-sky-700/10 via-white/22 to-white/32',
         badge: 'Constat',
       },
+      classes: { container: 'bg-gradient-to-br from-white via-sky-50/80 to-white rounded-3xl shadow-sm px-6 md:px-10 py-10 text-slate-900' },
       isReversed: true,
     },
     steps: {
@@ -1054,17 +1218,18 @@ const views: Record<BrandKey, BrandView> = {
       ],
       image: {
         src: img('empty_apartment_4'),
-        overlayClass: 'bg-gradient-to-br from-sky-500/40 via-slate-900/70 to-slate-900/70',
+        overlayClass: 'bg-gradient-to-br from-sky-700/10 via-white/25 to-white/35',
         badge: 'Rapidité',
       },
+      classes: { container: 'bg-gradient-to-br from-white via-sky-50/70 to-white rounded-3xl shadow-sm px-6 md:px-10 py-10 text-slate-900' },
     },
     options: {
       tagline: 'Options',
       title: 'Modules complémentaires',
       subtitle: 'Pour compléter le constat',
       variant: 'tiles',
-      classes: { container: 'max-w-5xl', items: { panel: 'panel-grid rounded-2xl p-6 gap-4 text-sky-50 border border-sky-200/20' } },
-      bgClass: 'bg-gradient-to-br from-sky-500/15 via-slate-900/35 to-slate-900/55',
+      classes: { container: 'max-w-5xl', items: { panel: 'panel-grid rounded-2xl p-6 gap-4 text-slate-900 border border-sky-200/40 bg-white/85' } },
+      bgClass: 'bg-gradient-to-br from-white via-sky-50/60 to-white',
       items: [
         { title: 'Mesures & plans', description: 'Relevé métrique simple.', icon: 'tabler:ruler' },
         { title: 'Suivi correctifs', description: 'Liste des actions et validation photo.', icon: 'tabler:checkup-list' },
@@ -1108,7 +1273,7 @@ const metadata = view.metadata;
             class="absolute inset-0"
             style={`background-image: linear-gradient(135deg, rgba(185,28,28,0.35), rgba(239,68,68,0.25), rgba(249,115,22,0.25)), url('${img('men_loading_van_2')}'); background-size: cover; background-position: center;`}
           ></div>
-          <div class="absolute inset-0 bg-gradient-to-br from-red-900/60 via-red-800/55 to-orange-600/55 backdrop-blur-[2px]"></div>
+          <div class="absolute inset-0 bg-gradient-to-br from-red-900/30 via-red-800/26 to-orange-600/24 backdrop-blur-[2px]"></div>
         </Fragment>
 
         <Fragment slot="title">
@@ -1191,7 +1356,7 @@ const metadata = view.metadata;
         id="urgent-support"
         title="Ce qui est toujours inclus"
         subtitle="Même en express, on protège et on coordonne."
-        classes={{ container: 'urgent-grid', items: { panel: 'card rounded-2xl p-6' } }}
+        classes={{ container: 'urgent-grid', items: { panel: 'card rounded-2xl p-6 text-slate-900' }, bgClass: 'bg-white' }}
         items={[
           { title: 'Chef d’équipe urgence', description: 'Coordination terrain et suivi en direct.', icon: 'tabler:headset' },
           { title: 'Protections complètes', description: 'Housses, couvertures, sangles, arrimage renforcé.', icon: 'tabler:box' },
@@ -1375,14 +1540,15 @@ const metadata = view.metadata;
       </Hero>
 
       {view.features.variant === 'tiles' ? (
-        <Features2
-          id="features"
-          tagline={view.features.tagline}
-          title={view.features.title}
-          subtitle={view.features.subtitle}
-          classes={view.features.classes}
-          items={view.features.items}
-        >
+      <Features2
+        id="features"
+        tagline={view.features.tagline}
+        title={view.features.title}
+        subtitle={view.features.subtitle}
+        columns={view.features.columns || 3}
+        classes={view.features.classes}
+        items={view.features.items}
+      >
           {view.features.bgClass ? (
             <Fragment slot="bg">
               <div class={`absolute inset-0 ${view.features.bgClass}`}></div>
@@ -1398,6 +1564,37 @@ const metadata = view.metadata;
           classes={view.features.classes}
           items={view.features.items}
         />
+      )}
+
+      {isExperience && (
+        <>
+          <Features2
+            id="formats"
+            title="Formats d’expérience"
+            subtitle="Formats clairs pour décider vite"
+            columns={4}
+            classes={{ container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-5 gap-3 border border-emerald-200/40 bg-white/92 text-slate-900' } }}
+            items={experienceFormats}
+          />
+
+          <Features2
+            id="concierge"
+            title="Conciergerie dédiée — concret"
+            subtitle="Inclus dans chaque expérience"
+            columns={3}
+            classes={{ container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-5 gap-3 border border-emerald-200/35 bg-white/92 text-slate-900' } }}
+            items={experienceConcierge}
+          />
+
+          <Features2
+            id="logistique"
+            title="Logistique & précision"
+            subtitle="Ce que nous verrouillons avant de confirmer"
+            columns={3}
+            classes={{ container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-5 gap-3 border border-emerald-200/35 bg-white/92 text-slate-900' } }}
+            items={experienceLogistics}
+          />
+        </>
       )}
 
       <Content
@@ -1420,7 +1617,7 @@ const metadata = view.metadata;
               <div class={`absolute inset-0 ${view.process.image.overlayClass || ''}`}></div>
               <div class="relative p-8 text-white">
                 {view.process.image.badge ? (
-                  <p class="text-xs uppercase tracking-[0.3em] text-white/80">{view.process.image.badge}</p>
+                  <p class="text-xs uppercase tracking-[0.3em] text-white/80 process-badge">{view.process.image.badge}</p>
                 ) : null}
                 <p class="mt-4 max-w-lg text-lg text-white/90">{view.process.content}</p>
               </div>
@@ -1444,13 +1641,24 @@ const metadata = view.metadata;
               <div class={`absolute inset-0 ${view.steps.image.overlayClass || ''}`}></div>
               <div class="relative p-8 text-white">
                 {view.steps.image.badge ? (
-                  <p class="text-xs uppercase tracking-[0.3em] text-white/80">{view.steps.image.badge}</p>
+                  <p class="text-xs uppercase tracking-[0.3em] text-white/80 steps-badge">{view.steps.image.badge}</p>
                 ) : null}
               </div>
             </div>
           </Fragment>
         ) : null}
       </Steps>
+
+      {isExperience && (
+        <Features2
+          id="engagements"
+          title="Nos engagements"
+          subtitle="Ce que nous garantissons"
+          columns={4}
+          classes={{ container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-5 gap-3 border border-emerald-200/35 bg-white/92 text-slate-900' } }}
+          items={experienceCommitments}
+        />
+      )}
 
       {view.options.variant === 'tiles' ? (
         <Features2
@@ -1499,3 +1707,33 @@ const metadata = view.metadata;
     </>
   )}
 </Layout>
+
+<style>
+:global(.hero-light h1),
+:global(.hero-light h2),
+:global(.hero-light h3),
+:global(.hero-light h4),
+:global(.hero-light h5),
+:global(.hero-light h6),
+:global(.hero-light .text-muted),
+:global(.hero-light .text-secondary) {
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+:global(.hero-light p),
+:global(.hero-light .tagline) {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+:global(.hero-light .btn-secondary) {
+  color: #1d1306;
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 255, 255, 0.9);
+}
+:global(.brand-lausanne .lausanne-hero-light h1),
+:global(.brand-lausanne .lausanne-hero-light h2) {
+  color: #fff !important;
+}
+:global(.brand-lausanne .lausanne-hero-light p),
+:global(.brand-lausanne .lausanne-hero-light .text-secondary) {
+  color: #e5e7eb !important;
+}
+</style>

@@ -5,7 +5,7 @@ import { serializeMetadata } from '../src/lib/metadata.js';
 test('serializeMetadata normalizes fields', () => {
   const md = serializeMetadata({
     name: '  Alice ',
-    email: 'ALICE@EXAMPLE.COM',
+    email: 'contact@lausannedemenagement.ch',
     company: ' ACME ',
     phone: '079 123 45 67',
     template: 'classic',
@@ -13,7 +13,7 @@ test('serializeMetadata normalizes fields', () => {
     agencyId: ' 1234-abc ',
   });
   assert.equal(md.name, 'Alice');
-  assert.equal(md.email, 'alice@example.com');
+  assert.equal(md.email, 'contact@lausannedemenagement.ch');
   assert.equal(md.company, 'ACME');
   assert.equal(md.phone.startsWith('+'), true);
   assert.equal(md.template, 'classic');

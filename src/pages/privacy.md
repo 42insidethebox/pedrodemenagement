@@ -9,7 +9,7 @@ Cette politique décrit la manière dont **Pedro Déménagement** collecte et tr
 
 ## 1. Responsable de traitement
 
-Pedro Déménagement est responsable des traitements décrits dans ce document. Vous pouvez nous contacter à **pedro@pedrodemenagement.ch**.
+Pedro Déménagement est responsable des traitements décrits dans ce document. Vous pouvez nous contacter à **contact@lausannedemenagement.ch**.
 
 ## 2. Données collectées
 
@@ -52,7 +52,7 @@ Vous pouvez à tout moment :
 - obtenir une copie des informations que vous nous avez fournies dans un format structuré (portabilité) ;
 - retirer votre consentement lorsque celui-ci est la base légale.
 
-Pour exercer ces droits, écrivez-nous à **hello@pedrodemenagement.ch**. Nous répondrons sous 30 jours.
+Pour exercer ces droits, écrivez-nous à **contact@lausannedemenagement.ch**. Nous répondrons sous 30 jours.
 
 ## 8. Sécurité
 
@@ -68,4 +68,4 @@ Nous pouvons mettre à jour cette politique pour refléter l'évolution de la l�
 
 ## 11. Contact
 
-Pour toute question relative à la protection des données, contactez **pedro@pedrodemenagement.ch**.
+Pour toute question relative à la protection des données, contactez **contact@lausannedemenagement.ch**.

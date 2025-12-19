@@ -65,4 +65,4 @@ Les présentes Conditions sont régies par le droit suisse. Tout litige sera sou
 
 ## 12. Contact
 
-Pour toute question, contactez-nous à **pedro@pedrodemenagement.ch** ou au **+41 76 798 27 93** (du lundi au samedi, 8h–18h).
+Pour toute question, contactez-nous à **contact@lausannedemenagement.ch** ou au **+41 76 798 27 93** (du lundi au samedi, 8h–18h).

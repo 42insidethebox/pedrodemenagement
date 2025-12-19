@@ -155,6 +155,73 @@ export const IMAGE_INVENTORY = {
     alt: 'Homme emballant des cartons dans un salon.',
   },
 
+  // Lac Léman Experience imagery
+  silent_boat_still_lake: {
+    name: 'Silent boat on still lake',
+    url: 'https://cdn.midjourney.com/739d9dc0-21da-42a5-8283-40312725ca73/0_3.png',
+    alt: 'Bateau silencieux glissant sur un Léman calme au lever du jour.',
+  },
+  sunrise_boat_breakfast: {
+    name: 'Sunrise boat with breakfast',
+    url: 'https://cdn.midjourney.com/d8b5d831-d9e9-4667-b13a-fa3ae73c1ff2/0_3.png',
+    alt: 'Petit-déjeuner sur un bateau privé au lever du soleil entre Vevey et Lausanne.',
+  },
+  leman_horizon_minimal_1: {
+    name: 'Minimalist Léman horizon',
+    url: 'https://cdn.midjourney.com/63b722a6-4340-4e63-ba78-9595952cd3ea/0_1.png',
+    alt: 'Horizon minimaliste du Léman avec les Alpes en arrière-plan, tons doux.',
+  },
+  leman_horizon_minimal_2: {
+    name: 'Minimalist Léman horizon 2',
+    url: 'https://cdn.midjourney.com/9c092fbc-cdb3-455b-af06-28429827b0b2/0_2.png',
+    alt: 'Vue épurée du lac et des Alpes dans des tons neutres.',
+  },
+  open_door_lake_view: {
+    name: 'Open door to lake view',
+    url: 'https://cdn.midjourney.com/fcce49a5-fddf-4285-b177-94fa95c5580f/0_2.png',
+    alt: 'Porte ouverte sur une vue lacustre lumineuse, ambiance hôtelière premium.',
+  },
+  notebook_lake_planning: {
+    name: 'Notebook by the lake',
+    url: 'https://cdn.midjourney.com/255002de-3d59-48ab-bbd9-2f3291995c21/0_0.png',
+    alt: 'Carnet et café sur table bois face au Léman, préparation de voyage.',
+  },
+  quiet_luxury_lake_lifestyle: {
+    name: 'Quiet luxury lake lifestyle',
+    url: 'https://cdn.midjourney.com/7487e7d3-a81d-4288-b03a-58cd0d409570/0_0.png',
+    alt: 'Scène lifestyle calme et luxueuse au bord du Léman, matières naturelles.',
+  },
+  vevey_promenade_golden: {
+    name: 'Vevey promenade golden hour',
+    url: 'https://cdn.midjourney.com/c5dae0c4-a56a-4a04-8d44-5d36a40f10be/0_2.png',
+    alt: 'Promenade de Vevey au coucher de soleil, eau calme et ambiance élégante.',
+  },
+  lausanne_old_town_morning: {
+    name: 'Lausanne old town morning',
+    url: 'https://cdn.midjourney.com/dcddabd3-0715-4b03-b82c-ba574b53067a/0_2.png',
+    alt: 'Vieille ville de Lausanne au petit matin, rues calmes et lumière douce.',
+  },
+  alpine_sunrise_pastel: {
+    name: 'Alpine sunrise pastel',
+    url: 'https://cdn.midjourney.com/809fd51c-9042-4d16-98fd-1c7473197c24/0_0.png',
+    alt: 'Lever de soleil pastel sur les Alpes avec le Léman en contrebas.',
+  },
+  winter_chalet_table: {
+    name: 'Winter chalet table',
+    url: 'https://cdn.midjourney.com/4b45d720-6334-4fc2-869f-4e22ce7dcc75/0_0.png',
+    alt: 'Table dressée en extérieur devant un chalet enneigé, ambiance chaleureuse.',
+  },
+  wine_glass_lavaux: {
+    name: 'Wine glass Lavaux',
+    url: 'https://cdn.midjourney.com/d666aa5a-8a89-4325-90c5-6777131aaeca/0_0.png',
+    alt: 'Verre de vin devant les vignes en terrasse et le Léman, lumière dorée.',
+  },
+  lakeside_open_doors: {
+    name: 'Lakeside open doors',
+    url: 'https://cdn.midjourney.com/45a912a6-b02f-494d-8c7e-052c2967ae47/0_2.png',
+    alt: 'Portes ouvertes sur le lac avec lumière chaude et calme.',
+  },
+
   empty_apartment_1: {
     name: 'Empty apartment 1',
     url: 'https://cdn.midjourney.com/917a3462-630a-4aab-baf3-d1f39b3b57a0/0_0.png',

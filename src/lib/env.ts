@@ -51,7 +51,7 @@ const ENV = {
   SUPPORT_EMAIL:
     process.env.SENDER_EMAIL ??
     import.meta.env.SENDER_EMAIL ??
-    'hello@pedrodemenagement.ch',
+    'contact@lausannedemenagement.ch',
 
   SENDER_NAME:
     process.env.SENDER_NAME ?? import.meta.env.SENDER_NAME ?? 'Pedro Déménagement',

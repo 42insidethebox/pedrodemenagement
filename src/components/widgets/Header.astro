@@ -53,7 +53,10 @@ const urlObj = new URL(Astro.url);
 const currentPath = `/${trimSlash(urlObj.pathname)}` || '/';
 const filteredLinks = links ?? [];
 const isUrgent = brandKey === 'urgent';
-const toneClass = brandKey === 'videsuccession' || brandKey === 'pedro' ? 'header-tone-light' : 'header-tone-white';
+const toneClass =
+  brandKey === 'videsuccession' || brandKey === 'pedro' || brandKey === 'lausanne'
+    ? 'header-tone-light'
+    : 'header-tone-white';
 ---
 
 <header
@@ -209,5 +212,13 @@ const toneClass = brandKey === 'videsuccession' || brandKey === 'pedro' ? 'heade
   }
   :global(.aw-header.header-tone-white a) {
     color: #f8fafc;
+  }
+  :global(.brand-lausanne .aw-header.header-tone-light) {
+    background: #fff;
+    background-image: none;
+    color: #0f172a;
+  }
+  :global(.brand-lausanne .aw-header.header-tone-light a) {
+    color: #0f172a;
   }
 </style>

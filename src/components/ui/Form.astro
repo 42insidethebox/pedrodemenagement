@@ -12,6 +12,26 @@ const {
   method = 'post',
   encType = 'text/plain',
 } = Astro.props as Props & { action?: string; method?: string; encType?: string };
+
+const sections: string[] = [];
+let currentStep = -1;
+const fieldsWithStep =
+  (inputs || [])
+    .map((field) => {
+      if (!field) return null;
+      if ((field as any).type === 'section') {
+        currentStep += 1;
+        sections.push((field as any).label || `Étape ${currentStep + 1}`);
+        return { field, step: currentStep, isSection: true };
+      }
+      return { field, step: Math.max(currentStep, 0), isSection: false };
+    })
+    .filter(Boolean) || [];
+
+if (!sections.length) {
+  sections.push('Étape 1');
+  fieldsWithStep.forEach((item: any) => (item.step = 0));
+}
 ---
 
 <form
@@ -19,12 +39,30 @@ const {
   action={action}
   {...(encType ? { enctype: encType } : {})}
   data-enhanced="true"
-  class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8"
+  class="space-y-6"
 >
-  {
-    inputs &&
-      inputs.map((field) => {
-        if (!field || !field.name) return null;
+  {sections.length > 1 && (
+    <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-center" data-step-progress>
+      {sections.map((label, idx) => (
+        <div class="flex items-center justify-center gap-2 sm:gap-3">
+          <div
+            class="h-9 w-9 rounded-full border border-primary/30 text-sm flex items-center justify-center font-semibold text-primary/80 bg-primary/5"
+            data-step-dot
+            data-step={idx + ''}
+          >
+            {idx + 1}
+          </div>
+          <span class="text-xs sm:text-sm text-slate-500 dark:text-slate-300 hidden sm:inline">{label}</span>
+          {idx < sections.length - 1 ? <div class="w-8 h-px bg-slate-300/70 dark:bg-slate-700/70"></div> : null}
+        </div>
+      ))}
+    </div>
+  )}
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8" data-stepper-fields>
+    {
+      fieldsWithStep.map(({ field, step, isSection }: any) => {
+        if (!(field as any).name && !isSection) return null;
         const {
           type = 'text',
           name,
@@ -37,11 +75,17 @@ const {
           helper = '',
           requiredMessage = '',
           conditional,
-        } = field;
+          colSpan = 1,
+          className = '',
+        } = field as any;
 
-        if (type === 'section') {
+        if (isSection) {
           return (
-            <div class="col-span-1 md:col-span-2 pt-12 pb-5 border-t border-gray-200 dark:border-gray-700 mt-8 bg-gray-50/70 dark:bg-slate-800/70 rounded-xl px-5 shadow-sm">
+            <div
+              class="col-span-1 md:col-span-2 pt-10 pb-4 border-t border-gray-200 dark:border-gray-700 mt-6 bg-gray-50/70 dark:bg-slate-800/70 rounded-xl px-5 shadow-sm"
+              data-step={step}
+              data-step-section
+            >
               {label && <h3 class="text-lg md:text-xl font-semibold tracking-tight text-slate-900 dark:text-white">{label}</h3>}
             </div>
           );
@@ -49,23 +93,26 @@ const {
 
         return (
           <div
-            class="space-y-2"
+            class={`space-y-2 ${colSpan === 2 ? 'md:col-span-2' : ''} ${className}`}
             data-field-wrapper
+            data-step={step}
             data-conditional-source={conditional?.source}
             data-conditional-show={conditional?.showOn?.join(',')}
             data-conditional-hide={conditional?.hideOn?.join(',')}
             data-conditional-anynot={conditional?.showIfAnyNot?.join(',')}
           >
             {label && (
-              <label for={name} class="block text-sm font-medium text-slate-800 dark:text-slate-100">
-                {label} {required ? <span class="text-red-500" aria-hidden="true">*</span> : null}
+              <label for={name} class="flex items-center gap-2 text-sm font-semibold text-slate-800 dark:text-slate-100">
+                <span>{label}</span>
+                {required ? <span class="text-red-500" aria-hidden="true">*</span> : null}
+                {(type === 'checkbox' || multiple) && (
+                  <span class="inline-flex items-center rounded-full bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-200 px-2 py-0.5 text-[11px] font-medium">
+                    Plusieurs choix
+                  </span>
+                )}
               </label>
             )}
-            {helper && (
-              <p class="text-xs text-gray-500 helper-text">
-                {helper}
-              </p>
-            )}
+            {helper && <p class="text-xs text-gray-500 helper-text">{helper}</p>}
             {required && requiredMessage && <p class="text-xs text-red-500 required-msg hidden">{requiredMessage}</p>}
 
             {type === 'select' ? (
@@ -75,25 +122,40 @@ const {
                 multiple={multiple}
                 required={required}
                 title={required && requiredMessage ? requiredMessage : undefined}
-                class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
+                class="py-3 px-4 pr-12 block w-full text-md rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm hover:border-primary/50 focus:border-primary/70 focus:ring-2 focus:ring-primary/30 transition-all appearance-none"
+                style="background-image: url('data:image/svg+xml;utf8,<svg fill=\"none\" stroke=\"%23718096\" stroke-width=\"1.6\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M6 9l6 6 6-6\"/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 14px;"
               >
-                {(options.length ? options : [{ value: '', label: 'Select an option' }]).map((option) => (
-                  <option value={option.value}>
-                    {option.label ?? option.value}
-                  </option>
+                {(options.length ? options : [{ value: '', label: 'Select an option' }]).map((option: any) => (
+                  <option value={option.value}>{option.label ?? option.value}</option>
                 ))}
               </select>
             ) : type === 'checkbox' ? (
-              <div class="space-y-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50/70 dark:bg-slate-800/70 px-4 py-3">
-                {(options.length ? options : [{ value: 'yes', label: 'Oui' }]).map((option, index) => (
-                  <label class="flex items-center gap-2 text-sm text-slate-800 dark:text-slate-100">
+              <div class="space-y-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm px-4 py-3">
+                {(options.length ? options : [{ value: 'yes', label: 'Oui' }]).map((option: any, index: number) => (
+                  <label class="flex items-center gap-3 text-sm text-slate-800 dark:text-slate-100">
                     <input
                       type="checkbox"
                       name={`${name}[]`}
                       value={option.value}
                       required={required && index === 0}
                       title={required && requiredMessage ? requiredMessage : undefined}
-                      class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary focus:ring-2"
+                      class="h-4 w-4 rounded border-slate-300 text-primary focus:ring-primary focus:ring-2 focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-slate-900"
+                    />
+                    <span>{option.label ?? option.value}</span>
+                  </label>
+                ))}
+              </div>
+            ) : type === 'radio' ? (
+              <div class="space-y-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm px-4 py-3">
+                {(options.length ? options : [{ value: 'oui', label: 'Oui' }]).map((option: any, index: number) => (
+                  <label class="flex items-center gap-3 text-sm text-slate-800 dark:text-slate-100">
+                    <input
+                      type="radio"
+                      name={name}
+                      value={option.value}
+                      required={required && index === 0}
+                      title={required && requiredMessage ? requiredMessage : undefined}
+                      class="h-4 w-4 rounded-full border-slate-300 text-primary focus:ring-primary focus:ring-2 focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-slate-900"
                     />
                     <span>{option.label ?? option.value}</span>
                   </label>
@@ -107,74 +169,98 @@ const {
                 autocomplete={autocomplete}
                 placeholder={placeholder}
                 required={required}
-                title={required && requiredMessage ? requiredMessage : undefined}
+                title={
+                  type === 'tel'
+                    ? 'Merci d’entrer un numéro suisse (+41 XX XXX XX XX ou 0XX XXX XX XX).'
+                    : required && requiredMessage
+                      ? requiredMessage
+                      : undefined
+                }
+                pattern={
+                  type === 'tel'
+                    ? '(\\+41|0)[\\s.-]?\\d{2}[\\s.-]?\\d{3}[\\s.-]?\\d{2}[\\s.-]?\\d{2}'
+                    : undefined
+                }
+                inputMode={type === 'tel' ? 'tel' : undefined}
+                data-validate={type === 'tel' ? 'ch-phone' : undefined}
                 class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
               />
             )}
           </div>
         );
       })
-  }
+    }
 
-  {
-    textarea && (
-      <div class="col-span-1 md:col-span-2 space-y-2" data-field-wrapper>
-        <label for="textarea" class="block text-sm font-medium text-slate-800 dark:text-slate-100">
-          {textarea.label} {textarea.required ? <span class="text-red-500" aria-hidden="true">*</span> : null}
-        </label>
-        <textarea
-          id="textarea"
-          name={textarea.name ? textarea.name : 'message'}
-          rows={textarea.rows ? textarea.rows : 4}
-          placeholder={textarea.placeholder}
-          {...(textarea as any)?.required ? { required: true } : {}}
-          class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
-        />
-      </div>
-    )
-  }
-
-  {
-    disclaimer && (
-      <div class="col-span-1 md:col-span-2 mt-3 flex items-start space-x-3">
-        <div class="flex mt-0.5">
-          <input
-            id="disclaimer"
-            name="disclaimer"
-            type="checkbox"
-            class="cursor-pointer h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+    {
+      textarea && (
+        <div class="col-span-1 md:col-span-2 space-y-2" data-field-wrapper data-step={(sections.length ? sections.length - 1 : 0)}>
+          <label for="textarea" class="block text-sm font-medium text-slate-800 dark:text-slate-100">
+            {textarea.label} {textarea.required ? <span class="text-red-500" aria-hidden="true">*</span> : null}
+          </label>
+          <textarea
+            id="textarea"
+            name={textarea.name ? textarea.name : 'message'}
+            rows={textarea.rows ? textarea.rows : 4}
+            placeholder={textarea.placeholder}
+            {...(textarea as any)?.required ? { required: true } : {}}
+            class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
           />
         </div>
-        <div class="ml-3">
-          <label for="disclaimer" class="cursor-pointer select-none text-sm text-gray-600 dark:text-gray-400">
-            {disclaimer.label}
-          </label>
+      )
+    }
+
+    {
+      disclaimer && (
+        <div class="col-span-1 md:col-span-2 mt-3 flex items-start space-x-3" data-step={(sections.length ? sections.length - 1 : 0)}>
+          <div class="flex mt-0.5">
+            <input
+              id="disclaimer"
+              name="disclaimer"
+              type="checkbox"
+              class="cursor-pointer h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+            />
+          </div>
+          <div class="ml-3">
+            <label for="disclaimer" class="cursor-pointer select-none text-sm text-gray-600 dark:text-gray-400">
+              {disclaimer.label}
+            </label>
+          </div>
         </div>
-      </div>
-    )
-  }
+      )
+    }
 
-  {
-    button && (
-      <div class="col-span-1 md:col-span-2 mt-10 grid">
-        <Button variant="primary" type="submit">
-          {button}
-        </Button>
-      </div>
-    )
-  }
+    {
+      button && (
+        <div class="col-span-1 md:col-span-2 mt-10 grid">
+          <div class="flex justify-between">
+            <Button variant="secondary" type="button" class="hidden" data-step-prev>Précédent</Button>
+            <div class="flex gap-3 ml-auto">
+              <Button variant="secondary" type="button" class={sections.length > 1 ? '' : 'hidden'} data-step-next>
+                Suivant
+              </Button>
+              <Button variant="primary" type="submit" data-step-submit>
+                {button}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )
+    }
 
-  {
-    description && (
-      <div class="col-span-1 md:col-span-2 mt-3 text-center">
-        <p class="text-sm text-gray-600 dark:text-gray-400">{description}</p>
-      </div>
-    )
-  }
+    {
+      description && (
+        <div class="col-span-1 md:col-span-2 mt-3 text-center">
+          <p class="text-sm text-gray-600 dark:text-gray-400">{description}</p>
+        </div>
+      )
+    }
+  </div>
 </form>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('form[data-enhanced="true"]') as HTMLFormElement | null;
+
     const applyConditional = () => {
       document.querySelectorAll('[data-conditional-source]').forEach((el) => {
         const sourceName = el.dataset.conditionalSource;
@@ -185,7 +271,7 @@ const {
         const sourceInputs = document.querySelectorAll(`[name="${sourceName}"], [name="${sourceName}[]"]`);
         if (!sourceInputs.length) return;
 
-        const values = [];
+        const values: string[] = [];
         sourceInputs.forEach((input: any) => {
           if (input.type === 'checkbox') {
             if (input.checked) values.push(input.value);
@@ -212,73 +298,101 @@ const {
         if (shouldShow) {
           (el as HTMLElement).style.display = '';
           requiredEls.forEach((r: any) => {
-            r.dataset.wasRequired = 'true';
-            r.required = true;
+            if (r.dataset.wasRequired === 'false') {
+              r.required = false;
+            } else {
+              r.required = true;
+            }
           });
         } else {
           (el as HTMLElement).style.display = 'none';
           requiredEls.forEach((r: any) => {
-            if (r.dataset.wasRequired) {
-              r.required = false;
-            }
+            r.dataset.wasRequired = r.required ? 'true' : 'false';
+            r.required = false;
           });
         }
       });
     };
 
-    document.addEventListener('change', (event) => {
-      const target = event.target as HTMLInputElement;
-      if (!target?.name) return;
+    const steps = Array.from(
+      new Set(Array.from(form?.querySelectorAll('[data-step]') || []).map((el) => el.getAttribute('data-step') || '0'))
+    ).sort((a, b) => Number(a) - Number(b));
+
+    let currentStep = 0;
+    const prevBtn = form?.querySelector('[data-step-prev]') as HTMLButtonElement | null;
+    const nextBtn = form?.querySelector('[data-step-next]') as HTMLButtonElement | null;
+    const submitBtn = form?.querySelector('[data-step-submit]') as HTMLButtonElement | null;
+    const dots = form?.querySelectorAll('[data-step-dot]') || [];
+
+    const showStep = (stepIdx: number) => {
+      const wrappers = form?.querySelectorAll('[data-step]') || [];
+      wrappers.forEach((el: any) => {
+        el.classList.toggle('hidden', el.getAttribute('data-step') !== String(stepIdx));
+      });
+      dots.forEach((dot: any) => {
+        const isActive = dot.getAttribute('data-step') === String(stepIdx);
+        dot.classList.toggle('bg-primary/70', isActive);
+        dot.classList.toggle('text-white', isActive);
+      });
+      if (prevBtn) prevBtn.classList.toggle('hidden', stepIdx === 0);
+      if (nextBtn) nextBtn.classList.toggle('hidden', stepIdx >= steps.length - 1);
+      if (submitBtn) submitBtn.classList.toggle('hidden', stepIdx < steps.length - 1);
       applyConditional();
-    });
+    };
 
-    applyConditional();
-
-    document.querySelectorAll('form[data-enhanced="true"]').forEach((form) => {
-      form.addEventListener('submit', (event) => {
-        let firstError = null;
-
-        form.querySelectorAll('[data-field-wrapper]').forEach((wrapper) => {
-          const requiredElements = wrapper.querySelectorAll('[required]');
-          let valid = true;
-
-          requiredElements.forEach((input) => {
-            if (input.type === 'checkbox') {
-              const groupName = input.name;
-              const group = form.querySelectorAll(`input[type="checkbox"][name="${groupName}"]`);
-              const checked = Array.from(group).some((g) => (g as HTMLInputElement).checked);
-              if (!checked) valid = false;
-            } else if (input.tagName === 'SELECT' || input.tagName === 'TEXTAREA' || input.tagName === 'INPUT') {
-              const value = (input as HTMLInputElement).value;
-              if (!value || value.trim() === '') valid = false;
-            }
-          });
-
-          const helperEls = wrapper.querySelectorAll('.helper-text');
-          const msg = wrapper.querySelector('.required-msg');
-          if (!valid) {
-            (wrapper as HTMLElement).dataset.error = 'true';
-            helperEls.forEach((h) => {
-              h.classList.remove('text-gray-500');
-              h.classList.add('text-red-500');
-            });
-            if (msg) msg.classList.remove('hidden');
-            if (!firstError) firstError = wrapper;
+    const validateStep = (stepIdx: number) => {
+      const fields =
+        form?.querySelectorAll(
+          `[data-step="${stepIdx}"] input, [data-step="${stepIdx}"] select, [data-step="${stepIdx}"] textarea`
+        ) || [];
+      for (const field of fields as any) {
+        if (field.dataset.validate === 'ch-phone') {
+          const value = (field.value || '').trim();
+          const phoneRegex = /^(\+41|0)[\s.-]?\d{2}[\s.-]?\d{3}[\s.-]?\d{2}[\s.-]?\d{2}$/;
+          if (value && !phoneRegex.test(value)) {
+            field.setCustomValidity('Merci d’entrer un numéro suisse (+41 XX XXX XX XX ou 0XX XXX XX XX).');
           } else {
-            (wrapper as HTMLElement).dataset.error = '';
-            helperEls.forEach((h) => {
-              h.classList.remove('text-red-500');
-              h.classList.add('text-gray-500');
-            });
-            if (msg) msg.classList.add('hidden');
+            field.setCustomValidity('');
           }
-        });
+        }
+        if (field.required && !field.checkValidity()) {
+          field.reportValidity();
+          return false;
+        }
+      }
+      return true;
+    };
 
-        if (firstError) {
+    if (form) {
+      form.querySelectorAll('[data-conditional-source]').forEach((el) => {
+        const sourceName = el.getAttribute('data-conditional-source');
+        const sourceInputs = form.querySelectorAll(`[name="${sourceName}"], [name="${sourceName}[]"]`);
+        sourceInputs.forEach((input) => input.addEventListener('change', applyConditional));
+      });
+
+      form.querySelectorAll('[data-validate="ch-phone"]').forEach((input: any) => {
+        input.addEventListener('input', () => {
+          input.setCustomValidity('');
+        });
+      });
+
+      prevBtn?.addEventListener('click', () => {
+        currentStep = Math.max(0, currentStep - 1);
+        showStep(currentStep);
+      });
+      nextBtn?.addEventListener('click', () => {
+        if (!validateStep(currentStep)) return;
+        currentStep = Math.min(steps.length - 1, currentStep + 1);
+        showStep(currentStep);
+      });
+
+      form.addEventListener('submit', (event) => {
+        if (!validateStep(currentStep)) {
           event.preventDefault();
-          (firstError as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
       });
-    });
+
+      showStep(0);
+    }
   });
 </script>

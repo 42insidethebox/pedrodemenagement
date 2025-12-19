@@ -19,7 +19,7 @@ Set these variables in `.env`, on your hosting provider and in GitHub/Vercel/Net
 | `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY` | Private key (replace `\n` with real newlines). |
 | `GOOGLE_DRIVE_PARENT_FOLDER_ID` | Folder where client workspaces are provisioned. |
 | `GOOGLE_DOCS_SECTION_TEMPLATE_ID` | Optional doc template duplicated for each site (leave blank to create empty docs). |
-| `SUPPORT_EMAIL` | Outbound email used for ticket notifications (defaults to support@pedrodemenagement.ch). |
+| `SUPPORT_EMAIL` | Outbound email used for ticket notifications (defaults to contact@lausannedemenagement.ch). |
 | `SENDER_NAME` | Display name for transactional emails. |
 
 Run `npm run check` locally after updating the environment to validate required keys.

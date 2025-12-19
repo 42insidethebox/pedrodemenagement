@@ -16,7 +16,7 @@ export interface Props {
 }
 const host = Astro.request.headers.get('host');
 const brandKey = getBrandFromHost(host);
-const brand = BRANDS[brandKey];
+const brand = BRANDS[brandKey] || BRANDS.pedro;
 const themeVars: Record<string, string> = {
   '--brand-primary': brand.primaryColor || '#0f172a',
   '--brand-secondary': brand.secondaryColor || '#1e40af',

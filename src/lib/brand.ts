@@ -8,7 +8,8 @@ export type BrandKey =
   | 'videsuccession'
   | 'nettoyagesuccession'
   | 'etatdeslieux'
-  | 'lausannenettoyage';
+  | 'lausannenettoyage'
+  | 'laclemanexperience';
 
 /**
  * Map request host to a brand key. Default to "pedro" if unknown.
@@ -26,5 +27,6 @@ export function getBrandFromHost(host: string | null | undefined): BrandKey {
   if (value.includes('nettoyagesuccession.ch')) return 'nettoyagesuccession';
   if (value.includes('etatdeslieuxlausanne.ch')) return 'etatdeslieux';
   if (value.includes('lausannenettoyage.ch')) return 'lausannenettoyage';
+  if (value.includes('laclemanexperience.ch')) return 'laclemanexperience';
   return 'pedro';
 }

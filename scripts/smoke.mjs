@@ -33,7 +33,7 @@ async function get(path) {
   // Contact (JSON)
   results.contact = await postJSON('/api/contact', {
     name: 'Smoke Test',
-    email: 'smoke@pedrodemenagement.ch',
+    email: 'contact@lausannedemenagement.ch',
     company: 'Pedro Demenagement',
     message: 'This is a test lead from smoke tests.'
   });
@@ -41,7 +41,7 @@ async function get(path) {
   // Demo (JSON)
   results.demo = await postJSON('/api/demo', {
     name: 'Smoke Demo',
-    email: 'smoke-demo@pedrodemenagement.ch',
+    email: 'contact@lausannedemenagement.ch',
     company: 'Pedro Demenagement',
     details: 'Demo request.'
   });

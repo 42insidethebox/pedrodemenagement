@@ -7,11 +7,13 @@ import Layout from '~/layouts/PageLayout.astro';
 import { getBrandFromHost } from '~/lib/brand';
 import { BRANDS } from '~/lib/brands.config';
 import { getImage, getImageAlt } from '~/data/imageInventory';
+import { EXPERIENCES } from '~/data/experiences';
 
 const host = Astro.request.headers.get('host');
 const brandKey = getBrandFromHost(host);
 const isUrgent = brandKey === 'urgent';
 const isTransport = brandKey === 'transport';
+const isExperience = brandKey === 'laclemanexperience';
 const brandType =
   isUrgent
     ? 'urgent'
@@ -27,42 +29,105 @@ const brandType =
               ? 'clean'
               : brandKey === 'etatdeslieux'
                 ? 'etatdeslieux'
-                : 'move';
-const brand = BRANDS[brandKey];
-const whatsapp = brand.whatsapp || 'https://wa.me/41767982793';
+                : brandKey === 'laclemanexperience'
+                  ? 'experience'
+                  : 'move';
+const brand = BRANDS[brandKey] || BRANDS.pedro;
+const whatsapp = (brand?.whatsapp || 'https://wa.me/41767982793');
+
+const experienceFormats = [
+  { title: 'Demi-journée', description: '2–4h · 2–6 pers. · Couples, VIP visiteurs', icon: 'tabler:clock-hour-4' },
+  { title: 'Journée', description: '5–8h · 2–8 pers. · Découverte complète', icon: 'tabler:calendar-time' },
+  { title: 'Soirée signature', description: '3–4h · 2–10 pers. · Dîner, célébration', icon: 'tabler:moon-stars' },
+  { title: 'Immersion', description: '2–3 jours · 2–6 pers. · UHNW, corporate', icon: 'tabler:route' },
+];
+
+const experienceConcierge = [
+  { title: 'Interlocuteur unique', description: 'WhatsApp + téléphone, réponse rapide J-7 → J+1', icon: 'tabler:headset' },
+  { title: 'Brief écrit', description: 'Partagé aux bateliers, vignerons, chefs locaux. Pas d’improvisation.', icon: 'tabler:clipboard-list' },
+  { title: 'Plan B météo', description: 'Validé à l’avance, expérience maintenue sans perte de qualité.', icon: 'tabler:cloud-check' },
+];
+
+const experienceLogistics = [
+  { title: 'Créneaux verrouillés', description: 'Sunset, transferts porte-à-porte, tampons horaires intégrés.', icon: 'tabler:clock-check' },
+  { title: 'Transferts privés', description: 'Mercedes V/E, bateau-taxi si pertinent, chauffeurs brieffés.', icon: 'tabler:car' },
+  { title: 'Autorisations & privatisations', description: 'Caves, bateaux, tables d’hôtes réellement privatisés.', icon: 'tabler:lock-square-rounded' },
+];
+
+const experienceCommitments = [
+  { title: 'Privatisation réelle', description: 'Jamais de mélange de groupes.', icon: 'tabler:shield-lock' },
+  { title: 'Horaires respectés', description: 'Ou compensation si décalage.', icon: 'tabler:clock-bolt' },
+  { title: 'Partenaires directs', description: 'Réseau local (bateliers, vignerons, chefs) sans intermédiaire.', icon: 'tabler:users' },
+  { title: 'Plan B météo', description: 'Alternatives prêtes et validées.', icon: 'tabler:umbrella' },
+];
+
+const categoryIcons: Record<string, string> = {
+  lac: 'tabler:sailboat',
+  gastronomy: 'tabler:chef-hat',
+  wine: 'tabler:glass-full',
+  mountain: 'tabler:mountain',
+  city: 'tabler:building-community',
+  wellness: 'tabler:leaf',
+  winter: 'tabler:snowflake',
+  corporate: 'tabler:briefcase-2',
+  meta: 'tabler:map',
+};
+
+const experienceCards = isExperience
+  ? EXPERIENCES.map((exp) => ({
+      title: exp.title,
+      description: `${exp.description} · ${exp.duration} · ${exp.priceBand}`,
+      icon: categoryIcons[exp.category] || 'tabler:sparkles',
+      category: exp.category,
+      season: exp.season,
+    }))
+  : [];
+
+const signatureExperiences = experienceCards.filter((exp) =>
+  ['lac', 'gastronomy', 'wine', 'mountain'].includes(exp.category)
+).slice(0, 6);
+const slowExperiences = experienceCards.filter((exp) => ['wellness', 'city', 'lac'].includes(exp.category)).slice(0, 6);
+const winterExperiences = experienceCards.filter((exp) => exp.season === 'winter').slice(0, 5);
+const corporateExperiences = experienceCards.filter((exp) => ['corporate', 'meta'].includes(exp.category)).slice(0, 4);
 const heroImageId =
   isUrgent
     ? 'e_cat_truck_mountains_lake_00'
     : isTransport
       ? 'professional_van_1'
-      : brandKey === 'debarras'
-        ? 'van_inside_objects_boxes_1'
-        : brandKey === 'videmaison'
-          ? 'strong_man_packing_1'
+    : brandKey === 'debarras'
+      ? 'van_inside_objects_boxes_1'
+      : brandKey === 'videmaison'
+        ? 'strong_man_packing_1'
           : brandKey === 'videsuccession'
             ? 'empty_apartment_3'
             : brandKey === 'nettoyagesuccession' || brandKey === 'lausannenettoyage'
               ? 'professional_cleanerd_floor'
-              : brandKey === 'etatdeslieux'
-                ? 'empty_apartment_2'
-                : 'hero_happy_boxes_plants';
+          : brandKey === 'etatdeslieux'
+            ? 'empty_apartment_2'
+            : brandKey === 'laclemanexperience'
+              ? 'silent_boat_still_lake'
+              : 'hero_happy_boxes_plants';
 const heroImage = getImage(heroImageId);
 const heroAlt = getImageAlt(heroImageId);
 const heroOverlay = isUrgent
-  ? 'bg-black/35'
+  ? 'bg-black/22'
   : isTransport
     ? 'bg-gradient-to-br from-purple-900/45 via-slate-900/40 to-amber-500/30'
     : brandKey === 'debarras'
       ? 'bg-gradient-to-br from-emerald-900/35 via-emerald-800/35 to-slate-900/35'
-      : brandKey === 'videmaison'
-        ? 'bg-gradient-to-br from-amber-900/35 via-orange-700/35 to-amber-500/30'
-        : brandKey === 'videsuccession'
-          ? 'bg-gradient-to-br from-slate-900/40 via-gray-900/35 to-amber-600/30'
-          : brandKey === 'nettoyagesuccession' || brandKey === 'lausannenettoyage'
-            ? 'bg-gradient-to-br from-sky-300/30 via-sky-500/25 to-slate-900/35 backdrop-blur-[2px]'
-            : brandKey === 'etatdeslieux'
-              ? 'bg-gradient-to-br from-sky-500/30 via-slate-900/40 to-slate-900/45'
-              : 'bg-white/15';
+    : brandKey === 'videmaison'
+      ? 'bg-gradient-to-br from-amber-900/18 via-orange-700/14 to-amber-500/10'
+    : brandKey === 'videsuccession'
+      ? 'bg-gradient-to-br from-slate-900/40 via-gray-900/35 to-amber-600/30'
+    : brandKey === 'nettoyagesuccession' || brandKey === 'lausannenettoyage'
+      ? 'bg-gradient-to-br from-sky-300/30 via-sky-500/25 to-slate-900/35 backdrop-blur-[2px]'
+      : brandKey === 'etatdeslieux'
+        ? 'bg-gradient-to-br from-sky-700/25 via-white/55 to-white/75'
+        : brandKey === 'laclemanexperience'
+          ? 'bg-gradient-to-br from-emerald-950/22 via-slate-900/26 to-amber-50/24'
+          : brandKey === 'lausanne'
+            ? 'bg-gradient-to-br from-slate-900/32 via-blue-900/28 to-slate-800/28'
+            : 'bg-white/15';
 const heroCardImage = getImage(
   isUrgent
     ? 'e_cat_truck_mountains_lake_01'
@@ -76,25 +141,29 @@ const heroCardImage = getImage(
             ? 'empty_apartment_4'
             : brandKey === 'nettoyagesuccession' || brandKey === 'lausannenettoyage'
               ? 'man_cleaning'
-              : brandKey === 'etatdeslieux'
-                ? 'empty_apartment_5'
-                : 'men_loading_e_cat_truck'
+        : brandKey === 'etatdeslieux'
+          ? 'empty_apartment_5'
+          : brandKey === 'laclemanexperience'
+                  ? 'quiet_luxury_lake_lifestyle'
+                  : 'men_loading_e_cat_truck'
 );
 const processImage = getImage(
   isUrgent
     ? 'men_moving_furniture_montreux_stairs'
     : brandKey === 'transport'
       ? 'van_inside_objects_boxes_3'
-      : brandKey === 'debarras'
-        ? 'van_inside_objects_boxes_2'
-        : brandKey === 'videmaison'
-          ? 'strong_man_packing_1'
-          : brandKey === 'videsuccession'
-            ? 'empty_apartment_6'
-            : brandKey === 'nettoyagesuccession' || brandKey === 'lausannenettoyage'
-              ? 'mop_cleaning_closeup'
-              : brandKey === 'etatdeslieux'
-                ? 'empty_apartment_9'
+    : brandKey === 'debarras'
+      ? 'van_inside_objects_boxes_2'
+      : brandKey === 'videmaison'
+        ? 'strong_man_packing_1'
+        : brandKey === 'videsuccession'
+          ? 'empty_apartment_6'
+          : brandKey === 'nettoyagesuccession' || brandKey === 'lausannenettoyage'
+            ? 'mop_cleaning_closeup'
+        : brandKey === 'etatdeslieux'
+            ? 'empty_apartment_9'
+            : brandKey === 'laclemanexperience'
+                ? 'silent_boat_still_lake'
                 : 'high_luxury_swiss_balcony_leman'
 );
 const optionsImage = getImage(
@@ -110,9 +179,11 @@ const optionsImage = getImage(
             ? 'empty_apartment_8'
             : brandKey === 'nettoyagesuccession' || brandKey === 'lausannenettoyage'
               ? 'mop_closeup_luxury_apartment'
-              : brandKey === 'etatdeslieux'
-                ? 'empty_apartment_11'
-                : 'high_end_luxury_apartment_lakeside'
+        : brandKey === 'etatdeslieux'
+            ? 'empty_apartment_11'
+            : brandKey === 'laclemanexperience'
+                  ? 'quiet_luxury_lake_lifestyle'
+                  : 'high_end_luxury_apartment_lakeside'
 );
 
 const metadata = isUrgent
@@ -133,7 +204,9 @@ const metadata = isUrgent
             ? { title: 'Services de nettoyage', description: 'Nettoyages complets, vitres, sols et contrôle qualité.' }
             : brandKey === 'etatdeslieux'
               ? { title: 'Services état des lieux', description: 'Constats détaillés, photos, rapports rapides.' }
-              : { title: 'Services de déménagement' };
+              : brandKey === 'laclemanexperience'
+                ? { title: 'Expériences Lac Léman', description: 'Croisières privées, vignobles UNESCO, tables d’hôtes et échappées alpines.' }
+                : { title: 'Services de déménagement' };
 
 const view = (() => {
   switch (brandType) {
@@ -223,6 +296,52 @@ const view = (() => {
         ctaActions: [
           { variant: 'primary', text: 'Planifier un débarras', href: '/contact#form', icon: 'tabler:calendar-up' },
           { text: 'Appeler', href: whatsapp, icon: 'tabler:phone' },
+        ],
+      };
+    case 'experience':
+      return {
+        tagline: 'Expériences Léman',
+        title: 'Croisières privées, vignobles UNESCO, tables d’hôtes',
+        subtitle: 'Conciergerie dédiée, partenaires locaux, logistique verrouillée entre lac, montagne et ville.',
+        actions: [
+          { variant: 'primary', text: 'Réserver une expérience', href: '/contact#form', icon: 'tabler:mail-forward' },
+          { text: 'Parler à un concierge', href: whatsapp, icon: 'tabler:phone' },
+        ],
+        cardTitle: 'Saisonnalité orchestrée',
+        cardSubtitle: 'Lac au printemps, vignobles en été, tables d’hôtes en automne, bains alpins en hiver.',
+        featureTitle: 'Pourquoi nous choisir',
+        featureSubtitle: 'Conciergerie dédiée + partenaires locaux premium.',
+        featureItems: [
+          { title: 'Concierge unique', description: 'Un interlocuteur pour tout cadrer.', icon: 'tabler:headset' },
+          { title: 'Partenaires triés', description: 'Bateliers privés, vignerons UNESCO, chefs.', icon: 'tabler:medal' },
+          { title: 'Timing verrouillé', description: 'Horaires précis, transferts coordonnés.', icon: 'tabler:clock' },
+        ],
+        content1Title: 'Moments signature',
+        content1Subtitle: 'Croisière sunset, cave voûtée UNESCO, table d’hôtes, bains alpins.',
+        content1Items: [
+          { title: 'Croisière privée', description: 'Bateau privatisé, sommelière, plateau fromages.', icon: 'tabler:sailboat' },
+        { title: 'Vignobles UNESCO', description: 'Caves voûtées, accords vins-fromages.', icon: 'tabler:glass-full' },
+        { title: 'Table d’hôtes', description: 'Chef local, produits lac + alpages.', icon: 'tabler:snowflake' },
+        ],
+        content2Title: 'Logistique premium',
+        content2Subtitle: 'Transferts, brief partenaires, plan B météo inclus.',
+        content2Items: [
+          { title: 'Transferts privés', description: 'Chauffeur ou bateau-taxi selon parcours.', icon: 'tabler:car' },
+          { title: 'Brief discret', description: 'Hôtes et équipes alignés à l’avance.', icon: 'tabler:clipboard-check' },
+          { title: 'Plan B météo', description: 'Alternatives prévues sans friction.', icon: 'tabler:umbrella' },
+        ],
+        supportTitle: 'Inclus',
+        supportSubtitle: 'Base de chaque expérience.',
+        supportItems: [
+          { title: 'Concierge', description: 'Un contact dédié.', icon: 'tabler:user-star' },
+          { title: 'Horaires verrouillés', description: 'Timing précis, confirmations.', icon: 'tabler:clock' },
+          { title: 'Partenaires premium', description: 'Réseau local sélectionné.', icon: 'tabler:check' },
+        ],
+        ctaTitle: 'Prêt pour une expérience Léman ?',
+        ctaSubtitle: 'Dites-nous vos dates et vos envies. On orchestre le reste.',
+        ctaActions: [
+          { variant: 'primary', text: 'Réserver', href: '/contact#form', icon: 'tabler:mail-forward' },
+          { text: 'Parler à un concierge', href: whatsapp, icon: 'tabler:phone' },
         ],
       };
     case 'videmaison':
@@ -369,6 +488,8 @@ const view = (() => {
           { variant: 'primary', text: 'Programmer un état des lieux', href: '/contact#form', icon: 'tabler:clipboard-check' },
           { text: 'Contacter', href: whatsapp, icon: 'tabler:phone' },
         ],
+        cardTitle: 'Rapport livré en 24h',
+        cardSubtitle: 'PDF + galerie photo, remarques actionnables et copie régie/propriétaire.',
         featureTitle: 'État des lieux structuré',
         featureSubtitle: 'Rapport clair pour éviter les contestations.',
         featureItems: [
@@ -408,7 +529,8 @@ const view = (() => {
       return {
         tagline: 'Nos services',
         title: 'Déménagements soignés partout en Suisse romande',
-        subtitle: 'Appartement, maison, bureau ou longue distance : nous préparons, protégeons et transportons vos biens avec une équipe locale.',
+        subtitle:
+          '<span class="move-subtitle-highlight">Appartement, maison, bureau ou longue distance : nous préparons, protégeons et transportons vos biens avec une équipe locale.</span>',
         actions: [{ variant: 'primary', text: 'Obtenir un devis', href: '/contact#form' }],
         featureTitle: 'Prestations principales',
         featureSubtitle: 'Choisissez le format adapté à votre déménagement.',
@@ -424,6 +546,8 @@ const view = (() => {
           { title: 'Protection systématique', description: 'Sols, murs, portes, meubles protégés.', icon: 'tabler:shield-check' },
           { title: 'Remontage soigné', description: 'Remise en place dans les bonnes pièces.', icon: 'tabler:tools' },
         ],
+        cardTitle: 'Camion réservé, protections prêtes',
+        cardSubtitle: 'Créneau confirmé, repérage des accès et protections sols/murs incluses.',
         content2Title: 'Services complémentaires',
         content2Subtitle: 'Sélectionnez uniquement ce dont vous avez besoin.',
         content2Items: [
@@ -453,40 +577,48 @@ const accentClass =
     ? 'text-orange-100/90'
     : brandType === 'transport'
       ? 'text-amber-200/90'
-      : brandType === 'debarras'
+    : brandType === 'debarras'
+      ? 'text-emerald-100/90'
+    : brandType === 'videmaison'
+      ? 'text-amber-200/90'
+    : brandType === 'videsuccession'
+      ? 'text-amber-100/90'
+    : brandType === 'clean'
+      ? 'text-sky-100/90'
+      : brandType === 'experience'
         ? 'text-emerald-100/90'
-        : brandType === 'videmaison'
-          ? 'text-amber-200/90'
-          : brandType === 'videsuccession'
-            ? 'text-amber-100/90'
-            : brandType === 'clean'
-              ? 'text-sky-100/90'
-      : brandType === 'etatdeslieux'
-        ? 'text-sky-100/90'
-        : 'text-blue-200/80';
+        : brandType === 'etatdeslieux'
+          ? 'text-slate-800'
+          : 'text-blue-200/80';
 
-const heroToneClass = ['urgent', 'transport', 'debarras', 'videmaison', 'videsuccession', 'clean', 'etatdeslieux'].includes(
+const heroToneClass = ['urgent', 'transport', 'debarras', 'videmaison', 'videsuccession', 'clean', 'experience'].includes(
   brandType
 )
   ? 'hero-light'
   : '';
 
+const overlayTextClass = brandType === 'etatdeslieux' ? 'text-slate-900' : 'text-white';
+const overlaySubTextClass =
+  brandType === 'etatdeslieux' ? 'text-slate-800' : isUrgent ? 'text-orange-50/90' : 'text-white/90';
+
 const contentGradient = (() => {
   switch (brandType) {
     case 'urgent':
-      return 'rgba(185, 28, 28, 0.45), rgba(239, 68, 68, 0.42), rgba(249, 115, 22, 0.38)';
+      return 'rgba(185, 28, 28, 0.30), rgba(239, 68, 68, 0.28), rgba(249, 115, 22, 0.26)';
     case 'transport':
-      return 'rgba(76,29,149,0.42), rgba(17,24,39,0.40), rgba(245,158,11,0.32)';
+      return 'rgba(31,42,68,0.34), rgba(15,23,42,0.32), rgba(242,176,69,0.22)';
     case 'debarras':
       return 'rgba(16,185,129,0.38), rgba(6,95,70,0.34), rgba(15,23,42,0.34)';
     case 'videmaison':
-      return 'rgba(180,83,9,0.40), rgba(249,115,22,0.38), rgba(124,45,18,0.32)';
+      return 'rgba(197,143,85,0.18), rgba(160,112,70,0.15), rgba(117,78,45,0.12)';
     case 'videsuccession':
       return 'rgba(15,15,20,0.50), rgba(217,119,6,0.36), rgba(0,0,0,0.38)';
     case 'clean':
       return 'rgba(34,211,238,0.34), rgba(15,118,110,0.36), rgba(15,23,42,0.32)';
+    case 'experience':
+      return 'rgba(15,118,110,0.32), rgba(30,41,59,0.30), rgba(253,230,138,0.24)';
     case 'etatdeslieux':
-      return 'rgba(14,165,233,0.36), rgba(15,23,42,0.42), rgba(0,6,16,0.40)';
+      return 'rgba(14,165,233,0.18), rgba(224,242,254,0.35), rgba(255,255,255,0.4)';
     default:
       return 'rgba(148,149,153,0.40), rgba(15,23,42,0.40), rgba(2,6,23,0.38)';
   }
@@ -511,7 +643,13 @@ const optionsGradient = contentGradient;
     </Fragment>
 <Fragment slot="image">
   <div
-    class="relative aspect-[5/3] overflow-hidden rounded-2xl p-10 text-left text-white shadow-2xl bg-cover bg-center"
+    class={`relative aspect-[5/3] overflow-hidden rounded-2xl p-10 text-left shadow-2xl bg-cover bg-center ${
+      brandType === 'etatdeslieux'
+        ? 'text-slate-800'
+        : brandKey === 'lausanne' || brandKey === 'lausannenettoyage'
+          ? 'text-slate-900'
+          : 'text-white'
+    }`}
     style={
       isUrgent
         ? `
@@ -523,7 +661,36 @@ const optionsGradient = contentGradient;
           rgba(249, 115, 22, 0.62)
         ),
         url('${heroCardImage}');`
-        : `
+        : brandType === 'etatdeslieux'
+          ? `
+      background-image:
+        linear-gradient(
+          to bottom right,
+          rgba(255, 255, 255, 0.15),
+          rgba(224, 242, 254, 0.28)
+        ),
+        url('${heroCardImage}');`
+          : brandKey === 'lausannenettoyage'
+            ? `
+      background-image:
+        linear-gradient(
+          to bottom right,
+          rgba(236, 254, 255, 0.88),
+          rgba(186, 230, 253, 0.82),
+          rgba(255, 255, 255, 0.95)
+        ),
+        url('${heroCardImage}');`
+          : brandKey === 'lausanne'
+            ? `
+      background-image:
+        linear-gradient(
+          to bottom right,
+          rgba(224, 242, 254, 0.82),
+          rgba(191, 219, 254, 0.78),
+          rgba(255, 255, 255, 0.9)
+        ),
+        url('${heroCardImage}');`
+          : `
       background-image:
         linear-gradient(
           to bottom right,
@@ -538,10 +705,14 @@ const optionsGradient = contentGradient;
       {view.tagline}
     </p>
     <h4 class="mt-4 text-4xl font-semibold">
-      {view.title}
+      {view.cardTitle ?? view.title}
     </h4>
-    <p class={`mt-6 max-w-xl text-lg ${isUrgent ? 'text-orange-50/90' : 'text-white/90'}`}>
-      {view.subtitle}
+    <p
+      class={`mt-6 max-w-xl text-lg ${
+        brandType === 'etatdeslieux' ? 'text-slate-700' : isUrgent ? 'text-orange-50/90' : 'text-white/90'
+      }`}
+    >
+      {view.cardSubtitle ?? view.subtitle}
     </p>
   </div>
 </Fragment>
@@ -564,13 +735,46 @@ const optionsGradient = contentGradient;
       : brandType === 'clean'
         ? { items: { panel: 'panel-surface rounded-2xl p-6 gap-4 border border-cyan-200/40 text-slate-900' } }
       : brandType === 'etatdeslieux'
-        ? { items: { panel: 'panel-grid rounded-2xl p-6 gap-4 text-sky-50 border border-sky-200/20' } }
+        ? { items: { panel: 'panel-grid rounded-2xl p-6 gap-4 text-slate-900 border border-sky-200/40 bg-white/90' } }
+      : brandType === 'experience'
+        ? { items: { panel: 'panel-surface rounded-2xl p-6 gap-4 text-slate-900 border border-emerald-200/40 bg-white/92' } }
         : brandType === 'videmaison'
           ? { items: { panel: 'panel-surface rounded-2xl p-6 gap-4 text-amber-950 border border-amber-200/30' } }
           : {}
     }
     items={view.featureItems}
   />
+
+  {brandType === 'experience' && (
+    <>
+      <Features2
+        id="experience-formats"
+        title="Formats d’expérience"
+        subtitle="Décider en 1 regard"
+        columns={4}
+        classes={{ container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-5 gap-3 border border-emerald-200/35 bg-white/92 text-slate-900' } }}
+        items={experienceFormats}
+      />
+
+      <Features2
+        id="experience-concierge"
+        title="Conciergerie dédiée — concret"
+        subtitle="Inclus dans chaque expérience"
+        columns={3}
+        classes={{ container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-5 gap-3 border border-emerald-200/35 bg-white/92 text-slate-900' } }}
+        items={experienceConcierge}
+      />
+
+      <Features2
+        id="experience-logistics"
+        title="Logistique & précision"
+        subtitle="Ce que nous verrouillons"
+        columns={3}
+        classes={{ container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-5 gap-3 border border-emerald-200/35 bg-white/92 text-slate-900' } }}
+        items={experienceLogistics}
+      />
+    </>
+  )}
 
   <Content
     id="appartement"
@@ -586,7 +790,7 @@ const optionsGradient = contentGradient;
 
 <Fragment slot="image">
   <div
-    class="relative aspect-[4/3] overflow-hidden rounded-xl p-10 text-left text-white shadow-xl bg-cover bg-center"
+    class={`relative aspect-[4/3] overflow-hidden rounded-xl p-10 text-left ${overlayTextClass} shadow-xl bg-cover bg-center`}
     style={
       `
       background-image:
@@ -598,7 +802,7 @@ const optionsGradient = contentGradient;
     }
   >
     <h4 class="text-3xl font-semibold">Arc lémanique & Suisse</h4>
-    <p class={`mt-6 max-w-sm ${isUrgent ? 'text-orange-50/90' : 'text-white/90'}`}>
+    <p class={`mt-6 max-w-sm ${overlaySubTextClass}`}>
       {view.content1Subtitle}
     </p>
   </div>
@@ -620,7 +824,7 @@ const optionsGradient = contentGradient;
 
 <Fragment slot="image">
   <div
-    class="relative aspect-[4/3] overflow-hidden rounded-xl p-10 text-white shadow-xl bg-cover bg-center"
+    class={`relative aspect-[4/3] overflow-hidden rounded-xl p-10 ${overlayTextClass} shadow-xl bg-cover bg-center`}
     style={
       isUrgent
         ? `
@@ -640,7 +844,7 @@ const optionsGradient = contentGradient;
     }
   >
     <h4 class="text-3xl font-semibold">Options flexibles</h4>
-    <p class={`mt-6 max-w-sm ${isUrgent ? 'text-orange-50/90' : 'text-blue-100/90'}`}>
+    <p class={`mt-6 max-w-sm ${overlaySubTextClass}`}>
       {isUrgent
         ? 'Nous ajustons l’équipe, le matériel et le créneau pour limiter le temps sur place.'
         : 'Nous adaptons l’équipe, le matériel et les créneaux horaires à vos contraintes de bail, d’ascenseur ou de route.'}
@@ -656,7 +860,19 @@ const optionsGradient = contentGradient;
     subtitle={view.supportSubtitle}
     classes={
       brandType === 'urgent'
-        ? { items: { panel: 'card' }, container: 'urgent-grid' }
+        ? {
+            items: {
+              panel: 'card rounded-2xl p-6 text-slate-800',
+              title: 'text-slate-900',
+              description: 'text-slate-800',
+            },
+            container: 'urgent-grid',
+            headline: {
+              title: 'text-slate-900',
+              subtitle: 'text-slate-800',
+              container: 'max-w-3xl text-left md:text-center mx-auto',
+            },
+          }
       : brandType === 'transport'
         ? { container: 'max-w-6xl', items: { panel: 'panel-grid rounded-2xl p-6 gap-4 text-white border border-amber-200/20' } }
       : brandType === 'debarras'
@@ -666,14 +882,69 @@ const optionsGradient = contentGradient;
       : brandType === 'clean'
         ? { items: { panel: 'panel-surface rounded-2xl p-6 gap-4 border border-cyan-200/40 text-slate-900' } }
       : brandType === 'etatdeslieux'
-        ? { items: { panel: 'panel-grid rounded-2xl p-6 gap-4 text-sky-50 border border-sky-200/20' } }
+        ? { items: { panel: 'panel-grid rounded-2xl p-6 gap-4 text-slate-900 border border-sky-200/40 bg-white/90' } }
         : brandType === 'videmaison'
           ? { items: { panel: 'panel-surface rounded-2xl p-6 gap-4 text-amber-950 border border-amber-200/30' } }
           : {}
     }
     columns={3}
     items={view.supportItems}
-  />
+  >
+    {isUrgent ? (
+      <Fragment slot="bg">
+        <div class="absolute inset-0 bg-white"></div>
+      </Fragment>
+    ) : null}
+  </Features2>
+
+  {brandType === 'experience' && (
+    <>
+      <Features2
+        id="experiences-signature"
+        title="Sélection signature"
+        subtitle="Lac, vignobles, gastronomie, altitude"
+        columns={3}
+        classes={{ container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-6 gap-4 text-slate-900 border border-emerald-200/35 bg-white/95' } }}
+        items={signatureExperiences}
+      />
+
+      <Features2
+        id="experiences-slow"
+        title="Slow & bien-être"
+        subtitle="Calme, silence, design suisse, thermal"
+        columns={3}
+        classes={{ container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-6 gap-4 text-slate-900 border border-emerald-200/30 bg-white/92' } }}
+        items={slowExperiences}
+      />
+
+      <Features2
+        id="experiences-winter"
+        title="Hiver & lumière"
+        subtitle="Chalet, veillées, silence neige, brumes du lac"
+        columns={3}
+        classes={{ container: 'max-w-5xl', items: { panel: 'panel-surface rounded-2xl p-6 gap-4 text-slate-900 border border-emerald-200/30 bg-white/92' } }}
+        items={winterExperiences}
+      />
+
+      <Features2
+        id="experiences-corporate"
+        title="Corporate & célébrations"
+        subtitle="Retraites exécutives, propositions, héritage familial"
+        columns={2}
+        classes={{ container: 'max-w-5xl', items: { panel: 'panel-surface rounded-2xl p-6 gap-4 text-slate-900 border border-emerald-200/30 bg-white/92' } }}
+        items={corporateExperiences}
+      />
+
+      <Features2
+        id="experience-engagements"
+        title="Nos engagements"
+        subtitle="Ce que nous garantissons"
+        columns={4}
+        classes={{ container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-5 gap-3 border border-emerald-200/35 bg-white/92 text-slate-900' } }}
+        items={experienceCommitments}
+      />
+    </>
+  )}
 
   <CallToAction actions={view.ctaActions}>
     <Fragment slot="title">
@@ -700,26 +971,68 @@ const optionsGradient = contentGradient;
     color: rgba(255, 255, 255, 0.9);
   }
   :global(.hero-light .btn-secondary) {
-    color: #0b1220;
+    color: #20190b;
     background: rgba(255, 255, 255, 0.9);
     border-color: rgba(255, 255, 255, 0.9);
   }
-  :global(.services-hero h1),
-  :global(.services-hero h2),
-  :global(.services-hero h3),
-  :global(.services-hero h4),
-  :global(.services-hero h5),
-  :global(.services-hero h6) {
-    color: #e5e7eb !important;
+  :global(.brand-lausanne .services-hero h1),
+  :global(.brand-lausanne .services-hero h2),
+  :global(.brand-lausanne .services-hero h3),
+  :global(.brand-lausanne .services-hero h4),
+  :global(.brand-lausanne .services-hero h5),
+  :global(.brand-lausanne .services-hero h6) {
+    color: #0f172a !important;
   }
-  :global(.services-hero p),
-  :global(.services-hero .text-muted),
-  :global(.services-hero .tagline) {
-    color: #e2e8f0 !important;
+  :global(.brand-lausannenettoyage .services-hero h1),
+  :global(.brand-lausannenettoyage .services-hero h2),
+  :global(.brand-lausannenettoyage .services-hero h3),
+  :global(.brand-lausannenettoyage .services-hero h4),
+  :global(.brand-lausannenettoyage .services-hero h5),
+  :global(.brand-lausannenettoyage .services-hero h6) {
+    color: #0f172a !important;
+  }
+  :global(.brand-lausanne .services-hero p),
+  :global(.brand-lausanne .services-hero .text-muted),
+  :global(.brand-lausanne .services-hero .tagline),
+  :global(.brand-lausanne .services-hero .move-subtitle-highlight) {
+    color: #1f2937 !important;
+    background: transparent !important;
   }
   :global(.services-hero .btn-secondary) {
-    color: #0b1220;
+    color: #0b2010;
     background: rgba(255, 255, 255, 0.9);
     border-color: rgba(255, 255, 255, 0.9);
+  }
+  :global(.brand-lausanne .services-hero .text-center h1) {
+    color: #fff !important;
+    text-shadow:
+      -1px 0 #0f172a,
+      1px 0 #0f172a,
+      0 1px #0f172a,
+      0 -1px #0f172a;
+  }
+  :global(.brand-lausanne .services-hero .text-center p),
+  :global(.brand-lausanne .services-hero .text-center .text-muted),
+  :global(.brand-lausanne .services-hero .text-center .text-secondary),
+  :global(.brand-lausanne .services-hero .text-center .tagline) {
+    color: #0f172a !important;
+    text-shadow: none;
+  }
+  :global(.brand-lausannenettoyage .services-hero p),
+  :global(.brand-lausannenettoyage .services-hero .text-muted),
+  :global(.brand-lausannenettoyage .services-hero .tagline),
+  :global(.brand-lausannenettoyage .services-hero .move-subtitle-highlight) {
+    color: #1f2937 !important;
+    background: transparent !important;
+  }
+
+  :global(.move-subtitle-highlight) {
+    background: rgba(255, 255, 255, 0.45);
+    color: rgb(8, 81, 106);
+    padding: 0.23rem 0.65rem;
+    border-radius: 0.1rem;
+    font-weight: 700;
+  
+    box-shadow: 0 10px 30px -16px rgb(8, 81, 106);
   }
 </style>

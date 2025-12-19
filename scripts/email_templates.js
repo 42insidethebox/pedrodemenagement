@@ -20,7 +20,7 @@ function stripTagsToText(html) {
 function getBrand() {
   const brand = {
     name: process.env.SENDER_NAME || 'Pedro Demenagement',
-    supportEmail: process.env.SENDER_EMAIL || process.env.SUPPORT_EMAIL || 'hello@pedrodemenagement.ch',
+    supportEmail: process.env.SENDER_EMAIL || process.env.SUPPORT_EMAIL || 'contact@lausannedemenagement.ch',
     origin: process.env.SITE_URL || process.env.ORIGIN || 'https://pedrodemenagement.ch',
     bg: '#f6f9fc',
     cardBg: '#ffffff',
