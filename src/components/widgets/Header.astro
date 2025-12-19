@@ -1,13 +1,13 @@
 ---
 import { Icon } from 'astro-icon/components';
 import Logo from '~/components/Logo.astro';
-import ToggleTheme from '~/components/common/ToggleTheme.astro';
 import ToggleMenu from '~/components/common/ToggleMenu.astro';
 import Button from '~/components/ui/Button.astro';
 import { twMerge } from 'tailwind-merge';
 
 import { getHomePermalink } from '~/utils/permalinks';
 import { trimSlash, getAsset } from '~/utils/permalinks';
+import { resolveLocaleFromRequest } from '~/lib/locale';
 import type { CallToAction } from '~/types';
 
 interface Link {
@@ -30,7 +30,6 @@ export interface Props {
   isSticky?: boolean;
   isDark?: boolean;
   isFullWidth?: boolean;
-  showToggleTheme?: boolean;
   showRssFeed?: boolean;
   position?: string;
 }
@@ -44,7 +43,6 @@ const {
   isSticky = false,
   isDark = false,
   isFullWidth = false,
-  showToggleTheme = false,
   showRssFeed = false,
   position = 'center',
 } = Astro.props;
@@ -56,7 +54,12 @@ const isUrgent = brandKey === 'urgent';
 const toneClass =
   brandKey === 'videsuccession' || brandKey === 'pedro' || brandKey === 'lausanne'
     ? 'header-tone-light'
-    : 'header-tone-white';
+    : brandKey === 'lausannenettoyage'
+      ? 'header-tone-light'
+      : 'header-tone-white';
+const supportedLangs = ['fr', 'en', 'de', 'it'];
+const brandDefaultLocale = brandKey === 'laclemanexperience' ? 'en' : 'fr';
+const initialLang = resolveLocaleFromRequest(Astro.request, brandDefaultLocale);
 ---
 
 <header
@@ -157,8 +160,22 @@ const toneClass =
       ]}
     >
       <div class="items-center flex justify-between w-full md:w-auto">
-        <div class="flex">
-          {showToggleTheme && <ToggleTheme iconClass="w-6 h-6 md:w-5 md:h-5 md:inline-block" />}
+        <div class="flex items-center gap-2">
+          <div class="relative">
+            <label for="lang-select" class="sr-only">Langue</label>
+            <select
+              id="lang-select"
+              data-initial={initialLang}
+              data-aw-lang-select
+              onchange="window.__awSetLang && window.__awSetLang(this.value)"
+              class="appearance-none rounded-full border border-white/50 bg-white/90 px-3 py-1.5 text-sm font-semibold text-slate-900 shadow-sm backdrop-blur md:px-3.5 md:py-2 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
+            >
+              <option value="fr" selected={initialLang === 'fr'}>FR</option>
+              <option value="en" selected={initialLang === 'en'}>EN</option>
+              <option value="de" selected={initialLang === 'de'}>DE</option>
+              <option value="it" selected={initialLang === 'it'}>IT</option>
+            </select>
+          </div>
           {
             showRssFeed && (
               <a
@@ -195,6 +212,59 @@ const toneClass =
     </div>
   </div>
 </header>
+
+<script>
+  (() => {
+    const supported = ['fr', 'en', 'de', 'it'];
+
+    const detectLang = (selects) => {
+      const stored = localStorage.getItem('aw-lang');
+      if (stored && supported.includes(stored)) return stored;
+      const cookie = document.cookie.split('; ').find((c) => c.startsWith('aw_lang='));
+      if (cookie) {
+        const val = cookie.split('=')[1];
+        if (supported.includes(val)) return val;
+      }
+      const initial = selects[0]?.dataset.initial;
+      if (initial && supported.includes(initial)) return initial;
+      const htmlLang = (document.documentElement.lang || '').slice(0, 2).toLowerCase();
+      if (supported.includes(htmlLang)) return htmlLang;
+      const nav = (navigator.language || 'fr').slice(0, 2).toLowerCase();
+      return supported.includes(nav) ? nav : 'fr';
+    };
+
+    const applyLang = (lang, selects) => {
+      document.documentElement.lang = lang;
+      localStorage.setItem('aw-lang', lang);
+      document.cookie = `aw_lang=${lang}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
+      selects.forEach((sel) => (sel.value = lang));
+      window.dispatchEvent(new CustomEvent('aw:lang-change', { detail: { lang } }));
+    };
+
+    if (!window.__awSetLang) {
+      window.__awSetLang = (lang) => {
+        if (!supported.includes(lang)) return;
+        const selects = Array.from(document.querySelectorAll('[data-aw-lang-select]'));
+        applyLang(lang, selects);
+        window.location.reload();
+      };
+    }
+
+    const bind = () => {
+      const selects = Array.from(document.querySelectorAll('[data-aw-lang-select]'));
+      if (!selects.length) return;
+      const lang = detectLang(selects);
+      applyLang(lang, selects);
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', bind, { once: true });
+    } else {
+      bind();
+    }
+    window.addEventListener('pageshow', bind);
+  })();
+</script>
 
 <style>
   :global(.aw-header.header-tone-light) {

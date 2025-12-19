@@ -10,6 +10,7 @@ import { getBrandFromHost } from '~/lib/brand';
 import { BRANDS } from '~/lib/brands.config';
 import { getImage } from '~/data/imageInventory';
 import type { ImageId } from '~/data/imageInventory';
+import { resolveLocaleFromRequest } from '~/lib/locale';
 
 const host = Astro.request.headers.get('host');
 const brandKey = getBrandFromHost(host);
@@ -39,11 +40,60 @@ const img = (id: ImageId) => getImage(id);
 const heroToneClass = 'pricing-hero-light';
 const isEtat = brandKey === 'etatdeslieux';
 const isExperience = brandKey === 'laclemanexperience';
+const isLausanne = brandKey === 'lausanne';
+const defaultLocale = isExperience ? 'en' : 'fr';
+const locale = resolveLocaleFromRequest(Astro.request, defaultLocale);
+const lang = isExperience
+  ? (['fr', 'en', 'de', 'it'].includes(locale) ? locale : defaultLocale)
+  : isLausanne
+    ? (['fr', 'en', 'de', 'it'].includes(locale) ? locale : 'fr')
+    : 'fr';
+const isEn = lang === 'en';
+const isDe = lang === 'de';
+const isIt = lang === 'it';
+const lceT = <T,>(fr: T, en: T, de: T, it: T): T => {
+  if (!isExperience) return fr;
+  if (isEn) return en;
+  if (isDe) return de;
+  if (isIt) return it;
+  return fr;
+};
+const lamT = <T,>(fr: T, en: T, de: T, it: T): T => {
+  if (!isLausanne) return fr;
+  if (isEn) return en;
+  if (isDe) return de;
+  if (isIt) return it;
+  return fr;
+};
 
 const experiencePriceNotes = [
-  { title: 'Inclus', description: 'Privatisation (bateau / cave / table), conciergerie, partenaires premium, TVA.' },
-  { title: 'Variables', description: 'Saison (sunset, vendanges, hiver), durée, options (sommellerie, photo, chef).' },
-  { title: 'Pas de frais cachés', description: 'Ajustement uniquement si le périmètre change.' },
+  {
+    title: lceT('Inclus', 'Included', 'Inklusive', 'Incluso'),
+    description: lceT(
+      'Privatisation (bateau / cave / table), conciergerie, partenaires premium, TVA.',
+      'Privatisation (boat/cellar/hosted table), concierge, premium partners, VAT.',
+      'Privatisierung (Boot/Keller/Table d’hôtes), Concierge, Premiumpartner, MwSt.',
+      'Privatizzazione (barca/cantina/tavola), concierge, partner premium, IVA.'
+    ),
+  },
+  {
+    title: lceT('Variables', 'Variables', 'Variablen', 'Variabili'),
+    description: lceT(
+      'Saison (sunset, vendanges, hiver), durée, options (sommellerie, photo, chef).',
+      'Season (sunset, harvest, winter), duration, options (sommelier, photo, chef).',
+      'Saison (Sunset, Weinlese, Winter), Dauer, Optionen (Sommelier, Foto, Chef).',
+      'Stagione (tramonto, vendemmia, inverno), durata, opzioni (sommelier, foto, chef).'
+    ),
+  },
+  {
+    title: lceT('Pas de frais cachés', 'No hidden fees', 'Keine versteckten Gebühren', 'Nessun costo nascosto'),
+    description: lceT(
+      'Ajustement uniquement si le périmètre change.',
+      'Adjustments only if scope changes.',
+      'Anpassungen nur bei geändertem Umfang.',
+      'Adeguamenti solo se cambia il perimetro.'
+    ),
+  },
 ];
 
 const metadata = isUrgent
@@ -64,11 +114,26 @@ const metadata = isUrgent
             ? { title: 'Tarifs nettoyage', description: 'Nettoyages complets, vitres, sols et contrôle qualité.' }
             : brandKey === 'etatdeslieux'
               ? { title: 'Tarifs état des lieux', description: 'Constats, photos et rapport envoyé sous 24h.' }
-              : brandKey === 'laclemanexperience'
-                ? {
-                    title: 'Tarifs expériences Lac Léman',
-                    description: 'Privatisations bateau, vignobles UNESCO, tables d’hôtes et échappées alpines.',
-                  }
+    : brandKey === 'laclemanexperience'
+      ? {
+          title: lceT('Tarifs expériences Lac Léman', 'Lake Geneva Experiences Pricing', 'Preise Lac Léman Experiences', 'Prezzi esperienze Lac Léman'),
+          description: lceT(
+            'Privatisations bateau, vignobles UNESCO, tables d’hôtes et échappées alpines.',
+            'Boat, UNESCO vineyards, hosted tables, and alpine escapes — private and concierge-led.',
+            'Boote, UNESCO-Weinberge, Gastgebertafeln und alpine Auszeiten – privat mit Concierge.',
+            'Barca, vigneti UNESCO, tavole d’hôtes e fughe alpine — private e gestite da concierge.'
+          ),
+        }
+    : brandKey === 'lausanne'
+      ? {
+          title: lamT('Tarifs déménagement Lausanne', 'Lausanne moving prices', 'Umzugspreise Lausanne', 'Prezzi trasloco Losanna'),
+          description: lamT(
+            'Fourchettes selon volume, accès urbains et options (emballage, monte-meubles, nettoyage).',
+            'Ranges based on volume, urban access, and options (packing, lift, cleaning).',
+            'Spannen je nach Volumen, Stadtzugang und Optionen (Packen, Möbellift, Reinigung).',
+            'Fasce in base a volume, accessi urbani e opzioni (imballo, elevatore, pulizia).'
+          ),
+        }
                 : {
                     title: 'Tarifs déménagement',
                   };
@@ -239,42 +304,74 @@ const views = {
   },
   experience: {
     hero: {
-      tagline: 'Tarifs expériences',
-      title: 'Conciergerie Lac Léman',
-      subtitle: 'Croisières privées, vignobles UNESCO, tables d’hôtes et échappées alpines. Tarifs indicatifs privatisation + service.',
+      tagline: lceT('Tarifs expériences', 'Experience pricing', 'Erlebnispreise', 'Prezzi esperienze'),
+      title: lceT('Conciergerie Lac Léman', 'Lake Geneva concierge', 'Genfersee-Concierge', 'Concierge Lago Lemano'),
+      subtitle: lceT(
+        'Croisières privées, vignobles UNESCO, tables d’hôtes et échappées alpines. Tarifs indicatifs privatisation + service.',
+        'Private cruises, UNESCO vineyards, hosted tables, alpine escapes. Indicative pricing includes privatisation + service.',
+        'Private Cruises, UNESCO-Weinberge, Gastgebertafeln, alpine Auszeiten. Richtpreise inkl. Privatisierung + Service.',
+        'Crociere private, vigneti UNESCO, tavole d’hôtes, fughe alpine. Prezzi indicativi includono privatizzazione + servizio.'
+      ),
       background: `linear-gradient(135deg, rgba(15,118,110,0.30), rgba(30,41,59,0.34), rgba(253,230,138,0.22)), url('${img('leman_horizon_minimal_1')}')`,
       overlayClass: 'bg-gradient-to-br from-emerald-950/30 via-slate-900/38 to-amber-100/22',
-      chips: ['Conciergerie dédiée', 'Partenaires triés', 'Privatisations'],
+      chips: lceT(
+        ['Conciergerie dédiée', 'Partenaires triés', 'Privatisations'],
+        ['Dedicated concierge', 'Vetted partners', 'Privatisations'],
+        ['Dedizierter Concierge', 'Geprüfte Partner', 'Privatisierungen'],
+        ['Concierge dedicato', 'Partner selezionati', 'Privatizzazioni']
+      ),
       tone: 'dark',
     },
-    priceTitle: 'Repères expériences',
-    priceSubtitle: 'Privatisations, partenaires premium, transferts et sommellerie.',
+    priceTitle: lceT('Repères expériences', 'Experience anchors', 'Preisanker Erlebnisse', 'Riferimenti esperienze'),
+    priceSubtitle: lceT(
+      'Privatisations, partenaires premium, transferts et sommellerie.',
+      'Privatisations, premium partners, transfers, and sommellerie.',
+      'Privatisierungen, Premiumpartner, Transfers und Sommellerie.',
+      'Privatizzazioni, partner premium, transfer e sommellerie.'
+    ),
     factors: [
-      { title: 'Format', description: 'Privatisation bateau, cave ou table d’hôtes.', icon: 'tabler:sailboat' },
-      { title: 'Saisonnalité', description: 'Horaires sunset, météo et alternatives prévues.', icon: 'tabler:calendar' },
-      { title: 'Transferts', description: 'Chauffeur privé ou bateau-taxi selon parcours.', icon: 'tabler:car' },
-      { title: 'Options', description: 'Sommelière, chef invité, photo/vidéo.', icon: 'tabler:sparkles' },
+      { title: lceT('Format', 'Format', 'Format', 'Formato'), description: lceT('Privatisation bateau, cave ou table d’hôtes.', 'Private boat, cellar, or hosted table.', 'Privates Boot, Keller oder Table d’hôtes.', 'Barca, cantina o tavola d’hôtes privata.'), icon: 'tabler:sailboat' },
+      { title: lceT('Saisonnalité', 'Seasonality', 'Saisonalität', 'Stagionalità'), description: lceT('Horaires sunset, météo et alternatives prévues.', 'Sunset slots, weather and alternatives planned.', 'Sunset-Slots, Wetter und Alternativen geplant.', 'Orari sunset, meteo e alternative pianificate.'), icon: 'tabler:calendar' },
+      { title: lceT('Transferts', 'Transfers', 'Transfers', 'Transfer'), description: lceT('Chauffeur privé ou bateau-taxi selon parcours.', 'Private driver or boat taxi by route.', 'Privater Fahrer oder Bootstaxi je nach Strecke.', 'Autista privato o taxi boat a seconda del percorso.'), icon: 'tabler:car' },
+      { title: lceT('Options', 'Options', 'Optionen', 'Opzioni'), description: lceT('Sommelière, chef invité, photo/vidéo.', 'Sommelier, guest chef, photo/video.', 'Sommelier, Gastkoch, Foto/Video.', 'Sommelier, chef ospite, foto/video.'), icon: 'tabler:sparkles' },
     ],
     steps: [
-      { title: '1. Brief', description: 'Dates, envies, budget, contraintes.', icon: 'tabler:message' },
-      { title: '2. Proposition', description: 'Sélection verrouillée avec horaires.', icon: 'tabler:clipboard-check' },
-      { title: '3. Confirmation', description: 'Privatisation, acomptes, transferts.', icon: 'tabler:check' },
-      { title: '4. Jour J', description: 'Concierge et partenaires alignés.', icon: 'tabler:map-pin' },
+      { title: '1. Brief', description: lceT('Dates, envies, budget, contraintes.', 'Dates, wishes, budget, constraints.', 'Daten, Wünsche, Budget, Constraints.', 'Date, desideri, budget, vincoli.'), icon: 'tabler:message' },
+      { title: lceT('2. Proposition', '2. Proposal', '2. Vorschlag', '2. Proposta'), description: lceT('Sélection verrouillée avec horaires.', 'Locked selection with timings.', 'Fixierte Auswahl mit Zeiten.', 'Selezione bloccata con orari.'), icon: 'tabler:clipboard-check' },
+      { title: lceT('3. Confirmation', '3. Confirmation', '3. Bestätigung', '3. Conferma'), description: lceT('Privatisation, acomptes, transferts.', 'Privatisation, deposits, transfers.', 'Privatisierung, Anzahlungen, Transfers.', 'Privatizzazione, acconti, transfer.'), icon: 'tabler:check' },
+      { title: lceT('4. Jour J', '4. Day-of', '4. Tag X', '4. Giorno J'), description: lceT('Concierge et partenaires alignés.', 'Concierge and partners aligned.', 'Concierge und Partner abgestimmt.', 'Concierge e partner allineati.'), icon: 'tabler:map-pin' },
     ],
     faqs: [
-      { title: 'Quel délai ?', description: '7–10 jours idéalement, accélération possible selon disponibilité.' },
-      { title: 'Privatisation ?', description: 'Oui pour bateaux, caves, tables d’hôtes (ou semi-privé si demandé).' },
-      { title: 'Météo ?', description: 'Plan B prévu pour navigation et dégustations extérieures.' },
-      { title: 'Transferts ?', description: 'Chauffeur privé ou bateau-taxi avec horaires verrouillés.' },
+      {
+        title: lceT('Quel délai ?', 'How early to book?', 'Welche Vorlaufzeit?', 'Che preavviso?'),
+        description: lceT('7–10 jours idéalement, accélération possible selon disponibilité.', '7–10 days ideally, faster depending on availability.', 'Ideal 7–10 Tage, schneller je nach Verfügbarkeit.', 'Idealmente 7–10 giorni, più rapido secondo disponibilità.'),
+      },
+      {
+        title: lceT('Privatisation ?', 'Privatisation?', 'Privatisierung?', 'Privatizzazione?'),
+        description: lceT('Oui pour bateaux, caves, tables d’hôtes (ou semi-privé si demandé).', 'Yes for boats, cellars, hosted tables (or semi-private on request).', 'Ja für Boote, Keller, Gastgebertafeln (oder semi-privat auf Wunsch).', 'Sì per barche, cantine, tavole d’hôtes (o semi-private su richiesta).'),
+      },
+      {
+        title: lceT('Météo ?', 'Weather?', 'Wetter?', 'Meteo?'),
+        description: lceT('Plan B prévu pour navigation et dégustations extérieures.', 'Plan B ready for navigation and outdoor tastings.', 'Plan B für Navigation und Outdoor-Degustationen bereit.', 'Piano B pronto per navigazione e degustazioni outdoor.'),
+      },
+      {
+        title: lceT('Transferts ?', 'Transfers?', 'Transfers?', 'Transfer?'),
+        description: lceT('Chauffeur privé ou bateau-taxi avec horaires verrouillés.', 'Private driver or boat taxi with locked timings.', 'Privater Fahrer oder Bootstaxi mit fixen Zeiten.', 'Autista privato o taxi boat con orari bloccati.'),
+      },
     ],
     stepsBg: img('high_end_luxury_apartment_lakeside'),
     accent: 'from-emerald-200/30 via-emerald-800/22 to-amber-100/30',
     cta: {
-      title: 'Prêt pour une expérience Léman ?',
-      subtitle: 'Dites-nous vos dates et le format souhaité, on orchestre le reste.',
+      title: lceT('Prêt pour une expérience Léman ?', 'Ready to book an experience?', 'Bereit für ein Erlebnis?', 'Pronti a prenotare un’esperienza?'),
+      subtitle: lceT(
+        'Dites-nous vos dates et le format souhaité, on orchestre le reste.',
+        'Tell us your dates and desired format; we orchestrate the rest.',
+        'Sagen Sie uns Ihre Daten und das gewünschte Format, wir orchestrieren den Rest.',
+        'Dateci date e formato desiderato, al resto pensiamo noi.'
+      ),
       actions: [
-        { variant: 'primary', text: 'Réserver une expérience', href: '/contact#form', icon: 'tabler:mail-forward' },
-        { text: 'Parler à un concierge', href: whatsapp, icon: 'tabler:phone' },
+        { variant: 'primary', text: lceT('Réserver une expérience', 'Book an experience', 'Erlebnis buchen', 'Prenotare un’esperienza'), href: '/contact#form', icon: 'tabler:mail-forward' },
+        { text: lceT('Parler à un concierge', 'Talk to a concierge', 'Mit dem Concierge sprechen', 'Parlare con un concierge'), href: whatsapp, icon: 'tabler:phone' },
       ],
     },
   },
@@ -444,7 +541,114 @@ const views = {
   },
 };
 
-const view = views[brandType];
+let view = views[brandType];
+if (isLausanne && brandType === 'move') {
+  view = {
+    ...view,
+    hero: {
+      ...view.hero,
+      tagline: lamT('Tarifs déménagement', 'Moving prices', 'Umzugspreise', 'Prezzi trasloco'),
+      title: lamT('Fourchettes claires selon volume et accès', 'Clear ranges by volume and access', 'Klare Spannen nach Volumen und Zugang', 'Fasce chiare per volume e accessi'),
+      subtitle: lamT(
+        'Prix indicatifs en CHF, ajustés après validation des accès, options (emballage, monte-meubles, nettoyage) et distance.',
+        'Indicative CHF prices, adjusted after confirming access, options (packing, lift, cleaning) and distance.',
+        'Richtpreise in CHF, angepasst nach Zugang, Optionen (Packen, Möbellift, Reinigung) und Distanz.',
+        'Prezzi indicativi in CHF, aggiustati dopo verifica accessi, opzioni (imballo, elevatore, pulizia) e distanza.'
+      ),
+    },
+    priceTitle: lamT('Repères déménagement', 'Moving anchors', 'Preisanker Umzug', 'Riferimenti trasloco'),
+    priceSubtitle: lamT(
+      'Indications pour préparer votre budget. Chaque devis est ajusté après un échange rapide.',
+      'Guidance to prep your budget. Each quote is adjusted after a quick call.',
+      'Anhaltspunkte zur Budgetierung. Jede Offerte wird nach kurzem Austausch angepasst.',
+      'Indicazioni per preparare il budget. Ogni preventivo è affinato dopo un rapido scambio.'
+    ),
+    factors: view.factors.map((f) => ({
+      ...f,
+      title:
+        f.title === 'Volume & pièces'
+          ? lamT('Volume & pièces', 'Volume & rooms', 'Volumen & Zimmer', 'Volume & stanze')
+          : f.title === 'Accès & portage'
+            ? lamT('Accès & portage', 'Access & carry', 'Zugang & Tragen', 'Accesso & portata')
+            : f.title === 'Options'
+              ? lamT('Options', 'Options', 'Optionen', 'Opzioni')
+              : f.title === 'Distance'
+                ? lamT('Distance', 'Distance', 'Distanz', 'Distanza')
+                : f.title,
+      description:
+        f.title === 'Volume & pièces'
+          ? lamT('Studio à maison, cartons, meubles principaux.', 'Studio to house, boxes, main furniture.', 'Studio bis Haus, Kartons, Hauptmöbel.', 'Monolocale a casa, scatole, mobili principali.')
+          : f.title === 'Accès & portage'
+            ? lamT('Ascenseur, étages, distance à pied et autorisations parking.', 'Lift, floors, carry distance and parking permits.', 'Lift, Etagen, Laufdistanz und Parkbewilligungen.', 'Ascensore, piani, distanza a piedi e permessi parcheggio.')
+            : f.title === 'Options'
+              ? lamT('Emballage/déballage, monte-meubles, nettoyage, stockage.', 'Packing/unpacking, lift, cleaning, storage.', 'Packen/Entpacken, Möbellift, Reinigung, Lagerung.', 'Imballo/disimballo, elevatore, pulizia, deposito.')
+              : f.title === 'Distance'
+                ? lamT('Kilométrage et temps de trajet aller/retour.', 'Mileage and round-trip time.', 'Kilometer und Hin-/Rückfahrzeit.', 'Chilometraggio e tempo di percorrenza A/R.')
+                : f.description,
+    })),
+    steps: view.steps.map((s) => ({
+      ...s,
+      title:
+        s.title === '1. Estimation du volume'
+          ? lamT('1. Estimation du volume', '1. Volume estimate', '1. Volumenschätzung', '1. Stima del volume')
+          : s.title === '2. Accès & contraintes'
+            ? lamT('2. Accès & contraintes', '2. Access & constraints', '2. Zugang & Vorgaben', '2. Accessi & vincoli')
+            : s.title === '3. Options retenues'
+              ? lamT('3. Options retenues', '3. Selected options', '3. Gewählte Optionen', '3. Opzioni scelte')
+              : s.title === '4. Planning & équipe'
+                ? lamT('4. Planning & équipe', '4. Planning & crew', '4. Planung & Team', '4. Planning & squadra')
+                : s.title,
+      description:
+        s.title === '1. Estimation du volume'
+          ? lamT('Formulaire complet ou visio express si besoin.', 'Full form or quick video if needed.', 'Vollständiges Formular oder kurzer Video-Call.', 'Modulo completo o video rapida se serve.')
+          : s.title === '2. Accès & contraintes'
+            ? lamT('Ascenseur, parkings, distance de portage, autorisations.', 'Lift, parking, carry distance, permits.', 'Lift, Parkplätze, Tragedistanz, Bewilligungen.', 'Ascensore, parcheggi, distanza di trasporto, permessi.')
+            : s.title === '3. Options retenues'
+              ? lamT('Emballage, monte-meubles, nettoyage ou longue distance.', 'Packing, lift, cleaning or long distance.', 'Packen, Möbellift, Reinigung oder Langstrecke.', 'Imballo, elevatore, pulizia o lunga distanza.')
+              : s.title === '4. Planning & équipe'
+                ? lamT('Créneau, chef d’équipe, matériel prévu.', 'Slot, crew lead, planned gear.', 'Slot, Teamleiter, geplantes Material.', 'Fascia, caposquadra, materiale previsto.')
+                : s.description,
+    })),
+    faqs: view.faqs.map((q) => ({
+      ...q,
+      title:
+        q.title === 'Le prix est-il fixe ?'
+          ? lamT('Le prix est-il fixe ?', 'Is the price fixed?', 'Ist der Preis fix?', 'Il prezzo è fisso?')
+          : q.title === 'Proposez-vous des visites ?'
+            ? lamT('Proposez-vous des visites ?', 'Do you do visits?', 'Bieten Sie Besichtigungen an?', 'Fate sopralluoghi?')
+            : q.title === 'Péages / km ?'
+              ? lamT('Péages / km ?', 'Tolls / km?', 'Maut / km?', 'Pedaggi / km?')
+              : q.title === 'Objets lourds ?'
+                ? lamT('Objets lourds ?', 'Heavy items?', 'Schwere Gegenstände?', 'Oggetti pesanti?')
+                : q.title,
+      description:
+        q.title === 'Le prix est-il fixe ?'
+          ? lamT('Oui après validation du devis. Seuls un volume très différent ou des options ajoutées ajustent le montant.', 'Yes after the quote is confirmed. Only big volume changes or added options adjust it.', 'Ja nach Offertenbestätigung. Nur stark anderes Volumen oder Zusatzoptionen ändern den Betrag.', 'Sì dopo la conferma del preventivo. Solo volume molto diverso o opzioni aggiunte lo modificano.')
+          : q.title === 'Proposez-vous des visites ?'
+            ? lamT('Oui. Le formulaire suffit souvent, mais la visite est possible (service payant) si contexte complexe.', 'Yes. Form is often enough; visit possible (paid) if complex.', 'Ja. Formular reicht oft; Besichtigung möglich (kostenpflichtig) bei komplexen Fällen.', 'Sì. Il modulo basta spesso; sopralluogo possibile (a pagamento) se contesto complesso.')
+            : q.title === 'Péages / km ?'
+              ? lamT('50 km inclus (Lausanne → A → B). Au-delà, km et péages sont détaillés séparément.', '50 km included (Lausanne → A → B). Beyond, km and tolls detailed separately.', '50 km inklusive (Lausanne → A → B). Darüber km und Maut separat.', '50 km inclusi (Losanna → A → B). Oltre, km e pedaggi dettagliati a parte.')
+              : q.title === 'Objets lourds ?'
+                ? lamT('Oui jusqu’à ~200 kg selon accès. Monte-meubles si nécessaire.', 'Yes up to ~200 kg depending on access. Lift if needed.', 'Ja bis ca. 200 kg je nach Zugang. Möbellift falls nötig.', 'Sì fino a ~200 kg secondo accessi. Elevatore se serve.')
+                : q.description,
+    })),
+    cta: {
+      ...view.cta,
+      title: lamT('Besoin d’un chiffrage précis ?', 'Need a precise quote?', 'Brauchen Sie eine genaue Offerte?', 'Serve un preventivo preciso?'),
+      subtitle: lamT(
+        'Indiquez vos adresses, le volume estimé et la date souhaitée : réponse sous 24h.',
+        'Share addresses, estimated volume, desired date: reply within 24h.',
+        'Nennen Sie Adressen, geschätztes Volumen, Wunschtermin: Antwort innert 24h.',
+        'Indica indirizzi, volume stimato e data desiderata: risposta entro 24h.'
+      ),
+      actions: [
+        { variant: 'primary', text: lamT('Recevoir un devis', 'Get a quote', 'Offerte erhalten', 'Ricevi un preventivo'), href: '/contact#form', icon: 'tabler:mail-forward' },
+        { text: lamT('Parler à un conseiller', 'Talk to an advisor', 'Mit einem Berater sprechen', 'Parlare con un consulente'), href: '/contact' },
+      ],
+    },
+  };
+}
+
 const priceList = (() => {
   if (isUrgent) {
     return [
@@ -572,42 +776,42 @@ const priceList = (() => {
   if (brandKey === 'laclemanexperience') {
     return [
       {
-        title: 'Croisière sunset privée',
-        subtitle: 'Lac Léman',
-        price: 'dès 1900',
+        title: lceT('Croisière sunset privée', 'Private sunset cruise', 'Private Sunset-Cruise', 'Crociera privata al tramonto'),
+        subtitle: lceT('Lac Léman', 'Lake Geneva', 'Genfersee', 'Lago Lemano'),
+        price: lceT('dès 1900', 'from 1900', 'ab 1900', 'da 1900'),
         period: 'CHF',
         items: [
-          { description: 'Bateau privatisé 2–3h' },
-          { description: 'Sommelière / accords vins-fromages' },
-          { description: 'Transferts et horaires verrouillés' },
+          { description: lceT('Bateau privatisé 2–3h', 'Private boat 2–3h', 'Privates Boot 2–3h', 'Barca privatizzata 2–3h') },
+          { description: lceT('Sommelière / accords vins-fromages', 'Sommelier / wine-cheese pairings', 'Sommelière / Wein-Käse-Pairings', 'Sommelier / abbinamenti vino-formaggi') },
+          { description: lceT('Transferts et horaires verrouillés', 'Transfers and timing locked', 'Transfers und Timing fixiert', 'Transfer e orari bloccati') },
         ],
-        callToAction: '<a class="btn btn-primary" href="/contact#form">Réserver</a>',
+        callToAction: `<a class="btn btn-primary" href="/contact#form">${lceT('Réserver', 'Book', 'Buchen', 'Prenotare')}</a>`,
       },
       {
-        title: 'Vignobles UNESCO',
-        subtitle: 'Cave + dégustation privée',
+        title: lceT('Vignobles UNESCO', 'UNESCO vineyards', 'UNESCO-Weinberge', 'Vigneti UNESCO'),
+        subtitle: lceT('Cave + dégustation privée', 'Cellar + private tasting', 'Keller + private Degustation', 'Cantina + degustazione privata'),
         price: '1500–2800',
-        period: 'CHF typique',
+        period: lceT('CHF typique', 'typical CHF', 'typischer CHF', 'CHF tipico'),
         items: [
-          { description: 'Visite avec vigneron hôte' },
-          { description: 'Accords mets & vins en cave voûtée' },
-          { description: 'Chauffeur privé ou bateau + chauffeur' },
+          { description: lceT('Visite avec vigneron hôte', 'Visit with hosting winemaker', 'Besuch mit Winzer als Gastgeber', 'Visita con vignaiolo ospite') },
+          { description: lceT('Accords mets & vins en cave voûtée', 'Food & wine pairings in vaulted cellar', 'Food-&-Wine-Pairings im Gewölbekeller', 'Abbinamenti cibo-vino in cantina a volta') },
+          { description: lceT('Chauffeur privé ou bateau + chauffeur', 'Private driver or boat + driver', 'Privater Fahrer oder Boot + Fahrer', 'Autista privato o barca + autista') },
         ],
         hasRibbon: true,
-        ribbonTitle: 'Plus fréquent',
-        callToAction: '<a class="btn btn-primary" href="/contact#form">Sélectionner</a>',
+        ribbonTitle: lceT('Plus fréquent', 'Most frequent', 'Am häufigsten', 'Più frequente'),
+        callToAction: `<a class="btn btn-primary" href="/contact#form">${lceT('Sélectionner', 'Select', 'Auswählen', 'Selezionare')}</a>`,
       },
       {
-        title: 'Table d’hôtes / Chalet',
-        subtitle: 'Montagne ou vignoble',
-        price: 'dès 2400',
+        title: lceT('Table d’hôtes / Chalet', 'Hosted table / Chalet', 'Gastgebertafel / Chalet', 'Table d’hôtes / Chalet'),
+        subtitle: lceT('Montagne ou vignoble', 'Mountain or vineyard', 'Berg oder Weinberg', 'Montagna o vigneto'),
+        price: lceT('dès 2400', 'from 2400', 'ab 2400', 'da 2400'),
         period: 'CHF',
         items: [
-          { description: 'Chef invité, menu lac + alpages' },
-          { description: 'Privatisation ou semi-privé' },
-          { description: 'Options photo/vidéo et sommellerie' },
+          { description: lceT('Chef invité, menu lac + alpages', 'Guest chef, lake + alpine produce', 'Gastkoch, See- + Alpenprodukte', 'Chef ospite, prodotti lago + alpi') },
+          { description: lceT('Privatisation ou semi-privé', 'Private or semi-private', 'Privat oder semi-privat', 'Privato o semi-privato') },
+          { description: lceT('Options photo/vidéo et sommellerie', 'Photo/video and sommelier options', 'Foto/Video und Sommelier-Optionen', 'Opzioni foto/video e sommelier') },
         ],
-        callToAction: '<a class="btn btn-primary" href="/contact#form">Composer</a>',
+        callToAction: `<a class="btn btn-primary" href="/contact#form">${lceT('Composer', 'Compose', 'Gestalten', 'Comporre')}</a>`,
       },
     ];
   }
@@ -769,58 +973,58 @@ const priceList = (() => {
   }
   return [
     {
-      title: 'Studio / 1 pièce',
+      title: lamT('Studio / 1 pièce', 'Studio / 1 room', 'Studio / 1 Zimmer', 'Monolocale / 1 stanza'),
       subtitle: '~10–12 m³',
       price: '550–1000',
-      period: 'déménagement local',
+      period: lamT('déménagement local', 'local move', 'lokaler Umzug', 'trasloco locale'),
       items: [
-        { description: 'Longue distance (~200 km): 1500–2500 CHF' },
-        { description: 'Camion 20 m³ + 2-3 déménageurs' },
-        { description: 'Protection des meubles et matelas' },
-        { description: 'Chargement + transport + installation' },
+        { description: lamT('Longue distance (~200 km): 1500–2500 CHF', 'Long distance (~200 km): 1500–2500 CHF', 'Langstrecke (~200 km): 1500–2500 CHF', 'Lunga distanza (~200 km): 1500–2500 CHF') },
+        { description: lamT('Camion 20 m³ + 2-3 déménageurs', '20 m³ truck + 2-3 movers', '20 m³ LKW + 2-3 Umzugshelfer', 'Camion 20 m³ + 2-3 facchini') },
+        { description: lamT('Protection des meubles et matelas', 'Furniture and mattress protection', 'Schutz für Möbel und Matratzen', 'Protezione mobili e materassi') },
+        { description: lamT('Chargement + transport + installation', 'Loading + transport + installation', 'Laden + Transport + Aufbau', 'Carico + trasporto + installazione') },
       ],
-      callToAction: '<a class="btn btn-primary" href="/contact#form">Réserver ma date</a>',
+      callToAction: `<a class="btn btn-primary" href="/contact#form">${lamT('Réserver ma date', 'Reserve my date', 'Datum reservieren', 'Prenota la data')}</a>`,
     },
     {
-      title: '2–3 pièces',
+      title: lamT('2–3 pièces', '2–3 rooms', '2–3 Zimmer', '2–3 locali'),
       subtitle: '~20 m³',
       price: '800–1300',
-      period: 'déménagement local',
+      period: lamT('déménagement local', 'local move', 'lokaler Umzug', 'trasloco locale'),
       items: [
-        { description: 'Longue distance (~200 km): 1800–3000 CHF' },
-        { description: 'Camion 20 m³ + 2-3 déménageurs' },
-        { description: 'Démontage/remontage essentiel' },
-        { description: 'Emballage fragile en option' },
+        { description: lamT('Longue distance (~200 km): 1800–3000 CHF', 'Long distance (~200 km): 1800–3000 CHF', 'Langstrecke (~200 km): 1800–3000 CHF', 'Lunga distanza (~200 km): 1800–3000 CHF') },
+        { description: lamT('Camion 20 m³ + 2-3 déménageurs', '20 m³ truck + 2-3 movers', '20 m³ LKW + 2-3 Umzugshelfer', 'Camion 20 m³ + 2-3 facchini') },
+        { description: lamT('Démontage/remontage essentiel', 'Essential disassembly/reassembly', 'Wesentlicher Ab-/Aufbau', 'Smontaggio/rimontaggio essenziale') },
+        { description: lamT('Emballage fragile en option', 'Fragile packing optional', 'Fragilen Verpackung optional', 'Imballo fragili opzionale') },
       ],
       hasRibbon: true,
-      ribbonTitle: 'Le plus demandé',
-      callToAction: '<a class="btn btn-primary" href="/contact#form">Réserver ma date</a>',
+      ribbonTitle: lamT('Le plus demandé', 'Most requested', 'Am meisten gefragt', 'Il più richiesto'),
+      callToAction: `<a class="btn btn-primary" href="/contact#form">${lamT('Réserver ma date', 'Reserve my date', 'Datum reservieren', 'Prenota la data')}</a>`,
     },
     {
-      title: '3–4 pièces',
+      title: lamT('3–4 pièces', '3–4 rooms', '3–4 Zimmer', '3–4 locali'),
       subtitle: '~30–35 m³',
       price: '1100–1450',
-      period: 'déménagement local',
+      period: lamT('déménagement local', 'local move', 'lokaler Umzug', 'trasloco locale'),
       items: [
-        { description: 'Longue distance (~200 km): 2300–3400 CHF' },
-        { description: 'Planification d’équipe dédiée' },
-        { description: 'Monte-meubles ou double camion si besoin' },
-        { description: 'Emballage complet disponible' },
+        { description: lamT('Longue distance (~200 km): 2300–3400 CHF', 'Long distance (~200 km): 2300–3400 CHF', 'Langstrecke (~200 km): 2300–3400 CHF', 'Lunga distanza (~200 km): 2300–3400 CHF') },
+        { description: lamT('Planification d’équipe dédiée', 'Dedicated crew planning', 'Planung eines dedizierten Teams', 'Pianificazione squadra dedicata') },
+        { description: lamT('Monte-meubles ou double camion si besoin', 'Lift or double truck if needed', 'Möbellift oder Doppellastwagen falls nötig', 'Elevatore o doppio camion se serve') },
+        { description: lamT('Emballage complet disponible', 'Full packing available', 'Komplettpacken verfügbar', 'Imballo completo disponibile') },
       ],
-      callToAction: '<a class="btn btn-primary" href="/contact#form">Réserver ma date</a>',
+      callToAction: `<a class="btn btn-primary" href="/contact#form">${lamT('Réserver ma date', 'Reserve my date', 'Datum reservieren', 'Prenota la data')}</a>`,
     },
     {
-      title: 'Maison / 5 pièces +',
+      title: lamT('Maison / 5 pièces +', 'House / 5 rooms +', 'Haus / 5 Zimmer +', 'Casa / 5 locali +'),
       subtitle: '40–45 m³+',
       price: '1500–2500',
-      period: 'déménagement local',
+      period: lamT('déménagement local', 'local move', 'lokaler Umzug', 'trasloco locale'),
       items: [
-        { description: 'Longue distance (~200 km): 2000–4500 CHF' },
-        { description: 'Planification d’équipe dédiée' },
-        { description: 'Monte-meubles ou double camion si besoin' },
-        { description: 'Emballage complet disponible' },
+        { description: lamT('Longue distance (~200 km): 2000–4500 CHF', 'Long distance (~200 km): 2000–4500 CHF', 'Langstrecke (~200 km): 2000–4500 CHF', 'Lunga distanza (~200 km): 2000–4500 CHF') },
+        { description: lamT('Planification d’équipe dédiée', 'Dedicated crew planning', 'Planung eines dedizierten Teams', 'Pianificazione squadra dedicata') },
+        { description: lamT('Monte-meubles ou double camion si besoin', 'Lift or double truck if needed', 'Möbellift oder Doppellastwagen falls nötig', 'Elevatore o doppio camion se serve') },
+        { description: lamT('Emballage complet disponible', 'Full packing available', 'Komplettpacken verfügbar', 'Imballo completo disponibile') },
       ],
-      callToAction: '<a class="btn btn-primary" href="/contact#form">Demander un devis</a>',
+      callToAction: `<a class="btn btn-primary" href="/contact#form">${lamT('Demander un devis', 'Request a quote', 'Offerte anfragen', 'Richiedi un preventivo')}</a>`,
     },
   ];
 })();

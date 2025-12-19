@@ -8,12 +8,14 @@ import { getBrandFromHost } from '~/lib/brand';
 import { BRANDS } from '~/lib/brands.config';
 import { getImage, getImageAlt } from '~/data/imageInventory';
 import { EXPERIENCES } from '~/data/experiences';
+import { resolveLocaleFromRequest } from '~/lib/locale';
 
 const host = Astro.request.headers.get('host');
 const brandKey = getBrandFromHost(host);
 const isUrgent = brandKey === 'urgent';
 const isTransport = brandKey === 'transport';
 const isExperience = brandKey === 'laclemanexperience';
+const isLausanne = brandKey === 'lausanne';
 const brandType =
   isUrgent
     ? 'urgent'
@@ -109,6 +111,108 @@ const heroImageId =
               : 'hero_happy_boxes_plants';
 const heroImage = getImage(heroImageId);
 const heroAlt = getImageAlt(heroImageId);
+const defaultLocale = brandKey === 'laclemanexperience' ? 'en' : 'fr';
+const locale = resolveLocaleFromRequest(Astro.request, defaultLocale);
+const lang = isExperience
+  ? (['fr', 'en', 'de', 'it'].includes(locale) ? locale : defaultLocale)
+  : isLausanne
+    ? (['fr', 'en', 'de', 'it'].includes(locale) ? locale : 'fr')
+    : 'fr';
+const isEn = lang === 'en';
+const isDe = lang === 'de';
+const isIt = lang === 'it';
+const lceT = <T,>(fr: T, en: T, de: T, it: T): T => {
+  if (!isExperience) return fr;
+  if (isEn) return en;
+  if (isDe) return de;
+  if (isIt) return it;
+  return fr;
+};
+const lamT = <T,>(fr: T, en: T, de: T, it: T): T => {
+  if (!isLausanne) return fr;
+  if (isEn) return en;
+  if (isDe) return de;
+  if (isIt) return it;
+  return fr;
+};
+const experienceFormatsData = lceT(
+  experienceFormats,
+  [
+    { title: 'Half-day', description: '2–4h · 2–6 ppl · Couples, VIP visitors', icon: 'tabler:clock-hour-4' },
+    { title: 'Full day', description: '5–8h · 2–8 ppl · Complete discovery', icon: 'tabler:calendar-time' },
+    { title: 'Signature evening', description: '3–4h · 2–10 ppl · Dinner, celebration', icon: 'tabler:moon-stars' },
+    { title: 'Immersion', description: '2–3 days · 2–6 ppl · UHNW, corporate', icon: 'tabler:route' },
+  ],
+  [
+    { title: 'Halbtags', description: '2–4h · 2–6 Pers. · Paare, VIP-Besucher', icon: 'tabler:clock-hour-4' },
+    { title: 'Ganzer Tag', description: '5–8h · 2–8 Pers. · Komplette Entdeckung', icon: 'tabler:calendar-time' },
+    { title: 'Signature-Abend', description: '3–4h · 2–10 Pers. · Dinner, Celebration', icon: 'tabler:moon-stars' },
+    { title: 'Immersion', description: '2–3 Tage · 2–6 Pers. · UHNW, Corporate', icon: 'tabler:route' },
+  ],
+  [
+    { title: 'Mezza giornata', description: '2–4h · 2–6 pers. · Coppie, visitatori VIP', icon: 'tabler:clock-hour-4' },
+    { title: 'Giornata intera', description: '5–8h · 2–8 pers. · Scoperta completa', icon: 'tabler:calendar-time' },
+    { title: 'Serata signature', description: '3–4h · 2–10 pers. · Cena, celebrazione', icon: 'tabler:moon-stars' },
+    { title: 'Immersione', description: '2–3 giorni · 2–6 pers. · UHNW, corporate', icon: 'tabler:route' },
+  ]
+);
+const experienceConciergeData = lceT(
+  experienceConcierge,
+  [
+    { title: 'Single concierge', description: 'WhatsApp + phone, responsive from D-7 to D+1.', icon: 'tabler:headset' },
+    { title: 'Written brief', description: 'Shared with skippers, winemakers, chefs. No improvisation.', icon: 'tabler:clipboard-list' },
+    { title: 'Weather plan B', description: 'Validated upfront, experience quality preserved.', icon: 'tabler:cloud-check' },
+  ],
+  [
+    { title: 'Ein Concierge', description: 'WhatsApp + Telefon, reaktionsschnell J-7 → J+1.', icon: 'tabler:headset' },
+    { title: 'Schriftliches Briefing', description: 'Mit Skippern, Winzern, Köchen geteilt. Keine Improvisation.', icon: 'tabler:clipboard-list' },
+    { title: 'Wetter-Plan B', description: 'Vorab validiert, Qualität bleibt.', icon: 'tabler:cloud-check' },
+  ],
+  [
+    { title: 'Concierge unico', description: 'WhatsApp + telefono, reattivo da D-7 a D+1.', icon: 'tabler:headset' },
+    { title: 'Brief scritto', description: 'Condiviso con skipper, vignaioli, chef. Nessuna improvvisazione.', icon: 'tabler:clipboard-list' },
+    { title: 'Piano B meteo', description: 'Validato in anticipo, esperienza preservata.', icon: 'tabler:cloud-check' },
+  ]
+);
+const experienceLogisticsData = lceT(
+  experienceLogistics,
+  [
+    { title: 'Locked slots', description: 'Sunset timings, door-to-door transfers, buffer times.', icon: 'tabler:clock-check' },
+    { title: 'Private transfers', description: 'Mercedes V/E, boat taxi if relevant, briefed drivers.', icon: 'tabler:car' },
+    { title: 'Permits & privatisations', description: 'Cellars, boats, hosted tables truly privatised.', icon: 'tabler:lock-square-rounded' },
+  ],
+  [
+    { title: 'Fixe Slots', description: 'Sunset-Zeiten, Tür-zu-Tür-Transfers, Pufferzeiten.', icon: 'tabler:clock-check' },
+    { title: 'Private Transfers', description: 'Mercedes V/E, Bootstaxi falls sinnvoll, gebriefte Fahrer.', icon: 'tabler:car' },
+    { title: 'Bewilligungen & Privatisierungen', description: 'Keller, Boote, Gastgebertafeln wirklich privat.', icon: 'tabler:lock-square-rounded' },
+  ],
+  [
+    { title: 'Slot bloccati', description: 'Orari sunset, transfer door-to-door, tempi cuscinetto.', icon: 'tabler:clock-check' },
+    { title: 'Transfer privati', description: 'Mercedes V/E, taxi boat se serve, autisti briefati.', icon: 'tabler:car' },
+    { title: 'Permessi & privatizzazioni', description: 'Cantine, barche, tavole davvero privatizzate.', icon: 'tabler:lock-square-rounded' },
+  ]
+);
+const experienceCommitmentsData = lceT(
+  experienceCommitments,
+  [
+    { title: 'Real privatisation', description: 'Never mixing groups.', icon: 'tabler:shield-lock' },
+    { title: 'Timing respected', description: 'Or compensated.', icon: 'tabler:clock-bolt' },
+    { title: 'Direct partners', description: 'Local skippers, winemakers, chefs.', icon: 'tabler:users' },
+    { title: 'Weather plan B', description: 'Alternatives ready and validated.', icon: 'tabler:umbrella' },
+  ],
+  [
+    { title: 'Echte Privatisierung', description: 'Keine Gruppendurchmischung.', icon: 'tabler:shield-lock' },
+    { title: 'Timing eingehalten', description: 'Oder kompensiert.', icon: 'tabler:clock-bolt' },
+    { title: 'Direkte Partner', description: 'Lokale Skipper, Winzer, Köche.', icon: 'tabler:users' },
+    { title: 'Wetter-Plan B', description: 'Alternativen bereit und validiert.', icon: 'tabler:umbrella' },
+  ],
+  [
+    { title: 'Vera privatizzazione', description: 'Mai gruppi mescolati.', icon: 'tabler:shield-lock' },
+    { title: 'Timing rispettato', description: 'O compensato.', icon: 'tabler:clock-bolt' },
+    { title: 'Partner diretti', description: 'Skipper, vignaioli, chef locali.', icon: 'tabler:users' },
+    { title: 'Piano B meteo', description: 'Alternative pronte e validate.', icon: 'tabler:umbrella' },
+  ]
+);
 const heroOverlay = isUrgent
   ? 'bg-black/22'
   : isTransport
@@ -208,7 +312,7 @@ const metadata = isUrgent
                 ? { title: 'Expériences Lac Léman', description: 'Croisières privées, vignobles UNESCO, tables d’hôtes et échappées alpines.' }
                 : { title: 'Services de déménagement' };
 
-const view = (() => {
+let view = (() => {
   switch (brandType) {
     case 'transport':
       return {
@@ -300,48 +404,109 @@ const view = (() => {
       };
     case 'experience':
       return {
-        tagline: 'Expériences Léman',
-        title: 'Croisières privées, vignobles UNESCO, tables d’hôtes',
-        subtitle: 'Conciergerie dédiée, partenaires locaux, logistique verrouillée entre lac, montagne et ville.',
+        tagline: lceT('Expériences Léman', 'Lake Geneva experiences', 'Genfersee-Erlebnisse', 'Esperienze Lago Lemano'),
+        title: lceT(
+          'Croisières privées, vignobles UNESCO, tables d’hôtes',
+          'Private cruises, UNESCO vineyards, hosted tables',
+          'Private Kreuzfahrten, UNESCO-Weinberge, Gastgebertafeln',
+          'Crociere private, vigneti UNESCO, tavole d’hôtes'
+        ),
+        subtitle: lceT(
+          'Conciergerie dédiée, partenaires locaux, logistique verrouillée entre lac, montagne et ville.',
+          'Dedicated concierge, local partners, locked logistics across lake, mountain, and city.',
+          'Dedizierter Concierge, lokale Partner, fixierte Logistik zwischen See, Bergen und Stadt.',
+          'Concierge dedicato, partner locali, logistica bloccata tra lago, montagna e città.'
+        ),
         actions: [
-          { variant: 'primary', text: 'Réserver une expérience', href: '/contact#form', icon: 'tabler:mail-forward' },
-          { text: 'Parler à un concierge', href: whatsapp, icon: 'tabler:phone' },
+          { variant: 'primary', text: lceT('Réserver une expérience', 'Book an experience', 'Erlebnis buchen', 'Prenotare un’esperienza'), href: '/contact#form', icon: 'tabler:mail-forward' },
+          { text: lceT('Parler à un concierge', 'Talk to a concierge', 'Mit dem Concierge sprechen', 'Parlare con un concierge'), href: whatsapp, icon: 'tabler:phone' },
         ],
-        cardTitle: 'Saisonnalité orchestrée',
-        cardSubtitle: 'Lac au printemps, vignobles en été, tables d’hôtes en automne, bains alpins en hiver.',
-        featureTitle: 'Pourquoi nous choisir',
-        featureSubtitle: 'Conciergerie dédiée + partenaires locaux premium.',
+        cardTitle: lceT('Saisonnalité orchestrée', 'Seasonality orchestrated', 'Saisonale Orchestrierung', 'Stagionalità orchestrata'),
+        cardSubtitle: lceT(
+          'Lac au printemps, vignobles en été, tables d’hôtes en automne, bains alpins en hiver.',
+          'Lake in spring, vineyards in summer, hosted tables in autumn, alpine baths in winter.',
+          'See im Frühling, Weinberge im Sommer, Gastgebertafeln im Herbst, alpine Bäder im Winter.',
+          'Lago in primavera, vigneti in estate, tavole d’hôtes in autunno, bagni alpini in inverno.'
+        ),
+        featureTitle: lceT('Pourquoi nous choisir', 'Why choose us', 'Warum uns wählen', 'Perché scegliere noi'),
+        featureSubtitle: lceT(
+          'Conciergerie dédiée + partenaires locaux premium.',
+          'Dedicated concierge + premium local partners.',
+          'Dedizierter Concierge + lokale Premiumpartner.',
+          'Concierge dedicato + partner locali premium.'
+        ),
         featureItems: [
-          { title: 'Concierge unique', description: 'Un interlocuteur pour tout cadrer.', icon: 'tabler:headset' },
-          { title: 'Partenaires triés', description: 'Bateliers privés, vignerons UNESCO, chefs.', icon: 'tabler:medal' },
-          { title: 'Timing verrouillé', description: 'Horaires précis, transferts coordonnés.', icon: 'tabler:clock' },
+          {
+            title: lceT('Concierge unique', 'Dedicated concierge', 'Dedizierter Concierge', 'Concierge dedicato'),
+            description: lceT('Un interlocuteur pour tout cadrer.', 'One contact to frame everything.', 'Eine Ansprechperson für alles.', 'Un referente unico per tutto.'),
+            icon: 'tabler:headset',
+          },
+          {
+            title: lceT('Partenaires triés', 'Vetted partners', 'Geprüfte Partner', 'Partner selezionati'),
+            description: lceT('Bateliers privés, vignerons UNESCO, chefs.', 'Private boats, UNESCO winemakers, chefs.', 'Private Boote, UNESCO-Winzer, Köche.', 'Barche private, vignaioli UNESCO, chef.'),
+            icon: 'tabler:medal',
+          },
+          {
+            title: lceT('Timing verrouillé', 'Locked timing', 'Fixiertes Timing', 'Timing bloccato'),
+            description: lceT('Horaires précis, transferts coordonnés.', 'Precise schedules, coordinated transfers.', 'Genaue Zeiten, koordinierte Transfers.', 'Orari precisi, transfer coordinati.'),
+            icon: 'tabler:clock',
+          },
         ],
-        content1Title: 'Moments signature',
-        content1Subtitle: 'Croisière sunset, cave voûtée UNESCO, table d’hôtes, bains alpins.',
+        content1Title: lceT('Moments signature', 'Signature moments', 'Signature-Momente', 'Momenti signature'),
+        content1Subtitle: lceT(
+          'Croisière sunset, cave voûtée UNESCO, table d’hôtes, bains alpins.',
+          'Sunset cruise, UNESCO vaulted cellar, hosted table, alpine baths.',
+          'Sunset-Cruise, UNESCO-Gewölbekeller, Table d’hôtes, alpine Bäder.',
+          'Crociera al tramonto, cantina a volta UNESCO, tavola d’hôtes, bagni alpini.'
+        ),
         content1Items: [
-          { title: 'Croisière privée', description: 'Bateau privatisé, sommelière, plateau fromages.', icon: 'tabler:sailboat' },
-        { title: 'Vignobles UNESCO', description: 'Caves voûtées, accords vins-fromages.', icon: 'tabler:glass-full' },
-        { title: 'Table d’hôtes', description: 'Chef local, produits lac + alpages.', icon: 'tabler:snowflake' },
+          {
+            title: lceT('Croisière privée', 'Private cruise', 'Private Cruise', 'Crociera privata'),
+            description: lceT('Bateau privatisé, sommelière, plateau fromages.', 'Private boat, sommelier, cheese board.', 'Privates Boot, Sommelière, Käseplatte.', 'Barca privata, sommelier, tagliere di formaggi.'),
+            icon: 'tabler:sailboat',
+          },
+          {
+            title: lceT('Vignobles UNESCO', 'UNESCO vineyards', 'UNESCO-Weinberge', 'Vigneti UNESCO'),
+            description: lceT('Caves voûtées, accords vins-fromages.', 'Vaulted cellars, wine-cheese pairings.', 'Gewölbekeller, Wein-Käse-Pairings.', 'Cantine a volta, abbinamenti vino-formaggi.'),
+            icon: 'tabler:glass-full',
+          },
+          {
+            title: lceT('Table d’hôtes', 'Hosted table', 'Table d’hôtes', 'Table d’hôtes'),
+            description: lceT('Chef local, produits lac + alpages.', 'Local chef, lake + alpine produce.', 'Lokaler Chef, Produkte vom See & aus den Alpen.', 'Chef locale, prodotti del lago e delle alpi.'),
+            icon: 'tabler:snowflake',
+          },
         ],
-        content2Title: 'Logistique premium',
-        content2Subtitle: 'Transferts, brief partenaires, plan B météo inclus.',
+        content2Title: lceT('Logistique premium', 'Premium logistics', 'Premium-Logistik', 'Logistica premium'),
+        content2Subtitle: lceT('Transferts, brief partenaires, plan B météo inclus.', 'Transfers, partner briefs, weather plan B included.', 'Transfers, Partner-Briefings, Wetter-Plan B inklusive.', 'Transfer, brief partner, piano B meteo inclusi.'),
         content2Items: [
-          { title: 'Transferts privés', description: 'Chauffeur ou bateau-taxi selon parcours.', icon: 'tabler:car' },
-          { title: 'Brief discret', description: 'Hôtes et équipes alignés à l’avance.', icon: 'tabler:clipboard-check' },
-          { title: 'Plan B météo', description: 'Alternatives prévues sans friction.', icon: 'tabler:umbrella' },
+          {
+            title: lceT('Transferts privés', 'Private transfers', 'Private Transfers', 'Transfer privati'),
+            description: lceT('Chauffeur ou bateau-taxi selon parcours.', 'Driver or boat taxi depending on route.', 'Fahrer oder Bootstaxi je nach Strecke.', 'Autista o taxi boat a seconda del percorso.'),
+            icon: 'tabler:car',
+          },
+          {
+            title: lceT('Brief discret', 'Discreet briefing', 'Diskretes Briefing', 'Brief discreto'),
+            description: lceT('Hôtes et équipes alignés à l’avance.', 'Hosts and teams aligned in advance.', 'Gastgeber und Teams vorab ausgerichtet.', 'Host e team allineati in anticipo.'),
+            icon: 'tabler:clipboard-check',
+          },
+          {
+            title: lceT('Plan B météo', 'Weather plan B', 'Wetter-Plan B', 'Piano B meteo'),
+            description: lceT('Alternatives prévues sans friction.', 'Alternatives ready without friction.', 'Alternativen reibungslos bereit.', 'Alternative pronte senza attrito.'),
+            icon: 'tabler:umbrella',
+          },
         ],
-        supportTitle: 'Inclus',
-        supportSubtitle: 'Base de chaque expérience.',
+        supportTitle: lceT('Inclus', 'Included', 'Inklusive', 'Incluso'),
+        supportSubtitle: lceT('Base de chaque expérience.', 'Standard with every experience.', 'Standard bei jedem Erlebnis.', 'Base di ogni esperienza.'),
         supportItems: [
-          { title: 'Concierge', description: 'Un contact dédié.', icon: 'tabler:user-star' },
-          { title: 'Horaires verrouillés', description: 'Timing précis, confirmations.', icon: 'tabler:clock' },
-          { title: 'Partenaires premium', description: 'Réseau local sélectionné.', icon: 'tabler:check' },
+          { title: lceT('Concierge', 'Concierge', 'Concierge', 'Concierge'), description: lceT('Un contact dédié.', 'Dedicated contact.', 'Eine dedizierte Ansprechperson.', 'Un contatto dedicato.'), icon: 'tabler:user-star' },
+          { title: lceT('Horaires verrouillés', 'Locked timings', 'Fixe Zeiten', 'Orari bloccati'), description: lceT('Timing précis, confirmations.', 'Precise timing, confirmations.', 'Präzises Timing, Bestätigungen.', 'Timing preciso, conferme.'), icon: 'tabler:clock' },
+          { title: lceT('Partenaires premium', 'Premium partners', 'Premium-Partner', 'Partner premium'), description: lceT('Réseau local sélectionné.', 'Selected local network.', 'Ausgewähltes lokales Netzwerk.', 'Rete locale selezionata.'), icon: 'tabler:check' },
         ],
-        ctaTitle: 'Prêt pour une expérience Léman ?',
-        ctaSubtitle: 'Dites-nous vos dates et vos envies. On orchestre le reste.',
+        ctaTitle: lceT('Prêt pour une expérience Léman ?', 'Ready for a Lake Geneva experience?', 'Bereit für ein Genfersee-Erlebnis?', 'Pronti per un’esperienza Léman?'),
+        ctaSubtitle: lceT('Dites-nous vos dates et vos envies. On orchestre le reste.', 'Share your dates and wishes. We orchestrate the rest.', 'Teilen Sie Termine und Wünsche. Wir orchestrieren den Rest.', 'Dateci le date e i vostri desideri. Al resto pensiamo noi.'),
         ctaActions: [
-          { variant: 'primary', text: 'Réserver', href: '/contact#form', icon: 'tabler:mail-forward' },
-          { text: 'Parler à un concierge', href: whatsapp, icon: 'tabler:phone' },
+          { variant: 'primary', text: lceT('Réserver', 'Book', 'Buchen', 'Prenotare'), href: '/contact#form', icon: 'tabler:mail-forward' },
+          { text: lceT('Parler à un concierge', 'Talk to a concierge', 'Mit dem Concierge sprechen', 'Parlare con un concierge'), href: whatsapp, icon: 'tabler:phone' },
         ],
       };
     case 'videmaison':
@@ -572,6 +737,64 @@ const view = (() => {
   }
 })();
 
+if (isLausanne && brandType === 'move') {
+  view = {
+    ...view,
+    tagline: lamT('Nos services', 'Our services', 'Unsere Services', 'I nostri servizi'),
+    title: lamT('Déménagements soignés partout en Suisse romande', 'Careful moves across Suisse romande', 'Sorgfältige Umzüge in der Romandie', 'Traslochi curati in Svizzera romanda'),
+    subtitle: lamT(
+      'Appartement, maison, bureau ou longue distance : nous préparons, protégeons et transportons vos biens avec une équipe locale.',
+      'Apartment, house, office or long distance: local team to prep, protect and transport your belongings.',
+      'Wohnung, Haus, Büro oder Langstrecke: Lokales Team zum Vorbereiten, Schützen und Transportieren.',
+      'Appartamento, casa, ufficio o lunga distanza: team locale per preparare, proteggere e trasportare i tuoi beni.'
+    ),
+    actions: [
+      { variant: 'primary', text: lamT('Obtenir un devis', 'Get a quote', 'Offerte anfordern', 'Richiedi un preventivo'), href: '/contact#form', icon: 'tabler:arrow-right' },
+    ],
+    featureTitle: lamT('Prestations principales', 'Core services', 'Hauptleistungen', 'Servizi principali'),
+    featureSubtitle: lamT('Choisissez le format adapté à votre déménagement.', 'Choose the format for your move.', 'Wählen Sie das passende Format für Ihren Umzug.', 'Scegli il formato adatto al tuo trasloco.'),
+    featureItems: [
+      { title: lamT('Appartement', 'Apartment', 'Wohnung', 'Appartamento'), description: lamT('Studios et 2-4.5 pièces avec gestion ascenseurs/parkings.', 'Studios and 2–4.5 rooms with lifts/parking handled.', 'Studios und 2–4.5 Zimmer mit Lift/Parkplatz-Handling.', 'Monolocali e 2–4,5 locali con gestione ascensori/parcheggi.'), icon: 'tabler:building' },
+      { title: lamT('Maisons & villas', 'Houses & villas', 'Häuser & Villen', 'Case & ville'), description: lamT('Volumes importants, démontage/remontage inclus.', 'Larger volumes, disassembly/reassembly included.', 'Größere Volumen, Ab-/Aufbau inklusive.', 'Volumi importanti, smontaggio/rimontaggio incluso.'), icon: 'tabler:home' },
+      { title: lamT('Emballage & déballage', 'Packing & unpacking', 'Packen & Auspacken', 'Imballaggio & disimballo'), description: lamT('Cartons, penderies, protections vaisselle et emballage complet.', 'Boxes, wardrobes, dish protection and full packing.', 'Kartons, Kleiderboxen, Geschirrschutz und Komplettpacken.', 'Scatole, appendiabiti, protezioni stoviglie e imballo completo.'), icon: 'tabler:package' },
+    ],
+    content1Title: lamT('Déménagement résidentiel', 'Residential moving', 'Privatumzug', 'Trasloco residenziale'),
+    content1Subtitle: lamT('Du studio à la maison familiale, matériel adapté et équipe dimensionnée.', 'From studio to family home, right gear and sized crew.', 'Vom Studio bis zum Familienhaus, passendes Material und Teamgröße.', 'Dallo studio alla casa familiare, attrezzatura e squadra adeguate.'),
+    content1Items: [
+      { title: lamT('Repérage des accès', 'Access scouting', 'Zugangsscouting', 'Sopralluogo accessi'), description: lamT('Ascenseur, parkings, autorisations municipales.', 'Lifts, parking, city permits.', 'Lift, Parkplätze, Bewilligungen.', 'Ascensori, parcheggi, permessi comunali.'), icon: 'tabler:map-pin' },
+      { title: lamT('Protection systématique', 'Systematic protection', 'Systematischer Schutz', 'Protezione sistematica'), description: lamT('Sols, murs, portes, meubles protégés.', 'Floors, walls, doors, furniture protected.', 'Böden, Wände, Türen, Möbel geschützt.', 'Pavimenti, pareti, porte, mobili protetti.'), icon: 'tabler:shield-check' },
+      { title: lamT('Remontage soigné', 'Careful reassembly', 'Sorgfältiger Wiederaufbau', 'Rimontaggio accurato'), description: lamT('Remise en place dans les bonnes pièces.', 'Placed back in the right rooms.', 'Wieder am richtigen Ort platziert.', 'Riposti nelle stanze giuste.'), icon: 'tabler:tools' },
+    ],
+    cardTitle: lamT('Camion réservé, protections prêtes', 'Truck reserved, protections ready', 'LKW reserviert, Schutz bereit', 'Camion riservato, protezioni pronte'),
+    cardSubtitle: lamT('Créneau confirmé, repérage des accès et protections sols/murs incluses.', 'Slot confirmed, access scouting and floor/wall protection included.', 'Slot bestätigt, Zugangsscouting und Boden-/Wandschutz inklusive.', 'Fascia oraria confermata, sopralluogo accessi e protezioni pavimenti/pareti inclusi.'),
+    content2Title: lamT('Services complémentaires', 'Complementary services', 'Zusatzservices', 'Servizi complementari'),
+    content2Subtitle: lamT('Sélectionnez uniquement ce dont vous avez besoin.', 'Select only what you need.', 'Wählen Sie nur, was Sie brauchen.', 'Seleziona solo ciò di cui hai bisogno.'),
+    content2Items: [
+      { title: lamT('Emballage & déballage', 'Packing & unpacking', 'Packen & Auspacken', 'Imballaggio & disimballo'), description: lamT('Protection fragile, penderies, vaisselle.', 'Fragile care, wardrobes, dishes.', 'Fragileschutz, Kleiderboxen, Geschirr.', 'Protezione fragili, appendiabiti, stoviglie.'), icon: 'tabler:package' },
+      { title: lamT('Démontage/remontage', 'Disassembly/reassembly', 'Ab-/Aufbau', 'Smontaggio/rimontaggio'), description: lamT('Meubles, dressing, literie et luminaires.', 'Furniture, wardrobes, bedding, lighting.', 'Möbel, Schrank, Bett, Beleuchtung.', 'Mobili, armadi, letti e illuminazione.'), icon: 'tabler:tools' },
+      { title: lamT('Nettoyage de sortie', 'Move-out cleaning', 'Auszugsreinigung', 'Pulizia di fine locazione'), description: lamT('Option ménage pour rendre le logement en ordre.', 'Cleaning option to hand back clean.', 'Reinigungsoption für ordentliche Übergabe.', 'Opzione pulizia per consegna in ordine.'), icon: 'tabler:sparkles' },
+    ],
+    supportTitle: lamT('Ce qui est inclus', 'What’s included', 'Was inkludiert ist', 'Cosa è incluso'),
+    supportSubtitle: lamT('Bases solides pour chaque déménagement.', 'Solid basics for every move.', 'Solide Basis für jeden Umzug.', 'Basi solide per ogni trasloco.'),
+    supportItems: [
+      { title: lamT('Chef d’équipe dédié', 'Dedicated crew lead', 'Dedizierter Teamleiter', 'Caposquadra dedicato'), description: lamT('Coordonne horaires et accès.', 'Coordinates timing and access.', 'Koordiniert Zeiten und Zugang.', 'Coordina orari e accessi.'), icon: 'tabler:headset' },
+      { title: lamT('Protections complètes', 'Full protections', 'Vollschutz', 'Protezioni complete'), description: lamT('Housses, couvertures, sangles, chariots.', 'Covers, blankets, straps, dollies.', 'Bezüge, Decken, Gurte, Rollwagen.', 'Coperture, coperte, cinghie, carrelli.'), icon: 'tabler:box' },
+      { title: lamT('Créneaux fiables', 'Reliable slots', 'Verlässliche Slots', 'Fasce affidabili'), description: lamT('Arrivée confirmée, créneau matin/après-midi.', 'Confirmed arrival, morning/afternoon window.', 'Bestätigte Ankunft, Morgen-/Nachmittagsfenster.', 'Arrivo confermato, finestra mattina/pomeriggio.'), icon: 'tabler:calendar-time' },
+    ],
+    ctaTitle: lamT('Discutons de votre déménagement', 'Let’s plan your move', 'Lassen Sie uns Ihren Umzug planen', 'Pianifichiamo il tuo trasloco'),
+    ctaSubtitle: lamT(
+      'Expliquez votre volume, vos adresses et la date souhaitée : nous revenons avec un plan clair.',
+      'Share volume, addresses, and target date: we reply with a clear plan.',
+      'Nennen Sie Volumen, Adressen und Wunschtermin: wir antworten mit einem klaren Plan.',
+      'Indica volume, indirizzi e data: ti inviamo un piano chiaro.'
+    ),
+    ctaActions: [
+      { variant: 'primary', text: lamT('Planifier mon déménagement', 'Schedule my move', 'Meinen Umzug planen', 'Pianifica il mio trasloco'), href: '/contact#form', icon: 'tabler:mail-forward' },
+      { text: lamT('Voir les tarifs', 'See pricing', 'Preise ansehen', 'Vedi tariffe'), href: '/pricing' },
+    ],
+  };
+}
+
 const accentClass =
   brandType === 'urgent'
     ? 'text-orange-100/90'
@@ -749,29 +972,29 @@ const optionsGradient = contentGradient;
     <>
       <Features2
         id="experience-formats"
-        title="Formats d’expérience"
-        subtitle="Décider en 1 regard"
+        title={isEn ? 'Experience formats' : 'Formats d’expérience'}
+        subtitle={isEn ? 'Decide at a glance' : 'Décider en 1 regard'}
         columns={4}
         classes={{ container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-5 gap-3 border border-emerald-200/35 bg-white/92 text-slate-900' } }}
-        items={experienceFormats}
+        items={experienceFormatsData}
       />
 
       <Features2
         id="experience-concierge"
-        title="Conciergerie dédiée — concret"
-        subtitle="Inclus dans chaque expérience"
+        title={isEn ? 'Dedicated concierge — concrete' : 'Conciergerie dédiée — concret'}
+        subtitle={isEn ? 'Included in every experience' : 'Inclus dans chaque expérience'}
         columns={3}
         classes={{ container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-5 gap-3 border border-emerald-200/35 bg-white/92 text-slate-900' } }}
-        items={experienceConcierge}
+        items={experienceConciergeData}
       />
 
       <Features2
         id="experience-logistics"
-        title="Logistique & précision"
-        subtitle="Ce que nous verrouillons"
+        title={isEn ? 'Logistics & precision' : 'Logistique & précision'}
+        subtitle={isEn ? 'What we lock in' : 'Ce que nous verrouillons'}
         columns={3}
         classes={{ container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-5 gap-3 border border-emerald-200/35 bg-white/92 text-slate-900' } }}
-        items={experienceLogistics}
+        items={experienceLogisticsData}
       />
     </>
   )}
@@ -901,8 +1124,8 @@ const optionsGradient = contentGradient;
     <>
       <Features2
         id="experiences-signature"
-        title="Sélection signature"
-        subtitle="Lac, vignobles, gastronomie, altitude"
+        title={isEn ? 'Signature selection' : 'Sélection signature'}
+        subtitle={isEn ? 'Lake, vineyards, gastronomy, altitude' : 'Lac, vignobles, gastronomie, altitude'}
         columns={3}
         classes={{ container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-6 gap-4 text-slate-900 border border-emerald-200/35 bg-white/95' } }}
         items={signatureExperiences}
@@ -910,8 +1133,8 @@ const optionsGradient = contentGradient;
 
       <Features2
         id="experiences-slow"
-        title="Slow & bien-être"
-        subtitle="Calme, silence, design suisse, thermal"
+        title={isEn ? 'Slow & wellness' : 'Slow & bien-être'}
+        subtitle={isEn ? 'Calm, silence, Swiss design, thermal' : 'Calme, silence, design suisse, thermal'}
         columns={3}
         classes={{ container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-6 gap-4 text-slate-900 border border-emerald-200/30 bg-white/92' } }}
         items={slowExperiences}
@@ -919,8 +1142,8 @@ const optionsGradient = contentGradient;
 
       <Features2
         id="experiences-winter"
-        title="Hiver & lumière"
-        subtitle="Chalet, veillées, silence neige, brumes du lac"
+        title={isEn ? 'Winter & light' : 'Hiver & lumière'}
+        subtitle={isEn ? 'Chalet, fireside, snow silence, lake mist' : 'Chalet, veillées, silence neige, brumes du lac'}
         columns={3}
         classes={{ container: 'max-w-5xl', items: { panel: 'panel-surface rounded-2xl p-6 gap-4 text-slate-900 border border-emerald-200/30 bg-white/92' } }}
         items={winterExperiences}
@@ -928,8 +1151,8 @@ const optionsGradient = contentGradient;
 
       <Features2
         id="experiences-corporate"
-        title="Corporate & célébrations"
-        subtitle="Retraites exécutives, propositions, héritage familial"
+        title={isEn ? 'Corporate & celebrations' : 'Corporate & célébrations'}
+        subtitle={isEn ? 'Executive retreats, proposals, family heritage' : 'Retraites exécutives, propositions, héritage familial'}
         columns={2}
         classes={{ container: 'max-w-5xl', items: { panel: 'panel-surface rounded-2xl p-6 gap-4 text-slate-900 border border-emerald-200/30 bg-white/92' } }}
         items={corporateExperiences}
@@ -937,11 +1160,11 @@ const optionsGradient = contentGradient;
 
       <Features2
         id="experience-engagements"
-        title="Nos engagements"
-        subtitle="Ce que nous garantissons"
+        title={isEn ? 'Our guarantees' : 'Nos engagements'}
+        subtitle={isEn ? 'What we guarantee' : 'Ce que nous garantissons'}
         columns={4}
         classes={{ container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-5 gap-3 border border-emerald-200/35 bg-white/92 text-slate-900' } }}
-        items={experienceCommitments}
+        items={experienceCommitmentsData}
       />
     </>
   )}

@@ -60,6 +60,22 @@ const {
               <div class="max-w-xs sm:max-w-md m-auto flex flex-nowrap flex-col sm:flex-row sm:justify-center gap-4 intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade">
                 {Array.isArray(actions) ? (
                   actions.map((action) => {
+                    if (action?.kind === 'select') {
+                      return (
+                        <div class="flex w-full sm:w-auto">
+                          <label class="sr-only" for={action.id || 'hero-select'}>{action.label || 'Sélection'}</label>
+                          <select
+                            id={action.id || 'hero-select'}
+                            class="w-full rounded-full border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm focus:border-primary focus:ring-2 focus:ring-primary/20"
+                            value={action.value}
+                          >
+                            {(action.options || []).map((opt) => (
+                              <option value={opt.value}>{opt.label}</option>
+                            ))}
+                          </select>
+                        </div>
+                      );
+                    }
                     const { class: actionClass, ...actionProps } = action || {};
                     return (
                       <div class="flex w-full sm:w-auto">

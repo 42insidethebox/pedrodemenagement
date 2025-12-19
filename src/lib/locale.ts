@@ -1,40 +1,24 @@
-import type { EmailLocale } from './email-templates';
-import { resolveEmailLocale } from './email';
+import type { APIRoute } from 'astro';
 
-const LOCALE_QUERY_KEYS = ['lang', 'locale', 'language'];
+const SUPPORTED = ['fr', 'en', 'de', 'it'] as const;
+export type Locale = (typeof SUPPORTED)[number];
 
-function extractFromAcceptLanguage(header: string | null | undefined) {
-  if (!header) return null;
-  const [first] = header.split(',');
-  if (!first) return null;
-  const base = first.split(';')[0]?.trim();
-  if (!base) return null;
-  const short = base.includes('-') ? base.split('-')[0] : base;
-  return short;
+export const DEFAULT_LOCALE: Locale = 'fr';
+
+export function resolveLocaleFromRequest(request: Request, fallback: Locale = DEFAULT_LOCALE): Locale {
+  const cookie = request.headers.get('cookie') || '';
+  const cookieMatch = cookie
+    .split(';')
+    .map((c) => c.trim())
+    .find((c) => c.startsWith('aw_lang='));
+  const cookieLang = cookieMatch ? cookieMatch.split('=')[1] : '';
+
+  const accept = (request.headers.get('accept-language') || '').slice(0, 2).toLowerCase();
+
+  return (SUPPORTED.find((l) => l === cookieLang) ??
+    SUPPORTED.find((l) => l === accept) ??
+    fallback) as Locale;
 }
 
-export function detectRequestLocale(request: Request, url?: URL, fallback?: string | null): EmailLocale {
-  let candidate: string | null | undefined = null;
-  if (url) {
-    for (const key of LOCALE_QUERY_KEYS) {
-      const value = url.searchParams.get(key);
-      if (value) {
-        candidate = value;
-        break;
-      }
-    }
-    if (!candidate) {
-      const segments = url.pathname.split('/').filter(Boolean);
-      if (segments.length > 0) {
-        candidate = segments[0];
-      }
-    }
-  }
-  if (!candidate) {
-    candidate = extractFromAcceptLanguage(request.headers.get('accept-language'));
-  }
-  if (!candidate && fallback) {
-    candidate = fallback;
-  }
-  return resolveEmailLocale(candidate ?? undefined);
-}
+// Helper to expose locale to API routes (if needed later)
+export type LocaleAwareAPIRoute = APIRoute & { locale?: Locale };
