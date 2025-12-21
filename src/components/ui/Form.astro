@@ -237,13 +237,27 @@ if (!sections.length) {
     {
       button && (
         <div class="col-span-1 md:col-span-2 mt-10 grid">
-          <div class="flex justify-between">
-            <Button variant="secondary" type="button" class="hidden" data-step-prev>Précédent</Button>
-            <div class="flex gap-3 ml-auto">
-              <Button variant="secondary" type="button" class={sections.length > 1 ? '' : 'hidden'} data-step-next>
+          <div class="flex items-center justify-between gap-4">
+            <div class="flex-none w-[132px]">
+              <Button
+                variant="secondary"
+                type="button"
+                class="invisible opacity-0 pointer-events-none w-full justify-center"
+                data-step-prev
+              >
+                Précédent
+              </Button>
+            </div>
+            <div class="flex flex-none gap-3 items-center">
+              <Button
+                variant="secondary"
+                type="button"
+                class={`flex-none w-[132px] justify-center ${sections.length > 1 ? '' : 'hidden'}`}
+                data-step-next
+              >
                 Suivant
               </Button>
-              <Button variant="primary" type="submit" data-step-submit>
+              <Button variant="primary" type="submit" class="flex-none w-[140px] justify-center" data-step-submit>
                 {button}
               </Button>
             </div>
@@ -328,13 +342,9 @@ if (!sections.length) {
         }
 
         const requiredEls = el.querySelectorAll('[required], [data-required-original="true"]');
-        const wasHidden = (el as HTMLElement).style.display === 'none';
         if (shouldShow) {
           (el as HTMLElement).style.display = '';
-          if (wasHidden) {
-            el.classList.add('conditional-reveal');
-            setTimeout(() => el.classList.remove('conditional-reveal'), 800);
-          }
+          el.classList.remove('conditional-reveal');
           requiredEls.forEach((r: any) => {
             r.required = r.dataset.requiredOriginal === 'true';
           });
@@ -536,6 +546,20 @@ if (!sections.length) {
     const fieldsContainer = form?.querySelector('[data-stepper-fields]') as HTMLElement | null;
     let maxHeight = 0;
 
+    const setButtonState = (btn: HTMLButtonElement | null, isVisible: boolean, keepSpace = false) => {
+      if (!btn) return;
+      btn.setAttribute('aria-hidden', (!isVisible).toString());
+      if (keepSpace) {
+        btn.classList.toggle('invisible', !isVisible);
+        btn.classList.toggle('opacity-0', !isVisible);
+        btn.classList.toggle('pointer-events-none', !isVisible);
+        btn.classList.remove('hidden');
+      } else {
+        btn.classList.toggle('hidden', !isVisible);
+        btn.classList.remove('invisible', 'opacity-0', 'pointer-events-none');
+      }
+    };
+
     const updateContainerHeight = () => {
       if (!fieldsContainer) return;
       const currentHeight = fieldsContainer.offsetHeight;
@@ -583,9 +607,9 @@ if (!sections.length) {
         label.classList.toggle('text-slate-500', !isActive);
         label.classList.toggle('dark:text-slate-300', !isActive);
       });
-      if (prevBtn) prevBtn.classList.toggle('hidden', stepIdx === 0);
-      if (nextBtn) nextBtn.classList.toggle('hidden', stepIdx >= steps.length - 1);
-      if (submitBtn) submitBtn.classList.toggle('hidden', stepIdx < steps.length - 1);
+      setButtonState(prevBtn, stepIdx > 0, true);
+      setButtonState(nextBtn, stepIdx < steps.length - 1, true);
+      setButtonState(submitBtn, stepIdx >= steps.length - 1);
       applyConditional();
       updateContainerHeight();
       previousStep = stepIdx;
