@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 
-const SUPPORTED = ['fr', 'en', 'de', 'it'] as const;
+const SUPPORTED = ['fr', 'en', 'de', 'it', 'ar', 'zh'] as const;
 export type Locale = (typeof SUPPORTED)[number];
 
 export const DEFAULT_LOCALE: Locale = 'fr';

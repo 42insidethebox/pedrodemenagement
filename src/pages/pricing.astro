@@ -44,18 +44,22 @@ const isLausanne = brandKey === 'lausanne';
 const defaultLocale = isExperience ? 'en' : 'fr';
 const locale = resolveLocaleFromRequest(Astro.request, defaultLocale);
 const lang = isExperience
-  ? (['fr', 'en', 'de', 'it'].includes(locale) ? locale : defaultLocale)
+  ? (['fr', 'en', 'de', 'it', 'ar', 'zh'].includes(locale) ? locale : defaultLocale)
   : isLausanne
     ? (['fr', 'en', 'de', 'it'].includes(locale) ? locale : 'fr')
     : 'fr';
 const isEn = lang === 'en';
 const isDe = lang === 'de';
 const isIt = lang === 'it';
-const lceT = <T,>(fr: T, en: T, de: T, it: T): T => {
+const isAr = lang === 'ar';
+const isZh = lang === 'zh';
+const lceT = <T,>(fr: T, en: T, de: T, it: T, ar?: T, zh?: T): T => {
   if (!isExperience) return fr;
   if (isEn) return en;
   if (isDe) return de;
   if (isIt) return it;
+  if (isAr && ar !== undefined) return ar;
+  if (isZh && zh !== undefined) return zh;
   return fr;
 };
 const lamT = <T,>(fr: T, en: T, de: T, it: T): T => {
@@ -65,33 +69,61 @@ const lamT = <T,>(fr: T, en: T, de: T, it: T): T => {
   if (isIt) return it;
   return fr;
 };
+const experienceFaqTitle = isExperience
+  ? lceT('Questions sur les tarifs', 'Pricing questions', 'Fragen zu den Preisen', 'Domande sui prezzi', 'أسئلة حول الأسعار', '价格问答')
+  : `Questions sur les tarifs ${view.hero.tagline?.toLowerCase?.() || ''}`.trim();
+const experienceStepsTitle = isExperience
+  ? lceT('Comment nous calculons', 'How we calculate', 'Wie wir kalkulieren', 'Come calcoliamo', 'كيف نحسب', '我们如何计算')
+  : 'Comment nous calculons';
+const experienceStepsTagline = isExperience
+  ? lceT('Processus', 'Process', 'Prozess', 'Processo', 'العملية', '流程')
+  : 'Processus';
+const transparencyLabel = isExperience
+  ? lceT('Transparence', 'Transparency', 'Transparenz', 'Trasparenza', 'شفافية', '透明度')
+  : 'Transparence';
+const transparencyBody = isExperience
+  ? lceT(
+      'Prix en CHF, TVA incluse, sans frais cachés. Ajustements seulement si volume ou options changent.',
+      'Prices in CHF, VAT included, no hidden fees. Adjustments only if scope or options change.',
+      'Preise in CHF inkl. MwSt., keine versteckten Gebühren. Anpassungen nur bei geändertem Umfang/Optionen.',
+      'Prezzi in CHF IVA inclusa, nessun costo nascosto. Adeguamenti solo se cambiano perimetro/opzioni.',
+      'أسعار بالفرنك مع ضريبة، بلا رسوم خفية. تعديلات فقط إذا تغيّر الحجم أو الخيارات.',
+      '价格为瑞郎含税，无隐藏费用。仅在范围或选项变化时调整。'
+    )
+  : 'Prix en CHF, TVA incluse, sans frais cachés. Ajustements seulement si volume ou options changent.';
 
 const experiencePriceNotes = [
   {
-    title: lceT('Inclus', 'Included', 'Inklusive', 'Incluso'),
+    title: lceT('Inclus', 'Included', 'Inklusive', 'Incluso', 'مشمول', '包含'),
     description: lceT(
       'Privatisation (bateau / cave / table), conciergerie, partenaires premium, TVA.',
       'Privatisation (boat/cellar/hosted table), concierge, premium partners, VAT.',
       'Privatisierung (Boot/Keller/Table d’hôtes), Concierge, Premiumpartner, MwSt.',
-      'Privatizzazione (barca/cantina/tavola), concierge, partner premium, IVA.'
+      'Privatizzazione (barca/cantina/tavola), concierge, partner premium, IVA.',
+      'خصخصة (قارب/قبو/مائدة)، كونسيرج، شركاء مميزون، ضريبة.',
+      '私享（游船/酒窖/私宴）、礼宾、优质伙伴、含税。'
     ),
   },
   {
-    title: lceT('Variables', 'Variables', 'Variablen', 'Variabili'),
+    title: lceT('Variables', 'Variables', 'Variablen', 'Variabili', 'متغيرات', '变量'),
     description: lceT(
       'Saison (sunset, vendanges, hiver), durée, options (sommellerie, photo, chef).',
       'Season (sunset, harvest, winter), duration, options (sommelier, photo, chef).',
       'Saison (Sunset, Weinlese, Winter), Dauer, Optionen (Sommelier, Foto, Chef).',
-      'Stagione (tramonto, vendemmia, inverno), durata, opzioni (sommelier, foto, chef).'
+      'Stagione (tramonto, vendemmia, inverno), durata, opzioni (sommelier, foto, chef).',
+      'موسم (غروب، حصاد، شتاء)، مدة، خيارات (سوميليه، صور، شيف).',
+      '季节（日落/采收/冬季）、时长、选项（侍酒、拍摄、主厨）。'
     ),
   },
   {
-    title: lceT('Pas de frais cachés', 'No hidden fees', 'Keine versteckten Gebühren', 'Nessun costo nascosto'),
+    title: lceT('Pas de frais cachés', 'No hidden fees', 'Keine versteckten Gebühren', 'Nessun costo nascosto', 'لا رسوم خفية', '无隐藏费用'),
     description: lceT(
       'Ajustement uniquement si le périmètre change.',
       'Adjustments only if scope changes.',
       'Anpassungen nur bei geändertem Umfang.',
-      'Adeguamenti solo se cambia il perimetro.'
+      'Adeguamenti solo se cambia il perimetro.',
+      'تعديل فقط إذا تغيّر النطاق.',
+      '仅在范围变更时调整。'
     ),
   },
 ];
@@ -116,12 +148,21 @@ const metadata = isUrgent
               ? { title: 'Tarifs état des lieux', description: 'Constats, photos et rapport envoyé sous 24h.' }
     : brandKey === 'laclemanexperience'
       ? {
-          title: lceT('Tarifs expériences Lac Léman', 'Lake Geneva Experiences Pricing', 'Preise Lac Léman Experiences', 'Prezzi esperienze Lac Léman'),
+          title: lceT(
+            'Tarifs expériences Lac Léman',
+            'Lake Geneva Experiences Pricing',
+            'Preise Lac Léman Experiences',
+            'Prezzi esperienze Lac Léman',
+            'أسعار تجارب بحيرة ليمان',
+            '莱蒙湖体验定价'
+          ),
           description: lceT(
             'Privatisations bateau, vignobles UNESCO, tables d’hôtes et échappées alpines.',
             'Boat, UNESCO vineyards, hosted tables, and alpine escapes — private and concierge-led.',
             'Boote, UNESCO-Weinberge, Gastgebertafeln und alpine Auszeiten – privat mit Concierge.',
-            'Barca, vigneti UNESCO, tavole d’hôtes e fughe alpine — private e gestite da concierge.'
+            'Barca, vigneti UNESCO, tavole d’hôtes e fughe alpine — private e gestite da concierge.',
+            'رحلات بحرية خاصة، كروم اليونسكو، موائد مضيفة وهروب للألب — بكونسيرج مخصص.',
+            '私享游船、联合国教科文组织葡萄园、私宴与高山度假 — 礼宾全程统筹。'
           ),
         }
     : brandKey === 'lausanne'
@@ -304,13 +345,15 @@ const views = {
   },
   experience: {
     hero: {
-      tagline: lceT('Tarifs expériences', 'Experience pricing', 'Erlebnispreise', 'Prezzi esperienze'),
-      title: lceT('Conciergerie Lac Léman', 'Lake Geneva concierge', 'Genfersee-Concierge', 'Concierge Lago Lemano'),
+      tagline: lceT('Tarifs expériences', 'Experience pricing', 'Erlebnispreise', 'Prezzi esperienze', 'أسعار التجارب', '体验价格'),
+      title: lceT('Conciergerie Lac Léman', 'Lake Geneva concierge', 'Genfersee-Concierge', 'Concierge Lago Lemano', 'كونسيرج بحيرة ليمان', '莱蒙湖礼宾'),
       subtitle: lceT(
         'Croisières privées, vignobles UNESCO, tables d’hôtes et échappées alpines. Tarifs indicatifs privatisation + service.',
         'Private cruises, UNESCO vineyards, hosted tables, alpine escapes. Indicative pricing includes privatisation + service.',
         'Private Cruises, UNESCO-Weinberge, Gastgebertafeln, alpine Auszeiten. Richtpreise inkl. Privatisierung + Service.',
-        'Crociere private, vigneti UNESCO, tavole d’hôtes, fughe alpine. Prezzi indicativi includono privatizzazione + servizio.'
+        'Crociere private, vigneti UNESCO, tavole d’hôtes, fughe alpine. Prezzi indicativi includono privatizzazione + servizio.',
+        'رحلات خاصة، كروم اليونسكو، موائد مضيفة، هروب للألب. الأسعار إرشادية وتشمل الخصخصة + الخدمة.',
+        '私享游船、联合国教科文组织葡萄园、私宴与高山度假。价格含私享与服务。'
       ),
       background: `linear-gradient(135deg, rgba(15,118,110,0.30), rgba(30,41,59,0.34), rgba(253,230,138,0.22)), url('${img('leman_horizon_minimal_1')}')`,
       overlayClass: 'bg-gradient-to-br from-emerald-950/30 via-slate-900/38 to-amber-100/22',
@@ -318,60 +361,114 @@ const views = {
         ['Conciergerie dédiée', 'Partenaires triés', 'Privatisations'],
         ['Dedicated concierge', 'Vetted partners', 'Privatisations'],
         ['Dedizierter Concierge', 'Geprüfte Partner', 'Privatisierungen'],
-        ['Concierge dedicato', 'Partner selezionati', 'Privatizzazioni']
+        ['Concierge dedicato', 'Partner selezionati', 'Privatizzazioni'],
+        ['كونسيرج مخصص', 'شركاء مختارون', 'خصخصة حقيقية'],
+        ['专属礼宾', '甄选伙伴', '真实私享']
       ),
       tone: 'dark',
     },
-    priceTitle: lceT('Repères expériences', 'Experience anchors', 'Preisanker Erlebnisse', 'Riferimenti esperienze'),
+    priceTitle: lceT('Repères expériences', 'Experience anchors', 'Preisanker Erlebnisse', 'Riferimenti esperienze', 'مؤشرات للتجارب', '体验参考'),
     priceSubtitle: lceT(
       'Privatisations, partenaires premium, transferts et sommellerie.',
       'Privatisations, premium partners, transfers, and sommellerie.',
       'Privatisierungen, Premiumpartner, Transfers und Sommellerie.',
-      'Privatizzazioni, partner premium, transfer e sommellerie.'
+      'Privatizzazioni, partner premium, transfer e sommellerie.',
+      'خصخصة، شركاء مميزون، تنقلات وخدمة سوميليه.',
+      '私享、优质伙伴、接送与侍酒服务。'
     ),
     factors: [
-      { title: lceT('Format', 'Format', 'Format', 'Formato'), description: lceT('Privatisation bateau, cave ou table d’hôtes.', 'Private boat, cellar, or hosted table.', 'Privates Boot, Keller oder Table d’hôtes.', 'Barca, cantina o tavola d’hôtes privata.'), icon: 'tabler:sailboat' },
-      { title: lceT('Saisonnalité', 'Seasonality', 'Saisonalität', 'Stagionalità'), description: lceT('Horaires sunset, météo et alternatives prévues.', 'Sunset slots, weather and alternatives planned.', 'Sunset-Slots, Wetter und Alternativen geplant.', 'Orari sunset, meteo e alternative pianificate.'), icon: 'tabler:calendar' },
-      { title: lceT('Transferts', 'Transfers', 'Transfers', 'Transfer'), description: lceT('Chauffeur privé ou bateau-taxi selon parcours.', 'Private driver or boat taxi by route.', 'Privater Fahrer oder Bootstaxi je nach Strecke.', 'Autista privato o taxi boat a seconda del percorso.'), icon: 'tabler:car' },
-      { title: lceT('Options', 'Options', 'Optionen', 'Opzioni'), description: lceT('Sommelière, chef invité, photo/vidéo.', 'Sommelier, guest chef, photo/video.', 'Sommelier, Gastkoch, Foto/Video.', 'Sommelier, chef ospite, foto/video.'), icon: 'tabler:sparkles' },
+      { title: lceT('Format', 'Format', 'Format', 'Formato', 'الصيغة', '形式'), description: lceT('Privatisation bateau, cave ou table d’hôtes.', 'Private boat, cellar, or hosted table.', 'Privates Boot, Keller oder Table d’hôtes.', 'Barca, cantina o tavola d’hôtes privata.', 'خصخصة قارب، قبو أو مائدة مضيفة.', '私享游船、酒窖或私宴。'), icon: 'tabler:sailboat' },
+      { title: lceT('Saisonnalité', 'Seasonality', 'Saisonalität', 'Stagionalità', 'الموسمية', '季节性'), description: lceT('Horaires sunset, météo et alternatives prévues.', 'Sunset slots, weather and alternatives planned.', 'Sunset-Slots, Wetter und Alternativen geplant.', 'Orari sunset, meteo e alternative pianificate.', 'أوقات الغروب، الطقس والبدائل مخططة.', '日落档期、天气与备选方案已规划。'), icon: 'tabler:calendar' },
+      { title: lceT('Transferts', 'Transfers', 'Transfers', 'Transfer', 'التنقلات', '接送'), description: lceT('Chauffeur privé ou bateau-taxi selon parcours.', 'Private driver or boat taxi by route.', 'Privater Fahrer oder Bootstaxi je nach Strecke.', 'Autista privato o taxi boat a seconda del percorso.', 'سائق خاص أو تاكسي بحري حسب المسار.', '根据路线安排专车或水上接驳。'), icon: 'tabler:car' },
+      { title: lceT('Options', 'Options', 'Optionen', 'Opzioni', 'الخيارات', '选项'), description: lceT('Sommelière, chef invité, photo/vidéo.', 'Sommelier, guest chef, photo/video.', 'Sommelier, Gastkoch, Foto/Video.', 'Sommelier, chef ospite, foto/video.', 'سوميليه، شيف ضيف، صور/فيديو.', '侍酒师、客座主厨、照片/视频。'), icon: 'tabler:sparkles' },
     ],
     steps: [
-      { title: '1. Brief', description: lceT('Dates, envies, budget, contraintes.', 'Dates, wishes, budget, constraints.', 'Daten, Wünsche, Budget, Constraints.', 'Date, desideri, budget, vincoli.'), icon: 'tabler:message' },
-      { title: lceT('2. Proposition', '2. Proposal', '2. Vorschlag', '2. Proposta'), description: lceT('Sélection verrouillée avec horaires.', 'Locked selection with timings.', 'Fixierte Auswahl mit Zeiten.', 'Selezione bloccata con orari.'), icon: 'tabler:clipboard-check' },
-      { title: lceT('3. Confirmation', '3. Confirmation', '3. Bestätigung', '3. Conferma'), description: lceT('Privatisation, acomptes, transferts.', 'Privatisation, deposits, transfers.', 'Privatisierung, Anzahlungen, Transfers.', 'Privatizzazione, acconti, transfer.'), icon: 'tabler:check' },
-      { title: lceT('4. Jour J', '4. Day-of', '4. Tag X', '4. Giorno J'), description: lceT('Concierge et partenaires alignés.', 'Concierge and partners aligned.', 'Concierge und Partner abgestimmt.', 'Concierge e partner allineati.'), icon: 'tabler:map-pin' },
+      {
+        title: lceT('1. Brief', '1. Brief', '1. Briefing', '1. Brief', '1. موجز', '1. 简述'),
+        description: lceT('Dates, envies, budget, contraintes.', 'Dates, wishes, budget, constraints.', 'Daten, Wünsche, Budget, Constraints.', 'Date, desideri, budget, vincoli.', 'تواريخ، رغبات، ميزانية، قيود.', '日期、偏好、预算、限制。'),
+        icon: 'tabler:message',
+      },
+      { title: lceT('2. Proposition', '2. Proposal', '2. Vorschlag', '2. Proposta', '2. عرض', '2. 方案'), description: lceT('Sélection verrouillée avec horaires.', 'Locked selection with timings.', 'Fixierte Auswahl mit Zeiten.', 'Selezione bloccata con orari.', 'اختيار مقفل مع جداول زمنية.', '锁定选项与时间。'), icon: 'tabler:clipboard-check' },
+      { title: lceT('3. Confirmation', '3. Confirmation', '3. Bestätigung', '3. Conferma', '3. تأكيد', '3. 确认'), description: lceT('Privatisation, acomptes, transferts.', 'Privatisation, deposits, transfers.', 'Privatisierung, Anzahlungen, Transfers.', 'Privatizzazione, acconti, transfer.', 'خصخصة، عربون، تنقلات.', '私享锁定、订金、接送。'), icon: 'tabler:check' },
+      { title: lceT('4. Jour J', '4. Day-of', '4. Tag X', '4. Giorno J', '4. يوم التنفيذ', '4. 当日'), description: lceT('Concierge et partenaires alignés.', 'Concierge and partners aligned.', 'Concierge und Partner abgestimmt.', 'Concierge e partner allineati.', 'كونسيرج وشركاء منسقون.', '礼宾与伙伴对齐。'), icon: 'tabler:map-pin' },
     ],
     faqs: [
       {
-        title: lceT('Quel délai ?', 'How early to book?', 'Welche Vorlaufzeit?', 'Che preavviso?'),
-        description: lceT('7–10 jours idéalement, accélération possible selon disponibilité.', '7–10 days ideally, faster depending on availability.', 'Ideal 7–10 Tage, schneller je nach Verfügbarkeit.', 'Idealmente 7–10 giorni, più rapido secondo disponibilità.'),
+        title: lceT('Quel délai ?', 'How early to book?', 'Welche Vorlaufzeit?', 'Che preavviso?', 'كم المدة المسبقة للحجز؟', '需要提前多久预订？'),
+        description: lceT(
+          '7–10 jours idéalement, accélération possible selon disponibilité.',
+          '7–10 days ideally, faster depending on availability.',
+          'Ideal 7–10 Tage, schneller je nach Verfügbarkeit.',
+          'Idealmente 7–10 giorni, più rapido secondo disponibilità.',
+          'يفضل 7–10 أيام، يمكن التسريع حسب التوافر.',
+          '理想提前 7–10 天；可按档期加速。'
+        ),
       },
       {
-        title: lceT('Privatisation ?', 'Privatisation?', 'Privatisierung?', 'Privatizzazione?'),
-        description: lceT('Oui pour bateaux, caves, tables d’hôtes (ou semi-privé si demandé).', 'Yes for boats, cellars, hosted tables (or semi-private on request).', 'Ja für Boote, Keller, Gastgebertafeln (oder semi-privat auf Wunsch).', 'Sì per barche, cantine, tavole d’hôtes (o semi-private su richiesta).'),
+        title: lceT('Privatisation ?', 'Privatisation?', 'Privatisierung?', 'Privatizzazione?', 'الخصخصة؟', '私享？'),
+        description: lceT(
+          'Oui pour bateaux, caves, tables d’hôtes (ou semi-privé si demandé).',
+          'Yes for boats, cellars, hosted tables (or semi-private on request).',
+          'Ja für Boote, Keller, Gastgebertafeln (oder semi-privat auf Wunsch).',
+          'Sì per barche, cantine, tavole d’hôtes (o semi-private su richiesta).',
+          'نعم للقوارب والسراديب والموائد (أو شبه خاص عند الطلب).',
+          '船只、酒窖、私宴可私享/半私享。'
+        ),
       },
       {
-        title: lceT('Météo ?', 'Weather?', 'Wetter?', 'Meteo?'),
-        description: lceT('Plan B prévu pour navigation et dégustations extérieures.', 'Plan B ready for navigation and outdoor tastings.', 'Plan B für Navigation und Outdoor-Degustationen bereit.', 'Piano B pronto per navigazione e degustazioni outdoor.'),
+        title: lceT('Météo ?', 'Weather?', 'Wetter?', 'Meteo?', 'الطقس؟', '天气？'),
+        description: lceT(
+          'Plan B prévu pour navigation et dégustations extérieures.',
+          'Plan B ready for navigation and outdoor tastings.',
+          'Plan B für Navigation und Outdoor-Degustationen bereit.',
+          'Piano B pronto per navigazione e degustazioni outdoor.',
+          'خطة بديلة جاهزة للملاحة والتذوق في الهواء الطلق.',
+          '航行/户外品鉴均有B案。'
+        ),
       },
       {
-        title: lceT('Transferts ?', 'Transfers?', 'Transfers?', 'Transfer?'),
-        description: lceT('Chauffeur privé ou bateau-taxi avec horaires verrouillés.', 'Private driver or boat taxi with locked timings.', 'Privater Fahrer oder Bootstaxi mit fixen Zeiten.', 'Autista privato o taxi boat con orari bloccati.'),
+        title: lceT('Transferts ?', 'Transfers?', 'Transfers?', 'Transfer?', 'التنقلات؟', '接送？'),
+        description: lceT(
+          'Chauffeur privé ou bateau-taxi avec horaires verrouillés.',
+          'Private driver or boat taxi with locked timings.',
+          'Privater Fahrer oder Bootstaxi mit fixen Zeiten.',
+          'Autista privato o taxi boat con orari bloccati.',
+          'سائق خاص أو تاكسي بحري بتوقيت مقفل.',
+          '按锁定时间安排专车或水上接驳。'
+        ),
       },
     ],
     stepsBg: img('high_end_luxury_apartment_lakeside'),
     accent: 'from-emerald-200/30 via-emerald-800/22 to-amber-100/30',
     cta: {
-      title: lceT('Prêt pour une expérience Léman ?', 'Ready to book an experience?', 'Bereit für ein Erlebnis?', 'Pronti a prenotare un’esperienza?'),
+      title: lceT(
+        'Prêt pour une expérience Léman ?',
+        'Ready to book an experience?',
+        'Bereit für ein Erlebnis?',
+        'Pronti a prenotare un’esperienza?',
+        'جاهزون لتجربة ليمان؟',
+        '准备好莱蒙体验了吗？'
+      ),
       subtitle: lceT(
         'Dites-nous vos dates et le format souhaité, on orchestre le reste.',
         'Tell us your dates and desired format; we orchestrate the rest.',
         'Sagen Sie uns Ihre Daten und das gewünschte Format, wir orchestrieren den Rest.',
-        'Dateci date e formato desiderato, al resto pensiamo noi.'
+        'Dateci date e formato desiderato, al resto pensiamo noi.',
+        'اذكروا التواريخ والصيغة المطلوبة، ونتولى الباقي.',
+        '告诉我们日期和想要的形式，其余交给我们。'
       ),
       actions: [
-        { variant: 'primary', text: lceT('Réserver une expérience', 'Book an experience', 'Erlebnis buchen', 'Prenotare un’esperienza'), href: '/contact#form', icon: 'tabler:mail-forward' },
-        { text: lceT('Parler à un concierge', 'Talk to a concierge', 'Mit dem Concierge sprechen', 'Parlare con un concierge'), href: whatsapp, icon: 'tabler:phone' },
+        {
+          variant: 'primary',
+          text: lceT('Réserver une expérience', 'Book an experience', 'Erlebnis buchen', 'Prenotare un’esperienza', 'احجز تجربة', '预订体验'),
+          href: '/contact#form',
+          icon: 'tabler:mail-forward',
+        },
+        {
+          text: lceT('Parler à un concierge', 'Talk to a concierge', 'Mit dem Concierge sprechen', 'Parlare con un concierge', 'تحدث إلى الكونسيرج', '联系礼宾'),
+          href: whatsapp,
+          icon: 'tabler:phone',
+        },
       ],
     },
   },
@@ -776,42 +873,69 @@ const priceList = (() => {
   if (brandKey === 'laclemanexperience') {
     return [
       {
-        title: lceT('Croisière sunset privée', 'Private sunset cruise', 'Private Sunset-Cruise', 'Crociera privata al tramonto'),
-        subtitle: lceT('Lac Léman', 'Lake Geneva', 'Genfersee', 'Lago Lemano'),
-        price: lceT('dès 1900', 'from 1900', 'ab 1900', 'da 1900'),
+        title: lceT('Croisière sunset privée', 'Private sunset cruise', 'Private Sunset-Cruise', 'Crociera privata al tramonto', 'رحلة غروب خاصة', '私享日落游船'),
+        subtitle: lceT('Lac Léman', 'Lake Geneva', 'Genfersee', 'Lago Lemano', 'بحيرة ليمان', '莱蒙湖'),
+        price: lceT('dès 1900', 'from 1900', 'ab 1900', 'da 1900', 'من 1900', '起价 1900'),
         period: 'CHF',
         items: [
-          { description: lceT('Bateau privatisé 2–3h', 'Private boat 2–3h', 'Privates Boot 2–3h', 'Barca privatizzata 2–3h') },
-          { description: lceT('Sommelière / accords vins-fromages', 'Sommelier / wine-cheese pairings', 'Sommelière / Wein-Käse-Pairings', 'Sommelier / abbinamenti vino-formaggi') },
-          { description: lceT('Transferts et horaires verrouillés', 'Transfers and timing locked', 'Transfers und Timing fixiert', 'Transfer e orari bloccati') },
+          { description: lceT('Bateau privatisé 2–3h', 'Private boat 2–3h', 'Privates Boot 2–3h', 'Barca privatizzata 2–3h', 'قارب خاص 2–3 س', '私享游船 2–3 小时') },
+          { description: lceT('Sommelière / accords vins-fromages', 'Sommelier / wine-cheese pairings', 'Sommelière / Wein-Käse-Pairings', 'Sommelier / abbinamenti vino-formaggi', 'سوميليه / تناغم نبيذ-جبن', '侍酒师 / 酒酪搭配') },
+          { description: lceT('Transferts et horaires verrouillés', 'Transfers and timing locked', 'Transfers und Timing fixiert', 'Transfer e orari bloccati', 'تنقلات وتوقيت مقفل', '接送与时间锁定') },
         ],
-        callToAction: `<a class="btn btn-primary" href="/contact#form">${lceT('Réserver', 'Book', 'Buchen', 'Prenotare')}</a>`,
+        callToAction: `<a class="btn btn-primary" href="/contact#form">${lceT('Réserver', 'Book', 'Buchen', 'Prenotare', 'احجز', '预订')}</a>`,
       },
       {
-        title: lceT('Vignobles UNESCO', 'UNESCO vineyards', 'UNESCO-Weinberge', 'Vigneti UNESCO'),
-        subtitle: lceT('Cave + dégustation privée', 'Cellar + private tasting', 'Keller + private Degustation', 'Cantina + degustazione privata'),
+        title: lceT('Vignobles UNESCO', 'UNESCO vineyards', 'UNESCO-Weinberge', 'Vigneti UNESCO', 'كروم اليونسكو', '联合国教科文组织葡萄园'),
+        subtitle: lceT('Cave + dégustation privée', 'Cellar + private tasting', 'Keller + private Degustation', 'Cantina + degustazione privata', 'قبو + تذوق خاص', '酒窖 + 私享品鉴'),
         price: '1500–2800',
-        period: lceT('CHF typique', 'typical CHF', 'typischer CHF', 'CHF tipico'),
+        period: lceT('CHF typique', 'typical CHF', 'typischer CHF', 'CHF tipico', 'CHF نموذجي', '典型 CHF'),
         items: [
-          { description: lceT('Visite avec vigneron hôte', 'Visit with hosting winemaker', 'Besuch mit Winzer als Gastgeber', 'Visita con vignaiolo ospite') },
-          { description: lceT('Accords mets & vins en cave voûtée', 'Food & wine pairings in vaulted cellar', 'Food-&-Wine-Pairings im Gewölbekeller', 'Abbinamenti cibo-vino in cantina a volta') },
-          { description: lceT('Chauffeur privé ou bateau + chauffeur', 'Private driver or boat + driver', 'Privater Fahrer oder Boot + Fahrer', 'Autista privato o barca + autista') },
+          { description: lceT('Visite avec vigneron hôte', 'Visit with hosting winemaker', 'Besuch mit Winzer als Gastgeber', 'Visita con vignaiolo ospite', 'زيارة مع صانع نبيذ مضيف', '酒农接待参观') },
+          { description: lceT('Accords mets & vins en cave voûtée', 'Food & wine pairings in vaulted cellar', 'Food-&-Wine-Pairings im Gewölbekeller', 'Abbinamenti cibo-vino in cantina a volta', 'تناغم أطعمة ونبيذ في قبو مقبب', '拱顶酒窖酒食搭配') },
+          { description: lceT('Chauffeur privé ou bateau + chauffeur', 'Private driver or boat + driver', 'Privater Fahrer oder Boot + Fahrer', 'Autista privato o barca + autista', 'سائق خاص أو قارب + سائق', '专车或游船+司机') },
         ],
         hasRibbon: true,
-        ribbonTitle: lceT('Plus fréquent', 'Most frequent', 'Am häufigsten', 'Più frequente'),
-        callToAction: `<a class="btn btn-primary" href="/contact#form">${lceT('Sélectionner', 'Select', 'Auswählen', 'Selezionare')}</a>`,
+        ribbonTitle: lceT('Plus fréquent', 'Most frequent', 'Am häufigsten', 'Più frequente', 'الأكثر شيوعاً', '最常见'),
+        callToAction: `<a class="btn btn-primary" href="/contact#form">${lceT('Sélectionner', 'Select', 'Auswählen', 'Selezionare', 'اختر', '选择')}</a>`,
       },
       {
-        title: lceT('Table d’hôtes / Chalet', 'Hosted table / Chalet', 'Gastgebertafel / Chalet', 'Table d’hôtes / Chalet'),
-        subtitle: lceT('Montagne ou vignoble', 'Mountain or vineyard', 'Berg oder Weinberg', 'Montagna o vigneto'),
-        price: lceT('dès 2400', 'from 2400', 'ab 2400', 'da 2400'),
-        period: 'CHF',
+        title: lceT('Table d’hôtes / Chalet', 'Hosted table / Chalet', 'Gastgebertafel / Chalet', 'Table d’hôtes / Chalet', 'مائدة مضيفة / شاليه', '私宴 / 木屋'),
+        subtitle: lceT('Montagne ou vignoble', 'Mountain or vineyard', 'Berg oder Weinberg', 'Montagna o vigneto', 'جبل أو كرم', '山间或葡萄园'),
+        price: lceT('dès 2400', 'from 2400', 'ab 2400', 'da 2400', 'من 2400', '起价 2400'),
+        period: lceT('CHF', 'CHF', 'CHF', 'CHF', 'فرنك سويسري', '瑞郎'),
         items: [
-          { description: lceT('Chef invité, menu lac + alpages', 'Guest chef, lake + alpine produce', 'Gastkoch, See- + Alpenprodukte', 'Chef ospite, prodotti lago + alpi') },
-          { description: lceT('Privatisation ou semi-privé', 'Private or semi-private', 'Privat oder semi-privat', 'Privato o semi-privato') },
-          { description: lceT('Options photo/vidéo et sommellerie', 'Photo/video and sommelier options', 'Foto/Video und Sommelier-Optionen', 'Opzioni foto/video e sommelier') },
+          {
+            description: lceT(
+              'Chef invité, menu lac + alpages',
+              'Guest chef, lake + alpine produce',
+              'Gastkoch, See- + Alpenprodukte',
+              'Chef ospite, prodotti lago + alpi',
+              'شيف ضيف، منتجات البحيرة والألب',
+              '客座主厨，湖景与阿尔卑斯食材'
+            ),
+          },
+          {
+            description: lceT(
+              'Privatisation ou semi-privé',
+              'Private or semi-private',
+              'Privat oder semi-privat',
+              'Privato o semi-privato',
+              'خاص أو شبه خاص',
+              '私享或半私享'
+            ),
+          },
+          {
+            description: lceT(
+              'Options photo/vidéo et sommellerie',
+              'Photo/video and sommelier options',
+              'Foto/Video und Sommelier-Optionen',
+              'Opzioni foto/video e sommelier',
+              'خيارات صور/فيديو وسوميليه',
+              '照片/视频与侍酒选项'
+            ),
+          },
         ],
-        callToAction: `<a class="btn btn-primary" href="/contact#form">${lceT('Composer', 'Compose', 'Gestalten', 'Comporre')}</a>`,
+        callToAction: `<a class=\"btn btn-primary\" href=\"/contact#form\">${lceT('Composer', 'Compose', 'Gestalten', 'Comporre', 'كوّن تجربتك', '定制')}</a>`,
       },
     ];
   }
@@ -1129,8 +1253,8 @@ const toneMuted = view.hero.tone === 'dark' ? 'text-white/85' : 'text-slate-600'
   {isExperience && (
     <Features2
       id="experience-pricing-notes"
-      title="Comment lire nos tarifs"
-      subtitle="Logique transparente et sans frais cachés"
+      title={lceT('Comment lire nos tarifs', 'How to read our pricing', 'Wie man unsere Preise liest', 'Come leggere i nostri prezzi', 'كيفية قراءة أسعارنا', '如何解读我们的定价')}
+      subtitle={lceT('Logique transparente et sans frais cachés', 'Transparent logic, no hidden fees', 'Transparente Logik, keine versteckten Gebühren', 'Logica trasparente, nessun costo nascosto', 'منطق شفاف بلا رسوم مخفية', '透明逻辑，无隐藏费用')}
       columns={3}
       classes={{ container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-5 gap-3 border border-emerald-200/35 bg-white/94 text-slate-900' } }}
       items={experiencePriceNotes}
@@ -1138,7 +1262,11 @@ const toneMuted = view.hero.tone === 'dark' ? 'text-white/85' : 'text-slate-600'
   )}
 
   <Features3
-    title="Ce qui joue sur le prix"
+    title={
+      isExperience
+        ? lceT('Ce qui joue sur le prix', 'What drives price', 'Was den Preis beeinflusst', 'Cosa incide sul prezzo', 'ما يؤثر على السعر', '价格构成因素')
+        : 'Ce qui joue sur le prix'
+    }
     subtitle={view.priceSubtitle}
     columns={2}
     items={view.factors}
@@ -1146,8 +1274,8 @@ const toneMuted = view.hero.tone === 'dark' ? 'text-white/85' : 'text-slate-600'
   />
 
   <Steps
-    title="Comment nous calculons"
-    tagline="Processus"
+    title={experienceStepsTitle}
+    tagline={experienceStepsTagline}
     isReversed={['urgent', 'transport', 'debarras', 'videsuccession', 'videmaison'].includes(brandType)}
     items={view.steps}
   >
@@ -1157,16 +1285,16 @@ const toneMuted = view.hero.tone === 'dark' ? 'text-white/85' : 'text-slate-600'
         style={`background-image: linear-gradient(135deg, rgba(0,0,0,0.45), rgba(0,0,0,0.35)), url('${view.stepsBg}');`}
       >
         <p class="text-sm uppercase tracking-[0.35em] text-white/80">
-          Transparence
+          {transparencyLabel}
         </p>
         <p class="mt-6 max-w-xs text-base text-white/90">
-          Prix en CHF, TVA incluse, sans frais cachés. Ajustements seulement si volume ou options changent.
+          {transparencyBody}
         </p>
       </div>
     </Fragment>
   </Steps>
 
-  <FAQs title={`Questions sur les tarifs ${view.hero.tagline.toLowerCase()}`} subtitle={view.priceSubtitle} items={view.faqs} />
+  <FAQs title={experienceFaqTitle} subtitle={view.priceSubtitle} items={view.faqs} />
 
   <CallToAction actions={view.cta.actions}>
     <Fragment slot="title">

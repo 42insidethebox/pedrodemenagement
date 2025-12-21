@@ -6,6 +6,7 @@ import Footer from '~/components/widgets/Footer.astro';
 import { buildHeaderData, buildFooterData } from '~/navigation';
 import { getBrandFromHost } from '~/lib/brand';
 import { BRANDS } from '~/lib/brands.config';
+import { resolveLocaleFromRequest } from '~/lib/locale';
 
 import type { MetaData } from '~/types';
 
@@ -34,8 +35,11 @@ if (brand.fonts?.sans) themeVars['--aw-font-sans'] = brand.fonts.sans;
 if (brand.fonts?.serif) themeVars['--aw-font-serif'] = brand.fonts.serif;
 if (brand.fonts?.heading) themeVars['--aw-font-heading'] = brand.fonts.heading;
 
-const resolvedHeader = Astro.props.header ?? buildHeaderData(brand);
-const resolvedFooter = Astro.props.footer ?? buildFooterData(brand);
+const brandDefaultLocale = brandKey === 'laclemanexperience' ? 'en' : 'fr';
+const locale = resolveLocaleFromRequest(Astro.request, brandDefaultLocale);
+
+const resolvedHeader = Astro.props.header ?? buildHeaderData(brand, locale);
+const resolvedFooter = Astro.props.footer ?? buildFooterData(brand, locale);
 const { metadata } = Astro.props as Props;
 ---
 

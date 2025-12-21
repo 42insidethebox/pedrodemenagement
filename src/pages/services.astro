@@ -74,23 +74,6 @@ const categoryIcons: Record<string, string> = {
   corporate: 'tabler:briefcase-2',
   meta: 'tabler:map',
 };
-
-const experienceCards = isExperience
-  ? EXPERIENCES.map((exp) => ({
-      title: exp.title,
-      description: `${exp.description} · ${exp.duration} · ${exp.priceBand}`,
-      icon: categoryIcons[exp.category] || 'tabler:sparkles',
-      category: exp.category,
-      season: exp.season,
-    }))
-  : [];
-
-const signatureExperiences = experienceCards.filter((exp) =>
-  ['lac', 'gastronomy', 'wine', 'mountain'].includes(exp.category)
-).slice(0, 6);
-const slowExperiences = experienceCards.filter((exp) => ['wellness', 'city', 'lac'].includes(exp.category)).slice(0, 6);
-const winterExperiences = experienceCards.filter((exp) => exp.season === 'winter').slice(0, 5);
-const corporateExperiences = experienceCards.filter((exp) => ['corporate', 'meta'].includes(exp.category)).slice(0, 4);
 const heroImageId =
   isUrgent
     ? 'e_cat_truck_mountains_lake_00'
@@ -114,18 +97,22 @@ const heroAlt = getImageAlt(heroImageId);
 const defaultLocale = brandKey === 'laclemanexperience' ? 'en' : 'fr';
 const locale = resolveLocaleFromRequest(Astro.request, defaultLocale);
 const lang = isExperience
-  ? (['fr', 'en', 'de', 'it'].includes(locale) ? locale : defaultLocale)
+  ? (['fr', 'en', 'de', 'it', 'ar', 'zh'].includes(locale) ? locale : defaultLocale)
   : isLausanne
-    ? (['fr', 'en', 'de', 'it'].includes(locale) ? locale : 'fr')
+    ? (['fr', 'en', 'de', 'it', 'ar', 'zh'].includes(locale) ? locale : 'fr')
     : 'fr';
 const isEn = lang === 'en';
 const isDe = lang === 'de';
 const isIt = lang === 'it';
-const lceT = <T,>(fr: T, en: T, de: T, it: T): T => {
+const isAr = lang === 'ar';
+const isZh = lang === 'zh';
+const lceT = <T,>(fr: T, en: T, de: T, it: T, ar?: T, zh?: T): T => {
   if (!isExperience) return fr;
   if (isEn) return en;
   if (isDe) return de;
   if (isIt) return it;
+  if (isAr && ar !== undefined) return ar;
+  if (isZh && zh !== undefined) return zh;
   return fr;
 };
 const lamT = <T,>(fr: T, en: T, de: T, it: T): T => {
@@ -135,6 +122,36 @@ const lamT = <T,>(fr: T, en: T, de: T, it: T): T => {
   if (isIt) return it;
   return fr;
 };
+const experienceCards = isExperience
+  ? EXPERIENCES.map((exp) => {
+      const title =
+        isAr && exp.titleAr ? exp.titleAr : isZh && exp.titleZh ? exp.titleZh : exp.title;
+      const description =
+        isAr && exp.descriptionAr
+          ? exp.descriptionAr
+          : isZh && exp.descriptionZh
+            ? exp.descriptionZh
+            : exp.description;
+      const price =
+        isAr && exp.priceBandAr ? exp.priceBandAr : isZh && exp.priceBandZh ? exp.priceBandZh : exp.priceBand;
+
+      return {
+        title,
+        description: `${description} · ${exp.duration} · ${price}`,
+        icon: categoryIcons[exp.category] || 'tabler:sparkles',
+        category: exp.category,
+        season: exp.season,
+      };
+    })
+  : [];
+
+const signatureExperiences = experienceCards.filter((exp) =>
+  ['lac', 'gastronomy', 'wine', 'mountain'].includes(exp.category)
+).slice(0, 6);
+const slowExperiences = experienceCards.filter((exp) => ['wellness', 'city', 'lac'].includes(exp.category)).slice(0, 6);
+const winterExperiences = experienceCards.filter((exp) => exp.season === 'winter').slice(0, 5);
+const corporateExperiences = experienceCards.filter((exp) => ['corporate', 'meta'].includes(exp.category)).slice(0, 4);
+
 const experienceFormatsData = lceT(
   experienceFormats,
   [
@@ -154,6 +171,18 @@ const experienceFormatsData = lceT(
     { title: 'Giornata intera', description: '5–8h · 2–8 pers. · Scoperta completa', icon: 'tabler:calendar-time' },
     { title: 'Serata signature', description: '3–4h · 2–10 pers. · Cena, celebrazione', icon: 'tabler:moon-stars' },
     { title: 'Immersione', description: '2–3 giorni · 2–6 pers. · UHNW, corporate', icon: 'tabler:route' },
+  ],
+  [
+    { title: 'نصف يوم', description: '2–4س · 2–6 أشخاص · ثنائيات وزوار VIP', icon: 'tabler:clock-hour-4' },
+    { title: 'يوم كامل', description: '5–8س · 2–8 أشخاص · اكتشاف كامل', icon: 'tabler:calendar-time' },
+    { title: 'أمسية مميزة', description: '3–4س · 2–10 أشخاص · عشاء/احتفال', icon: 'tabler:moon-stars' },
+    { title: 'إقامة غامرة', description: '2–3 أيام · 2–6 أشخاص · عملاء مميزون/شركات', icon: 'tabler:route' },
+  ],
+  [
+    { title: '半天', description: '2–4小时 · 2–6人 · 情侣/贵宾访客', icon: 'tabler:clock-hour-4' },
+    { title: '整天', description: '5–8小时 · 2–8人 · 全面体验', icon: 'tabler:calendar-time' },
+    { title: '招牌夜晚', description: '3–4小时 · 2–10人 · 晚宴/庆祝', icon: 'tabler:moon-stars' },
+    { title: '沉浸式', description: '2–3天 · 2–6人 · 高端/企业', icon: 'tabler:route' },
   ]
 );
 const experienceConciergeData = lceT(
@@ -172,6 +201,16 @@ const experienceConciergeData = lceT(
     { title: 'Concierge unico', description: 'WhatsApp + telefono, reattivo da D-7 a D+1.', icon: 'tabler:headset' },
     { title: 'Brief scritto', description: 'Condiviso con skipper, vignaioli, chef. Nessuna improvvisazione.', icon: 'tabler:clipboard-list' },
     { title: 'Piano B meteo', description: 'Validato in anticipo, esperienza preservata.', icon: 'tabler:cloud-check' },
+  ],
+  [
+    { title: 'كونسيرج واحد', description: 'واتساب + هاتف، استجابة من J-7 إلى J+1.', icon: 'tabler:headset' },
+    { title: 'موجز مكتوب', description: 'يُشارك مع الملاحين، صناع النبيذ والطهاة. بلا ارتجال.', icon: 'tabler:clipboard-list' },
+    { title: 'خطة طقس بديلة', description: 'معتمدة مسبقاً للحفاظ على جودة التجربة.', icon: 'tabler:cloud-check' },
+  ],
+  [
+    { title: '单一礼宾', description: 'WhatsApp+电话，J-7 至 J+1 及时响应。', icon: 'tabler:headset' },
+    { title: '书面简报', description: '分享给船长、酒农、主厨，零即兴。', icon: 'tabler:clipboard-list' },
+    { title: '天气B案', description: '提前确认，体验质量不打折。', icon: 'tabler:cloud-check' },
   ]
 );
 const experienceLogisticsData = lceT(
@@ -190,6 +229,16 @@ const experienceLogisticsData = lceT(
     { title: 'Slot bloccati', description: 'Orari sunset, transfer door-to-door, tempi cuscinetto.', icon: 'tabler:clock-check' },
     { title: 'Transfer privati', description: 'Mercedes V/E, taxi boat se serve, autisti briefati.', icon: 'tabler:car' },
     { title: 'Permessi & privatizzazioni', description: 'Cantine, barche, tavole davvero privatizzate.', icon: 'tabler:lock-square-rounded' },
+  ],
+  [
+    { title: 'مواعيد مقفلة', description: 'أوقات الغروب، نقل باب لباب، هوامش زمنية مدمجة.', icon: 'tabler:clock-check' },
+    { title: 'تنقلات خاصة', description: 'مرسيدس V/E أو تاكسي بحري، سائقون مbriefés.', icon: 'tabler:car' },
+    { title: 'تصاريح وخصخصة', description: 'سراديب، قوارب، موائد مضيفة مخصخصة فعلياً.', icon: 'tabler:lock-square-rounded' },
+  ],
+  [
+    { title: '锁定档期', description: '日落时间段，门到门接送，预留缓冲。', icon: 'tabler:clock-check' },
+    { title: '专属接送', description: '奔驰V/E或水上接驳，司机已对齐。', icon: 'tabler:car' },
+    { title: '许可与私享', description: '酒窖/游船/私宴真正私享。', icon: 'tabler:lock-square-rounded' },
   ]
 );
 const experienceCommitmentsData = lceT(
@@ -211,8 +260,45 @@ const experienceCommitmentsData = lceT(
     { title: 'Timing rispettato', description: 'O compensato.', icon: 'tabler:clock-bolt' },
     { title: 'Partner diretti', description: 'Skipper, vignaioli, chef locali.', icon: 'tabler:users' },
     { title: 'Piano B meteo', description: 'Alternative pronte e validate.', icon: 'tabler:umbrella' },
+  ],
+  [
+    { title: 'خصخصة حقيقية', description: 'لا مزج بين المجموعات.', icon: 'tabler:shield-lock' },
+    { title: 'مواعيد محترمة', description: 'أو تعويض عند التأخير.', icon: 'tabler:clock-bolt' },
+    { title: 'شركاء مباشرين', description: 'ملاحون، صناع نبيذ، طهاة محليون.', icon: 'tabler:users' },
+    { title: 'خطة طقس بديلة', description: 'بدائل جاهزة ومعتمدة.', icon: 'tabler:umbrella' },
+  ],
+  [
+    { title: '真实私享', description: '绝不混团。', icon: 'tabler:shield-lock' },
+    { title: '严格守时', description: '如有延误则补偿。', icon: 'tabler:clock-bolt' },
+    { title: '直连伙伴', description: '本地船长、酒农、主厨。', icon: 'tabler:users' },
+    { title: '天气B案', description: '备用方案随时启用。', icon: 'tabler:umbrella' },
   ]
 );
+const overlayRegionTitle =
+  brandType === 'experience'
+    ? lceT('Arc lémanique & Suisse', 'Lake Geneva & Switzerland', 'Genfersee & Schweiz', 'Lago Lemano & Svizzera', 'بحيرة ليمان وسويسرا', '莱蒙湖及瑞士')
+    : lamT('Arc lémanique & Suisse', 'Lake Geneva & Switzerland', 'Genfersee & Schweiz', 'Lago Lemano & Svizzera');
+const overlayOptionsTitle =
+  brandType === 'experience'
+    ? lceT('Options flexibles', 'Flexible options', 'Flexible Optionen', 'Opzioni flessibili', 'خيارات مرنة', '灵活选项')
+    : lamT('Options flexibles', 'Flexible options', 'Flexible Optionen', 'Opzioni flessibili');
+const overlayOptionsSubtitle =
+  brandType === 'experience'
+    ? lceT(
+        'Nous adaptons l’équipe, le matériel et les créneaux horaires à vos contraintes de bail, d’ascenseur ou de route.',
+        'We adapt crew, gear and slots to lease, lift or route constraints.',
+        'Wir passen Team, Material und Slots an Miet-, Lift- oder Routen-Constraints an.',
+        'Adattiamo squadra, materiale e slot alle tue constraints di contratto/ascensore/strada.',
+        'نكيّف الفريق والمعدات والمواعيد وفق قيود العقد أو المصعد أو الطريق.',
+        '根据租约、电梯或线路限制调整团队、物料与时间段。'
+      )
+    : lamT(
+        'Nous adaptons l’équipe, le matériel et les créneaux horaires à vos contraintes de bail, d’ascenseur ou de route.',
+        'We adapt crew, gear and slots to lease, lift or route constraints.',
+        'Wir passen Team, Material und Slots an Miet-, Lift- oder Routen-Constraints an.',
+        'Adattiamo squadra, materiale e slot alle tue constraints di contratto/ascensore/strada.'
+      );
+
 const heroOverlay = isUrgent
   ? 'bg-black/22'
   : isTransport
@@ -404,109 +490,119 @@ let view = (() => {
       };
     case 'experience':
       return {
-        tagline: lceT('Expériences Léman', 'Lake Geneva experiences', 'Genfersee-Erlebnisse', 'Esperienze Lago Lemano'),
+        tagline: lceT('Expériences Léman', 'Lake Geneva experiences', 'Genfersee-Erlebnisse', 'Esperienze Lago Lemano', 'تجارب ليمان', '莱蒙湖体验'),
         title: lceT(
           'Croisières privées, vignobles UNESCO, tables d’hôtes',
           'Private cruises, UNESCO vineyards, hosted tables',
           'Private Kreuzfahrten, UNESCO-Weinberge, Gastgebertafeln',
-          'Crociere private, vigneti UNESCO, tavole d’hôtes'
+          'Crociere private, vigneti UNESCO, tavole d’hôtes',
+          'رحلات خاصة، كروم اليونسكو، موائد مضيفة',
+          '私享游船、联合国教科文组织葡萄园、私宴'
         ),
         subtitle: lceT(
           'Conciergerie dédiée, partenaires locaux, logistique verrouillée entre lac, montagne et ville.',
           'Dedicated concierge, local partners, locked logistics across lake, mountain, and city.',
           'Dedizierter Concierge, lokale Partner, fixierte Logistik zwischen See, Bergen und Stadt.',
-          'Concierge dedicato, partner locali, logistica bloccata tra lago, montagna e città.'
+          'Concierge dedicato, partner locali, logistica bloccata tra lago, montagna e città.',
+          'كونسيرج مخصص، شركاء محليون، لوجستيات محكمة بين البحيرة والجبال والمدينة.',
+          '专属礼宾 + 本地伙伴，湖/山/城的严谨物流。'
         ),
         actions: [
-          { variant: 'primary', text: lceT('Réserver une expérience', 'Book an experience', 'Erlebnis buchen', 'Prenotare un’esperienza'), href: '/contact#form', icon: 'tabler:mail-forward' },
-          { text: lceT('Parler à un concierge', 'Talk to a concierge', 'Mit dem Concierge sprechen', 'Parlare con un concierge'), href: whatsapp, icon: 'tabler:phone' },
+          { variant: 'primary', text: lceT('Réserver une expérience', 'Book an experience', 'Erlebnis buchen', 'Prenotare un’esperienza', 'احجز تجربة', '预订体验'), href: '/contact#form', icon: 'tabler:mail-forward' },
+          { text: lceT('Parler à un concierge', 'Talk to a concierge', 'Mit dem Concierge sprechen', 'Parlare con un concierge', 'تحدث إلى الكونسيرج', '联系礼宾'), href: whatsapp, icon: 'tabler:phone' },
         ],
-        cardTitle: lceT('Saisonnalité orchestrée', 'Seasonality orchestrated', 'Saisonale Orchestrierung', 'Stagionalità orchestrata'),
+        cardTitle: lceT('Saisonnalité orchestrée', 'Seasonality orchestrated', 'Saisonale Orchestrierung', 'Stagionalità orchestrata', 'موسمية منسقة', '季节策划'),
         cardSubtitle: lceT(
           'Lac au printemps, vignobles en été, tables d’hôtes en automne, bains alpins en hiver.',
           'Lake in spring, vineyards in summer, hosted tables in autumn, alpine baths in winter.',
           'See im Frühling, Weinberge im Sommer, Gastgebertafeln im Herbst, alpine Bäder im Winter.',
-          'Lago in primavera, vigneti in estate, tavole d’hôtes in autunno, bagni alpini in inverno.'
+          'Lago in primavera, vigneti in estate, tavole d’hôtes in autunno, bagni alpini in inverno.',
+          'بحيرة في الربيع، كروم في الصيف، موائد مضيفة في الخريف، حمامات جبلية في الشتاء.',
+          '春天湖面，夏季葡萄园，秋季私宴，冬季山间温泉。'
         ),
-        featureTitle: lceT('Pourquoi nous choisir', 'Why choose us', 'Warum uns wählen', 'Perché scegliere noi'),
+        featureTitle: lceT('Pourquoi nous choisir', 'Why choose us', 'Warum uns wählen', 'Perché scegliere noi', 'لماذا تختارنا', '选择我们的理由'),
         featureSubtitle: lceT(
           'Conciergerie dédiée + partenaires locaux premium.',
           'Dedicated concierge + premium local partners.',
           'Dedizierter Concierge + lokale Premiumpartner.',
-          'Concierge dedicato + partner locali premium.'
+          'Concierge dedicato + partner locali premium.',
+          'كونسيرج مخصص + شركاء محليون مميزون.',
+          '专属礼宾 + 本地优质伙伴。'
         ),
         featureItems: [
           {
-            title: lceT('Concierge unique', 'Dedicated concierge', 'Dedizierter Concierge', 'Concierge dedicato'),
-            description: lceT('Un interlocuteur pour tout cadrer.', 'One contact to frame everything.', 'Eine Ansprechperson für alles.', 'Un referente unico per tutto.'),
+            title: lceT('Concierge unique', 'Dedicated concierge', 'Dedizierter Concierge', 'Concierge dedicato', 'كونسيرج واحد', '一位礼宾'),
+            description: lceT('Un interlocuteur pour tout cadrer.', 'One contact to frame everything.', 'Eine Ansprechperson für alles.', 'Un referente unico per tutto.', 'جهة اتصال واحدة لكل التفاصيل.', '一人对接全程。'),
             icon: 'tabler:headset',
           },
           {
-            title: lceT('Partenaires triés', 'Vetted partners', 'Geprüfte Partner', 'Partner selezionati'),
-            description: lceT('Bateliers privés, vignerons UNESCO, chefs.', 'Private boats, UNESCO winemakers, chefs.', 'Private Boote, UNESCO-Winzer, Köche.', 'Barche private, vignaioli UNESCO, chef.'),
+            title: lceT('Partenaires triés', 'Vetted partners', 'Geprüfte Partner', 'Partner selezionati', 'شركاء مختارون', '甄选伙伴'),
+            description: lceT('Bateliers privés, vignerons UNESCO, chefs.', 'Private boats, UNESCO winemakers, chefs.', 'Private Boote, UNESCO-Winzer, Köche.', 'Barche private, vignaioli UNESCO, chef.', 'قوارب خاصة، صناع نبيذ اليونسكو، طهاة.', '私家船、联合国教科文组织酒农、主厨。'),
             icon: 'tabler:medal',
           },
           {
-            title: lceT('Timing verrouillé', 'Locked timing', 'Fixiertes Timing', 'Timing bloccato'),
-            description: lceT('Horaires précis, transferts coordonnés.', 'Precise schedules, coordinated transfers.', 'Genaue Zeiten, koordinierte Transfers.', 'Orari precisi, transfer coordinati.'),
+            title: lceT('Timing verrouillé', 'Locked timing', 'Fixiertes Timing', 'Timing bloccato', 'توقيت مقفل', '锁定时间'),
+            description: lceT('Horaires précis, transferts coordonnés.', 'Precise schedules, coordinated transfers.', 'Genaue Zeiten, koordinierte Transfers.', 'Orari precisi, transfer coordinati.', 'جداول دقيقة، تنقلات منسقة.', '精准日程，接送协同。'),
             icon: 'tabler:clock',
           },
         ],
-        content1Title: lceT('Moments signature', 'Signature moments', 'Signature-Momente', 'Momenti signature'),
+        content1Title: lceT('Moments signature', 'Signature moments', 'Signature-Momente', 'Momenti signature', 'لحظات مميزة', '标志性时刻'),
         content1Subtitle: lceT(
           'Croisière sunset, cave voûtée UNESCO, table d’hôtes, bains alpins.',
           'Sunset cruise, UNESCO vaulted cellar, hosted table, alpine baths.',
           'Sunset-Cruise, UNESCO-Gewölbekeller, Table d’hôtes, alpine Bäder.',
-          'Crociera al tramonto, cantina a volta UNESCO, tavola d’hôtes, bagni alpini.'
+          'Crociera al tramonto, cantina a volta UNESCO, tavola d’hôtes, bagni alpini.',
+          'رحلة غروب، قبو مقبب لليونسكو، مائدة مضيفة، حمامات جبلية.',
+          '日落游船、联合国教科文组织拱顶酒窖、私宴、山间温泉。'
         ),
         content1Items: [
           {
-            title: lceT('Croisière privée', 'Private cruise', 'Private Cruise', 'Crociera privata'),
-            description: lceT('Bateau privatisé, sommelière, plateau fromages.', 'Private boat, sommelier, cheese board.', 'Privates Boot, Sommelière, Käseplatte.', 'Barca privata, sommelier, tagliere di formaggi.'),
+            title: lceT('Croisière privée', 'Private cruise', 'Private Cruise', 'Crociera privata', 'رحلة خاصة', '私享游船'),
+            description: lceT('Bateau privatisé, sommelière, plateau fromages.', 'Private boat, sommelier, cheese board.', 'Privates Boot, Sommelière, Käseplatte.', 'Barca privata, sommelier, tagliere di formaggi.', 'قارب خاص، خبيرة نبيذ، أجبان.', '私家游船，侍酒师与奶酪。'),
             icon: 'tabler:sailboat',
           },
           {
-            title: lceT('Vignobles UNESCO', 'UNESCO vineyards', 'UNESCO-Weinberge', 'Vigneti UNESCO'),
-            description: lceT('Caves voûtées, accords vins-fromages.', 'Vaulted cellars, wine-cheese pairings.', 'Gewölbekeller, Wein-Käse-Pairings.', 'Cantine a volta, abbinamenti vino-formaggi.'),
+            title: lceT('Vignobles UNESCO', 'UNESCO vineyards', 'UNESCO-Weinberge', 'Vigneti UNESCO', 'كروم اليونسكو', '联合国教科文组织葡萄园'),
+            description: lceT('Caves voûtées, accords vins-fromages.', 'Vaulted cellars, wine-cheese pairings.', 'Gewölbekeller, Wein-Käse-Pairings.', 'Cantine a volta, abbinamenti vino-formaggi.', 'سراديب مقببة، تناغم نبيذ وجبن.', '拱顶酒窖，酒酪搭配。'),
             icon: 'tabler:glass-full',
           },
           {
-            title: lceT('Table d’hôtes', 'Hosted table', 'Table d’hôtes', 'Table d’hôtes'),
-            description: lceT('Chef local, produits lac + alpages.', 'Local chef, lake + alpine produce.', 'Lokaler Chef, Produkte vom See & aus den Alpen.', 'Chef locale, prodotti del lago e delle alpi.'),
+            title: lceT('Table d’hôtes', 'Hosted table', 'Table d’hôtes', 'Table d’hôtes', 'مائدة مضيفة', '私宴'),
+            description: lceT('Chef local, produits lac + alpages.', 'Local chef, lake + alpine produce.', 'Lokaler Chef, Produkte vom See & aus den Alpen.', 'Chef locale, prodotti del lago e delle alpi.', 'طاهٍ محلي، منتجات البحيرة والألب.', '本地主厨，湖与阿尔卑斯食材。'),
             icon: 'tabler:snowflake',
           },
         ],
-        content2Title: lceT('Logistique premium', 'Premium logistics', 'Premium-Logistik', 'Logistica premium'),
-        content2Subtitle: lceT('Transferts, brief partenaires, plan B météo inclus.', 'Transfers, partner briefs, weather plan B included.', 'Transfers, Partner-Briefings, Wetter-Plan B inklusive.', 'Transfer, brief partner, piano B meteo inclusi.'),
+        content2Title: lceT('Logistique premium', 'Premium logistics', 'Premium-Logistik', 'Logistica premium', 'لوجستيات مميزة', '高端物流'),
+        content2Subtitle: lceT('Transferts, brief partenaires, plan B météo inclus.', 'Transfers, partner briefs, weather plan B included.', 'Transfers, Partner-Briefings, Wetter-Plan B inklusive.', 'Transfer, brief partner, piano B meteo inclusi.', 'تنقلات، إحاطات شركاء، خطة طقس بديلة.', '接送、伙伴对接、天气B案皆含。'),
         content2Items: [
           {
-            title: lceT('Transferts privés', 'Private transfers', 'Private Transfers', 'Transfer privati'),
-            description: lceT('Chauffeur ou bateau-taxi selon parcours.', 'Driver or boat taxi depending on route.', 'Fahrer oder Bootstaxi je nach Strecke.', 'Autista o taxi boat a seconda del percorso.'),
+            title: lceT('Transferts privés', 'Private transfers', 'Private Transfers', 'Transfer privati', 'تنقلات خاصة', '专属接送'),
+            description: lceT('Chauffeur ou bateau-taxi selon parcours.', 'Driver or boat taxi depending on route.', 'Fahrer oder Bootstaxi je nach Strecke.', 'Autista o taxi boat a seconda del percorso.', 'سائق أو تاكسي بحري حسب المسار.', '按线路安排专车/水上接驳。'),
             icon: 'tabler:car',
           },
           {
-            title: lceT('Brief discret', 'Discreet briefing', 'Diskretes Briefing', 'Brief discreto'),
-            description: lceT('Hôtes et équipes alignés à l’avance.', 'Hosts and teams aligned in advance.', 'Gastgeber und Teams vorab ausgerichtet.', 'Host e team allineati in anticipo.'),
+            title: lceT('Brief discret', 'Discreet briefing', 'Diskretes Briefing', 'Brief discreto', 'إحاطة هادئة', '低调对接'),
+            description: lceT('Hôtes et équipes alignés à l’avance.', 'Hosts and teams aligned in advance.', 'Gastgeber und Teams vorab ausgerichtet.', 'Host e team allineati in anticipo.', 'تنسيق مسبق مع المضيفين والفرق.', '提前与主人团队对齐。'),
             icon: 'tabler:clipboard-check',
           },
           {
-            title: lceT('Plan B météo', 'Weather plan B', 'Wetter-Plan B', 'Piano B meteo'),
-            description: lceT('Alternatives prévues sans friction.', 'Alternatives ready without friction.', 'Alternativen reibungslos bereit.', 'Alternative pronte senza attrito.'),
+            title: lceT('Plan B météo', 'Weather plan B', 'Wetter-Plan B', 'Piano B meteo', 'خطة طقس بديلة', '天气B案'),
+            description: lceT('Alternatives prévues sans friction.', 'Alternatives ready without friction.', 'Alternativen reibungslos bereit.', 'Alternative pronte senza attrito.', 'بدائل جاهزة بلا تعقيد.', '备用方案顺滑切换。'),
             icon: 'tabler:umbrella',
           },
         ],
-        supportTitle: lceT('Inclus', 'Included', 'Inklusive', 'Incluso'),
-        supportSubtitle: lceT('Base de chaque expérience.', 'Standard with every experience.', 'Standard bei jedem Erlebnis.', 'Base di ogni esperienza.'),
+        supportTitle: lceT('Inclus', 'Included', 'Inklusive', 'Incluso', 'مشمول', '包含'),
+        supportSubtitle: lceT('Base de chaque expérience.', 'Standard with every experience.', 'Standard bei jedem Erlebnis.', 'Base di ogni esperienza.', 'أساس كل تجربة.', '每次体验的标准配置。'),
         supportItems: [
-          { title: lceT('Concierge', 'Concierge', 'Concierge', 'Concierge'), description: lceT('Un contact dédié.', 'Dedicated contact.', 'Eine dedizierte Ansprechperson.', 'Un contatto dedicato.'), icon: 'tabler:user-star' },
-          { title: lceT('Horaires verrouillés', 'Locked timings', 'Fixe Zeiten', 'Orari bloccati'), description: lceT('Timing précis, confirmations.', 'Precise timing, confirmations.', 'Präzises Timing, Bestätigungen.', 'Timing preciso, conferme.'), icon: 'tabler:clock' },
-          { title: lceT('Partenaires premium', 'Premium partners', 'Premium-Partner', 'Partner premium'), description: lceT('Réseau local sélectionné.', 'Selected local network.', 'Ausgewähltes lokales Netzwerk.', 'Rete locale selezionata.'), icon: 'tabler:check' },
+          { title: lceT('Concierge', 'Concierge', 'Concierge', 'Concierge', 'كونسيرج', '礼宾'), description: lceT('Un contact dédié.', 'Dedicated contact.', 'Eine dedizierte Ansprechperson.', 'Un contatto dedicato.', 'جهة اتصال مخصصة.', '专属对接人。'), icon: 'tabler:user-star' },
+          { title: lceT('Horaires verrouillés', 'Locked timings', 'Fixe Zeiten', 'Orari bloccati', 'أوقات مقفلة', '锁定时间'), description: lceT('Timing précis, confirmations.', 'Precise timing, confirmations.', 'Präzises Timing, Bestätigungen.', 'Timing preciso, conferme.', 'توقيت دقيق، تأكيدات.', '精准时间与确认。'), icon: 'tabler:clock' },
+          { title: lceT('Partenaires premium', 'Premium partners', 'Premium-Partner', 'Partner premium', 'شركاء مميزون', '精选伙伴'), description: lceT('Réseau local sélectionné.', 'Selected local network.', 'Ausgewähltes lokales Netzwerk.', 'Rete locale selezionata.', 'شبكة محلية مختارة.', '精选本地网络。'), icon: 'tabler:check' },
         ],
-        ctaTitle: lceT('Prêt pour une expérience Léman ?', 'Ready for a Lake Geneva experience?', 'Bereit für ein Genfersee-Erlebnis?', 'Pronti per un’esperienza Léman?'),
-        ctaSubtitle: lceT('Dites-nous vos dates et vos envies. On orchestre le reste.', 'Share your dates and wishes. We orchestrate the rest.', 'Teilen Sie Termine und Wünsche. Wir orchestrieren den Rest.', 'Dateci le date e i vostri desideri. Al resto pensiamo noi.'),
+        ctaTitle: lceT('Prêt pour une expérience Léman ?', 'Ready for a Lake Geneva experience?', 'Bereit für ein Genfersee-Erlebnis?', 'Pronti per un’esperienza Léman?', 'جاهزون لتجربة ليمان؟', '准备好莱蒙体验了吗？'),
+        ctaSubtitle: lceT('Dites-nous vos dates et vos envies. On orchestre le reste.', 'Share your dates and wishes. We orchestrate the rest.', 'Teilen Sie Termine und Wünsche. Wir orchestrieren den Rest.', 'Dateci le date e i vostri desideri. Al resto pensiamo noi.', 'أخبرونا بالتواريخ والرغبات. نحن نتولى الباقي.', '告诉我们日期与偏好，其余交给我们。'),
         ctaActions: [
-          { variant: 'primary', text: lceT('Réserver', 'Book', 'Buchen', 'Prenotare'), href: '/contact#form', icon: 'tabler:mail-forward' },
-          { text: lceT('Parler à un concierge', 'Talk to a concierge', 'Mit dem Concierge sprechen', 'Parlare con un concierge'), href: whatsapp, icon: 'tabler:phone' },
+          { variant: 'primary', text: lceT('Réserver', 'Book', 'Buchen', 'Prenotare', 'احجز', '预订'), href: '/contact#form', icon: 'tabler:mail-forward' },
+          { text: lceT('Parler à un concierge', 'Talk to a concierge', 'Mit dem Concierge sprechen', 'Parlare con un concierge', 'تحدث إلى الكونسيرج', '联系礼宾'), href: whatsapp, icon: 'tabler:phone' },
         ],
       };
     case 'videmaison':
@@ -972,8 +1068,8 @@ const optionsGradient = contentGradient;
     <>
       <Features2
         id="experience-formats"
-        title={isEn ? 'Experience formats' : 'Formats d’expérience'}
-        subtitle={isEn ? 'Decide at a glance' : 'Décider en 1 regard'}
+        title={lceT('Formats d’expérience', 'Experience formats', 'Erlebnisformate', 'Formati di esperienza', 'صيغ التجارب', '体验形式')}
+        subtitle={lceT('Décider en 1 regard', 'Decide at a glance', 'Auf einen Blick entscheiden', 'Decidi a colpo d’occhio', 'قرار سريع بنظرة', '一眼决断')}
         columns={4}
         classes={{ container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-5 gap-3 border border-emerald-200/35 bg-white/92 text-slate-900' } }}
         items={experienceFormatsData}
@@ -981,8 +1077,8 @@ const optionsGradient = contentGradient;
 
       <Features2
         id="experience-concierge"
-        title={isEn ? 'Dedicated concierge — concrete' : 'Conciergerie dédiée — concret'}
-        subtitle={isEn ? 'Included in every experience' : 'Inclus dans chaque expérience'}
+        title={lceT('Conciergerie dédiée — concret', 'Dedicated concierge — concrete', 'Dedizierter Concierge — konkret', 'Concierge dedicato — concreto', 'كونسيرج مخصص — بوضوح', '专属礼宾 — 具体执行')}
+        subtitle={lceT('Inclus dans chaque expérience', 'Included in every experience', 'Inklusive bei jedem Erlebnis', 'Incluso in ogni esperienza', 'مشمولة في كل تجربة', '每次体验均包含')}
         columns={3}
         classes={{ container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-5 gap-3 border border-emerald-200/35 bg-white/92 text-slate-900' } }}
         items={experienceConciergeData}
@@ -990,8 +1086,8 @@ const optionsGradient = contentGradient;
 
       <Features2
         id="experience-logistics"
-        title={isEn ? 'Logistics & precision' : 'Logistique & précision'}
-        subtitle={isEn ? 'What we lock in' : 'Ce que nous verrouillons'}
+        title={lceT('Logistique & précision', 'Logistics & precision', 'Logistik & Präzision', 'Logistica & precisione', 'لوجستيات ودقة', '物流与严谨')}
+        subtitle={lceT('Ce que nous verrouillons', 'What we lock in', 'Was wir fixieren', 'Cosa blocchiamo', 'ما نثبته مسبقاً', '我们提前锁定的要点')}
         columns={3}
         classes={{ container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-5 gap-3 border border-emerald-200/35 bg-white/92 text-slate-900' } }}
         items={experienceLogisticsData}
@@ -1024,7 +1120,7 @@ const optionsGradient = contentGradient;
         url('${processImage}');`
     }
   >
-    <h4 class="text-3xl font-semibold">Arc lémanique & Suisse</h4>
+    <h4 class="text-3xl font-semibold">{overlayRegionTitle}</h4>
     <p class={`mt-6 max-w-sm ${overlaySubTextClass}`}>
       {view.content1Subtitle}
     </p>
@@ -1066,11 +1162,16 @@ const optionsGradient = contentGradient;
         url('${optionsImage}');`
     }
   >
-    <h4 class="text-3xl font-semibold">Options flexibles</h4>
+    <h4 class="text-3xl font-semibold">{overlayOptionsTitle}</h4>
     <p class={`mt-6 max-w-sm ${overlaySubTextClass}`}>
       {isUrgent
-        ? 'Nous ajustons l’équipe, le matériel et le créneau pour limiter le temps sur place.'
-        : 'Nous adaptons l’équipe, le matériel et les créneaux horaires à vos contraintes de bail, d’ascenseur ou de route.'}
+        ? lamT(
+            'Nous ajustons l’équipe, le matériel et le créneau pour limiter le temps sur place.',
+            'We adjust crew, gear and slot to limit time on-site.',
+            'Wir passen Team, Material und Slot an, um die Zeit vor Ort zu minimieren.',
+            'Adattiamo squadra, materiale e fascia per ridurre il tempo sul posto.'
+          )
+        : overlayOptionsSubtitle}
     </p>
   </div>
 </Fragment>
@@ -1124,8 +1225,8 @@ const optionsGradient = contentGradient;
     <>
       <Features2
         id="experiences-signature"
-        title={isEn ? 'Signature selection' : 'Sélection signature'}
-        subtitle={isEn ? 'Lake, vineyards, gastronomy, altitude' : 'Lac, vignobles, gastronomie, altitude'}
+        title={lceT('Sélection signature', 'Signature selection', 'Signature Auswahl', 'Selezione signature', 'اختيار مميز', '甄选体验')}
+        subtitle={lceT('Lac, vignobles, gastronomie, altitude', 'Lake, vineyards, gastronomy, altitude', 'See, Weinberge, Gastronomie, Höhe', 'Lago, vigneti, gastronomia, altitudine', 'بحيرة، كروم، فنون الطهو، ارتفاع', '湖泊、葡萄园、美食、高地')}
         columns={3}
         classes={{ container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-6 gap-4 text-slate-900 border border-emerald-200/35 bg-white/95' } }}
         items={signatureExperiences}
@@ -1133,8 +1234,8 @@ const optionsGradient = contentGradient;
 
       <Features2
         id="experiences-slow"
-        title={isEn ? 'Slow & wellness' : 'Slow & bien-être'}
-        subtitle={isEn ? 'Calm, silence, Swiss design, thermal' : 'Calme, silence, design suisse, thermal'}
+        title={lceT('Slow & bien-être', 'Slow & wellness', 'Slow & Wellness', 'Slow & benessere', 'هدوء ورفاهية', '慢享与身心')}
+        subtitle={lceT('Calme, silence, design suisse, thermal', 'Calm, silence, Swiss design, thermal', 'Ruhe, Stille, Swiss Design, Thermal', 'Calma, silenzio, design svizzero, terme', 'هدوء، صمت، تصميم سويسري، ينابيع', '安静、静谧、瑞士设计、温泉')}
         columns={3}
         classes={{ container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-6 gap-4 text-slate-900 border border-emerald-200/30 bg-white/92' } }}
         items={slowExperiences}
@@ -1142,8 +1243,8 @@ const optionsGradient = contentGradient;
 
       <Features2
         id="experiences-winter"
-        title={isEn ? 'Winter & light' : 'Hiver & lumière'}
-        subtitle={isEn ? 'Chalet, fireside, snow silence, lake mist' : 'Chalet, veillées, silence neige, brumes du lac'}
+        title={lceT('Hiver & lumière', 'Winter & light', 'Winter & Licht', 'Inverno & luce', 'شتاء ونور', '冬季与光影')}
+        subtitle={lceT('Chalet, veillées, silence neige, brumes du lac', 'Chalet, fireside, snow silence, lake mist', 'Chalet, Kamin, Schneestille, Seennebel', 'Chalet, focolare, silenzio neve, bruma del lago', 'شاليه، دفء الموقد، صمت الثلج، ضباب البحيرة', '木屋、炉火、雪之静、湖雾')}
         columns={3}
         classes={{ container: 'max-w-5xl', items: { panel: 'panel-surface rounded-2xl p-6 gap-4 text-slate-900 border border-emerald-200/30 bg-white/92' } }}
         items={winterExperiences}
@@ -1151,8 +1252,8 @@ const optionsGradient = contentGradient;
 
       <Features2
         id="experiences-corporate"
-        title={isEn ? 'Corporate & celebrations' : 'Corporate & célébrations'}
-        subtitle={isEn ? 'Executive retreats, proposals, family heritage' : 'Retraites exécutives, propositions, héritage familial'}
+        title={lceT('Corporate & célébrations', 'Corporate & celebrations', 'Corporate & Feiern', 'Corporate & celebrazioni', 'شركات واحتفالات', '商务与庆典')}
+        subtitle={lceT('Retraites exécutives, propositions, héritage familial', 'Executive retreats, proposals, family heritage', 'Executive Retreats, Anträge, Familienerbe', 'Ritiri executive, proposte, eredità familiare', 'خلوات تنفيذية، عروض زواج، إرث عائلي', '高管静修、求婚、家族传承')}
         columns={2}
         classes={{ container: 'max-w-5xl', items: { panel: 'panel-surface rounded-2xl p-6 gap-4 text-slate-900 border border-emerald-200/30 bg-white/92' } }}
         items={corporateExperiences}
@@ -1160,8 +1261,8 @@ const optionsGradient = contentGradient;
 
       <Features2
         id="experience-engagements"
-        title={isEn ? 'Our guarantees' : 'Nos engagements'}
-        subtitle={isEn ? 'What we guarantee' : 'Ce que nous garantissons'}
+        title={lceT('Nos engagements', 'Our guarantees', 'Unsere Zusagen', 'I nostri impegni', 'التزاماتنا', '我们的承诺')}
+        subtitle={lceT('Ce que nous garantissons', 'What we guarantee', 'Was wir garantieren', 'Cosa garantiamo', 'ما نضمنه', '我们保证的事项')}
         columns={4}
         classes={{ container: 'max-w-6xl', items: { panel: 'panel-surface rounded-2xl p-5 gap-3 border border-emerald-200/35 bg-white/92 text-slate-900' } }}
         items={experienceCommitmentsData}
