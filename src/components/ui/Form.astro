@@ -374,145 +374,106 @@ if (!sections.length) {
         .filter((el) => el.checked)
         .map((el) => el.value);
 
-    const daysUntil = (value: string) => {
-      if (!value) return null;
-      const target = new Date(value);
-      if (Number.isNaN(target.getTime())) return null;
-      const diff = target.getTime() - Date.now();
-      return Math.floor(diff / (1000 * 60 * 60 * 24));
+    const parseFloorValue = (value: string) => (value === '4+' ? 4 : Number(value) || 0);
+    const parseApartmentSize = (value: string) => {
+      const parsed = parseFloat(value);
+      return Number.isNaN(parsed) ? 0 : parsed;
     };
 
-    const computeSignal = () => {
-      const moveDate =
-        getFieldValue('move_date') || getFieldValue('move_date_from') || getFieldValue('move_date_to');
-      const apartmentSize = getRadioValue('apartment_size');
-      const originFloor = getFieldValue('origin_floor');
+    const computeRiskScore = () => {
+      const apartmentSize = parseApartmentSize(getRadioValue('apartment_size'));
+      const originFloor = parseFloorValue(getRadioValue('origin_floor'));
+      const destFloor = parseFloorValue(getRadioValue('dest_floor'));
       const originElevator = getRadioValue('origin_elevator');
-      const originParking = getRadioValue('origin_parking');
-      const destFloor = getFieldValue('dest_floor');
       const destElevator = getRadioValue('dest_elevator');
       const packedReady = getRadioValue('packed_ready');
       const extraSpaces = getCheckboxValues('extra_spaces');
-      const boxCount = getFieldValue('box_count');
-      const peoplePickup = getRadioValue('people_pickup');
+      const bulkyItems = getCheckboxValues('bulky_items');
+      const fragileItems = getRadioValue('fragile_items');
+      const dismantling = getRadioValue('dismantling');
+      const parkingAuthorization = getRadioValue('parking_authorization');
+      const stairsType = getRadioValue('stairs_type');
+      const confidenceLevel = getRadioValue('confidence_level');
       const clientHelping = getRadioValue('client_helping');
 
       let score = 0;
-      const flags: string[] = [];
-      let autoAbortReason = '';
-      const daysToMove = daysUntil(moveDate);
+      const drivers: string[] = [];
 
-      if (daysToMove !== null) {
-        if (daysToMove <= 1) {
-          score += 4;
-          flags.push('urgence<48h');
-        } else if (daysToMove <= 7) {
-          score += 2;
-          flags.push('J-7');
-        }
-      } else {
-        flags.push('date_inconnue');
-      }
-
-      if (apartmentSize === '4.5') {
-        score += 3;
-        flags.push('4.5p');
-      } else if (apartmentSize === '3.5') {
+      if (confidenceLevel === 'unsure') {
         score += 2;
-        flags.push('3.5p');
-      } else if (apartmentSize === '2.5') {
-        score += 1;
+        drivers.push('confidence_unsure');
       }
 
-      const floorScore = (val: string) => (val === '4+' ? 2 : val === '3' ? 1 : 0);
-      score += floorScore(originFloor) + floorScore(destFloor);
-      if (floorScore(originFloor)) flags.push(`etage_dep_${originFloor}`);
-      if (floorScore(destFloor)) flags.push(`etage_arr_${destFloor}`);
+      if (originFloor >= 3 && originElevator === 'no') {
+        score += 2;
+        drivers.push('origin_floor_no_elevator');
+      }
+      if (destFloor >= 3 && destElevator === 'no') {
+        score += 2;
+        drivers.push('dest_floor_no_elevator');
+      }
 
-      const elevatorScore = (val: string) => (val === 'no' ? 2 : val === 'unknown' ? 1 : 0);
-      score += elevatorScore(originElevator) + elevatorScore(destElevator);
-      if (originElevator === 'no') flags.push('sans_asc_dep');
-      if (destElevator === 'no') flags.push('sans_asc_arr');
-      if (originElevator === 'unknown' || destElevator === 'unknown') flags.push('ascenseur_inconnu');
+      if (bulkyItems.includes('bulky')) {
+        score += 2;
+        drivers.push('bulky_items');
+      }
 
-      if (originParking === '>30m') {
-        score += 3;
-        flags.push('portage_long_dep');
-      } else if (originParking === '10-30m') {
+      if (fragileItems === 'yes') {
+        score += 2;
+        drivers.push('fragile_items');
+      }
+
+      if (dismantling === 'many') {
+        score += 2;
+        drivers.push('dismantling_many');
+      }
+
+      if (parkingAuthorization === 'unknown') {
         score += 1;
-        flags.push('portage_dep');
-      } else if (originParking === 'unknown') {
+        drivers.push('parking_authorization_unknown');
+      }
+
+      if (stairsType === 'narrow') {
+        score += 2;
+        drivers.push('stairs_narrow');
+      }
+
+      if (extraSpaces.includes('cellar') && apartmentSize >= 3.5) {
         score += 1;
-        flags.push('parking_dep_inconnu');
+        drivers.push('cellar_with_large_flat');
+      }
+
+      if (clientHelping === 'yes' && fragileItems === 'yes') {
+        score += 1;
+        drivers.push('client_helping_fragile');
       }
 
       if (packedReady === 'no') {
-        score += 3;
-        flags.push('non_emballe');
-      } else if (packedReady === 'mostly') {
-        score += 1;
-        flags.push('emballage_partiel');
+        drivers.push('non_emballe');
       }
 
-      const extraScore = extraSpaces.reduce((acc, item) => {
-        if (item === 'piano' || item === 'stone') return acc + 4;
-        if (item === 'garage') return acc + 2;
-        if (item === 'cellar' || item === 'attic') return acc + 1;
-        return acc;
-      }, 0);
-      score += extraScore;
-      if (extraSpaces.length) flags.push(`extras:${extraSpaces.join('+')}`);
-      const extrasHeavy = extraSpaces.some((item) => item === 'piano' || item === 'stone');
+      return { score, drivers };
+    };
 
-      if (boxCount === '30-50') {
-        score += 1;
-      } else if (boxCount === '50-80') {
-        score += 2;
-        flags.push('cartons_50+');
-      } else if (boxCount === 'unknown') {
-        score += 1;
-        flags.push('cartons_inconnu');
-      }
+    const mapRiskOutcome = (score: number) => {
+      if (score <= 2) return 'auto_quote';
+      if (score <= 5) return 'manual_validation';
+      if (score <= 7) return 'photos_required';
+      return 'human_call';
+    };
 
-      if (peoplePickup === 'client_only') {
-        score += 1;
-        flags.push('client_seul');
-      }
-      if (clientHelping === 'yes') {
-        score += 1;
-        flags.push('client_aide');
-      }
+    const computeSignal = () => {
+      const { score, drivers } = computeRiskScore();
+      const riskOutcome = mapRiskOutcome(score);
+      const level = riskOutcome === 'auto_quote' ? 'green' : riskOutcome === 'manual_validation' ? 'yellow' : 'red';
+      const expressEligible = riskOutcome === 'auto_quote';
 
-      if (!autoAbortReason && daysToMove !== null && daysToMove <= 1 && packedReady === 'no') {
-        autoAbortReason = 'Urgence non emballée';
-      }
-      if (
-        !autoAbortReason &&
-        extrasHeavy &&
-        (originElevator === 'no' || destElevator === 'no') &&
-        (originFloor === '4+' || destFloor === '4+')
-      ) {
-        autoAbortReason = 'Objet lourd étage élevé sans ascenseur';
-      }
-
-      const expressEligible =
-        !autoAbortReason &&
-        (daysToMove === null || daysToMove >= 3) &&
-        score <= 5 &&
-        !extrasHeavy &&
-        packedReady !== 'no' &&
-        originElevator !== 'no' &&
-        destElevator !== 'no' &&
-        originParking !== '>30m';
-
-      const level = autoAbortReason ? 'red' : score >= 10 ? 'red' : score >= 6 ? 'yellow' : 'green';
-
-      return { level, score, flags, autoAbortReason, expressEligible };
+      return { level, score, drivers, autoAbortReason: '', expressEligible, riskOutcome };
     };
 
     const syncSignalOutputs = () => {
       if (!form) return;
-      const { level, score, flags, autoAbortReason, expressEligible } = computeSignal();
+      const { level, score, drivers, autoAbortReason, expressEligible, riskOutcome } = computeSignal();
       const setHidden = (name: string, value: string) => {
         let el = form.querySelector<HTMLInputElement>(`input[name="${name}"]`);
         if (!el) {
@@ -526,9 +487,12 @@ if (!sections.length) {
 
       setHidden('signal_level', level);
       setHidden('signal_score', String(score));
-      setHidden('signal_flags', flags.join('|'));
+      setHidden('signal_flags', drivers.join('|'));
       setHidden('signal_auto_abort', autoAbortReason || '');
       setHidden('express_eligible', expressEligible ? 'yes' : 'no');
+      setHidden('risk_score', String(score));
+      setHidden('risk_outcome', riskOutcome);
+      setHidden('risk_drivers', drivers.join('|'));
       form.dataset.signal = level;
     };
 

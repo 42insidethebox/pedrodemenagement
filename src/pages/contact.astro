@@ -169,7 +169,7 @@ const views = {
       title: 'Ce que nous cadrons',
       subtitle: 'Pour vider vite et propre.',
       items: [
-        { title: 'Volume & accès', description: 'Photos ou visite express pour estimer portage.' },
+        { title: 'Volume & accès', description: 'Photos ou visite express pour préparer le portage.' },
         { title: 'Tri sur place', description: 'Réemploi en priorité, recyclage, évacuation contrôlée.' },
         { title: 'Remise propre', description: 'Balayage ou ménage optionnel, photos avant/après.' },
       ],
@@ -798,7 +798,40 @@ const formSubtitle =
                 ],
               },
 
+              {
+                type: 'radio',
+                name: 'stairs_type',
+                label: 'Type d’escaliers',
+                required: true,
+                options: [
+                  { value: 'standard', label: 'Standards' },
+                  { value: 'narrow', label: 'Étroits / tournants / colimaçon' },
+                ],
+              },
+              {
+                type: 'radio',
+                name: 'parking_authorization',
+                label: 'Autorisation de stationnement nécessaire ?',
+                required: true,
+                helper: 'Dans certaines communes, une autorisation doit être demandée 5–7 jours avant.',
+                options: [
+                  { value: 'no', label: 'Non / stationnement libre' },
+                  { value: 'yes', label: 'Oui (zone bleue / centre-ville)' },
+                  { value: 'unknown', label: 'Je ne sais pas' },
+                ],
+              },
+
               { type: 'section', name: 'section_volume', label: '📦 Volume & friction réelle' },
+              {
+                type: 'radio',
+                name: 'confidence_level',
+                label: 'Êtes-vous sûr(e) que ces informations reflètent bien la réalité ?',
+                required: true,
+                options: [
+                  { value: 'sure', label: 'Oui, assez sûr' },
+                  { value: 'unsure', label: 'Pas vraiment / difficile à évaluer' },
+                ],
+              },
               {
                 type: 'radio',
                 name: 'packed_ready',
@@ -823,15 +856,32 @@ const formSubtitle =
                 ],
               },
               {
-                type: 'select',
-                name: 'box_count',
-                label: 'Nombre estimé de cartons',
+                type: 'checkbox',
+                name: 'bulky_items',
+                label: 'Objets difficiles à manœuvrer',
+                options: [
+                  { value: 'bulky', label: 'Canapé d’angle, armoire large, table monobloc…' },
+                ],
+              },
+              {
+                type: 'radio',
+                name: 'fragile_items',
+                label: 'Objets fragiles ou de valeur ?',
                 required: true,
                 options: [
-                  { value: '<30', label: '< 30' },
-                  { value: '30-50', label: '30 à 50' },
-                  { value: '50-80', label: '50 à 80' },
-                  { value: 'unknown', label: 'Je ne sais pas' },
+                  { value: 'no', label: 'Non' },
+                  { value: 'yes', label: 'Oui (verre, écrans, œuvres, aquariums…)' },
+                ],
+              },
+              {
+                type: 'radio',
+                name: 'dismantling',
+                label: 'Meubles à démonter / remonter ?',
+                required: true,
+                options: [
+                  { value: 'none', label: 'Aucun' },
+                  { value: 'some', label: 'Quelques-uns' },
+                  { value: 'many', label: 'Plusieurs' },
                 ],
               },
 
@@ -859,14 +909,14 @@ const formSubtitle =
               },
             ]}
             textarea={{
-              label: 'Y a-t-il quelque chose qui pourrait surprendre un déménageur le jour J ?',
+              label: 'Y a-t-il des contraintes particulières que nous devrions connaître ?',
               name: 'surprises',
               rows: 3,
             }}
             disclaimer={{
               label: 'Je confirme que ces informations sont exactes et complètes.',
             }}
-            button="Vérifier la faisabilité"
+            button="Vérifier planning & accès"
             description="Aucun engagement — devis gratuit sous 24h. Nous confirmons sous 1 jour ouvré."
           />
         </div>
