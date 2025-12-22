@@ -1769,11 +1769,11 @@ const metadata = view.metadata;
 
         <Fragment slot="image">
           <div
-            class="relative aspect-[4/3] overflow-hidden rounded-3xl panel-contrast text-white"
+            class="relative visual-card aspect-[4/3] overflow-hidden rounded-3xl panel-contrast text-white"
             style={`background-image: linear-gradient(135deg, rgba(239,68,68,0.35), rgba(249,115,22,0.25)), url('${img('inside_truck_unloading_couch')}'); background-size: cover; background-position: center;`}
           >
             <div class="absolute inset-0 bg-gradient-to-br from-red-900/70 via-red-700/65 to-orange-500/55"></div>
-            <div class="relative h-full p-8 flex flex-col justify-end gap-3">
+            <div class="relative visual-card-body h-full p-8 flex flex-col justify-end gap-3">
               <p class="text-xs uppercase tracking-[0.35em] text-orange-100/80">Départ confirmé</p>
               <h4 class="text-3xl font-semibold leading-tight">Équipe prête, protections incluses</h4>
               <p class="text-white/85 max-w-xl">Chef d’équipe urgence, arrimage renforcé, communication en direct jusqu’à la livraison.</p>
@@ -1813,11 +1813,11 @@ const metadata = view.metadata;
         </Fragment>
         <Fragment slot="image">
           <div
-            class="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl"
+            class="relative visual-card aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl"
             style={`background-image: linear-gradient(135deg, rgba(185,28,28,0.27), rgba(239,68,68,0.15), rgba(249,115,22,0.16)), url('${img('men_loading_van_4')}'); background-size: cover; background-position: center;`}
           >
             <div class="absolute inset-0 bg-gradient-to-br from-red-900/65 via-red-800/60 to-orange-500/55"></div>
-            <div class="relative p-8 text-white">
+            <div class="relative visual-card-body p-8 text-white">
               <p class="text-xs uppercase tracking-[0.35em] text-orange-100/80">Urgence</p>
               <p class="mt-4 max-w-lg text-lg text-white/90">Départ prioritaire, protections complètes, communication directe pendant le trajet.</p>
             </div>
@@ -1886,11 +1886,11 @@ const metadata = view.metadata;
 
         <Fragment slot="image">
           <div
-            class="relative aspect-[4/3] overflow-hidden rounded-3xl panel-grid text-white border border-amber-200/20"
+            class="relative visual-card aspect-[4/3] overflow-hidden rounded-3xl panel-grid text-white border border-amber-200/20"
             style={`background-image: linear-gradient(135deg, rgba(91,33,182,0.35), rgba(245,158,11,0.25)), url('${img('professional_van_1')}'); background-size: cover; background-position: center;`}
           >
             <div class="absolute inset-0 bg-gradient-to-br from-purple-900/65 via-slate-900/60 to-amber-500/40"></div>
-            <div class="relative h-full p-8 flex flex-col justify-end gap-3">
+            <div class="relative visual-card-body h-full p-8 flex flex-col justify-end gap-3">
               <p class="text-xs uppercase tracking-[0.3em] text-amber-100/80">Arrimage & protection</p>
               <h4 class="text-3xl font-semibold leading-tight">Pièces uniques, livrées à l’heure</h4>
               <p class="text-white/80 max-w-xl">Filmage, calage, sangles et créneau verrouillé. Chauffeur contactable.</p>
@@ -1928,11 +1928,11 @@ const metadata = view.metadata;
         </Fragment>
         <Fragment slot="image">
           <div
-            class="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl"
+            class="relative visual-card aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl"
             style={`background-image: linear-gradient(135deg, rgba(76,29,149,0.35), rgba(17,24,39,0.27), rgba(245,158,11,0.24)), url('${img('van_inside_objects_boxes_3')}'); background-size: cover; background-position: center;`}
           >
             <div class="absolute inset-0 bg-gradient-to-br from-purple-900/65 via-slate-900/65 to-amber-500/35"></div>
-            <div class="relative p-8 text-white">
+            <div class="relative visual-card-body p-8 text-white">
               <p class="text-xs uppercase tracking-[0.3em] text-amber-100/80">Transport</p>
               <p class="mt-4 max-w-lg text-lg text-white/90">Calage, arrimage, et timing verrouillé pour vos pièces haut de gamme.</p>
             </div>
@@ -1992,7 +1992,7 @@ const metadata = view.metadata;
         <Fragment slot="image">
           {view.hero.card ? (
             <div
-              class={`relative aspect-[4/3] overflow-hidden rounded-2xl ${view.hero.card.className ?? ''}`}
+              class={`relative visual-card aspect-[4/3] overflow-hidden rounded-2xl ${view.hero.card.className ?? ''}`}
               style={
                 view.hero.card.background
                   ? `background-image:${view.hero.card.background}; background-size: cover; background-position: center;`
@@ -2000,7 +2000,7 @@ const metadata = view.metadata;
               }
             >
               <div class={`absolute inset-0 ${view.hero.card.overlayClass || ''}`}></div>
-              <div class="relative h-full p-8 text-left">
+              <div class="relative visual-card-body h-full p-8 text-left">
                 {view.hero.card.badge ? (
                   <p class="text-xs uppercase tracking-[0.3em] opacity-80">{view.hero.card.badge}</p>
                 ) : null}
@@ -2084,11 +2084,11 @@ const metadata = view.metadata;
         {view.process.image ? (
           <Fragment slot="image">
             <div
-              class="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl"
+              class="relative visual-card aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl"
               style={`background-image: url('${view.process.image.src}'); background-size: cover; background-position: center;`}
             >
               <div class={`absolute inset-0 ${view.process.image.overlayClass || ''}`}></div>
-              <div class="relative p-8 text-white">
+              <div class="relative visual-card-body p-8 text-white">
                 {view.process.image.badge ? (
                   <p class="text-xs uppercase tracking-[0.3em] text-white/80 process-badge">{view.process.image.badge}</p>
                 ) : null}

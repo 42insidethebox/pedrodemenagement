@@ -489,8 +489,16 @@
 .brand-lausanne #header.expanded nav {
   background: linear-gradient(135deg, #0f172a, #1f2a44);
 }
-.brand-lausanne #header.expanded nav a {
-  color: #f8fafc;
+.brand-lausanne #header.expanded nav a,
+.brand-lausanne #header.expanded nav button {
+  color: #f8fafc !important;
+}
+.brand-lausanne #header.expanded nav a.aw-link-active {
+  color: #f8fafc !important;
+}
+.brand-lausanne #header.expanded nav a:hover,
+.brand-lausanne #header.expanded nav button:hover {
+  color: #e2e8f0 !important;
 }
 
 /* Preserve WhatsApp button styling even inside light heroes */
@@ -547,12 +555,6 @@
   @apply rotate-45 translate-y-[-8px] translate-x-[14px];
 }
 
-/* Mobile menu text color */
-.brand-lausanne #header.expanded nav a,
-.brand-lausanne #header.expanded nav button {
-  color: #f8fafc;
-}
-
 /* Pedrodemenagement header readable on dark hero */
 .brand-pedro .aw-header,
 .brand-pedro .aw-header .text-default,
@@ -601,6 +603,17 @@
   background: transparent !important;
   color: #f8fafc !important;
   border-color: #f8fafc !important;
+}
+
+/* Visual cards should auto-size on small screens to avoid cutting text */
+@media (max-width: 768px) {
+  .visual-card {
+    aspect-ratio: auto !important;
+    min-height: 0;
+  }
+  .visual-card .visual-card-body {
+    height: auto !important;
+  }
 }
 
 /* Header CTA legibility for Transport */
