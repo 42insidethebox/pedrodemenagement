@@ -248,8 +248,8 @@ if (!sections.length) {
     {
       button && (
         <div class="col-span-1 md:col-span-2 mt-10 grid">
-          <div class="flex items-center justify-between gap-4 stepper-actions">
-            <div class="flex-none w-[132px]">
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 stepper-actions">
+            <div class="flex-none w-full sm:w-[132px]">
               <Button
                 variant="secondary"
                 type="button"
@@ -259,16 +259,16 @@ if (!sections.length) {
                 Précédent
               </Button>
             </div>
-            <div class="flex flex-none gap-3 items-center">
+            <div class="flex flex-col sm:flex-row w-full sm:w-auto flex-none gap-3 items-center">
               <Button
                 variant="secondary"
                 type="button"
-                class={`flex-none w-[132px] justify-center ${sections.length > 1 ? '' : 'hidden'}`}
+                class={`flex-none w-full sm:w-[132px] justify-center ${sections.length > 1 ? '' : 'hidden'}`}
                 data-step-next
               >
                 Suivant
               </Button>
-              <Button variant="primary" type="submit" class="flex-none w-[140px] justify-center" data-step-submit>
+              <Button variant="primary" type="submit" class="flex-none w-full sm:w-[140px] justify-center" data-step-submit>
                 {button}
               </Button>
             </div>
@@ -397,18 +397,33 @@ if (!sections.length) {
       const destFloor = parseFloorValue(getRadioValue('dest_floor'));
       const originElevator = getRadioValue('origin_elevator');
       const destElevator = getRadioValue('dest_elevator');
+      const leadIntent = getRadioValue('lead_intent');
+      const timePressure = getRadioValue('time_pressure');
       const packedReady = getRadioValue('packed_ready');
       const extraSpaces = getCheckboxValues('extra_spaces');
       const bulkyItems = getCheckboxValues('bulky_items');
       const fragileItems = getRadioValue('fragile_items');
       const dismantling = getRadioValue('dismantling');
+      const heavyObject = getRadioValue('heavy_object');
       const parkingAuthorization = getRadioValue('parking_authorization');
       const stairsType = getRadioValue('stairs_type');
       const confidenceLevel = getRadioValue('confidence_level');
       const clientHelping = getRadioValue('client_helping');
+      const accessReserved = getRadioValue('access_reserved');
+      const neighborsInformed = getRadioValue('neighbors_informed');
 
       let score = 0;
       const drivers: string[] = [];
+
+      if (leadIntent === 'access_complex') {
+        score += 2;
+        drivers.push('intent_access_complex');
+      }
+
+      if (leadIntent === 'urgent_today' || timePressure === 'urgent_today') {
+        score += 2;
+        drivers.push('urgent_window');
+      }
 
       if (confidenceLevel === 'unsure') {
         score += 2;
@@ -429,6 +444,11 @@ if (!sections.length) {
         drivers.push('bulky_items');
       }
 
+      if (heavyObject === 'yes') {
+        score += 3;
+        drivers.push('heavy_object_over_120kg');
+      }
+
       if (fragileItems === 'yes') {
         score += 2;
         drivers.push('fragile_items');
@@ -444,9 +464,22 @@ if (!sections.length) {
         drivers.push('parking_authorization_unknown');
       }
 
+      if (accessReserved === 'no') {
+        score += 1;
+        drivers.push('access_not_reserved');
+      }
+      if (accessReserved === 'not_needed') {
+        drivers.push('access_self_managed');
+      }
+
       if (stairsType === 'narrow') {
         score += 2;
         drivers.push('stairs_narrow');
+      }
+
+      if (neighborsInformed === 'no') {
+        score += 1;
+        drivers.push('neighbors_not_informed');
       }
 
       if (extraSpaces.includes('cellar') && apartmentSize >= 3.5) {
@@ -584,8 +617,9 @@ if (!sections.length) {
         label.classList.toggle('text-slate-500', !isActive);
         label.classList.toggle('dark:text-slate-300', !isActive);
       });
-      setButtonState(prevBtn, stepIdx > 0, true);
-      setButtonState(nextBtn, stepIdx < steps.length - 1, true);
+      const keepSpace = !window.matchMedia('(max-width: 768px)').matches;
+      setButtonState(prevBtn, stepIdx > 0, keepSpace);
+      setButtonState(nextBtn, stepIdx < steps.length - 1, keepSpace);
       setButtonState(submitBtn, stepIdx >= steps.length - 1);
       form?.setAttribute('data-active-step', String(stepIdx));
       updateProgress(stepIdx);
