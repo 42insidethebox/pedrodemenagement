@@ -313,6 +313,26 @@ export const IMAGE_INVENTORY = {
     url: 'https://cdn.midjourney.com/49796357-451f-4d6c-bdd5-189080c1d9a2/0_3.png',
     alt: 'Gros plan sur un nettoyage de sol dans un appartement haut de gamme.',
   },
+  lausanne_clean_hero: {
+    name: 'Lausanne cleaning hero',
+    url: 'https://cdn.midjourney.com/b5082433-a2b2-469c-aa65-6fcec7ead074/0_2.png',
+    alt: 'Appartement lausannois lumineux avec agent de nettoyage au travail.',
+  },
+  lausanne_clean_card: {
+    name: 'Lausanne cleaning card',
+    url: 'https://cdn.midjourney.com/beb08f2d-8718-46fd-84a0-85a406745cf2/0_0.png',
+    alt: 'Nettoyage dans un appartement lausannois ancien avec lumière naturelle.',
+  },
+  lausanne_clean_process: {
+    name: 'Lausanne cleaning process',
+    url: 'https://cdn.midjourney.com/f45f2750-6418-4e5c-9f82-5293bff7e7d1/0_2.png',
+    alt: 'Agent d’entretien dans un appartement lumineux à Lausanne.',
+  },
+  lausanne_clean_steps: {
+    name: 'Lausanne cleaning steps',
+    url: 'https://cdn.midjourney.com/e164a061-0089-4a88-93b8-c0f50526e22b/0_3.png',
+    alt: 'Nettoyage professionnel dans un intérieur lausannois moderne.',
+  },
   shades_of_white_man_vaccum: {
     name: 'Shades of white man vacuum',
     url: 'https://cdn.midjourney.com/75a089c4-9b52-4c51-b314-2b50bbe0755e/0_2.png',
