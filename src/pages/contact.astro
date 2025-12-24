@@ -704,6 +704,7 @@ const processStates = [
             title={formTitle}
             subtitle={formSubtitle}
             classes={{ container: 'px-4 md:px-6 py-8 md:py-10' }}
+            geoapifyKey={import.meta.env.PUBLIC_GEOAPIFY_KEY ?? ''}
 
             inputs={[
               { type: 'section', name: 'section_need', label: '🎯 Votre besoin' },
@@ -795,6 +796,7 @@ const processStates = [
                 required: true,
                 requiredMessage: 'Merci d’indiquer la rue de départ.',
                 colSpan: 1,
+                attributes: { 'data-geoapify': 'from' },
               },
               {
                 type: 'text',
@@ -869,6 +871,7 @@ const processStates = [
                 required: true,
                 requiredMessage: 'Merci d’indiquer la rue d’arrivée.',
                 colSpan: 1,
+                attributes: { 'data-geoapify': 'to' },
               },
               {
                 type: 'text',
