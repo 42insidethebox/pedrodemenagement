@@ -464,6 +464,67 @@ const formSubtitle =
               'Modulo completo per un preventivo chiaro fin dal primo scambio.'
             )
           : 'Formulaire complet pour un chiffrage clair dès le premier échange.';
+
+const leadIntentOptions =
+  brandType === 'transport'
+    ? [
+        { value: 'standard_transport', label: 'Fenêtre horaire précise', description: 'Livraison point à point avec chauffeur joignable.' },
+        { value: 'design_or_heavy', label: 'Pièce design / lourde', description: 'Objet volumineux ou fragile nécessitant calage renforcé.' },
+        { value: 'office_rotation', label: 'Bureaux / rotation', description: 'Plusieurs postes, besoin de protéger et d’étiqueter.' },
+      ]
+    : brandType === 'clean'
+      ? [
+          { value: 'end_of_lease', label: 'Nettoyage fin de bail', description: 'Checklist bailleur, vitres et sols priorisés.' },
+          { value: 'after_move', label: 'Après déménagement', description: 'Remise propre immédiate après le départ.' },
+          { value: 'office_clean', label: 'Bureaux / commerces', description: 'Passage en horaires flexibles, zones critiques ciblées.' },
+        ]
+      : isUrgent
+        ? [
+            { value: 'urgent_today', label: 'Intervention aujourd’hui', description: 'Créneau prioritaire avec confirmation en 15 minutes.' },
+            { value: 'tomorrow', label: 'Demain / très proche', description: 'Planification express avec protections prêtes.' },
+            { value: 'access_complex', label: 'Accès sensible', description: 'Escaliers étroits, parking compliqué ou voisins à prévenir.' },
+          ]
+        : [
+            { value: 'standard_move', label: 'Déménagement standard', description: 'Planifié, avec verrouillage des accès et protections.' },
+            { value: 'heavy_item', label: 'Objet lourd / piano', description: 'Portage complexe, calage spécifique ou monte-meubles.' },
+            { value: 'access_complex', label: 'Accès sensibles', description: 'Ascenseur restreint, distance > 30m ou voisins à prévenir.' },
+            { value: 'cleaning_only', label: 'Nettoyage uniquement', description: 'Remise propre ou état des lieux sans transport.' },
+          ];
+
+const priceAnchors =
+  brandType === 'urgent'
+    ? [
+        { title: 'Intervention urgente', range: 'CHF 550 – 1’100', drivers: ['Créneau du jour ou du lendemain', 'Renfort +30–70% selon l’heure'] },
+        { title: 'Transport express pièce unique', range: 'CHF 290 – 520', drivers: ['Arc lémanique', 'Arrimage et protections inclus'] },
+      ]
+    : brandType === 'transport'
+      ? [
+          { title: 'Livraison mobilier design', range: 'CHF 350 – 780', drivers: ['Calage, sanglage, coins mousse'] },
+          { title: 'Fenêtre horaire dédiée', range: 'CHF 450 – 950', drivers: ['Passage précis', 'Suivi direct chauffeur'] },
+        ]
+      : brandType === 'clean'
+        ? [
+            { title: 'Fin de bail 2–3 pièces', range: 'CHF 420 – 780', drivers: ['Vitres, sanitaires, sols'] },
+            { title: 'Remise après déménagement', range: 'CHF 280 – 520', drivers: ['Zones critiques', 'Option désinfection'] },
+          ]
+        : [
+            { title: 'Déménagement local 2–3h', range: 'CHF 450 – 900', drivers: ['Accès, volume, protections'] },
+            { title: 'Créneau week-end / soir', range: 'CHF 580 – 1’050', drivers: ['Disponibilité équipe', 'Coordination parking'] },
+          ];
+
+const trustFacts = [
+  'Plus de 1’200 interventions sur l’arc lémanique',
+  'RC Pro et responsabilité civile incluses',
+  'Chef d’équipe identifié avant le jour J',
+  'Rapport photo disponible sur demande',
+];
+
+const processStates = [
+  'Lead reçu → qualification (accès, dates, volume)',
+  'Validation manuelle si accès sensibles ou objets lourds',
+  'Confirmation écrite avec créneau et chef dédié',
+  'Plan B : adaptation météo/accès, notification proactive',
+];
 ---
 
 <Layout metadata={metadata} brandKey={brandKey}>
@@ -580,6 +641,49 @@ const formSubtitle =
     </div>
   </section>
 
+  <section class="py-12 md:py-16 bg-gradient-to-b from-slate-950/70 via-slate-900/80 to-slate-950/90 text-white">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-[1.1fr_0.9fr] gap-10 items-start">
+      <div class="space-y-4">
+        <p class="uppercase tracking-[0.32em] text-xs text-amber-200/80">Signal & qualification</p>
+        <h2 class="text-3xl md:text-4xl font-semibold leading-tight">Choisissez le scénario qui vous correspond</h2>
+        <p class="text-lg text-white/85 max-w-2xl">
+          Chaque option déclenche des questions adaptées : urgences, objets lourds, accès sensibles ou simple nettoyage. Vous gagnez
+          du temps et nous filtrons les risques avant de confirmer un créneau.
+        </p>
+        <div class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-4 text-sm space-y-2">
+          <p class="font-semibold text-white/90">Ce que nous qualifions automatiquement</p>
+          <ul class="list-disc pl-5 space-y-1 text-white/80">
+            <li>Intentions différentes = routing différent (urgence, lourd, accès complexe, nettoyage).</li>
+            <li>Questions de disqualification discrètes : objet &gt; 120kg, réservations ascenseur/parking, voisins informés.</li>
+            <li>Score de risque mis à jour en temps réel pour prioriser l’appel ou la validation manuelle.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-4">
+        {leadIntentOptions.map((option) => (
+          <button
+            type="button"
+            class="group text-left rounded-2xl border border-white/10 bg-white/10 hover:border-amber-300/70 hover:bg-amber-50/10 transition shadow-lg p-4 flex flex-col gap-2"
+            data-intent-choice={option.value}
+          >
+            <div class="flex items-center justify-between gap-3">
+              <p class="text-sm uppercase tracking-[0.2em] text-amber-200/70">Intent</p>
+              <span class="px-2 py-1 text-[11px] rounded-full bg-white/10 border border-white/20">Sélection rapide</span>
+            </div>
+            <div>
+              <p class="text-lg font-semibold text-white">{option.label}</p>
+              <p class="text-sm text-white/80 leading-relaxed">{option.description}</p>
+            </div>
+            <span class="text-xs text-amber-200/80 flex items-center gap-2 group-hover:text-amber-100">
+              <span class="h-1 w-1 rounded-full bg-amber-300"></span>
+              Pré-sélectionne le formulaire
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <section
     class="relative py-14 md:py-18 bg-cover bg-center"
     style={`background-image:${view.hero.background}; background-size: cover; background-position: center;`}
@@ -595,13 +699,34 @@ const formSubtitle =
             isTransport ? 'bg-white/10 dark:bg-slate-900/90 backdrop-blur-md' : 'bg-white/10 dark:bg-slate-900/90 backdrop-blur-md'
           }`}
         >
-          <ContactUs
+            <ContactUs
             id="form"
             title={formTitle}
             subtitle={formSubtitle}
             classes={{ container: 'px-4 md:px-6 py-8 md:py-10' }}
+            geoapifyKey={import.meta.env.PUBLIC_GEOAPIFY_KEY ?? ''}
 
             inputs={[
+              { type: 'section', name: 'section_need', label: '🎯 Votre besoin' },
+              {
+                type: 'radio',
+                name: 'lead_intent',
+                label: 'Ce qui vous correspond le mieux',
+                required: true,
+                options: leadIntentOptions.map((option) => ({ value: option.value, label: option.label })),
+              },
+              {
+                type: 'radio',
+                name: 'time_pressure',
+                label: 'Délai et souplesse',
+                required: true,
+                options: [
+                  { value: 'urgent_today', label: 'Aujourd’hui / demain' },
+                  { value: 'this_week', label: 'Cette semaine' },
+                  { value: 'flexible', label: 'Flexible si créneau optimisé' },
+                ],
+              },
+
               { type: 'section', name: 'section_info', label: '📍 Informations essentielles' },
               {
                 type: 'radio',
@@ -671,6 +796,7 @@ const formSubtitle =
                 required: true,
                 requiredMessage: 'Merci d’indiquer la rue de départ.',
                 colSpan: 1,
+                attributes: { 'data-geoapify': 'from' },
               },
               {
                 type: 'text',
@@ -745,6 +871,7 @@ const formSubtitle =
                 required: true,
                 requiredMessage: 'Merci d’indiquer la rue d’arrivée.',
                 colSpan: 1,
+                attributes: { 'data-geoapify': 'to' },
               },
               {
                 type: 'text',
@@ -884,6 +1011,16 @@ const formSubtitle =
                   { value: 'many', label: 'Plusieurs' },
                 ],
               },
+              {
+                type: 'radio',
+                name: 'heavy_object',
+                label: 'Objet > 120kg ou encombrant ?',
+                required: true,
+                options: [
+                  { value: 'no', label: 'Non' },
+                  { value: 'yes', label: 'Oui (piano à queue, coffre-fort, pierre…)' },
+                ],
+              },
 
               { type: 'section', name: 'section_org', label: '👥 Organisation & contrôle' },
               {
@@ -907,6 +1044,66 @@ const formSubtitle =
                   { value: 'yes', label: 'Oui' },
                 ],
               },
+              {
+                type: 'radio',
+                name: 'access_reserved',
+                label: 'Ascenseur / parking déjà réservés ?',
+                required: true,
+                helper: 'Réservation recommandée pour éviter les blocages le jour J.',
+                options: [
+                  { value: 'yes', label: 'Oui' },
+                  { value: 'no', label: 'Pas encore' },
+                  { value: 'not_needed', label: 'Non nécessaire' },
+                ],
+              },
+              {
+                type: 'radio',
+                name: 'neighbors_informed',
+                label: 'Voisins / conciergerie informés ?',
+                required: true,
+                options: [
+                  { value: 'yes', label: 'Oui' },
+                  { value: 'no', label: 'Pas encore' },
+                  { value: 'not_needed', label: 'Non nécessaire' },
+                ],
+              },
+
+              { type: 'section', name: 'section_contact', label: '📞 Coordonnées & validation' },
+              {
+                type: 'text',
+                name: 'client_name',
+                label: 'Nom et prénom',
+                placeholder: 'Nom complet',
+                required: true,
+                requiredMessage: 'Merci d’indiquer un nom complet.',
+              },
+              {
+                type: 'email',
+                name: 'client_email',
+                label: 'Email',
+                placeholder: 'vous@example.ch',
+                required: true,
+                requiredMessage: 'Merci d’indiquer un email valide.',
+              },
+              {
+                type: 'tel',
+                name: 'client_phone',
+                label: 'Téléphone suisse',
+                placeholder: '+41 79 123 45 67',
+                required: true,
+                requiredMessage: 'Merci d’indiquer un numéro suisse.',
+              },
+              {
+                type: 'radio',
+                name: 'contact_channel',
+                label: 'Canal préféré pour la confirmation',
+                required: true,
+                options: [
+                  { value: 'phone', label: 'Appel' },
+                  { value: 'whatsapp', label: 'WhatsApp' },
+                  { value: 'email', label: 'Email' },
+                ],
+              },
             ]}
             textarea={{
               label: 'Y a-t-il des contraintes particulières que nous devrions connaître ?',
@@ -919,6 +1116,65 @@ const formSubtitle =
             button="Vérifier planning & accès"
             description="Aucun engagement — devis gratuit sous 24h. Nous confirmons sous 1 jour ouvré."
           />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-14 md:py-18 bg-gradient-to-b from-white to-slate-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[1.2fr_0.8fr] gap-10 items-start">
+      <div class="space-y-6">
+        <div class="space-y-2">
+          <p class="text-xs uppercase tracking-[0.32em] text-slate-500">Ancrage prix & filtres</p>
+          <h2 class="text-3xl font-semibold leading-tight text-slate-900">Repères tarifaires non engageants</h2>
+          <p class="text-slate-600 max-w-3xl">
+            Ranges indicatifs pour cadrer les attentes. Les écarts viennent des accès, du volume réel et du niveau de protection.
+            Les urgences ajoutent généralement 30–70% selon le timing.
+          </p>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-4">
+          {priceAnchors.map((anchor) => (
+            <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-5">
+              <p class="text-sm uppercase tracking-[0.2em] text-slate-500">{anchor.title}</p>
+              <p class="text-2xl font-semibold text-slate-900 mt-2">{anchor.range}</p>
+              <ul class="mt-3 space-y-1 text-sm text-slate-600 list-disc list-inside">
+                {anchor.drivers.map((driver) => (
+                  <li>{driver}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <div class="rounded-2xl border border-amber-200/80 bg-amber-50 p-4 text-sm text-amber-900 shadow-sm">
+          <p class="font-semibold">Pourquoi nous ne sommes pas les moins chers</p>
+          <ul class="list-disc pl-5 space-y-1 mt-1">
+            <li>Protections systématiques (sols, murs, mobilier) et arrimage renforcé.</li>
+            <li>Coordination parkings/ascenseur, réservations et notifications voisins si besoin.</li>
+            <li>Chef d’équipe identifié et suivi direct en cas d’imprévu.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="space-y-5">
+        <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-5">
+          <p class="text-xs uppercase tracking-[0.32em] text-slate-500">Process & plan B</p>
+          <h3 class="text-xl font-semibold text-slate-900 mt-1">États visibles côté client</h3>
+          <ul class="mt-3 space-y-2 text-sm text-slate-600 list-disc list-inside">
+            {processStates.map((state) => (
+              <li>{state}</li>
+            ))}
+          </ul>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-5">
+          <p class="text-xs uppercase tracking-[0.32em] text-slate-500">Preuves concrètes</p>
+          <h3 class="text-xl font-semibold text-slate-900 mt-1">Ce que nous montrons</h3>
+          <ul class="mt-3 space-y-2 text-sm text-slate-600 list-disc list-inside">
+            {trustFacts.map((fact) => (
+              <li>{fact}</li>
+            ))}
+          </ul>
+          <p class="mt-3 text-sm text-slate-600">
+            Photos d’habillages de protection disponibles pour rassurer et cadrer les attentes sur place.
+          </p>
         </div>
       </div>
     </div>
@@ -944,6 +1200,24 @@ const formSubtitle =
     }
   />
 </Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const intentButtons = document.querySelectorAll<HTMLButtonElement>('[data-intent-choice]');
+    intentButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const value = btn.dataset.intentChoice;
+        if (!value) return;
+        const target = document.querySelector<HTMLInputElement>(`input[name="lead_intent"][value="${value}"]`);
+        if (target) {
+          target.checked = true;
+          target.dispatchEvent(new Event('change', { bubbles: true }));
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+    });
+  });
+</script>
 
   <style>
     :global(.contact-hero-light h1),

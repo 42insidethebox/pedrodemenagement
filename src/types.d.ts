@@ -178,6 +178,8 @@ export interface Input {
     hideOn?: string[];
     showIfAnyNot?: string[];
   };
+  className?: string;
+  attributes?: Record<string, string>;
 }
 
 export interface Textarea {
@@ -225,6 +227,7 @@ export interface Form {
   action?: string;
   method?: string;
   encType?: string;
+  geoapifyKey?: string;
 }
 
 // WIDGETS

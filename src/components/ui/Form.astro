@@ -11,7 +11,8 @@ const {
   action = 'mailto:contact@lausannedemenagement.ch?subject=Demande%20de%20devis',
   method = 'post',
   encType = 'text/plain',
-} = Astro.props as Props & { action?: string; method?: string; encType?: string };
+  geoapifyKey = '',
+} = Astro.props as Props & { action?: string; method?: string; encType?: string; geoapifyKey?: string };
 
 const sections: string[] = [];
 let currentStep = -1;
@@ -40,6 +41,7 @@ if (!sections.length) {
   {...(encType ? { enctype: encType } : {})}
   data-enhanced="true"
   data-stepper-mobile
+  {...(geoapifyKey ? { 'data-geoapify-key': geoapifyKey } : {})}
   class="space-y-6"
 >
   {sections.length > 1 && (
@@ -93,6 +95,7 @@ if (!sections.length) {
           conditional,
           colSpan = 1,
           className = '',
+          attributes = {},
         } = field as any;
 
         if (isSection) {
@@ -105,6 +108,10 @@ if (!sections.length) {
               {label && <h3 class="text-lg md:text-xl font-semibold tracking-tight text-slate-900 dark:text-white">{label}</h3>}
             </div>
           );
+        }
+
+        if (type === 'hidden') {
+          return <input type="hidden" name={name} id={name} value={(attributes as any)?.value ?? ''} />;
         }
 
         return (
@@ -185,6 +192,7 @@ if (!sections.length) {
                 autocomplete={autocomplete}
                 placeholder={placeholder}
                 required={required}
+                {...attributes}
                 title={
                   type === 'tel'
                     ? 'Merci d’entrer un numéro suisse (+41 XX XXX XX XX ou 0XX XXX XX XX).'
@@ -248,8 +256,8 @@ if (!sections.length) {
     {
       button && (
         <div class="col-span-1 md:col-span-2 mt-10 grid">
-          <div class="flex items-center justify-between gap-4 stepper-actions">
-            <div class="flex-none w-[132px]">
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 stepper-actions">
+            <div class="flex-none w-full sm:w-[132px]">
               <Button
                 variant="secondary"
                 type="button"
@@ -259,16 +267,16 @@ if (!sections.length) {
                 Précédent
               </Button>
             </div>
-            <div class="flex flex-none gap-3 items-center">
+            <div class="flex flex-col sm:flex-row w-full sm:w-auto flex-none gap-3 items-center">
               <Button
                 variant="secondary"
                 type="button"
-                class={`flex-none w-[132px] justify-center ${sections.length > 1 ? '' : 'hidden'}`}
+                class={`flex-none w-full sm:w-[132px] justify-center ${sections.length > 1 ? '' : 'hidden'}`}
                 data-step-next
               >
                 Suivant
               </Button>
-              <Button variant="primary" type="submit" class="flex-none w-[140px] justify-center" data-step-submit>
+              <Button variant="primary" type="submit" class="flex-none w-full sm:w-[140px] justify-center" data-step-submit>
                 {button}
               </Button>
             </div>
@@ -290,6 +298,17 @@ if (!sections.length) {
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.querySelector('form[data-enhanced="true"]') as HTMLFormElement | null;
+    const setHiddenField = (name: string, value: string) => {
+      if (!form) return;
+      let el = form.querySelector<HTMLInputElement>(`input[name="${name}"]`);
+      if (!el) {
+        el = document.createElement('input');
+        el.type = 'hidden';
+        el.name = name;
+        form.appendChild(el);
+      }
+      el.value = value;
+    };
 
     form
       ?.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>('input, select, textarea')
@@ -397,18 +416,33 @@ if (!sections.length) {
       const destFloor = parseFloorValue(getRadioValue('dest_floor'));
       const originElevator = getRadioValue('origin_elevator');
       const destElevator = getRadioValue('dest_elevator');
+      const leadIntent = getRadioValue('lead_intent');
+      const timePressure = getRadioValue('time_pressure');
       const packedReady = getRadioValue('packed_ready');
       const extraSpaces = getCheckboxValues('extra_spaces');
       const bulkyItems = getCheckboxValues('bulky_items');
       const fragileItems = getRadioValue('fragile_items');
       const dismantling = getRadioValue('dismantling');
+      const heavyObject = getRadioValue('heavy_object');
       const parkingAuthorization = getRadioValue('parking_authorization');
       const stairsType = getRadioValue('stairs_type');
       const confidenceLevel = getRadioValue('confidence_level');
       const clientHelping = getRadioValue('client_helping');
+      const accessReserved = getRadioValue('access_reserved');
+      const neighborsInformed = getRadioValue('neighbors_informed');
 
       let score = 0;
       const drivers: string[] = [];
+
+      if (leadIntent === 'access_complex') {
+        score += 2;
+        drivers.push('intent_access_complex');
+      }
+
+      if (leadIntent === 'urgent_today' || timePressure === 'urgent_today') {
+        score += 2;
+        drivers.push('urgent_window');
+      }
 
       if (confidenceLevel === 'unsure') {
         score += 2;
@@ -429,6 +463,11 @@ if (!sections.length) {
         drivers.push('bulky_items');
       }
 
+      if (heavyObject === 'yes') {
+        score += 3;
+        drivers.push('heavy_object_over_120kg');
+      }
+
       if (fragileItems === 'yes') {
         score += 2;
         drivers.push('fragile_items');
@@ -444,9 +483,22 @@ if (!sections.length) {
         drivers.push('parking_authorization_unknown');
       }
 
+      if (accessReserved === 'no') {
+        score += 1;
+        drivers.push('access_not_reserved');
+      }
+      if (accessReserved === 'not_needed') {
+        drivers.push('access_self_managed');
+      }
+
       if (stairsType === 'narrow') {
         score += 2;
         drivers.push('stairs_narrow');
+      }
+
+      if (neighborsInformed === 'no') {
+        score += 1;
+        drivers.push('neighbors_not_informed');
       }
 
       if (extraSpaces.includes('cellar') && apartmentSize >= 3.5) {
@@ -485,26 +537,227 @@ if (!sections.length) {
     const syncSignalOutputs = () => {
       if (!form) return;
       const { level, score, drivers, autoAbortReason, expressEligible, riskOutcome } = computeSignal();
-      const setHidden = (name: string, value: string) => {
-        let el = form.querySelector<HTMLInputElement>(`input[name="${name}"]`);
-        if (!el) {
-          el = document.createElement('input');
-          el.type = 'hidden';
-          el.name = name;
-          form.appendChild(el);
-        }
-        el.value = value;
+
+      setHiddenField('signal_level', level);
+      setHiddenField('signal_score', String(score));
+      setHiddenField('signal_flags', drivers.join('|'));
+      setHiddenField('signal_auto_abort', autoAbortReason || '');
+      setHiddenField('express_eligible', expressEligible ? 'yes' : 'no');
+      setHiddenField('risk_score', String(score));
+      setHiddenField('risk_outcome', riskOutcome);
+      setHiddenField('risk_drivers', drivers.join('|'));
+      form.dataset.signal = level;
+    };
+
+    const getFieldValue = (name: string) => {
+      if (!form) return '';
+      const fields = form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
+        `[name="${name}"], [name="${name}[]"]`
+      );
+      if (!fields.length) return '';
+      const first = fields[0] as HTMLInputElement;
+      if (first.type === 'checkbox') {
+        return Array.from(fields as any)
+          .filter((input: HTMLInputElement) => input.checked)
+          .map((input: HTMLInputElement) => input.value);
+      }
+      if (first.type === 'radio') {
+        const selected = Array.from(fields as any).find((input: HTMLInputElement) => input.checked);
+        return selected?.value ?? '';
+      }
+      return (fields[0] as HTMLInputElement).value ?? '';
+    };
+
+    const buildLeadPayload = () => {
+      const origin = {
+        street: getFieldValue('from_street'),
+        number: getFieldValue('from_number'),
+        postcode: getFieldValue('from_postcode'),
+        city: getFieldValue('from_city'),
+        lat: getFieldValue('from_lat'),
+        lon: getFieldValue('from_lon'),
+        placeId: getFieldValue('from_place_id'),
+        formatted: getFieldValue('from_formatted'),
+        floor: getFieldValue('origin_floor'),
+        elevator: getFieldValue('origin_elevator'),
+        parkingDistance: getFieldValue('origin_parking'),
       };
 
-      setHidden('signal_level', level);
-      setHidden('signal_score', String(score));
-      setHidden('signal_flags', drivers.join('|'));
-      setHidden('signal_auto_abort', autoAbortReason || '');
-      setHidden('express_eligible', expressEligible ? 'yes' : 'no');
-      setHidden('risk_score', String(score));
-      setHidden('risk_outcome', riskOutcome);
-      setHidden('risk_drivers', drivers.join('|'));
-      form.dataset.signal = level;
+      const destination = {
+        street: getFieldValue('to_street'),
+        number: getFieldValue('to_number'),
+        postcode: getFieldValue('to_postcode'),
+        city: getFieldValue('to_city'),
+        lat: getFieldValue('to_lat'),
+        lon: getFieldValue('to_lon'),
+        placeId: getFieldValue('to_place_id'),
+        formatted: getFieldValue('to_formatted'),
+        floor: getFieldValue('dest_floor'),
+        elevator: getFieldValue('dest_elevator'),
+      };
+
+      const dateFlexible = getFieldValue('date_flexible');
+      return {
+        id: typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : `lead_${Date.now()}`,
+        createdAt: new Date().toISOString(),
+        intent: getFieldValue('lead_intent'),
+        urgency: getFieldValue('time_pressure'),
+        timeWindow: {
+          flexible: dateFlexible,
+          date: dateFlexible === 'no' ? getFieldValue('move_date') : '',
+          range:
+            dateFlexible === 'yes'
+              ? { from: getFieldValue('move_date_from'), to: getFieldValue('move_date_to') }
+              : null,
+          preference: getFieldValue('time_preference'),
+        },
+        origin,
+        destination,
+        access: {
+          stairsType: getFieldValue('stairs_type'),
+          parkingAuthorization: getFieldValue('parking_authorization'),
+          accessReserved: getFieldValue('access_reserved'),
+          neighborsInformed: getFieldValue('neighbors_informed'),
+        },
+        volume: {
+          apartmentSize: getFieldValue('apartment_size'),
+          extraSpaces: getFieldValue('extra_spaces'),
+          bulkyItems: getFieldValue('bulky_items'),
+          heavyObject: getFieldValue('heavy_object'),
+          fragileItems: getFieldValue('fragile_items'),
+          dismantling: getFieldValue('dismantling'),
+          packedReady: getFieldValue('packed_ready'),
+          confidence: getFieldValue('confidence_level'),
+        },
+        contacts: {
+          name: getFieldValue('client_name'),
+          email: getFieldValue('client_email'),
+          phone: getFieldValue('client_phone'),
+          channel: getFieldValue('contact_channel'),
+        },
+        notes: getFieldValue('surprises'),
+        signals: {
+          level: getFieldValue('signal_level'),
+          score: getFieldValue('signal_score'),
+          flags: getFieldValue('signal_flags'),
+          autoAbort: getFieldValue('signal_auto_abort'),
+          expressEligible: getFieldValue('express_eligible'),
+          riskOutcome: getFieldValue('risk_outcome'),
+          riskDrivers: getFieldValue('risk_drivers'),
+        },
+      };
+    };
+
+    const persistLeadPayload = () => {
+      if (!form) return;
+      const payload = buildLeadPayload();
+      setHiddenField('lead_payload', JSON.stringify(payload));
+      try {
+        const key = 'pedrodemenagement:leadSignals';
+        const raw = window.localStorage.getItem(key);
+        const list = raw ? JSON.parse(raw) : [];
+        const next = Array.isArray(list) ? [payload, ...list] : [payload];
+        window.localStorage.setItem(key, JSON.stringify(next.slice(0, 50)));
+      } catch {
+        // ignore storage issues
+      }
+    };
+
+    const setupGeoapify = () => {
+      if (!form) return;
+      const apiKey = form.dataset.geoapifyKey || '';
+      if (!apiKey) return;
+      const geoInputs = Array.from(form.querySelectorAll<HTMLInputElement>('[data-geoapify]'));
+      if (!geoInputs.length) return;
+
+      const requestCache = new Map<HTMLInputElement, { timer?: number; suggestions: Map<string, any> }>();
+
+      const ensureDatalist = (input: HTMLInputElement) => {
+        const existing = input.getAttribute('list');
+        if (existing) return document.getElementById(existing) as HTMLDataListElement | null;
+        const listId = `geoapify-${input.name || 'address'}-${Math.random().toString(36).slice(2, 8)}`;
+        const datalist = document.createElement('datalist');
+        datalist.id = listId;
+        input.setAttribute('list', listId);
+        input.parentElement?.appendChild(datalist);
+        return datalist;
+      };
+
+      const fillAddressFields = (input: HTMLInputElement, feature: any) => {
+        const prefix = input.dataset.geoapify || '';
+        if (!prefix) return;
+        const props = feature?.properties || {};
+        const street = props.street || props.address_line1 || '';
+        const number = props.housenumber || '';
+        const postcode = props.postcode || '';
+        const city = props.city || props.town || props.village || props.county || '';
+        if (street) input.value = street;
+        if (number) {
+          const numberField = form.querySelector<HTMLInputElement>(`input[name="${prefix}_number"]`);
+          if (numberField) numberField.value = number;
+        }
+        if (postcode) {
+          const postcodeField = form.querySelector<HTMLInputElement>(`input[name="${prefix}_postcode"]`);
+          if (postcodeField) postcodeField.value = postcode;
+        }
+        if (city) {
+          const cityField = form.querySelector<HTMLInputElement>(`input[name="${prefix}_city"]`);
+          if (cityField) cityField.value = city;
+        }
+        if (props.lat) setHiddenField(`${prefix}_lat`, String(props.lat));
+        if (props.lon) setHiddenField(`${prefix}_lon`, String(props.lon));
+        if (props.place_id) setHiddenField(`${prefix}_place_id`, String(props.place_id));
+        if (props.formatted) setHiddenField(`${prefix}_formatted`, String(props.formatted));
+      };
+
+      const fetchSuggestions = async (input: HTMLInputElement) => {
+        const text = input.value.trim();
+        if (text.length < 3) return;
+        const url = new URL('https://api.geoapify.com/v1/geocode/autocomplete');
+        url.searchParams.set('text', text);
+        url.searchParams.set('format', 'json');
+        url.searchParams.set('limit', '6');
+        url.searchParams.set('lang', 'fr');
+        url.searchParams.set('filter', 'countrycode:ch');
+        url.searchParams.set('apiKey', apiKey);
+        const response = await fetch(url.toString());
+        if (!response.ok) return;
+        const data = await response.json();
+        const results = (data?.results || []) as any[];
+        const datalist = ensureDatalist(input);
+        if (!datalist) return;
+        datalist.innerHTML = '';
+        const map = new Map<string, any>();
+        results.forEach((result) => {
+          const label = result.formatted || `${result.address_line1 || ''} ${result.address_line2 || ''}`.trim();
+          if (!label) return;
+          const option = document.createElement('option');
+          option.value = label;
+          datalist.appendChild(option);
+          map.set(label, result);
+        });
+        requestCache.set(input, { suggestions: map });
+      };
+
+      geoInputs.forEach((input) => {
+        const handleChange = () => {
+          const cached = requestCache.get(input);
+          const suggestion = cached?.suggestions.get(input.value);
+          if (suggestion) {
+            fillAddressFields(input, { properties: suggestion });
+          }
+        };
+        input.addEventListener('change', handleChange);
+        input.addEventListener('blur', handleChange);
+        input.addEventListener('input', () => {
+          const cached = requestCache.get(input) || { suggestions: new Map<string, any>() };
+          if (cached.timer) window.clearTimeout(cached.timer);
+          cached.timer = window.setTimeout(() => {
+            fetchSuggestions(input).catch(() => undefined);
+          }, 250);
+          requestCache.set(input, cached);
+        });
+      });
     };
 
     const steps = Array.from(
@@ -584,8 +837,9 @@ if (!sections.length) {
         label.classList.toggle('text-slate-500', !isActive);
         label.classList.toggle('dark:text-slate-300', !isActive);
       });
-      setButtonState(prevBtn, stepIdx > 0, true);
-      setButtonState(nextBtn, stepIdx < steps.length - 1, true);
+      const keepSpace = !window.matchMedia('(max-width: 768px)').matches;
+      setButtonState(prevBtn, stepIdx > 0, keepSpace);
+      setButtonState(nextBtn, stepIdx < steps.length - 1, keepSpace);
       setButtonState(submitBtn, stepIdx >= steps.length - 1);
       form?.setAttribute('data-active-step', String(stepIdx));
       updateProgress(stepIdx);
@@ -690,11 +944,14 @@ if (!sections.length) {
         syncSignalOutputs();
         if (!validateStep(currentStep)) {
           event.preventDefault();
+          return;
         }
+        persistLeadPayload();
       });
 
       syncSignalOutputs();
       showStep(0);
+      setupGeoapify();
     }
   });
 </script>

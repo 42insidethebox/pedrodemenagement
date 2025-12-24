@@ -7,6 +7,7 @@ const translations: Record<LocaleCode, Record<string, string>> = {
   fr: {
     'nav.languageLabel': 'Langue',
     'nav.overview': 'Vue d’ensemble',
+    'nav.leads': 'Leads',
     'nav.clients': 'Clients',
     'nav.projects': 'Projets',
     'nav.websites': 'Sites web',
@@ -23,6 +24,7 @@ const translations: Record<LocaleCode, Record<string, string>> = {
   en: {
     'nav.languageLabel': 'Language',
     'nav.overview': 'Overview',
+    'nav.leads': 'Leads',
     'nav.clients': 'Clients',
     'nav.projects': 'Projects',
     'nav.websites': 'Websites',
@@ -39,6 +41,7 @@ const translations: Record<LocaleCode, Record<string, string>> = {
   de: {
     'nav.languageLabel': 'Sprache',
     'nav.overview': 'Übersicht',
+    'nav.leads': 'Leads',
     'nav.clients': 'Kunden',
     'nav.projects': 'Projekte',
     'nav.websites': 'Websites',
@@ -55,6 +58,7 @@ const translations: Record<LocaleCode, Record<string, string>> = {
   it: {
     'nav.languageLabel': 'Lingua',
     'nav.overview': 'Panoramica',
+    'nav.leads': 'Lead',
     'nav.clients': 'Clienti',
     'nav.projects': 'Progetti',
     'nav.websites': 'Siti web',
