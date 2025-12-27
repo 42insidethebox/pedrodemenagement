@@ -66,6 +66,12 @@ type BrandView = {
 
 const host = Astro.request.headers.get('host');
 const brandKey = getBrandFromHost(host);
+if (brandKey === 'maisoncortes') {
+  return Astro.redirect('/maison-cortes');
+}
+
+export const prerender = false;
+
 const brand = BRANDS[brandKey] || BRANDS.pedro;
 const img = (id: ImageId) => getImage(id);
 const isUrgent = brandKey === 'urgent';
@@ -374,7 +380,7 @@ const baseMove: BrandView = {
       },
       {
         title: 'Gérez-vous les pianos ou objets lourds ?',
-        description: 'Nous pouvons déplacer des objets jusqu’à 200 kg maximum. Au-delà, il faudra faire appel à un service spécialisé.',
+        description: 'Notre système standard prend en charge des pièces jusqu’à 250 kg. Au-delà, nous mobilisons un partenaire spécialisé.',
       },
       {
         title: 'Intervenez-vous le week-end ?',

@@ -14,6 +14,10 @@ import { resolveLocaleFromRequest } from '~/lib/locale';
 
 const host = Astro.request.headers.get('host');
 const brandKey = getBrandFromHost(host);
+if (brandKey === 'maisoncortes') {
+  return Astro.redirect('/maison-cortes/pricing');
+}
+
 const isUrgent = brandKey === 'urgent';
 const isUrgentPricing = isUrgent;
 const brandType =
@@ -69,9 +73,6 @@ const lamT = <T,>(fr: T, en: T, de: T, it: T): T => {
   if (isIt) return it;
   return fr;
 };
-const experienceFaqTitle = isExperience
-  ? lceT('Questions sur les tarifs', 'Pricing questions', 'Fragen zu den Preisen', 'Domande sui prezzi', 'أسئلة حول الأسعار', '价格问答')
-  : `Questions sur les tarifs ${view.hero.tagline?.toLowerCase?.() || ''}`.trim();
 const experienceStepsTitle = isExperience
   ? lceT('Comment nous calculons', 'How we calculate', 'Wie wir kalkulieren', 'Come calcoliamo', 'كيف نحسب', '我们如何计算')
   : 'Comment nous calculons';
@@ -178,6 +179,9 @@ const metadata = isUrgent
                 : {
                     title: 'Tarifs déménagement',
                   };
+
+export const prerender = false;
+
 const views = {
   move: {
     hero: {
@@ -1152,6 +1156,9 @@ const priceList = (() => {
     },
   ];
 })();
+const experienceFaqTitle = isExperience
+  ? lceT('Questions sur les tarifs', 'Pricing questions', 'Fragen zu den Preisen', 'Domande sui prezzi', 'أسئلة حول الأسعار', '价格问答')
+  : `Questions sur les tarifs ${view.hero.tagline?.toLowerCase?.() || ''}`.trim();
 const toneStrong = view.hero.tone === 'dark' ? 'text-white' : 'text-slate-900';
 const toneMuted = view.hero.tone === 'dark' ? 'text-white/85' : 'text-slate-600';
 ---

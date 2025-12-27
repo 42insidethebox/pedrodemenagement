@@ -1,0 +1,355 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import type { MetaData } from '~/types';
+import { maisonCortesCopy } from '../copy';
+import { maisonCortesTheme } from '../theme';
+
+export interface Props {
+  metadata?: MetaData;
+  title?: string;
+  subtitle?: string;
+}
+
+const { metadata = {}, title = '', subtitle = '' } = Astro.props;
+
+const navLinks = [
+  { text: 'Catalogue', href: '/maison-cortes' },
+  { text: 'Protocoles', href: '/maison-cortes/services' },
+  { text: 'Tarifs', href: '/maison-cortes/pricing' },
+  { text: 'Contact', href: '/maison-cortes/contact' },
+];
+
+const styleVars: Record<string, string> = {
+  '--mc-bg': maisonCortesTheme.colors.background,
+  '--mc-text': maisonCortesTheme.colors.text,
+  '--mc-muted': maisonCortesTheme.colors.muted,
+  '--mc-border': maisonCortesTheme.colors.border,
+  '--mc-font': maisonCortesTheme.typography.family,
+  '--mc-tracking-city': maisonCortesTheme.typography.cityTracking,
+  '--mc-tracking-brand': maisonCortesTheme.typography.brandTracking,
+};
+---
+
+<Layout metadata={metadata} brandKey={maisonCortesTheme.brandKey} styleVars={styleVars}>
+  <div class="mc-shell">
+    <header class="mc-nav">
+      <div class="mc-wordmark" aria-label="Maison Cortes">
+        <span class="mc-wordmark-top">{maisonCortesCopy.brandTop}</span>
+        <span class="mc-wordmark-bottom">{maisonCortesCopy.brandBottom}</span>
+      </div>
+      <nav class="mc-nav-links" aria-label="Navigation principale">
+        {navLinks.map((link) => (
+          <a href={link.href}>{link.text}</a>
+        ))}
+      </nav>
+    </header>
+
+    <main class="mc-content">
+      {(title || subtitle) && (
+        <div class="mc-page-head">
+          {title && <h1>{title}</h1>}
+          {subtitle && <p>{subtitle}</p>}
+        </div>
+      )}
+      <slot />
+    </main>
+
+    <footer class="mc-footer">
+      <div class="mc-footer-grid">
+        <div>
+          <div class="mc-wordmark" aria-label="Maison Cortes">
+            <span class="mc-wordmark-top">{maisonCortesCopy.brandTop}</span>
+            <span class="mc-wordmark-bottom">{maisonCortesCopy.brandBottom}</span>
+          </div>
+        </div>
+        <div>
+          <p class="mc-footer-title">Accès</p>
+          <ul>
+            {navLinks.map((link) => (
+              <li><a href={link.href}>{link.text}</a></li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <p class="mc-footer-title">Règles</p>
+          <ul>
+            {maisonCortesCopy.rulesFooter.map((line) => (
+              <li>{line}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <p class="mc-footnote">{maisonCortesCopy.footerNote}</p>
+    </footer>
+  </div>
+</Layout>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap');
+
+  :global(body.brand-maisoncortes) {
+    background: var(--mc-bg) !important;
+    color: var(--mc-text) !important;
+    font-family: var(--mc-font), serif !important;
+    letter-spacing: 0.02em !important;
+    line-height: 1.7 !important;
+  }
+
+  :global(.brand-maisoncortes *) {
+    font-family: var(--mc-font), serif !important;
+  }
+
+  :global(.brand-maisoncortes a) {
+    color: var(--mc-text);
+    text-decoration: none;
+  }
+
+  :global(.brand-maisoncortes a:hover),
+  :global(.brand-maisoncortes a:focus-visible) {
+    text-decoration: underline;
+    outline: none;
+  }
+
+  .mc-shell {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 20px 80px;
+    background: var(--mc-bg);
+  }
+
+  .mc-nav {
+    width: min({maisonCortesTheme.layout.maxWidth}, 100%);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 1px solid var(--mc-border);
+    padding-bottom: 14px;
+    margin-bottom: 32px;
+  }
+
+  .mc-wordmark {
+    display: grid;
+    gap: 2px;
+    text-transform: uppercase;
+  }
+
+  .mc-wordmark-top {
+    font-size: 14px;
+    letter-spacing: var(--mc-tracking-city);
+  }
+
+  .mc-wordmark-bottom {
+    font-size: 32px;
+    letter-spacing: var(--mc-tracking-brand);
+  }
+
+  .mc-nav-links {
+    display: flex;
+    gap: 18px;
+    font-size: 14px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .mc-content {
+    width: min({maisonCortesTheme.layout.maxWidth}, 100%);
+    display: grid;
+    gap: 32px;
+  }
+
+  .mc-page-head {
+    display: grid;
+    gap: 6px;
+    text-transform: uppercase;
+  }
+
+  .mc-page-head h1 {
+    margin: 0;
+    font-size: clamp(26px, 4vw, 34px);
+    letter-spacing: 0.1em;
+  }
+
+  .mc-page-head p {
+    margin: 0;
+    color: var(--mc-muted);
+    letter-spacing: 0.08em;
+  }
+
+  .mc-footer {
+    width: min({maisonCortesTheme.layout.maxWidth}, 100%);
+    border-top: 1px solid var(--mc-border);
+    padding-top: 20px;
+    margin-top: 24px;
+    display: grid;
+    gap: 16px;
+  }
+
+  .mc-footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 18px;
+  }
+
+  .mc-footer-title {
+    margin: 0 0 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 13px;
+    color: var(--mc-text);
+  }
+
+  .mc-footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 6px;
+    color: var(--mc-muted);
+    letter-spacing: 0.06em;
+  }
+
+  .mc-footnote {
+    margin: 0;
+    color: var(--mc-muted);
+    letter-spacing: 0.06em;
+    font-size: 13px;
+  }
+
+  :global(.mc-section) {
+    display: grid;
+    gap: 10px;
+    border-top: 1px solid var(--mc-border);
+    padding-top: 18px;
+  }
+
+  :global(.mc-section:first-of-type) {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  :global(.mc-section h2) {
+    margin: 0;
+    font-size: 18px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  :global(.mc-section h3) {
+    margin: 0;
+    font-size: 16px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  :global(.mc-section p),
+  :global(.mc-section li),
+  :global(.mc-section span) {
+    letter-spacing: 0.04em;
+  }
+
+  :global(.mc-note-inline) {
+    color: var(--mc-muted);
+    letter-spacing: 0.06em;
+    font-size: 13px;
+  }
+
+  :global(.mc-grid) {
+    display: grid;
+    gap: 14px;
+  }
+
+  :global(.mc-columns) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px;
+  }
+
+  :global(.mc-quiet-list) {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 6px;
+    color: var(--mc-muted);
+  }
+
+  :global(.mc-label) {
+    display: inline-block;
+    padding: 6px 10px;
+    border: 1px solid var(--mc-border);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 12px;
+  }
+
+  :global(.mc-classification) {
+    margin: 0;
+    display: flex;
+    gap: 6px;
+    align-items: baseline;
+    font-size: 22px;
+    text-transform: uppercase;
+  }
+
+  :global(.mc-city) {
+    letter-spacing: var(--mc-tracking-city);
+    color: var(--accent, var(--mc-muted));
+    opacity: 0.24;
+  }
+
+  :global(.mc-object) {
+    letter-spacing: 0.08em;
+  }
+
+  :global(.mc-specs) {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 4px;
+    color: var(--mc-muted);
+  }
+
+  :global(.mc-meta) {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  :global(.mc-price) {
+    letter-spacing: 0.06em;
+  }
+
+  :global(.mc-button) {
+    border: 1px solid var(--mc-text);
+    background: transparent;
+    color: var(--mc-text);
+    padding: 10px 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  :global(.mc-button:hover),
+  :global(.mc-button:focus-visible) {
+    text-decoration: underline;
+    outline: none;
+  }
+
+  @media (max-width: 720px) {
+    .mc-nav {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .mc-nav-links {
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+  }
+</style>

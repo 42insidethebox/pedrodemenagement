@@ -10,6 +10,10 @@ import { resolveLocaleFromRequest } from '~/lib/locale';
 
 const host = Astro.request.headers.get('host');
 const brandKey = getBrandFromHost(host) || 'pedro';
+if (brandKey === 'maisoncortes') {
+  return Astro.redirect('/maison-cortes/contact');
+}
+
 const isUrgent = brandKey === 'urgent';
 const isEtat = brandKey === 'etatdeslieux';
 const isTransport = brandKey === 'transport';
@@ -418,11 +422,13 @@ const metadata = isUrgent
             'Planning, urban access and detailed quote within 24h for Lausanne & Vaud.',
             'Planung, Stadtzugänge und detaillierte Offerte innert 24h für Lausanne & Waadt.',
             'Pianificazione, accessi urbani e preventivo dettagliato entro 24h per Losanna & Vaud.'
-          ),
-        }
+        ),
+      }
     : {
         title: 'Contact',
       };
+
+export const prerender = false;
 const toneStrong = view.hero.tone === 'dark' ? 'text-white' : 'text-slate-900';
 const toneMuted = view.hero.tone === 'dark' ? 'text-white/85' : 'text-slate-600';
 const formTitle =

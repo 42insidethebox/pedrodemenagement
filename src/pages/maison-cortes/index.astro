@@ -1,0 +1,89 @@
+---
+import Shell from '~/tenants/maison-cortes/ui/Shell.astro';
+import { maisonCortesConfig } from '~/tenants/maison-cortes/config';
+import { maisonCortesCopy } from '~/tenants/maison-cortes/copy';
+import { maisonCortesProducts } from '~/tenants/maison-cortes/products';
+import { maisonCortesTheme } from '~/tenants/maison-cortes/theme';
+
+const status = Astro.url.searchParams.get('statut');
+const statusCopy =
+  status === 'ok'
+    ? 'Paiement enregistré. Confirmation Stripe en cours.'
+    : status === 'annule'
+      ? 'Session interrompue avant paiement.'
+      : '';
+
+const metadata = {
+  title: 'MAISON CORTES — Catalogue',
+  description: 'Catalogue d’objets classifiés. Spécifications techniques et prix en CHF.',
+  ignoreTitleTemplate: true,
+};
+
+export const prerender = false;
+---
+
+<Shell metadata={metadata} title="Catalogue" subtitle="Classification par ville et index">
+  <section class="mc-section">
+    <p class="mc-note-inline">{maisonCortesCopy.lead}</p>
+    <ul class="mc-quiet-list">
+      {maisonCortesCopy.principles.map((rule) => (
+        <li>{rule}</li>
+      ))}
+    </ul>
+    {statusCopy && <p class="mc-note-inline">{statusCopy}</p>}
+  </section>
+
+  <section class="mc-section">
+    <h2>Objects</h2>
+    <div class="mc-grid">
+      {maisonCortesProducts.map((product) => (
+        <article class="mc-card" style={`--accent: ${product.accent ?? maisonCortesTheme.colors.muted};`}>
+          <p class="mc-classification">
+            <span class="mc-city">{product.city}</span>
+            <span aria-hidden="true"> / </span>
+            <span class="mc-object">{product.object} {product.index}</span>
+          </p>
+          <ul class="mc-specs">
+            {product.specs.map((spec) => (
+              <li>{spec}</li>
+            ))}
+          </ul>
+          <div class="mc-meta">
+            <form method="post" action="/api/maison-cortes/checkout">
+              <input type="hidden" name="sku" value={product.id} />
+              <button type="submit" class="mc-button">{maisonCortesCopy.cta}</button>
+            </form>
+            <span class="mc-price">CHF {product.priceChf}.–</span>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="mc-section">
+    <h2>Conditions</h2>
+    <ul class="mc-quiet-list">
+      <li>{maisonCortesCopy.shippingLine}</li>
+      <li>CHF uniquement. Facturation sans compte.</li>
+      <li>Frais de livraison : CHF {maisonCortesConfig.shipping.flatFee}.– Suisse.</li>
+    </ul>
+    <p class="mc-note-inline">Aucune promotion. Aucun programme de fidélité. Aucune urgence.</p>
+  </section>
+</Shell>
+
+<style>
+  .mc-card {
+    display: grid;
+    gap: 10px;
+    padding-top: 12px;
+    border-top: 1px solid var(--mc-border);
+  }
+
+  @media (max-width: 640px) {
+    .mc-meta {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+  }
+</style>

@@ -12,6 +12,10 @@ import { resolveLocaleFromRequest } from '~/lib/locale';
 
 const host = Astro.request.headers.get('host');
 const brandKey = getBrandFromHost(host);
+if (brandKey === 'maisoncortes') {
+  return Astro.redirect('/maison-cortes/services');
+}
+
 const isUrgent = brandKey === 'urgent';
 const isTransport = brandKey === 'transport';
 const isExperience = brandKey === 'laclemanexperience';
@@ -397,6 +401,8 @@ const metadata = isUrgent
               : brandKey === 'laclemanexperience'
                 ? { title: 'Expériences Lac Léman', description: 'Croisières privées, vignobles UNESCO, tables d’hôtes et échappées alpines.' }
                 : { title: 'Services de déménagement' };
+
+export const prerender = false;
 
 let view = (() => {
   switch (brandType) {

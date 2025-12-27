@@ -61,6 +61,8 @@ export default defineConfig({
         "www.lausannenettoyage.ch",
         "laclemanexperience.ch",
         "www.laclemanexperience.ch",
+        "maisoncortes.ch",
+        "www.maisoncortes.ch",
       ],
     },
   },
