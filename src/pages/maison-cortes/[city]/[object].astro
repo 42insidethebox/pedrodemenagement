@@ -1,0 +1,77 @@
+---
+import Shell from '~/tenants/maison-cortes/ui/Shell.astro';
+import { maisonCortesProducts } from '~/tenants/maison-cortes/products';
+import { maisonCortesCopy } from '~/tenants/maison-cortes/copy';
+
+export const prerender = false;
+
+export function getStaticPaths() {
+  return maisonCortesProducts.map((product) => ({
+    params: { city: product.citySlug, object: product.objectSlug },
+  }));
+}
+
+const { city, object } = Astro.params;
+const product = maisonCortesProducts.find((item) => item.citySlug === city && item.objectSlug === object);
+if (!product) {
+  throw new Error('Object not found');
+}
+
+const metadata = {
+  title: `MAISON CORTES — ${product.city} ${product.object} ${product.index}`,
+  description: `${product.city} ${product.object} ${product.index}.`,
+  ignoreTitleTemplate: true,
+};
+---
+
+<Shell metadata={metadata}>
+  <section class="mc-section">
+    <div class="mc-brand">
+      <span class="mc-brand-top">{maisonCortesCopy.brandTop}</span>
+      <span class="mc-brand-bottom">{maisonCortesCopy.brandBottom}</span>
+    </div>
+    <p class="mc-classification">
+      <span class="mc-city">{product.city}</span>
+      <span aria-hidden="true"> / </span>
+      <span class="mc-object">{product.object} {product.index}</span>
+    </p>
+    <ul class="mc-specs">
+      {product.specs.map((spec) => (
+        <li>{spec}</li>
+      ))}
+    </ul>
+    <p class="mc-price">CHF {product.priceChf}.–</p>
+    <form method="post" action="/api/maison-cortes/checkout">
+      <input type="hidden" name="sku" value={product.id} />
+      <button type="submit" class="mc-button">{maisonCortesCopy.cta}</button>
+    </form>
+  </section>
+</Shell>
+
+<style>
+  .mc-brand {
+    display: grid;
+    gap: 4px;
+    text-transform: uppercase;
+  }
+
+  .mc-brand-top {
+    font-size: 14px;
+    letter-spacing: var(--mc-tracking-city);
+  }
+
+  .mc-brand-bottom {
+    font-size: 28px;
+    letter-spacing: var(--mc-tracking-brand);
+  }
+
+  .mc-price {
+    margin: 0;
+    font-size: 18px;
+    letter-spacing: 0.1em;
+  }
+
+  form {
+    margin: 0;
+  }
+</style>

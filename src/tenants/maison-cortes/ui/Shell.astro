@@ -14,9 +14,6 @@ const { metadata = {}, title = '', subtitle = '' } = Astro.props;
 
 const navLinks = [
   { text: 'Catalogue', href: '/maison-cortes' },
-  { text: 'Protocoles', href: '/maison-cortes/services' },
-  { text: 'Tarifs', href: '/maison-cortes/pricing' },
-  { text: 'Contact', href: '/maison-cortes/contact' },
 ];
 
 const styleVars: Record<string, string> = {
@@ -41,6 +38,7 @@ const styleVars: Record<string, string> = {
         {navLinks.map((link) => (
           <a href={link.href}>{link.text}</a>
         ))}
+        <a href={`mailto:${maisonCortesCopy.contactEmail}`}>Contact</a>
       </nav>
     </header>
 
@@ -63,23 +61,10 @@ const styleVars: Record<string, string> = {
           </div>
         </div>
         <div>
-          <p class="mc-footer-title">Accès</p>
-          <ul>
-            {navLinks.map((link) => (
-              <li><a href={link.href}>{link.text}</a></li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <p class="mc-footer-title">Règles</p>
-          <ul>
-            {maisonCortesCopy.rulesFooter.map((line) => (
-              <li>{line}</li>
-            ))}
-          </ul>
+          <p class="mc-footer-title">Contact</p>
+          <a href={`mailto:${maisonCortesCopy.contactEmail}`}>{maisonCortesCopy.contactEmail}</a>
         </div>
       </div>
-      <p class="mc-footnote">{maisonCortesCopy.footerNote}</p>
     </footer>
   </div>
 </Layout>
@@ -200,23 +185,6 @@ const styleVars: Record<string, string> = {
     color: var(--mc-text);
   }
 
-  .mc-footer ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    gap: 6px;
-    color: var(--mc-muted);
-    letter-spacing: 0.06em;
-  }
-
-  .mc-footnote {
-    margin: 0;
-    color: var(--mc-muted);
-    letter-spacing: 0.06em;
-    font-size: 13px;
-  }
-
   :global(.mc-section) {
     display: grid;
     gap: 10px;
@@ -247,12 +215,6 @@ const styleVars: Record<string, string> = {
   :global(.mc-section li),
   :global(.mc-section span) {
     letter-spacing: 0.04em;
-  }
-
-  :global(.mc-note-inline) {
-    color: var(--mc-muted);
-    letter-spacing: 0.06em;
-    font-size: 13px;
   }
 
   :global(.mc-grid) {
@@ -295,8 +257,8 @@ const styleVars: Record<string, string> = {
 
   :global(.mc-city) {
     letter-spacing: var(--mc-tracking-city);
-    color: var(--accent, var(--mc-muted));
-    opacity: 0.24;
+    color: var(--mc-muted);
+    opacity: 0.6;
   }
 
   :global(.mc-object) {
