@@ -1,0 +1,51 @@
+---
+import Shell from '~/tenants/maison-cortes/ui/Shell.astro';
+import { maisonCortesCities, maisonCortesProducts } from '~/tenants/maison-cortes/products';
+
+export const prerender = false;
+
+export function getStaticPaths() {
+  return maisonCortesCities.map((city) => ({ params: { city: city.slug } }));
+}
+
+const { city } = Astro.params;
+const cityEntry = maisonCortesCities.find((item) => item.slug === city);
+if (!cityEntry) {
+  throw new Error('City not found');
+}
+
+const products = maisonCortesProducts.filter((product) => product.citySlug === cityEntry.slug);
+
+const metadata = {
+  title: `MAISON CORTES — ${cityEntry.name}`,
+  description: `${cityEntry.name}.`,
+  ignoreTitleTemplate: true,
+};
+---
+
+<Shell metadata={metadata} title={cityEntry.name}>
+  <section class="mc-section">
+    <ul class="mc-object-list">
+      {products.map((product) => (
+        <li>
+          <a href={`/maison-cortes/${product.citySlug}/${product.objectSlug}`}>
+            {product.object} {product.index}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Shell>
+
+<style>
+  .mc-object-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 12px;
+    font-size: clamp(18px, 2.6vw, 24px);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+</style>

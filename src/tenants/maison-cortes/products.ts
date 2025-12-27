@@ -1,43 +1,67 @@
-import { maisonCortesTheme } from './theme';
-
 export type MaisonCortesProduct = {
   id: string;
-  city: 'LUGANO' | 'GENÈVE' | 'ZÜRICH';
+  city: 'LUGANO' | 'GENEVE' | 'ZURICH' | 'LAUSANNE' | 'ZERMATT';
+  citySlug: 'lugano' | 'geneve' | 'zurich' | 'lausanne' | 'zermatt';
   object: string;
   index: string;
+  objectSlug: string;
   specs: string[];
   priceChf: number;
-  accent?: string;
 };
-
-const { colors } = maisonCortesTheme;
 
 export const maisonCortesProducts: MaisonCortesProduct[] = [
   {
     id: 'lugano-bracelet-02',
     city: 'LUGANO',
+    citySlug: 'lugano',
     object: 'BRACELET',
     index: '02',
-    specs: ['Sterling silver (925).', 'Gold-plated surface.', '318 laboratory-grown diamonds.', 'Width 7 mm.'],
+    objectSlug: 'bracelet-02',
+    specs: ['Sterling silver (925).', 'Gold-plated surface.', '318 diamonds.', 'Width 7 mm.'],
     priceChf: 530,
-    accent: colors.accentLugano,
   },
   {
     id: 'geneve-pendant-03',
-    city: 'GENÈVE',
+    city: 'GENEVE',
+    citySlug: 'geneve',
     object: 'PENDANT',
     index: '03',
-    specs: ['Medical-grade titanium core.', 'Gold-plated surface.', '176 laboratory-grown diamonds.', 'Length 28 mm.'],
+    objectSlug: 'pendant-03',
+    specs: ['Medical-grade titanium core.', 'Gold-plated surface.', '176 diamonds.', 'Length 28 mm.'],
     priceChf: 610,
-    accent: colors.accentGeneve,
   },
   {
     id: 'zurich-ring-01',
-    city: 'ZÜRICH',
+    city: 'ZURICH',
+    citySlug: 'zurich',
     object: 'RING',
     index: '01',
+    objectSlug: 'ring-01',
     specs: ['Stainless steel frame.', 'Gold-plated surface.', 'Laser-etched serial number.', 'Width 5 mm.'],
     priceChf: 340,
-    accent: colors.accentZurich,
+  },
+  {
+    id: 'lausanne-bracelet-01',
+    city: 'LAUSANNE',
+    citySlug: 'lausanne',
+    object: 'BRACELET',
+    index: '01',
+    objectSlug: 'bracelet-01',
+    specs: ['Sterling silver (925).', 'Brushed finish.', '84 diamonds.', 'Width 6 mm.'],
+    priceChf: 420,
+  },
+  {
+    id: 'zermatt-watch-01',
+    city: 'ZERMATT',
+    citySlug: 'zermatt',
+    object: 'WATCH',
+    index: '01',
+    objectSlug: 'watch-01',
+    specs: ['Stainless steel case.', 'Satin black dial.', '66 diamonds.', 'Case 34 mm.'],
+    priceChf: 980,
   },
 ];
+
+export const maisonCortesCities = Array.from(
+  new Map(maisonCortesProducts.map((product) => [product.citySlug, { name: product.city, slug: product.citySlug }])).values()
+);

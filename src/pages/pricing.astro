@@ -15,7 +15,7 @@ import { resolveLocaleFromRequest } from '~/lib/locale';
 const host = Astro.request.headers.get('host');
 const brandKey = getBrandFromHost(host);
 if (brandKey === 'maisoncortes') {
-  return Astro.redirect('/maison-cortes/pricing');
+  return Astro.redirect('/maison-cortes');
 }
 
 const isUrgent = brandKey === 'urgent';
