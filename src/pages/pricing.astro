@@ -11,10 +11,19 @@ import { BRANDS } from '~/lib/brands.config';
 import { getImage } from '~/data/imageInventory';
 import type { ImageId } from '~/data/imageInventory';
 import { resolveLocaleFromRequest } from '~/lib/locale';
+import { resolveTenantFromRequest } from '~/lib/tenants';
+import { resolveTonSiteWebComponent } from '~/tenants/tonsiteweb/router';
+
+const tenant = resolveTenantFromRequest(Astro.request);
+
+const TonComponent =
+  tenant.slug === 'tonsiteweb'
+    ? resolveTonSiteWebComponent('pricing', Astro.url instanceof URL ? Astro.url : new URL(Astro.request.url), Astro.request)
+    : null;
 
 const host = Astro.request.headers.get('host');
 const brandKey = getBrandFromHost(host);
-if (brandKey === 'maisoncortes') {
+if (!TonComponent && brandKey === 'maisoncortes') {
   return Astro.redirect('/maison-cortes');
 }
 
@@ -1163,6 +1172,9 @@ const toneStrong = view.hero.tone === 'dark' ? 'text-white' : 'text-slate-900';
 const toneMuted = view.hero.tone === 'dark' ? 'text-white/85' : 'text-slate-600';
 ---
 
+{TonComponent ? (
+  <TonComponent />
+) : (
 <Layout metadata={metadata}>
 <section
   class={`relative overflow-hidden brand-${brandKey} ${heroToneClass}`}
@@ -1353,3 +1365,4 @@ const toneMuted = view.hero.tone === 'dark' ? 'text-white/85' : 'text-slate-600'
     border-color: rgba(255, 255, 255, 0.92);
   }
 </style>
+)}

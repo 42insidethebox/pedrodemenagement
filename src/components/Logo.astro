@@ -1,9 +1,40 @@
 ---
 import { SITE } from 'astrowind:config';
+import tonLogo from '~/assets/images/tsw_logo.png';
 
-const { name = SITE?.name } = Astro.props as { name?: string };
+interface Props {
+  name?: string;
+  brandKey?: string;
+}
+
+const { name = SITE?.name, brandKey = 'pedro' } = Astro.props as Props;
+const logoByBrand: Record<string, string | undefined> = {
+  tonsiteweb: tonLogo.src,
+};
+const logoSrc = logoByBrand[brandKey];
 ---
 
-<span class="self-center ml-2 rtl:ml-0 rtl:mr-2 text-2xl md:text-xl font-bold text-gray-900 whitespace-nowrap dark:text-white logo-text">
-  🚚 {name || SITE?.name}
-</span>
+{logoSrc ? (
+  brandKey === 'tonsiteweb' ? (
+    <span class="inline-flex items-center justify-center">
+      <img
+        src={logoSrc}
+        alt={name || SITE?.name || brandKey}
+        class="w-auto h-10 md:h-11 flex-shrink-0"
+        style="transform: scale(2.4); transform-origin: left center;"
+        loading="lazy"
+      />
+    </span>
+  ) : (
+    <img
+      src={logoSrc}
+      alt={name || SITE?.name || brandKey}
+      class="h-14 w-auto md:h-12 flex-shrink-0"
+      loading="lazy"
+    />
+  )
+) : (
+  <span class="self-center ml-2 rtl:ml-0 rtl:mr-2 text-2xl md:text-xl font-bold text-gray-900 whitespace-nowrap dark:text-white logo-text">
+    🚚 {name || SITE?.name}
+  </span>
+)}

@@ -114,6 +114,49 @@ if (!sections.length) {
           return <input type="hidden" name={name} id={name} value={(attributes as any)?.value ?? ''} />;
         }
 
+        if (type === 'group' && (field as any).children) {
+          return (
+            <div
+              class={`space-y-0 ${colSpan === 2 ? 'md:col-span-2' : ''}`}
+              data-field-wrapper
+              data-step={step}
+              data-conditional-source={conditional?.source}
+              data-conditional-show={conditional?.showOn?.join(',')}
+              data-conditional-hide={conditional?.hideOn?.join(',')}
+              data-conditional-anynot={conditional?.showIfAnyNot?.join(',')}
+            >
+              <div class={className}>
+                {(field as any).children.map((child: any) => {
+                  const childField = { ...child, step };
+                  return (
+                    <div class="space-y-2 h-full" data-field-wrapper data-step={step}>
+                      {childField.label && (
+                        <label for={childField.name} class="flex items-center gap-2 text-sm font-semibold text-slate-800 dark:text-slate-100">
+                          <span>{childField.label}</span>
+                          {childField.required ? <span class="text-red-500" aria-hidden="true">*</span> : null}
+                        </label>
+                      )}
+                      {childField.helper && (
+                        <p class="text-xs text-gray-500 helper-text min-h-[2.6rem] leading-snug flex items-start">
+                          {childField.helper}
+                        </p>
+                      )}
+                      <input
+                        type={childField.type || 'text'}
+                        name={childField.name}
+                        id={childField.name}
+                        placeholder={childField.placeholder || ''}
+                        required={childField.required}
+                        class="py-3 px-4 block w-full text-md rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors shadow-sm"
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        }
+
         return (
           <div
             class={`space-y-2 ${colSpan === 2 ? 'md:col-span-2' : ''} ${className}`}
@@ -138,14 +181,24 @@ if (!sections.length) {
             {helper && <p class="text-xs text-gray-500 helper-text">{helper}</p>}
             {required && requiredMessage && <p class="text-xs text-red-500 required-msg hidden">{requiredMessage}</p>}
 
-            {type === 'select' ? (
+            {type === 'textarea' ? (
+              <textarea
+                name={name}
+                id={name}
+                rows={attributes.rows || 3}
+                placeholder={placeholder}
+                required={required}
+                {...attributes}
+                class="py-3 px-4 block w-full text-md rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors shadow-sm"
+              />
+            ) : type === 'select' ? (
               <select
                 name={name}
                 id={name}
                 multiple={multiple}
                 required={required}
                 title={required && requiredMessage ? requiredMessage : undefined}
-                class="py-3 px-4 pr-12 block w-full text-md rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm hover:border-primary/50 focus:border-primary/70 focus:ring-2 focus:ring-primary/30 transition-all appearance-none"
+                class="py-3.5 px-4 pr-12 block w-full text-md rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm hover:border-primary/50 focus:border-primary/70 focus:ring-2 focus:ring-primary/30 transition-all appearance-none"
                 style="background-image: url('data:image/svg+xml;utf8,<svg fill=\"none\" stroke=\"%23718096\" stroke-width=\"1.6\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M6 9l6 6 6-6\"/></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 14px;"
               >
                 {(options.length ? options : [{ value: '', label: 'Select an option' }]).map((option: any) => (
@@ -387,11 +440,6 @@ if (!sections.length) {
           });
         }
       });
-    };
-
-    const getFieldValue = (name: string) => {
-      const el = form?.querySelector<HTMLInputElement | HTMLSelectElement>(`[name="${name}"]`);
-      return el?.value || '';
     };
 
     const getRadioValue = (name: string) => {

@@ -11,8 +11,9 @@ export function serializeMetadata(input) {
   const locale = toStr(input?.locale).toLowerCase();
   const clientSlug = generateClientSlug(name, company);
   const agencyId = toStr(input?.agencyId || input?.agency_id);
+  const tenantId = toStr(input?.tenant_id || input?.tenantId || input?.tenant);
 
-  const meta = { name, email, company, phone, template, plan, locale, clientSlug, agencyId };
+  const meta = { name, email, company, phone, template, plan, locale, clientSlug, agencyId, tenant_id: tenantId };
   return JSON.parse(JSON.stringify(meta));
 }
 

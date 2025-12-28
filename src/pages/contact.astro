@@ -7,10 +7,36 @@ import { BRANDS } from '~/lib/brands.config';
 import { getImage, getImageAlt } from '~/data/imageInventory';
 import type { ImageId } from '~/data/imageInventory';
 import { resolveLocaleFromRequest } from '~/lib/locale';
+import { resolveTenantFromRequest } from '~/lib/tenants';
+import { resolveTonSiteWebComponent } from '~/tenants/tonsiteweb/router';
+
+const tenant = resolveTenantFromRequest(Astro.request);
+const url = new URL(Astro.request.url);
+const planParam = (url.searchParams.get('plan') || '').toLowerCase();
+const localePrefixMatch = url.pathname.match(/^\/(fr|en|de|it)(?=\/|$)/);
+const localePrefix = localePrefixMatch ? `/${localePrefixMatch[1]}` : '';
+if (tenant.slug === 'tonsiteweb' && planParam.startsWith('advanced')) {
+  return Astro.redirect(`${localePrefix}/choose-template?model=backend_light&plan=avance`);
+}
+
+const TonComponent =
+  tenant.slug === 'tonsiteweb'
+    ? resolveTonSiteWebComponent('contact', Astro.url instanceof URL ? Astro.url : new URL(Astro.request.url), Astro.request)
+    : null;
+
+let lceData: {
+  metadata: Record<string, any>;
+  inputs: any[];
+  textarea: any;
+  disclaimer: string;
+  button: string;
+  title: string;
+  subtitle: string;
+} | null = null;
 
 const host = Astro.request.headers.get('host');
 const brandKey = getBrandFromHost(host) || 'pedro';
-if (brandKey === 'maisoncortes') {
+if (!TonComponent && brandKey === 'maisoncortes') {
   return Astro.redirect('/maison-cortes/contact');
 }
 
@@ -48,6 +74,131 @@ const lamT = <T,>(fr: T, en: T, de: T, it: T): T => {
   if (isIt) return it;
   return fr;
 };
+
+if (!TonComponent && tenant.slug === 'laclemanexperience') {
+  const lceT = <T,>(fr: T, en: T, de: T, it: T): T => {
+    if (isEn) return en;
+    if (isDe) return de;
+    if (isIt) return it;
+    return fr;
+  };
+
+  const lceInputs = [
+    { type: 'hidden', name: 'tenant', attributes: { value: 'laclemanexperience' } },
+    { type: 'hidden', name: 'form_type', attributes: { value: 'experience_inquiry' } },
+    { type: 'hidden', name: 'locale', attributes: { value: lang } },
+    { type: 'hidden', name: 'source', attributes: { value: 'web' } },
+    { name: 'name', label: lceT('Nom complet', 'Full name', 'Vollständiger Name', 'Nome completo'), required: true },
+    { name: 'email', label: 'Email', type: 'email', required: true, placeholder: 'you@example.com' },
+    { name: 'phone', label: lceT('Téléphone', 'Phone', 'Telefon', 'Telefono'), type: 'tel', placeholder: '+41 …' },
+    {
+      name: 'experience_type',
+      label: lceT('Type d’expérience', 'Experience type', 'Erlebnistyp', 'Tipo di esperienza'),
+      type: 'radio',
+      required: true,
+      colSpan: 2,
+      options: [
+        { value: 'private_cruise', label: lceT('Croisière privée', 'Private cruise', 'Private Cruise', 'Crociera privata') },
+        { value: 'food_experience', label: lceT('Expérience gastronomique', 'Dining experience', 'Gastronomie-Erlebnis', 'Esperienza gastronomica') },
+        { value: 'stay_weekend', label: lceT('Week-end / séjour', 'Weekend / stay', 'Weekend / Aufenthalt', 'Weekend / soggiorno') },
+        { value: 'special_event', label: lceT('Événement spécial', 'Special event', 'Spezieller Anlass', 'Evento speciale') },
+        { value: 'sur_mesure', label: lceT('Sur-mesure', 'Custom', 'Massgeschneidert', 'Su misura') },
+        { value: 'other', label: lceT('Autre', 'Other', 'Andere', 'Altro') },
+      ],
+    },
+    {
+      type: 'textarea',
+      name: 'experience_details',
+      label: lceT('Pouvez-vous nous en dire un peu plus ?', 'Can you tell us a bit more?', 'Können Sie uns mehr erzählen?', 'Puoi dirci qualcosa di più?'),
+      placeholder: lceT(
+        'Ex : anniversaire, mariage, événement d’entreprise…',
+        'e.g., birthday, wedding, corporate gathering…',
+        'z.B. Geburtstag, Hochzeit, Firmenanlass…',
+        'Es: compleanno, matrimonio, evento aziendale…'
+      ),
+      colSpan: 2,
+      conditional: { source: 'experience_type', showOn: ['special_event'] },
+    },
+    {
+      type: 'textarea',
+      name: 'experience_details',
+      label: lceT('Décrivez brièvement l’expérience idéale que vous imaginez', 'Describe the ideal experience you have in mind', 'Beschreiben Sie kurz Ihr Wunscherlebnis', "Descrivi brevemente l'esperienza ideale che immagini"),
+      placeholder: lceT(
+        'Ton, rythme, ambiance, moments clés…',
+        'Tone, pace, ambiance, key moments…',
+        'Ton, Rhythmus, Stimmung, Schlüsselmomente…',
+        'Tono, ritmo, atmosfera, momenti chiave…'
+      ),
+      colSpan: 2,
+      conditional: { source: 'experience_type', showOn: ['sur_mesure'] },
+    },
+    {
+      type: 'textarea',
+      name: 'experience_details',
+      label: lceT('Précisez votre demande', 'Specify your request', 'Präzisieren Sie Ihre Anfrage', 'Precisa la tua richiesta'),
+      placeholder: lceT('Ce que vous souhaitez vivre', 'What you’d like to experience', 'Was Sie erleben möchten', 'Cosa vorresti vivere'),
+      colSpan: 2,
+      conditional: { source: 'experience_type', showOn: ['other'] },
+    },
+    {
+      name: 'date_from',
+      label: lceT('Date souhaitée — début', 'Desired date — from', 'Gewünschtes Datum — ab', 'Data desiderata — inizio'),
+      type: 'date',
+      helper: lceT('Choisissez une date ou la première journée possible', 'Pick a date or the first possible day', 'Datum oder ersten Tag wählen', 'Scegli una data o il primo giorno possibile'),
+    },
+    {
+      name: 'date_to',
+      label: lceT('Date souhaitée — fin', 'Desired date — to', 'Gewünschtes Datum — bis', 'Data desiderata — fine'),
+      type: 'date',
+      helper: lceT('Facultatif : fin de votre fenêtre', 'Optional: end of your window', 'Optional: Ende Ihres Fensters', 'Opzionale: fine della finestra'),
+    },
+    {
+      name: 'party_size',
+      label: lceT('Nombre de personnes', 'Party size', 'Personenzahl', 'Numero di persone'),
+      type: 'number',
+      attributes: { min: 1, max: 30, step: 1 },
+      required: true,
+    },
+    {
+      name: 'dietary',
+      label: lceT('Régimes / allergies', 'Dietary / allergies', 'Ernährung / Allergien', 'Diete / allergie'),
+      placeholder: lceT('Ex: sans gluten, sans lactose', 'e.g., gluten-free, lactose-free', 'z.B. glutenfrei, laktosefrei', 'es. senza glutine, senza lattosio'),
+    },
+  ];
+
+  const lceTextarea = {
+    name: 'message',
+    label: lceT('Votre demande', 'Your request', 'Ihre Anfrage', 'La tua richiesta'),
+    placeholder: lceT(
+      'Itinéraire souhaité, timing, préférences, contraintes…',
+      'Desired itinerary, timing, preferences, constraints…',
+      'Gewünschte Route, Timing, Präferenzen, Einschränkungen…',
+      'Itinerario, tempistiche, preferenze, vincoli…'
+    ),
+    required: true,
+  };
+
+  const lceDisclaimer = lceT(
+    'Réponse par concierge dédié sous 24h.',
+    'Reply from a dedicated concierge within 24h.',
+    'Antwort durch Concierge innert 24h.',
+    'Risposta di un concierge dedicato entro 24h.'
+  );
+
+  const lceButton = lceT('Parler à un concierge', 'Talk to a concierge', 'Mit einem Concierge sprechen', 'Parlare con un concierge');
+  const lceMetadata = { title: lceT('Contact — Lac Léman Experience', 'Contact — Lac Léman Experience', 'Kontakt — Lac Léman Experience', 'Contatto — Lac Léman Experience') };
+
+  lceData = {
+    metadata: lceMetadata,
+    inputs: lceInputs,
+    textarea: lceTextarea,
+    disclaimer: lceDisclaimer,
+    button: lceButton,
+    title: lceT('Parlons de votre expérience', 'Tell us about your experience', 'Sprechen wir über Ihr Erlebnis', 'Parliamo della tua esperienza'),
+    subtitle: lceT('Concierge dédié, options validées à l’avance.', 'Dedicated concierge, options validated upfront.', 'Dedizierter Concierge, Optionen im Voraus bestätigt.', 'Concierge dedicato, opzioni validate in anticipo.'),
+  };
+}
+
 const brandType =
   isUrgent
     ? 'urgent'
@@ -194,8 +345,8 @@ const views = {
         'رحلات خاصة، كروم اليونسكو، موائد مضيفة وهروب للألب منسقة بالكامل.',
         '私享游船、联合国教科文组织葡萄园、私宴与高山度假，全程统筹。'
       ),
-      background: `linear-gradient(135deg, rgba(15,118,110,0.28), rgba(30,41,59,0.34), rgba(253,230,138,0.22)), url('${img('quiet_luxury_lake_lifestyle')}')`,
-      overlayClass: 'bg-gradient-to-br from-emerald-950/30 via-slate-900/40 to-amber-100/22',
+      background: `linear-gradient(135deg, rgba(255,255,255,0.45), rgba(226,245,239,0.32), rgba(244,247,255,0.35)), url('${img('quiet_luxury_lake_lifestyle')}'), url('${img('leman_horizon_minimal_2')}')`,
+      overlayClass: 'bg-gradient-to-br from-white/20 via-emerald-50/14 to-amber-50/16 backdrop-blur-[1.5px]',
       chips: lceT(
         ['Conciergerie dédiée', 'Partenaires triés', 'Privatisations'],
         ['Dedicated concierge', 'Vetted partners', 'Privatisations'],
@@ -204,7 +355,7 @@ const views = {
         ['كونسيرج مخصص', 'شركاء مختارون', 'خصخصة فعلية'],
         ['专属礼宾', '甄选伙伴', '真实私享']
       ),
-      tone: 'dark',
+      tone: 'light',
     },
     info: {
       title: lceT('Ce que nous verrouillons', 'What we lock in', 'Was wir fixieren', 'Cosa blocchiamo', 'ما الذي نثبته', '我们为您锁定什么'),
@@ -261,7 +412,7 @@ const views = {
       ['一位礼宾', '保证私享', '低调对接主人']
     ),
     accent: 'from-emerald-200/30 via-emerald-700/20 to-amber-100/30',
-    formAccent: 'from-white/92 via-emerald-50/92 to-white/92',
+    formAccent: 'from-white/20 via-emerald-50/22 to-amber-50/20',
   },
   videmaison: {
     hero: {
@@ -387,6 +538,32 @@ if (isLausanne && brandType === 'move') {
       lamT('Devis détaillé en CHF', 'Detailed CHF quote', 'Detaillierte CHF-Offerte', 'Preventivo dettagliato in CHF'),
       lamT('Coordination WhatsApp si besoin', 'WhatsApp coordination if needed', 'WhatsApp-Koordination bei Bedarf', 'Coordinamento WhatsApp se serve'),
     ],
+  };
+}
+if (brandKey === 'tonsiteweb') {
+  view = {
+    ...view,
+    hero: {
+      ...view.hero,
+      tone: 'light',
+      background: `linear-gradient(135deg, rgba(15,23,42,0.25), rgba(37,99,235,0.24), rgba(248,250,252,0.5)), url('${img('leman_horizon_minimal_2')}'), url('${img('hero_happy_boxes_plants')}')`,
+      overlayClass: 'bg-gradient-to-br from-white/55 via-slate-50/40 to-blue-50/55 backdrop-blur-[3px]',
+      chips: ['Sites vitrines clés-en-main', 'Copy & SEO inclus', 'Mise en ligne rapide'],
+      title: 'Parlons de votre site clé-en-main',
+      subtitle: 'Design, contenu multilingue et intégrations locales, livrés en quelques jours.',
+    },
+    info: {
+      ...view.info,
+      title: 'Ce que nous préparons',
+      subtitle: 'On verrouille le contenu, le design et les intégrations avant la mise en ligne.',
+      items: [
+        { title: 'Structure & contenus', description: 'Arborescence, sections clés et textes localisés.' },
+        { title: 'Intégrations', description: 'Formulaires, suivi analytics, SEO technique dès le départ.' },
+        { title: 'Livraison rapide', description: 'Mise en ligne typique : 5 jours ouvrés après cadrage.' },
+      ],
+    },
+    accent: 'from-blue-200/40 via-white/60 to-slate-100/40',
+    formAccent: 'from-white/92 via-blue-50/92 to-white/94',
   };
 }
 const metadata = isUrgent
@@ -533,6 +710,150 @@ const processStates = [
 ];
 ---
 
+{TonComponent ? (
+  <TonComponent />
+) : brandKey === 'laclemanexperience' && lceData ? (
+  <Layout metadata={lceData.metadata} brandKey={brandKey}>
+    <section
+      class={`relative overflow-hidden brand-${brandKey} contact-hero-light`}
+      style={`background-image:${view.hero.background}; background-size: cover; background-position: center;`}
+      aria-label={contactAlt}
+    >
+      <div class={`absolute inset-0 ${view.hero.overlayClass?.replace(/0\\.\\d+/g, (m) => (Number(m) * 0.7).toFixed(2)) || ''}`}></div>
+      <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-18 grid gap-10 md:grid-cols-[1fr_1fr] items-start">
+        <div class="space-y-6">
+          <p class={`text-sm uppercase tracking-[0.32em] ${toneMuted}`}>{view.hero.tagline}</p>
+          <h1 class={`text-4xl md:text-5xl font-semibold leading-tight ${toneStrong}`}>{view.hero.title}</h1>
+          <p class={`text-lg md:text-xl max-w-3xl ${toneMuted}`}>{view.hero.subtitle}</p>
+          <div class="flex flex-wrap gap-3">
+            {view.hero.chips.map((chip) => (
+              <span
+                class={`rounded-full px-3 py-1.5 text-xs font-semibold ${
+                  view.hero.tone === 'dark'
+                    ? 'bg-white/15 border border-white/20 text-white backdrop-blur'
+                    : 'bg-white/70 border border-emerald-100/80 text-slate-900 shadow-sm'
+                }`}
+              >
+                {chip}
+              </span>
+            ))}
+          </div>
+          <div class="grid sm:grid-cols-3 gap-3 text-sm">
+            {view.checkpoints.map((item) => (
+              <div
+                class={`rounded-xl px-4 py-3 shadow-lg ${
+                  view.hero.tone === 'dark'
+                    ? 'bg-white/10 border border-white/20 text-white/90 backdrop-blur'
+                    : 'bg-white/85 border border-emerald-100/80 text-slate-900 backdrop-blur'
+                }`}
+              >
+                {item}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div class="relative">
+          <div class={`absolute -inset-6 blur-3xl opacity-70 bg-gradient-to-br ${view.accent}`}></div>
+          <div
+            class={`relative rounded-3xl backdrop-blur-lg shadow-2xl p-8 space-y-4 ${
+              view.hero.tone === 'dark'
+                ? 'border border-white/20 bg-white/10 text-white'
+                : 'border border-emerald-100/70 bg-white/85 text-slate-900'
+            }`}
+          >
+            <p
+              class={`text-xs uppercase tracking-[0.3em] ${
+                view.hero.tone === 'dark' ? 'text-white/70' : 'text-slate-600'
+              }`}
+            >
+              Ce qui change selon vous
+            </p>
+            <h3 class="text-2xl font-semibold leading-tight">{view.info.title}</h3>
+            <p class={view.hero.tone === 'dark' ? 'text-white/85' : 'text-slate-700'}>{view.info.subtitle}</p>
+            <div class="space-y-3">
+              {view.info.items.map((item) => (
+                <div class="flex gap-3">
+                  <div
+                    class={`mt-1 h-2 w-2 rounded-full ${
+                      view.hero.tone === 'dark' ? 'bg-white/70' : 'bg-emerald-500/70'
+                    }`}
+                  ></div>
+                  <div>
+                    <p class={`font-semibold text-${view.hero.tone === 'dark' ? 'white' : 'slate-900'}`}>{item.title}</p>
+                    <p class={`${view.hero.tone === 'dark' ? 'text-white/80' : 'text-slate-700'} text-sm leading-relaxed`}>
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div
+              class={`grid grid-cols-1 sm:grid-cols-[minmax(0,0.75fr)_minmax(0,1.25fr)] md:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] gap-2.5 pt-2 text-sm ${
+                view.hero.tone === 'dark' ? 'text-white/80' : 'text-slate-700'
+              }`}
+            >
+              <div
+                class={`rounded-lg px-3 py-2 flex flex-col gap-0.5 min-w-0 ${
+                  view.hero.tone === 'dark'
+                    ? 'border border-white/20 bg-white/5'
+                    : 'border border-emerald-100/70 bg-white/80'
+                }`}
+              >
+                <span class={view.hero.tone === 'dark' ? 'text-white/80' : 'text-slate-600'}>Téléphone</span>
+                <span class={`${view.hero.tone === 'dark' ? 'text-white' : 'text-slate-900'} font-semibold whitespace-nowrap text-sm`}>
+                  {brand.phone}
+                </span>
+              </div>
+              <div
+                class={`rounded-lg px-3 py-2 flex flex-col gap-0.5 overflow-hidden min-w-0 ${
+                  view.hero.tone === 'dark'
+                    ? 'border border-white/20 bg-white/5'
+                    : 'border border-emerald-100/70 bg-white/80'
+                }`}
+              >
+                <span class={view.hero.tone === 'dark' ? 'text-white/80' : 'text-slate-600'}>Email</span>
+                <span
+                  class={`${
+                    view.hero.tone === 'dark' ? 'text-white' : 'text-slate-900'
+                  } font-semibold whitespace-nowrap text-sm leading-tight md:text-[15px]`}
+                  style="overflow: visible;"
+                >
+                  {brand.email}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section
+      class="relative py-14 md:py-18 bg-cover bg-center"
+      style={`background-image:${view.hero.background}; background-size: cover; background-position: center;`}
+    >
+      <div class={`absolute inset-0 bg-gradient-to-br ${view.formAccent} mix-blend-multiply saturate-135 contrast-102 brightness-101 opacity-28`}></div>
+      <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(80% 80% at 20% 25%, rgba(255,255,255,0.12), transparent), radial-gradient(70% 70% at 80% 20%, rgba(255,255,255,0.1), transparent); mix-blend-screen;"></div>
+      <div class="absolute inset-0 bg-white/4 backdrop-blur-[1px]"></div>
+      <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="relative">
+          <div class="absolute -inset-4 blur-3xl opacity-28 bg-white/28"></div>
+          <div class="relative rounded-3xl shadow-2xl border border-emerald-100/60 bg-white/82 backdrop-blur-xl">
+            <ContactUs
+              id="form"
+              title={lceData.title}
+              subtitle={lceData.subtitle}
+              classes={{ container: 'px-4 md:px-6 py-8 md:py-10' }}
+              inputs={lceData.inputs}
+              textarea={lceData.textarea}
+              disclaimer={lceData.disclaimer}
+              button={lceData.button}
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  </Layout>
+) : (
 <Layout metadata={metadata} brandKey={brandKey}>
   <section
     class={`relative overflow-hidden brand-${brandKey} contact-hero-light`}
@@ -608,7 +929,7 @@ const processStates = [
             ))}
           </div>
           <div
-            class={`grid grid-cols-[minmax(0,0.6fr)_minmax(0,1.4fr)] md:grid-cols-[minmax(0,0.55fr)_minmax(0,1.45fr)] gap-2.5 pt-2 text-sm ${
+            class={`grid grid-cols-1 sm:grid-cols-[minmax(0,0.75fr)_minmax(0,1.25fr)] md:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] gap-2.5 pt-2 text-sm ${
               view.hero.tone === 'dark' ? 'text-white/80' : 'text-slate-700'
             }`}
           >
@@ -1193,14 +1514,14 @@ const processStates = [
     items={
       isUrgent
         ? [
-            { title: 'Téléphone', description: '+41 76 798 27 93', icon: 'tabler:phone' },
-            { title: 'Email', description: 'contact@lausannedemenagement.ch', icon: 'tabler:mail' },
-            { title: 'WhatsApp', description: 'Réponse rapide sur créneau urgent', icon: 'tabler:brand-whatsapp' },
+            ...(brand.phone ? [{ title: 'Téléphone', description: brand.phone, icon: 'tabler:phone' }] : []),
+            ...(brand.email ? [{ title: 'Email', description: brand.email, icon: 'tabler:mail' }] : []),
+            { title: 'WhatsApp', description: brand.phone || 'Réponse rapide sur créneau urgent', icon: 'tabler:brand-whatsapp' },
             { title: 'Disponibilité', description: 'Créneaux jour + soir/week-end selon charge', icon: 'tabler:calendar-time' },
           ]
         : [
-            { title: 'WhatsApp', description: '+41 76 798 27 93', icon: 'tabler:phone' },
-            { title: 'Email', description: 'pedro@pedrodemenagement.ch', icon: 'tabler:mail' },
+            { title: 'WhatsApp', description: brand.phone || 'WhatsApp', icon: 'tabler:brand-whatsapp' },
+            ...(brand.email ? [{ title: 'Email', description: brand.email, icon: 'tabler:mail' }] : []),
             { title: 'Disponibilité', description: 'Du lundi au samedi, 8h00 – 18h00', icon: 'tabler:calendar-time' },
           ]
     }
@@ -1261,3 +1582,4 @@ const processStates = [
   }
 
 </style>
+)}

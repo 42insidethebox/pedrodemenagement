@@ -5,12 +5,24 @@ import Hero from '~/components/widgets/Hero.astro';
 import Stats from '~/components/widgets/Stats.astro';
 import Steps2 from '~/components/widgets/Steps2.astro';
 import Layout from '~/layouts/PageLayout.astro';
+import { resolveTenantFromRequest } from '~/lib/tenants';
+import { resolveTonSiteWebComponent } from '~/tenants/tonsiteweb/router';
+
+const tenant = resolveTenantFromRequest(Astro.request);
+
+const TonComponent =
+  tenant.slug === 'tonsiteweb'
+    ? resolveTonSiteWebComponent('about', Astro.url instanceof URL ? Astro.url : new URL(Astro.request.url), Astro.request)
+    : null;
 
 const metadata = {
   title: 'À propos',
 };
 ---
 
+{TonComponent ? (
+  <TonComponent />
+) : (
 <Layout metadata={metadata}>
   <Hero tagline="À propos de Pedro Déménagement">
     <Fragment slot="title">Une équipe lémanique pour des déménagements soignés</Fragment>
@@ -131,3 +143,4 @@ const metadata = {
     ]}
   />
 </Layout>
+)}

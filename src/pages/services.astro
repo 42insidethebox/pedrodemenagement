@@ -9,10 +9,19 @@ import { BRANDS } from '~/lib/brands.config';
 import { getImage, getImageAlt } from '~/data/imageInventory';
 import { EXPERIENCES } from '~/data/experiences';
 import { resolveLocaleFromRequest } from '~/lib/locale';
+import { resolveTenantFromRequest } from '~/lib/tenants';
+import { resolveTonSiteWebComponent } from '~/tenants/tonsiteweb/router';
+
+const tenant = resolveTenantFromRequest(Astro.request);
+
+const TonComponent =
+  tenant.slug === 'tonsiteweb'
+    ? resolveTonSiteWebComponent('services', Astro.url instanceof URL ? Astro.url : new URL(Astro.request.url), Astro.request)
+    : null;
 
 const host = Astro.request.headers.get('host');
 const brandKey = getBrandFromHost(host);
-if (brandKey === 'maisoncortes') {
+if (!TonComponent && brandKey === 'maisoncortes') {
   return Astro.redirect('/maison-cortes');
 }
 
@@ -952,7 +961,9 @@ const contentGradient = (() => {
 const optionsGradient = contentGradient;
 
 ---
-
+{TonComponent ? (
+  <TonComponent />
+) : (
 <Layout metadata={metadata}>
   <Hero
     id="services"
@@ -1370,3 +1381,4 @@ const optionsGradient = contentGradient;
     box-shadow: 0 10px 30px -16px rgb(8, 81, 106);
   }
 </style>
+)}

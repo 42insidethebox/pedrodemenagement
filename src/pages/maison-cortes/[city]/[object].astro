@@ -1,7 +1,11 @@
 ---
+import { Image } from 'astro:assets';
+
 import Shell from '~/tenants/maison-cortes/ui/Shell.astro';
+import { getMaisonCortesImage } from '~/tenants/maison-cortes/images';
+import { getMaisonCortesInventorySnapshot } from '~/tenants/maison-cortes/inventory';
 import { maisonCortesProducts } from '~/tenants/maison-cortes/products';
-import { maisonCortesCopy } from '~/tenants/maison-cortes/copy';
+import { maisonCortesCopy, resolveMaisonCortesLocale } from '~/tenants/maison-cortes/copy';
 
 export const prerender = false;
 
@@ -17,6 +21,15 @@ if (!product) {
   throw new Error('Object not found');
 }
 
+const locale = resolveMaisonCortesLocale(Astro.cookies.get('mc-lang')?.value);
+const copy = maisonCortesCopy.locales[locale];
+const snapshot = await getMaisonCortesInventorySnapshot();
+const state = snapshot[product.id];
+const computedStatus = state?.status ?? product.status;
+const statusLabel = copy.statusLabels[computedStatus];
+const isAvailable = computedStatus === 'available';
+const productImage = getMaisonCortesImage(product.id);
+
 const metadata = {
   title: `MAISON CORTES — ${product.city} ${product.object} ${product.index}`,
   description: `${product.city} ${product.object} ${product.index}.`,
@@ -31,20 +44,53 @@ const metadata = {
       <span class="mc-brand-bottom">{maisonCortesCopy.brandBottom}</span>
     </div>
     <p class="mc-classification">
-      <span class="mc-city">{product.city}</span>
+      <a class="mc-city" href={`/maison-cortes/${product.citySlug}`}>{product.city}</a>
       <span aria-hidden="true"> / </span>
-      <span class="mc-object">{product.object} {product.index}</span>
+      <a class="mc-object" href={`/maison-cortes/${product.citySlug}/${product.objectSlug}`}>
+        {product.object} {product.index}
+      </a>
     </p>
+    {productImage && (
+      <figure class="mc-figure">
+        <Image
+          src={productImage.src}
+          alt={productImage.alt}
+          widths={[520, 720, 960]}
+          sizes="(min-width: 960px) 720px, 100vw"
+          format="webp"
+          class="mc-image"
+        />
+      </figure>
+    )}
+    <div class="mc-meta">
+      <span class="mc-label">{statusLabel}</span>
+      {product.editionSize && <span class="mc-footnote">{copy.editionLabel} {product.editionSize}</span>}
+    </div>
     <ul class="mc-specs">
       {product.specs.map((spec) => (
         <li>{spec}</li>
       ))}
     </ul>
     <p class="mc-price">CHF {product.priceChf}.–</p>
-    <form method="post" action="/api/maison-cortes/checkout">
-      <input type="hidden" name="sku" value={product.id} />
-      <button type="submit" class="mc-button">{maisonCortesCopy.cta}</button>
-    </form>
+    {isAvailable ? (
+      <form method="post" action="/api/maison-cortes/select">
+        <input type="hidden" name="sku" value={product.id} />
+        <input type="hidden" name="redirect" value="/maison-cortes/selection" />
+        <button type="submit" class="mc-button">{copy.selectionAction}</button>
+      </form>
+    ) : (
+      <p class="mc-footnote">{copy.statusUnavailable}</p>
+    )}
+  </section>
+  <section class="mc-section">
+    <h2>{copy.materialsTitle}</h2>
+    <ul class="mc-quiet-list">
+      <li>{copy.materialsBody}</li>
+      <li>{copy.labDisclosureShort}</li>
+      <li>{copy.careLine}</li>
+      <li>{copy.shippingLine}</li>
+      <li>{copy.returnsBody}</li>
+    </ul>
   </section>
 </Shell>
 
@@ -69,6 +115,17 @@ const metadata = {
     margin: 0;
     font-size: 18px;
     letter-spacing: 0.1em;
+  }
+
+  .mc-figure {
+    margin: 0;
+  }
+
+  .mc-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid var(--mc-border);
   }
 
   form {

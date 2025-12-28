@@ -75,18 +75,23 @@ function applyStatusFilters(
   return query.in('status', normalized);
 }
 
+function applyTenantFilter(query: ReturnType<SupabaseClient['from']>, tenantId?: string) {
+  if (!tenantId) return query;
+  return query.eq('tenant_id', tenantId);
+}
+
 export async function listOrders(
   client: SupabaseClient,
   agencyId: string,
   options: ListOrdersOptions,
+  tenantId?: string,
 ): Promise<OrderRecord[]> {
   const limit = Math.max(1, Math.min(options.limit, 200));
   const baseQuery = () =>
-    client
-      .from('orders')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(limit);
+    applyTenantFilter(
+      client.from('orders').select('*').order('created_at', { ascending: false }).limit(limit),
+      tenantId,
+    );
 
   try {
     const queryWithAgency = applyStatusFilters(
@@ -120,9 +125,9 @@ export async function getOrderById(
   client: SupabaseClient,
   agencyId: string,
   id: number,
+  tenantId?: string,
 ): Promise<OrderRecord> {
-  const { data, error } = await client
-    .from('orders')
+  const { data, error } = await applyTenantFilter(client.from('orders'), tenantId)
     .select('*')
     .eq('id', id)
     .or(`agency_id.is.null,agency_id.eq.${agencyId}`)
@@ -145,13 +150,13 @@ export async function updateOrder(
   agencyId: string,
   id: number,
   payload: OrderUpdateInput,
+  tenantId?: string,
 ): Promise<OrderRecord> {
   const updatePayload = Object.fromEntries(
     Object.entries(payload).filter(([k]) => ORDER_DB_COLUMNS.has(k)),
   );
 
-  const { data, error } = await client
-    .from('orders')
+  const { data, error } = await applyTenantFilter(client.from('orders'), tenantId)
     .update(updatePayload)
     .eq('id', id)
     .or(`agency_id.is.null,agency_id.eq.${agencyId}`)
@@ -174,9 +179,9 @@ export async function deleteOrder(
   client: SupabaseClient,
   agencyId: string,
   id: number,
+  tenantId?: string,
 ): Promise<OrderRecord> {
-  const { data, error } = await client
-    .from('orders')
+  const { data, error } = await applyTenantFilter(client.from('orders'), tenantId)
     .delete()
     .eq('id', id)
     .or(`agency_id.is.null,agency_id.eq.${agencyId}`)
@@ -199,9 +204,10 @@ export async function computeOrderMetrics(
   client: SupabaseClient,
   agencyId: string,
   statuses?: readonly string[],
+  tenantId?: string,
 ): Promise<OrderMetrics> {
   const normalized = normalizeStatusesForQuery(statuses);
-  const base = client.from('orders');
+  const base = applyTenantFilter(client.from('orders'), tenantId);
 
   try {
     const [totalResult, recurringResult, revenueResult, latestResult] = await Promise.all([

@@ -1,9 +1,21 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
+import { resolveTenantFromRequest } from '~/lib/tenants';
+import { resolveTonSiteWebComponent } from '~/tenants/tonsiteweb/router';
+
+const tenant = resolveTenantFromRequest(Astro.request);
+
+const TonComponent =
+  tenant.slug === 'tonsiteweb'
+    ? resolveTonSiteWebComponent('thank-you', Astro.url instanceof URL ? Astro.url : new URL(Astro.request.url), Astro.request)
+    : null;
 
 const metadata = { title: 'Merci — Pedro Déménagement' };
 ---
 
+{TonComponent ? (
+  <TonComponent />
+) : (
 <Layout metadata={metadata}>
   <section class="py-24">
     <div class="container mx-auto max-w-2xl text-center">
@@ -22,3 +34,4 @@ const metadata = { title: 'Merci — Pedro Déménagement' };
     </div>
   </section>
 </Layout>
+)}

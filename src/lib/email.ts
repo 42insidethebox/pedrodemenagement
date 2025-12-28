@@ -1,6 +1,7 @@
 import { ENV } from './env';
 import { logger } from './logger.js';
 import type { EmailLocale } from './email-templates';
+import type { TenantContext } from './tenants';
 import { renderEmailTemplate, formatAmountForLocale, renderTemplate } from './email-templates';
 
 type SendResult = { ok: boolean; error?: string };
@@ -189,11 +190,12 @@ export async function sendAdminUserSignupEmail(info: {
   phone?: string | null;
   plan?: string | null;
   template?: string | null;
+  tenant?: TenantContext;
 }) {
   const to = ENV.SUPPORT_EMAIL;
   if (!to) return { ok: false, error: 'Missing support email' };
   const subject = info?.email ? `Nouveau compte: ${info.email}` : 'Nouveau compte créé';
-  const html = renderTemplate('admin_user_signup', info);
+  const html = renderTemplate('admin_user_signup', { ...info, tenant_id: info.tenant?.slug });
   return sendEmailInternal(subject, to, html);
 }
 
@@ -338,6 +340,7 @@ export async function sendContactNotificationEmail(data: {
   message: string;
   source?: string;
   locale?: string | null;
+  tenant?: TenantContext;
 }) {
   const locale = resolveEmailLocale(data.locale);
   return sendEmailTemplate({
@@ -350,6 +353,7 @@ export async function sendContactNotificationEmail(data: {
       sender_company: data.company || '',
       sender_message: data.message,
       source: data.source || 'contact',
+      tenant_id: data.tenant?.slug,
     },
     bccSupport: false,
     replyTo: data.email,
@@ -361,6 +365,7 @@ export async function sendContactConfirmationEmail(data: {
   name?: string;
   message?: string;
   locale?: string | null;
+  tenant?: TenantContext;
 }) {
   return sendEmailTemplate({
     template: 'contact/contact-confirmation',
@@ -369,6 +374,7 @@ export async function sendContactConfirmationEmail(data: {
     data: {
       sender_name: data.name || '',
       sender_message: data.message || '',
+      tenant_id: data.tenant?.slug,
     },
     bccSupport: true,
   });
@@ -381,6 +387,7 @@ export async function sendDemoRequestEmail(data: {
   message?: string;
   locale?: string | null;
   timeslot?: string;
+  tenant?: TenantContext;
 }) {
   const locale = resolveEmailLocale(data.locale);
   return sendEmailTemplate({
@@ -393,6 +400,7 @@ export async function sendDemoRequestEmail(data: {
       requester_company: data.company || '',
       requester_message: data.message || '',
       preferred_timeslot: data.timeslot || '',
+      tenant_id: data.tenant?.slug,
     },
     bccSupport: false,
     replyTo: data.email,
@@ -404,6 +412,7 @@ export async function sendDemoConfirmationEmail(data: {
   name?: string;
   locale?: string | null;
   timeslot?: string;
+  tenant?: TenantContext;
 }) {
   return sendEmailTemplate({
     template: 'demo/demo-confirmation',
@@ -412,6 +421,7 @@ export async function sendDemoConfirmationEmail(data: {
     data: {
       requester_name: data.name || '',
       preferred_timeslot: data.timeslot || '',
+      tenant_id: data.tenant?.slug,
     },
     bccSupport: true,
   });
@@ -423,12 +433,14 @@ export async function sendFeedbackNotificationEmail({
   project,
   author,
   locale,
+  tenant,
 }: {
   to?: string;
   message: string;
   project: string;
   author?: string;
   locale?: string | null;
+  tenant?: TenantContext;
 }) {
   const recipient = to || ENV.SUPPORT_EMAIL || 'contact@lausannedemenagement.ch';
   return sendEmailTemplate({
@@ -439,6 +451,7 @@ export async function sendFeedbackNotificationEmail({
       feedback_message: message,
       project_name: project,
       feedback_author: author || '',
+      tenant_id: tenant?.slug,
     },
     bccSupport: !to,
   });

@@ -41,6 +41,7 @@ export type OrderStatus = 'pending' | 'paid' | 'active' | 'cancelled' | 'unpaid'
 const ORDER_DB_COLUMNS = new Set([
   'order_number',
   'agency_id',
+  'tenant_id',
   'stripe_session_id',
   'subscription_id',
   'customer_email',
@@ -89,30 +90,38 @@ export async function fetchOrderBySessionId(sessionId: string) {
   return row;
 }
 
-export async function updateOrderStatusInSupabase(sessionId: string, status: OrderStatus, extra?: Record<string, any>) {
+export async function updateOrderStatusInSupabase(
+  sessionId: string,
+  status: OrderStatus,
+  extra?: Record<string, any>,
+  tenantId?: string,
+) {
   const sb = getSupabaseAdmin();
   if (!sb) return null;
   const update = sanitizeOrderDbPayload({ status, ...(extra || {}) });
-  const { data: row, error } = await sb
-    .from('orders')
-    .update(update)
-    .eq('stripe_session_id', sessionId)
-    .select('*')
-    .single();
+  let query = sb.from('orders').update(update).eq('stripe_session_id', sessionId);
+  if (tenantId) {
+    query = query.eq('tenant_id', tenantId);
+  }
+  const { data: row, error } = await query.select('*').single();
   if (error) throw error;
   return row;
 }
 
-export async function updateOrderStatusBySubscriptionId(subscriptionId: string, status: OrderStatus, extra?: Record<string, any>) {
+export async function updateOrderStatusBySubscriptionId(
+  subscriptionId: string,
+  status: OrderStatus,
+  extra?: Record<string, any>,
+  tenantId?: string,
+) {
   const sb = getSupabaseAdmin();
   if (!sb) return null;
   const update = sanitizeOrderDbPayload({ status, ...(extra || {}) });
-  const { data: row, error } = await sb
-    .from('orders')
-    .update(update)
-    .eq('subscription_id', subscriptionId)
-    .select('*')
-    .maybeSingle();
+  let query = sb.from('orders').update(update).eq('subscription_id', subscriptionId);
+  if (tenantId) {
+    query = query.eq('tenant_id', tenantId);
+  }
+  const { data: row, error } = await query.select('*').maybeSingle();
   if (error) throw error;
   return row;
 }
@@ -129,20 +138,33 @@ export function extractMetadataFromSession(session: any) {
       phone: String(md.phone || ''),
       clientSlug: String(md.clientSlug || ''),
       agencyId: String(md.agencyId || md.agency_id || ''),
+      tenantId: String(md.tenant_id || md.tenantId || md.tenant || ''),
     };
   } catch (e) {
     logger.error(e as any, { where: 'extractMetadataFromSession' });
-    return { plan: '', template: '', name: '', email: '', company: '', phone: '', clientSlug: '', agencyId: '' };
+    return {
+      plan: '',
+      template: '',
+      name: '',
+      email: '',
+      company: '',
+      phone: '',
+      clientSlug: '',
+      agencyId: '',
+      tenantId: '',
+    };
   }
 }
 
-export function buildOrderDraftFromSession(session: any) {
+export function buildOrderDraftFromSession(session: any, tenantId?: string) {
   const metadata = extractMetadataFromSession(session);
   const amount = typeof session?.amount_total === 'number' ? session.amount_total : null;
+  const tenant = metadata.tenantId || tenantId || null;
 
   return {
     order_number: null,
     agency_id: metadata.agencyId || null,
+    tenant_id: tenant,
     stripe_session_id: session?.id ?? null,
     subscription_id: (session as any)?.subscription ?? null,
     customer_email: metadata.email || session?.customer_details?.email || null,
@@ -155,7 +177,7 @@ export function buildOrderDraftFromSession(session: any) {
     currency: session?.currency || null,
     mode: session?.mode || null,
     status: session?.payment_status || null,
-    metadata,
+    metadata: { ...metadata, tenant_id: tenant || undefined },
   };
 }
 

@@ -42,6 +42,21 @@ const shared = {
 };
 
 export const BRANDS: Record<BrandKey, BrandProfile> = {
+  tonsiteweb: {
+    key: 'tonsiteweb',
+    name: 'TonSiteWeb.ch',
+    shortName: 'TonSiteWeb',
+    domain: 'tonsiteweb.ch',
+    seoTitle: 'TonSiteWeb.ch — Sites vitrines suisses pour l’Arc lémanique',
+    seoDescription: 'Sites vitrines clés-en-main pour PME et indépendants de l’Arc lémanique.',
+    primaryColor: '#0f172a',
+    secondaryColor: '#2563eb',
+    fonts: { sans: 'Inter Variable', heading: 'Space Grotesk' },
+    ...shared,
+    phone: '+41 76 798 27 93',
+    email: 'support@tonsiteweb.ch',
+    legalOperator: 'TonSiteWeb Sàrl',
+  },
   pedro: {
     key: 'pedro',
     name: 'Pedro Déménagement',

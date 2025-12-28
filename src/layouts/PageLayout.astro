@@ -7,6 +7,7 @@ import { buildHeaderData, buildFooterData } from '~/navigation';
 import { getBrandFromHost } from '~/lib/brand';
 import { BRANDS } from '~/lib/brands.config';
 import { resolveLocaleFromRequest } from '~/lib/locale';
+import type { TenantContext } from '~/lib/tenants';
 
 import type { MetaData } from '~/types';
 
@@ -16,7 +17,8 @@ export interface Props {
   footer?: typeof footerData;
 }
 const host = Astro.request.headers.get('host');
-const brandKey = getBrandFromHost(host);
+const tenant = Astro.locals?.tenant as TenantContext | undefined;
+const brandKey = (tenant?.brandKey || tenant?.slug || getBrandFromHost(host)) as keyof typeof BRANDS;
 const brand = BRANDS[brandKey] || BRANDS.pedro;
 const themeVars: Record<string, string> = {
   '--brand-primary': brand.primaryColor || '#0f172a',
@@ -52,6 +54,6 @@ const { metadata } = Astro.props as Props;
     <slot />
   </main>
   <slot name="footer">
-    <Footer {...resolvedFooter} />
+    <Footer {...resolvedFooter} brandName={brand.name} />
   </slot>
 </Layout>

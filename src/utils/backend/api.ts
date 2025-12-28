@@ -1,6 +1,15 @@
 // src/utils/backend/api.ts
-const ACCESS_TOKEN_KEY = 'pedrodemenagement:accessToken';
-const REFRESH_TOKEN_KEY = 'pedrodemenagement:refreshToken';
+function storagePrefix() {
+  if (typeof window === 'undefined') return 'tenant';
+  const host = window.location?.hostname || 'tenant';
+  const path = window.location?.pathname || '';
+  const firstSegment = path.split('/').filter(Boolean)[0];
+  const suffix = firstSegment ? `:${firstSegment.toLowerCase()}` : '';
+  return `${host.toLowerCase()}${suffix}`;
+}
+
+const ACCESS_TOKEN_KEY = `${storagePrefix()}:accessToken`;
+const REFRESH_TOKEN_KEY = `${storagePrefix()}:refreshToken`;
 
 export type AuthFetchOptions = RequestInit & {
   parseJson?: boolean;

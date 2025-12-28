@@ -35,9 +35,33 @@ const lamT = <T,>(locale: string, fr: T, en: T, de: T, it: T): T => {
   return fr;
 };
 
+const tonT = <T,>(locale: string, fr: T, en: T, de: T, it: T): T => {
+  if (locale === 'en') return en;
+  if (locale === 'de') return de;
+  if (locale === 'it') return it;
+  return fr;
+};
+
 export const buildHeaderData = (brand: NavigationBrand & { key?: BrandKey }, locale: string = 'fr'): Navigation => {
   const navLinks =
-    brand.key === 'laclemanexperience'
+    brand.key === 'tonsiteweb'
+      ? [
+          {
+            text: tonT(locale, 'Solutions', 'Solutions', 'Lösungen', 'Soluzioni'),
+            links: [
+              { text: tonT(locale, 'Site vitrine clé-en-main', 'Turnkey showcase site', 'Schlüsselfertige Website', 'Sito vetrina chiavi in mano'), href: getPermalink('/services#site-vitrine') },
+              { text: tonT(locale, 'Accompagnement continu', 'Ongoing guidance', 'Fortlaufende Begleitung', 'Accompagnamento continuo'), href: getPermalink('/services#accompagnement') },
+              { text: tonT(locale, 'Support & maintenance', 'Support & maintenance', 'Support & Wartung', 'Support & manutenzione'), href: getPermalink('/services#support') },
+              { text: tonT(locale, 'Contenus multilingues', 'Multilingual content', 'Mehrsprachige Inhalte', 'Contenuti multilingue'), href: getPermalink('/services#multilingue') },
+            ],
+          },
+          { text: tonT(locale, 'Tarifs', 'Pricing', 'Preise', 'Prezzi'), href: getPermalink('/pricing') },
+          { text: tonT(locale, 'Modèles', 'Templates', 'Vorlagen', 'Modelli'), href: getPermalink('/choose-template') },
+          { text: tonT(locale, 'À propos', 'About', 'Über uns', 'Chi siamo'), href: getPermalink('/about') },
+          { text: 'FAQ', href: getPermalink('/contact#faq') },
+          { text: tonT(locale, 'Contact', 'Contact', 'Kontakt', 'Contatto'), href: getPermalink('/contact') },
+        ]
+      : brand.key === 'laclemanexperience'
       ? [
           { text: lceT(locale, 'Accueil', 'Home', 'Startseite', 'Home', 'الرئيسية', '首页'), href: getPermalink('/') },
           { text: lceT(locale, 'Services', 'Experiences', 'Erlebnisse', 'Esperienze', 'التجارب', '体验'), href: getPermalink('/services') },
@@ -59,7 +83,9 @@ export const buildHeaderData = (brand: NavigationBrand & { key?: BrandKey }, loc
           ];
 
   const actionText =
-    brand.key === 'lausanne'
+    brand.key === 'tonsiteweb'
+      ? tonT(locale, 'Créer un compte', 'Create account', 'Konto erstellen', 'Crea un account')
+      : brand.key === 'lausanne'
       ? lamT(locale, 'Réserver mon déménagement', 'Schedule my move', 'Umzug planen', 'Pianifica il trasloco')
       : brand.key === 'urgent'
         ? 'Intervention express'
@@ -82,10 +108,17 @@ export const buildHeaderData = (brand: NavigationBrand & { key?: BrandKey }, loc
   return {
     links: navLinks,
     actions: [
-      {
-        text: actionText,
-        href: getPermalink('/contact#form'),
-      },
+      ...(brand.key === 'tonsiteweb'
+        ? [
+            { text: tonT(locale, 'Créer un compte', 'Create account', 'Konto erstellen', 'Crea un account'), href: getPermalink('/auth/signup'), variant: 'primary' },
+            { text: tonT(locale, 'Se connecter', 'Sign in', 'Anmelden', 'Accedi'), href: getPermalink('/auth/signin'), variant: 'secondary' },
+          ]
+        : [
+            {
+              text: actionText,
+              href: getPermalink('/contact#form'),
+            },
+          ]),
     ],
     brandName: brand.name,
     brandKey: brand.key,
@@ -94,14 +127,24 @@ export const buildHeaderData = (brand: NavigationBrand & { key?: BrandKey }, loc
 
 export const buildFooterData = (brand: NavigationBrand, locale: string = 'fr'): FooterNavigation => {
   const vertical =
-    brand.key === 'laclemanexperience'
+    brand.key === 'tonsiteweb'
+      ? 'Sites vitrines clés-en-main pour PME et indépendants de l’Arc lémanique.'
+      : brand.key === 'laclemanexperience'
       ? lceT(locale, 'Expériences privées autour du Léman.', 'Private experiences around Lake Geneva.', 'Private Erlebnisse rund um den Genfersee.', 'Esperienze private attorno al Lemano.', 'تجارب خاصة حول بحيرة ليمان.', '莱蒙湖畔私享体验。')
       : brand.key === 'lausanne'
         ? lamT(locale, 'Déménagements en Suisse romande.', 'Moves across Suisse romande.', 'Umzüge in der Romandie.', 'Traslochi in Svizzera romanda.')
         : 'Déménagements en Suisse romande.';
 
   const serviceLinks =
-    brand.key === 'laclemanexperience'
+    brand.key === 'tonsiteweb'
+      ? [
+          { text: tonT(locale, 'Services', 'Services', 'Services', 'Servizi'), href: getPermalink('/services') },
+          { text: tonT(locale, 'Tarifs', 'Pricing', 'Preise', 'Prezzi'), href: getPermalink('/pricing') },
+          { text: tonT(locale, 'Modèles', 'Templates', 'Vorlagen', 'Modelli'), href: getPermalink('/choose-template') },
+          { text: tonT(locale, 'Notre approche', 'Our approach', 'Unsere Vorgehensweise', 'Il nostro approccio'), href: getPermalink('/#process') },
+          { text: tonT(locale, 'Notre processus', 'Our process', 'Unser Prozess', 'Il nostro processo'), href: getPermalink('/services#process') },
+        ]
+      : brand.key === 'laclemanexperience'
       ? [
           { text: lceT(locale, 'Expériences', 'Experiences', 'Erlebnisse', 'Esperienze', 'التجارب', '体验'), href: getPermalink('/services') },
           { text: lceT(locale, 'Tarifs', 'Pricing', 'Preise', 'Prezzi', 'الأسعار', '价格'), href: getPermalink('/pricing') },
@@ -122,12 +165,19 @@ export const buildFooterData = (brand: NavigationBrand, locale: string = 'fr'): 
           ];
 
   const topLinks =
-    brand.key === 'laclemanexperience'
+    brand.key === 'tonsiteweb'
       ? [
-          { text: lceT(locale, 'Accueil', 'Home', 'Startseite', 'Home', 'الرئيسية', '首页'), href: getPermalink('/') },
-          { text: lceT(locale, 'Services', 'Experiences', 'Erlebnisse', 'Esperienze', 'التجارب', '体验'), href: getPermalink('/services') },
-          { text: lceT(locale, 'Tarifs', 'Pricing', 'Preise', 'Prezzi', 'الأسعار', '价格'), href: getPermalink('/pricing') },
+          { text: tonT(locale, 'Accueil', 'Home', 'Home', 'Home'), href: getPermalink('/') },
+          { text: tonT(locale, 'Services', 'Services', 'Services', 'Servizi'), href: getPermalink('/services') },
+          { text: tonT(locale, 'Tarifs', 'Pricing', 'Preise', 'Prezzi'), href: getPermalink('/pricing') },
+          { text: tonT(locale, 'Modèles', 'Templates', 'Vorlagen', 'Modelli'), href: getPermalink('/choose-template') },
         ]
+      : brand.key === 'laclemanexperience'
+        ? [
+            { text: lceT(locale, 'Accueil', 'Home', 'Startseite', 'Home', 'الرئيسية', '首页'), href: getPermalink('/') },
+            { text: lceT(locale, 'Services', 'Experiences', 'Erlebnisse', 'Esperienze', 'التجارب', '体验'), href: getPermalink('/services') },
+            { text: lceT(locale, 'Tarifs', 'Pricing', 'Preise', 'Prezzi', 'الأسعار', '价格'), href: getPermalink('/pricing') },
+          ]
       : brand.key === 'lausanne'
         ? [
             { text: lamT(locale, 'Accueil', 'Home', 'Startseite', 'Home'), href: getPermalink('/') },
@@ -141,7 +191,13 @@ export const buildFooterData = (brand: NavigationBrand, locale: string = 'fr'): 
           ];
 
   const contactLinks =
-    brand.key === 'laclemanexperience'
+    brand.key === 'tonsiteweb'
+      ? [
+          { text: tonT(locale, 'Parler à un expert', 'Talk to an expert', 'Mit einem Experten sprechen', 'Parlare con un esperto'), href: getPermalink('/contact#form') },
+          ...(brand.email ? [{ text: brand.email, href: `mailto:${brand.email}` }] : []),
+          ...(brand.phone ? [{ text: brand.phone, href: `tel:${brand.phone.replace(/\s+/g, '')}` }] : []),
+        ]
+      : brand.key === 'laclemanexperience'
       ? [
           { text: lceT(locale, 'Demander un devis', 'Request a quote', 'Offerte anfragen', 'Richiedi un preventivo', 'طلب عرض سعر', '索取报价'), href: getPermalink('/contact#form') },
           ...(brand.email ? [{ text: brand.email, href: `mailto:${brand.email}` }] : []),
@@ -160,20 +216,49 @@ export const buildFooterData = (brand: NavigationBrand, locale: string = 'fr'): 
           ];
 
   return {
-    links: [
-      {
-        title: brand.name,
-        links: topLinks,
-      },
-      {
-        title: brand.key === 'laclemanexperience' ? lceT(locale, 'Nos services', 'Our services', 'Unsere Services', 'I nostri servizi', 'خدماتنا', '我们的服务') : 'Nos services',
-        links: serviceLinks,
-      },
-      {
-        title: brand.key === 'laclemanexperience' ? lceT(locale, 'Contact', 'Contact', 'Kontakt', 'Contatto', 'اتصال', '联系') : 'Contact',
-        links: contactLinks,
-      },
-    ],
+    links:
+      brand.key === 'tonsiteweb'
+        ? [
+            {
+              title: tonT(locale, 'TonSiteWeb', 'TonSiteWeb', 'TonSiteWeb', 'TonSiteWeb'),
+              links: topLinks,
+            },
+            {
+              title: tonT(locale, 'Notre approche', 'Our approach', 'Unsere Vorgehensweise', 'Il nostro approccio'),
+              links: [
+                { text: tonT(locale, 'Site vitrine clé-en-main', 'Turnkey showcase site', 'Schlüsselfertige Website', 'Sito vetrina chiavi in mano'), href: getPermalink('/services#site-vitrine') },
+                { text: tonT(locale, 'Contenus & structure', 'Content & structure', 'Inhalte & Struktur', 'Contenuti & struttura'), href: getPermalink('/services#multilingue') },
+                { text: tonT(locale, 'Accompagnement continu', 'Ongoing guidance', 'Fortlaufende Begleitung', 'Accompagnamento continuo'), href: getPermalink('/services#accompagnement') },
+                { text: tonT(locale, 'Support & maintenance', 'Support & maintenance', 'Support & Wartung', 'Support & manutenzione'), href: getPermalink('/services#support') },
+              ],
+            },
+            {
+              title: tonT(locale, 'Par où commencer ?', 'Where to start?', 'Wo anfangen?', 'Da dove iniziare?'),
+              links: [
+                { text: tonT(locale, 'Tarifs', 'Pricing', 'Preise', 'Prezzi'), href: getPermalink('/pricing') },
+                { text: tonT(locale, 'Modèles', 'Templates', 'Vorlagen', 'Modelli'), href: getPermalink('/choose-template') },
+                { text: tonT(locale, 'FAQ', 'FAQ', 'FAQ', 'FAQ'), href: getPermalink('/contact#faq') },
+              ],
+            },
+            {
+              title: tonT(locale, 'Contact', 'Contact', 'Kontakt', 'Contatto'),
+              links: contactLinks,
+            },
+          ]
+        : [
+            {
+              title: brand.name,
+              links: topLinks,
+            },
+            {
+              title: brand.key === 'laclemanexperience' ? lceT(locale, 'Nos services', 'Our services', 'Unsere Services', 'I nostri servizi', 'خدماتنا', '我们的服务') : 'Nos services',
+              links: serviceLinks,
+            },
+            {
+              title: brand.key === 'laclemanexperience' ? lceT(locale, 'Contact', 'Contact', 'Kontakt', 'Contatto', 'اتصال', '联系') : 'Contact',
+              links: contactLinks,
+            },
+          ],
     secondaryLinks:
       brand.key === 'laclemanexperience'
         ? [
@@ -183,14 +268,21 @@ export const buildFooterData = (brand: NavigationBrand, locale: string = 'fr'): 
         : [
             { text: 'Conditions générales', href: getPermalink('/terms') },
             { text: 'Politique de confidentialité', href: getPermalink('/privacy') },
-          ],
+    ],
     socialLinks: [],
     footNote: `
     © ${new Date().getFullYear()} ${brand.legalOperator || brand.name} · ${vertical}
   `,
+    brandName: brand.name,
   };
 };
 
 // Fallback static exports for legacy imports
 export const headerData = buildHeaderData(BRANDS.pedro);
 export const footerData = buildFooterData(BRANDS.pedro);
+export const headerDataEn = buildHeaderData(BRANDS.tonsiteweb, 'en');
+export const footerDataEn = buildFooterData(BRANDS.tonsiteweb, 'en');
+export const headerDataDe = buildHeaderData(BRANDS.tonsiteweb, 'de');
+export const footerDataDe = buildFooterData(BRANDS.tonsiteweb, 'de');
+export const headerDataIt = buildHeaderData(BRANDS.tonsiteweb, 'it');
+export const footerDataIt = buildFooterData(BRANDS.tonsiteweb, 'it');

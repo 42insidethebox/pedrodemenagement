@@ -1,8 +1,9 @@
 ---
 import Layout from '~/layouts/Layout.astro';
 import type { MetaData } from '~/types';
-import { maisonCortesCopy } from '../copy';
+import { maisonCortesCopy, resolveMaisonCortesLocale } from '../copy';
 import { maisonCortesTheme } from '../theme';
+import type { MaisonCortesLocale } from '../copy';
 
 export interface Props {
   metadata?: MetaData;
@@ -11,9 +12,16 @@ export interface Props {
 }
 
 const { metadata = {}, title = '', subtitle = '' } = Astro.props;
+const locale = resolveMaisonCortesLocale(Astro.cookies.get('mc-lang')?.value);
+const copy = maisonCortesCopy.locales[locale];
+const languageOptions: MaisonCortesLocale[] = ['fr', 'en', 'it'];
 
+import { parseSelectionCookie, SELECTION_COOKIE_NAME } from '../inventory';
+
+const selectionEntries = parseSelectionCookie(Astro.cookies.get(SELECTION_COOKIE_NAME)?.value);
 const navLinks = [
-  { text: 'Catalogue', href: '/maison-cortes' },
+  { text: copy.navCatalogue, href: '/maison-cortes' },
+  ...(selectionEntries.length ? [{ text: copy.navSelection, href: '/maison-cortes/selection' }] : []),
 ];
 
 const styleVars: Record<string, string> = {
@@ -30,16 +38,30 @@ const styleVars: Record<string, string> = {
 <Layout metadata={metadata} brandKey={maisonCortesTheme.brandKey} styleVars={styleVars}>
   <div class="mc-shell">
     <header class="mc-nav">
-      <div class="mc-wordmark" aria-label="Maison Cortes">
+      <a class="mc-wordmark" aria-label="Maison Cortes" href="/">
         <span class="mc-wordmark-top">{maisonCortesCopy.brandTop}</span>
         <span class="mc-wordmark-bottom">{maisonCortesCopy.brandBottom}</span>
+      </a>
+      <div class="mc-nav-right">
+        <nav class="mc-nav-links" aria-label="Navigation principale">
+          {navLinks.map((link) => (
+            <a href={link.href}>{link.text}</a>
+          ))}
+          <a href={`mailto:${maisonCortesCopy.contactEmail}`}>{copy.navContact}</a>
+        </nav>
+        <div class="mc-lang-switch" role="group" aria-label={copy.languageTitle}>
+          {languageOptions.map((lang) => (
+            <button
+              class={lang === locale ? 'mc-lang-button active' : 'mc-lang-button'}
+              type="button"
+              data-mc-lang={lang}
+              aria-pressed={lang === locale}
+            >
+              {lang.toUpperCase()}
+            </button>
+          ))}
+        </div>
       </div>
-      <nav class="mc-nav-links" aria-label="Navigation principale">
-        {navLinks.map((link) => (
-          <a href={link.href}>{link.text}</a>
-        ))}
-        <a href={`mailto:${maisonCortesCopy.contactEmail}`}>Contact</a>
-      </nav>
     </header>
 
     <main class="mc-content">
@@ -55,18 +77,66 @@ const styleVars: Record<string, string> = {
     <footer class="mc-footer">
       <div class="mc-footer-grid">
         <div>
-          <div class="mc-wordmark" aria-label="Maison Cortes">
+          <a class="mc-wordmark" aria-label="Maison Cortes" href="/">
             <span class="mc-wordmark-top">{maisonCortesCopy.brandTop}</span>
             <span class="mc-wordmark-bottom">{maisonCortesCopy.brandBottom}</span>
-          </div>
+          </a>
         </div>
         <div>
-          <p class="mc-footer-title">Contact</p>
+          <p class="mc-footer-title">{copy.footerContactTitle}</p>
           <a href={`mailto:${maisonCortesCopy.contactEmail}`}>{maisonCortesCopy.contactEmail}</a>
+        </div>
+        <div>
+          <p class="mc-footer-title">{copy.footerLegalTitle}</p>
+          <ul class="mc-quiet-list">
+            {copy.legalLines.map((line) => (
+              <li>{line}</li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <p class="mc-footer-title">{copy.materialsTitle}</p>
+          <p class="mc-footer-note">{copy.materialsBody}</p>
+          <p class="mc-footer-note">{copy.labDisclosureShort}</p>
+        </div>
+        <div>
+          <p class="mc-footer-title">{copy.returnsTitle}</p>
+          <p class="mc-footer-note">{copy.returnsBody}</p>
+          <p class="mc-footer-note">{copy.shippingLine}</p>
+        </div>
+        <div>
+          <p class="mc-footer-title">{copy.languageTitle}</p>
+          <div class="mc-lang-switch" role="group" aria-label={copy.languageTitle}>
+            {languageOptions.map((lang) => (
+              <button
+                class={lang === locale ? 'mc-lang-button active' : 'mc-lang-button'}
+                type="button"
+                data-mc-lang={lang}
+                aria-pressed={lang === locale}
+              >
+                {lang.toUpperCase()}
+              </button>
+            ))}
+          </div>
+          <p class="mc-footnote">{copy.currencyNote}</p>
         </div>
       </div>
     </footer>
   </div>
+
+  <script is:inline>
+    const langButtons = document.querySelectorAll('[data-mc-lang]');
+    langButtons.forEach((button) => {
+      button.addEventListener('click', (event) => {
+        event.preventDefault();
+    const lang = button.getAttribute('data-mc-lang');
+    if (!lang) return;
+    document.cookie = `mc-lang=${lang}; Path=/; Max-Age=31536000; SameSite=Lax`;
+    langButtons.forEach((btn) => btn.setAttribute('aria-pressed', btn === button ? 'true' : 'false'));
+    window.location.reload();
+  });
+});
+  </script>
 </Layout>
 
 <style>
@@ -100,7 +170,7 @@ const styleVars: Record<string, string> = {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 48px 20px 80px;
+    padding: 42px 18px 72px;
     background: var(--mc-bg);
   }
 
@@ -118,30 +188,39 @@ const styleVars: Record<string, string> = {
     display: grid;
     gap: 2px;
     text-transform: uppercase;
+    white-space: nowrap;
   }
 
   .mc-wordmark-top {
-    font-size: 14px;
+    font-size: clamp(12px, 2.6vw, 14px);
     letter-spacing: var(--mc-tracking-city);
   }
 
   .mc-wordmark-bottom {
-    font-size: 32px;
+    font-size: clamp(22px, 6vw, 32px);
     letter-spacing: var(--mc-tracking-brand);
   }
 
   .mc-nav-links {
     display: flex;
-    gap: 18px;
-    font-size: 14px;
+    gap: 16px;
+    font-size: clamp(12px, 2.6vw, 14px);
     letter-spacing: 0.12em;
     text-transform: uppercase;
+  }
+
+  .mc-nav-right {
+    display: flex;
+    gap: 14px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    justify-content: flex-end;
   }
 
   .mc-content {
     width: min({maisonCortesTheme.layout.maxWidth}, 100%);
     display: grid;
-    gap: 32px;
+    gap: 28px;
   }
 
   .mc-page-head {
@@ -152,7 +231,7 @@ const styleVars: Record<string, string> = {
 
   .mc-page-head h1 {
     margin: 0;
-    font-size: clamp(26px, 4vw, 34px);
+    font-size: clamp(24px, 4vw, 34px);
     letter-spacing: 0.1em;
   }
 
@@ -163,17 +242,17 @@ const styleVars: Record<string, string> = {
   }
 
   .mc-footer {
-    width: min({maisonCortesTheme.layout.maxWidth}, 100%);
+    width: min(1080px, 100%);
     border-top: 1px solid var(--mc-border);
-    padding-top: 20px;
+    padding-top: 24px;
     margin-top: 24px;
     display: grid;
-    gap: 16px;
+    gap: 18px;
   }
 
   .mc-footer-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 18px;
   }
 
@@ -183,6 +262,54 @@ const styleVars: Record<string, string> = {
     letter-spacing: 0.08em;
     font-size: 13px;
     color: var(--mc-text);
+  }
+
+  .mc-footer-note {
+    margin: 0 0 6px;
+    color: var(--mc-muted);
+    font-size: 13px;
+    line-height: 1.5;
+    letter-spacing: 0.04em;
+  }
+
+  :global(.mc-footnote) {
+    margin: 8px 0 0;
+    color: var(--mc-muted);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+
+  .mc-lang-switch {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .mc-lang-button {
+    border: none;
+    background: transparent;
+    color: var(--mc-text);
+    padding: 4px 6px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-size: 12px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .mc-lang-button.active {
+    border-bottom: 1px solid var(--mc-text);
+  }
+
+  .mc-footer .mc-wordmark {
+    white-space: nowrap;
+    max-width: none;
+  }
+
+  .mc-footer .mc-wordmark-bottom {
+    letter-spacing: var(--mc-tracking-brand);
+    line-height: 1.05;
   }
 
   :global(.mc-section) {
@@ -306,12 +433,69 @@ const styleVars: Record<string, string> = {
     .mc-nav {
       flex-direction: column;
       align-items: flex-start;
-      gap: 12px;
+      gap: 10px;
     }
 
     .mc-nav-links {
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
+    }
+
+    .mc-nav-right {
+      width: 100%;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mc-lang-switch {
+      justify-content: flex-end;
+    }
+  }
+
+  @media (max-width: 540px) {
+    .mc-shell {
+      padding: 34px 16px 64px;
+    }
+
+    .mc-content {
+      gap: 24px;
+    }
+
+    .mc-footer-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .mc-nav-right {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .mc-lang-switch {
+      justify-content: flex-start;
+    }
+
+    .mc-wordmark-bottom {
+      font-size: clamp(20px, 7vw, 26px);
+    }
+  }
+
+  @media (max-width: 420px) {
+    .mc-nav {
+      padding-bottom: 12px;
+    }
+
+    .mc-wordmark-bottom {
+      font-size: 20px;
+      letter-spacing: 0.32em;
+    }
+
+    .mc-nav-links {
+      gap: 8px;
+    }
+
+    .mc-lang-switch {
+      gap: 6px;
     }
   }
 </style>

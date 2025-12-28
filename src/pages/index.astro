@@ -13,9 +13,13 @@ import CallToAction from '~/components/widgets/CallToAction.astro';
 import { getImage } from '~/data/imageInventory';
 import type { ImageId } from '~/data/imageInventory';
 import { resolveLocaleFromRequest } from '~/lib/locale';
+import { resolveTenantFromRequest } from '~/lib/tenants';
+import { resolveTonSiteWebComponent } from '~/tenants/tonsiteweb/router';
 
 import type { MetaData } from '~/types';
 import type { BrandKey } from '~/lib/brand';
+import MaisonShell from '~/tenants/maison-cortes/ui/Shell.astro';
+import { maisonCortesCopy } from '~/tenants/maison-cortes/copy';
 
 type SimpleItem = { title: string; description: string; icon?: string };
 
@@ -41,7 +45,7 @@ type SectionView = {
   title: string;
   subtitle?: string;
   tagline?: string;
-  items: SimpxleItem[];
+  items: SimpleItem[];
   variant?: 'tiles' | 'stacked';
   classes?: Record<string, unknown>;
   bgClass?: string;
@@ -64,11 +68,24 @@ type BrandView = {
   cta: { title: string; subtitle: string; actions: { variant?: string; text: string; href: string; icon?: string }[] };
 };
 
+const tenant = resolveTenantFromRequest(Astro.request);
+const TonComponent =
+  tenant.slug === 'tonsiteweb'
+    ? resolveTonSiteWebComponent('home', Astro.url instanceof URL ? Astro.url : new URL(Astro.request.url), Astro.request)
+    : null;
+
 const host = Astro.request.headers.get('host');
 const brandKey = getBrandFromHost(host);
-if (brandKey === 'maisoncortes') {
-  return Astro.redirect('/maison-cortes');
-}
+const hostLower = (host || '').toLowerCase();
+const isMaisonHost = hostLower.includes('maisoncortes');
+const maisonBasePath = isMaisonHost ? '' : '/maison-cortes';
+const isMaisonLanding = brandKey === 'maisoncortes';
+const maisonLandingMetadata: MetaData = {
+  title: 'MAISON CORTES — Archive',
+  description: 'Archive maison. Catalogue limite et selection privee.',
+  ignoreTitleTemplate: true,
+};
+const maisonLandingCopy = maisonCortesCopy.locales.fr;
 
 export const prerender = false;
 
@@ -1740,6 +1757,22 @@ const view = views[brandKey] || baseMove;
 const metadata = view.metadata;
 ---
 
+{TonComponent ? (
+  <TonComponent />
+) : isMaisonLanding ? (
+  <MaisonShell metadata={maisonLandingMetadata} title="Maison Cortes" subtitle="Archive limitée et sélection privée.">
+    <section class="mc-section mc-landing">
+      <p class="mc-landing-body">
+        Edition limitée par ville. Matériaux disclose. Sélection maintenue 24h.
+      </p>
+      <div class="mc-actions">
+        <a class="mc-button" href={`${maisonBasePath}/`}>{maisonLandingCopy.navCatalogue}</a>
+        <a class="mc-button mc-button-ghost" href={`${maisonBasePath}/selection`}>{maisonLandingCopy.navSelection}</a>
+        <a class="mc-button mc-button-ghost" href={`${maisonBasePath}/contact`}>{maisonLandingCopy.navContact}</a>
+      </div>
+    </section>
+  </MaisonShell>
+) : (
 <Layout metadata={metadata}>
   {isUrgent ? (
     <>
@@ -2186,6 +2219,7 @@ const metadata = view.metadata;
     </>
   )}
 </Layout>
+)}
 
 <style>
 :global(.hero-light h1),
@@ -2214,5 +2248,23 @@ const metadata = view.metadata;
 :global(.brand-lausanne .lausanne-hero-light p),
 :global(.brand-lausanne .lausanne-hero-light .text-secondary) {
   color: #e5e7eb !important;
+}
+
+:global(.mc-landing) {
+  display: grid;
+  gap: 16px;
+  background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.04), transparent 35%), rgba(0,0,0,0.8);
+  padding: 24px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+:global(.mc-landing-body) {
+  color: #f4f4f5;
+  letter-spacing: 0.08em;
+  line-height: 1.7;
+}
+
+:global(.mc-actions .mc-button-ghost) {
+  border-color: rgba(255,255,255,0.3);
 }
 </style>
