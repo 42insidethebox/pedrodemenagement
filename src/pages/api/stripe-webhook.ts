@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { ENV } from '~/lib/env';
 import { getStripe } from '~/lib/stripe';
 import { getSupabaseAdmin } from '~/lib/supabase';
+import { generateClientSlug } from '~/lib/slug';
 import {
   buildOrderDraftFromSession,
   extractMetadataFromSession,
@@ -17,6 +18,77 @@ import { triggerTemplateDeployment } from '~/lib/deployment.js';
 import { getTenantFromContext } from '~/utils/tenant';
 
 export const prerender = false;
+
+async function provisionWebsiteFromCheckout(
+  sb: ReturnType<typeof getSupabaseAdmin>,
+  session: any,
+  metadata: ReturnType<typeof extractMetadataFromSession>,
+  orderId?: number | string | null
+) {
+  if (!sb) return null;
+
+  const slug =
+    metadata.clientSlug ||
+    generateClientSlug(metadata.name || '', metadata.company || metadata.email || 'client');
+  const name = metadata.company || metadata.name || 'Site client';
+  const agencyId = metadata.agencyId || metadata.agency_id || null;
+  const template = metadata.template || null;
+  const plan = metadata.plan || null;
+
+  const basePayload = {
+    slug,
+    name,
+    status: 'ready',
+    plan,
+    template_key: template,
+    published_at: new Date().toISOString(),
+    agency_id: agencyId,
+    metadata: {
+      ...metadata,
+      stripe_session_id: session?.id || null,
+      order_id: orderId ?? null,
+    },
+  };
+
+  const { data: website, error } = await sb
+    .from('websites')
+    .upsert(basePayload, { onConflict: 'slug,agency_id' })
+    .select('*')
+    .maybeSingle();
+
+  if (error || !website) {
+    console.error('Failed to upsert website from checkout', error);
+    return null;
+  }
+
+  const domainRoot = (ENV.DOMAIN_ROOT || '').trim();
+  if (domainRoot) {
+    const domain = `${slug}.${domainRoot}`;
+    await sb
+      .from('website_domains')
+      .upsert({ website_id: website.id, domain, is_primary: true }, { onConflict: 'domain' });
+  }
+
+  // Seed a simple section if none exist yet
+  const { data: existingSections } = await sb
+    .from('website_sections')
+    .select('id')
+    .eq('website_id', website.id)
+    .limit(1);
+  if (!existingSections || existingSections.length === 0) {
+    const intro = metadata.company || metadata.name || 'Votre site est prêt à être configuré.';
+    await sb.from('website_sections').insert({
+      website_id: website.id,
+      section_key: 'intro',
+      heading: name,
+      content: intro,
+      google_doc_id: null,
+      google_doc_heading: null,
+    });
+  }
+
+  return website;
+}
 
 export const POST: APIRoute = async ({ request, locals }) => {
   const stripe = await getStripe();
@@ -96,6 +168,15 @@ export const POST: APIRoute = async ({ request, locals }) => {
       } catch {}
       try { await sendAdminNotificationEmail(emailOrder); } catch {}
       try { await sendClientConfirmationEmail(emailOrder); } catch {}
+
+      // Provision website + domain for the customer (multi-tenant runtime)
+      if (sb) {
+        try {
+          await provisionWebsiteFromCheckout(sb, session, metadata, orderRecord?.id);
+        } catch (err) {
+          console.error('Failed to provision website from checkout', err);
+        }
+      }
     }
 
     if (event.type === 'invoice.paid') {

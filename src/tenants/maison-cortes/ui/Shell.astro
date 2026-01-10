@@ -14,7 +14,7 @@ export interface Props {
 const { metadata = {}, title = '', subtitle = '' } = Astro.props;
 const locale = resolveMaisonCortesLocale(Astro.cookies.get('mc-lang')?.value);
 const copy = maisonCortesCopy.locales[locale];
-const languageOptions: MaisonCortesLocale[] = ['fr', 'en', 'it'];
+const languageOptions: MaisonCortesLocale[] = ['fr', 'en', 'de', 'it'];
 
 import { parseSelectionCookie, SELECTION_COOKIE_NAME } from '../inventory';
 
@@ -125,17 +125,101 @@ const styleVars: Record<string, string> = {
   </div>
 
   <script is:inline>
+    const currentLang = '{locale}';
     const langButtons = document.querySelectorAll('[data-mc-lang]');
     langButtons.forEach((button) => {
       button.addEventListener('click', (event) => {
         event.preventDefault();
-    const lang = button.getAttribute('data-mc-lang');
-    if (!lang) return;
-    document.cookie = `mc-lang=${lang}; Path=/; Max-Age=31536000; SameSite=Lax`;
-    langButtons.forEach((btn) => btn.setAttribute('aria-pressed', btn === button ? 'true' : 'false'));
-    window.location.reload();
-  });
-});
+        const lang = button.getAttribute('data-mc-lang');
+        if (!lang || lang === currentLang) return;
+        document.cookie = `mc-lang=${lang}; Path=/; Max-Age=31536000; SameSite=Lax`;
+        langButtons.forEach((btn) => btn.setAttribute('aria-pressed', btn === button ? 'true' : 'false'));
+        window.location.reload();
+      });
+    });
+
+    // Global lightbox for Maison Cortes figures (persists across pages)
+    (() => {
+      const ensureLightbox = () => {
+        let lightbox = document.querySelector('.mc-lightbox') as HTMLElement | null;
+        if (lightbox) return lightbox;
+        lightbox = document.createElement('div');
+        lightbox.className = 'mc-lightbox';
+        lightbox.innerHTML = `
+          <div class="mc-lightbox-backdrop" data-close></div>
+          <div class="mc-lightbox-content">
+            <button class="mc-lightbox-close" type="button" data-close aria-label="Fermer">×</button>
+            <div class="mc-lightbox-counter">1 / 1</div>
+            <img class="mc-lightbox-img" alt="" />
+            <button class="mc-lightbox-nav" type="button" data-dir="prev" aria-label="Précédent">‹</button>
+            <button class="mc-lightbox-nav" type="button" data-dir="next" aria-label="Suivant">›</button>
+          </div>
+        `;
+        document.body.appendChild(lightbox);
+        return lightbox;
+      };
+
+      const bindFigures = () => {
+        const figures = Array.from(document.querySelectorAll<HTMLElement>('.mc-figure'));
+        if (!figures.length) return;
+
+        const lightbox = ensureLightbox();
+        const img = lightbox.querySelector<HTMLImageElement>('.mc-lightbox-img');
+        const counter = lightbox.querySelector<HTMLElement>('.mc-lightbox-counter');
+        let current = 0;
+        let activeSet: HTMLElement[] = figures;
+
+        const render = (idx: number) => {
+          const target = activeSet[idx];
+          if (!target || !img) return;
+          current = idx;
+          img.src = target.dataset.full || '';
+          img.alt = target.dataset.alt || '';
+          if (counter) counter.textContent = `${idx + 1} / ${activeSet.length}`;
+          lightbox.classList.add('is-open');
+        };
+
+        const closeLightbox = () => lightbox.classList.remove('is-open');
+        const prev = () => render((current - 1 + activeSet.length) % activeSet.length);
+        const next = () => render((current + 1) % activeSet.length);
+
+        lightbox.querySelectorAll('[data-close]').forEach((el) => el.addEventListener('click', closeLightbox));
+        lightbox.querySelector('[data-dir="prev"]')?.addEventListener('click', prev);
+        lightbox.querySelector('[data-dir="next"]')?.addEventListener('click', next);
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape') closeLightbox();
+          if (event.key === 'ArrowLeft') prev();
+          if (event.key === 'ArrowRight') next();
+        });
+
+        figures.forEach((figure, idx) => {
+          if (figure.dataset.mcBound === '1') return;
+          figure.dataset.mcBound = '1';
+          const open = (eventIdx = idx) => {
+            activeSet = figures;
+            render(eventIdx);
+          };
+          figure.addEventListener('click', () => open(idx));
+          figure.querySelector('.mc-zoom-btn')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            open(idx);
+          });
+        });
+      };
+
+      // Initial bind and re-bind on DOM changes
+      const init = () => {
+        bindFigures();
+        const observer = new MutationObserver(() => bindFigures());
+        observer.observe(document.body, { childList: true, subtree: true });
+      };
+
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        init();
+      } else {
+        document.addEventListener('DOMContentLoaded', init);
+      }
+    })();
   </script>
 </Layout>
 
@@ -300,6 +384,70 @@ const styleVars: Record<string, string> = {
 
   .mc-lang-button.active {
     border-bottom: 1px solid var(--mc-text);
+  }
+
+  /* Shared lightbox styles */
+  :global(.mc-lightbox) {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 60;
+  }
+
+  :global(.mc-lightbox.is-open) {
+    display: flex;
+  }
+
+  :global(.mc-lightbox-backdrop) {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(2px);
+  }
+
+  :global(.mc-lightbox-content) {
+    position: relative;
+    max-width: min(90vw, 820px);
+    max-height: 90vh;
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 22px 80px rgba(15, 23, 42, 0.2);
+    display: grid;
+    gap: 12px;
+    z-index: 1;
+  }
+
+  :global(.mc-lightbox-img) {
+    max-width: 100%;
+    max-height: 75vh;
+    object-fit: contain;
+    display: block;
+    border-radius: 8px;
+    background: #f8fafc;
+  }
+
+  :global(.mc-lightbox-close) {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 999px;
+    width: 34px;
+    height: 34px;
+    font-size: 18px;
+    background: #ffffff;
+    cursor: pointer;
+  }
+
+  :global(.mc-lightbox-counter) {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mc-muted);
+    text-align: center;
   }
 
   .mc-footer .mc-wordmark {

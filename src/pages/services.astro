@@ -19,6 +19,11 @@ const TonComponent =
     ? resolveTonSiteWebComponent('services', Astro.url instanceof URL ? Astro.url : new URL(Astro.request.url), Astro.request)
     : null;
 
+if (tenant.slug === 'ateliermemoire' && !(Astro.url?.pathname || '').startsWith('/atelier-memoire')) {
+  const target = new URL('/atelier-memoire', Astro.url instanceof URL ? Astro.url : new URL(Astro.request.url));
+  return Astro.redirect(target.toString(), 308);
+}
+
 const host = Astro.request.headers.get('host');
 const brandKey = getBrandFromHost(host);
 if (!TonComponent && brandKey === 'maisoncortes') {

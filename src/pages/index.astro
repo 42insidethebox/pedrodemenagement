@@ -74,6 +74,12 @@ const TonComponent =
     ? resolveTonSiteWebComponent('home', Astro.url instanceof URL ? Astro.url : new URL(Astro.request.url), Astro.request)
     : null;
 
+// Route Atelier Mémoire hosts to the dedicated tenant pages to avoid fallback content
+if (tenant.slug === 'ateliermemoire' && !(Astro.url?.pathname || '').startsWith('/atelier-memoire')) {
+  const target = new URL('/atelier-memoire', Astro.url instanceof URL ? Astro.url : new URL(Astro.request.url));
+  return Astro.redirect(target.toString(), 308);
+}
+
 const host = Astro.request.headers.get('host');
 const brandKey = getBrandFromHost(host);
 const hostLower = (host || '').toLowerCase();

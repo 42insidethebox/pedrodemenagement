@@ -1,10 +1,10 @@
 export const maisonCortesTheme = {
   brandKey: 'maisoncortes',
   colors: {
-    background: '#0a0a0a',
-    text: '#f5f5f5',
-    muted: '#a1a1aa',
-    border: '#2a2a2a',
+    background: '#f8f6f2',
+    text: '#0f172a',
+    muted: '#475569',
+    border: '#e2e8f0',
   },
   typography: {
     family: "'Libre Baskerville', serif",

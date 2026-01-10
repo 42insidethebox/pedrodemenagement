@@ -1,4 +1,4 @@
-export type MaisonCortesLocale = 'fr' | 'en' | 'it';
+export type MaisonCortesLocale = 'fr' | 'en' | 'it' | 'de';
 
 const defaultLocale: MaisonCortesLocale = 'fr';
 export const maisonCortesContactEmail = 'registry@maisoncortes.ch';
@@ -132,10 +132,51 @@ export const maisonCortesCopy = {
       statusUnavailable: 'Oggetto non disponibile.',
       editionLabel: 'Edizione',
     },
+    de: {
+      cta: 'Erwerben',
+      selectionAction: 'Zur Auswahl hinzufügen',
+      navCatalogue: 'Katalog',
+      navContact: 'Kontakt',
+      navSelection: 'Auswahl',
+      catalogueTitle: 'Katalog',
+      catalogueDescription: 'Objekte nach Stadt geordnet.',
+      contactPageTitle: 'Kontakt',
+      contactPageDescription: 'Direkter Kontakt für Maison Cortes.',
+      objectListTitle: 'Objekte',
+      cityAvailabilityLabel: 'Verfügbar',
+      footerContactTitle: 'Kontakt',
+      footerLegalTitle: 'Rechtliches',
+      legalLines: ['Maison Cortes Sarl', 'Lausanne, Schweiz', 'UID / MwSt. auf der Rechnung'],
+      returnsTitle: 'Rückgabe & Garantie',
+      returnsBody: 'Rückgabe innerhalb 14 Tagen, wenn ungetragen. Bitte vorher schreiben.',
+      materialsTitle: 'Materialien & Disclosure',
+      materialsBody: '925 Silberbasis. Vergoldete Oberfläche. Steine: Labordiamanten. Abrieb und Chemie vermeiden.',
+      shippingLine: 'Versand nur Schweiz, 2–4 Werktage, versicherter Service.',
+      currencyNote: 'Preise in CHF. Versand nur Schweiz.',
+      languageTitle: 'Sprache',
+      labDisclosureShort: 'Labordiamanten, 925-Basis, vergoldete Oberfläche.',
+      confirmationTitle: 'Bestätigung',
+      confirmationLead: 'Wir haben Ihre Auswahl gespeichert und senden eine detaillierte Bestätigung.',
+      confirmationNext: ['Lieferung: Schweiz, 2–4 Werktage.', 'Rückgabe innerhalb 14 Tage, wenn ungetragen.', `Kontakt: ${maisonCortesContactEmail}`],
+      cancelledTitle: 'Zahlung abgebrochen',
+      cancelledLead: 'Keine Belastung erfolgt. Ihre Auswahl bleibt offen.',
+      careLine: 'Kein Wasser, kein Parfum, Abrieb vermeiden. Nach dem Tragen abwischen.',
+      selectionTitle: 'Auswahl',
+      selectionLead: 'Objekt 24h für Sie reserviert.',
+      selectionEmpty: 'Keine Auswahl gespeichert.',
+      selectionPrimary: 'Zur Kasse',
+      selectionRemove: 'Auswahl entfernen',
+      selectionBack: 'Zurück zum Katalog',
+      selectionUnavailable: 'Auswahl nicht verfügbar. Bitte anderes Objekt wählen.',
+      selectionHold: 'Reservierung aktiv für ~{minutes} Minuten.',
+      statusLabels: { available: 'Verfügbar', reserved: 'Reserviert', sold: 'Verkauft', archived: 'Archiv' },
+      statusUnavailable: 'Objekt nicht verfügbar.',
+      editionLabel: 'Edition',
+    },
   },
 };
 
 export function resolveMaisonCortesLocale(raw?: string | null): MaisonCortesLocale {
-  if (raw === 'fr' || raw === 'en' || raw === 'it') return raw;
+  if (raw === 'fr' || raw === 'en' || raw === 'it' || raw === 'de') return raw;
   return defaultLocale;
 }

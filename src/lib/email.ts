@@ -8,10 +8,17 @@ type SendResult = { ok: boolean; error?: string };
 
 type Recipient = string | string[];
 
+export type EmailAttachment = {
+  filename: string;
+  content: string;
+  contentType?: string;
+};
+
 type SendTransactionalOptions = {
   replyTo?: Recipient;
   cc?: Recipient;
   bccSupport?: boolean;
+  attachments?: EmailAttachment[];
 };
 
 const SUPPORTED_LOCALES: EmailLocale[] = ['fr', 'en', 'de', 'it'];
@@ -80,6 +87,10 @@ async function sendTransactionalEmail(
     payload.reply_to = replyToList.length === 1 ? replyToList[0] : replyToList;
   }
 
+  if (options.attachments && options.attachments.length > 0) {
+    payload.attachments = options.attachments;
+  }
+
   try {
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -114,12 +125,13 @@ type TemplateSendOptions = {
   bccSupport?: boolean;
   replyTo?: Recipient;
   cc?: Recipient;
+  attachments?: EmailAttachment[];
 };
 
 export async function sendEmailTemplate(options: TemplateSendOptions): Promise<SendResult> {
-  const { template, to, locale, data, bccSupport = true, replyTo, cc } = options;
+  const { template, to, locale, data, bccSupport = true, replyTo, cc, attachments } = options;
   const rendered = renderEmailTemplate(template, { locale, data });
-  return sendTransactionalEmail(to, rendered.subject, rendered.html, bccSupport, { replyTo, cc });
+  return sendTransactionalEmail(to, rendered.subject, rendered.html, bccSupport, { replyTo, cc, attachments });
 }
 
 function formatOrderAmount(amount: unknown, currency: string | null | undefined, locale: EmailLocale) {

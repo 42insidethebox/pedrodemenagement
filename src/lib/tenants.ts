@@ -27,6 +27,8 @@ const brandTenants: TenantConfig[] = Object.values(BRANDS)
     brandKey: brand.key as BrandKey,
     domains: [brand.domain, `www.${brand.domain}`].filter(Boolean) as string[],
     defaultLocale: 'fr',
+    basePath: brand.key === 'ateliermemoire' ? '/atelier-memoire' : undefined,
+    preserveBasePath: brand.key === 'ateliermemoire',
   }));
 
 const extraTenants: TenantConfig[] = [

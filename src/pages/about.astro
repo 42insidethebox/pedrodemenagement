@@ -15,6 +15,11 @@ const TonComponent =
     ? resolveTonSiteWebComponent('about', Astro.url instanceof URL ? Astro.url : new URL(Astro.request.url), Astro.request)
     : null;
 
+if (tenant.slug === 'ateliermemoire' && !(Astro.url?.pathname || '').startsWith('/atelier-memoire')) {
+  const target = new URL('/atelier-memoire', Astro.url instanceof URL ? Astro.url : new URL(Astro.request.url));
+  return Astro.redirect(target.toString(), 308);
+}
+
 const metadata = {
   title: 'À propos',
 };

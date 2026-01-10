@@ -178,6 +178,9 @@ create index if not exists documents_agency_id_idx on public.documents(agency_id
 create index if not exists invoices_agency_id_idx on public.invoices(agency_id);
 create index if not exists activities_agency_id_idx on public.activities(agency_id);
 create index if not exists websites_agency_id_idx on public.websites(agency_id);
+create index if not exists websites_slug_agency_id_idx on public.websites(slug, agency_id);
+create index if not exists website_domains_domain_idx on public.website_domains(domain);
+create index if not exists website_domains_website_id_idx on public.website_domains(website_id);
 create index if not exists support_requests_agency_id_idx on public.support_requests(agency_id);
 create index if not exists subscription_events_agency_id_idx on public.subscription_events(agency_id);
 create index if not exists leads_tenant_id_idx on public.leads(tenant_id);
@@ -556,14 +559,27 @@ create table if not exists public.websites (
   created_at timestamptz not null default now(),
   agency_id uuid references public.agencies(id) on delete cascade,
   client_id uuid references public.clients(id) on delete set null,
+  slug text not null,
   name text not null,
   status text default 'draft',
+  plan text,
+  published_at timestamptz,
   domain text,
   preview_url text,
   production_url text,
   google_doc_id text,
   google_folder_id text,
   template_key text,
+  metadata jsonb default '{}'::jsonb
+);
+
+create table if not exists public.website_domains (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  website_id uuid references public.websites(id) on delete cascade,
+  domain text not null unique,
+  is_primary boolean not null default false,
+  verified_at timestamptz,
   metadata jsonb default '{}'::jsonb
 );
 

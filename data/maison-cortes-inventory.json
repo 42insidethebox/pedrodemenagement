@@ -34,13 +34,7 @@
       "sku": "lugano-chain-01",
       "total": 120,
       "sold": 0,
-      "reservations": [
-        {
-          "id": "d68c3fbd-87f9-4d2a-be94-bed5a70eed33",
-          "quantity": 1,
-          "expiresAt": 1766927477291
-        }
-      ]
+      "reservations": []
     },
     "lugano-ring-03": {
       "sku": "lugano-ring-03",

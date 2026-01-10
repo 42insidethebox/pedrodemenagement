@@ -11,6 +11,7 @@ export type BrandKey =
   | 'lausannenettoyage'
   | 'laclemanexperience'
   | 'maisoncortes'
+  | 'ateliermemoire'
   | 'tonsiteweb';
 
 /**
@@ -31,6 +32,7 @@ export function getBrandFromHost(host: string | null | undefined): BrandKey {
   if (value.includes('lausannenettoyage.ch')) return 'lausannenettoyage';
   if (value.includes('laclemanexperience.ch')) return 'laclemanexperience';
   if (value.includes('maisoncortes.')) return 'maisoncortes';
+  if (value.includes('ateliermemoire.ch')) return 'ateliermemoire';
   if (value.includes('tonsiteweb.ch') || value.includes('tonwebsite.ch')) return 'tonsiteweb';
   return 'pedro';
 }

@@ -24,6 +24,11 @@ const TonComponent =
     ? resolveTonSiteWebComponent('contact', Astro.url instanceof URL ? Astro.url : new URL(Astro.request.url), Astro.request)
     : null;
 
+if (tenant.slug === 'ateliermemoire' && !(Astro.url?.pathname || '').startsWith('/atelier-memoire')) {
+  const target = new URL('/atelier-memoire/contact', Astro.url instanceof URL ? Astro.url : new URL(Astro.request.url));
+  return Astro.redirect(target.toString(), 308);
+}
+
 let lceData: {
   metadata: Record<string, any>;
   inputs: any[];

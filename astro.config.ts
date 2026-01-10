@@ -63,6 +63,8 @@ export default defineConfig({
         "www.laclemanexperience.ch",
         "maisoncortes.ch",
         "www.maisoncortes.ch",
+        "ateliermemoire.ch",
+        "www.ateliermemoire.ch",
         "tonsiteweb.ch",
         "www.tonsiteweb.ch",
         "tonwebsite.ch",
