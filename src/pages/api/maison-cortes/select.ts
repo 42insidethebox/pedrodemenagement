@@ -4,11 +4,11 @@ import {
   SELECTION_COOKIE_NAME,
   SELECTION_TTL_MS,
   formatSelectionCookie,
-  MaisonCortesSelectionEntry,
   parseSelectionCookie,
   releaseReservation,
   reserveSelection,
 } from '~/tenants/maison-cortes/inventory';
+import type { MaisonCortesSelectionEntry } from '~/tenants/maison-cortes/inventory';
 import { maisonCortesProducts } from '~/tenants/maison-cortes/products';
 
 export const prerender = false;
