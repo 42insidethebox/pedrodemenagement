@@ -13,9 +13,11 @@ import {
   sanitizeOrderDbPayload,
 } from '~/lib/orders';
 import { provisionWebsiteWorkspace, shareFileWithEmail } from '~/lib/google-docs';
-import { sendAdminNotificationEmail, sendClientConfirmationEmail } from '~/lib/email';
+import { sendAdminNotificationEmail, sendBookingConfirmationEmail, sendBookingNotificationEmail, sendClientConfirmationEmail } from '~/lib/email';
 import { triggerTemplateDeployment } from '~/lib/deployment.js';
 import { getTenantFromContext } from '~/utils/tenant';
+import { finalizeBookingFromSession } from '~/lib/booking';
+import { resolveTenantFromRequest } from '~/lib/tenants';
 
 export const prerender = false;
 
@@ -116,6 +118,42 @@ export const POST: APIRoute = async ({ request, locals }) => {
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object;
       const metadata = extractMetadataFromSession(session);
+      if (session?.metadata?.booking_id) {
+        const booking = await finalizeBookingFromSession(session);
+        if (booking) {
+          const tenant = resolveTenantFromRequest(request, booking.tenant_id || undefined);
+          const locale = booking.locale || metadata.locale || 'fr';
+          try {
+            await sendBookingNotificationEmail({
+              name: booking.customer_name || '',
+              email: booking.customer_email || '',
+              phone: booking.customer_phone || '',
+              service: booking.service || '',
+              address: booking.address || '',
+              notes: booking.notes || '',
+              startTime: booking.start_time,
+              endTime: booking.end_time,
+              locale,
+              tenant,
+            });
+          } catch {}
+          if (booking.customer_email) {
+            try {
+              await sendBookingConfirmationEmail({
+                to: booking.customer_email,
+                name: booking.customer_name || '',
+                service: booking.service || '',
+                startTime: booking.start_time,
+                endTime: booking.end_time,
+                locale,
+                tenant,
+              });
+            } catch {}
+          }
+        }
+        return new Response('ok');
+      }
+
       const tenantId = metadata.tenantId || getTenantFromContext({ request, locals }).slug;
       const draft = buildOrderDraftFromSession(session, tenantId);
 
@@ -198,7 +236,9 @@ export const POST: APIRoute = async ({ request, locals }) => {
     }
 
     if (event.type === 'checkout.session.completed') {
-      try { await triggerTemplateDeployment(event.data.object); } catch {}
+      if (!event?.data?.object?.metadata?.booking_id) {
+        try { await triggerTemplateDeployment(event.data.object); } catch {}
+      }
     }
   } catch (e) {
     console.error('Stripe webhook handler failed', e);

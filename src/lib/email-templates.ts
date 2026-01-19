@@ -384,6 +384,10 @@ export function renderEmailTemplate(
         return 'Nouveau message de contact';
       case 'contact/contact-confirmation':
         return 'Nous avons bien reçu votre message';
+      case 'booking/booking-notification':
+        return 'Nouvelle réservation confirmée';
+      case 'booking/booking-confirmation':
+        return 'Votre réservation est confirmée';
       case 'demo/demo-request':
         return 'Nouvelle demande de démo';
       case 'demo/demo-confirmation':
@@ -536,6 +540,43 @@ export function renderEmailTemplate(
           <p>Notre équipe vous répond sous 24 heures (jours ouvrés).</p>
         `;
         return renderLayout({ title: 'Message bien reçu', preheader: 'Nous revenons vite vers vous', contentHtml: content });
+      }
+      case 'booking/booking-notification': {
+        const rows = [
+          ['Client', data?.customer_name || '—'],
+          ['Email', data?.customer_email || '—'],
+          ['Téléphone', data?.customer_phone || '—'],
+          ['Service', data?.service || '—'],
+          ['Adresse', data?.address || '—'],
+          ['Début', data?.start_time || '—'],
+          ['Fin', data?.end_time || '—'],
+        ]
+          .map(
+            ([label, value]) => `
+              <tr>
+                <td style="padding:6px 12px; font-weight:600; width:180px;">${label}</td>
+                <td style="padding:6px 12px;">${escapeHtml(String(value))}</td>
+              </tr>
+            `,
+          )
+          .join('');
+        const content = `
+          <p>Une nouvelle réservation a été confirmée.</p>
+          <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%; border:1px solid #e2e8f0; border-radius:12px; overflow:hidden; font-size:14px; line-height:20px;">
+            <tbody>${rows}</tbody>
+          </table>
+          ${data?.notes ? `<blockquote style="margin:16px 0; padding:12px 16px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px;">${escapeHtml(String(data.notes))}</blockquote>` : ''}
+        `;
+        return renderLayout({ title: 'Nouvelle réservation confirmée', contentHtml: content });
+      }
+      case 'booking/booking-confirmation': {
+        const content = `
+          <p>Votre réservation est confirmée${data?.customer_name ? `, ${escapeHtml(String(data.customer_name))}` : ''}.</p>
+          <p><strong>Service :</strong> ${escapeHtml(String(data?.service || '—'))}</p>
+          <p><strong>Créneau :</strong> ${escapeHtml(String(data?.start_time || '—'))} → ${escapeHtml(String(data?.end_time || '—'))}</p>
+          <p>Merci pour votre confiance. Nous restons disponibles si vous avez des questions.</p>
+        `;
+        return renderLayout({ title: 'Réservation confirmée', preheader: 'Merci pour votre réservation', contentHtml: content });
       }
       case 'feedback/feedback': {
         return renderTemplate('feedback_notification', {

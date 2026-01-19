@@ -386,3 +386,34 @@ _Last updated: 2026‑01‑18 — scope: Astro multi‑brand stack (Pedro Démé
 - Core risk: mailto-based contact forms → fix by pointing to `/api/contact` with tenant metadata.
 - Supabase, Resend, Stripe already integrated; deployment target is Vercel serverless.
 - Clear milestones A–D to reach production-grade, with test matrix and acceptance criteria defined.
+
+## 31) 2026-02-20 booking + contact flow updates (Lausanne)
+### Backend routes & methods added
+- **`GET /api/booking?date=YYYY-MM-DD`**: returns tenant-scoped availability (bookings + blocks) for the requested date, used by the Lausanne booking UI to render available slots.
+- **`POST /api/booking`**: validates booking payload, checks conflicts, creates a `bookings` row in Supabase, and returns a Stripe Checkout URL (or 303 redirect for HTML form submissions).
+
+### New backend logic + methods
+- **`src/lib/booking.ts`** introduced helpers to parse booking payloads, detect conflicts, persist bookings, create Stripe checkout sessions, and finalize bookings after checkout.
+- **`finalizeBookingFromSession`** is invoked from the Stripe webhook when `metadata.booking_id` is present to mark a booking as confirmed and store Stripe session data.
+
+### Stripe webhook behavior (updated)
+- **`POST /api/stripe-webhook`** now detects `checkout.session.completed` events tied to bookings (`metadata.booking_id`) and finalizes the booking record before sending booking emails.
+
+### Email templates + senders added
+- **Templates**: `booking/booking-notification` (admin) and `booking/booking-confirmation` (customer).
+- **Senders**: `sendBookingNotificationEmail` (to support email) and `sendBookingConfirmationEmail` (to customer), triggered after booking confirmation in the Stripe webhook.
+
+### Supabase schema/migrations
+- **New tables**: `bookings`, `booking_blocks` with indexes for tenant + time queries.
+- **RLS** enabled on the new tables. Migrations are included under `supabase/migrations/20260220000000_booking_pipeline.sql`.
+
+### Front-end changes (Lausanne only)
+- **Contact page booking section** added for Lausanne: date picker, slot selection, and booking form that posts to `/api/booking`.
+- **Availability loader**: client-side JS fetches `/api/booking?date=...` and renders time slots; prevents submission if no slot selected.
+
+### Contact form default behavior (all tenants)
+- **`Form.astro`** now defaults to `action="/api/contact"` and includes hidden `tenant`, `source`, `locale` fields to persist leads in Supabase.
+
+### Notes on completeness (current state)
+- Booking flow is **live (non-mock)** end-to-end for Lausanne when Supabase + Stripe + Resend keys are configured.
+- **Calendly is not integrated**; booking availability is handled in Supabase (`bookings` + `booking_blocks`) via the custom booking endpoint.

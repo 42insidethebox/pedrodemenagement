@@ -102,6 +102,13 @@ const ENV = {
     process.env.DEPLOY_AUTOMATION_ENABLED ?? import.meta.env.DEPLOY_AUTOMATION_ENABLED ?? '',
   DOMAIN_ROOT:
     process.env.DOMAIN_ROOT ?? import.meta.env.DOMAIN_ROOT ?? '',
+
+  LAUSANNE_BOOKING_PRICE_CHF:
+    process.env.LAUSANNE_BOOKING_PRICE_CHF ?? import.meta.env.LAUSANNE_BOOKING_PRICE_CHF ?? '',
+  LAUSANNE_BOOKING_CURRENCY:
+    process.env.LAUSANNE_BOOKING_CURRENCY ?? import.meta.env.LAUSANNE_BOOKING_CURRENCY ?? '',
+  LAUSANNE_BOOKING_PRODUCT_NAME:
+    process.env.LAUSANNE_BOOKING_PRODUCT_NAME ?? import.meta.env.LAUSANNE_BOOKING_PRODUCT_NAME ?? '',
 };
 
 // ✅ Explicitly typed export (for IDE autocomplete + safety)

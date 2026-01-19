@@ -1,5 +1,7 @@
 ---
 import type { Form as Props } from '~/types';
+import { resolveLocaleFromRequest } from '~/lib/locale';
+import { resolveTenantFromRequest } from '~/lib/tenants';
 import Button from '~/components/ui/Button.astro';
 
 const {
@@ -8,11 +10,28 @@ const {
   disclaimer,
   button = 'Envoyer',
   description = '',
-  action = 'mailto:contact@lausannedemenagement.ch?subject=Demande%20de%20devis',
+  action = '/api/contact',
   method = 'post',
-  encType = 'text/plain',
+  encType = 'application/x-www-form-urlencoded',
   geoapifyKey = '',
-} = Astro.props as Props & { action?: string; method?: string; encType?: string; geoapifyKey?: string };
+  tenant: tenantProp,
+  source: sourceProp,
+  locale: localeProp,
+} = Astro.props as Props & {
+  action?: string;
+  method?: string;
+  encType?: string;
+  geoapifyKey?: string;
+  tenant?: string;
+  source?: string;
+  locale?: string;
+};
+
+const resolvedTenant = Astro.locals?.tenant ?? resolveTenantFromRequest(Astro.request);
+const resolvedLocale = resolveLocaleFromRequest(Astro.request, resolvedTenant?.defaultLocale);
+const tenant = tenantProp ?? resolvedTenant?.slug ?? 'pedro';
+const source = sourceProp ?? 'contact';
+const locale = localeProp ?? resolvedLocale;
 
 const sections: string[] = [];
 let currentStep = -1;
@@ -44,6 +63,9 @@ if (!sections.length) {
   {...(geoapifyKey ? { 'data-geoapify-key': geoapifyKey } : {})}
   class="space-y-6"
 >
+  <input type="hidden" name="tenant" value={tenant} />
+  <input type="hidden" name="source" value={source} />
+  <input type="hidden" name="locale" value={locale} />
   {sections.length > 1 && (
     <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-center" data-step-progress>
       {sections.map((label, idx) => (

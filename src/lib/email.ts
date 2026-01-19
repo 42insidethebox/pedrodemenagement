@@ -392,6 +392,63 @@ export async function sendContactConfirmationEmail(data: {
   });
 }
 
+export async function sendBookingNotificationEmail(data: {
+  name: string;
+  email: string;
+  phone?: string;
+  service?: string;
+  address?: string;
+  notes?: string;
+  startTime: string;
+  endTime: string;
+  locale?: string | null;
+  tenant?: TenantContext;
+}) {
+  const locale = resolveEmailLocale(data.locale);
+  return sendEmailTemplate({
+    template: 'booking/booking-notification',
+    to: ENV.SUPPORT_EMAIL || 'contact@lausannedemenagement.ch',
+    locale,
+    data: {
+      customer_name: data.name,
+      customer_email: data.email,
+      customer_phone: data.phone || '',
+      service: data.service || '',
+      address: data.address || '',
+      notes: data.notes || '',
+      start_time: data.startTime,
+      end_time: data.endTime,
+      tenant_id: data.tenant?.slug,
+    },
+    bccSupport: false,
+    replyTo: data.email,
+  });
+}
+
+export async function sendBookingConfirmationEmail(data: {
+  to: string;
+  name?: string;
+  service?: string;
+  startTime?: string;
+  endTime?: string;
+  locale?: string | null;
+  tenant?: TenantContext;
+}) {
+  return sendEmailTemplate({
+    template: 'booking/booking-confirmation',
+    to: data.to,
+    locale: data.locale,
+    data: {
+      customer_name: data.name || '',
+      service: data.service || '',
+      start_time: data.startTime || '',
+      end_time: data.endTime || '',
+      tenant_id: data.tenant?.slug,
+    },
+    bccSupport: true,
+  });
+}
+
 export async function sendDemoRequestEmail(data: {
   name: string;
   email: string;

@@ -48,7 +48,7 @@ if (!TonComponent && brandKey === 'maisoncortes') {
 const isUrgent = brandKey === 'urgent';
 const isEtat = brandKey === 'etatdeslieux';
 const isTransport = brandKey === 'transport';
-const isLausanne = brandKey === 'lausanne';
+const isLausanne = brandKey === 'lausanne' || tenant.slug === 'lausanne';
 const brand = BRANDS[brandKey] || BRANDS.pedro;
 const defaultLocale = brandKey === 'laclemanexperience' ? 'en' : 'fr';
 const locale = resolveLocaleFromRequest(Astro.request, defaultLocale);
@@ -1016,6 +1016,139 @@ const processStates = [
     </div>
   </section>
 
+  {
+    isLausanne && (
+      <section class="py-14 md:py-18 bg-slate-950 text-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] items-start">
+            <div class="space-y-4">
+              <p class="uppercase tracking-[0.32em] text-xs text-amber-200/80">Réservation express</p>
+              <h2 class="text-3xl md:text-4xl font-semibold leading-tight">
+                {lamT('Réservez un créneau confirmé', 'Book a confirmed time slot', 'Bestätigten Termin buchen', 'Prenota una fascia oraria confermata')}
+              </h2>
+              <p class="text-lg text-white/85 max-w-2xl">
+                {lamT(
+                  'Choisissez une date, un créneau et validez immédiatement par carte. Nous bloquons la disponibilité et vous recevrez une confirmation par email.',
+                  'Pick a date and a time slot, then confirm instantly by card. We lock availability and email you the confirmation.',
+                  'Wählen Sie Datum und Zeitfenster, bestätigen Sie direkt per Karte. Wir blockieren die Verfügbarkeit und senden die Bestätigung per E-Mail.',
+                  'Scegli data e fascia oraria, conferma subito con carta. Blocchiamo la disponibilità e inviamo la conferma via email.'
+                )}
+              </p>
+              <div class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-4 text-sm space-y-2">
+                <p class="font-semibold text-white/90">{lamT('Ce qui est inclus', 'What’s included', 'Inbegriffen', 'Incluso')}</p>
+                <ul class="list-disc pl-5 space-y-1 text-white/80">
+                  <li>{lamT('Créneau réservé + équipe notifiée', 'Slot reserved + team notified', 'Termin reserviert + Team informiert', 'Fascia riservata + team avvisato')}</li>
+                  <li>{lamT('Confirmation email immédiate', 'Instant email confirmation', 'Sofortige Bestätigungs-E-Mail', 'Conferma email immediata')}</li>
+                  <li>{lamT('Annulation gratuite sous 24h', 'Free cancellation within 24h', 'Kostenlose Stornierung binnen 24h', 'Cancellazione gratuita entro 24h')}</li>
+                </ul>
+              </div>
+            </div>
+            <div class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 shadow-2xl">
+              <form
+                id="lausanne-booking-form"
+                action="/api/booking"
+                method="post"
+                class="space-y-4"
+                data-booking-form
+                data-locale={lang}
+              >
+                <div class="grid gap-4">
+                  <label class="text-sm font-semibold">Date</label>
+                  <input
+                    type="date"
+                    name="date"
+                    required
+                    class="rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-white placeholder:text-white/60"
+                    data-booking-date
+                  />
+                </div>
+                <div class="space-y-3">
+                  <div class="flex items-center justify-between">
+                    <label class="text-sm font-semibold">Créneau</label>
+                    <span class="text-xs text-white/60" data-booking-status>Choisissez une date</span>
+                  </div>
+                  <div class="grid gap-2 sm:grid-cols-2" data-booking-slots></div>
+                  <p class="text-xs text-amber-200/80 hidden" data-booking-error>
+                    Merci de sélectionner un créneau disponible.
+                  </p>
+                </div>
+                <input type="hidden" name="start_time" data-booking-start />
+                <input type="hidden" name="end_time" data-booking-end />
+                <input type="hidden" name="locale" value={lang} />
+                <input type="hidden" name="timezone" data-booking-timezone />
+
+                <div class="grid gap-3">
+                  <label class="text-sm font-semibold">{lamT('Service', 'Service', 'Service', 'Servizio')}</label>
+                  <select
+                    name="service"
+                    required
+                    class="rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-white"
+                  >
+                    <option value="move">{lamT('Déménagement', 'Move', 'Umzug', 'Trasloco')}</option>
+                    <option value="packing">{lamT('Emballage', 'Packing', 'Verpackung', 'Imballaggio')}</option>
+                    <option value="storage">{lamT('Stockage', 'Storage', 'Einlagerung', 'Deposito')}</option>
+                  </select>
+                </div>
+                <div class="grid gap-3">
+                  <label class="text-sm font-semibold">{lamT('Adresse de départ', 'Origin address', 'Adresse Start', 'Indirizzo partenza')}</label>
+                  <input
+                    type="text"
+                    name="address"
+                    required
+                    placeholder={lamT('Rue + numéro, ville', 'Street + number, city', 'Straße + Nr., Stadt', 'Via + numero, città')}
+                    class="rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-white placeholder:text-white/60"
+                  />
+                </div>
+                <div class="grid gap-3">
+                  <label class="text-sm font-semibold">{lamT('Notes', 'Notes', 'Notizen', 'Note')}</label>
+                  <textarea
+                    name="notes"
+                    rows={3}
+                    class="rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-white placeholder:text-white/60"
+                    placeholder={lamT('Volume, accès, objets fragiles…', 'Volume, access, fragile items…', 'Volumen, Zugang, fragile Gegenstände…', 'Volume, accessi, oggetti fragili…')}
+                  ></textarea>
+                </div>
+                <div class="grid gap-3">
+                  <label class="text-sm font-semibold">Nom complet</label>
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    class="rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-white placeholder:text-white/60"
+                  />
+                </div>
+                <div class="grid gap-3">
+                  <label class="text-sm font-semibold">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    class="rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-white placeholder:text-white/60"
+                  />
+                </div>
+                <div class="grid gap-3">
+                  <label class="text-sm font-semibold">Téléphone</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    required
+                    class="rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-white placeholder:text-white/60"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  class="w-full rounded-xl bg-amber-400 text-slate-900 font-semibold py-3 hover:bg-amber-300 transition"
+                >
+                  {lamT('Confirmer & payer', 'Confirm & pay', 'Bestätigen & bezahlen', 'Conferma e paga')}
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
   <section
     class="relative py-14 md:py-18 bg-cover bg-center"
     style={`background-image:${view.hero.background}; background-size: cover; background-position: center;`}
@@ -1547,6 +1680,109 @@ const processStates = [
           target.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
       });
+    });
+  });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector<HTMLFormElement>('[data-booking-form]');
+    if (!form) return;
+    const dateInput = form.querySelector<HTMLInputElement>('[data-booking-date]');
+    const slotsEl = form.querySelector<HTMLDivElement>('[data-booking-slots]');
+    const statusEl = form.querySelector<HTMLElement>('[data-booking-status]');
+    const errorEl = form.querySelector<HTMLElement>('[data-booking-error]');
+    const startField = form.querySelector<HTMLInputElement>('[data-booking-start]');
+    const endField = form.querySelector<HTMLInputElement>('[data-booking-end]');
+    const timezoneField = form.querySelector<HTMLInputElement>('[data-booking-timezone]');
+    if (timezoneField) {
+      timezoneField.value = Intl.DateTimeFormat().resolvedOptions().timeZone || 'Europe/Zurich';
+    }
+
+    const toISO = (dateStr: string, hour: number) => {
+      const d = new Date(`${dateStr}T${String(hour).padStart(2, '0')}:00:00`);
+      return d.toISOString();
+    };
+
+    const renderSlots = (dateStr: string, blocked: Array<{ start: string; end: string }>) => {
+      if (!slotsEl || !statusEl) return;
+      slotsEl.innerHTML = '';
+      const slots: Array<{ label: string; start: string; end: string; disabled: boolean }> = [];
+      for (let hour = 8; hour <= 16; hour += 2) {
+        const start = toISO(dateStr, hour);
+        const end = toISO(dateStr, hour + 2);
+        const overlap = blocked.some((b) => !(end <= b.start || start >= b.end));
+        slots.push({
+          label: `${String(hour).padStart(2, '0')}h–${String(hour + 2).padStart(2, '0')}h`,
+          start,
+          end,
+          disabled: overlap,
+        });
+      }
+      if (!slots.length) {
+        statusEl.textContent = 'Aucun créneau disponible';
+        return;
+      }
+      statusEl.textContent = 'Sélectionnez un créneau';
+      slots.forEach((slot) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.dataset.slotStart = slot.start;
+        btn.dataset.slotEnd = slot.end;
+        btn.className =
+          'booking-slot w-full rounded-xl border px-3 py-2 text-sm font-semibold transition ' +
+          (slot.disabled
+            ? 'border-white/10 bg-white/5 text-white/40 cursor-not-allowed'
+            : 'border-white/20 bg-white/10 text-white hover:border-amber-300 hover:bg-amber-100/10');
+        btn.textContent = slot.label;
+        btn.disabled = slot.disabled;
+        btn.addEventListener('click', () => {
+          if (!startField || !endField) return;
+          startField.value = slot.start;
+          endField.value = slot.end;
+          errorEl?.classList.add('hidden');
+          form.querySelectorAll('.booking-slot[data-selected="true"]').forEach((el) => {
+            el.removeAttribute('data-selected');
+            el.classList.remove('ring-2', 'ring-amber-300');
+          });
+          btn.dataset.selected = 'true';
+          btn.classList.add('ring-2', 'ring-amber-300');
+        });
+        slotsEl.appendChild(btn);
+      });
+    };
+
+    const loadAvailability = async (dateStr: string) => {
+      if (!statusEl) return;
+      statusEl.textContent = 'Chargement…';
+      try {
+        const res = await fetch(`/api/booking?date=${dateStr}`);
+        if (!res.ok) throw new Error('Unavailable');
+        const data = await res.json();
+        const blocked: Array<{ start: string; end: string }> = [];
+        (data.bookings || []).forEach((b: any) => blocked.push({ start: b.start_time, end: b.end_time }));
+        (data.blocks || []).forEach((b: any) => blocked.push({ start: b.start_time, end: b.end_time }));
+        renderSlots(dateStr, blocked);
+      } catch {
+        statusEl.textContent = 'Indisponible pour le moment';
+        if (slotsEl) slotsEl.innerHTML = '';
+      }
+    };
+
+    dateInput?.addEventListener('change', () => {
+      const dateStr = dateInput.value;
+      if (!dateStr) return;
+      startField && (startField.value = '');
+      endField && (endField.value = '');
+      loadAvailability(dateStr);
+    });
+
+    form.addEventListener('submit', (event) => {
+      if (!startField?.value || !endField?.value) {
+        event.preventDefault();
+        errorEl?.classList.remove('hidden');
+        errorEl?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     });
   });
 </script>

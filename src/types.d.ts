@@ -228,6 +228,9 @@ export interface Form {
   method?: string;
   encType?: string;
   geoapifyKey?: string;
+  tenant?: string;
+  source?: string;
+  locale?: string;
 }
 
 // WIDGETS
