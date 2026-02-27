@@ -52,6 +52,9 @@ export const BRANDS: Record<BrandKey, BrandProfile> = {
     primaryColor: '#0f172a',
     secondaryColor: '#2563eb',
     fonts: { sans: 'Inter Variable', heading: 'Space Grotesk' },
+    theme: {
+      accent: '#1e3a8a',
+    },
     ...shared,
     phone: '+41 76 798 27 93',
     email: 'support@tonsiteweb.ch',
@@ -68,6 +71,9 @@ export const BRANDS: Record<BrandKey, BrandProfile> = {
     primaryColor: '#0f172a',
     secondaryColor: '#1e40af',
     fonts: { sans: 'Inter Variable', heading: 'Space Grotesk' },
+    theme: {
+      accent: '#1e3a8a',
+    },
     ...shared,
   },
   lausanne: {
@@ -82,7 +88,7 @@ export const BRANDS: Record<BrandKey, BrandProfile> = {
     secondaryColor: '#0ea5e9',
     fonts: { sans: 'Manrope', heading: 'Archivo' },
     theme: {
-      accent: '#0ea5e9',
+      accent: '#1e3a8a',
       gradient: 'linear-gradient(135deg, #ffffffae 0%, #ffffff9d 60%, #ffffff9d 100%)',
       surface: 'rgba(14,165,233,0.08)',
       card: 'rgba(14,165,233,0.1)',
@@ -103,7 +109,7 @@ export const BRANDS: Record<BrandKey, BrandProfile> = {
     theme: {
       bg: '#0b0f1a',
       gradient: 'linear-gradient(135deg, #7f1d1d 0%, #b91c1c 55%, #f97316 100%)',
-      accent: '#f97316',
+      accent: '#b91c1c',
       surface: 'rgba(239,68,68,0.08)',
       card: 'rgba(15,15,20,0.75)',
       shadow: '0 25px 70px -35px rgba(239,68,68,0.65)',
@@ -123,7 +129,7 @@ export const BRANDS: Record<BrandKey, BrandProfile> = {
     fonts: { sans: 'DM Sans', heading: 'Playfair Display' },
     theme: {
       gradient: 'radial-gradient(circle at 10% 20%, #0f766e 0%, #022c22 45%, #0f172a 100%)',
-      accent: '#10b981',
+      accent: '#0f766e',
       surface: 'rgba(16,185,129,0.08)',
       card: 'rgba(6,95,70,0.16)',
       shadow: '0 22px 60px -30px rgba(16,185,129,0.6)',
@@ -143,7 +149,7 @@ export const BRANDS: Record<BrandKey, BrandProfile> = {
     theme: {
       bg: '#0c1020',
       gradient: 'linear-gradient(135deg, #0b1220 0%, #111827 45%, #1f2a44 85%)',
-      accent: '#f2b045',
+      accent: '#c8a15a',
       surface: 'rgba(31,42,68,0.18)',
       card: 'rgba(15,20,34,0.9)',
       shadow: '0 24px 70px -42px rgba(15,23,42,0.55)',
@@ -185,7 +191,7 @@ export const BRANDS: Record<BrandKey, BrandProfile> = {
     theme: {
       bg: '#0b0c14',
       gradient: 'radial-gradient(circle at 10% 10%, #1f2937 0%, #0b0c14 40%, #000000 100%)',
-      accent: '#d97706',
+      accent: '#b07a37',
       surface: 'rgba(217,119,6,0.12)',
       card: 'rgba(15,17,27,0.85)',
       shadow: '0 30px 90px -45px rgba(217,119,6,0.65)',
@@ -205,7 +211,7 @@ export const BRANDS: Record<BrandKey, BrandProfile> = {
     theme: {
       bg: '#f8fbfd',
       gradient: 'linear-gradient(135deg, #ecfeff 0%, #67e8f9 45%, #0f172a 100%)',
-      accent: '#0ea5e9',
+      accent: '#0f766e',
       surface: 'rgba(103,232,249,0.12)',
       card: '#ffffff',
       shadow: '0 18px 55px -35px rgba(15,118,110,0.5)',
@@ -219,14 +225,15 @@ export const BRANDS: Record<BrandKey, BrandProfile> = {
     shortName: 'Nettoyage Lausanne',
     domain: 'lausannenettoyage.ch',
     seoTitle: 'Nettoyage Lausanne — Appartements, bureaux, remise en état',
-    seoDescription: 'Nettoyage complet à Lausanne : remises en état, bureaux et fin de chantier, avec contrôle qualité.',
+    seoDescription:
+      'Nettoyage complet à Lausanne : remises en état, bureaux et fin de chantier, avec contrôle qualité.',
     primaryColor: '#0ea5e9',
     secondaryColor: '#0f172a',
     fonts: { sans: 'Work Sans', heading: 'Space Grotesk' },
     theme: {
       bg: '#f7fbff',
       gradient: 'linear-gradient(135deg, #fff 0%, #fff 45%, #fff 100%)',
-      accent: 'rgba(14, 165, 233, 1)',
+      accent: '#0369a1',
       surface: 'rgba(224,242,254,0.18)',
       card: '#ffffff',
       shadow: '0 22px 70px -45px rgba(14,165,233,0.55)',
@@ -248,15 +255,15 @@ export const BRANDS: Record<BrandKey, BrandProfile> = {
     theme: {
       bg: '#f8fafc',
       gradient: 'linear-gradient(135deg, #f8fafc 0%, #e0f2f1 45%, #e2e8f0 100%)',
-      accent: '#fde68a',
+      accent: '#0f766e',
       surface: 'rgba(15,118,110,0.08)',
       card: 'rgba(255, 255, 255, 0.94)',
-    shadow: '0 20px 60px -35px rgba(15,118,110,0.35)',
-    pattern: 'radial-gradient(circle at 14% 18%, rgba(253,230,138,0.16) 0, transparent 28%)',
-  },
-  ...shared,
-  legalOperator: 'Lac Léman Experience',
-  email: 'contact@laclemanexperience.ch',
+      shadow: '0 20px 60px -35px rgba(15,118,110,0.35)',
+      pattern: 'radial-gradient(circle at 14% 18%, rgba(253,230,138,0.16) 0, transparent 28%)',
+    },
+    ...shared,
+    legalOperator: 'Lac Léman Experience',
+    email: 'contact@laclemanexperience.ch',
   },
   etatdeslieux: {
     key: 'etatdeslieux',
@@ -269,6 +276,7 @@ export const BRANDS: Record<BrandKey, BrandProfile> = {
     secondaryColor: '#0ea5e9',
     fonts: { sans: 'Manrope', heading: 'Archivo' },
     theme: {
+      accent: '#1e3a8a',
       gradient: 'linear-gradient(135deg, #ffffffae 0%, #ffffff9d 60%, #ffffff9d 100%)',
       surface: 'rgba(14,165,233,0.08)',
       card: 'rgba(14,165,233,0.1)',
@@ -303,7 +311,8 @@ export const BRANDS: Record<BrandKey, BrandProfile> = {
     shortName: 'Atelier Mémoire',
     domain: 'ateliermemoire.ch',
     seoTitle: 'Atelier Mémoire — Restauration de photographies anciennes',
-    seoDescription: 'Restauration et colorisation naturelle de photos anciennes. Révisions incluses. Envoi en ligne ou par courrier.',
+    seoDescription:
+      'Restauration et colorisation naturelle de photos anciennes. Révisions incluses. Envoi en ligne ou par courrier.',
     primaryColor: '#e8e8e4',
     secondaryColor: '#c7a374',
     fonts: { sans: 'Inter', heading: 'Libre Baskerville', serif: 'Libre Baskerville' },
@@ -317,5 +326,28 @@ export const BRANDS: Record<BrandKey, BrandProfile> = {
     },
     email: 'bonjour@ateliermemoire.ch',
     legalOperator: 'Atelier Mémoire',
+  },
+  'tolo-coiffure': {
+    key: 'tolo-coiffure',
+    name: 'Tolo Coiffure',
+    shortName: 'Tolo',
+    domain: 'tolocoiffure.ch',
+    seoTitle: 'Tolo Coiffure — Coiffeur à Lausanne Centre',
+    seoDescription:
+      'Atelier de coiffure haut de gamme à Lausanne : colorations précises, coupes éditoriales, soins profonds.',
+    primaryColor: '#2B1D14',
+    secondaryColor: '#C8B38A',
+    fonts: { sans: 'Inter', heading: 'Playfair Display', serif: 'Playfair Display' },
+    theme: {
+      bg: '#F5EFE8',
+      surface: '#F1E7DC',
+      card: '#F5EFE8',
+      accent: '#C8B38A',
+      pattern: 'none',
+      shadow: '0 18px 60px -42px rgba(43, 29, 20, 0.18)',
+    },
+    phone: '0779421225',
+    email: 'contact@tolocoiffure.ch',
+    legalOperator: 'Tolo Coiffure',
   },
 };

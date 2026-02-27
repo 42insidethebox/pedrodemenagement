@@ -24,6 +24,19 @@ const TonComponent =
     ? resolveTonSiteWebComponent('contact', Astro.url instanceof URL ? Astro.url : new URL(Astro.request.url), Astro.request)
     : null;
 
+const hostCandidates = [
+  Astro.request.headers.get('x-forwarded-host'),
+  Astro.request.headers.get('host'),
+  new URL(Astro.request.url).host,
+]
+  .flatMap((value) => (value || '').split(','))
+  .map((value) => value.toLowerCase().trim().split(':')[0])
+  .filter(Boolean);
+const isToloHost = hostCandidates.some((host) => host.includes('tolocoiffure.ch'));
+if (tenant.slug === 'tolo-coiffure' || isToloHost) {
+  return Astro.rewrite('/tolo-coiffure/contact');
+}
+
 if (tenant.slug === 'ateliermemoire' && !(Astro.url?.pathname || '').startsWith('/atelier-memoire')) {
   const target = new URL('/atelier-memoire/contact', Astro.url instanceof URL ? Astro.url : new URL(Astro.request.url));
   return Astro.redirect(target.toString(), 308);
@@ -252,7 +265,7 @@ const views = {
       title: 'Un conseiller pour verrouiller vos accès et votre planning',
       subtitle: 'Réponse < 24h, chef d’équipe dédié, protections sol/murs et autorisations parking gérées.',
       background: `linear-gradient(135deg, rgba(15,23,42,0.72), rgba(30,64,175,0.62), rgba(12,18,36,0.7)), url('${img('hero_happy_boxes_plants')}')`,
-      overlayClass: 'bg-gradient-to-br from-slate-900/45 via-blue-900/45 to-slate-800/55 backdrop-blur-[2px]',
+      overlayClass: 'move-contact-hero-overlay',
       chips: ['Réponse < 24h', 'Chef d’équipe dédié', 'Accès et parkings validés'],
       tone: 'dark',
     },
@@ -275,7 +288,7 @@ const views = {
       title: 'Appel immédiat, confirmation en 15 minutes',
       subtitle: 'Créneau du jour ou du lendemain selon disponibilité. Protections prêtes, livraison directe sans stockage.',
       background: `linear-gradient(135deg, rgba(185,28,28,0.78), rgba(239,68,68,0.64), rgba(249,115,22,0.5)), url('${img('men_loading_van_2')}')`,
-      overlayClass: 'bg-gradient-to-br from-red-900/30 via-red-800/28 to-orange-600/24 backdrop-blur-[1px]',
+      overlayClass: 'urgent-contact-hero-overlay',
       chips: ['Réponse < 5 min', 'Départ 60–90 min', 'Arc lémanique'],
       tone: 'dark',
     },
@@ -298,7 +311,7 @@ const views = {
       title: 'Fenêtre horaire serrée et arrimage premium',
       subtitle: 'Mobilier design, électroménager, bureaux : conditionnement, calage et suivi chauffeur.',
       background: `linear-gradient(135deg, rgba(12,18,32,0.88), rgba(31,42,68,0.8), rgba(242,176,69,0.24)), url('${img('professional_van_2')}')`,
-      overlayClass: 'bg-gradient-to-br from-slate-950/55 via-slate-900/55 to-amber-200/18 backdrop-blur-[2px]',
+      overlayClass: 'transport-contact-hero-overlay',
       chips: ['Fenêtre courte', 'Arrimage renforcé', 'Suivi direct chauffeur'],
       tone: 'dark',
     },
@@ -321,7 +334,7 @@ const views = {
       title: 'Débarras complet, trié et valorisé',
       subtitle: 'Appartements, caves, bureaux : tri, dons/recyclage et remise propre sans coordonner plusieurs équipes.',
       background: `linear-gradient(135deg, rgba(6,95,70,0.78), rgba(16,185,129,0.62), rgba(15,23,42,0.6)), url('${img('men_moving_heavy_couch_block')}')`,
-      overlayClass: 'bg-gradient-to-br from-emerald-900/55 via-emerald-800/55 to-slate-900/55',
+      overlayClass: 'debarras-contact-hero-overlay',
       chips: ['Tri & dons', 'Protection des communs', 'Rapport photo'],
       tone: 'dark',
     },
@@ -425,7 +438,7 @@ const views = {
       title: 'Vide maison complet et ordonné',
       subtitle: 'Tri, dons, recyclage et évacuation en une seule équipe. Rapport photo et remise propre.',
       background: `linear-gradient(135deg, rgba(197,143,85,0.26), rgba(160,112,70,0.3), rgba(117,78,45,0.2)), url('${img('strong_man_packing_1')}')`,
-      overlayClass: 'bg-gradient-to-br from-[#3b2a18]/12 via-[#5a3b1f]/10 to-[#8c6136]/10',
+      overlayClass: 'videmaison-contact-hero-overlay',
       chips: ['Orientation dons', 'Respect des lieux', 'Remise propre'],
       tone: 'dark',
     },
@@ -448,7 +461,7 @@ const views = {
       title: 'Gestion discrète des biens successoraux',
       subtitle: 'Tri, inventaire succinct, évacuation et remise propre. Coordination héritiers et notaires.',
       background: `linear-gradient(135deg, rgba(15,17,27,0.9), rgba(217,119,6,0.52), rgba(0,0,0,0.72)), url('${img('empty_apartment_7')}')`,
-      overlayClass: 'bg-gradient-to-br from-gray-950/65 via-gray-900/60 to-amber-600/45',
+      overlayClass: 'videsuccession-contact-hero-overlay',
       chips: ['Discrétion', 'Inventaire succinct', 'Reporting photo'],
       tone: 'dark',
     },
@@ -471,7 +484,7 @@ const views = {
       title: 'Propreté maîtrisée, délais rapides',
       subtitle: 'Checklist pro, produits adaptés et contrôle qualité systématique pour appartements, bureaux ou fin de chantier.',
       background: `linear-gradient(135deg, rgba(34,211,238,0.52), rgba(14,165,233,0.55), rgba(15,23,42,0.7)), url('${img('man_cleaning')}')`,
-      overlayClass: 'bg-gradient-to-br from-cyan-200/35 via-cyan-500/40 to-slate-900/60 backdrop-blur-[2px]',
+      overlayClass: 'clean-contact-hero-overlay',
       chips: ['Checklist bailleur', 'Matériel pro', 'Photos sur demande'],
       tone: 'dark',
     },
@@ -543,6 +556,26 @@ if (isLausanne && brandType === 'move') {
       lamT('Devis détaillé en CHF', 'Detailed CHF quote', 'Detaillierte CHF-Offerte', 'Preventivo dettagliato in CHF'),
       lamT('Coordination WhatsApp si besoin', 'WhatsApp coordination if needed', 'WhatsApp-Koordination bei Bedarf', 'Coordinamento WhatsApp se serve'),
     ],
+  };
+}
+if (brandKey === 'lausannenettoyage' && brandType === 'clean') {
+  view = {
+    ...view,
+    hero: {
+      ...view.hero,
+      overlayClass: 'lausannenettoyage-contact-hero-overlay',
+    },
+    accent: 'from-sky-300/12 via-slate-900/46 to-slate-950/68',
+  };
+}
+if (brandKey === 'nettoyagesuccession' && brandType === 'clean') {
+  view = {
+    ...view,
+    hero: {
+      ...view.hero,
+      overlayClass: 'nettoyagesuccession-contact-hero-overlay',
+    },
+    accent: 'from-teal-300/10 via-slate-900/46 to-slate-950/68',
   };
 }
 if (brandKey === 'tonsiteweb') {
@@ -859,6 +892,7 @@ const processStates = [
     </section>
   </Layout>
 ) : (
+<>
 <Layout metadata={metadata} brandKey={brandKey}>
   <section
     class={`relative overflow-hidden brand-${brandKey} contact-hero-light`}
@@ -1668,12 +1702,12 @@ const processStates = [
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const intentButtons = document.querySelectorAll<HTMLButtonElement>('[data-intent-choice]');
+    const intentButtons = document.querySelectorAll('[data-intent-choice]');
     intentButtons.forEach((btn) => {
       btn.addEventListener('click', () => {
         const value = btn.dataset.intentChoice;
         if (!value) return;
-        const target = document.querySelector<HTMLInputElement>(`input[name="lead_intent"][value="${value}"]`);
+        const target = document.querySelector(`input[name="lead_intent"][value="${value}"]`);
         if (target) {
           target.checked = true;
           target.dispatchEvent(new Event('change', { bubbles: true }));
@@ -1686,28 +1720,28 @@ const processStates = [
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector<HTMLFormElement>('[data-booking-form]');
+    const form = document.querySelector('[data-booking-form]');
     if (!form) return;
-    const dateInput = form.querySelector<HTMLInputElement>('[data-booking-date]');
-    const slotsEl = form.querySelector<HTMLDivElement>('[data-booking-slots]');
-    const statusEl = form.querySelector<HTMLElement>('[data-booking-status]');
-    const errorEl = form.querySelector<HTMLElement>('[data-booking-error]');
-    const startField = form.querySelector<HTMLInputElement>('[data-booking-start]');
-    const endField = form.querySelector<HTMLInputElement>('[data-booking-end]');
-    const timezoneField = form.querySelector<HTMLInputElement>('[data-booking-timezone]');
+    const dateInput = form.querySelector('[data-booking-date]');
+    const slotsEl = form.querySelector('[data-booking-slots]');
+    const statusEl = form.querySelector('[data-booking-status]');
+    const errorEl = form.querySelector('[data-booking-error]');
+    const startField = form.querySelector('[data-booking-start]');
+    const endField = form.querySelector('[data-booking-end]');
+    const timezoneField = form.querySelector('[data-booking-timezone]');
     if (timezoneField) {
       timezoneField.value = Intl.DateTimeFormat().resolvedOptions().timeZone || 'Europe/Zurich';
     }
 
-    const toISO = (dateStr: string, hour: number) => {
+    const toISO = (dateStr, hour) => {
       const d = new Date(`${dateStr}T${String(hour).padStart(2, '0')}:00:00`);
       return d.toISOString();
     };
 
-    const renderSlots = (dateStr: string, blocked: Array<{ start: string; end: string }>) => {
+    const renderSlots = (dateStr, blocked) => {
       if (!slotsEl || !statusEl) return;
       slotsEl.innerHTML = '';
-      const slots: Array<{ label: string; start: string; end: string; disabled: boolean }> = [];
+      const slots = [];
       for (let hour = 8; hour <= 16; hour += 2) {
         const start = toISO(dateStr, hour);
         const end = toISO(dateStr, hour + 2);
@@ -1752,16 +1786,16 @@ const processStates = [
       });
     };
 
-    const loadAvailability = async (dateStr: string) => {
+    const loadAvailability = async (dateStr) => {
       if (!statusEl) return;
       statusEl.textContent = 'Chargement…';
       try {
         const res = await fetch(`/api/booking?date=${dateStr}`);
         if (!res.ok) throw new Error('Unavailable');
         const data = await res.json();
-        const blocked: Array<{ start: string; end: string }> = [];
-        (data.bookings || []).forEach((b: any) => blocked.push({ start: b.start_time, end: b.end_time }));
-        (data.blocks || []).forEach((b: any) => blocked.push({ start: b.start_time, end: b.end_time }));
+        const blocked = [];
+        (data.bookings || []).forEach((b) => blocked.push({ start: b.start_time, end: b.end_time }));
+        (data.blocks || []).forEach((b) => blocked.push({ start: b.start_time, end: b.end_time }));
         renderSlots(dateStr, blocked);
       } catch {
         statusEl.textContent = 'Indisponible pour le moment';
@@ -1787,8 +1821,8 @@ const processStates = [
   });
 </script>
 
-  <style>
-    :global(.contact-hero-light h1),
+<style>
+  :global(.contact-hero-light h1),
     :global(.contact-hero-light h2),
     :global(.contact-hero-light h3),
     :global(.contact-hero-light h4),
@@ -1802,6 +1836,115 @@ const processStates = [
   :global(.contact-hero-light .rounded-xl.bg-white\\/5) {
     background: rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.15);
+  }
+</style>
+
+<style>
+  :global(.brand-pedro.contact-hero-light .move-contact-hero-overlay) {
+    background:
+      radial-gradient(138% 90% at 8% 24%, rgba(2, 6, 23, 0.24) 0%, rgba(2, 6, 23, 0.08) 46%, rgba(2, 6, 23, 0) 74%),
+      radial-gradient(138% 90% at 92% 24%, rgba(2, 6, 23, 0.2) 0%, rgba(2, 6, 23, 0.08) 44%, rgba(2, 6, 23, 0) 72%),
+      linear-gradient(180deg, rgba(2, 6, 23, 0.06) 0%, rgba(2, 6, 23, 0.14) 58%, rgba(2, 6, 23, 0.92) 100%);
+  }
+  :global(.brand-lausanne.contact-hero-light .move-contact-hero-overlay) {
+    background:
+      radial-gradient(138% 90% at 8% 24%, rgba(2, 6, 23, 0.26) 0%, rgba(2, 6, 23, 0.08) 46%, rgba(2, 6, 23, 0) 74%),
+      radial-gradient(138% 90% at 92% 24%, rgba(2, 6, 23, 0.22) 0%, rgba(2, 6, 23, 0.08) 44%, rgba(2, 6, 23, 0) 72%),
+      linear-gradient(180deg, rgba(2, 6, 23, 0.06) 0%, rgba(2, 6, 23, 0.14) 58%, rgba(2, 6, 23, 0.92) 100%);
+  }
+  :global(.brand-urgent.contact-hero-light .urgent-contact-hero-overlay) {
+    background:
+      radial-gradient(138% 90% at 8% 24%, rgba(127, 29, 29, 0.28) 0%, rgba(127, 29, 29, 0.1) 46%, rgba(2, 6, 23, 0) 74%),
+      radial-gradient(138% 90% at 92% 24%, rgba(194, 65, 12, 0.22) 0%, rgba(194, 65, 12, 0.08) 44%, rgba(2, 6, 23, 0) 72%),
+      linear-gradient(180deg, rgba(2, 6, 23, 0.08) 0%, rgba(127, 29, 29, 0.3) 58%, rgba(2, 6, 23, 0.92) 100%);
+  }
+  :global(.brand-transport.contact-hero-light .transport-contact-hero-overlay) {
+    background:
+      radial-gradient(138% 90% at 8% 24%, rgba(15, 23, 42, 0.28) 0%, rgba(15, 23, 42, 0.1) 46%, rgba(2, 6, 23, 0) 74%),
+      radial-gradient(138% 90% at 92% 24%, rgba(217, 119, 6, 0.18) 0%, rgba(217, 119, 6, 0.08) 44%, rgba(2, 6, 23, 0) 72%),
+      linear-gradient(180deg, rgba(2, 6, 23, 0.08) 0%, rgba(15, 23, 42, 0.3) 58%, rgba(2, 6, 23, 0.92) 100%);
+  }
+  :global(.brand-debarras.contact-hero-light .debarras-contact-hero-overlay) {
+    background:
+      radial-gradient(138% 90% at 8% 24%, rgba(6, 95, 70, 0.28) 0%, rgba(6, 95, 70, 0.1) 46%, rgba(2, 6, 23, 0) 74%),
+      radial-gradient(138% 90% at 92% 24%, rgba(16, 185, 129, 0.18) 0%, rgba(16, 185, 129, 0.08) 44%, rgba(2, 6, 23, 0) 72%),
+      linear-gradient(180deg, rgba(2, 6, 23, 0.08) 0%, rgba(6, 95, 70, 0.3) 58%, rgba(2, 6, 23, 0.92) 100%);
+  }
+  :global(.brand-videmaison.contact-hero-light .videmaison-contact-hero-overlay) {
+    background:
+      radial-gradient(138% 90% at 8% 24%, rgba(59, 42, 24, 0.28) 0%, rgba(59, 42, 24, 0.1) 46%, rgba(2, 6, 23, 0) 74%),
+      radial-gradient(138% 90% at 92% 24%, rgba(140, 97, 54, 0.18) 0%, rgba(140, 97, 54, 0.08) 44%, rgba(2, 6, 23, 0) 72%),
+      linear-gradient(180deg, rgba(2, 6, 23, 0.08) 0%, rgba(59, 42, 24, 0.3) 58%, rgba(2, 6, 23, 0.92) 100%);
+  }
+  :global(.brand-videsuccession.contact-hero-light .videsuccession-contact-hero-overlay) {
+    background:
+      radial-gradient(138% 90% at 8% 24%, rgba(15, 17, 27, 0.34) 0%, rgba(15, 17, 27, 0.12) 46%, rgba(2, 6, 23, 0) 74%),
+      radial-gradient(138% 90% at 92% 24%, rgba(180, 83, 9, 0.2) 0%, rgba(180, 83, 9, 0.08) 44%, rgba(2, 6, 23, 0) 72%),
+      linear-gradient(180deg, rgba(2, 6, 23, 0.1) 0%, rgba(15, 17, 27, 0.34) 58%, rgba(2, 6, 23, 0.92) 100%);
+  }
+  :global(.brand-nettoyagesuccession.contact-hero-light .clean-contact-hero-overlay) {
+    background:
+      radial-gradient(138% 90% at 8% 24%, rgba(15, 118, 110, 0.28) 0%, rgba(15, 118, 110, 0.1) 46%, rgba(2, 6, 23, 0) 74%),
+      radial-gradient(138% 90% at 92% 24%, rgba(34, 211, 238, 0.2) 0%, rgba(34, 211, 238, 0.08) 44%, rgba(2, 6, 23, 0) 72%),
+      linear-gradient(180deg, rgba(2, 6, 23, 0.08) 0%, rgba(15, 118, 110, 0.28) 58%, rgba(2, 6, 23, 0.92) 100%);
+  }
+</style>
+
+<style>
+  :global(.brand-nettoyagesuccession.contact-hero-light .nettoyagesuccession-contact-hero-overlay) {
+    background:
+      radial-gradient(138% 90% at 8% 24%, rgba(2, 6, 23, 0.24) 0%, rgba(2, 6, 23, 0.08) 46%, rgba(2, 6, 23, 0) 74%),
+      radial-gradient(138% 90% at 92% 24%, rgba(2, 6, 23, 0.2) 0%, rgba(2, 6, 23, 0.08) 44%, rgba(2, 6, 23, 0) 72%),
+      linear-gradient(180deg, rgba(2, 6, 23, 0.06) 0%, rgba(2, 6, 23, 0.14) 58%, rgba(2, 6, 23, 0.92) 100%);
+  }
+  :global(.brand-pedro.contact-hero-light h1),
+  :global(.brand-urgent.contact-hero-light h1),
+  :global(.brand-debarras.contact-hero-light h1),
+  :global(.brand-transport.contact-hero-light h1),
+  :global(.brand-videmaison.contact-hero-light h1),
+  :global(.brand-videsuccession.contact-hero-light h1),
+  :global(.brand-nettoyagesuccession.contact-hero-light h1) {
+    text-shadow: 0 8px 28px rgba(2, 6, 23, 0.58);
+  }
+  :global(.brand-pedro.contact-hero-light p),
+  :global(.brand-pedro.contact-hero-light .text-muted),
+  :global(.brand-pedro.contact-hero-light .tagline),
+  :global(.brand-urgent.contact-hero-light p),
+  :global(.brand-urgent.contact-hero-light .text-muted),
+  :global(.brand-urgent.contact-hero-light .tagline),
+  :global(.brand-debarras.contact-hero-light p),
+  :global(.brand-debarras.contact-hero-light .text-muted),
+  :global(.brand-debarras.contact-hero-light .tagline),
+  :global(.brand-transport.contact-hero-light p),
+  :global(.brand-transport.contact-hero-light .text-muted),
+  :global(.brand-transport.contact-hero-light .tagline),
+  :global(.brand-videmaison.contact-hero-light p),
+  :global(.brand-videmaison.contact-hero-light .text-muted),
+  :global(.brand-videmaison.contact-hero-light .tagline),
+  :global(.brand-videsuccession.contact-hero-light p),
+  :global(.brand-videsuccession.contact-hero-light .text-muted),
+  :global(.brand-videsuccession.contact-hero-light .tagline),
+  :global(.brand-nettoyagesuccession.contact-hero-light p),
+  :global(.brand-nettoyagesuccession.contact-hero-light .text-muted),
+  :global(.brand-nettoyagesuccession.contact-hero-light .tagline) {
+    text-shadow: 0 4px 18px rgba(2, 6, 23, 0.48);
+  }
+</style>
+
+<style>
+  :global(.brand-lausannenettoyage.contact-hero-light .lausannenettoyage-contact-hero-overlay) {
+    background:
+      radial-gradient(138% 90% at 8% 24%, rgba(2, 6, 23, 0.24) 0%, rgba(2, 6, 23, 0.08) 46%, rgba(2, 6, 23, 0) 74%),
+      radial-gradient(138% 90% at 92% 24%, rgba(2, 6, 23, 0.2) 0%, rgba(2, 6, 23, 0.08) 44%, rgba(2, 6, 23, 0) 72%),
+      linear-gradient(180deg, rgba(2, 6, 23, 0.05) 0%, rgba(2, 6, 23, 0.13) 58%, rgba(2, 6, 23, 0.93) 100%);
+  }
+  :global(.brand-lausannenettoyage.contact-hero-light h1) {
+    text-shadow: 0 8px 28px rgba(2, 6, 23, 0.58);
+  }
+  :global(.brand-lausannenettoyage.contact-hero-light p),
+  :global(.brand-lausannenettoyage.contact-hero-light .text-muted),
+  :global(.brand-lausannenettoyage.contact-hero-light .tagline) {
+    text-shadow: 0 4px 18px rgba(2, 6, 23, 0.48);
   }
 </style>
 
@@ -1823,4 +1966,5 @@ const processStates = [
   }
 
 </style>
+</>
 )}

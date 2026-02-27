@@ -7,6 +7,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const viteCacheDir = path.join(process.env.TMPDIR || "/tmp", "astro-pedrodemenagement-vite-cache");
 
 export default defineConfig({
   site: "https://pedrodemenagement.ch",
@@ -21,7 +22,7 @@ export default defineConfig({
   // prerender: true,
   integrations: [tailwind({ applyBaseStyles: false }), icon()],
   vite: {
-    cacheDir: "./.vite-cache",
+    cacheDir: viteCacheDir,
     resolve: {
       alias: {
         "astrowind:config": path.resolve(
@@ -69,6 +70,8 @@ export default defineConfig({
         "www.tonsiteweb.ch",
         "tonwebsite.ch",
         "www.tonwebsite.ch",
+        "tolocoiffure.ch",
+        "www.tolocoiffure.ch",
       ],
     },
   },

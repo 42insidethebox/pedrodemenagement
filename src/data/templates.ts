@@ -21,6 +21,8 @@ export const TEMPLATE_DEFINITIONS: TemplateDefinition[] = [
   { id: 'nettoyagesuccession', models: ['frontend'], plans: ['999', '1249', '1500'], tags: ['cleaning'] },
   { id: 'lausannenettoyage', models: ['frontend'], plans: ['999', '1249', '1500'], tags: ['cleaning'] },
   { id: 'etatdeslieux', models: ['frontend'], plans: ['999', '1249', '1500'], tags: ['inspection'] },
+  { id: 'ateliermemoire', models: ['frontend'], plans: ['999', '1249', '1500'], tags: ['restoration'] },
+  { id: 'tolo-coiffure', models: ['frontend'], plans: ['999', '1249', '1500'], tags: ['beauty'] },
 
   // Model-specific (no 999/1249/1500)
   { id: 'laclemanexperience', models: ['experience'], plans: [] },

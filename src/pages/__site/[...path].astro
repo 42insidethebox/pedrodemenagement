@@ -3,9 +3,6 @@ import type { APIContext } from 'astro';
 import { getWebsiteByHost } from '~/lib/website-resolver';
 
 export const prerender = false;
-export function getStaticPaths() {
-  return [];
-}
 
 const host =
   Astro.request.headers.get('x-forwarded-host') ??
@@ -19,11 +16,14 @@ if (!resolved) {
 }
 
 const { website, sections, primaryDomain } = resolved;
+const originalPath = Astro.request.headers.get('x-original-path');
+const rewrittenPath = Astro.url.pathname.replace(/^\/__site/, '') || '/';
+const canonicalPath = (originalPath || rewrittenPath) === '/index' ? '/' : originalPath || rewrittenPath;
 
 const metadata = {
   title: (website.metadata as any)?.seo_title || website.name,
   description: (website.metadata as any)?.seo_description || '',
-  canonical: primaryDomain ? `https://${primaryDomain}${Astro.url.pathname}` : undefined,
+  canonical: primaryDomain ? `https://${primaryDomain}${canonicalPath}` : undefined,
 };
 ---
 

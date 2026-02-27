@@ -27,8 +27,13 @@ const brandTenants: TenantConfig[] = Object.values(BRANDS)
     brandKey: brand.key as BrandKey,
     domains: [brand.domain, `www.${brand.domain}`].filter(Boolean) as string[],
     defaultLocale: 'fr',
-    basePath: brand.key === 'ateliermemoire' ? '/atelier-memoire' : undefined,
-    preserveBasePath: brand.key === 'ateliermemoire',
+    basePath:
+      brand.key === 'ateliermemoire'
+        ? '/atelier-memoire'
+        : brand.key === 'tolo-coiffure'
+          ? '/tolo-coiffure'
+          : undefined,
+    preserveBasePath: brand.key === 'ateliermemoire' || brand.key === 'tolo-coiffure',
   }));
 
 const extraTenants: TenantConfig[] = [
@@ -57,7 +62,20 @@ const tenantBySlug = Object.fromEntries(TENANTS.map((tenant) => [tenant.slug, te
 const defaultTenant = tenantBySlug.pedro ?? TENANTS[0];
 
 function normalizeHost(host: string | null | undefined) {
-  return (host || '').toLowerCase().split(':')[0];
+  return (host || '')
+    .toLowerCase()
+    .split(',')[0]
+    .trim()
+    .split(':')[0];
+}
+
+function hostCandidatesFromRequest(request: Request, url: URL) {
+  const raw = [request.headers.get('x-forwarded-host'), request.headers.get('host'), url.host];
+  const normalized = raw
+    .flatMap((value) => (value || '').split(','))
+    .map((value) => normalizeHost(value))
+    .filter(Boolean);
+  return Array.from(new Set(normalized));
 }
 
 function matchesHost(host: string, tenant: TenantConfig) {
@@ -75,12 +93,12 @@ function matchesHost(host: string, tenant: TenantConfig) {
   */
 export function resolveTenantFromRequest(request: Request, overrideSlug?: string): TenantContext {
   const url = new URL(request.url);
-  const host = normalizeHost(request.headers.get('x-forwarded-host') ?? request.headers.get('host') ?? url.host);
+  const hosts = hostCandidatesFromRequest(request, url);
   const querySlug = overrideSlug || url.searchParams.get('tenant') || '';
   const pathSegments = url.pathname.split('/').filter(Boolean);
   const pathSlug = pathSegments[0] as TenantSlug | undefined;
 
-  const candidateByHost = TENANTS.find((tenant) => matchesHost(host, tenant));
+  const candidateByHost = TENANTS.find((tenant) => hosts.some((host) => matchesHost(host, tenant)));
   const candidateByQuery = (querySlug && tenantBySlug[querySlug as TenantSlug]) || undefined;
   const candidateByPath = (pathSlug && tenantBySlug[pathSlug]) || undefined;
 
@@ -94,7 +112,8 @@ export function resolveTenantFromRequest(request: Request, overrideSlug?: string
         ? 'path'
         : 'fallback';
 
-  return { ...tenant, source, host };
+  const matchedHost = candidateByHost ? hosts.find((host) => matchesHost(host, candidateByHost)) : undefined;
+  return { ...tenant, source, host: matchedHost || hosts[0] };
 }
 
 export function getTenantBySlug(slug?: string | null): TenantContext {

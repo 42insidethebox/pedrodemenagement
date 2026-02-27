@@ -51,6 +51,7 @@ const urlObj = new URL(Astro.url);
 const currentPath = `/${trimSlash(urlObj.pathname)}` || '/';
 const filteredLinks = links ?? [];
 const isUrgent = brandKey === 'urgent';
+const isLaclemanExperience = brandKey === 'laclemanexperience';
 const toneClass =
   brandKey === 'videsuccession' || brandKey === 'pedro' || brandKey === 'lausanne'
     ? 'header-tone-light'
@@ -111,23 +112,29 @@ const flagClasses: Record<string, string> = {
         <Logo name={brandName} brandKey={brandKey} />
       </a>
       <div class="flex items-center gap-2 md:hidden">
-        <ToggleMenu class="flex flex-col h-12 w-12 rounded justify-center items-center cursor-pointer group text-white" />
-        {supportedLangs.length > 1 && (
-          <div class="relative">
-            <span class={`aw-flag ${flagClasses[initialLang] || ''}`} data-aw-lang-flag></span>
-            <select
-              id="lang-select-mobile-inline"
-              data-initial={initialLang}
-              data-aw-lang-select
-              onchange="window.__awSetLang && window.__awSetLang(this.value)"
-              class="appearance-none rounded-full border border-slate-200 bg-white/95 px-2.5 py-1 text-xs font-semibold text-slate-900 shadow-sm"
-            >
-              {supportedLangs.map((code) => (
-                <option value={code} selected={initialLang === code}>{code.toUpperCase()}</option>
-              ))}
-            </select>
-          </div>
-        )}
+        <ToggleMenu
+          class="flex flex-col h-12 w-12 rounded justify-center items-center cursor-pointer group text-white"
+        />
+        {
+          supportedLangs.length > 1 && (
+            <div class="lang-select-wrap lang-select-wrap-compact">
+              <span class={`aw-flag ${flagClasses[initialLang] || ''}`} data-aw-lang-flag />
+              <select
+                id="lang-select-mobile-inline"
+                data-initial={initialLang}
+                data-aw-lang-select
+                onchange="window.__awSetLang && window.__awSetLang(this.value)"
+                class="aw-lang-select-input aw-lang-select-input-sm"
+              >
+                {supportedLangs.map((code) => (
+                  <option value={code} selected={initialLang === code}>
+                    {code.toUpperCase()}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )
+        }
       </div>
     </div>
     <nav
@@ -135,70 +142,79 @@ const flagClasses: Record<string, string> = {
       aria-label="Main navigation"
     >
       <ul
-        class="flex flex-col md:flex-row md:flex-wrap xl:flex-nowrap md:self-center w-full md:w-auto text-xl md:text-[0.9375rem] tracking-[0.01rem] font-medium md:justify-center md:gap-1 md:min-w-0"
+        class:list={[
+          'flex flex-col md:flex-row md:flex-wrap xl:flex-nowrap md:self-center w-full md:w-auto text-xl md:text-[0.9375rem] tracking-[0.01rem] font-medium md:justify-center md:gap-1 md:min-w-0',
+          isLaclemanExperience ? 'font-heading' : '',
+        ]}
       >
-        {supportedLangs.length > 1 && (
-          <li class="md:hidden px-3 py-3">
-            <div class="lang-select-wrap">
-              <span class={`aw-flag ${flagClasses[initialLang] || ''}`} data-aw-lang-flag></span>
-              <select
-                id="lang-select-mobile"
-                data-initial={initialLang}
-                data-aw-lang-select
-                onchange="window.__awSetLang && window.__awSetLang(this.value)"
-                class="appearance-none rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-900 shadow-sm"
-              >
-                {supportedLangs.map((code) => (
-                  <option value={code} selected={initialLang === code}>{code.toUpperCase()}</option>
-                ))}
-              </select>
-            </div>
-          </li>
-        )}
+        {
+          supportedLangs.length > 1 && (
+            <li class="md:hidden px-3 py-3">
+              <div class="lang-select-wrap">
+                <span class={`aw-flag ${flagClasses[initialLang] || ''}`} data-aw-lang-flag />
+                <select
+                  id="lang-select-mobile"
+                  data-initial={initialLang}
+                  data-aw-lang-select
+                  onchange="window.__awSetLang && window.__awSetLang(this.value)"
+                  class="aw-lang-select-input"
+                >
+                  {supportedLangs.map((code) => (
+                    <option value={code} selected={initialLang === code}>
+                      {code.toUpperCase()}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </li>
+          )
+        }
         {
           filteredLinks.map(({ text, href, links }) => (
-          <li class={links?.length ? 'dropdown' : ''}>
-            {links?.length ? (
-              <>
-                <button
-                  type="button"
+            <li class={links?.length ? 'dropdown' : ''}>
+              {links?.length ? (
+                <>
+                  <button
+                    type="button"
+                    class:list={[
+                      'hover:text-link dark:hover:text-white px-3 min-[1100px]:px-4 py-3 flex items-center whitespace-nowrap',
+                      isUrgent ? 'text-white hover:text-orange-100' : '',
+                    ]}
+                  >
+                    {text}{' '}
+                    <Icon name="tabler:chevron-down" class="w-3.5 h-3.5 ml-0.5 rtl:ml-0 rtl:mr-0.5 hidden md:inline" />
+                  </button>
+                  <ul class="dropdown-menu md:backdrop-blur-md dark:md:bg-dark rounded md:absolute pl-4 md:pl-0 md:hidden font-medium md:bg-white/90 md:min-w-[200px] drop-shadow-xl">
+                    {(links || []).map(({ text: text2, href: href2 }) => (
+                      <li>
+                        <a
+                          class:list={[
+                            'first:rounded-t last:rounded-b md:hover:bg-gray-100 hover:text-link dark:hover:text-white dark:hover:bg-gray-700 py-2 px-5 block whitespace-no-wrap',
+                            isUrgent ? 'md:text-slate-900' : '',
+                            { 'aw-link-active': href2 === currentPath },
+                          ]}
+                          href={href2}
+                        >
+                          {text2}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ) : (
+                <a
                   class:list={[
                     'hover:text-link dark:hover:text-white px-3 min-[1100px]:px-4 py-3 flex items-center whitespace-nowrap',
                     isUrgent ? 'text-white hover:text-orange-100' : '',
+                    toneClass === 'header-tone-light'
+                      ? 'text-slate-900 hover:text-slate-700'
+                      : 'text-white hover:text-slate-100',
+                    { 'aw-link-active': href === currentPath },
                   ]}
+                  href={href}
                 >
-                  {text}{' '}
-                  <Icon name="tabler:chevron-down" class="w-3.5 h-3.5 ml-0.5 rtl:ml-0 rtl:mr-0.5 hidden md:inline" />
-                </button>
-                <ul class="dropdown-menu md:backdrop-blur-md dark:md:bg-dark rounded md:absolute pl-4 md:pl-0 md:hidden font-medium md:bg-white/90 md:min-w-[200px] drop-shadow-xl">
-                  {(links || []).map(({ text: text2, href: href2 }) => (
-                    <li>
-                      <a
-                        class:list={[
-                          'first:rounded-t last:rounded-b md:hover:bg-gray-100 hover:text-link dark:hover:text-white dark:hover:bg-gray-700 py-2 px-5 block whitespace-no-wrap',
-                          isUrgent ? 'md:text-slate-900' : '',
-                          { 'aw-link-active': href2 === currentPath },
-                        ]}
-                        href={href2}
-                      >
-                        {text2}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            ) : (
-              <a
-                class:list={[
-                  'hover:text-link dark:hover:text-white px-3 min-[1100px]:px-4 py-3 flex items-center whitespace-nowrap',
-                  isUrgent ? 'text-white hover:text-orange-100' : '',
-                  toneClass === 'header-tone-light' ? 'text-slate-900 hover:text-slate-700' : 'text-white hover:text-slate-100',
-                  { 'aw-link-active': href === currentPath },
-                ]}
-                href={href}
-              >
-                {text}
-              </a>
+                  {text}
+                </a>
               )}
             </li>
           ))
@@ -222,11 +238,15 @@ const flagClasses: Record<string, string> = {
                 data-initial={initialLang}
                 data-aw-lang-select
                 onchange="window.__awSetLang && window.__awSetLang(this.value)"
-                class="appearance-none rounded-full border border-white/50 bg-white/90 px-3 py-1.5 text-sm font-semibold text-slate-900 shadow-sm backdrop-blur md:px-3.5 md:py-2 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
+                class="aw-lang-select-input"
               >
-                {supportedLangs.map((code) => (
-                  <option value={code} selected={initialLang === code}>{code.toUpperCase()}</option>
-                ))}
+                {
+                  supportedLangs.map((code) => (
+                    <option value={code} selected={initialLang === code}>
+                      {code.toUpperCase()}
+                    </option>
+                  ))
+                }
               </select>
             </div>
           </div>
@@ -242,26 +262,29 @@ const flagClasses: Record<string, string> = {
             )
           }
         </div>
-        {actions?.length ? (
-          <span class="ml-4 rtl:ml-0 rtl:mr-4">
-            {actions.map((btnProps) => (
-              <Button
-                {...btnProps}
-                variant={isUrgent ? 'primary' : btnProps.variant}
-                class={twMerge(
-                  'ml-2 py-2.5 px-5.5 md:px-6 font-semibold text-sm w-auto',
-                  isUrgent
-                    ? 'bg-red-600 hover:bg-orange-500 text-white shadow-red-500/30 border-transparent'
-                    : toneClass === 'header-tone-light'
-                      ? 'bg-white text-slate-900 hover:bg-slate-100 border border-slate-200 shadow-sm'
-                      : 'bg-white text-slate-900 hover:bg-slate-100 border-transparent shadow-sm'
-                )}
-              />
-            ))}
-          </span>
-        ) : (
-          ''
-        )}
+        {
+          actions?.length ? (
+            <span class="ml-4 rtl:ml-0 rtl:mr-4">
+              {actions.map((btnProps) => (
+                <Button
+                  {...btnProps}
+                  variant={isUrgent ? 'primary' : btnProps.variant}
+                  class={twMerge(
+                    'ml-2 py-2.5 px-5.5 md:px-6 font-semibold text-sm w-auto',
+                    isLaclemanExperience ? 'font-heading' : '',
+                    isUrgent
+                      ? 'bg-red-600 hover:bg-orange-500 text-white shadow-red-500/30 border-transparent'
+                      : toneClass === 'header-tone-light'
+                        ? 'bg-white text-slate-900 hover:bg-slate-100 border border-slate-200 shadow-sm'
+                        : 'bg-white text-slate-900 hover:bg-slate-100 border-transparent shadow-sm'
+                  )}
+                />
+              ))}
+            </span>
+          ) : (
+            ''
+          )
+        }
       </div>
     </div>
   </div>
@@ -348,31 +371,129 @@ const flagClasses: Record<string, string> = {
 
 <style>
   .lang-select-wrap {
+    position: relative;
     display: inline-flex;
     align-items: center;
+    isolation: isolate;
+    overflow: hidden;
+    gap: 0.48rem;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.48);
+    background: radial-gradient(
+      140% 180% at 0% -40%,
+      rgba(255, 255, 255, 0.98),
+      rgba(255, 255, 255, 0.84) 48%,
+      rgba(241, 245, 249, 0.82) 100%
+    );
+    box-shadow:
+      0 16px 34px -26px rgba(15, 23, 42, 0.55),
+      inset 0 1px 0 rgba(255, 255, 255, 0.96),
+      inset 0 -1px 0 rgba(15, 23, 42, 0.07);
+    backdrop-filter: blur(10px);
+    min-height: 2rem;
+    padding: 0.2rem 0.52rem 0.2rem 0.3rem;
+    transition:
+      border-color 220ms ease,
+      box-shadow 220ms ease,
+      transform 220ms ease,
+      background 220ms ease;
+  }
+  .lang-select-wrap-compact {
+    min-height: 1.82rem;
+    padding-right: 0.44rem;
     gap: 0.4rem;
   }
+  .lang-select-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0) 44%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .lang-select-wrap::after {
+    content: '';
+    position: absolute;
+    right: 0.62rem;
+    top: 50%;
+    width: 0.38rem;
+    height: 0.38rem;
+    border-right: 1.45px solid rgba(15, 23, 42, 0.72);
+    border-bottom: 1.45px solid rgba(15, 23, 42, 0.72);
+    transform: translateY(-63%) rotate(45deg);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .lang-select-wrap:hover {
+    border-color: rgba(100, 116, 139, 0.62);
+    box-shadow:
+      0 18px 34px -24px rgba(15, 23, 42, 0.56),
+      inset 0 1px 0 rgba(255, 255, 255, 0.98),
+      inset 0 -1px 0 rgba(15, 23, 42, 0.09);
+    transform: translateY(-1px);
+  }
+  .aw-lang-select-input {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    outline: none;
+    color: #0f172a;
+    font-size: 0.73rem;
+    line-height: 1.05;
+    font-weight: 620;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    min-width: 3.08rem;
+    cursor: pointer;
+    padding: 0.38rem 1rem 0.38rem 0.04rem;
+    z-index: 1;
+    position: relative;
+  }
+  .aw-lang-select-input-sm {
+    font-size: 0.68rem;
+    min-width: 2.76rem;
+    padding-right: 0.84rem;
+  }
+  .aw-lang-select-input option {
+    color: #0f172a;
+  }
+  .lang-select-wrap:has(.aw-lang-select-input:focus-visible) {
+    border-color: rgba(71, 85, 105, 0.58);
+    box-shadow:
+      0 0 0 3px rgba(148, 163, 184, 0.25),
+      0 16px 30px -22px rgba(15, 23, 42, 0.52),
+      inset 0 1px 0 rgba(255, 255, 255, 0.98);
+  }
   .aw-flag {
-    width: 18px;
-    height: 12px;
-    border-radius: 3px;
-    border: 1px solid rgba(15, 23, 42, 0.15);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    width: 20px;
+    height: 14px;
+    border-radius: 4px;
+    border: 1px solid rgba(15, 23, 42, 0.2);
+    box-shadow: 0 3px 8px rgba(2, 6, 23, 0.16);
     flex-shrink: 0;
+    z-index: 1;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: rgba(15, 23, 42, 0.08);
   }
-  .aw-flag-fr { background: linear-gradient(90deg, #0055a4 0 33%, #fff 33% 66%, #ef4135 66% 100%); }
+  .aw-flag-fr {
+    background-image: url('../../assets/flags/4x3/fr.svg');
+  }
   .aw-flag-en {
-    background: #012169;
-    background-image: url("data:image/svg+xml,%3Csvg width='18' height='12' viewBox='0 0 18 12' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='18' height='12' fill='%23012169'/%3E%3Cpath d='M0 0l7 4.5V0h4v4.5L18 0v2l-6.5 4.5H18v2h-6.5L18 13v-1.5L11 7.5V12H7V7.5L0 11.5V9l6.5-4.5H0v-2h6.5L0 2V0z' fill='%23fff'/%3E%3Cpath d='M0 0l6 4h-2L0 .7V0zm18 0v.7L14 4h-2l6-4zM14 8l4 3.3V12l-6-4h2zm-8 0L0 12v-1l4-3h2z' fill='%23C8102E'/%3E%3Cpath d='M7 0h4v12H7zM0 4h18v4H0z' fill='%23C8102E'/%3E%3C/svg%3E");
-    background-size: cover;
+    background-image: url('../../assets/flags/4x3/gb.svg');
   }
-  .aw-flag-de { background: linear-gradient(180deg, #000 0 33%, #dd0000 33% 66%, #ffce00 66% 100%); }
-  .aw-flag-it { background: linear-gradient(90deg, #009246 0 33%, #fff 33% 66%, #ce2b37 66% 100%); }
-  .aw-flag-ar { background: linear-gradient(180deg, #007a3d 0 33%, #fff 33% 66%, #000 66% 100%); }
+  .aw-flag-de {
+    background-image: url('../../assets/flags/4x3/de.svg');
+  }
+  .aw-flag-it {
+    background-image: url('../../assets/flags/4x3/it.svg');
+  }
+  .aw-flag-ar {
+    background-image: url('../../assets/flags/4x3/arab.svg');
+  }
   .aw-flag-zh {
-    background: #de2910;
-    background-image: url("data:image/svg+xml,%3Csvg width='18' height='12' viewBox='0 0 18 12' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='18' height='12' fill='%23de2910'/%3E%3Cpolygon fill='%23ffde00' points='3,5 3.9,7.8 1.4,6 4.6,6 2.1,7.8'/%3E%3Cpolygon fill='%23ffde00' points='6.3,2.3 6.9,3.5 5.7,2.9 6.9,2.3 6.3,3.5' transform='rotate(-20 6.3 2.9)'/%3E%3Cpolygon fill='%23ffde00' points='7.5,3.9 8.3,5 7,4.6 8.2,4.2 7.4,5.2' transform='rotate(10 7.7 4.7)'/%3E%3Cpolygon fill='%23ffde00' points='7.6,6.3 8.5,7.4 7.1,7 8.3,6.6 7.5,7.6' transform='rotate(25 7.8 7)'/%3E%3Cpolygon fill='%23ffde00' points='6.2,7.9 7,9 5.7,8.6 6.9,8.2 6.1,9.2' transform='rotate(5 6.3 8.8)'/%3E%3C/svg%3E");
-    background-size: cover;
+    background-image: url('../../assets/flags/4x3/cn.svg');
   }
   :global(.aw-header.header-tone-light) {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.88));
@@ -389,6 +510,49 @@ const flagClasses: Record<string, string> = {
   }
   :global(.aw-header.header-tone-white a) {
     color: #f8fafc;
+  }
+  :global(.aw-header.header-tone-white .lang-select-wrap) {
+    border-color: rgba(226, 232, 240, 0.34);
+    background:
+      radial-gradient(
+        140% 180% at 8% -30%,
+        rgba(255, 255, 255, 0.2),
+        rgba(255, 255, 255, 0.05) 48%,
+        rgba(15, 23, 42, 0.68) 100%
+      ),
+      linear-gradient(135deg, rgba(15, 23, 42, 0.72), rgba(30, 41, 59, 0.62));
+    box-shadow:
+      0 16px 34px -24px rgba(2, 6, 23, 0.8),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2),
+      inset 0 -1px 0 rgba(2, 6, 23, 0.35);
+  }
+  :global(.aw-header.header-tone-white .lang-select-wrap:hover) {
+    border-color: rgba(248, 250, 252, 0.46);
+    box-shadow:
+      0 20px 38px -24px rgba(2, 6, 23, 0.84),
+      inset 0 1px 0 rgba(255, 255, 255, 0.24),
+      inset 0 -1px 0 rgba(2, 6, 23, 0.35);
+  }
+  :global(.aw-header.header-tone-white .lang-select-wrap::after) {
+    border-right-color: rgba(248, 250, 252, 0.82);
+    border-bottom-color: rgba(248, 250, 252, 0.82);
+  }
+  :global(.aw-header.header-tone-white .lang-select-wrap:has(.aw-lang-select-input:focus-visible)) {
+    border-color: rgba(226, 232, 240, 0.58);
+    box-shadow:
+      0 0 0 3px rgba(248, 250, 252, 0.18),
+      0 16px 30px -20px rgba(2, 6, 23, 0.85),
+      inset 0 1px 0 rgba(255, 255, 255, 0.24);
+  }
+  :global(.aw-header.header-tone-white .aw-lang-select-input) {
+    color: #f8fafc;
+  }
+  :global(.aw-header.header-tone-white .aw-lang-select-input option) {
+    color: #0f172a;
+  }
+  :global(.aw-header.header-tone-white .aw-flag) {
+    border-color: rgba(226, 232, 240, 0.35);
+    box-shadow: 0 2px 8px rgba(2, 6, 23, 0.35);
   }
   :global(.brand-lausanne .aw-header.header-tone-light) {
     background: #fff;
@@ -421,12 +585,6 @@ const flagClasses: Record<string, string> = {
   :global(.brand-tonsiteweb .aw-header .dropdown-menu a:focus-visible) {
     background: rgba(255, 255, 255, 0.06);
     color: #e2e8f0 !important;
-  }
-  /* Language select: back to light pill for TonSiteWeb */
-  :global(.brand-tonsiteweb .aw-header .lang-select-wrap select) {
-    background: #ffffff;
-    color: #0f172a;
-    border-color: rgba(15, 23, 42, 0.15);
   }
   :global(.brand-tonsiteweb .aw-header .dropdown > button) {
     color: #f8fafc !important;
