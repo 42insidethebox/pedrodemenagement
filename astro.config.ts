@@ -17,6 +17,7 @@ export default defineConfig({
   adapter: vercel({
     mode: "serverless",
     runtime: "nodejs20.x",
+    edgeMiddleware: false,
   }),
   // prerender is typically disabled when using serverless output
   // prerender: true,
