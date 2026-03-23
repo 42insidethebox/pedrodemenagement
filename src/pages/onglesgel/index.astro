@@ -15,6 +15,7 @@ const metadata = {
 const { images, heroImage } = await getOgGalleryData();
 const galleryImages = images.slice(0, 9);
 const secondImage = images[1] ?? null;
+const lastGalleryImage = galleryImages[galleryImages.length - 1] ?? null;
 ---
 
 <Shell page="home" metadata={metadata}>
@@ -44,29 +45,29 @@ const secondImage = images[1] ?? null;
       </div>
 
       <div class="og-hero-media-pair">
-        {heroImage && (
+        {lastGalleryImage && (
           <figure class="og-hero-img og-hero-img-main">
             <Image
-              src={heroImage.src}
-              alt={ogContent.hero.imageAlt}
+              src={lastGalleryImage.src}
+              alt={lastGalleryImage.alt}
               loading="eager"
               widths={[600, 900, 1200]}
               sizes="(max-width: 900px) 100vw, 40vw"
               format="webp"
-              quality={88}
+              quality={85}
             />
           </figure>
         )}
-        {secondImage && (
+        {heroImage && (
           <figure class="og-hero-img og-hero-img-second">
             <Image
-              src={secondImage.src}
-              alt={secondImage.alt}
+              src={heroImage.src}
+              alt={ogContent.hero.imageAlt}
               loading="eager"
               widths={[400, 700]}
               sizes="25vw"
               format="webp"
-              quality={85}
+              quality={88}
             />
           </figure>
         )}
@@ -354,7 +355,7 @@ const secondImage = images[1] ?? null;
 
   .og-hero-media-pair {
     display: grid;
-    grid-template-columns: 1.6fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 0.75rem;
     align-items: end;
   }
@@ -371,7 +372,7 @@ const secondImage = images[1] ?? null;
     display: block;
   }
   .og-hero-img-main { aspect-ratio: 3/4; }
-  .og-hero-img-second { aspect-ratio: 2/3; }
+  .og-hero-img-second { aspect-ratio: 3/4; }
 
   /* ── INTRO ── */
   .og-intro {

@@ -66,6 +66,9 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   const isExostifHost =
     (resolved.source === 'host' && resolved.slug === 'exostif-coiffure') ||
     hostCandidates.some((host) => host.includes('exostif.ch'));
+  const isOnglesgelHost =
+    (resolved.source === 'host' && resolved.slug === 'onglesgel') ||
+    hostCandidates.some((host) => host.includes('onglesgel.ch'));
   const basePath = tenantBasePath(resolved);
   const shouldSkip = SKIP_PREFIXES.some((prefix) => url.pathname.startsWith(prefix));
   const headers = new Headers(context.request.headers);
@@ -135,6 +138,18 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   // Keep clean root URLs on Exostif host while internally serving tenant pages.
   if (isExostifHost && !shouldSkip && !url.pathname.startsWith('/exostif-coiffure')) {
     url.pathname = `/exostif-coiffure${url.pathname === '/' ? '' : url.pathname}`;
+  }
+
+  // Canonicalize prefixed onglesgel URLs to clean root paths.
+  if (isOnglesgelHost && url.pathname.startsWith('/onglesgel')) {
+    const stripped = url.pathname.replace(/^\/onglesgel/, '') || '/';
+    const target = new URL(`${stripped}${url.search}`, url);
+    return Response.redirect(target.toString(), 308);
+  }
+
+  // Keep clean root URLs on onglesgel host while internally serving tenant pages.
+  if (isOnglesgelHost && !shouldSkip && !url.pathname.startsWith('/onglesgel')) {
+    url.pathname = `/onglesgel${url.pathname === '/' ? '' : url.pathname}`;
   }
 
   // Hard redirect Atelier Mémoire host to its dedicated base path to avoid falling back to generic content
