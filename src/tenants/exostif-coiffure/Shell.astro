@@ -1,0 +1,317 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import type { MetaData } from '~/types';
+import { exostifCoiffureTheme } from './theme';
+import { exostifCoiffureConfig } from './config';
+
+type PageKey = 'home' | 'atelier' | 'services' | 'galerie' | 'contact';
+
+interface Props {
+  page?: PageKey;
+  metadata?: MetaData;
+}
+
+const { page = 'home', metadata = {} } = Astro.props as Props;
+
+const nav = [
+  { key: 'atelier', href: '/atelier', label: "L'Atelier" },
+  { key: 'services', href: '/services', label: 'Services' },
+  { key: 'galerie', href: '/galerie', label: 'Galerie' },
+  { key: 'contact', href: '/contact', label: 'Contact' },
+];
+
+const styleVars = {
+  '--ec-bg': exostifCoiffureTheme.colors.background,
+  '--ec-surface': exostifCoiffureTheme.colors.surface,
+  '--ec-text': exostifCoiffureTheme.colors.text,
+  '--ec-muted': exostifCoiffureTheme.colors.muted,
+  '--ec-accent': exostifCoiffureTheme.colors.accent,
+  '--ec-line': exostifCoiffureTheme.colors.line,
+  '--ec-dark': exostifCoiffureTheme.colors.dark,
+  '--ec-max': exostifCoiffureTheme.layout.maxWidth,
+  '--ec-gap': exostifCoiffureTheme.layout.sectionGap,
+  '--ec-font-heading': exostifCoiffureTheme.typography.heading,
+  '--ec-font-body': exostifCoiffureTheme.typography.body,
+};
+---
+
+<Layout metadata={metadata} brandKey={exostifCoiffureTheme.brandKey} styleVars={styleVars}>
+  <div class="ec-shell">
+
+    <!-- Top utility bar -->
+    <div class="ec-topbar">
+      <a href={exostifCoiffureConfig.telHref} class="ec-topbar-phone">{exostifCoiffureConfig.phoneIntlDisplay}</a>
+      <span class="ec-topbar-sep" aria-hidden="true">·</span>
+      <a href={`mailto:${exostifCoiffureConfig.email}`} class="ec-topbar-email">{exostifCoiffureConfig.email}</a>
+    </div>
+
+    <!-- Main header: large centered wordmark + nav below -->
+    <header class="ec-header">
+      <a class="ec-wordmark" href="/" aria-label="Exostif Coiffure — accueil">
+        EXOSTIF <em>Coiffure</em>
+      </a>
+      <nav class="ec-nav" aria-label="Navigation principale">
+        {nav.map((item) => (
+          <a
+            href={item.href}
+            class={item.key === page ? 'is-active' : ''}
+            aria-current={item.key === page ? 'page' : undefined}
+          >
+            {item.label}
+          </a>
+        ))}
+        <a class="ec-nav-cta" href={exostifCoiffureConfig.telHref}>
+          Réserver
+        </a>
+      </nav>
+    </header>
+
+    <main class="ec-main">
+      <slot />
+    </main>
+
+    <!-- Footer: 2-column, no embedded map -->
+    <footer class="ec-footer">
+      <div class="ec-footer-inner">
+        <div class="ec-footer-brand">
+          <p class="ec-footer-wordmark">EXOSTIF <em>Coiffure</em></p>
+          <p class="ec-footer-tagline">Salon de coiffure professionnel à Lausanne</p>
+          <div class="ec-footer-contact">
+            <a href={exostifCoiffureConfig.telHref}>{exostifCoiffureConfig.phone}</a>
+            <a href={`mailto:${exostifCoiffureConfig.email}`}>{exostifCoiffureConfig.email}</a>
+            <a href={exostifCoiffureConfig.mapLink} target="_blank" rel="noreferrer">Voir la carte →</a>
+          </div>
+        </div>
+        <div class="ec-footer-hours">
+          <p class="ec-footer-label">Horaires</p>
+          <ul>
+            <li><span>Lundi</span><span>10:00 – 19:00</span></li>
+            <li><span>Ma – Ve</span><span>09:00 – 19:00</span></li>
+            <li><span>Samedi</span><span>09:00 – 18:00</span></li>
+            <li><span>Dimanche</span><span>Fermé</span></li>
+          </ul>
+        </div>
+      </div>
+      <p class="ec-footer-legal">
+        © {new Date().getFullYear()} Exostif Coiffure — Lausanne
+      </p>
+    </footer>
+
+  </div>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@400;500;600&display=swap');
+
+    :global(body) {
+      background: var(--ec-bg);
+      color: var(--ec-text);
+      font-family: var(--ec-font-body);
+      letter-spacing: -0.01em;
+    }
+
+    .ec-shell {
+      min-height: 100vh;
+      background: var(--ec-bg);
+      color: var(--ec-text);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top utility bar */
+    .ec-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.6rem;
+      padding: 0.5rem 2rem;
+      background: var(--ec-dark);
+      font-size: 0.8rem;
+      letter-spacing: 0.04em;
+      border-bottom: 1px solid var(--ec-line);
+    }
+    .ec-topbar a {
+      color: var(--ec-muted);
+      text-decoration: none;
+      transition: color 140ms ease;
+    }
+    .ec-topbar a:hover {
+      color: var(--ec-text);
+    }
+    .ec-topbar-sep {
+      color: var(--ec-line);
+    }
+
+    /* Main header */
+    .ec-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: color-mix(in srgb, var(--ec-bg) 94%, transparent);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--ec-line);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.1rem 2rem 0.75rem;
+      gap: 0.65rem;
+    }
+
+    .ec-wordmark {
+      font-family: var(--ec-font-heading);
+      font-size: 1.6rem;
+      font-weight: 300;
+      letter-spacing: 0.22em;
+      text-decoration: none;
+      color: var(--ec-text);
+      text-transform: uppercase;
+    }
+    .ec-wordmark em {
+      font-style: italic;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      color: var(--ec-accent);
+      text-transform: none;
+    }
+
+    .ec-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.15rem;
+    }
+    .ec-nav a {
+      text-decoration: none;
+      color: var(--ec-muted);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.4rem 0.75rem;
+      border-radius: 4px;
+      transition: color 140ms ease, background 140ms ease;
+    }
+    .ec-nav a:hover {
+      color: var(--ec-text);
+      background: var(--ec-surface);
+    }
+    .ec-nav a.is-active {
+      color: var(--ec-accent);
+    }
+    .ec-nav-cta {
+      margin-left: 0.75rem;
+      padding: 0.4rem 1rem !important;
+      background: var(--ec-accent) !important;
+      color: var(--ec-dark) !important;
+      font-weight: 600 !important;
+      border-radius: 4px !important;
+    }
+    .ec-nav-cta:hover {
+      background: color-mix(in srgb, var(--ec-accent) 85%, #ffffff 15%) !important;
+    }
+
+    /* Main content */
+    .ec-main {
+      width: min(var(--ec-max), 100%);
+      max-width: calc(var(--ec-max) + 4rem);
+      margin: 0 auto;
+      padding: 3rem 2rem var(--ec-gap);
+      flex: 1;
+    }
+
+    /* Footer */
+    .ec-footer {
+      background: var(--ec-dark);
+      border-top: 1px solid var(--ec-line);
+      padding: 3rem 2rem 1.5rem;
+      margin-top: auto;
+    }
+
+    .ec-footer-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem 3rem;
+      max-width: calc(var(--ec-max) + 4rem);
+      margin: 0 auto 2rem;
+    }
+
+    .ec-footer-wordmark {
+      font-family: var(--ec-font-heading);
+      font-size: 1.25rem;
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ec-text);
+      margin: 0 0 0.35rem;
+    }
+    .ec-footer-wordmark em {
+      font-style: italic;
+      color: var(--ec-accent);
+      text-transform: none;
+      letter-spacing: 0.1em;
+    }
+
+    .ec-footer-tagline {
+      font-size: 0.85rem;
+      color: var(--ec-muted);
+      margin: 0 0 1rem;
+      letter-spacing: 0.02em;
+    }
+
+    .ec-footer-contact {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .ec-footer-contact a {
+      color: var(--ec-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 140ms ease;
+    }
+    .ec-footer-contact a:hover {
+      color: var(--ec-accent);
+    }
+
+    .ec-footer-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ec-accent);
+      margin: 0 0 0.6rem;
+    }
+
+    .ec-footer-hours ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 0.3rem;
+    }
+    .ec-footer-hours li {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      font-size: 0.9rem;
+      color: var(--ec-muted);
+    }
+
+    .ec-footer-legal {
+      max-width: calc(var(--ec-max) + 4rem);
+      margin: 0 auto;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--ec-line);
+      font-size: 0.8rem;
+      color: color-mix(in srgb, var(--ec-muted) 60%, transparent);
+      text-align: center;
+    }
+
+    @media (max-width: 760px) {
+      .ec-topbar { display: none; }
+      .ec-header { padding: 0.9rem 1.25rem 0.6rem; }
+      .ec-wordmark { font-size: 1.25rem; }
+      .ec-nav { flex-wrap: wrap; justify-content: center; gap: 0; }
+      .ec-nav a { font-size: 0.75rem; padding: 0.35rem 0.6rem; }
+      .ec-nav-cta { margin-left: 0.4rem !important; }
+      .ec-main { padding: 2rem 1.25rem calc(var(--ec-gap) * 0.85); }
+      .ec-footer-inner { grid-template-columns: 1fr; gap: 1.5rem; }
+    }
+  </style>
+</Layout>

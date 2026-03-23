@@ -63,6 +63,9 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   const isToloHost =
     (resolved.source === 'host' && resolved.slug === 'tolo-coiffure') ||
     hostCandidates.some((host) => host.includes('tolocoiffure.ch'));
+  const isExostifHost =
+    (resolved.source === 'host' && resolved.slug === 'exostif-coiffure') ||
+    hostCandidates.some((host) => host.includes('exostif.ch'));
   const basePath = tenantBasePath(resolved);
   const shouldSkip = SKIP_PREFIXES.some((prefix) => url.pathname.startsWith(prefix));
   const headers = new Headers(context.request.headers);
@@ -120,6 +123,18 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   // Keep clean root URLs on Tolo host while internally serving tenant pages.
   if (isToloHost && !shouldSkip && !url.pathname.startsWith('/tolo-coiffure')) {
     url.pathname = `/tolo-coiffure${url.pathname === '/' ? '' : url.pathname}`;
+  }
+
+  // Canonicalize prefixed Exostif URLs to clean root paths.
+  if (url.pathname.startsWith('/exostif-coiffure')) {
+    const stripped = url.pathname.replace(/^\/exostif-coiffure/, '') || '/';
+    const target = new URL(`${stripped}${url.search}`, url);
+    return Response.redirect(target.toString(), 308);
+  }
+
+  // Keep clean root URLs on Exostif host while internally serving tenant pages.
+  if (isExostifHost && !shouldSkip && !url.pathname.startsWith('/exostif-coiffure')) {
+    url.pathname = `/exostif-coiffure${url.pathname === '/' ? '' : url.pathname}`;
   }
 
   // Hard redirect Atelier Mémoire host to its dedicated base path to avoid falling back to generic content

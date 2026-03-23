@@ -1,0 +1,240 @@
+---
+import Shell from '~/tenants/onglesgel/Shell.astro';
+import { onglesGelConfig } from '~/tenants/onglesgel/config';
+
+const metadata = {
+  title: 'Contact — Ongles Gel Lausanne',
+  description: 'Contactez Ongles Gel à Lausanne pour réserver ou poser vos questions.',
+  ignoreTitleTemplate: true,
+};
+---
+
+<Shell page="contact" metadata={metadata}>
+  <div class="og-contact">
+
+    <header class="og-contact-header">
+      <p class="og-label">Contact</p>
+      <h1 class="og-contact-title">Prendre rendez-vous</h1>
+      <p class="og-contact-sub">La meilleure façon de réserver est via WhatsApp ou le lien de réservation en ligne — réponse rapide garantie.</p>
+    </header>
+
+    <div class="og-contact-grid">
+
+      <div class="og-contact-block">
+        <p class="og-block-label">Réservation en ligne</p>
+        <p class="og-block-desc">Choisissez votre créneau directement dans le calendrier.</p>
+        <a class="og-btn og-btn-primary og-btn-lg" href={onglesGelConfig.bookingUrl} target="_blank" rel="noreferrer">
+          Réserver un créneau
+        </a>
+      </div>
+
+      <div class="og-contact-block">
+        <p class="og-block-label">WhatsApp</p>
+        <p class="og-block-desc">Pour une question rapide, un changement ou une demande personnalisée.</p>
+        <a class="og-btn og-btn-ghost og-btn-lg" href={onglesGelConfig.whatsappUrl} target="_blank" rel="noreferrer">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M20.52 3.48A11.93 11.93 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.11.55 4.17 1.6 5.99L0 24l6.18-1.62A11.93 11.93 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.21-3.48-8.52zm-8.52 18.48a9.9 9.9 0 0 1-5.04-1.37l-.36-.21-3.67.96.98-3.58-.23-.37A9.9 9.9 0 0 1 2.1 12c0-5.46 4.44-9.9 9.9-9.9a9.9 9.9 0 0 1 0 19.8zm5.44-7.4c-.3-.15-1.77-.87-2.04-.97s-.47-.15-.67.15-.77.97-.94 1.17-.35.22-.64.07a8.12 8.12 0 0 1-2.39-1.47 8.98 8.98 0 0 1-1.65-2.05c-.17-.3-.02-.46.13-.6.13-.13.3-.35.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52s-.67-1.62-.92-2.22c-.24-.58-.48-.5-.67-.51h-.57c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.48 1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.09 4.49.71.31 1.27.49 1.7.63.72.23 1.37.2 1.89.12.58-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/>
+          </svg>
+          Écrire sur WhatsApp
+        </a>
+      </div>
+
+      <div class="og-contact-block og-contact-info">
+        <p class="og-block-label">Adresse</p>
+        <address class="og-address">
+          <strong>Ongles Gel</strong><br />
+          {onglesGelConfig.address}<br />
+          <a href={onglesGelConfig.mapLink} target="_blank" rel="noreferrer" class="og-map-link">
+            Ouvrir dans Maps →
+          </a>
+        </address>
+      </div>
+
+      <div class="og-contact-block og-contact-hours">
+        <p class="og-block-label">Horaires d'ouverture</p>
+        <ul class="og-hours">
+          <li><span>Lundi</span><span class="og-closed">Fermé</span></li>
+          <li><span>Mardi – Vendredi</span><span>09:00 – 19:00</span></li>
+          <li><span>Samedi</span><span>09:00 – 17:00</span></li>
+          <li><span>Dimanche</span><span class="og-closed">Fermé</span></li>
+        </ul>
+      </div>
+
+      <div class="og-contact-block og-contact-email">
+        <p class="og-block-label">E-mail</p>
+        <a href={`mailto:${onglesGelConfig.email}`} class="og-email-link">{onglesGelConfig.email}</a>
+        <p class="og-block-note">Pour les demandes non urgentes uniquement. Réponse sous 48h.</p>
+      </div>
+
+    </div>
+
+  </div>
+</Shell>
+
+<style>
+  .og-contact {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: clamp(3rem, 6vw, 5rem) 2.5rem clamp(4rem, 8vw, 7rem);
+    display: grid;
+    gap: 3rem;
+  }
+
+  .og-label {
+    font-family: var(--og-heading);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--og-accent);
+  }
+
+  .og-contact-header {
+    display: grid;
+    gap: 0.75rem;
+    border-bottom: 1px solid var(--og-line);
+    padding-bottom: 2rem;
+  }
+
+  .og-contact-title {
+    font-family: var(--og-heading);
+    font-size: clamp(2.4rem, 4vw, 3.6rem);
+    font-weight: 300;
+    font-style: italic;
+    letter-spacing: 0.01em;
+    margin: 0;
+    color: var(--og-text);
+  }
+
+  .og-contact-sub {
+    color: var(--og-muted);
+    font-size: 0.95rem;
+    line-height: 1.65;
+    max-width: 480px;
+  }
+
+  .og-contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--og-line);
+    border: 1px solid var(--og-line);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .og-contact-block {
+    display: grid;
+    gap: 0.75rem;
+    padding: 2rem;
+    background: var(--og-bg);
+    align-content: start;
+  }
+
+  .og-block-label {
+    font-family: var(--og-body);
+    font-size: 0.67rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--og-accent);
+    margin: 0;
+  }
+
+  .og-block-desc {
+    color: var(--og-muted);
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .og-block-note {
+    color: var(--og-muted);
+    font-size: 0.82rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .og-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 1rem;
+    border-radius: 999px;
+    font-family: var(--og-body);
+    font-size: 0.855rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background 140ms, border-color 140ms;
+    justify-self: start;
+  }
+  .og-btn-lg { padding: 0.6rem 1.4rem; font-size: 0.9rem; }
+  .og-btn-primary {
+    background: var(--og-accent);
+    color: #fff;
+    border: 1.5px solid var(--og-accent);
+  }
+  .og-btn-primary:hover { background: color-mix(in srgb, var(--og-accent) 88%, #1A1612 12%); }
+  .og-btn-ghost {
+    background: transparent;
+    color: var(--og-text);
+    border: 1.5px solid var(--og-line);
+  }
+  .og-btn-ghost:hover {
+    border-color: color-mix(in srgb, var(--og-text) 25%, transparent);
+    background: color-mix(in srgb, var(--og-text) 4%, transparent);
+  }
+
+  .og-address {
+    font-style: normal;
+    color: var(--og-muted);
+    font-size: 0.93rem;
+    line-height: 1.75;
+  }
+  .og-address strong { color: var(--og-text); font-weight: 600; }
+
+  .og-map-link {
+    color: var(--og-accent);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: opacity 130ms;
+    display: inline-block;
+    margin-top: 0.25rem;
+  }
+  .og-map-link:hover { opacity: 0.7; }
+
+  .og-hours {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.2rem;
+  }
+  .og-hours li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--og-line);
+    font-size: 0.9rem;
+    color: var(--og-muted);
+  }
+  .og-hours li:last-child { border-bottom: none; }
+  .og-closed { color: color-mix(in srgb, var(--og-muted) 60%, transparent); }
+
+  .og-email-link {
+    color: var(--og-text);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.92rem;
+    transition: color 130ms;
+  }
+  .og-email-link:hover { color: var(--og-accent); }
+
+  @media (max-width: 640px) {
+    .og-contact { padding: 2rem 1.25rem 4rem; }
+    .og-contact-grid { grid-template-columns: 1fr; }
+  }
+</style>

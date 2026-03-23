@@ -1,0 +1,206 @@
+---
+import Shell from '~/tenants/exostif-coiffure/Shell.astro';
+import { exostifServicePanels } from '~/tenants/exostif-coiffure/services';
+import { exostifCoiffureConfig } from '~/tenants/exostif-coiffure/config';
+
+const metadata = {
+  title: 'Services & Tarifs — Exostif Coiffure Lausanne',
+  description: 'Grille complète des prestations et tarifs en CHF chez Exostif Coiffure à Lausanne.',
+  ignoreTitleTemplate: true,
+};
+
+const panels = [exostifServicePanels.femme, exostifServicePanels.homme];
+---
+
+<Shell page="services" metadata={metadata}>
+
+  <header class="ec-services-header">
+    <p class="ec-overline">Prestations</p>
+    <h1 class="ec-title">Services & Tarifs</h1>
+    <p class="ec-sub">Tarifs officiels en CHF — mis à jour régulièrement.</p>
+    <a class="ec-book-cta" href={exostifCoiffureConfig.telHref}>
+      Réserver par téléphone — {exostifCoiffureConfig.phone}
+    </a>
+  </header>
+
+  {panels.map((panel) => (
+    <section class="ec-panel">
+      <h2 class="ec-panel-title">
+        <span class="ec-panel-num">{panel.title}</span>
+      </h2>
+      <div class="ec-categories">
+        {panel.categories.map((cat) => (
+          <div class="ec-category">
+            <h3 class="ec-cat-title">{cat.title}</h3>
+            <ul class="ec-price-list">
+              {cat.items.map((item) => (
+                <li>
+                  <span class="ec-item-name">{item.name}</span>
+                  <span class="ec-dots"></span>
+                  <span class="ec-item-price">{item.price}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+  ))}
+
+  <div class="ec-footer-cta">
+    <p class="ec-footer-cta-text">Questions ou informations ? Appelez-nous directement.</p>
+    <a class="ec-btn-primary" href={exostifCoiffureConfig.telHref}>{exostifCoiffureConfig.phone}</a>
+  </div>
+
+</Shell>
+
+<style>
+  .ec-services-header {
+    padding: 2rem 0 3rem;
+    border-bottom: 1px solid var(--ec-line);
+    margin-bottom: 3rem;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .ec-overline {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ec-accent);
+  }
+  .ec-title {
+    font-family: var(--ec-font-heading);
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    margin: 0;
+    color: var(--ec-text);
+  }
+  .ec-sub {
+    color: var(--ec-muted);
+    font-size: 0.95rem;
+    margin: 0;
+  }
+  .ec-book-cta {
+    font-size: 0.85rem;
+    color: var(--ec-accent);
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    margin-top: 0.5rem;
+    width: fit-content;
+  }
+  .ec-book-cta:hover { text-decoration: underline; }
+
+  /* Panel: one per gender */
+  .ec-panel {
+    margin-bottom: 4rem;
+    padding-bottom: 4rem;
+    border-bottom: 1px solid var(--ec-line);
+  }
+  .ec-panel:last-of-type { border-bottom: none; }
+  .ec-panel-title {
+    font-family: var(--ec-font-heading);
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--ec-text);
+    margin: 0 0 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--ec-accent) 35%, transparent);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .ec-panel-num {
+    color: var(--ec-accent);
+  }
+
+  /* Category grid: 2-3 cols */
+  .ec-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem 3rem;
+  }
+  .ec-cat-title {
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ec-accent);
+    margin: 0 0 0.85rem;
+  }
+  .ec-price-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0;
+  }
+  .ec-price-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.3rem;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--ec-line) 60%, transparent);
+    font-size: 0.9rem;
+  }
+  .ec-price-list li:last-child { border-bottom: none; }
+  .ec-item-name {
+    color: var(--ec-text);
+    white-space: nowrap;
+    font-size: 0.88rem;
+  }
+  .ec-dots {
+    flex: 1;
+    border-bottom: 1px dotted color-mix(in srgb, var(--ec-muted) 30%, transparent);
+    min-width: 0.75rem;
+    margin-bottom: 3px;
+  }
+  .ec-item-price {
+    white-space: nowrap;
+    font-weight: 600;
+    color: var(--ec-accent);
+    font-size: 0.9rem;
+  }
+
+  /* Footer CTA */
+  .ec-footer-cta {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    padding: 2rem 2.5rem;
+    background: var(--ec-surface);
+    border: 1px solid var(--ec-line);
+    border-radius: 6px;
+    margin-bottom: var(--ec-gap);
+  }
+  .ec-footer-cta-text {
+    color: var(--ec-muted);
+    font-size: 0.95rem;
+    margin: 0;
+    flex: 1;
+    min-width: 200px;
+  }
+  .ec-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.65rem 1.4rem;
+    background: var(--ec-accent);
+    color: var(--ec-dark);
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    border-radius: 4px;
+    white-space: nowrap;
+    transition: background 160ms ease;
+  }
+  .ec-btn-primary:hover {
+    background: color-mix(in srgb, var(--ec-accent) 85%, #ffffff 15%);
+  }
+
+  @media (max-width: 640px) {
+    .ec-categories { grid-template-columns: 1fr; gap: 1.5rem; }
+    .ec-footer-cta { flex-direction: column; align-items: flex-start; }
+  }
+</style>

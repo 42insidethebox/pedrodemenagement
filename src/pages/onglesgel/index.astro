@@ -1,0 +1,661 @@
+---
+import { Image } from 'astro:assets';
+import Shell from '~/tenants/onglesgel/Shell.astro';
+import { ogContent } from '~/tenants/onglesgel/content';
+import { ogServices } from '~/tenants/onglesgel/services';
+import { getOgGalleryData } from '~/tenants/onglesgel/gallery';
+import { onglesGelConfig } from '~/tenants/onglesgel/config';
+
+const metadata = {
+  title: 'Ongles Gel Lausanne — Pose, extensions & nail art',
+  description: 'Studio de pose gel, extensions et nail art à Lausanne. Résultats durables, ambiance zen, sur mesure.',
+  ignoreTitleTemplate: true,
+};
+
+const { images, heroImage } = await getOgGalleryData();
+const galleryImages = images.slice(0, 9);
+const secondImage = images[1] ?? null;
+---
+
+<Shell page="home" metadata={metadata}>
+
+  <!-- HERO -->
+  <section class="og-hero">
+    <div class="og-hero-content">
+      <div class="og-hero-text">
+        <p class="og-eyebrow">{ogContent.hero.eyebrow}</p>
+        <h1 class="og-hero-title">
+          {ogContent.hero.title.split('\n').map((line) => (
+            <span>{line}</span>
+          ))}
+        </h1>
+        <p class="og-hero-sub">{ogContent.hero.subtitle}</p>
+        <div class="og-actions">
+          <a class="og-btn og-btn-primary og-btn-lg" href={onglesGelConfig.bookingUrl} target="_blank" rel="noreferrer">
+            {ogContent.hero.cta}
+          </a>
+          <a class="og-btn og-btn-ghost og-btn-lg" href={onglesGelConfig.whatsappUrl} target="_blank" rel="noreferrer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M20.52 3.48A11.93 11.93 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.11.55 4.17 1.6 5.99L0 24l6.18-1.62A11.93 11.93 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.21-3.48-8.52zm-8.52 18.48a9.9 9.9 0 0 1-5.04-1.37l-.36-.21-3.67.96.98-3.58-.23-.37A9.9 9.9 0 0 1 2.1 12c0-5.46 4.44-9.9 9.9-9.9a9.9 9.9 0 0 1 0 19.8zm5.44-7.4c-.3-.15-1.77-.87-2.04-.97s-.47-.15-.67.15-.77.97-.94 1.17-.35.22-.64.07a8.12 8.12 0 0 1-2.39-1.47 8.98 8.98 0 0 1-1.65-2.05c-.17-.3-.02-.46.13-.6.13-.13.3-.35.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52s-.67-1.62-.92-2.22c-.24-.58-.48-.5-.67-.51h-.57c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.48 1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.09 4.49.71.31 1.27.49 1.7.63.72.23 1.37.2 1.89.12.58-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/>
+            </svg>
+            WhatsApp
+          </a>
+        </div>
+      </div>
+
+      <div class="og-hero-media-pair">
+        {heroImage && (
+          <figure class="og-hero-img og-hero-img-main">
+            <Image
+              src={heroImage.src}
+              alt={ogContent.hero.imageAlt}
+              loading="eager"
+              widths={[600, 900, 1200]}
+              sizes="(max-width: 900px) 100vw, 40vw"
+              format="webp"
+              quality={88}
+            />
+          </figure>
+        )}
+        {secondImage && (
+          <figure class="og-hero-img og-hero-img-second">
+            <Image
+              src={secondImage.src}
+              alt={secondImage.alt}
+              loading="eager"
+              widths={[400, 700]}
+              sizes="25vw"
+              format="webp"
+              quality={85}
+            />
+          </figure>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <section class="og-wrap og-intro">
+    <div class="og-intro-grid">
+      <div class="og-intro-left">
+        <p class="og-label">{ogContent.intro.kicker}</p>
+        <h2 class="og-intro-title">{ogContent.intro.title}</h2>
+      </div>
+      <div class="og-intro-right">
+        {ogContent.intro.body.map((p) => <p>{p}</p>)}
+        <a class="og-text-link" href={onglesGelConfig.bookingUrl} target="_blank" rel="noreferrer">
+          Prendre rendez-vous →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="og-wrap og-services" id="services">
+    <div class="og-section-head">
+      <p class="og-label">Tarifs</p>
+      <h2 class="og-section-title">Nos prestations</h2>
+    </div>
+    <div class="og-service-table">
+      {ogServices.map((group) => (
+        <div class="og-service-group">
+          <div class="og-group-head">
+            <span class="og-group-num">{group.number}</span>
+            <h3 class="og-group-name">{group.category}</h3>
+          </div>
+          <ul class="og-service-list">
+            {group.items.map((item) => (
+              <li>
+                <div class="og-svc-text">
+                  <span class="og-svc-name">{item.name}</span>
+                  {item.detail && <span class="og-svc-detail">{item.detail}</span>}
+                </div>
+                <span class="og-svc-price">{item.price}</span>
+              </li>
+            ))}
+          </ul>
+          <a class="og-btn og-btn-outline" href={onglesGelConfig.bookingUrl} target="_blank" rel="noreferrer">
+            Réserver
+          </a>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  {galleryImages.length > 0 && (
+    <section class="og-gallery-section">
+      <div class="og-wrap og-section-head">
+        <p class="og-label">{ogContent.gallery.kicker}</p>
+        <h2 class="og-section-title">{ogContent.gallery.title}</h2>
+      </div>
+      <div class="og-gallery">
+        {galleryImages.map((item, i) => (
+          <figure
+            class={`og-gitem ${i === 0 ? 'og-gitem-wide' : i === 4 ? 'og-gitem-tall' : ''}`}
+          >
+            <Image
+              src={item.src}
+              alt={item.alt}
+              loading="lazy"
+              widths={[500, 800, 1200]}
+              sizes="(max-width: 640px) 100vw, 33vw"
+              format="webp"
+              quality={84}
+            />
+          </figure>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- LOCATION -->
+  <section class="og-wrap og-location">
+    <div class="og-location-grid">
+      <div class="og-location-text">
+        <p class="og-label">{ogContent.location.kicker}</p>
+        <h2 class="og-location-title">{ogContent.location.heading}</h2>
+        <p class="og-location-sub">{ogContent.location.subheading}</p>
+        <div class="og-actions">
+          <a class="og-btn og-btn-primary" href={onglesGelConfig.bookingUrl} target="_blank" rel="noreferrer">
+            Réserver
+          </a>
+          <a class="og-btn og-btn-ghost" href={onglesGelConfig.mapLink} target="_blank" rel="noreferrer">
+            Voir la carte →
+          </a>
+        </div>
+      </div>
+      <div class="og-location-aside">
+        <p class="og-address-line">{onglesGelConfig.address}</p>
+        <ul class="og-hours-list">
+          <li><span>Lun</span><span>Fermé</span></li>
+          <li><span>Mar–Ven</span><span>09:00 – 19:00</span></li>
+          <li><span>Samedi</span><span>09:00 – 17:00</span></li>
+          <li><span>Dimanche</span><span>Fermé</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="og-wrap og-testimonials">
+    <div class="og-section-head">
+      <p class="og-label">Avis clients</p>
+      <h2 class="og-section-title">Ce qu'elles disent.</h2>
+    </div>
+    <div class="og-reviews">
+      {ogContent.testimonials.map((item) => (
+        <a class="og-review" href={item.link} target="_blank" rel="noreferrer">
+          <div class="og-review-stars">{'★'.repeat(item.stars)}</div>
+          <p class="og-review-quote">"{item.quote}"</p>
+          <div class="og-review-meta">
+            <cite>{item.author}</cite>
+            <span>{item.when}</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+</Shell>
+
+<style>
+  /* ── SHARED ── */
+  .og-wrap {
+    max-width: var(--og-max);
+    margin: 0 auto;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+
+  .og-label {
+    font-family: var(--og-heading);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--og-accent);
+  }
+
+  .og-section-head {
+    display: grid;
+    gap: 0.45rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .og-section-title {
+    font-family: var(--og-heading);
+    font-size: clamp(1.9rem, 2.8vw, 2.6rem);
+    font-weight: 300;
+    font-style: italic;
+    letter-spacing: 0.01em;
+    margin: 0;
+    color: var(--og-text);
+  }
+
+  .og-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 1rem;
+    border-radius: 999px;
+    font-family: var(--og-body);
+    font-size: 0.855rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background 140ms, border-color 140ms, color 140ms;
+  }
+  .og-btn-lg { padding: 0.6rem 1.4rem; font-size: 0.92rem; }
+
+  .og-btn-primary {
+    background: var(--og-accent);
+    color: #fff;
+    border: 1.5px solid var(--og-accent);
+  }
+  .og-btn-primary:hover {
+    background: color-mix(in srgb, var(--og-accent) 88%, #1A1612 12%);
+  }
+
+  .og-btn-ghost {
+    background: transparent;
+    color: var(--og-text);
+    border: 1.5px solid var(--og-line);
+  }
+  .og-btn-ghost:hover {
+    border-color: color-mix(in srgb, var(--og-text) 25%, transparent);
+    background: color-mix(in srgb, var(--og-text) 4%, transparent);
+  }
+
+  .og-btn-outline {
+    background: transparent;
+    color: var(--og-accent);
+    border: 1.5px solid var(--og-blush);
+    font-size: 0.82rem;
+    padding: 0.4rem 0.9rem;
+  }
+  .og-btn-outline:hover {
+    background: var(--og-blush);
+  }
+
+  .og-actions {
+    display: flex;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .og-text-link {
+    color: var(--og-accent);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.01em;
+    margin-top: 0.5rem;
+    display: inline-block;
+    transition: opacity 130ms;
+  }
+  .og-text-link:hover { opacity: 0.7; }
+
+  /* ── HERO ── */
+  .og-hero {
+    border-bottom: 1px solid var(--og-line);
+    background: var(--og-bg);
+    overflow: hidden;
+  }
+  .og-hero-content {
+    max-width: var(--og-max);
+    margin: 0 auto;
+    padding: clamp(3rem, 7vw, 5.5rem) 2.5rem clamp(3rem, 6vw, 4.5rem);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem 4rem;
+    align-items: center;
+  }
+
+  .og-hero-text {
+    display: grid;
+    gap: 1.35rem;
+  }
+
+  .og-eyebrow {
+    font-family: var(--og-heading);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--og-accent);
+  }
+
+  .og-hero-title {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    font-family: var(--og-heading);
+    font-size: clamp(3rem, 5.5vw, 5rem);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.1;
+    letter-spacing: 0.01em;
+    color: var(--og-text);
+  }
+  .og-hero-title span:nth-child(2) {
+    color: var(--og-accent);
+    font-style: normal;
+    font-weight: 400;
+  }
+
+  .og-hero-sub {
+    color: var(--og-muted);
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 340px;
+  }
+
+  .og-hero-media-pair {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 0.75rem;
+    align-items: end;
+  }
+  .og-hero-img {
+    margin: 0;
+    overflow: hidden;
+    border-radius: 12px;
+    background: var(--og-surface);
+  }
+  .og-hero-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .og-hero-img-main { aspect-ratio: 3/4; }
+  .og-hero-img-second { aspect-ratio: 2/3; }
+
+  /* ── INTRO ── */
+  .og-intro {
+    padding-top: var(--og-gap);
+    padding-bottom: var(--og-gap);
+  }
+  .og-intro-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 2rem 5rem;
+    border-top: 1px solid var(--og-line);
+    padding-top: 2.5rem;
+    align-items: start;
+  }
+  .og-intro-left {
+    display: grid;
+    gap: 0.75rem;
+    position: sticky;
+    top: 80px;
+  }
+  .og-intro-title {
+    font-family: var(--og-heading);
+    font-size: clamp(2rem, 3vw, 2.8rem);
+    font-weight: 300;
+    font-style: italic;
+    letter-spacing: 0.01em;
+    line-height: 1.15;
+    margin: 0;
+  }
+  .og-intro-right {
+    display: grid;
+    gap: 1rem;
+    color: var(--og-muted);
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  /* ── SERVICES ── */
+  .og-services { padding-bottom: var(--og-gap); }
+
+  .og-service-table {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--og-line);
+    border: 1px solid var(--og-line);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .og-service-group {
+    display: grid;
+    gap: 1.1rem;
+    padding: 1.75rem 1.6rem;
+    background: var(--og-bg);
+    align-content: start;
+  }
+  .og-service-group:hover { background: var(--og-surface); }
+
+  .og-group-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--og-line);
+  }
+  .og-group-num {
+    font-family: var(--og-heading);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--og-accent);
+  }
+  .og-group-name {
+    font-family: var(--og-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0;
+    color: var(--og-text);
+  }
+
+  .og-service-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0;
+  }
+  .og-service-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--og-line);
+  }
+  .og-service-list li:last-child { border-bottom: none; }
+  .og-svc-text { display: grid; gap: 0.1rem; }
+  .og-svc-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--og-text);
+  }
+  .og-svc-detail {
+    font-size: 0.78rem;
+    color: var(--og-muted);
+  }
+  .og-svc-price {
+    font-family: var(--og-heading);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--og-accent);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* ── GALLERY ── */
+  .og-gallery-section { padding-bottom: var(--og-gap); }
+  .og-gallery-section .og-wrap { margin-bottom: 1.5rem; }
+
+  .og-gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    padding: 0 2.5rem;
+    max-width: calc(var(--og-max) + 5rem);
+    margin: 0 auto;
+  }
+  .og-gitem {
+    overflow: hidden;
+    border-radius: 8px;
+    background: var(--og-surface);
+    margin: 0;
+    aspect-ratio: 3/4;
+  }
+  .og-gitem img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 500ms ease;
+  }
+  .og-gitem:hover img { transform: scale(1.03); }
+  .og-gitem-wide {
+    grid-column: span 2;
+    aspect-ratio: 3/2;
+  }
+  .og-gitem-tall {
+    grid-row: span 2;
+    aspect-ratio: 2/3;
+  }
+
+  /* ── LOCATION ── */
+  .og-location {
+    padding-top: 0;
+    padding-bottom: var(--og-gap);
+  }
+  .og-location-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem 5rem;
+    align-items: start;
+    padding: 3rem;
+    border-radius: 16px;
+    background: var(--og-surface);
+    border: 1px solid var(--og-line);
+  }
+  .og-location-text { display: grid; gap: 1rem; }
+  .og-location-title {
+    font-family: var(--og-heading);
+    font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin: 0;
+  }
+  .og-location-sub {
+    color: var(--og-muted);
+    font-size: 0.97rem;
+    line-height: 1.6;
+    max-width: 380px;
+  }
+
+  .og-location-aside {
+    display: grid;
+    gap: 1.25rem;
+    padding-top: 0.5rem;
+  }
+  .og-address-line {
+    font-size: 0.93rem;
+    color: var(--og-muted);
+    line-height: 1.5;
+  }
+  .og-hours-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.3rem;
+    font-size: 0.9rem;
+    color: var(--og-muted);
+  }
+  .og-hours-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.35rem 0;
+    border-bottom: 1px solid var(--og-line);
+  }
+  .og-hours-list li:last-child { border-bottom: none; }
+
+  /* ── TESTIMONIALS ── */
+  .og-testimonials { padding-bottom: var(--og-gap); }
+  .og-reviews {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--og-line);
+    border: 1px solid var(--og-line);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .og-review {
+    display: grid;
+    gap: 0.85rem;
+    padding: 1.75rem 1.5rem;
+    background: var(--og-bg);
+    text-decoration: none;
+    color: inherit;
+    align-content: start;
+    transition: background 140ms;
+  }
+  .og-review:hover { background: var(--og-surface); }
+  .og-review-stars {
+    color: var(--og-accent);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+  }
+  .og-review-quote {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--og-text);
+    margin: 0;
+  }
+  .og-review-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--og-line);
+  }
+  .og-review-meta cite {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--og-text);
+  }
+  .og-review-meta span {
+    font-size: 0.78rem;
+    color: var(--og-muted);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1000px) {
+    .og-hero-content { grid-template-columns: 1fr; }
+    .og-hero-media-pair { max-width: 540px; }
+    .og-intro-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    .og-intro-left { position: static; }
+    .og-location-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .og-reviews { grid-template-columns: 1fr; }
+    .og-service-table { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 820px) {
+    .og-gallery { grid-template-columns: repeat(2, 1fr); padding: 0 1.5rem; }
+    .og-gitem-wide { grid-column: span 2; }
+    .og-gitem-tall { grid-row: unset; }
+  }
+
+  @media (max-width: 640px) {
+    .og-wrap { padding-left: 1.25rem; padding-right: 1.25rem; }
+    .og-hero-content { padding: 2.5rem 1.25rem 2rem; }
+    .og-gallery { padding: 0 1.25rem; grid-template-columns: repeat(2, 1fr); }
+  }
+</style>

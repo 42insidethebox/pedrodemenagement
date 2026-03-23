@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la \"/Users/pedroribeiro/iCloud Drive \\(Archive\\)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/astro_pedrodemenagement/src/tenants/tolo-coiffure/\")",
+      "Bash(ls -la \"/Users/pedroribeiro/iCloud Drive \\(Archive\\)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/astro_pedrodemenagement/src/tenants/maison-cortes/\")",
+      "Bash(find \"/Users/pedroribeiro/iCloud Drive \\(Archive\\)/Documents/Coding/JS/monwebsite_factory/tonwebsite_ch/astro_pedrodemenagement/src/tenants\" -type f)"
+    ]
+  }
+}

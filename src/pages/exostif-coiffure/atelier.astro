@@ -1,0 +1,282 @@
+---
+import { Image } from 'astro:assets';
+import Shell from '~/tenants/exostif-coiffure/Shell.astro';
+import { exostifCoiffureConfig } from '~/tenants/exostif-coiffure/config';
+import { getExostifGalleryData } from '~/tenants/exostif-coiffure/gallery';
+
+const metadata = {
+  title: "L'Atelier — Exostif Coiffure Lausanne",
+  description:
+    "Découvrez l'atelier Exostif Coiffure à Lausanne : philosophie de soin, techniques maîtrisées et engagement pour la qualité.",
+  ignoreTitleTemplate: true,
+};
+
+const { heroImage, atelierInteriorImage, atelierDetailImage } = await getExostifGalleryData();
+const mainImage = atelierInteriorImage || heroImage;
+const secondImage = atelierDetailImage || heroImage;
+---
+
+<Shell page="atelier" metadata={metadata}>
+
+  <!-- Editorial opening: large serif statement -->
+  <section class="ec-opening">
+    <p class="ec-overline">L'Atelier</p>
+    <h1 class="ec-statement">
+      Le soin du geste,<br/>
+      <em>la précision du résultat.</em>
+    </h1>
+  </section>
+
+  <!-- Full-width image -->
+  {mainImage && (
+    <figure class="ec-fullwidth-image">
+      <Image
+        src={mainImage.src}
+        alt="Salon Exostif Coiffure — Lausanne"
+        loading="eager"
+        widths={[900, 1400, 1920]}
+        sizes="100vw"
+        format="webp"
+        quality={82}
+      />
+    </figure>
+  )}
+
+  <!-- Lead paragraph -->
+  <section class="ec-lead-section">
+    <p class="ec-lead-text">
+      Chaque client est accueilli avec attention. Nous prenons le temps d'écouter vos envies,
+      d'analyser votre cheveu et de construire une prestation adaptée — du diagnostic à la finition.
+    </p>
+  </section>
+
+  <!-- Pull quote -->
+  <blockquote class="ec-pullquote">
+    <p>"Un salon reconnu pour la qualité de son service — 4.6 / 5 sur 178 avis Google."</p>
+  </blockquote>
+
+  <!-- Two text blocks + image -->
+  <section class="ec-split-section">
+    <div class="ec-split-text">
+      <div class="ec-text-block">
+        <p class="ec-block-label">Techniques</p>
+        <p>
+          Coupes structurées, colorations précises, balayages maîtrisés et soins capillaires
+          adaptés à chaque texture. Chaque prestation est réalisée avec soin et un œil constant
+          sur le résultat final.
+        </p>
+      </div>
+      <div class="ec-text-block">
+        <p class="ec-block-label">Engagement</p>
+        <p>
+          La santé du cheveu guide chaque choix : produits sélectionnés, gestes protecteurs,
+          délai maîtrisé. L'objectif est un résultat durable et naturel, sans compromis.
+        </p>
+      </div>
+      <a class="ec-split-cta" href={exostifCoiffureConfig.telHref}>
+        Appeler pour réserver — {exostifCoiffureConfig.phone}
+      </a>
+    </div>
+    {secondImage && (
+      <figure class="ec-split-image">
+        <Image
+          src={secondImage.src}
+          alt="Détail de coiffure — Exostif Coiffure"
+          loading="lazy"
+          widths={[600, 1000]}
+          sizes="(max-width: 780px) 100vw, 50vw"
+          format="webp"
+          quality={80}
+        />
+      </figure>
+    )}
+  </section>
+
+  <!-- Rating strip -->
+  <section class="ec-rating-strip">
+    <div class="ec-rating-inner">
+      <p class="ec-rating-stars">★★★★★</p>
+      <p class="ec-rating-text">
+        <strong>4.6 / 5</strong> — 178 avis clients sur Google
+      </p>
+      <a class="ec-rating-link" href={exostifCoiffureConfig.googleReviewsUrl} target="_blank" rel="noreferrer">
+        Lire les avis →
+      </a>
+    </div>
+  </section>
+
+</Shell>
+
+<style>
+  /* ── Opening ── */
+  .ec-opening {
+    padding: 2rem 0 3rem;
+    border-bottom: 1px solid var(--ec-line);
+    margin-bottom: 0;
+  }
+  .ec-overline {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ec-accent);
+    margin-bottom: 1.5rem;
+  }
+  .ec-statement {
+    font-family: var(--ec-font-heading);
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--ec-text);
+    margin: 0;
+  }
+  .ec-statement em {
+    color: var(--ec-accent);
+    font-style: italic;
+  }
+
+  /* ── Full-width image ── */
+  .ec-fullwidth-image {
+    margin: 0 0 0;
+    width: calc(100% + 4rem);
+    margin-left: -2rem;
+    max-width: none;
+  }
+  .ec-fullwidth-image img {
+    width: 100%;
+    height: clamp(280px, 50vw, 560px);
+    object-fit: cover;
+    display: block;
+    filter: saturate(0.75) brightness(0.78);
+  }
+
+  /* ── Lead ── */
+  .ec-lead-section {
+    padding: 3rem 0;
+    max-width: 680px;
+  }
+  .ec-lead-text {
+    font-family: var(--ec-font-heading);
+    font-size: clamp(1.2rem, 2.4vw, 1.55rem);
+    font-weight: 300;
+    line-height: 1.55;
+    color: var(--ec-text);
+    margin: 0;
+  }
+
+  /* ── Pull quote ── */
+  .ec-pullquote {
+    margin: 0 0 3rem;
+    padding: 2rem 2.5rem;
+    border-left: 3px solid var(--ec-accent);
+    background: var(--ec-surface);
+    border-radius: 0 6px 6px 0;
+  }
+  .ec-pullquote p {
+    font-family: var(--ec-font-heading);
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    font-style: italic;
+    color: var(--ec-text);
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  /* ── Split section ── */
+  .ec-split-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+    padding-bottom: var(--ec-gap);
+    border-bottom: 1px solid var(--ec-line);
+    margin-bottom: var(--ec-gap);
+  }
+  .ec-split-text {
+    display: grid;
+    gap: 1.75rem;
+  }
+  .ec-block-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ec-accent);
+    margin: 0 0 0.6rem;
+  }
+  .ec-text-block p:not(.ec-block-label) {
+    color: var(--ec-muted);
+    font-size: 1rem;
+    line-height: 1.65;
+    margin: 0;
+  }
+  .ec-split-cta {
+    display: inline-block;
+    font-size: 0.88rem;
+    color: var(--ec-accent);
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    border-bottom: 1px solid color-mix(in srgb, var(--ec-accent) 40%, transparent);
+    padding-bottom: 2px;
+    width: fit-content;
+    transition: border-color 140ms ease;
+  }
+  .ec-split-cta:hover { border-color: var(--ec-accent); }
+
+  .ec-split-image {
+    margin: 0;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--ec-line);
+  }
+  .ec-split-image img {
+    width: 100%;
+    height: 100%;
+    min-height: 360px;
+    object-fit: cover;
+    display: block;
+    filter: saturate(0.82) brightness(0.85);
+  }
+
+  /* ── Rating strip ── */
+  .ec-rating-strip {
+    background: var(--ec-surface);
+    border: 1px solid var(--ec-line);
+    border-radius: 6px;
+    padding: 1.5rem 2rem;
+    margin-bottom: var(--ec-gap);
+  }
+  .ec-rating-inner {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .ec-rating-stars {
+    color: #d4a96a;
+    font-size: 1.1rem;
+    letter-spacing: 0.1em;
+    margin: 0;
+  }
+  .ec-rating-text {
+    font-size: 0.95rem;
+    color: var(--ec-muted);
+    margin: 0;
+    flex: 1;
+  }
+  .ec-rating-text strong { color: var(--ec-text); }
+  .ec-rating-link {
+    font-size: 0.85rem;
+    color: var(--ec-accent);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .ec-rating-link:hover { text-decoration: underline; }
+
+  @media (max-width: 780px) {
+    .ec-fullwidth-image {
+      width: calc(100% + 2.5rem);
+      margin-left: -1.25rem;
+    }
+    .ec-split-section { grid-template-columns: 1fr; }
+    .ec-split-image { display: none; }
+  }
+</style>

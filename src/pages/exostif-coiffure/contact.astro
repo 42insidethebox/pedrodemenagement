@@ -1,0 +1,252 @@
+---
+import Shell from '~/tenants/exostif-coiffure/Shell.astro';
+import { exostifCoiffureConfig } from '~/tenants/exostif-coiffure/config';
+
+const metadata = {
+  title: 'Contact — Exostif Coiffure Lausanne',
+  description:
+    "Contacter Exostif Coiffure à Lausanne : téléphone, email, horaires et plan d'accès. Prenez rendez-vous facilement.",
+  ignoreTitleTemplate: true,
+};
+
+const hours = [
+  { day: 'Lundi', time: '10:00 – 19:00' },
+  { day: 'Mardi', time: '09:00 – 19:00' },
+  { day: 'Mercredi', time: '09:00 – 19:00' },
+  { day: 'Jeudi', time: '09:00 – 19:00' },
+  { day: 'Vendredi', time: '09:00 – 19:00' },
+  { day: 'Samedi', time: '09:00 – 18:00' },
+  { day: 'Dimanche', time: 'Fermé' },
+];
+---
+
+<Shell page="contact" metadata={metadata}>
+
+  <!-- Typographic hero: phone number as the visual centrepiece -->
+  <section class="ec-contact-hero">
+    <p class="ec-overline">Prendre rendez-vous</p>
+    <a class="ec-big-phone" href={exostifCoiffureConfig.telHref}>
+      {exostifCoiffureConfig.phone}
+    </a>
+    <p class="ec-or">ou par email</p>
+    <a class="ec-email-link" href={`mailto:${exostifCoiffureConfig.email}`}>
+      {exostifCoiffureConfig.email}
+    </a>
+  </section>
+
+  <!-- Divider -->
+  <div class="ec-divider"></div>
+
+  <!-- Info row -->
+  <section class="ec-info-row">
+    <div class="ec-info-block">
+      <p class="ec-block-label">Adresse</p>
+      <p class="ec-block-value">{exostifCoiffureConfig.address}</p>
+      <a class="ec-map-cta" href={exostifCoiffureConfig.mapLink} target="_blank" rel="noreferrer">
+        Voir sur la carte →
+      </a>
+    </div>
+
+    <div class="ec-info-block">
+      <p class="ec-block-label">Horaires d'ouverture</p>
+      <ul class="ec-hours-table">
+        {hours.map((row) => (
+          <li class={row.time === 'Fermé' ? 'closed' : ''}>
+            <span class="ec-day">{row.day}</span>
+            <span class="ec-time">{row.time}</span>
+          </li>
+        ))}
+      </ul>
+      <p class="ec-hours-note">Horaires susceptibles de varier.</p>
+    </div>
+
+    <div class="ec-info-block">
+      <p class="ec-block-label">Contact direct</p>
+      <div class="ec-contact-links">
+        <a class="ec-action-btn primary" href={exostifCoiffureConfig.telHref}>
+          Appeler le salon
+        </a>
+        <a class="ec-action-btn" href={exostifCoiffureConfig.whatsappUrl} target="_blank" rel="noreferrer">
+          WhatsApp
+        </a>
+        <a class="ec-action-btn" href={`mailto:${exostifCoiffureConfig.email}`}>
+          Email
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Full-width map -->
+  <section class="ec-map-section">
+    <iframe
+      title="Plan Exostif Coiffure — Lausanne"
+      src={exostifCoiffureConfig.mapEmbed}
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+    />
+  </section>
+
+</Shell>
+
+<style>
+  /* ── Typographic hero ── */
+  .ec-contact-hero {
+    padding: 3rem 0 2.5rem;
+    display: grid;
+    gap: 0.6rem;
+    border-bottom: 1px solid var(--ec-line);
+    margin-bottom: 3rem;
+  }
+  .ec-overline {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ec-accent);
+  }
+  .ec-big-phone {
+    font-family: var(--ec-font-heading);
+    font-size: clamp(2.8rem, 8vw, 5.5rem);
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    color: var(--ec-text);
+    text-decoration: none;
+    line-height: 1;
+    transition: color 160ms ease;
+  }
+  .ec-big-phone:hover { color: var(--ec-accent); }
+  .ec-or {
+    font-size: 0.85rem;
+    color: var(--ec-muted);
+    margin-top: 0.5rem;
+    letter-spacing: 0.04em;
+  }
+  .ec-email-link {
+    font-size: 1.05rem;
+    color: var(--ec-muted);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: color 140ms ease;
+  }
+  .ec-email-link:hover { color: var(--ec-accent); }
+
+  .ec-divider {
+    height: 1px;
+    background: var(--ec-line);
+    margin-bottom: 3rem;
+  }
+
+  /* ── Info row ── */
+  .ec-info-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem 3rem;
+    margin-bottom: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--ec-line);
+  }
+  .ec-block-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ec-accent);
+    margin: 0 0 1rem;
+  }
+  .ec-block-value {
+    color: var(--ec-text);
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0 0 0.75rem;
+  }
+  .ec-map-cta {
+    font-size: 0.88rem;
+    color: var(--ec-muted);
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    transition: color 140ms ease;
+  }
+  .ec-map-cta:hover { color: var(--ec-accent); }
+
+  .ec-hours-table {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0.75rem;
+    display: grid;
+    gap: 0.35rem;
+  }
+  .ec-hours-table li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.9rem;
+    color: var(--ec-muted);
+    padding: 0.2rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--ec-line) 50%, transparent);
+  }
+  .ec-hours-table li.closed { opacity: 0.5; }
+  .ec-day { color: var(--ec-text); }
+  .ec-hours-note {
+    font-size: 0.75rem;
+    color: color-mix(in srgb, var(--ec-muted) 70%, transparent);
+    letter-spacing: 0.02em;
+    margin: 0;
+  }
+
+  .ec-contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    align-items: flex-start;
+  }
+  .ec-action-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.55rem 1.1rem;
+    border: 1px solid var(--ec-line);
+    border-radius: 4px;
+    font-size: 0.88rem;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    color: var(--ec-muted);
+    background: transparent;
+    transition: border-color 140ms ease, color 140ms ease, background 140ms ease;
+    min-width: 160px;
+    justify-content: center;
+  }
+  .ec-action-btn:hover {
+    border-color: var(--ec-accent);
+    color: var(--ec-accent);
+  }
+  .ec-action-btn.primary {
+    background: var(--ec-accent);
+    border-color: var(--ec-accent);
+    color: var(--ec-dark);
+    font-weight: 600;
+  }
+  .ec-action-btn.primary:hover {
+    background: color-mix(in srgb, var(--ec-accent) 85%, #ffffff 15%);
+    border-color: color-mix(in srgb, var(--ec-accent) 85%, #ffffff 15%);
+    color: var(--ec-dark);
+  }
+
+  /* ── Full-width map ── */
+  .ec-map-section {
+    width: 100%;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--ec-line);
+    margin-bottom: var(--ec-gap);
+  }
+  .ec-map-section iframe {
+    width: 100%;
+    height: clamp(280px, 40vw, 460px);
+    border: 0;
+    display: block;
+    filter: invert(0.88) hue-rotate(180deg) saturate(0.6);
+  }
+
+  @media (max-width: 760px) {
+    .ec-info-row { grid-template-columns: 1fr; gap: 2rem; }
+    .ec-contact-links { flex-direction: row; flex-wrap: wrap; }
+    .ec-action-btn { min-width: auto; flex: 1 1 120px; }
+  }
+</style>

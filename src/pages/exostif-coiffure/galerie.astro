@@ -1,0 +1,154 @@
+---
+import { Image } from 'astro:assets';
+import Shell from '~/tenants/exostif-coiffure/Shell.astro';
+import { getExostifGalleryData } from '~/tenants/exostif-coiffure/gallery';
+
+const metadata = {
+  title: 'Galerie — Exostif Coiffure Lausanne',
+  description: 'Réalisations Exostif Coiffure à Lausanne : coupes, colorations et soins capillaires.',
+  ignoreTitleTemplate: true,
+};
+
+const { fullGallery } = await getExostifGalleryData();
+---
+
+<Shell page="galerie" metadata={metadata}>
+
+  <header class="ec-gallery-header">
+    <p class="ec-overline">Réalisations</p>
+    <h1 class="ec-title">Galerie</h1>
+    <p class="ec-sub">Coupes, colorations et soins — un aperçu de notre savoir-faire.</p>
+  </header>
+
+  {fullGallery.length > 0 ? (
+    <div class="ec-masonry">
+      {fullGallery.map((item, i) => (
+        <figure class={`ec-item ec-item--${(i % 4 === 0) ? 'tall' : 'normal'}`}>
+          <Image
+            src={item.src}
+            alt={item.alt}
+            loading="lazy"
+            widths={[480, 800, 1100]}
+            sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 33vw"
+            format="webp"
+            quality={78}
+          />
+          <figcaption>{item.alt}</figcaption>
+        </figure>
+      ))}
+    </div>
+  ) : (
+    <div class="ec-empty">
+      <p class="ec-empty-title">Photos bientôt disponibles</p>
+      <p class="ec-empty-text">
+        Retrouvez nos réalisations sur{' '}
+        <a href="https://www.google.com/search?q=Exostif+Coiffure" target="_blank" rel="noreferrer">Google</a>.
+      </p>
+    </div>
+  )}
+
+</Shell>
+
+<style>
+  .ec-gallery-header {
+    padding: 2rem 0 3rem;
+    border-bottom: 1px solid var(--ec-line);
+    margin-bottom: 2.5rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .ec-overline {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ec-accent);
+  }
+  .ec-title {
+    font-family: var(--ec-font-heading);
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    margin: 0;
+    color: var(--ec-text);
+  }
+  .ec-sub {
+    color: var(--ec-muted);
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  /* Column masonry with CSS columns */
+  .ec-masonry {
+    columns: 3;
+    column-gap: 8px;
+    margin-bottom: var(--ec-gap);
+  }
+  .ec-item {
+    break-inside: avoid;
+    margin: 0 0 8px;
+    overflow: hidden;
+    border-radius: 4px;
+    background: var(--ec-surface);
+    position: relative;
+  }
+  .ec-item img {
+    width: 100%;
+    display: block;
+    filter: saturate(0.82) brightness(0.82);
+    transition: filter 300ms ease, transform 400ms ease;
+  }
+  .ec-item:hover img {
+    filter: saturate(1) brightness(0.92);
+    transform: scale(1.02);
+  }
+  .ec-item--tall img {
+    /* taller items thanks to natural image ratio — no forced height */
+  }
+  .ec-item figcaption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.6rem 0.75rem;
+    background: linear-gradient(to top, rgba(7,5,4,0.7), transparent);
+    color: var(--ec-text);
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+    opacity: 0;
+    transition: opacity 240ms ease;
+  }
+  .ec-item:hover figcaption { opacity: 1; }
+
+  /* Empty state */
+  .ec-empty {
+    padding: 4rem 2rem;
+    text-align: center;
+    border: 1px solid var(--ec-line);
+    border-radius: 6px;
+    background: var(--ec-surface);
+    margin-bottom: var(--ec-gap);
+  }
+  .ec-empty-title {
+    font-family: var(--ec-font-heading);
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: var(--ec-text);
+    margin: 0 0 0.5rem;
+  }
+  .ec-empty-text {
+    color: var(--ec-muted);
+    font-size: 0.95rem;
+    margin: 0;
+  }
+  .ec-empty-text a {
+    color: var(--ec-accent);
+    text-decoration: none;
+  }
+
+  @media (max-width: 900px) {
+    .ec-masonry { columns: 2; }
+  }
+  @media (max-width: 520px) {
+    .ec-masonry { columns: 1; }
+  }
+</style>

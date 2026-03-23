@@ -1,0 +1,580 @@
+---
+import { Image } from 'astro:assets';
+import Shell from '~/tenants/exostif-coiffure/Shell.astro';
+import { exostifContent } from '~/tenants/exostif-coiffure/content';
+import { exostifServices, bookingCta } from '~/tenants/exostif-coiffure/services';
+import { getExostifGalleryData } from '~/tenants/exostif-coiffure/gallery';
+import { exostifCoiffureConfig } from '~/tenants/exostif-coiffure/config';
+
+const metadata = {
+  title: 'Exostif Coiffure — Salon de coiffure à Lausanne',
+  description:
+    'Salon de coiffure professionnel à Lausanne : coupes précises, colorations, soins capillaires et coiffures mariage. Note 4.6/5 · 178 avis Google.',
+  ignoreTitleTemplate: true,
+};
+
+const { gallery, heroImage, locationImage } = await getExostifGalleryData();
+const featuredGallery = gallery.slice(0, 6);
+---
+
+<Shell page="home" metadata={metadata}>
+
+  <!-- Full-bleed hero with image backdrop and text overlay -->
+  <section class="ec-hero">
+    <h1 class="sr-only">{exostifContent.hero.srH1}</h1>
+    <figure class="ec-hero-bg">
+      {heroImage ? (
+        <Image
+          src={heroImage.src}
+          alt={exostifContent.hero.imageAlt}
+          loading="eager"
+          widths={[900, 1400, 1920]}
+          sizes="100vw"
+          format="webp"
+          quality={82}
+        />
+      ) : (
+        <div class="ec-hero-fallback" aria-hidden="true"></div>
+      )}
+    </figure>
+    <div class="ec-hero-overlay"></div>
+    <div class="ec-hero-content">
+      <p class="ec-label">Lausanne · Depuis {new Date().getFullYear() - 5}</p>
+      <h2 class="ec-hero-title">{exostifContent.hero.title}</h2>
+      <div class="ec-hero-meta">
+        <a class="ec-rating-link" href={exostifCoiffureConfig.googleReviewsUrl} target="_blank" rel="noreferrer">
+          <span class="ec-stars" aria-label="Note 4.6">★★★★★</span>
+          <span>4.6 · 178 avis</span>
+        </a>
+      </div>
+      <div class="ec-hero-actions">
+        <a class="ec-btn-primary" href={exostifCoiffureConfig.telHref}>{exostifContent.hero.cta}</a>
+        <a class="ec-btn-ghost" href="/services">Voir les tarifs</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Signature: 2-column text block -->
+  <section class="ec-section">
+    <div class="ec-two-col">
+      <div class="ec-col-label">
+        <p class="ec-label-vert">Notre approche</p>
+      </div>
+      <div class="ec-col-content">
+        <h2 class="ec-section-title">{exostifContent.signature.title}</h2>
+        <div class="ec-paragraphs">
+          {exostifContent.signature.paragraphs.map((p) => <p>{p}</p>)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services: horizontal list with price, no card grid -->
+  <section class="ec-section" id="services">
+    <div class="ec-services-header">
+      <p class="ec-eyebrow">Prestations</p>
+      <h2 class="ec-section-title">Services <span class="ec-accent-text">femme & homme</span></h2>
+      <a class="ec-services-link" href="/services">Voir tous les tarifs →</a>
+    </div>
+    <div class="ec-services-panels">
+      {[exostifServices.femme, exostifServices.homme].map((category) => (
+        <div class="ec-service-panel">
+          <h3 class="ec-panel-title">{category.title}</h3>
+          <ul class="ec-price-list">
+            {category.items.map((item) => (
+              <li>
+                <span class="ec-item-name">{item.name}</span>
+                <span class="ec-item-dots"></span>
+                <span class="ec-item-price">{item.price}</span>
+              </li>
+            ))}
+          </ul>
+          <a class="ec-panel-cta" href={exostifCoiffureConfig.telHref}>{bookingCta}</a>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Gallery: masonry-style strip -->
+  {featuredGallery.length > 0 && (
+    <section class="ec-section ec-gallery-section">
+      <div class="ec-gallery-header">
+        <p class="ec-eyebrow">Galerie</p>
+        <a class="ec-gallery-link" href="/galerie">Toutes les réalisations →</a>
+      </div>
+      <div class="ec-gallery-strip">
+        {featuredGallery.map((item, i) => (
+          <figure class={`ec-strip-item ${i === 0 ? 'wide' : ''}`}>
+            <Image
+              src={item.src}
+              alt={item.alt}
+              loading="lazy"
+              widths={[460, 760]}
+              sizes="(max-width: 640px) 100vw, 25vw"
+              format="webp"
+              quality={78}
+            />
+          </figure>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- Testimonials: horizontal scrolling cards -->
+  <section class="ec-section">
+    <p class="ec-eyebrow">Avis clients</p>
+    <div class="ec-reviews-scroll">
+      {exostifContent.testimonials.map((item) => (
+        <a class="ec-review-card" href={item.link} target="_blank" rel="noreferrer">
+          <div class="ec-review-top">
+            <span class="ec-stars">{('★').repeat(item.stars)}</span>
+            <span class="ec-review-when">{item.when}</span>
+          </div>
+          <blockquote>"{item.quote}"</blockquote>
+          <cite>{item.author}</cite>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Location CTA -->
+  <section class="ec-section ec-cta-section">
+    <div class="ec-cta-block">
+      <div class="ec-cta-text">
+        <p class="ec-eyebrow light">{exostifContent.location.heading}</p>
+        <p class="ec-cta-sub">{exostifContent.location.subheading}</p>
+      </div>
+      <div class="ec-cta-actions">
+        <a class="ec-btn-primary" href={exostifCoiffureConfig.telHref}>{exostifCoiffureConfig.bookingLabel}</a>
+        <a class="ec-btn-map" href={exostifCoiffureConfig.mapLink} target="_blank" rel="noreferrer">Carte →</a>
+      </div>
+    </div>
+    {locationImage && (
+      <figure class="ec-cta-image">
+        <Image
+          src={locationImage.src}
+          alt={exostifContent.location.imageAlt}
+          loading="lazy"
+          widths={[800, 1200]}
+          sizes="(max-width: 780px) 100vw, 50vw"
+          format="webp"
+          quality={78}
+        />
+      </figure>
+    )}
+  </section>
+
+</Shell>
+
+<style>
+  .sr-only {
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+
+  /* ── Hero ─────────────────────────────────────── */
+  .ec-hero {
+    position: relative;
+    width: 100%;
+    min-height: clamp(480px, 70vh, 780px);
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: var(--ec-gap);
+    border-radius: 0;
+    overflow: hidden;
+  }
+  .ec-hero-bg {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+  }
+  .ec-hero-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: saturate(0.8) brightness(0.7);
+  }
+  .ec-hero-fallback {
+    width: 100%; height: 100%;
+    background: color-mix(in srgb, var(--ec-dark) 90%, var(--ec-accent) 10%);
+  }
+  .ec-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(7,5,4,0.88) 0%, rgba(7,5,4,0.40) 55%, rgba(7,5,4,0.10) 100%);
+    pointer-events: none;
+  }
+  .ec-hero-content {
+    position: relative;
+    z-index: 2;
+    padding: clamp(2rem, 4vw, 3.5rem);
+    display: grid;
+    gap: 1rem;
+    max-width: 640px;
+  }
+  .ec-label {
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ec-accent);
+  }
+  .ec-hero-title {
+    font-family: var(--ec-font-heading);
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+    color: var(--ec-text);
+    white-space: pre-line;
+    margin: 0;
+  }
+  .ec-hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .ec-rating-link {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    text-decoration: none;
+    color: color-mix(in srgb, var(--ec-text) 80%, transparent);
+    font-size: 0.88rem;
+    letter-spacing: 0.02em;
+    transition: color 140ms ease;
+  }
+  .ec-rating-link:hover { color: var(--ec-text); }
+  .ec-stars { color: #d4a96a; letter-spacing: 0.06em; }
+  .ec-hero-actions {
+    display: flex;
+    gap: 0.85rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 0.25rem;
+  }
+
+  /* Buttons */
+  .ec-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.7rem 1.4rem;
+    background: var(--ec-accent);
+    color: var(--ec-dark);
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.03em;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background 160ms ease;
+  }
+  .ec-btn-primary:hover {
+    background: color-mix(in srgb, var(--ec-accent) 85%, #ffffff 15%);
+  }
+  .ec-btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.7rem 1.2rem;
+    border: 1px solid color-mix(in srgb, var(--ec-text) 30%, transparent);
+    color: var(--ec-text);
+    font-size: 0.9rem;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: border-color 160ms ease, background 160ms ease;
+  }
+  .ec-btn-ghost:hover {
+    border-color: var(--ec-accent);
+    background: color-mix(in srgb, var(--ec-accent) 8%, transparent);
+  }
+
+  /* ── General sections ─────────────────────────── */
+  .ec-section { margin-bottom: var(--ec-gap); }
+
+  /* ── Two-column text layout ───────────────────── */
+  .ec-two-col {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 2rem 3rem;
+    align-items: start;
+  }
+  .ec-label-vert {
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ec-accent);
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--ec-accent);
+  }
+  .ec-section-title {
+    font-family: var(--ec-font-heading);
+    font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    margin: 0 0 1.2rem;
+    color: var(--ec-text);
+  }
+  .ec-accent-text { color: var(--ec-accent); }
+  .ec-paragraphs {
+    display: grid;
+    gap: 0.85rem;
+    color: var(--ec-muted);
+    font-size: 1.03rem;
+    line-height: 1.65;
+  }
+  .ec-eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ec-accent);
+    margin-bottom: 0.75rem;
+  }
+  .ec-eyebrow.light { color: var(--ec-text); }
+
+  /* ── Services ─────────────────────────────────── */
+  .ec-services-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+  .ec-services-header .ec-eyebrow { margin: 0; }
+  .ec-services-header .ec-section-title { margin: 0; flex: 1; }
+  .ec-services-link {
+    font-size: 0.85rem;
+    color: var(--ec-accent);
+    text-decoration: none;
+    white-space: nowrap;
+    letter-spacing: 0.03em;
+  }
+  .ec-services-link:hover { text-decoration: underline; }
+
+  .ec-services-panels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--ec-line);
+    border: 1px solid var(--ec-line);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .ec-service-panel {
+    background: var(--ec-surface);
+    padding: 1.5rem 1.75rem 1.75rem;
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+  }
+  .ec-panel-title {
+    font-family: var(--ec-font-heading);
+    font-size: 1.3rem;
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: 0.02em;
+    margin: 0;
+    color: var(--ec-text);
+  }
+  .ec-price-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.55rem;
+  }
+  .ec-price-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35rem;
+    font-size: 0.92rem;
+    color: var(--ec-muted);
+  }
+  .ec-item-name { white-space: nowrap; }
+  .ec-item-dots {
+    flex: 1;
+    border-bottom: 1px dotted color-mix(in srgb, var(--ec-line) 180%, transparent);
+    min-width: 1rem;
+  }
+  .ec-item-price {
+    white-space: nowrap;
+    font-weight: 600;
+    color: var(--ec-text);
+    font-size: 0.9rem;
+  }
+  .ec-panel-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.55rem 1.1rem;
+    border: 1px solid var(--ec-accent);
+    color: var(--ec-accent);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    border-radius: 4px;
+    width: fit-content;
+    transition: background 160ms ease, color 160ms ease;
+  }
+  .ec-panel-cta:hover {
+    background: var(--ec-accent);
+    color: var(--ec-dark);
+  }
+
+  /* ── Gallery strip ────────────────────────────── */
+  .ec-gallery-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  .ec-gallery-header .ec-eyebrow { margin: 0; }
+  .ec-gallery-link {
+    font-size: 0.85rem;
+    color: var(--ec-accent);
+    text-decoration: none;
+    letter-spacing: 0.03em;
+  }
+  .ec-gallery-link:hover { text-decoration: underline; }
+  .ec-gallery-strip {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .ec-gallery-strip::-webkit-scrollbar { display: none; }
+  .ec-strip-item {
+    flex: 0 0 220px;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 6px;
+    background: var(--ec-surface);
+    margin: 0;
+  }
+  .ec-strip-item.wide { flex: 0 0 320px; }
+  .ec-strip-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: saturate(0.88) brightness(0.88);
+    transition: filter 300ms ease, transform 300ms ease;
+  }
+  .ec-strip-item:hover img {
+    filter: saturate(1) brightness(0.95);
+    transform: scale(1.03);
+  }
+
+  /* ── Reviews ──────────────────────────────────── */
+  .ec-reviews-scroll {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 0.25rem;
+  }
+  .ec-reviews-scroll::-webkit-scrollbar { display: none; }
+  .ec-review-card {
+    flex: 0 0 280px;
+    background: var(--ec-surface);
+    border: 1px solid var(--ec-line);
+    border-radius: 8px;
+    padding: 1.25rem;
+    display: grid;
+    gap: 0.7rem;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 160ms ease;
+  }
+  .ec-review-card:hover {
+    border-color: color-mix(in srgb, var(--ec-accent) 50%, var(--ec-line));
+  }
+  .ec-review-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .ec-review-when {
+    font-size: 0.8rem;
+    color: var(--ec-muted);
+  }
+  .ec-review-card blockquote {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--ec-muted);
+    font-style: italic;
+  }
+  .ec-review-card cite {
+    font-style: normal;
+    font-size: 0.85rem;
+    color: var(--ec-text);
+    font-weight: 500;
+  }
+
+  /* ── CTA location block ───────────────────────── */
+  .ec-cta-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: center;
+    border-top: 1px solid var(--ec-line);
+    padding-top: 3rem;
+  }
+  .ec-cta-block {
+    display: grid;
+    gap: 1.5rem;
+    align-content: center;
+  }
+  .ec-cta-sub {
+    color: var(--ec-muted);
+    font-size: 1.05rem;
+    line-height: 1.55;
+    margin: 0.4rem 0 0;
+  }
+  .ec-cta-actions {
+    display: flex;
+    gap: 0.85rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .ec-btn-map {
+    font-size: 0.9rem;
+    color: var(--ec-accent);
+    text-decoration: none;
+    letter-spacing: 0.03em;
+  }
+  .ec-btn-map:hover { text-decoration: underline; }
+  .ec-cta-image {
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 0;
+  }
+  .ec-cta-image img {
+    width: 100%;
+    height: 100%;
+    min-height: 280px;
+    object-fit: cover;
+    display: block;
+    filter: saturate(0.85) brightness(0.82);
+  }
+
+  /* ── Responsive ───────────────────────────────── */
+  @media (max-width: 780px) {
+    .ec-two-col {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .ec-label-vert { padding-top: 0; border-top: none; border-left: 2px solid var(--ec-accent); padding-left: 0.75rem; }
+    .ec-services-panels { grid-template-columns: 1fr; }
+    .ec-cta-section { grid-template-columns: 1fr; }
+    .ec-cta-image { display: none; }
+  }
+  @media (max-width: 640px) {
+    .ec-hero { min-height: clamp(420px, 80vw, 560px); }
+    .ec-hero-content { padding: 1.75rem 1.25rem; }
+    .ec-strip-item { flex: 0 0 180px; height: 240px; }
+    .ec-strip-item.wide { flex: 0 0 260px; }
+    .ec-review-card { flex: 0 0 240px; }
+  }
+</style>
