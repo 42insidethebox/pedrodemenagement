@@ -1,0 +1,316 @@
+---
+import Layout from '~/layouts/Layout.astro';
+
+export const prerender = false;
+
+const error = Astro.url.searchParams.get('error');
+---
+
+<Layout
+  metadata={{
+    title: 'Votre site internet demain – 500 CHF – TonSiteWeb',
+    description: 'Site internet professionnel livré en 24h pour 500 CHF. Satisfait ou remboursé. Idéal pour indépendants, artisans, commerçants en Suisse.',
+  }}
+  brandKey="tonsiteweb"
+>
+  <!-- Facebook Pixel — REPLACE XXXXXXXXXXXXXXXXXX with your real Pixel ID -->
+  <script is:inline>
+    !(function (f, b, e, v, n, t, s) {
+      if (f.fbq) return;
+      n = f.fbq = function () {
+        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+      };
+      if (!f._fbq) f._fbq = n;
+      n.push = n;
+      n.loaded = !0;
+      n.version = '2.0';
+      n.queue = [];
+      t = b.createElement(e);
+      t.async = !0;
+      t.src = v;
+      s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s);
+    })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', 'XXXXXXXXXXXXXXXXXX');
+    fbq('track', 'PageView');
+  </script>
+  <noscript>
+    <img
+      height="1"
+      width="1"
+      style="display:none"
+      src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXXXXX&ev=PageView&noscript=1"
+      alt=""
+    />
+  </noscript>
+
+  <!-- UTM capture script -->
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', function () {
+      const params = new URLSearchParams(window.location.search);
+      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].forEach(function (key) {
+        const el = document.getElementById(key);
+        if (el && params.get(key)) el.value = params.get(key);
+      });
+    });
+  </script>
+
+  <main class="bg-white text-gray-900">
+
+    <!-- HERO -->
+    <section class="bg-gradient-to-br from-blue-900 to-blue-700 text-white px-4 py-20 text-center">
+      <div class="max-w-2xl mx-auto">
+        <p class="text-blue-200 text-sm font-semibold uppercase tracking-widest mb-4">Pour indépendants · Artisans · Commerçants</p>
+        <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-6">
+          Votre site internet<br />est prêt <span class="text-yellow-300">demain</span>
+        </h1>
+        <p class="text-2xl font-bold text-yellow-300 mb-3">500 CHF · Satisfait ou remboursé</p>
+        <p class="text-blue-100 text-lg mb-10">
+          Page vitrine professionnelle, hébergement inclus, formulaire de contact, adapté mobile.<br />
+          Livré en 24 heures. Vous aimez, vous payez. Sinon, c'est gratuit.
+        </p>
+        <a
+          href="#form"
+          class="inline-block bg-yellow-400 hover:bg-yellow-300 text-blue-900 font-bold text-xl px-10 py-5 rounded-2xl transition-colors shadow-lg"
+        >
+          Je veux mon site demain →
+        </a>
+        <p class="text-blue-200 text-sm mt-5">Formulaire en 1 minute · On vous rappelle dans les 2 heures</p>
+      </div>
+    </section>
+
+    <!-- SOCIAL PROOF BAR -->
+    <section class="bg-gray-50 border-y border-gray-200 px-4 py-6 text-center">
+      <p class="text-gray-500 text-sm font-medium mb-3">Déjà utilisé par :</p>
+      <div class="flex flex-wrap justify-center gap-6 text-gray-700 font-semibold text-sm">
+        <span>Coiffure Tolo</span>
+        <span class="text-gray-300">·</span>
+        <span>Onglesgel</span>
+        <span class="text-gray-300">·</span>
+        <span>Maison Cortès</span>
+        <span class="text-gray-300">·</span>
+        <span>Pedro Déménagement</span>
+        <span class="text-gray-300">·</span>
+        <span>Atelier Mémoire</span>
+      </div>
+    </section>
+
+    <!-- CE QUI EST INCLUS -->
+    <section class="px-4 py-16 max-w-2xl mx-auto">
+      <h2 class="text-2xl font-bold text-center mb-10">Ce qui est inclus pour 500 CHF</h2>
+      <ul class="space-y-4">
+        {[
+          ['Page vitrine professionnelle', 'Design moderne adapté à votre activité'],
+          ['Hébergement 3 mois inclus', 'Votre site en ligne, prêt à partager'],
+          ['Formulaire de contact intégré', 'Vos clients vous écrivent directement'],
+          ['Adapté mobile et tablette', 'Parfait sur tous les écrans'],
+          ['Livré en 24 heures', 'On s\'engage sur le délai'],
+        ].map(([title, desc]) => (
+          <li class="flex items-start gap-4 p-4 bg-blue-50 rounded-xl">
+            <span class="flex-shrink-0 w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">✓</span>
+            <div>
+              <p class="font-semibold text-gray-900">{title}</p>
+              <p class="text-gray-500 text-sm">{desc}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- COMMENT CA MARCHE -->
+    <section class="bg-gray-50 px-4 py-16">
+      <div class="max-w-2xl mx-auto text-center">
+        <h2 class="text-2xl font-bold mb-12">Comment ça marche ?</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            ['1', 'Remplissez le formulaire', '2 minutes, aucune compétence technique requise'],
+            ['2', 'On vous rappelle', 'Notre équipe vous contacte dans les 2 heures'],
+            ['3', 'Votre site est en ligne', 'Livré le lendemain, vous validez avant de payer'],
+          ].map(([num, title, desc]) => (
+            <div class="text-center">
+              <div class="w-14 h-14 rounded-full bg-blue-600 text-white text-2xl font-extrabold flex items-center justify-center mx-auto mb-4">{num}</div>
+              <p class="font-bold text-gray-900 mb-2">{title}</p>
+              <p class="text-gray-500 text-sm">{desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- LEAD FORM -->
+    <section id="form" class="px-4 py-16 max-w-xl mx-auto">
+      <h2 class="text-2xl font-bold text-center mb-3">Réservez votre site maintenant</h2>
+      <p class="text-gray-500 text-center mb-10">Formulaire en 1 minute. On vous rappelle rapidement.</p>
+
+      {error && (
+        <div class="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-lg mb-6">
+          {error === 'missing'
+            ? 'Veuillez indiquer votre prénom et téléphone.'
+            : 'Une erreur est survenue. Veuillez réessayer.'}
+        </div>
+      )}
+
+      <form
+        method="POST"
+        action="/api/tonsiteweb/lead-offre"
+        class="space-y-5"
+      >
+        <div>
+          <label for="prenom" class="block text-sm font-semibold text-gray-700 mb-1">
+            Prénom <span class="text-red-500">*</span>
+          </label>
+          <input
+            id="prenom"
+            name="prenom"
+            type="text"
+            required
+            placeholder="Jean"
+            autocomplete="given-name"
+            class="w-full border border-gray-300 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
+          />
+        </div>
+
+        <div>
+          <label for="telephone" class="block text-sm font-semibold text-gray-700 mb-1">
+            Téléphone <span class="text-red-500">*</span>
+          </label>
+          <input
+            id="telephone"
+            name="telephone"
+            type="tel"
+            required
+            placeholder="+41 79 000 00 00"
+            autocomplete="tel"
+            class="w-full border border-gray-300 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
+          />
+        </div>
+
+        <div>
+          <label for="email" class="block text-sm font-semibold text-gray-700 mb-1">Email</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="jean@exemple.ch"
+            autocomplete="email"
+            class="w-full border border-gray-300 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
+          />
+        </div>
+
+        <div>
+          <label for="secteur" class="block text-sm font-semibold text-gray-700 mb-1">Secteur d'activité</label>
+          <select
+            id="secteur"
+            name="secteur"
+            class="w-full border border-gray-300 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg bg-white"
+          >
+            <option value="">-- Choisissez --</option>
+            <option value="Commerce">Commerce / Boutique</option>
+            <option value="Artisan">Artisan / Construction</option>
+            <option value="Beaute">Beauté / Bien-être</option>
+            <option value="Restauration">Restauration / Traiteur</option>
+            <option value="Sante">Santé / Thérapeute</option>
+            <option value="Immobilier">Immobilier / Conciergerie</option>
+            <option value="Transport">Transport / Déménagement</option>
+            <option value="Autre">Autre</option>
+          </select>
+        </div>
+
+        <!-- Hidden UTM fields -->
+        <input type="hidden" id="utm_source" name="utm_source" value="" />
+        <input type="hidden" id="utm_medium" name="utm_medium" value="" />
+        <input type="hidden" id="utm_campaign" name="utm_campaign" value="" />
+        <input type="hidden" id="utm_content" name="utm_content" value="" />
+
+        <button
+          type="submit"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xl px-8 py-5 rounded-2xl transition-colors shadow-md"
+        >
+          Je veux mon site demain →
+        </button>
+
+        <p class="text-center text-sm text-gray-400">
+          Aucun engagement. Vous validez votre site avant de payer.
+        </p>
+
+        <div class="text-center pt-2">
+          <a
+            href="/api/checkout?plan=essential500&template=classic-clean&tenant=tonsiteweb"
+            class="text-blue-600 hover:underline text-sm"
+          >
+            Payer directement 500 CHF en ligne →
+          </a>
+        </div>
+      </form>
+    </section>
+
+    <!-- TRUST BAR -->
+    <section class="bg-gray-50 border-t border-gray-200 px-4 py-8">
+      <div class="max-w-xl mx-auto flex flex-wrap justify-center gap-8 text-sm text-gray-600 font-medium">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">🇨🇭</span>
+          <span>Service 100% suisse</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xl">🔒</span>
+          <span>Paiement sécurisé</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xl">✅</span>
+          <span>Satisfait ou remboursé</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="px-4 py-16 max-w-2xl mx-auto">
+      <h2 class="text-2xl font-bold text-center mb-10">Questions fréquentes</h2>
+      <div class="space-y-6">
+        {[
+          [
+            'Que se passe-t-il après le formulaire ?',
+            'Notre équipe vous rappelle dans les 2 heures pour comprendre votre activité. Le lendemain, vous recevez votre site à valider.',
+          ],
+          [
+            "Qu'est-ce qui est inclus pour 500 CHF ?",
+            'Une page vitrine professionnelle, hébergement 3 mois, formulaire de contact, design mobile responsive, et livraison en 24h.',
+          ],
+          [
+            'Et si je ne suis pas satisfait ?',
+            "Vous validez le site avant tout paiement. Si le résultat ne vous convient pas, vous ne payez rien. C'est notre garantie.",
+          ],
+        ].map(([q, a]) => (
+          <div class="border border-gray-200 rounded-xl p-6">
+            <p class="font-semibold text-gray-900 mb-2">{q}</p>
+            <p class="text-gray-500 text-sm">{a}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="bg-blue-600 text-white px-4 py-16 text-center">
+      <h2 class="text-3xl font-bold mb-4">Prêt à avoir votre site demain ?</h2>
+      <p class="text-blue-100 mb-8">500 CHF · Livré en 24h · Satisfait ou remboursé</p>
+      <a
+        href="#form"
+        class="inline-block bg-yellow-400 hover:bg-yellow-300 text-blue-900 font-bold text-xl px-10 py-5 rounded-2xl transition-colors"
+      >
+        Je veux mon site demain →
+      </a>
+    </section>
+
+    <!-- MINIMAL FOOTER -->
+    <footer class="px-4 py-8 text-center text-xs text-gray-400">
+      <p>© {new Date().getFullYear()} TonSiteWeb.ch · Lausanne, Suisse</p>
+      <p class="mt-1">
+        <a href="/tonsiteweb" class="hover:underline">Accueil</a>
+        {' · '}
+        <a href="/privacy" class="hover:underline">Confidentialité</a>
+        {' · '}
+        <a href="/terms" class="hover:underline">CGV</a>
+      </p>
+    </footer>
+
+  </main>
+</Layout>

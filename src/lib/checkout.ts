@@ -324,9 +324,62 @@ async function handleDynamicCheckout(ctx: CheckoutContext, config: DynamicChecko
   return new Response(null, { status: 303, headers: { Location: redirectUrl.toString() } });
 }
 
+async function handleCustomCheckout(ctx: CheckoutContext): Promise<Response> {
+  const { request, url } = ctx;
+  const stripe = await getStripe();
+  if (!stripe) return new Response('Stripe not configured', { status: 501 });
+
+  const origin = ENV.ORIGIN || request.headers.get('origin') || url.origin;
+
+  const amountChf = Number(url.searchParams.get('amount') || 0);
+  const description = String(url.searchParams.get('description') || 'Site web sur mesure').trim().slice(0, 200);
+  const email = String(url.searchParams.get('email') || '').trim() || undefined;
+  const template = String(url.searchParams.get('template') || 'classic-clean').trim();
+  const tenant = resolveTenant(ctx);
+
+  if (!amountChf || amountChf <= 0 || amountChf > 100000) {
+    return new Response('Invalid amount — must be 1–100000 CHF', { status: 400 });
+  }
+
+  const session = await stripe.checkout.sessions.create({
+    mode: 'payment',
+    line_items: [{
+      price_data: {
+        currency: 'chf',
+        unit_amount: Math.round(amountChf * 100),
+        product_data: { name: description },
+      },
+      quantity: 1,
+    }],
+    customer_email: email,
+    billing_address_collection: 'auto',
+    success_url: buildSuccessUrl(origin, tenant.basePath || ''),
+    cancel_url: buildCancelUrl(origin, tenant.basePath || ''),
+    metadata: serializeMetadata({
+      plan: 'custom',
+      template,
+      amount_chf: String(amountChf),
+      description,
+      tenant_id: tenant.slug,
+    }),
+  });
+
+  if (request.method === 'GET') {
+    return new Response(null, { status: 303, headers: { Location: session.url || origin } });
+  }
+  return new Response(JSON.stringify({ url: session.url }), { status: 200 });
+}
+
 export async function handleUnifiedCheckout(ctx: CheckoutContext): Promise<Response> {
   const tenantOverride = ctx.tenantOverride || ctx.url.searchParams.get('tenant') || undefined;
   const context = { ...ctx, tenantOverride };
+
+  // Custom plan: arbitrary CHF amount via ?amount=X&description=Y, no pre-created price needed
+  const planParam = (context.url.searchParams.get('plan') || '').toLowerCase();
+  if (planParam === 'custom') {
+    return handleCustomCheckout(context);
+  }
+
   const tenant = resolveTenant(context);
   const config = getCheckoutConfig(tenant.slug);
   if (!config) return new Response('Checkout not available', { status: 404 });

@@ -7,6 +7,8 @@ export const ALLOWED_PLANS = [
   'essential999',
   'essential1249',
   'essential1500',
+  'essential500',
+  'custom',
 ];
 
 export function isSubscriptionPlan(plan) {
@@ -26,6 +28,7 @@ export function determineStripePriceId(plan, env) {
     essential999: E.PRICE_ESSENTIAL_999,
     essential1249: E.PRICE_ESSENTIAL_1249,
     essential1500: E.PRICE_ESSENTIAL_1500,
+    essential500: E.PRICE_ESSENTIAL_500,
   };
   return map[p] || null;
 }
