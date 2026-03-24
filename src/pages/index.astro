@@ -91,6 +91,11 @@ if (tenant.slug === 'tolo-coiffure' || isToloHost) {
   return Astro.rewrite('/tolo-coiffure');
 }
 
+// Route Onglesgel hosts to the dedicated tenant pages
+if (tenant.slug === 'onglesgel' || hostCandidates.some((h) => h.includes('onglesgel.ch'))) {
+  return Astro.rewrite('/onglesgel');
+}
+
 // Route Atelier Mémoire hosts to the dedicated tenant pages to avoid fallback content
 if (tenant.slug === 'ateliermemoire' && !(Astro.url?.pathname || '').startsWith('/atelier-memoire')) {
   const target = new URL('/atelier-memoire', Astro.url instanceof URL ? Astro.url : new URL(Astro.request.url));
