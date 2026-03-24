@@ -1,6 +1,6 @@
 import type { MiddlewareHandler } from 'astro';
-import { resolveTenantFromRequest, tenantBasePath } from '~/lib/tenants';
-import { getWebsiteByHost } from '~/lib/website-resolver';
+import { resolveTenantFromRequest, tenantBasePath } from './lib/tenants';
+import { getWebsiteByHost } from './lib/website-resolver';
 
 const SKIP_PREFIXES = [
   '/api/',
