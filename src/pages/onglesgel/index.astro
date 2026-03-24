@@ -253,15 +253,25 @@ const galleryImages = [...handImages, ...feetImages]; // hands first
 
   const wrap = track?.parentElement as HTMLElement | null;
   let currentIndex = 0;
-  // item width (300px) + gap (10px) = 310px per slot
-  const SLOT = 310;
-  // subtract 2×2.5rem (40px each side) of wrapper padding from clientWidth
-  const visibleCount = () => Math.max(1, Math.floor(((wrap?.clientWidth ?? 0) - 80) / SLOT));
+
+  // Measure actual slot size from DOM (handles responsive CSS breakpoints)
+  const getSlot = () => {
+    if (items.length >= 2) {
+      // distance between two adjacent items = item width + gap, unaffected by track transform
+      return items[1].offsetLeft - items[0].offsetLeft;
+    }
+    return items[0]?.offsetWidth ?? 300;
+  };
+  const visibleCount = () => {
+    const slot = getSlot();
+    if (!wrap || slot === 0) return 1;
+    return Math.max(1, Math.floor(wrap.clientWidth / slot));
+  };
   const maxIndex = () => Math.max(0, items.length - visibleCount());
 
   function goTo(idx: number) {
     currentIndex = Math.max(0, Math.min(idx, maxIndex()));
-    wrap?.scrollTo({ left: currentIndex * SLOT, behavior: 'smooth' });
+    if (track) track.style.transform = `translateX(-${currentIndex * getSlot()}px)`;
     dots.forEach((d, i) => d.classList.toggle('active', i === currentIndex));
     if (prevBtn) prevBtn.disabled = currentIndex === 0;
     if (nextBtn) nextBtn.disabled = currentIndex >= maxIndex();
@@ -685,20 +695,18 @@ const galleryImages = [...handImages, ...feetImages]; // hands first
   .og-carousel-btn:disabled { opacity: 0.35; cursor: default; }
 
   .og-carousel-track-wrap {
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    overflow: hidden;
     padding: 0 2.5rem;
     cursor: grab;
     user-select: none;
   }
-  .og-carousel-track-wrap::-webkit-scrollbar { display: none; }
   .og-carousel-track-wrap:active { cursor: grabbing; }
 
   .og-carousel-track {
     display: flex;
     gap: 10px;
+    transition: transform 380ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
   }
 
   .og-carousel-item {
