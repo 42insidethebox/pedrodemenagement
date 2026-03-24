@@ -12,10 +12,10 @@ const metadata = {
   ignoreTitleTemplate: true,
 };
 
-const { images, heroImage } = await getOgGalleryData();
-const galleryImages = images;
-
-const lastGalleryImage = galleryImages[galleryImages.length - 1] ?? null;
+const { images } = await getOgGalleryData();
+const handImages = images.slice(0, 9);  // 01–09: hands
+const feetImages = images.slice(9);     // 10–15: feet
+const galleryImages = [...handImages, ...feetImages]; // hands first
 ---
 
 <Shell page="home" metadata={metadata}>
@@ -45,24 +45,24 @@ const lastGalleryImage = galleryImages[galleryImages.length - 1] ?? null;
       </div>
 
       <div class="og-hero-media-pair">
-        {lastGalleryImage && (
+        {handImages[0] && (
           <figure class="og-hero-img og-hero-img-main">
             <Image
-              src={lastGalleryImage.src}
-              alt={lastGalleryImage.alt}
+              src={handImages[0].src}
+              alt={handImages[0].alt}
               loading="eager"
               widths={[600, 900, 1200]}
               sizes="(max-width: 900px) 100vw, 40vw"
               format="webp"
-              quality={85}
+              quality={88}
             />
           </figure>
         )}
-        {heroImage && (
+        {handImages[1] && (
           <figure class="og-hero-img og-hero-img-second">
             <Image
-              src={heroImage.src}
-              alt={ogContent.hero.imageAlt}
+              src={handImages[1].src}
+              alt={handImages[1].alt}
               loading="eager"
               widths={[400, 700]}
               sizes="25vw"
@@ -173,32 +173,22 @@ const lastGalleryImage = galleryImages[galleryImages.length - 1] ?? null;
     </section>
   )}
 
-  <!-- LIGHTBOX MODAL -->
+  <!-- LIGHTBOX -->
   <div class="og-lightbox" id="og-lightbox" role="dialog" aria-modal="true" aria-label="Galerie">
-    <div class="og-lightbox-backdrop" id="og-lb-backdrop"></div>
-    <div class="og-lightbox-window">
-      <div class="og-lightbox-titlebar">
-        <div class="og-lb-traffic">
-          <button class="og-lb-dot og-lb-close" id="og-lb-close" aria-label="Fermer"></button>
-          <button class="og-lb-dot og-lb-min" aria-label="Réduire"></button>
-          <button class="og-lb-dot og-lb-max" aria-label="Agrandir"></button>
-        </div>
-        <span class="og-lb-title" id="og-lb-title"></span>
-        <div class="og-lb-spacer"></div>
-      </div>
-      <div class="og-lightbox-body">
-        <button class="og-lb-nav og-lb-prev" id="og-lb-prev" aria-label="Précédent">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
-        <div class="og-lb-img-wrap">
-          <img id="og-lb-img" src="" alt="" />
-        </div>
-        <button class="og-lb-nav og-lb-next" id="og-lb-next" aria-label="Suivant">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-      </div>
-      <div class="og-lb-counter" id="og-lb-counter"></div>
+    <div class="og-lb-backdrop" id="og-lb-backdrop"></div>
+    <button class="og-lb-close-btn" id="og-lb-close" aria-label="Fermer">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <button class="og-lb-nav og-lb-prev" id="og-lb-prev" aria-label="Précédent">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="og-lb-img-wrap">
+      <img id="og-lb-img" src="" alt="" />
     </div>
+    <button class="og-lb-nav og-lb-next" id="og-lb-next" aria-label="Suivant">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+    <div class="og-lb-counter" id="og-lb-counter"></div>
   </div>
 
   <!-- LOCATION -->
@@ -261,19 +251,17 @@ const lastGalleryImage = galleryImages[galleryImages.length - 1] ?? null;
   const dotsWrap = document.getElementById('og-dots');
   const dots = dotsWrap ? Array.from(dotsWrap.querySelectorAll<HTMLButtonElement>('.og-dot')) : [];
 
+  const wrap = track?.parentElement as HTMLElement | null;
   let currentIndex = 0;
-  const ITEM_WIDTH = () => (items[0]?.offsetWidth ?? 300) + 10; // gap=10
-  const visibleCount = () => {
-    if (!track) return 1;
-    const wrap = track.parentElement;
-    if (!wrap) return 1;
-    return Math.floor(wrap.clientWidth / ITEM_WIDTH());
-  };
+  // item width (300px) + gap (10px) = 310px per slot
+  const SLOT = 310;
+  // subtract 2×2.5rem (40px each side) of wrapper padding from clientWidth
+  const visibleCount = () => Math.max(1, Math.floor(((wrap?.clientWidth ?? 0) - 80) / SLOT));
   const maxIndex = () => Math.max(0, items.length - visibleCount());
 
   function goTo(idx: number) {
     currentIndex = Math.max(0, Math.min(idx, maxIndex()));
-    if (track) track.style.transform = `translateX(-${currentIndex * ITEM_WIDTH()}px)`;
+    wrap?.scrollTo({ left: currentIndex * SLOT, behavior: 'smooth' });
     dots.forEach((d, i) => d.classList.toggle('active', i === currentIndex));
     if (prevBtn) prevBtn.disabled = currentIndex === 0;
     if (nextBtn) nextBtn.disabled = currentIndex >= maxIndex();
@@ -285,8 +273,7 @@ const lastGalleryImage = galleryImages[galleryImages.length - 1] ?? null;
 
   // Drag/swipe
   let dragStart = 0, dragging = false, dragMoved = false;
-  const trackWrap = track?.parentElement;
-  trackWrap?.addEventListener('mousedown', (e) => { dragging = true; dragMoved = false; dragStart = e.clientX; });
+  wrap?.addEventListener('mousedown', (e) => { dragging = true; dragMoved = false; dragStart = e.clientX; });
   window.addEventListener('mousemove', (e) => { if (dragging && Math.abs(e.clientX - dragStart) > 5) dragMoved = true; });
   window.addEventListener('mouseup', (e) => {
     if (!dragging) return;
@@ -294,8 +281,8 @@ const lastGalleryImage = galleryImages[galleryImages.length - 1] ?? null;
     if (Math.abs(diff) > 50) goTo(currentIndex + (diff > 0 ? 1 : -1));
     dragging = false;
   });
-  trackWrap?.addEventListener('touchstart', (e) => { dragStart = e.touches[0].clientX; dragMoved = false; }, { passive: true });
-  trackWrap?.addEventListener('touchend', (e) => {
+  wrap?.addEventListener('touchstart', (e) => { dragStart = e.touches[0].clientX; dragMoved = false; }, { passive: true });
+  wrap?.addEventListener('touchend', (e) => {
     const diff = dragStart - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 40) goTo(currentIndex + (diff > 0 ? 1 : -1));
   });
@@ -306,14 +293,12 @@ const lastGalleryImage = galleryImages[galleryImages.length - 1] ?? null;
   // ── LIGHTBOX ──
   const lightbox = document.getElementById('og-lightbox') as HTMLElement | null;
   const lbImg = document.getElementById('og-lb-img') as HTMLImageElement | null;
-  const lbTitle = document.getElementById('og-lb-title');
   const lbCounter = document.getElementById('og-lb-counter');
   const lbPrev = document.getElementById('og-lb-prev') as HTMLButtonElement | null;
   const lbNext = document.getElementById('og-lb-next') as HTMLButtonElement | null;
   const lbClose = document.getElementById('og-lb-close');
   const lbBackdrop = document.getElementById('og-lb-backdrop');
 
-  // Build image list from carousel items
   const imgData = items.map((item) => {
     const img = item.querySelector('img');
     return { src: img?.src ?? '', alt: img?.alt ?? '' };
@@ -327,7 +312,6 @@ const lastGalleryImage = galleryImages[galleryImages.length - 1] ?? null;
     showLbImage(idx, false);
     lightbox.classList.add('open');
     document.body.style.overflow = 'hidden';
-    lbImg?.focus();
   }
 
   function closeLightbox() {
@@ -346,12 +330,11 @@ const lastGalleryImage = galleryImages[galleryImages.length - 1] ?? null;
         lbImg.src = data.src;
         lbImg.alt = data.alt;
         lbImg.classList.remove('switching');
-      }, 160);
+      }, 150);
     } else {
       lbImg.src = data.src;
       lbImg.alt = data.alt;
     }
-    if (lbTitle) lbTitle.textContent = data.alt;
     if (lbCounter) lbCounter.textContent = `${lbIndex + 1} / ${imgData.length}`;
     if (lbPrev) lbPrev.disabled = lbIndex === 0;
     if (lbNext) lbNext.disabled = lbIndex === imgData.length - 1;
@@ -366,13 +349,6 @@ const lastGalleryImage = galleryImages[galleryImages.length - 1] ?? null;
   lbNext?.addEventListener('click', () => showLbImage(lbIndex + 1));
   lbClose?.addEventListener('click', closeLightbox);
   lbBackdrop?.addEventListener('click', closeLightbox);
-
-  // macOS traffic: min/max do nothing but feel right
-  document.querySelector('.og-lb-min')?.addEventListener('click', closeLightbox);
-  document.querySelector('.og-lb-max')?.addEventListener('click', () => {
-    const win = document.querySelector('.og-lightbox-window') as HTMLElement | null;
-    if (win) win.style.width = win.style.width === '98vw' ? '' : '98vw';
-  });
 
   document.addEventListener('keydown', (e) => {
     if (!lightbox?.classList.contains('open')) return;
@@ -709,18 +685,20 @@ const lastGalleryImage = galleryImages[galleryImages.length - 1] ?? null;
   .og-carousel-btn:disabled { opacity: 0.35; cursor: default; }
 
   .og-carousel-track-wrap {
-    overflow: hidden;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     padding: 0 2.5rem;
     cursor: grab;
     user-select: none;
   }
+  .og-carousel-track-wrap::-webkit-scrollbar { display: none; }
   .og-carousel-track-wrap:active { cursor: grabbing; }
 
   .og-carousel-track {
     display: flex;
     gap: 10px;
-    transition: transform 380ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    will-change: transform;
   }
 
   .og-carousel-item {
@@ -783,133 +761,91 @@ const lastGalleryImage = galleryImages[galleryImages.length - 1] ?? null;
     justify-content: center;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 220ms ease;
+    transition: opacity 200ms ease;
   }
   .og-lightbox.open {
     opacity: 1;
     pointer-events: all;
   }
-
-  .og-lightbox-backdrop {
+  .og-lb-backdrop {
     position: absolute;
     inset: 0;
-    background: rgba(10, 8, 7, 0.78);
-    backdrop-filter: blur(12px) saturate(0.6);
-    -webkit-backdrop-filter: blur(12px) saturate(0.6);
+    background: rgba(8, 6, 5, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
-
-  .og-lightbox-window {
+  .og-lb-img-wrap {
     position: relative;
     z-index: 1;
-    background: #1c1a19;
-    border-radius: 14px;
-    box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.08);
-    width: min(92vw, 820px);
-    max-height: 92vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    transform: scale(0.95) translateY(8px);
-    transition: transform 240ms cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-  .og-lightbox.open .og-lightbox-window {
-    transform: scale(1) translateY(0);
-  }
-
-  .og-lightbox-titlebar {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.7rem 1rem;
-    background: #252220;
-    border-bottom: 1px solid rgba(255,255,255,0.07);
-    flex-shrink: 0;
-  }
-  .og-lb-traffic {
-    display: flex;
-    gap: 7px;
-    align-items: center;
-  }
-  .og-lb-dot {
-    width: 13px;
-    height: 13px;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    position: relative;
-    transition: filter 120ms;
-  }
-  .og-lb-dot:hover { filter: brightness(1.2); }
-  .og-lb-close { background: #ff5f57; }
-  .og-lb-min { background: #febc2e; }
-  .og-lb-max { background: #28c840; }
-  .og-lb-title {
-    flex: 1;
-    text-align: center;
-    font-size: 0.78rem;
-    color: rgba(255,255,255,0.45);
-    font-family: var(--og-body);
-    letter-spacing: 0.01em;
-  }
-  .og-lb-spacer { width: calc(13px * 3 + 7px * 2); }
-
-  .og-lightbox-body {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex: 1;
-    min-height: 0;
-    padding: 1rem;
-    gap: 0.5rem;
-    position: relative;
-  }
-
-  .og-lb-img-wrap {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 0;
-    max-height: calc(92vh - 120px);
+    max-width: min(90vw, 720px);
+    max-height: 88vh;
   }
   .og-lb-img-wrap img {
     max-width: 100%;
-    max-height: 100%;
+    max-height: 88vh;
     width: auto;
     height: auto;
-    border-radius: 8px;
+    border-radius: 10px;
     object-fit: contain;
     display: block;
-    transition: opacity 160ms ease;
+    transition: opacity 150ms ease;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.5);
   }
   .og-lb-img-wrap img.switching { opacity: 0; }
-
-  .og-lb-nav {
-    flex-shrink: 0;
+  .og-lb-close-btn {
+    position: fixed;
+    top: 1.25rem;
+    right: 1.25rem;
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 2.4rem;
-    height: 2.4rem;
+    width: 2.2rem;
+    height: 2.2rem;
     border-radius: 50%;
-    border: 1.5px solid rgba(255,255,255,0.12);
-    background: rgba(255,255,255,0.06);
-    color: rgba(255,255,255,0.7);
+    border: none;
+    background: rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.8);
     cursor: pointer;
-    transition: background 120ms, color 120ms, transform 80ms;
+    transition: background 120ms;
   }
-  .og-lb-nav:hover { background: rgba(255,255,255,0.14); color: #fff; }
-  .og-lb-nav:active { transform: scale(0.9); }
-  .og-lb-nav:disabled { opacity: 0.25; cursor: default; }
-
+  .og-lb-close-btn:hover { background: rgba(255,255,255,0.22); color: #fff; }
+  .og-lb-nav {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.8);
+    cursor: pointer;
+    transition: background 120ms, transform 80ms;
+  }
+  .og-lb-nav:hover { background: rgba(255,255,255,0.2); color: #fff; }
+  .og-lb-nav:active { transform: translateY(-50%) scale(0.92); }
+  .og-lb-nav:disabled { opacity: 0.2; cursor: default; }
+  .og-lb-prev { left: 1.25rem; }
+  .og-lb-next { right: 1.25rem; }
   .og-lb-counter {
-    text-align: center;
+    position: fixed;
+    bottom: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
     font-size: 0.75rem;
-    color: rgba(255,255,255,0.35);
-    padding: 0.5rem 1rem 0.75rem;
+    color: rgba(255,255,255,0.4);
     font-family: var(--og-body);
-    flex-shrink: 0;
+    letter-spacing: 0.06em;
+    pointer-events: none;
   }
 
   /* ── LOCATION ── */
@@ -1044,6 +980,8 @@ const lastGalleryImage = galleryImages[galleryImages.length - 1] ?? null;
     .og-hero-content { padding: 2.5rem 1.25rem 2rem; }
     .og-carousel-track-wrap { padding: 0 1.25rem; }
     .og-carousel-item { flex: 0 0 180px; }
-    .og-lightbox-window { width: 98vw; border-radius: 10px; }
+    .og-lb-nav { width: 2rem; height: 2rem; }
+    .og-lb-prev { left: 0.5rem; }
+    .og-lb-next { right: 0.5rem; }
   }
 </style>

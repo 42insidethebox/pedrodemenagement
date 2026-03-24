@@ -1,5 +1,5 @@
 const whatsappNumberIntl = '41772403387';
-const whatsappMessage = encodeURIComponent('Bonjour Ivanna Gel, je souhaite prendre rendez-vous.');
+const whatsappMessage = encodeURIComponent('Bonjour Ivanna, je souhaite prendre rendez-vous.');
 const whatsappUrl = `https://wa.me/${whatsappNumberIntl}?text=${whatsappMessage}`;
 
 export const onglesGelConfig = {
