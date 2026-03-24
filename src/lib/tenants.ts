@@ -1,5 +1,5 @@
-import type { BrandKey } from './brand.ts';
-import { BRANDS } from './brands.config.ts';
+import type { BrandKey } from './brand';
+import { BRANDS } from './brands.config';
 
 export type TenantSlug = BrandKey | 'tonsiteweb' | 'maison-cortes';
 
