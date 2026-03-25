@@ -173,8 +173,9 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   }
 
   // Internally rewrite clean URLs to /tonsiteweb/* so Astro serves the right pages.
+  // Root '/' → '/tonsiteweb/offre' (prerender=false); other paths → '/tonsiteweb/PATH'.
   if (isTonsitewebHost && !shouldSkip) {
-    url.pathname = `/tonsiteweb${url.pathname === '/' ? '' : url.pathname}`;
+    url.pathname = `/tonsiteweb${url.pathname === '/' ? '/offre' : url.pathname}`;
   }
 
   if (!shouldSkip && basePath) {
