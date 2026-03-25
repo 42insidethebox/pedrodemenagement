@@ -27,11 +27,11 @@ const metadata = {
     actions={[
       {
         variant: 'primary',
-        text: 'Voir les offres',
-        href: '/pricing',
+        text: 'Commander — 500 CHF ce mois',
+        href: '/offre',
         icon: 'tabler:arrow-right',
       },
-      { text: 'Parler à un expert', href: '/contact#form' },
+      { text: 'Voir les tarifs', href: '/pricing' },
     ]}
     image={{ src: '~/assets/images/hero-image.png', alt: 'Interface TonSiteWeb.ch' }}
   >
@@ -273,10 +273,10 @@ const metadata = {
   <Stats
     title="Des repères clairs pour décider"
     stats={[
-      { title: 'Délai typique', amount: '5 jours ouvrés' },
-      { title: 'Pack site vitrine', amount: '999 CHF' },
+      { title: 'Délai typique', amount: '1 jour' },
+      { title: 'Pack vitrine — offre avril', amount: '500 CHF' },
       { title: 'Maintenance', amount: 'dès 79 CHF/mois' },
-      { title: 'Intégrations avancées', amount: 'sur devis' },
+      { title: 'Prix normal', amount: '999 CHF' },
     ]}
   />
 
@@ -322,21 +322,21 @@ const metadata = {
   <CallToAction
     actions={[
       {
-        variant: 'primary',
-        text: 'Demander une proposition',
-        href: '/contact#form',
-        icon: 'tabler:mail-forward',
+        variant: ‘primary’,
+        text: ‘Commander maintenant — 500 CHF’,
+        href: ‘/offre’,
+        icon: ‘tabler:arrow-right’,
       },
       {
-        text: 'Découvrir nos tarifs',
-        href: '/pricing',
+        text: ‘Voir les tarifs’,
+        href: ‘/pricing’,
       },
     ]}
   >
-    <Fragment slot="title">Prêts à clarifier votre présence en ligne ?</Fragment>
+    <Fragment slot="title">Votre site prêt demain — offre avril à 500 CHF</Fragment>
 
     <Fragment slot="subtitle">
-      Nous analysons vos besoins et proposons un plan d’action réaliste pour votre activité dans la région avec TonSiteWeb.ch.
+      Prix normal 999 CHF. Ce mois uniquement : 50 % de réduction sur le pack site vitrine TonSiteWeb.ch. Sans engagement, livraison le lendemain.
     </Fragment>
   </CallToAction>
 </Layout>
