@@ -1,5 +1,5 @@
 ---
-import Layout from '~/layouts/Layout.astro';
+import Layout from '~/layouts/PageLayout.astro';
 
 export const prerender = false;
 
@@ -91,7 +91,6 @@ const CHECKOUT_URL = '/api/checkout?plan=essential500&template=classic-clean&ten
     title: `${headline} – 500 CHF – TonSiteWeb`,
     description: 'Site internet professionnel livré en 24h pour 500 CHF. Satisfait ou remboursé. Idéal pour indépendants, artisans, commerçants en Suisse.',
   }}
-  brandKey="tonsiteweb"
 >
   <!-- Facebook Pixel — REPLACE XXXXXXXXXXXXXXXXXX with your real Pixel ID -->
   <script is:inline>
