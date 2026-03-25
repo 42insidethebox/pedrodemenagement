@@ -34,8 +34,7 @@ export default defineConfig({
     },
     build: {
       rollupOptions: {
-        // 👇 add googleapis here
-        external: ["stripe", "googleapis"],
+        external: ["googleapis"],
       },
     },
     server: {
