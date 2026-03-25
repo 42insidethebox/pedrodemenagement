@@ -69,6 +69,9 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   const isOnglesgelHost =
     (resolved.source === 'host' && resolved.slug === 'onglesgel') ||
     hostCandidates.some((host) => host.includes('onglesgel.ch'));
+  const isTonsitewebHost =
+    (resolved.source === 'host' && resolved.slug === 'tonsiteweb') ||
+    hostCandidates.some((host) => host.includes('tonsiteweb.ch') || host.includes('tonwebsite.ch'));
   const basePath = tenantBasePath(resolved);
   const shouldSkip = SKIP_PREFIXES.some((prefix) => url.pathname.startsWith(prefix));
   const headers = new Headers(context.request.headers);
@@ -161,11 +164,17 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
     }
   }
 
-  // Normalize legacy TonSiteWeb prefixed URLs to the host-based model
-  if (resolved.slug === 'tonsiteweb' && url.pathname.startsWith('/tonsiteweb')) {
+  // Redirect away browser-visible /tonsiteweb/* prefix on TonSiteWeb host (canonical clean URLs).
+  // Must run BEFORE the internal rewrite below to avoid a redirect loop.
+  if (isTonsitewebHost && url.pathname.startsWith('/tonsiteweb')) {
     const stripped = url.pathname.replace(/^\/tonsiteweb/, '') || '/';
-    const target = new URL(stripped, url);
+    const target = new URL(`${stripped}${url.search}`, url);
     return Response.redirect(target.toString(), 308);
+  }
+
+  // Internally rewrite clean URLs to /tonsiteweb/* so Astro serves the right pages.
+  if (isTonsitewebHost && !shouldSkip) {
+    url.pathname = `/tonsiteweb${url.pathname === '/' ? '' : url.pathname}`;
   }
 
   if (!shouldSkip && basePath) {
