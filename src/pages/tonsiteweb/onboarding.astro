@@ -3,12 +3,186 @@ import Layout from '~/layouts/Layout.astro';
 
 export const prerender = false;
 
+const SUPPORTED_LOCALES = ['fr', 'en', 'it', 'de'] as const;
+type Locale = typeof SUPPORTED_LOCALES[number];
+
+function resolveLocale(): Locale {
+  const query = Astro.url.searchParams.get('lang');
+  if (query && SUPPORTED_LOCALES.includes(query.toLowerCase() as Locale)) return query.toLowerCase() as Locale;
+  const header = Astro.request.headers.get('accept-language') || '';
+  const base = header.split(',')[0]?.split(';')[0]?.split('-')[0]?.toLowerCase();
+  if (base && SUPPORTED_LOCALES.includes(base as Locale)) return base as Locale;
+  return 'fr';
+}
+
+const locale = resolveLocale();
 const sessionId = Astro.url.searchParams.get('session_id') || '';
 const error = Astro.url.searchParams.get('error') || '';
+
+const T = {
+  fr: {
+    title: 'Configurer votre site — TonSiteWeb.ch',
+    heading: 'Configurez votre site',
+    sub: 'Remplissez ce formulaire une seule fois — nous faisons le reste.',
+    errorMsg: 'Une erreur est survenue. Veuillez réessayer ou nous écrire sur WhatsApp.',
+    s1: 'Votre entreprise',
+    bizName: "Nom de l'entreprise", bizNamePh: 'Ex : Salon Bella, Plomberie Dupont…',
+    tagline: 'Slogan / accroche', taglinePh: "Ex : L'artisan de confiance depuis 1990",
+    sector: "Secteur d'activité", sectorPh: '-- Choisissez --',
+    desc: 'Décrivez votre activité en 2-3 phrases', descPh: 'Qui êtes-vous, ce que vous faites, pour qui…',
+    s2: 'Vos services', s2sub: 'Listez vos 1 à 4 services principaux affichés sur le site.',
+    svcLabel: 'Service', optional: '(optionnel)', svcName: 'Nom', svcDesc: 'Description courte',
+    svcDescPh: 'En une phrase', svcPrice: 'Prix indicatif', svcPricePh: 'dès 80 CHF',
+    s3: 'Contact & Localisation',
+    address: 'Adresse complète', addressPh: 'Rue, numéro, ville, NPA',
+    phone: 'Téléphone affiché sur le site',
+    email: 'Email affiché sur le site', emailPh: 'contact@monentreprise.ch',
+    hours: "Horaires d'ouverture", hoursPh: 'Lun–Ven 9h–18h, Sam 10h–16h, Dim fermé',
+    s4: 'Identité visuelle',
+    colorMain: 'Couleur principale', colorSec: 'Couleur secondaire',
+    styleLabel: 'Style préféré',
+    styles: [
+      { value: 'moderne', label: 'Moderne / Minimaliste', emoji: '✦' },
+      { value: 'chaleureux', label: 'Chaleureux / Artisanal', emoji: '🪵' },
+      { value: 'corporate', label: 'Professionnel / Corporate', emoji: '💼' },
+    ],
+    logo: 'Logo', logoPh: 'optionnel — PNG, JPG, SVG',
+    photos: 'Photos (jusqu\'à 3)', photosPh: 'optionnel — votre équipe, local, travaux…',
+    s5: 'Réseaux sociaux & domaine',
+    igPh: 'https://instagram.com/moncompte', fbPh: 'https://facebook.com/mapage',
+    domain: 'Domaine souhaité', domainPh: 'Ex : moncoiffeur.ch…',
+    domainOwned: "J'ai déjà acheté ce domaine",
+    s6: 'Informations complémentaires',
+    refs: 'Sites que vous aimez (références)', refsPh: 'Collez des URLs ou décrivez le style…',
+    notes: 'Questions ou demandes spéciales', notesPh: 'Tout ce qui vous semble important…',
+    submit: 'Envoyer — lancer la création de mon site →',
+    privacy: 'Vos informations sont sécurisées et utilisées uniquement pour créer votre site.',
+    sectors: ['Commerce / Boutique','Artisan / Construction','Beauté / Bien-être','Restauration / Traiteur','Santé / Thérapeute','Immobilier / Conciergerie','Transport / Déménagement','Coiffure','Sport / Fitness','Autre'],
+  },
+  en: {
+    title: 'Configure your website — TonSiteWeb.ch',
+    heading: 'Configure your website',
+    sub: 'Fill in this form once — we handle the rest.',
+    errorMsg: 'An error occurred. Please try again or message us on WhatsApp.',
+    s1: 'Your business',
+    bizName: 'Business name', bizNamePh: 'E.g.: Bella Salon, Dupont Plumbing…',
+    tagline: 'Tagline / slogan', taglinePh: 'E.g.: Trusted craftsman since 1990',
+    sector: 'Industry / sector', sectorPh: '-- Select --',
+    desc: 'Describe your business in 2-3 sentences', descPh: 'Who you are, what you do, for whom…',
+    s2: 'Your services', s2sub: 'List your 1 to 4 main services shown on the site.',
+    svcLabel: 'Service', optional: '(optional)', svcName: 'Name', svcDesc: 'Short description',
+    svcDescPh: 'In one sentence', svcPrice: 'Indicative price', svcPricePh: 'From CHF 80',
+    s3: 'Contact & Location',
+    address: 'Full address', addressPh: 'Street, number, city, postcode',
+    phone: 'Phone displayed on site',
+    email: 'Email displayed on site', emailPh: 'contact@mybusiness.ch',
+    hours: 'Opening hours', hoursPh: 'Mon–Fri 9am–6pm, Sat 10am–4pm, Sun closed',
+    s4: 'Visual identity',
+    colorMain: 'Primary colour', colorSec: 'Secondary colour',
+    styleLabel: 'Preferred style',
+    styles: [
+      { value: 'moderne', label: 'Modern / Minimalist', emoji: '✦' },
+      { value: 'chaleureux', label: 'Warm / Artisan', emoji: '🪵' },
+      { value: 'corporate', label: 'Professional / Corporate', emoji: '💼' },
+    ],
+    logo: 'Logo', logoPh: 'optional — PNG, JPG, SVG',
+    photos: 'Photos (up to 3)', photosPh: 'optional — team, premises, work…',
+    s5: 'Social media & domain',
+    igPh: 'https://instagram.com/myaccount', fbPh: 'https://facebook.com/mypage',
+    domain: 'Desired domain name', domainPh: 'E.g.: myhairdresser.ch…',
+    domainOwned: 'I already own this domain',
+    s6: 'Additional information',
+    refs: 'Sites you like (references)', refsPh: 'Paste URLs or describe styles you like…',
+    notes: 'Questions or special requests', notesPh: 'Anything important for your site…',
+    submit: 'Submit — start building my site →',
+    privacy: 'Your information is secure and used solely to create your website.',
+    sectors: ['Retail / Shop','Craftsman / Construction','Beauty / Wellness','Restaurant / Catering','Health / Therapist','Real Estate / Concierge','Transport / Moving','Hairdressing','Sport / Fitness','Other'],
+  },
+  de: {
+    title: 'Ihre Website konfigurieren — TonSiteWeb.ch',
+    heading: 'Konfigurieren Sie Ihre Website',
+    sub: 'Füllen Sie dieses Formular einmal aus — wir erledigen den Rest.',
+    errorMsg: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut oder schreiben Sie uns auf WhatsApp.',
+    s1: 'Ihr Unternehmen',
+    bizName: 'Unternehmensname', bizNamePh: 'Z.B.: Salon Bella, Klempner Müller…',
+    tagline: 'Slogan / Claim', taglinePh: 'Z.B.: Ihr Handwerker seit 1990',
+    sector: 'Branche', sectorPh: '-- Auswählen --',
+    desc: 'Beschreiben Sie Ihr Unternehmen in 2-3 Sätzen', descPh: 'Wer Sie sind, was Sie tun, für wen…',
+    s2: 'Ihre Leistungen', s2sub: 'Listen Sie Ihre 1 bis 4 Hauptleistungen auf der Website auf.',
+    svcLabel: 'Leistung', optional: '(optional)', svcName: 'Name', svcDesc: 'Kurzbeschreibung',
+    svcDescPh: 'In einem Satz', svcPrice: 'Richtpreis', svcPricePh: 'Ab 80 CHF',
+    s3: 'Kontakt & Standort',
+    address: 'Vollständige Adresse', addressPh: 'Strasse, Nummer, Stadt, PLZ',
+    phone: 'Telefon auf der Website',
+    email: 'E-Mail auf der Website', emailPh: 'kontakt@meinunternehmen.ch',
+    hours: 'Öffnungszeiten', hoursPh: 'Mo–Fr 9–18 Uhr, Sa 10–16 Uhr, So geschlossen',
+    s4: 'Visuelles Design',
+    colorMain: 'Hauptfarbe', colorSec: 'Sekundärfarbe',
+    styleLabel: 'Bevorzugter Stil',
+    styles: [
+      { value: 'moderne', label: 'Modern / Minimalistisch', emoji: '✦' },
+      { value: 'chaleureux', label: 'Warm / Handwerklich', emoji: '🪵' },
+      { value: 'corporate', label: 'Professionell / Corporate', emoji: '💼' },
+    ],
+    logo: 'Logo', logoPh: 'optional — PNG, JPG, SVG',
+    photos: 'Fotos (bis zu 3)', photosPh: 'optional — Team, Räume, Arbeiten…',
+    s5: 'Soziale Medien & Domain',
+    igPh: 'https://instagram.com/meinprofil', fbPh: 'https://facebook.com/meinseite',
+    domain: 'Gewünschte Domain', domainPh: 'Z.B.: meinfriseursalon.ch…',
+    domainOwned: 'Ich habe diese Domain bereits gekauft',
+    s6: 'Weitere Informationen',
+    refs: 'Websites, die Sie mögen (Referenzen)', refsPh: 'URLs einfügen oder Stil beschreiben…',
+    notes: 'Fragen oder besondere Wünsche', notesPh: 'Alles Wichtige für Ihre Website…',
+    submit: 'Absenden — Website-Erstellung starten →',
+    privacy: 'Ihre Daten sind sicher und werden ausschliesslich zur Erstellung Ihrer Website verwendet.',
+    sectors: ['Handel / Geschäft','Handwerk / Bau','Schönheit / Wellness','Restaurant / Catering','Gesundheit / Therapeut','Immobilien / Concierge','Transport / Umzug','Friseur','Sport / Fitness','Sonstiges'],
+  },
+  it: {
+    title: 'Configurare il vostro sito — TonSiteWeb.ch',
+    heading: 'Configurate il vostro sito',
+    sub: 'Compilate questo modulo una sola volta — pensiamo noi al resto.',
+    errorMsg: 'Si è verificato un errore. Riprovate o scriveteci su WhatsApp.',
+    s1: 'La vostra azienda',
+    bizName: "Nome dell'azienda", bizNamePh: 'Es.: Salone Bella, Idraulico Rossi…',
+    tagline: 'Slogan', taglinePh: 'Es.: Artigiano di fiducia dal 1990',
+    sector: 'Settore di attività', sectorPh: '-- Selezionate --',
+    desc: 'Descrivete la vostra attività in 2-3 frasi', descPh: 'Chi siete, cosa fate, per chi…',
+    s2: 'I vostri servizi', s2sub: 'Elencate da 1 a 4 servizi principali da mostrare sul sito.',
+    svcLabel: 'Servizio', optional: '(facoltativo)', svcName: 'Nome', svcDesc: 'Descrizione breve',
+    svcDescPh: 'In una frase', svcPrice: 'Prezzo indicativo', svcPricePh: 'Da 80 CHF',
+    s3: 'Contatto & Localizzazione',
+    address: 'Indirizzo completo', addressPh: 'Via, numero, città, CAP',
+    phone: 'Telefono visualizzato sul sito',
+    email: 'Email visualizzata sul sito', emailPh: 'contatto@miazienda.ch',
+    hours: 'Orari di apertura', hoursPh: 'Lun–Ven 9–18, Sab 10–16, Dom chiuso',
+    s4: 'Identità visiva',
+    colorMain: 'Colore principale', colorSec: 'Colore secondario',
+    styleLabel: 'Stile preferito',
+    styles: [
+      { value: 'moderne', label: 'Moderno / Minimalista', emoji: '✦' },
+      { value: 'chaleureux', label: 'Caldo / Artigianale', emoji: '🪵' },
+      { value: 'corporate', label: 'Professionale / Corporate', emoji: '💼' },
+    ],
+    logo: 'Logo', logoPh: 'facoltativo — PNG, JPG, SVG',
+    photos: 'Foto (fino a 3)', photosPh: 'facoltativo — team, locale, lavori…',
+    s5: 'Social media & dominio',
+    igPh: 'https://instagram.com/mioaccount', fbPh: 'https://facebook.com/miapagina',
+    domain: 'Dominio desiderato', domainPh: 'Es.: mioparrucchiere.ch…',
+    domainOwned: 'Ho già acquistato questo dominio',
+    s6: 'Informazioni aggiuntive',
+    refs: 'Siti che vi piacciono (riferimenti)', refsPh: 'Incollate URL o descrivete lo stile…',
+    notes: 'Domande o richieste speciali', notesPh: 'Tutto ciò che è importante per il vostro sito…',
+    submit: 'Inviare — avviare la creazione del sito →',
+    privacy: 'Le vostre informazioni sono sicure e utilizzate esclusivamente per creare il vostro sito.',
+    sectors: ['Commercio / Negozio','Artigiano / Edilizia','Bellezza / Benessere','Ristorazione / Catering','Salute / Terapista','Immobiliare / Concierge','Trasporti / Traslochi','Parrucchiere','Sport / Fitness','Altro'],
+  },
+} as const;
+
+const t = T[locale];
 ---
 
 <Layout
-  metadata={{ title: 'Configurer votre site — TonSiteWeb.ch' }}
+  metadata={{ title: t.title }}
   brandKey="tonsiteweb"
 >
   <main class="min-h-screen bg-gray-50 py-12 px-4">
@@ -20,13 +194,13 @@ const error = Astro.url.searchParams.get('error') || '';
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </div>
-        <h1 class="text-3xl font-bold text-gray-900 mb-2">Configurez votre site</h1>
-        <p class="text-gray-500">Remplissez ce formulaire une seule fois — nous faisons le reste.</p>
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">{t.heading}</h1>
+        <p class="text-gray-500">{t.sub}</p>
       </div>
 
       {error && (
         <div class="bg-red-50 border border-red-200 text-red-700 rounded-xl p-4 mb-6 text-sm">
-          Une erreur est survenue. Veuillez réessayer ou nous écrire sur WhatsApp.
+          {t.errorMsg}
         </div>
       )}
 
@@ -37,170 +211,116 @@ const error = Astro.url.searchParams.get('error') || '';
         class="space-y-8"
       >
         <input type="hidden" name="session_id" value={sessionId} />
+        <input type="hidden" name="locale" value={locale} />
 
-        <!-- Section 1: Votre entreprise -->
+        <!-- Section 1 -->
         <div class="bg-white rounded-2xl border border-gray-200 p-6">
           <h2 class="text-lg font-bold text-gray-900 mb-5 flex items-center gap-2">
             <span class="w-7 h-7 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">1</span>
-            Votre entreprise
+            {t.s1}
           </h2>
           <div class="space-y-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">
-                Nom de l'entreprise <span class="text-red-500">*</span>
+                {t.bizName} <span class="text-red-500">*</span>
               </label>
-              <input
-                type="text"
-                name="business_name"
-                required
-                placeholder="Ex : Salon Bella, Plomberie Dupont…"
-                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+              <input type="text" name="business_name" required placeholder={t.bizNamePh}
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Slogan / accroche</label>
-              <input
-                type="text"
-                name="tagline"
-                placeholder="Ex : L'artisan de confiance depuis 1990"
-                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+              <label class="block text-sm font-medium text-gray-700 mb-1">{t.tagline}</label>
+              <input type="text" name="tagline" placeholder={t.taglinePh}
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Secteur d'activité</label>
-              <select
-                name="sector"
-                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-              >
-                <option value="">-- Choisissez --</option>
-                <option>Commerce / Boutique</option>
-                <option>Artisan / Construction</option>
-                <option>Beauté / Bien-être</option>
-                <option>Restauration / Traiteur</option>
-                <option>Santé / Thérapeute</option>
-                <option>Immobilier / Conciergerie</option>
-                <option>Transport / Déménagement</option>
-                <option>Coiffure</option>
-                <option>Sport / Fitness</option>
-                <option>Autre</option>
+              <label class="block text-sm font-medium text-gray-700 mb-1">{t.sector}</label>
+              <select name="sector" class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                <option value="">{t.sectorPh}</option>
+                {t.sectors.map((s) => <option>{s}</option>)}
               </select>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">
-                Décrivez votre activité en 2-3 phrases <span class="text-red-500">*</span>
+                {t.desc} <span class="text-red-500">*</span>
               </label>
-              <textarea
-                name="description"
-                required
-                rows="3"
-                placeholder="Qui êtes-vous, ce que vous faites, pour qui…"
-                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-              ></textarea>
+              <textarea name="description" required rows="3" placeholder={t.descPh}
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
             </div>
           </div>
         </div>
 
-        <!-- Section 2: Vos services -->
+        <!-- Section 2 -->
         <div class="bg-white rounded-2xl border border-gray-200 p-6">
           <h2 class="text-lg font-bold text-gray-900 mb-5 flex items-center gap-2">
             <span class="w-7 h-7 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">2</span>
-            Vos services
+            {t.s2}
           </h2>
-          <p class="text-xs text-gray-400 mb-4">Listez vos 1 à 4 services principaux affichés sur le site.</p>
+          <p class="text-xs text-gray-400 mb-4">{t.s2sub}</p>
           {[1, 2, 3, 4].map((i) => (
             <div class={`grid grid-cols-1 sm:grid-cols-3 gap-3 ${i < 4 ? 'mb-4 pb-4 border-b border-gray-100' : ''}`}>
-              <div class="sm:col-span-1">
+              <div>
                 <label class="block text-xs font-medium text-gray-600 mb-1">
-                  Service {i} {i === 1 ? <span class="text-red-500">*</span> : <span class="text-gray-400">(optionnel)</span>}
+                  {t.svcLabel} {i} {i === 1 ? <span class="text-red-500">*</span> : <span class="text-gray-400">{t.optional}</span>}
                 </label>
-                <input
-                  type="text"
-                  name={`service_${i}_name`}
-                  required={i === 1}
-                  placeholder="Nom"
-                  class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+                <input type="text" name={`service_${i}_name`} required={i === 1} placeholder={t.svcName}
+                  class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
               </div>
-              <div class="sm:col-span-1">
-                <label class="block text-xs font-medium text-gray-600 mb-1">Description courte</label>
-                <input
-                  type="text"
-                  name={`service_${i}_desc`}
-                  placeholder="En une phrase"
-                  class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">{t.svcDesc}</label>
+                <input type="text" name={`service_${i}_desc`} placeholder={t.svcDescPh}
+                  class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
               </div>
-              <div class="sm:col-span-1">
-                <label class="block text-xs font-medium text-gray-600 mb-1">Prix indicatif</label>
-                <input
-                  type="text"
-                  name={`service_${i}_price`}
-                  placeholder="Ex : dès 80 CHF"
-                  class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">{t.svcPrice}</label>
+                <input type="text" name={`service_${i}_price`} placeholder={t.svcPricePh}
+                  class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
               </div>
             </div>
           ))}
         </div>
 
-        <!-- Section 3: Contact & Localisation -->
+        <!-- Section 3 -->
         <div class="bg-white rounded-2xl border border-gray-200 p-6">
           <h2 class="text-lg font-bold text-gray-900 mb-5 flex items-center gap-2">
             <span class="w-7 h-7 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">3</span>
-            Contact & Localisation
+            {t.s3}
           </h2>
           <div class="space-y-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Adresse complète</label>
-              <input
-                type="text"
-                name="address"
-                placeholder="Rue, numéro, ville, NPA"
-                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+              <label class="block text-sm font-medium text-gray-700 mb-1">{t.address}</label>
+              <input type="text" name="address" placeholder={t.addressPh}
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Téléphone affiché sur le site</label>
-                <input
-                  type="tel"
-                  name="phone"
-                  placeholder="+41 79 000 00 00"
-                  class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+                <label class="block text-sm font-medium text-gray-700 mb-1">{t.phone}</label>
+                <input type="tel" name="phone" placeholder="+41 79 000 00 00"
+                  class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Email affiché sur le site</label>
-                <input
-                  type="email"
-                  name="site_email"
-                  placeholder="contact@monentreprise.ch"
-                  class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+                <label class="block text-sm font-medium text-gray-700 mb-1">{t.email}</label>
+                <input type="email" name="site_email" placeholder={t.emailPh}
+                  class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
               </div>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Horaires d'ouverture</label>
-              <textarea
-                name="hours"
-                rows="2"
-                placeholder="Ex : Lun–Ven 9h–18h, Sam 10h–16h, Dim fermé"
-                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-              ></textarea>
+              <label class="block text-sm font-medium text-gray-700 mb-1">{t.hours}</label>
+              <textarea name="hours" rows="2" placeholder={t.hoursPh}
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
             </div>
           </div>
         </div>
 
-        <!-- Section 4: Identité visuelle -->
+        <!-- Section 4 -->
         <div class="bg-white rounded-2xl border border-gray-200 p-6">
           <h2 class="text-lg font-bold text-gray-900 mb-5 flex items-center gap-2">
             <span class="w-7 h-7 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">4</span>
-            Identité visuelle
+            {t.s4}
           </h2>
           <div class="space-y-5">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Couleur principale</label>
+                <label class="block text-sm font-medium text-gray-700 mb-1">{t.colorMain}</label>
                 <div class="flex items-center gap-2">
                   <input type="color" name="color_primary" value="#1d4ed8" class="h-10 w-14 rounded border border-gray-300 cursor-pointer p-0.5" />
                   <input type="text" name="color_primary_hex" placeholder="#1d4ed8" maxlength="7"
@@ -208,7 +328,9 @@ const error = Astro.url.searchParams.get('error') || '';
                 </div>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Couleur secondaire <span class="text-gray-400 text-xs">(optionnel)</span></label>
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                  {t.colorSec} <span class="text-gray-400 text-xs">{t.optional}</span>
+                </label>
                 <div class="flex items-center gap-2">
                   <input type="color" name="color_secondary" value="#f59e0b" class="h-10 w-14 rounded border border-gray-300 cursor-pointer p-0.5" />
                   <input type="text" name="color_secondary_hex" placeholder="#f59e0b" maxlength="7"
@@ -216,15 +338,10 @@ const error = Astro.url.searchParams.get('error') || '';
                 </div>
               </div>
             </div>
-
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Style préféré</label>
+              <label class="block text-sm font-medium text-gray-700 mb-2">{t.styleLabel}</label>
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {[
-                  { value: 'moderne', label: 'Moderne / Minimaliste', emoji: '✦' },
-                  { value: 'chaleureux', label: 'Chaleureux / Artisanal', emoji: '🪵' },
-                  { value: 'corporate', label: 'Professionnel / Corporate', emoji: '💼' },
-                ].map(({ value, label, emoji }) => (
+                {t.styles.map(({ value, label, emoji }) => (
                   <label class="flex items-center gap-2 border border-gray-200 rounded-xl p-3 cursor-pointer hover:border-blue-400 has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50 transition-colors">
                     <input type="radio" name="style" value={value} class="accent-blue-600" />
                     <span class="text-sm">{emoji} {label}</span>
@@ -232,112 +349,79 @@ const error = Astro.url.searchParams.get('error') || '';
                 ))}
               </div>
             </div>
-
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">
-                Logo <span class="text-gray-400 text-xs">(optionnel — PNG, JPG, SVG)</span>
+                {t.logo} <span class="text-gray-400 text-xs">({t.logoPh})</span>
               </label>
-              <input
-                type="file"
-                name="logo"
-                accept="image/*"
-                class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-              />
+              <input type="file" name="logo" accept="image/*"
+                class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
             </div>
-
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">
-                Photos (jusqu'à 3) <span class="text-gray-400 text-xs">(optionnel — votre équipe, local, travaux…)</span>
+                {t.photos} <span class="text-gray-400 text-xs">({t.photosPh})</span>
               </label>
-              <input
-                type="file"
-                name="photos"
-                accept="image/*"
-                multiple
-                class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-              />
+              <input type="file" name="photos" accept="image/*" multiple
+                class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
             </div>
           </div>
         </div>
 
-        <!-- Section 5: Réseaux sociaux & domaine -->
+        <!-- Section 5 -->
         <div class="bg-white rounded-2xl border border-gray-200 p-6">
           <h2 class="text-lg font-bold text-gray-900 mb-5 flex items-center gap-2">
             <span class="w-7 h-7 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">5</span>
-            Réseaux sociaux & domaine
+            {t.s5}
           </h2>
           <div class="space-y-4">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Instagram</label>
-                <input
-                  type="url"
-                  name="instagram"
-                  placeholder="https://instagram.com/moncompte"
-                  class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+                <input type="url" name="instagram" placeholder={t.igPh}
+                  class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Facebook</label>
-                <input
-                  type="url"
-                  name="facebook"
-                  placeholder="https://facebook.com/mapage"
-                  class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+                <input type="url" name="facebook" placeholder={t.fbPh}
+                  class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
               </div>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Domaine souhaité</label>
-              <input
-                type="text"
-                name="domain_desired"
-                placeholder="Ex : moncoiffeur.ch, salondubeau.ch…"
-                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+              <label class="block text-sm font-medium text-gray-700 mb-1">{t.domain}</label>
+              <input type="text" name="domain_desired" placeholder={t.domainPh}
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <label class="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" name="domain_owned" value="yes" class="accent-blue-600 w-4 h-4" />
-              <span class="text-sm text-gray-700">J'ai déjà acheté ce domaine</span>
+              <span class="text-sm text-gray-700">{t.domainOwned}</span>
             </label>
           </div>
         </div>
 
-        <!-- Section 6: Infos complémentaires -->
+        <!-- Section 6 -->
         <div class="bg-white rounded-2xl border border-gray-200 p-6">
           <h2 class="text-lg font-bold text-gray-900 mb-5 flex items-center gap-2">
             <span class="w-7 h-7 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">6</span>
-            Informations complémentaires
+            {t.s6}
           </h2>
           <div class="space-y-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Sites que vous aimez (références)</label>
-              <textarea
-                name="references"
-                rows="2"
-                placeholder="Collez des URLs ou décrivez le style que vous avez vu et aimé…"
-                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-              ></textarea>
+              <label class="block text-sm font-medium text-gray-700 mb-1">{t.refs}</label>
+              <textarea name="references" rows="2" placeholder={t.refsPh}
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Questions ou demandes spéciales</label>
-              <textarea
-                name="notes"
-                rows="3"
-                placeholder="Tout ce qui vous semble important pour votre site…"
-                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-              ></textarea>
+              <label class="block text-sm font-medium text-gray-700 mb-1">{t.notes}</label>
+              <textarea name="notes" rows="3" placeholder={t.notesPh}
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
             </div>
           </div>
         </div>
 
-        <button
-          type="submit"
-          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg py-4 rounded-2xl transition-colors"
-        >
-          Envoyer — lancer la création de mon site →
+        <button type="submit"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg py-4 rounded-2xl transition-colors">
+          {t.submit}
         </button>
-        <p class="text-center text-xs text-gray-400 pb-8">Vos informations sont sécurisées et utilisées uniquement pour créer votre site.</p>
+        <p class="text-center text-xs text-gray-400 pb-8">{t.privacy}</p>
       </form>
     </div>
   </main>
