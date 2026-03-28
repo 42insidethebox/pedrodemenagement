@@ -330,12 +330,15 @@ export function renderTemplate(name: string, data: any) {
         <p style="margin-top:20px;">Un membre de notre équipe va vous contacter sous 24 heures pour récupérer les derniers éléments et planifier la mise en route.</p>
         <p>Besoin d'ajouter des précisions ? Répondez directement à cet email ou écrivez-nous sur <a href="mailto:${escapeHtml(brand.supportEmail)}" style="color:${brand.primary}; text-decoration:none;">${escapeHtml(brand.supportEmail)}</a>.</p>
       `;
-      const intakeUrl = (order?.content_doc_url as string) || (ENV.CONTENT_INTAKE_FORM_URL || '');
+      const onboardingBase = (ENV.CONTENT_INTAKE_FORM_URL || `${brand.origin}/tonsiteweb/onboarding`).replace(/\/$/, '');
+      const onboardingUrl = order?.stripe_session_id
+        ? `${onboardingBase}?session_id=${encodeURIComponent(order.stripe_session_id)}`
+        : onboardingBase;
       return renderLayout({
         title: 'Votre commande est confirmée',
         preheader: `Commande ${order.order_number || ''} reçue`.trim(),
         contentHtml: content,
-        cta: intakeUrl ? { label: 'Fournir les contenus', url: intakeUrl } : null,
+        cta: { label: 'Configurer mon site maintenant →', url: onboardingUrl },
       });
     }
     default: {

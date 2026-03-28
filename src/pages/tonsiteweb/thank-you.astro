@@ -126,7 +126,7 @@ const sessionId = Astro.url.searchParams.get('session_id') || '';
 const hasSession = Boolean(sessionId);
 
 // WhatsApp: REPLACE 41770000000 with your real WhatsApp number (no + or spaces)
-const WA_NUMBER = '41770000000';
+const WA_NUMBER = '41767982793';
 const waMessageBase = encodeURIComponent(`Bonjour, j'ai commandé un site sur TonSiteWeb.ch`);
 const waMessageWithSession = encodeURIComponent(`Bonjour, j'ai commandé un site sur TonSiteWeb.ch (ref: ${sessionId})`);
 const waUrl = `https://wa.me/${WA_NUMBER}?text=${hasSession ? waMessageWithSession : waMessageBase}`;
@@ -163,6 +163,19 @@ const waCustomUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Bonjo
           <div id="error" class="hidden text-red-600">{copy.error}</div>
         </div>
       ) : null}
+
+      <!-- ONBOARDING CTA — primary action -->
+      <div class="bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl p-6 mb-6 text-center text-white">
+        <p class="text-2xl mb-2">🚀</p>
+        <h2 class="font-bold text-xl mb-2">Configurez votre site maintenant</h2>
+        <p class="text-blue-100 text-sm mb-5">Remplissez notre formulaire en 5 min — on s'occupe du reste.</p>
+        <a
+          href={`/tonsiteweb/onboarding${sessionId ? `?session_id=${encodeURIComponent(sessionId)}` : ''}`}
+          class="inline-block bg-white text-blue-700 font-bold text-base px-8 py-3 rounded-xl hover:bg-blue-50 transition-colors"
+        >
+          Commencer la configuration →
+        </a>
+      </div>
 
       <!-- WHAT HAPPENS NEXT -->
       <div class="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-2xl p-6 mb-6 text-center">
