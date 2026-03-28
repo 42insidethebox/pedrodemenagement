@@ -1,6 +1,11 @@
 // astro.config.ts
 import { defineConfig } from "astro/config";
+import { loadEnv } from "vite";
 import vercel from "@astrojs/vercel";
+
+// Inject .env values into process.env so SSR code using process.env.* works in dev
+const loadedEnv = loadEnv(process.env.NODE_ENV ?? "development", process.cwd(), "");
+Object.assign(process.env, loadedEnv);
 import icon from "astro-icon";
 import tailwind from "@astrojs/tailwind";
 import path from "path";
