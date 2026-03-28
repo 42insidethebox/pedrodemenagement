@@ -12,7 +12,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const viteCacheDir = path.join(process.env.TMPDIR || "/tmp", "astro-pedrodemenagement-vite-cache");
+const viteCacheDir = path.join(process.env.TMPDIR || "/tmp", "astro-pedrodemenagement-vite-cache-v2");
 
 export default defineConfig({
   site: "https://pedrodemenagement.ch",
