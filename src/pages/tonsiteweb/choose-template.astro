@@ -1,55 +1,127 @@
 ---
-import Layout from '~/layouts/PageLayout.astro';
-import Headline from '~/components/ui/Headline.astro';
+import Layout from '~/layouts/Layout.astro';
 
-type Tpl = { id: string; name: string; preview?: string; url?: string };
+export const prerender = false;
 
-const plan = Astro.url.searchParams.get('plan') || '';
-const templates: Tpl[] = [
-  { id: 'classic-clean', name: 'Classic Clean', url: 'https://demo.example.com/classic-clean' },
-  { id: 'bold-contrast', name: 'Bold Contrast', url: 'https://demo.example.com/bold-contrast' },
-  { id: 'serif-elegance', name: 'Serif Elegance', url: 'https://demo.example.com/serif-elegance' },
-  { id: 'minimal-grid', name: 'Minimal Grid', url: 'https://demo.example.com/minimal-grid' },
-  { id: 'warm-landing', name: 'Warm Landing', url: 'https://demo.example.com/warm-landing' },
-  { id: 'artisan-folio', name: 'Artisan Folio', url: 'https://demo.example.com/artisan-folio' },
+const SUPPORTED_LOCALES = ['fr', 'en', 'it', 'de'] as const;
+type Locale = typeof SUPPORTED_LOCALES[number];
+
+function resolveLocale(): Locale {
+  const query = Astro.url.searchParams.get('lang');
+  if (query && SUPPORTED_LOCALES.includes(query.toLowerCase() as Locale)) return query.toLowerCase() as Locale;
+  const header = Astro.request.headers.get('accept-language') || '';
+  const base = header.split(',')[0]?.split(';')[0]?.split('-')[0]?.toLowerCase();
+  if (base && SUPPORTED_LOCALES.includes(base as Locale)) return base as Locale;
+  return 'fr';
+}
+
+const locale = resolveLocale();
+const plan = Astro.url.searchParams.get('plan') || 'essential500';
+
+const T = {
+  fr: {
+    title: 'Choisissez un style — TonSiteWeb.ch',
+    heading: 'Quel style préférez-vous ?',
+    sub: 'Choisissez une direction visuelle — on adapte tout à votre contenu. Ou laissez-nous décider.',
+    planLabel: 'Plan sélectionné',
+    select: 'Sélectionner',
+    surprise: 'Laissez-nous choisir',
+    surpriseDesc: 'Vous nous faites confiance, on choisit le style le plus adapté à votre secteur. Satisfait ou remboursé.',
+    surpriseBtn: 'Continuer sans choisir →',
+    preview: 'Aperçu',
+  },
+  en: {
+    title: 'Choose a style — TonSiteWeb.ch',
+    heading: 'Which style do you prefer?',
+    sub: 'Pick a visual direction — we adapt everything to your content. Or let us decide.',
+    planLabel: 'Selected plan',
+    select: 'Select',
+    surprise: 'Let us choose',
+    surpriseDesc: 'You trust us, we pick the style that best fits your industry. Full refund if you\'re not happy.',
+    surpriseBtn: 'Continue without choosing →',
+    preview: 'Preview',
+  },
+  de: {
+    title: 'Stil wählen — TonSiteWeb.ch',
+    heading: 'Welchen Stil bevorzugen Sie?',
+    sub: 'Wählen Sie eine visuelle Richtung — wir passen alles an Ihre Inhalte an. Oder lassen Sie uns entscheiden.',
+    planLabel: 'Gewähltes Paket',
+    select: 'Auswählen',
+    surprise: 'Wir wählen für Sie',
+    surpriseDesc: 'Sie vertrauen uns, wir wählen den passendsten Stil für Ihre Branche. Zufrieden oder Geld zurück.',
+    surpriseBtn: 'Weiter ohne Auswahl →',
+    preview: 'Vorschau',
+  },
+  it: {
+    title: 'Scegli uno stile — TonSiteWeb.ch',
+    heading: 'Quale stile preferite?',
+    sub: 'Scegliete una direzione visiva — adattiamo tutto al vostro contenuto. O lasciate decidere a noi.',
+    planLabel: 'Piano selezionato',
+    select: 'Seleziona',
+    surprise: 'Lasciate scegliere a noi',
+    surpriseDesc: 'Vi fidate di noi, scegliamo lo stile più adatto al vostro settore. Soddisfatti o rimborsati.',
+    surpriseBtn: 'Continua senza scegliere →',
+    preview: 'Anteprima',
+  },
+} as const;
+
+const t = T[locale];
+
+type Template = { id: string; name: string; desc: string; url?: string };
+const templates: Template[] = [
+  { id: 'classic-clean',    name: 'Classic Clean',    desc: { fr: 'Épuré, lisible, universel', en: 'Clean, readable, universal', de: 'Klar, lesbar, universell', it: 'Pulito, leggibile, universale' }[locale] },
+  { id: 'bold-contrast',    name: 'Bold Contrast',    desc: { fr: 'Fort impact, couleurs marquées', en: 'Strong impact, bold colors', de: 'Starke Wirkung, kräftige Farben', it: 'Forte impatto, colori marcati' }[locale] },
+  { id: 'serif-elegance',   name: 'Serif Elegance',   desc: { fr: 'Élégant, haut de gamme', en: 'Elegant, premium feel', de: 'Elegant, hochwertig', it: 'Elegante, di alta gamma' }[locale] },
+  { id: 'minimal-grid',     name: 'Minimal Grid',     desc: { fr: 'Minimaliste, structuré', en: 'Minimalist, structured', de: 'Minimalistisch, strukturiert', it: 'Minimalista, strutturato' }[locale] },
+  { id: 'warm-landing',     name: 'Warm Landing',     desc: { fr: 'Chaleureux, artisanal', en: 'Warm, artisan feel', de: 'Warm, handwerklich', it: 'Caldo, artigianale' }[locale] },
+  { id: 'artisan-folio',    name: 'Artisan Folio',    desc: { fr: 'Portfolio, créatif', en: 'Portfolio, creative', de: 'Portfolio, kreativ', it: 'Portfolio, creativo' }[locale] },
 ];
-
-const metadata = { title: 'Choisir un modèle' };
 ---
 
-<Layout metadata={metadata}>
-  <div class="max-w-6xl mx-auto px-4 py-10">
-    <Headline title="Choisissez votre modèle" subtitle={plan ? `Plan sélectionné: ${plan}` : 'Sélectionnez un pack sur la page Tarifs d\'abord'} />
+<Layout metadata={{ title: t.title }} brandKey="tonsiteweb">
+  <main class="min-h-screen bg-gray-50 py-12 px-4">
+    <div class="max-w-5xl mx-auto">
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-      {templates.map((t) => (
-        <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden flex flex-col">
-          <div class="aspect-video bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 text-sm">
-            Aperçu
-          </div>
-          <div class="p-5 flex-1 flex flex-col">
-            <h3 class="text-base font-semibold text-slate-900 dark:text-slate-100">{t.name}</h3>
-            <div class="mt-4 flex gap-2 mt-auto">
-              {t.url ? (
-                <a
-                  class="inline-flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-700 px-3 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition"
-                  href={t.url}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Prévisualiser
-                </a>
-              ) : ''}
+      <div class="text-center mb-10">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">{t.heading}</h1>
+        <p class="text-gray-500 max-w-xl mx-auto">{t.sub}</p>
+        {plan && <p class="mt-2 text-xs text-blue-600 font-medium uppercase tracking-wide">{t.planLabel}: {plan}</p>}
+      </div>
+
+      <!-- Template grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
+        {templates.map((tpl) => (
+          <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col hover:border-blue-400 hover:shadow-md transition-all">
+            <div class="aspect-video bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center text-slate-400 text-sm font-medium">
+              {tpl.name}
+            </div>
+            <div class="p-4 flex-1 flex flex-col">
+              <h3 class="font-semibold text-gray-900 text-sm mb-1">{tpl.name}</h3>
+              <p class="text-gray-500 text-xs mb-4 flex-1">{tpl.desc}</p>
               <a
-                class="inline-flex items-center justify-center rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 transition"
-                href={`/api/payment/redirect?plan=${encodeURIComponent(plan)}&template=${encodeURIComponent(t.id)}`}
+                href={`/api/payment/redirect?plan=${encodeURIComponent(plan)}&template=${encodeURIComponent(tpl.id)}`}
+                class="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors"
               >
-                Sélectionner ce modèle
+                {t.select} →
               </a>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
+
+      <!-- Surprise me -->
+      <div class="bg-white border-2 border-dashed border-gray-300 hover:border-blue-400 rounded-2xl p-6 text-center transition-colors">
+        <p class="text-2xl mb-2">🎲</p>
+        <h2 class="font-bold text-lg text-gray-900 mb-1">{t.surprise}</h2>
+        <p class="text-gray-500 text-sm mb-5 max-w-md mx-auto">{t.surpriseDesc}</p>
+        <a
+          href={`/api/payment/redirect?plan=${encodeURIComponent(plan)}&template=surprise`}
+          class="inline-block border border-gray-300 hover:border-blue-400 hover:bg-blue-50 text-gray-700 font-medium text-sm px-6 py-3 rounded-xl transition-colors"
+        >
+          {t.surpriseBtn}
+        </a>
+      </div>
+
     </div>
-  </div>
+  </main>
 </Layout>

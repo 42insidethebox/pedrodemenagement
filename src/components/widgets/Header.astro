@@ -65,6 +65,7 @@ const brandLangs: Record<string, string[]> = {
 };
 const supportedLangs = brandLangs[brandKey] ?? ['fr'];
 const brandDefaultLocale = brandKey === 'laclemanexperience' ? 'en' : 'fr';
+const langUrlRouting = brandKey === 'tonsiteweb' || brandKey === 'laclemanexperience';
 const initialResolved = resolveLocaleFromRequest(Astro.request, brandDefaultLocale);
 const initialLang = supportedLangs.includes(initialResolved) ? initialResolved : supportedLangs[0] || 'fr';
 const flagClasses: Record<string, string> = {
@@ -123,6 +124,7 @@ const flagClasses: Record<string, string> = {
                 id="lang-select-mobile-inline"
                 data-initial={initialLang}
                 data-aw-lang-select
+                {...(langUrlRouting ? { 'data-aw-lang-url-routing': '' } : {})}
                 onchange="window.__awSetLang && window.__awSetLang(this.value)"
                 class="aw-lang-select-input aw-lang-select-input-sm"
               >
@@ -156,6 +158,7 @@ const flagClasses: Record<string, string> = {
                   id="lang-select-mobile"
                   data-initial={initialLang}
                   data-aw-lang-select
+                  {...(langUrlRouting ? { 'data-aw-lang-url-routing': '' } : {})}
                   onchange="window.__awSetLang && window.__awSetLang(this.value)"
                   class="aw-lang-select-input"
                 >
@@ -237,6 +240,7 @@ const flagClasses: Record<string, string> = {
                 id="lang-select"
                 data-initial={initialLang}
                 data-aw-lang-select
+                {...(langUrlRouting ? { 'data-aw-lang-url-routing': '' } : {})}
                 onchange="window.__awSetLang && window.__awSetLang(this.value)"
                 class="aw-lang-select-input"
               >
@@ -349,7 +353,16 @@ const flagClasses: Record<string, string> = {
         if (!supported.includes(lang)) return;
         const selects = Array.from(document.querySelectorAll('[data-aw-lang-select]'));
         applyLang(lang, selects);
-        window.location.reload();
+        // If any lang selector has URL routing enabled, navigate to the locale URL
+        const hasRouting = selects.some((s) => s.dataset.awLangUrlRouting !== undefined);
+        if (hasRouting) {
+          const path = window.location.pathname;
+          const stripped = path.replace(/^\/(en|de|it|fr)(\/|$)/, '/') || '/';
+          const newPath = lang === 'fr' ? stripped : `/${lang}${stripped === '/' ? '' : stripped}`;
+          window.location.href = (newPath || '/') + window.location.search;
+        } else {
+          window.location.reload();
+        }
       };
     }
 

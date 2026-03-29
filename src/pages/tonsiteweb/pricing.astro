@@ -28,7 +28,7 @@ const metadata = {
     <div class="rounded-2xl border-2 border-yellow-400 bg-yellow-50 dark:bg-yellow-900/20 px-6 py-4 text-center">
       <p class="text-lg font-bold text-yellow-800 dark:text-yellow-200">🎉 Offre spéciale avril — 50 % sur le tarif initial TonSiteWeb</p>
       <p class="mt-1 text-sm text-yellow-700 dark:text-yellow-300">Prix normal : <s class="opacity-60">999 CHF</s> → <strong>500 CHF</strong> — valable uniquement en avril 2026. Site livré le lendemain.</p>
-      <a href="/offre" class="mt-3 inline-block bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold text-sm px-6 py-2 rounded-xl transition-colors">Commander maintenant →</a>
+      <a href="/choose-template?plan=essential500" class="mt-3 inline-block bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold text-sm px-6 py-2 rounded-xl transition-colors">Commander maintenant →</a>
     </div>
   </div>
 
@@ -55,7 +55,7 @@ const metadata = {
             description: "Guide vidéo et check‑list d'autonomie",
           },
         ],
-        callToAction: '<a class="btn btn-primary" href="/offre">Commander — 500 CHF →</a>',
+        callToAction: { text: 'Choisir un modèle →', href: '/choose-template?plan=essential500' },
       },
       {
         title: 'Avancé',
@@ -313,8 +313,8 @@ const metadata = {
     actions={[
       {
         variant: 'primary',
-        text: 'Commander — 500 CHF en avril',
-        href: '/offre',
+        text: 'Choisir un modèle — 500 CHF',
+        href: '/choose-template?plan=essential500',
         icon: 'tabler:arrow-right',
       },
       {
