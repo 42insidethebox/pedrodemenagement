@@ -194,6 +194,23 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
     }
   }
 
+  // Inject tonsiteweb locale prefix from cookie so clean URLs serve translated pages.
+  // e.g. /tonsiteweb/pricing + cookie aw_lang=de  →  renders /tonsiteweb/de/pricing (URL stays clean).
+  const isTonsitewebPath = url.pathname === '/tonsiteweb' || url.pathname.startsWith('/tonsiteweb/');
+  if (!shouldSkip && isTonsitewebPath) {
+    const afterBase = url.pathname.slice('/tonsiteweb'.length) || '/'; // e.g. /pricing or /
+    const alreadyLocale = /^\/(en|de|it|fr)(\/|$)/.test(afterBase);
+    if (!alreadyLocale) {
+      const rawCookie = context.request.headers.get('cookie') || '';
+      const cookieLang = rawCookie.split(';').map((c) => c.trim()).find((c) => c.startsWith('aw_lang='))?.split('=')[1]?.toLowerCase();
+      console.log('[i18n] tonsiteweb locale inject:', { cookieLang, from: url.pathname });
+      if (cookieLang && ['en', 'de', 'it'].includes(cookieLang)) {
+        url.pathname = `/tonsiteweb/${cookieLang}${afterBase === '/' ? '' : afterBase}`;
+        console.log('[i18n] rewrote to:', url.pathname);
+      }
+    }
+  }
+
   const init: RequestInit = {
     headers,
     method: context.request.method,

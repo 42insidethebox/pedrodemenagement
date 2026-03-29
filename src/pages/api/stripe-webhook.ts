@@ -204,8 +204,14 @@ export const POST: APIRoute = async ({ request, locals }) => {
           tenant_id: tenantId,
         });
       } catch {}
-      try { await sendAdminNotificationEmail(emailOrder); } catch {}
-      try { await sendClientConfirmationEmail(emailOrder); } catch {}
+      try {
+        const adminRes = await sendAdminNotificationEmail(emailOrder);
+        console.log('[webhook] admin email:', adminRes.ok ? 'sent' : `FAILED – ${adminRes.error}`);
+      } catch (err) { console.error('[webhook] admin email threw:', err); }
+      try {
+        const clientRes = await sendClientConfirmationEmail(emailOrder);
+        console.log('[webhook] client email:', clientRes.ok ? `sent to ${emailOrder.customer_email}` : `FAILED – ${clientRes.error}`);
+      } catch (err) { console.error('[webhook] client email threw:', err); }
 
       // Provision website + domain for the customer (multi-tenant runtime)
       if (sb) {
