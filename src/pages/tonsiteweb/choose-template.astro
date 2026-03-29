@@ -1,84 +1,149 @@
 ---
 import Layout from '~/layouts/Layout.astro';
+import { resolveLocaleFromRequest } from '~/lib/locale';
 
 export const prerender = false;
 
-const SUPPORTED_LOCALES = ['fr', 'en', 'it', 'de'] as const;
-type Locale = typeof SUPPORTED_LOCALES[number];
-
-function resolveLocale(): Locale {
-  const query = Astro.url.searchParams.get('lang');
-  if (query && SUPPORTED_LOCALES.includes(query.toLowerCase() as Locale)) return query.toLowerCase() as Locale;
-  const header = Astro.request.headers.get('accept-language') || '';
-  const base = header.split(',')[0]?.split(';')[0]?.split('-')[0]?.toLowerCase();
-  if (base && SUPPORTED_LOCALES.includes(base as Locale)) return base as Locale;
-  return 'fr';
-}
-
-const locale = resolveLocale();
+const locale = resolveLocaleFromRequest(Astro.request);
 const plan = Astro.url.searchParams.get('plan') || 'essential500';
 
 const T = {
   fr: {
     title: 'Choisissez un style — TonSiteWeb.ch',
-    heading: 'Quel style préférez-vous ?',
-    sub: 'Choisissez une direction visuelle — on adapte tout à votre contenu. Ou laissez-nous décider.',
-    planLabel: 'Plan sélectionné',
-    select: 'Sélectionner',
-    surprise: 'Laissez-nous choisir',
+    heading: 'Quel style pour votre site ?',
+    sub: 'Choisissez parmi nos réalisations réelles — on adapte tout à votre secteur et contenu.',
+    planLabel: 'Plan',
+    select: 'Choisir ce style',
+    preview: 'Voir le site →',
+    surprise: '🎲 Laissez-nous choisir',
     surpriseDesc: 'Vous nous faites confiance, on choisit le style le plus adapté à votre secteur. Satisfait ou remboursé.',
     surpriseBtn: 'Continuer sans choisir →',
-    preview: 'Aperçu',
+    baseTemplate: 'Modèle de base',
+    variation: 'variation',
+    liveExamples: 'Exemples réels',
+    promoBadge: 'Offre spéciale avril',
+    promoTitle: 'Offre spéciale avril — 50 % sur le tarif initial TonSiteWeb',
+    promoDesc: 'Prix normal : 999 CHF → 500 CHF — valable uniquement en avril 2026. Site livré le lendemain.',
+    promoBtn: 'Commander maintenant →',
   },
   en: {
     title: 'Choose a style — TonSiteWeb.ch',
-    heading: 'Which style do you prefer?',
-    sub: 'Pick a visual direction — we adapt everything to your content. Or let us decide.',
-    planLabel: 'Selected plan',
-    select: 'Select',
-    surprise: 'Let us choose',
+    heading: 'Which style for your site?',
+    sub: 'Choose from our real projects — we adapt everything to your sector and content.',
+    planLabel: 'Plan',
+    select: 'Choose this style',
+    preview: 'View live site →',
+    surprise: '🎲 Let us choose',
     surpriseDesc: 'You trust us, we pick the style that best fits your industry. Full refund if you\'re not happy.',
     surpriseBtn: 'Continue without choosing →',
-    preview: 'Preview',
+    baseTemplate: 'Base template',
+    variation: 'variation',
+    liveExamples: 'Live examples',
+    promoBadge: 'April special offer',
+    promoTitle: 'April special — 50% off TonSiteWeb\'s regular price',
+    promoDesc: 'Normal price: CHF 999 → CHF 500 — April 2026 only. Site delivered the next day.',
+    promoBtn: 'Order now →',
   },
   de: {
     title: 'Stil wählen — TonSiteWeb.ch',
-    heading: 'Welchen Stil bevorzugen Sie?',
-    sub: 'Wählen Sie eine visuelle Richtung — wir passen alles an Ihre Inhalte an. Oder lassen Sie uns entscheiden.',
-    planLabel: 'Gewähltes Paket',
-    select: 'Auswählen',
-    surprise: 'Wir wählen für Sie',
+    heading: 'Welcher Stil für Ihre Website?',
+    sub: 'Wählen Sie aus unseren echten Projekten — wir passen alles an Ihre Branche an.',
+    planLabel: 'Paket',
+    select: 'Diesen Stil wählen',
+    preview: 'Live-Site ansehen →',
+    surprise: '🎲 Wir wählen für Sie',
     surpriseDesc: 'Sie vertrauen uns, wir wählen den passendsten Stil für Ihre Branche. Zufrieden oder Geld zurück.',
     surpriseBtn: 'Weiter ohne Auswahl →',
-    preview: 'Vorschau',
+    baseTemplate: 'Basis-Vorlage',
+    variation: 'Variation',
+    liveExamples: 'Live-Beispiele',
+    promoBadge: 'April-Sonderangebot',
+    promoTitle: 'April-Angebot — 50 % Rabatt auf den regulären TonSiteWeb-Preis',
+    promoDesc: 'Normalpreis: 999 CHF → 500 CHF — nur im April 2026 gültig. Website am nächsten Tag geliefert.',
+    promoBtn: 'Jetzt bestellen →',
   },
   it: {
     title: 'Scegli uno stile — TonSiteWeb.ch',
-    heading: 'Quale stile preferite?',
-    sub: 'Scegliete una direzione visiva — adattiamo tutto al vostro contenuto. O lasciate decidere a noi.',
-    planLabel: 'Piano selezionato',
-    select: 'Seleziona',
-    surprise: 'Lasciate scegliere a noi',
+    heading: 'Quale stile per il vostro sito?',
+    sub: 'Scegliete tra i nostri progetti reali — adattiamo tutto al vostro settore.',
+    planLabel: 'Piano',
+    select: 'Scegli questo stile',
+    preview: 'Vedi il sito →',
+    surprise: '🎲 Lasciamo scegliere a noi',
     surpriseDesc: 'Vi fidate di noi, scegliamo lo stile più adatto al vostro settore. Soddisfatti o rimborsati.',
     surpriseBtn: 'Continua senza scegliere →',
-    preview: 'Anteprima',
+    baseTemplate: 'Modello base',
+    variation: 'variazione',
+    liveExamples: 'Esempi reali',
+    promoBadge: 'Offerta speciale aprile',
+    promoTitle: 'Offerta aprile — 50% sul prezzo normale TonSiteWeb',
+    promoDesc: 'Prezzo normale: 999 CHF → 500 CHF — valido solo ad aprile 2026. Sito consegnato il giorno dopo.',
+    promoBtn: 'Ordina ora →',
   },
 } as const;
 
-const t = T[locale];
+const t = T[locale as keyof typeof T] ?? T.fr;
 
-type Template = { id: string; name: string; desc: string; url?: string };
-const templates: Template[] = [
-  { id: 'classic-clean',    name: 'Classic Clean',    desc: { fr: 'Épuré, lisible, universel', en: 'Clean, readable, universal', de: 'Klar, lesbar, universell', it: 'Pulito, leggibile, universale' }[locale] },
-  { id: 'bold-contrast',    name: 'Bold Contrast',    desc: { fr: 'Fort impact, couleurs marquées', en: 'Strong impact, bold colors', de: 'Starke Wirkung, kräftige Farben', it: 'Forte impatto, colori marcati' }[locale] },
-  { id: 'serif-elegance',   name: 'Serif Elegance',   desc: { fr: 'Élégant, haut de gamme', en: 'Elegant, premium feel', de: 'Elegant, hochwertig', it: 'Elegante, di alta gamma' }[locale] },
-  { id: 'minimal-grid',     name: 'Minimal Grid',     desc: { fr: 'Minimaliste, structuré', en: 'Minimalist, structured', de: 'Minimalistisch, strukturiert', it: 'Minimalista, strutturato' }[locale] },
-  { id: 'warm-landing',     name: 'Warm Landing',     desc: { fr: 'Chaleureux, artisanal', en: 'Warm, artisan feel', de: 'Warm, handwerklich', it: 'Caldo, artigianale' }[locale] },
-  { id: 'artisan-folio',    name: 'Artisan Folio',    desc: { fr: 'Portfolio, créatif', en: 'Portfolio, creative', de: 'Portfolio, kreativ', it: 'Portfolio, creativo' }[locale] },
+const THUMB = (url: string) =>
+  `https://image.thum.io/get/width/1280/crop/800/noanimate/${url}`;
+
+const templates = [
+  {
+    id: 'lausanne-demenagement',
+    name: 'Pedro Déménagement',
+    sector: { fr: 'Services & déménagement', en: 'Services & moving', de: 'Dienstleistungen & Umzug', it: 'Servizi & trasloco' }[locale] ?? 'Services',
+    desc: { fr: 'Design professionnel sobre, sections services, témoignages, CTA fort. Modèle de référence — les autres styles sont des variations de celui-ci.', en: 'Professional clean design, services sections, testimonials, strong CTA. The base template — all other styles are variations of this one.', de: 'Professionelles sauberes Design, Service-Sektionen, Referenzen, starker CTA. Basis-Vorlage — alle anderen Stile sind Variationen davon.', it: 'Design professionale sobrio, sezioni servizi, testimonianze, CTA forte. Modello di riferimento — gli altri stili sono variazioni di questo.' }[locale] ?? '',
+    url: 'https://lausannedemenagement.ch',
+    img: THUMB('https://lausannedemenagement.ch'),
+    color: 'from-blue-600 to-blue-900',
+    isBase: true,
+    variations: ['pedrodemenagement.ch', 'demenagementurgent.ch', 'debarraslausanne.ch', 'transportmeubles.ch', 'videmaison.ch'],
+  },
+  {
+    id: 'tolo-coiffure',
+    name: 'Tolo Coiffure',
+    sector: { fr: 'Beauté & coiffure', en: 'Beauty & hair salon', de: 'Beauty & Friseur', it: 'Bellezza & parrucchiere' }[locale] ?? 'Beauty',
+    desc: { fr: 'Style moderne et chaleureux, galerie photos, prise de rendez-vous, palette claire.', en: 'Warm modern style, photo gallery, booking integration, light palette.', de: 'Warmes modernes Design, Fotogalerie, Terminbuchung, helle Palette.', it: 'Stile moderno e caldo, galleria foto, prenotazione appuntamenti, palette chiara.' }[locale] ?? '',
+    url: 'https://tolocoiffure.ch',
+    img: THUMB('https://tolocoiffure.ch'),
+    color: 'from-rose-400 to-pink-700',
+    isBase: false,
+    variations: [],
+  },
+  {
+    id: 'maison-cortes',
+    name: 'Maison Cortès',
+    sector: { fr: 'Hôtellerie & luxe', en: 'Hospitality & luxury', de: 'Hotellerie & Luxus', it: 'Ospitalità & lusso' }[locale] ?? 'Hospitality',
+    desc: { fr: 'Élégant, typographie soignée, tons neutres, ambiance haut de gamme. Idéal pour boutique-hôtels, restaurants, artisans premium.', en: 'Elegant, refined typography, neutral tones, premium feel. Ideal for boutique hotels, restaurants, premium artisans.', de: 'Elegant, verfeinerte Typografie, neutrale Töne, Premium-Atmosphäre. Ideal für Boutique-Hotels, Restaurants, Premium-Handwerk.', it: 'Elegante, tipografia raffinata, toni neutri, atmosfera premium. Ideale per boutique hotel, ristoranti, artigiani premium.' }[locale] ?? '',
+    url: 'https://maisoncortes.ch',
+    img: THUMB('https://maisoncortes.ch'),
+    color: 'from-stone-600 to-stone-900',
+    isBase: false,
+    variations: [],
+  },
+  {
+    id: 'onglesgel',
+    name: 'Ongles Gel',
+    sector: { fr: 'Beauté & ongles', en: 'Beauty & nails', de: 'Beauty & Nägel', it: 'Bellezza & unghie' }[locale] ?? 'Beauty',
+    desc: { fr: 'Style féminin doux, palette pastel, mise en avant des prestations, portfolio visuel.', en: 'Soft feminine style, pastel palette, service highlights, visual portfolio.', de: 'Sanfter femininer Stil, Pastellpalette, Leistungspräsentation, visuelles Portfolio.', it: 'Stile femminile delicato, palette pastello, evidenziazione servizi, portfolio visivo.' }[locale] ?? '',
+    url: 'https://onglesgel.ch',
+    img: THUMB('https://onglesgel.ch'),
+    color: 'from-fuchsia-300 to-purple-600',
+    isBase: false,
+    variations: [],
+  },
 ];
 ---
 
 <Layout metadata={{ title: t.title }} brandKey="tonsiteweb">
+  <!-- Promo banner -->
+  <div class="bg-gradient-to-r from-orange-500 to-red-500 text-white text-center px-4 py-3">
+    <span class="inline-block bg-white/20 text-xs font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full mr-2">{t.promoBadge}</span>
+    <span class="font-semibold text-sm">{t.promoTitle}</span>
+    <span class="hidden sm:inline text-white/80 text-sm mx-2">—</span>
+    <span class="block sm:inline text-white/90 text-xs sm:text-sm mt-0.5 sm:mt-0">{t.promoDesc}</span>
+  </div>
+
   <main class="min-h-screen bg-gray-50 py-12 px-4">
     <div class="max-w-5xl mx-auto">
 
@@ -88,37 +153,117 @@ const templates: Template[] = [
         {plan && <p class="mt-2 text-xs text-blue-600 font-medium uppercase tracking-wide">{t.planLabel}: {plan}</p>}
       </div>
 
-      <!-- Template grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
+      <!-- Surprise / let us choose — TOP -->
+      <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-6 text-white text-center mb-10 shadow-lg">
+        <p class="text-3xl mb-2">🎲</p>
+        <h2 class="font-bold text-xl mb-1">{t.surprise}</h2>
+        <p class="text-blue-100 text-sm mb-5 max-w-md mx-auto">{t.surpriseDesc}</p>
+        <a
+          href={`/api/payment/redirect?plan=${encodeURIComponent(plan)}&template=surprise`}
+          class="inline-block bg-white text-blue-700 font-semibold text-sm px-6 py-3 rounded-xl hover:bg-blue-50 transition-colors shadow"
+        >
+          {t.surpriseBtn}
+        </a>
+      </div>
+
+      <!-- Real template cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {templates.map((tpl) => (
           <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col hover:border-blue-400 hover:shadow-md transition-all">
-            <div class="aspect-video bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center text-slate-400 text-sm font-medium">
-              {tpl.name}
-            </div>
-            <div class="p-4 flex-1 flex flex-col">
-              <h3 class="font-semibold text-gray-900 text-sm mb-1">{tpl.name}</h3>
-              <p class="text-gray-500 text-xs mb-4 flex-1">{tpl.desc}</p>
+
+            <!-- Screenshot preview -->
+            <div class="relative aspect-video overflow-hidden bg-gray-100">
+              <img
+                src={tpl.img}
+                alt={tpl.name}
+                class="w-full h-full object-cover object-top"
+                loading="lazy"
+                onerror={`this.style.display='none';this.nextElementSibling.style.display='flex'`}
+              />
+              <!-- Fallback gradient if screenshot fails to load -->
+              <div class={`absolute inset-0 bg-gradient-to-br ${tpl.color} hidden items-center justify-center text-white/60 text-sm font-medium`}>
+                {tpl.name}
+              </div>
+              <!-- Hover overlay -->
               <a
-                href={`/api/payment/redirect?plan=${encodeURIComponent(plan)}&template=${encodeURIComponent(tpl.id)}`}
-                class="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors"
+                href={tpl.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="absolute inset-0 flex items-center justify-center bg-black/0 hover:bg-black/40 transition-colors group"
               >
-                {t.select} →
+                <span class="opacity-0 group-hover:opacity-100 bg-white text-gray-900 text-sm font-semibold px-4 py-2 rounded-full transition-opacity shadow-lg">
+                  {t.preview}
+                </span>
               </a>
+              {tpl.isBase && (
+                <div class="absolute top-3 left-3">
+                  <span class="bg-blue-600 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow">
+                    {t.baseTemplate}
+                  </span>
+                </div>
+              )}
             </div>
+
+            <!-- Content -->
+            <div class="p-5 flex-1 flex flex-col">
+              <div class="mb-3">
+                <div class="flex items-start justify-between gap-2 mb-1">
+                  <h3 class="font-bold text-gray-900">{tpl.name}</h3>
+                  <span class="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full whitespace-nowrap shrink-0">{tpl.sector}</span>
+                </div>
+                <p class="text-gray-500 text-sm leading-relaxed">{tpl.desc}</p>
+              </div>
+
+              {tpl.isBase && tpl.variations.length > 0 && (
+                <div class="mb-4 bg-blue-50 rounded-xl px-3 py-2.5">
+                  <p class="text-xs font-semibold text-blue-700 mb-1.5">{t.liveExamples} — {tpl.variations.length} {t.variation}s</p>
+                  <div class="flex flex-wrap gap-1.5">
+                    {tpl.variations.map((domain) => (
+                      <a
+                        href={`https://${domain}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-xs text-blue-600 hover:underline"
+                      >
+                        {domain}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div class="mt-auto flex gap-2">
+                <a
+                  href={tpl.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex-1 text-center border border-gray-200 hover:border-gray-300 text-gray-600 text-sm font-medium px-4 py-2.5 rounded-xl transition-colors"
+                >
+                  {t.preview}
+                </a>
+                <a
+                  href={`/api/payment/redirect?plan=${encodeURIComponent(plan)}&template=${encodeURIComponent(tpl.id)}`}
+                  class="flex-1 text-center bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors"
+                >
+                  {t.select} →
+                </a>
+              </div>
+            </div>
+
           </div>
         ))}
       </div>
 
-      <!-- Surprise me -->
-      <div class="bg-white border-2 border-dashed border-gray-300 hover:border-blue-400 rounded-2xl p-6 text-center transition-colors">
-        <p class="text-2xl mb-2">🎲</p>
-        <h2 class="font-bold text-lg text-gray-900 mb-1">{t.surprise}</h2>
-        <p class="text-gray-500 text-sm mb-5 max-w-md mx-auto">{t.surpriseDesc}</p>
+      <!-- Bottom promo CTA -->
+      <div class="mt-10 bg-white border border-orange-200 rounded-2xl p-6 text-center shadow-sm">
+        <p class="text-sm font-semibold text-orange-600 uppercase tracking-wide mb-1">{t.promoBadge}</p>
+        <p class="text-xl font-bold text-gray-900 mb-1">{t.promoTitle}</p>
+        <p class="text-gray-500 text-sm mb-5">{t.promoDesc}</p>
         <a
           href={`/api/payment/redirect?plan=${encodeURIComponent(plan)}&template=surprise`}
-          class="inline-block border border-gray-300 hover:border-blue-400 hover:bg-blue-50 text-gray-700 font-medium text-sm px-6 py-3 rounded-xl transition-colors"
+          class="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold px-8 py-3.5 rounded-xl transition-colors shadow-sm"
         >
-          {t.surpriseBtn}
+          {t.promoBtn}
         </a>
       </div>
 
