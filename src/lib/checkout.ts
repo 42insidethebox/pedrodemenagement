@@ -67,6 +67,7 @@ async function handlePlanCheckout(ctx: CheckoutContext, config: PlanCheckoutConf
     company: url.searchParams.get('company') || '',
     agencyId: url.searchParams.get('agencyId') || url.searchParams.get('agency_id') || '',
     locale: url.searchParams.get('locale') || '',
+    submission_id: url.searchParams.get('submission_id') || '',
   };
 
   if (isJson) {
@@ -106,8 +107,10 @@ async function handlePlanCheckout(ctx: CheckoutContext, config: PlanCheckoutConf
     agencyId: data.agencyId,
     tenant_id: tenant.slug,
     locale: data.locale,
+    submission_id: (data as any).submission_id,
   });
 
+  const testCoupon = process.env.STRIPE_TEST_COUPON;
   const session = await stripe.checkout.sessions.create({
     mode: isSubscriptionPlan(plan) ? 'subscription' : 'payment',
     line_items: [{ price: priceId, quantity: 1 }],
@@ -115,6 +118,7 @@ async function handlePlanCheckout(ctx: CheckoutContext, config: PlanCheckoutConf
     success_url: buildSuccessUrl(origin, tenant.basePath || ''),
     cancel_url: buildCancelUrl(origin, tenant.basePath || ''),
     metadata,
+    ...(testCoupon ? { discounts: [{ coupon: testCoupon }] } : {}),
   });
 
   if (request.method === 'GET') {

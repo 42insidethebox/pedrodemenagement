@@ -12,8 +12,9 @@ export function serializeMetadata(input) {
   const clientSlug = generateClientSlug(name, company);
   const agencyId = toStr(input?.agencyId || input?.agency_id);
   const tenantId = toStr(input?.tenant_id || input?.tenantId || input?.tenant);
+  const submissionId = toStr(input?.submission_id || input?.submissionId);
 
-  const meta = { name, email, company, phone, template, plan, locale, clientSlug, agencyId, tenant_id: tenantId };
+  const meta = { name, email, company, phone, template, plan, locale, clientSlug, agencyId, tenant_id: tenantId, submission_id: submissionId };
   return JSON.parse(JSON.stringify(meta));
 }
 

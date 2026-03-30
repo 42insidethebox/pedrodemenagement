@@ -119,6 +119,13 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
     }
   }
 
+  // Redirect www.tonsiteweb.ch → tonsiteweb.ch (canonical non-www)
+  if (isTonsitewebHost && hostLower.startsWith('www.')) {
+    const canonical = new URL(url.toString());
+    canonical.host = hostLower.replace(/^www\./, '');
+    return Response.redirect(canonical.toString(), 301);
+  }
+
   // Explicit host guard for Atelier Mémoire to avoid falling back to déménagement pages
   if (hostLower.includes('ateliermemoire.ch') && !url.pathname.startsWith('/atelier-memoire')) {
     const target = new URL(`/atelier-memoire${url.pathname === '/' ? '' : url.pathname}${url.search}`, url);
@@ -227,28 +234,30 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
 
   // Inject tonsiteweb locale prefix from cookie so clean URLs serve translated pages.
   // e.g. /tonsiteweb/pricing + cookie aw_lang=de  →  renders /tonsiteweb/de/pricing (URL stays clean).
+  // Only applies to pages that actually have locale-specific variants in en/de/it subdirectories.
+  const LOCALE_VARIANT_PATHS = ['/', '/pricing', '/about', '/contact', '/services', '/choose-template', '/thank-you', '/privacy', '/terms'];
   const isTonsitewebPath = url.pathname === '/tonsiteweb' || url.pathname.startsWith('/tonsiteweb/');
   if (!shouldSkip && isTonsitewebPath) {
     const afterBase = url.pathname.slice('/tonsiteweb'.length) || '/'; // e.g. /pricing or /
     const alreadyLocale = /^\/(en|de|it|fr)(\/|$)/.test(afterBase);
-    if (!alreadyLocale) {
+    const hasLocaleVariant = LOCALE_VARIANT_PATHS.some((p) => afterBase === p || afterBase.startsWith(p + '/'));
+    if (!alreadyLocale && hasLocaleVariant) {
       const rawCookie = context.request.headers.get('cookie') || '';
       const cookieLang = rawCookie.split(';').map((c) => c.trim()).find((c) => c.startsWith('aw_lang='))?.split('=')[1]?.toLowerCase();
-      console.log('[i18n] tonsiteweb locale inject:', { cookieLang, from: url.pathname });
       if (cookieLang && ['en', 'de', 'it'].includes(cookieLang)) {
         url.pathname = `/tonsiteweb/${cookieLang}${afterBase === '/' ? '' : afterBase}`;
-        console.log('[i18n] rewrote to:', url.pathname);
       }
     }
   }
 
-  const init: RequestInit = {
+  const init: RequestInit & { duplex?: string } = {
     headers,
     method: context.request.method,
     redirect: context.request.redirect,
   };
   if (context.request.method !== 'GET' && context.request.method !== 'HEAD') {
     init.body = context.request.body;
+    init.duplex = 'half';
   }
 
   return next(new Request(url.toString(), init));

@@ -16,14 +16,14 @@ function resolveLocale(): Locale {
 }
 
 const locale = resolveLocale();
-const sessionId = Astro.url.searchParams.get('session_id') || '';
+const plan = Astro.url.searchParams.get('plan') || 'essential500';
 const error = Astro.url.searchParams.get('error') || '';
 
 const T = {
   fr: {
-    title: 'Configurer votre site — TonSiteWeb.ch',
-    heading: 'Configurez votre site',
-    sub: 'Remplissez ce formulaire une seule fois — nous faisons le reste.',
+    title: 'Décrivez votre activité — TonSiteWeb.ch',
+    heading: 'Décrivez votre activité',
+    sub: 'Remplissez ce formulaire en 3 minutes — nous créons votre site, vous payez ensuite.',
     errorMsg: 'Une erreur est survenue. Veuillez réessayer ou nous écrire sur WhatsApp.',
     s1: 'Votre entreprise',
     bizName: "Nom de l'entreprise", bizNamePh: 'Ex : Salon Bella, Plomberie Dupont…',
@@ -55,14 +55,14 @@ const T = {
     s6: 'Informations complémentaires',
     refs: 'Sites que vous aimez (références)', refsPh: 'Collez des URLs ou décrivez le style…',
     notes: 'Questions ou demandes spéciales', notesPh: 'Tout ce qui vous semble important…',
-    submit: 'Envoyer — lancer la création de mon site →',
+    submit: 'Continuer vers le paiement — 500 CHF →',
     privacy: 'Vos informations sont sécurisées et utilisées uniquement pour créer votre site.',
     sectors: ['Commerce / Boutique','Artisan / Construction','Beauté / Bien-être','Restauration / Traiteur','Santé / Thérapeute','Immobilier / Conciergerie','Transport / Déménagement','Coiffure','Sport / Fitness','Autre'],
   },
   en: {
-    title: 'Configure your website — TonSiteWeb.ch',
-    heading: 'Configure your website',
-    sub: 'Fill in this form once — we handle the rest.',
+    title: 'Describe your business — TonSiteWeb.ch',
+    heading: 'Describe your business',
+    sub: 'Fill in this form in 3 minutes — we build your site, you pay after.',
     errorMsg: 'An error occurred. Please try again or message us on WhatsApp.',
     s1: 'Your business',
     bizName: 'Business name', bizNamePh: 'E.g.: Bella Salon, Dupont Plumbing…',
@@ -94,14 +94,14 @@ const T = {
     s6: 'Additional information',
     refs: 'Sites you like (references)', refsPh: 'Paste URLs or describe styles you like…',
     notes: 'Questions or special requests', notesPh: 'Anything important for your site…',
-    submit: 'Submit — start building my site →',
+    submit: 'Continue to payment — CHF 500 →',
     privacy: 'Your information is secure and used solely to create your website.',
     sectors: ['Retail / Shop','Craftsman / Construction','Beauty / Wellness','Restaurant / Catering','Health / Therapist','Real Estate / Concierge','Transport / Moving','Hairdressing','Sport / Fitness','Other'],
   },
   de: {
-    title: 'Ihre Website konfigurieren — TonSiteWeb.ch',
-    heading: 'Konfigurieren Sie Ihre Website',
-    sub: 'Füllen Sie dieses Formular einmal aus — wir erledigen den Rest.',
+    title: 'Beschreiben Sie Ihr Unternehmen — TonSiteWeb.ch',
+    heading: 'Beschreiben Sie Ihr Unternehmen',
+    sub: 'Füllen Sie dieses Formular in 3 Minuten aus — wir erstellen Ihre Website, Sie zahlen danach.',
     errorMsg: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut oder schreiben Sie uns auf WhatsApp.',
     s1: 'Ihr Unternehmen',
     bizName: 'Unternehmensname', bizNamePh: 'Z.B.: Salon Bella, Klempner Müller…',
@@ -133,14 +133,14 @@ const T = {
     s6: 'Weitere Informationen',
     refs: 'Websites, die Sie mögen (Referenzen)', refsPh: 'URLs einfügen oder Stil beschreiben…',
     notes: 'Fragen oder besondere Wünsche', notesPh: 'Alles Wichtige für Ihre Website…',
-    submit: 'Absenden — Website-Erstellung starten →',
+    submit: 'Weiter zur Zahlung — 500 CHF →',
     privacy: 'Ihre Daten sind sicher und werden ausschliesslich zur Erstellung Ihrer Website verwendet.',
     sectors: ['Handel / Geschäft','Handwerk / Bau','Schönheit / Wellness','Restaurant / Catering','Gesundheit / Therapeut','Immobilien / Concierge','Transport / Umzug','Friseur','Sport / Fitness','Sonstiges'],
   },
   it: {
-    title: 'Configurare il vostro sito — TonSiteWeb.ch',
-    heading: 'Configurate il vostro sito',
-    sub: 'Compilate questo modulo una sola volta — pensiamo noi al resto.',
+    title: 'Descrivete la vostra attività — TonSiteWeb.ch',
+    heading: 'Descrivete la vostra attività',
+    sub: 'Compilate questo modulo in 3 minuti — creiamo il vostro sito, pagate dopo.',
     errorMsg: 'Si è verificato un errore. Riprovate o scriveteci su WhatsApp.',
     s1: 'La vostra azienda',
     bizName: "Nome dell'azienda", bizNamePh: 'Es.: Salone Bella, Idraulico Rossi…',
@@ -172,7 +172,7 @@ const T = {
     s6: 'Informazioni aggiuntive',
     refs: 'Siti che vi piacciono (riferimenti)', refsPh: 'Incollate URL o descrivete lo stile…',
     notes: 'Domande o richieste speciali', notesPh: 'Tutto ciò che è importante per il vostro sito…',
-    submit: 'Inviare — avviare la creazione del sito →',
+    submit: 'Continua al pagamento — 500 CHF →',
     privacy: 'Le vostre informazioni sono sicure e utilizzate esclusivamente per creare il vostro sito.',
     sectors: ['Commercio / Negozio','Artigiano / Edilizia','Bellezza / Benessere','Ristorazione / Catering','Salute / Terapista','Immobiliare / Concierge','Trasporti / Traslochi','Parrucchiere','Sport / Fitness','Altro'],
   },
@@ -210,7 +210,7 @@ const t = T[locale];
         enctype="multipart/form-data"
         class="space-y-8"
       >
-        <input type="hidden" name="session_id" value={sessionId} />
+        <input type="hidden" name="plan" value={plan} />
         <input type="hidden" name="locale" value={locale} />
 
         <!-- Section 1 -->
@@ -417,8 +417,8 @@ const t = T[locale];
           </div>
         </div>
 
-        <button type="submit"
-          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg py-4 rounded-2xl transition-colors">
+        <button type="submit" id="onboarding-submit"
+          class="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white font-bold text-lg py-4 rounded-2xl transition-colors">
           {t.submit}
         </button>
         <p class="text-center text-xs text-gray-400 pb-8">{t.privacy}</p>
@@ -426,3 +426,134 @@ const t = T[locale];
     </div>
   </main>
 </Layout>
+
+<script is:inline define:vars={{ _sbUrl: import.meta.env.SUPABASE_URL, _sbKey: import.meta.env.SUPABASE_ANON_KEY, _plan: plan, _locale: locale }}>
+(function () {
+  const SB_URL = _sbUrl;
+  const SB_KEY = _sbKey;
+  const PLAN = _plan;
+  const LOCALE = _locale;
+
+  const form = document.querySelector('form');
+  const btn = document.getElementById('onboarding-submit');
+  if (!form || !SB_URL || !SB_KEY) return;
+
+  const originalText = btn ? btn.textContent : '';
+
+  async function uploadFile(file, path) {
+    const res = await fetch(`${SB_URL}/storage/v1/object/onboarding-assets/${path}`, {
+      method: 'POST',
+      headers: {
+        apikey: SB_KEY,
+        Authorization: `Bearer ${SB_KEY}`,
+        'Content-Type': file.type || 'application/octet-stream',
+        'x-upsert': 'true',
+      },
+      body: file,
+    });
+    if (!res.ok) return null;
+    return `${SB_URL}/storage/v1/object/public/onboarding-assets/${path}`;
+  }
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    if (btn) { btn.disabled = true; btn.textContent = '⏳ Envoi en cours…'; }
+
+    try {
+      const fd = new FormData(form);
+      const ts = Date.now();
+      const str = (k) => String(fd.get(k) || '').trim();
+
+      // Upload logo
+      let logoUrl = null;
+      const logoFile = fd.get('logo');
+      if (logoFile instanceof File && logoFile.size > 0) {
+        const ext = logoFile.name.split('.').pop() || 'png';
+        logoUrl = await uploadFile(logoFile, `${ts}/logo.${ext}`);
+      }
+
+      // Upload photos
+      const photoUrls = [];
+      for (const photo of Array.from(fd.getAll('photos')).slice(0, 3)) {
+        if (!(photo instanceof File) || photo.size === 0) continue;
+        const ext = photo.name.split('.').pop() || 'jpg';
+        const url = await uploadFile(photo, `${ts}/photo_${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`);
+        if (url) photoUrls.push(url);
+      }
+
+      // Collect services
+      const services = [];
+      for (let i = 1; i <= 4; i++) {
+        const name = str(`service_${i}_name`);
+        if (!name) continue;
+        services.push({ name, desc: str(`service_${i}_desc`), price: str(`service_${i}_price`) });
+      }
+
+      const businessName = str('business_name');
+      const description = str('description');
+
+      if (!businessName || !description) {
+        window.location.href = `/onboarding?error=missing&plan=${encodeURIComponent(PLAN)}`;
+        return;
+      }
+
+      const payload = {
+        tenant_id: 'tonsiteweb',
+        business_name: businessName,
+        tagline: str('tagline') || null,
+        sector: str('sector') || null,
+        description,
+        services,
+        address: str('address') || null,
+        phone: str('phone') || null,
+        email: str('site_email') || null,
+        hours: str('hours') || null,
+        color_primary: (str('color_primary_hex') || str('color_primary')) || null,
+        color_secondary: (str('color_secondary_hex') || str('color_secondary')) || null,
+        style: str('style') || null,
+        logo_url: logoUrl,
+        photo_urls: photoUrls.length > 0 ? photoUrls : null,
+        instagram: str('instagram') || null,
+        facebook: str('facebook') || null,
+        domain_desired: str('domain_desired') || null,
+        domain_owned: fd.get('domain_owned') === 'yes',
+        references: str('references') || null,
+        notes: str('notes') || null,
+      };
+
+      // Insert directly to Supabase
+      let submissionId = null;
+      const insertRes = await fetch(`${SB_URL}/rest/v1/onboarding_submissions`, {
+        method: 'POST',
+        headers: {
+          apikey: SB_KEY,
+          Authorization: `Bearer ${SB_KEY}`,
+          'Content-Type': 'application/json',
+          Prefer: 'return=representation',
+        },
+        body: JSON.stringify(payload),
+      });
+      if (insertRes.ok) {
+        const rows = await insertRes.json();
+        submissionId = (Array.isArray(rows) ? rows[0] : rows)?.id ?? null;
+      }
+
+      // Redirect to Stripe
+      const params = new URLSearchParams({
+        plan: PLAN,
+        template: 'surprise',
+        name: businessName,
+        phone: str('phone'),
+        locale: LOCALE,
+      });
+      if (submissionId) params.set('submission_id', submissionId);
+      window.location.href = `/api/payment/redirect?${params.toString()}`;
+
+    } catch (err) {
+      console.error('[onboarding]', err);
+      if (btn) { btn.disabled = false; btn.textContent = originalText; }
+      window.location.href = `/onboarding?error=server&plan=${encodeURIComponent(PLAN)}`;
+    }
+  });
+})();
+</script>

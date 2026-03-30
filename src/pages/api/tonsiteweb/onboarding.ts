@@ -9,7 +9,7 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     const form = await request.formData();
 
-    const sessionId     = String(form.get('session_id') || '').trim();
+    const plan          = String(form.get('plan') || 'essential500').trim();
     const businessName  = String(form.get('business_name') || '').trim();
     const tagline       = String(form.get('tagline') || '').trim();
     const sector        = String(form.get('sector') || '').trim();
@@ -31,7 +31,7 @@ export const POST: APIRoute = async ({ request }) => {
     if (!businessName || !description) {
       return new Response(null, {
         status: 303,
-        headers: { Location: `/tonsiteweb/onboarding?error=missing&session_id=${encodeURIComponent(sessionId)}` },
+        headers: { Location: `/onboarding?error=missing&plan=${encodeURIComponent(plan)}` },
       });
     }
 
@@ -50,6 +50,7 @@ export const POST: APIRoute = async ({ request }) => {
     const sb = getSupabaseAdmin();
 
     // Upload files to Supabase Storage
+    let submissionId: string | null = null;
     let logoUrl: string | null = null;
     const photoUrls: string[] = [];
 
@@ -57,7 +58,7 @@ export const POST: APIRoute = async ({ request }) => {
       const logoFile = form.get('logo') as File | null;
       if (logoFile && logoFile.size > 0) {
         const ext = logoFile.name.split('.').pop() || 'png';
-        const path = `${sessionId || Date.now()}/logo.${ext}`;
+        const path = `${Date.now()}/logo.${ext}`;
         const bytes = await logoFile.arrayBuffer();
         const { data } = await sb.storage
           .from('onboarding-assets')
@@ -72,7 +73,7 @@ export const POST: APIRoute = async ({ request }) => {
       for (const photo of photoFiles.slice(0, 3)) {
         if (!photo || photo.size === 0) continue;
         const ext = photo.name.split('.').pop() || 'jpg';
-        const path = `${sessionId || Date.now()}/photo_${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+        const path = `${Date.now()}/photo_${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
         const bytes = await photo.arrayBuffer();
         const { data } = await sb.storage
           .from('onboarding-assets')
@@ -84,8 +85,7 @@ export const POST: APIRoute = async ({ request }) => {
       }
 
       // Insert submission
-      await sb.from('onboarding_submissions').insert({
-        session_id: sessionId || null,
+      const { data: insertedRow } = await sb.from('onboarding_submissions').insert({
         tenant_id: 'tonsiteweb',
         business_name: businessName,
         tagline: tagline || null,
@@ -107,7 +107,8 @@ export const POST: APIRoute = async ({ request }) => {
         domain_owned: domainOwned,
         references: references || null,
         notes: notes || null,
-      });
+      }).select('id').maybeSingle();
+      submissionId = insertedRow?.id ?? null;
     }
 
     // Send admin notification email
@@ -136,7 +137,7 @@ export const POST: APIRoute = async ({ request }) => {
             ['Références', references],
             ['Notes', notes],
             ['Logo', logoUrl || '—'],
-            ['Session Stripe', sessionId],
+            ['Submission ID', submissionId],
           ].map(([k, v]) => `<tr><td style="padding:4px 10px;font-weight:600;border:1px solid #e5e7eb;width:180px;">${k}</td><td style="padding:4px 10px;border:1px solid #e5e7eb;">${v || '—'}</td></tr>`).join('')}
         </table>
         ${photoUrls.length > 0 ? `<p style="margin-top:12px;"><strong>Photos :</strong><br>${photoUrls.map(u => `<a href="${u}">${u}</a>`).join('<br>')}</p>` : ''}
@@ -150,16 +151,24 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
+    const params = new URLSearchParams({
+      plan,
+      template: 'surprise',
+      name: businessName,
+      phone,
+      locale: String(form.get('locale') || 'fr'),
+      ...(submissionId ? { submission_id: submissionId } : {}),
+    });
     return new Response(null, {
       status: 303,
-      headers: { Location: '/tonsiteweb/onboarding-merci' },
+      headers: { Location: `/api/payment/redirect?${params.toString()}` },
     });
   } catch (e) {
     console.error('[onboarding] error:', e);
     const sid = '';
     return new Response(null, {
       status: 303,
-      headers: { Location: '/tonsiteweb/onboarding?error=server' },
+      headers: { Location: '/onboarding?error=server' },
     });
   }
 };
