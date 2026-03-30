@@ -1,0 +1,410 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import type { MetaData } from '~/types';
+import { pbmTheme } from './theme';
+import { pbmConfig } from './config';
+
+type PageKey = 'home' | 'pacotes' | 'galeria' | 'contato';
+
+interface Props {
+  page?: PageKey;
+  metadata?: MetaData;
+}
+
+const { page = 'home', metadata = {} } = Astro.props as Props;
+
+const nav = [
+  { key: 'home',     href: '/paintballmaceio',          label: 'Início' },
+  { key: 'pacotes',  href: '/paintballmaceio/pacotes',  label: 'Pacotes' },
+  { key: 'galeria',  href: '/paintballmaceio/galeria',  label: 'Galeria' },
+  { key: 'contato',  href: '/paintballmaceio/contato',  label: 'Contato' },
+];
+
+const c = pbmTheme.colors;
+const styleVars = {
+  '--pbm-bg':      c.bg,
+  '--pbm-surface': c.surface,
+  '--pbm-card':    c.card,
+  '--pbm-text':    c.text,
+  '--pbm-muted':   c.muted,
+  '--pbm-accent':  c.accent,
+  '--pbm-accentd': c.accentDark,
+  '--pbm-green':   c.green,
+  '--pbm-greenl':  c.greenLight,
+  '--pbm-line':    c.line,
+  '--pbm-max':     pbmTheme.layout.maxWidth,
+  '--pbm-gap':     pbmTheme.layout.sectionGap,
+  '--pbm-heading': pbmTheme.typography.heading,
+  '--pbm-body':    pbmTheme.typography.body,
+};
+---
+
+<Layout metadata={metadata} brandKey={pbmTheme.brandKey as any} styleVars={styleVars}>
+  <div class="pbm-shell">
+
+    <header class="pbm-header">
+      <a class="pbm-logo" href="/paintballmaceio" aria-label="Paintball Maceió">
+        <span class="pbm-logo-icon">🎯</span>
+        <span class="pbm-logo-name">Paintball<strong>Maceió</strong></span>
+      </a>
+
+      <nav class="pbm-nav" aria-label="Navegação">
+        {nav.map((item) => (
+          <a class={item.key === page ? 'is-active' : ''} href={item.href}>{item.label}</a>
+        ))}
+      </nav>
+
+      <div class="pbm-header-actions">
+        <a class="pbm-btn pbm-btn-ghost" href={pbmConfig.whatsappUrl} target="_blank" rel="noreferrer">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M20.52 3.48A11.93 11.93 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.11.55 4.17 1.6 5.99L0 24l6.18-1.62A11.93 11.93 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.21-3.48-8.52zm-8.52 18.48a9.9 9.9 0 0 1-5.04-1.37l-.36-.21-3.67.96.98-3.58-.23-.37A9.9 9.9 0 0 1 2.1 12c0-5.46 4.44-9.9 9.9-9.9a9.9 9.9 0 0 1 0 19.8zm5.44-7.4c-.3-.15-1.77-.87-2.04-.97s-.47-.15-.67.15-.77.97-.94 1.17-.35.22-.64.07a8.12 8.12 0 0 1-2.39-1.47 8.98 8.98 0 0 1-1.65-2.05c-.17-.3-.02-.46.13-.6.13-.13.3-.35.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52s-.67-1.62-.92-2.22c-.24-.58-.48-.5-.67-.51h-.57c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.48 1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.09 4.49.71.31 1.27.49 1.7.63.72.23 1.37.2 1.89.12.58-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/>
+          </svg>
+          WhatsApp
+        </a>
+        <a class="pbm-btn pbm-btn-primary" href={pbmConfig.bookingUrl} target="_blank" rel="noreferrer">
+          Reservar
+        </a>
+        <button class="pbm-burger" id="pbm-burger" aria-label="Menu" aria-expanded="false" type="button">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <div class="pbm-drawer" id="pbm-drawer" aria-hidden="true">
+      <nav class="pbm-drawer-nav">
+        {nav.map((item) => (
+          <a class={item.key === page ? 'is-active' : ''} href={item.href}>{item.label}</a>
+        ))}
+      </nav>
+      <div class="pbm-drawer-actions">
+        <a class="pbm-btn pbm-btn-primary" href={pbmConfig.bookingUrl} target="_blank" rel="noreferrer">Reservar</a>
+        <a class="pbm-btn pbm-btn-ghost" href={pbmConfig.whatsappUrl} target="_blank" rel="noreferrer">WhatsApp</a>
+      </div>
+    </div>
+
+    <main class="pbm-main">
+      <slot />
+    </main>
+
+    <footer class="pbm-footer">
+      <div class="pbm-footer-inner">
+        <div class="pbm-footer-brand">
+          <span class="pbm-footer-logo">🎯 Paintball<strong>Maceió</strong></span>
+          <p class="pbm-footer-tagline">A adrenalina que você procura em Maceió, AL.</p>
+          <div class="pbm-footer-ctas">
+            <a href={pbmConfig.bookingUrl} target="_blank" rel="noreferrer" class="pbm-btn pbm-btn-primary">Reservar</a>
+            <a href={pbmConfig.whatsappUrl} target="_blank" rel="noreferrer" class="pbm-btn pbm-btn-ghost">WhatsApp</a>
+          </div>
+          <a href={pbmConfig.instagram} target="_blank" rel="noreferrer" class="pbm-footer-ig">
+            Instagram →
+          </a>
+        </div>
+        <div class="pbm-footer-col">
+          <p class="pbm-footer-label">Endereço</p>
+          <p>{pbmConfig.address}</p>
+          <a href={pbmConfig.mapLink} target="_blank" rel="noreferrer" class="pbm-footer-link">Ver no mapa →</a>
+        </div>
+        <div class="pbm-footer-col">
+          <p class="pbm-footer-label">Horários</p>
+          <ul class="pbm-hours">
+            <li><span>Segunda</span><span>Fechado</span></li>
+            <li><span>Ter–Sex</span><span>08h – 18h</span></li>
+            <li><span>Sáb–Dom</span><span>07h – 19h</span</li>
+            <li><span>Feriados</span><span>08h – 17h</span></li>
+          </ul>
+        </div>
+        <div class="pbm-footer-col">
+          <p class="pbm-footer-label">Contato</p>
+          <a href={pbmConfig.telHref} class="pbm-footer-link">{pbmConfig.phone}</a>
+          <a href={pbmConfig.whatsappUrl} target="_blank" rel="noreferrer" class="pbm-footer-link">WhatsApp</a>
+          <a href={`mailto:${pbmConfig.email}`} class="pbm-footer-link">{pbmConfig.email}</a>
+        </div>
+      </div>
+      <div class="pbm-footer-bottom">
+        <span>© {new Date().getFullYear()} Paintball Maceió</span>
+        <span>paintballmaceio.com.br</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600&display=swap');
+
+    :global(body) {
+      background: var(--pbm-bg);
+      color: var(--pbm-text);
+      font-family: var(--pbm-body);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .pbm-shell {
+      min-height: 100vh;
+      background: var(--pbm-bg);
+      color: var(--pbm-text);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── HEADER ── */
+    .pbm-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      padding: 0 2.5rem;
+      height: 64px;
+      background: color-mix(in srgb, var(--pbm-bg) 92%, transparent);
+      border-bottom: 1px solid var(--pbm-line);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .pbm-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: var(--pbm-text);
+      flex-shrink: 0;
+    }
+    .pbm-logo-icon { font-size: 1.3rem; }
+    .pbm-logo-name {
+      font-family: var(--pbm-heading);
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--pbm-text);
+    }
+    .pbm-logo-name strong { color: var(--pbm-accent); font-weight: 800; }
+
+    .pbm-nav {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+    .pbm-nav a {
+      text-decoration: none;
+      color: var(--pbm-muted);
+      font-size: 0.875rem;
+      font-weight: 500;
+      font-family: var(--pbm-heading);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.9rem;
+      border-radius: 6px;
+      transition: color 130ms ease;
+    }
+    .pbm-nav a:hover { color: var(--pbm-text); }
+    .pbm-nav a.is-active { color: var(--pbm-accent); }
+
+    .pbm-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    /* ── BUTTONS ── */
+    .pbm-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1.1rem;
+      border-radius: 6px;
+      font-family: var(--pbm-heading);
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 140ms ease, border-color 140ms ease, color 140ms ease;
+    }
+    .pbm-btn-primary {
+      background: var(--pbm-accent);
+      color: #fff;
+      border: 2px solid var(--pbm-accent);
+    }
+    .pbm-btn-primary:hover { background: var(--pbm-accentd); border-color: var(--pbm-accentd); }
+    .pbm-btn-ghost {
+      background: transparent;
+      color: var(--pbm-text);
+      border: 2px solid var(--pbm-line);
+    }
+    .pbm-btn-ghost:hover {
+      border-color: color-mix(in srgb, var(--pbm-text) 30%, transparent);
+      background: color-mix(in srgb, var(--pbm-text) 5%, transparent);
+    }
+
+    /* ── MAIN ── */
+    .pbm-main { flex: 1; width: 100%; }
+
+    /* ── FOOTER ── */
+    .pbm-footer {
+      border-top: 1px solid var(--pbm-line);
+      padding: 3.5rem 2.5rem 2rem;
+      margin-top: auto;
+      background: var(--pbm-surface);
+    }
+    .pbm-footer-inner {
+      display: grid;
+      grid-template-columns: 1.8fr repeat(3, 1fr);
+      gap: 2rem 3rem;
+      max-width: var(--pbm-max);
+      margin: 0 auto 2.5rem;
+      align-items: start;
+    }
+    .pbm-footer-brand { display: grid; gap: 0.75rem; }
+    .pbm-footer-logo {
+      font-family: var(--pbm-heading);
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--pbm-text);
+    }
+    .pbm-footer-logo strong { color: var(--pbm-accent); }
+    .pbm-footer-tagline { color: var(--pbm-muted); font-size: 0.875rem; line-height: 1.5; }
+    .pbm-footer-ctas { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .pbm-footer-ig {
+      color: var(--pbm-muted);
+      font-size: 0.8rem;
+      text-decoration: none;
+      transition: color 130ms;
+    }
+    .pbm-footer-ig:hover { color: var(--pbm-accent); }
+
+    .pbm-footer-col { display: grid; gap: 0.35rem; font-size: 0.875rem; color: var(--pbm-muted); }
+    .pbm-footer-label {
+      font-family: var(--pbm-heading);
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--pbm-accent);
+      margin-bottom: 0.25rem;
+    }
+    .pbm-footer-link {
+      color: var(--pbm-muted);
+      text-decoration: none;
+      transition: color 130ms;
+    }
+    .pbm-footer-link:hover { color: var(--pbm-text); }
+    .pbm-hours { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.2rem; }
+    .pbm-hours li { display: flex; justify-content: space-between; gap: 1rem; }
+    .pbm-footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      max-width: var(--pbm-max);
+      margin: 0 auto;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--pbm-line);
+      font-size: 0.75rem;
+      color: var(--pbm-muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── BURGER ── */
+    .pbm-burger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      width: 38px;
+      height: 38px;
+      background: transparent;
+      border: 2px solid var(--pbm-line);
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 0;
+      flex-shrink: 0;
+    }
+    .pbm-burger span {
+      display: block;
+      width: 16px;
+      height: 2px;
+      background: var(--pbm-text);
+      border-radius: 2px;
+      transition: transform 240ms ease, opacity 200ms ease;
+    }
+    .pbm-burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .pbm-burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+    .pbm-burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    /* ── DRAWER ── */
+    .pbm-drawer {
+      position: fixed;
+      top: 64px;
+      left: 0;
+      right: 0;
+      z-index: 39;
+      background: var(--pbm-surface);
+      border-bottom: 1px solid var(--pbm-line);
+      padding: 1.5rem;
+      display: grid;
+      gap: 1.5rem;
+      transform: translateY(-110%);
+      transition: transform 280ms cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+    }
+    .pbm-drawer.pbm-open { transform: translateY(0); pointer-events: auto; }
+    .pbm-drawer-nav { display: grid; gap: 0.1rem; }
+    .pbm-drawer-nav a {
+      text-decoration: none;
+      color: var(--pbm-muted);
+      font-family: var(--pbm-heading);
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.7rem 0.5rem;
+      border-bottom: 1px solid var(--pbm-line);
+      display: block;
+      transition: color 130ms;
+    }
+    .pbm-drawer-nav a:last-child { border-bottom: none; }
+    .pbm-drawer-nav a.is-active,
+    .pbm-drawer-nav a:hover { color: var(--pbm-accent); }
+    .pbm-drawer-actions { display: flex; gap: 0.6rem; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1100px) { .pbm-footer-inner { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 820px) {
+      .pbm-header { padding: 0 1.5rem; gap: 1rem; }
+      .pbm-nav { display: none; }
+      .pbm-burger { display: flex; }
+      .pbm-footer { padding: 2.5rem 1.5rem 1.5rem; }
+      .pbm-footer-inner { grid-template-columns: 1fr; gap: 1.5rem; }
+    }
+    @media (max-width: 600px) {
+      .pbm-header { padding: 0 1.2rem; }
+      .pbm-header-actions .pbm-btn-ghost { display: none; }
+      .pbm-burger { display: flex; }
+    }
+  </style>
+
+  <script>
+    const burger = document.getElementById('pbm-burger');
+    const drawer = document.getElementById('pbm-drawer');
+    if (burger && drawer) {
+      burger.addEventListener('click', () => {
+        const open = burger.getAttribute('aria-expanded') === 'true';
+        burger.setAttribute('aria-expanded', String(!open));
+        drawer.setAttribute('aria-hidden', String(open));
+        drawer.classList.toggle('pbm-open', !open);
+      });
+      drawer.querySelectorAll('a').forEach((a) => {
+        a.addEventListener('click', () => {
+          burger.setAttribute('aria-expanded', 'false');
+          drawer.setAttribute('aria-hidden', 'true');
+          drawer.classList.remove('pbm-open');
+        });
+      });
+    }
+  </script>
+</Layout>

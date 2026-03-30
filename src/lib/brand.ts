@@ -15,7 +15,8 @@ export type BrandKey =
   | 'maisoncortes'
   | 'ateliermemoire'
   | 'tonsiteweb'
-  | 'onglesgel';
+  | 'onglesgel'
+  | 'paintballmaceio';
 
 /**
  * Map request host to a brand key. Default to "pedro" if unknown.
@@ -38,6 +39,7 @@ export function getBrandFromHost(host: string | null | undefined): BrandKey {
   if (value.includes('tolocoiffure.ch')) return 'tolo-coiffure';
   if (value.includes('exostif.ch')) return 'exostif-coiffure';
   if (value.includes('maisoncortes.')) return 'maisoncortes';
+  if (value.includes('paintballmaceio.')) return 'paintballmaceio';
   if (value.includes('ateliermemoire.ch')) return 'ateliermemoire';
   if (value.includes('tonsiteweb.ch') || value.includes('tonwebsite.ch')) return 'tonsiteweb';
   return 'pedro';

@@ -69,6 +69,12 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   const isOnglesgelHost =
     (resolved.source === 'host' && resolved.slug === 'onglesgel') ||
     hostCandidates.some((host) => host.includes('onglesgel.ch'));
+  const isMaisoncortesHost =
+    (resolved.source === 'host' && resolved.slug === 'maison-cortes') ||
+    hostCandidates.some((host) => host.includes('maisoncortes.'));
+  const isPaintballHost =
+    (resolved.source === 'host' && resolved.slug === 'paintballmaceio') ||
+    hostCandidates.some((host) => host.includes('paintballmaceio.'));
   const isTonsitewebHost =
     (resolved.source === 'host' && resolved.slug === 'tonsiteweb') ||
     hostCandidates.some((host) => host.includes('tonsiteweb.ch') || host.includes('tonwebsite.ch'));
@@ -164,6 +170,28 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
     }
   }
 
+  // Canonicalize prefixed maison-cortes URLs to clean root paths.
+  if (isMaisoncortesHost && url.pathname.startsWith('/maison-cortes')) {
+    const stripped = url.pathname.replace(/^\/maison-cortes/, '') || '/';
+    const target = new URL(`${stripped}${url.search}`, url);
+    return Response.redirect(target.toString(), 308);
+  }
+  // Internally rewrite clean URLs to /maison-cortes/* so Astro serves the right pages.
+  if (isMaisoncortesHost && !shouldSkip) {
+    url.pathname = `/maison-cortes${url.pathname === '/' ? '' : url.pathname}`;
+  }
+
+  // Canonicalize prefixed paintball URLs to clean root paths.
+  if (isPaintballHost && url.pathname.startsWith('/paintballmaceio')) {
+    const stripped = url.pathname.replace(/^\/paintballmaceio/, '') || '/';
+    const target = new URL(`${stripped}${url.search}`, url);
+    return Response.redirect(target.toString(), 308);
+  }
+  // Internally rewrite clean URLs to /paintballmaceio/* so Astro serves the right pages.
+  if (isPaintballHost && !shouldSkip) {
+    url.pathname = `/paintballmaceio${url.pathname === '/' ? '' : url.pathname}`;
+  }
+
   // Redirect away browser-visible /tonsiteweb/* prefix on TonSiteWeb host (canonical clean URLs).
   // Must run BEFORE the internal rewrite below to avoid a redirect loop.
   if (isTonsitewebHost && url.pathname.startsWith('/tonsiteweb')) {
@@ -173,7 +201,10 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   }
 
   // Internally rewrite clean URLs to /tonsiteweb/* so Astro serves the right pages.
-  if (isTonsitewebHost && !shouldSkip) {
+  // Skip tenant demo paths that live outside /tonsiteweb/*.
+  const TENANT_DEMO_PREFIXES = ['/maison-cortes', '/restaurant-demo', '/artisan-demo', '/therapie-demo', '/fiduciaire-demo'];
+  const isTenantDemoPath = TENANT_DEMO_PREFIXES.some((p) => url.pathname.startsWith(p));
+  if (isTonsitewebHost && !shouldSkip && !isTenantDemoPath) {
     url.pathname = `/tonsiteweb${url.pathname === '/' ? '' : url.pathname}`;
   }
 

@@ -1,0 +1,204 @@
+---
+export const prerender = false;
+
+import Shell from '~/tenants/paintballmaceio/Shell.astro';
+import { pbmPackages, pbmExtras } from '~/tenants/paintballmaceio/services';
+import { pbmConfig } from '~/tenants/paintballmaceio/config';
+
+const metadata = {
+  title: 'Pacotes — Paintball Maceió',
+  description: 'Conheça nossos pacotes de paintball em Maceió: Starter, Batalha, Guerra Total e Aniversário.',
+  ignoreTitleTemplate: true,
+};
+---
+
+<Shell page="pacotes" metadata={metadata}>
+
+  <section class="pbm-section pbm-pkg-hero">
+    <div class="pbm-container">
+      <p class="pbm-kicker text-center">Escolha sua missão</p>
+      <h1 class="pbm-section-title text-center">Pacotes & Preços</h1>
+      <p class="pbm-pkg-sub">Todos os pacotes incluem equipamento completo e monitor presente. Preços por pessoa.</p>
+    </div>
+  </section>
+
+  <section class="pbm-section pbm-pkgs">
+    <div class="pbm-container">
+      <div class="pbm-pkg-grid">
+        {pbmPackages.map((pkg) => (
+          <div class={`pbm-pkg-card${pkg.highlight ? ' is-highlight' : ''}`}>
+            {pkg.badge && <div class="pbm-pkg-badge">{pkg.badge}</div>}
+            <div class="pbm-pkg-header">
+              <h2 class="pbm-pkg-name">{pkg.name}</h2>
+              <p class="pbm-pkg-tagline">{pkg.tagline}</p>
+            </div>
+            <div class="pbm-pkg-price-block">
+              <span class="pbm-pkg-price">R$ {pkg.price}</span>
+              <span class="pbm-pkg-unit">/ {pkg.priceUnit}</span>
+            </div>
+            <div class="pbm-pkg-meta">
+              <span>👥 {pkg.minPlayers}–{pkg.maxPlayers} pessoas</span>
+              <span>🎯 {pkg.shots} bolinhas</span>
+              <span>⏱ {pkg.duration}</span>
+            </div>
+            <ul class="pbm-pkg-includes">
+              {pkg.includes.map((item) => <li>✓ {item}</li>)}
+            </ul>
+            <a
+              class={`pbm-btn pbm-btn-lg${pkg.highlight ? ' pbm-btn-primary' : ' pbm-btn-ghost'}`}
+              href={`${pbmConfig.whatsappUrl}&text=Olá! Quero reservar o pacote ${encodeURIComponent(pkg.name)}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Reservar {pkg.name} →
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Extras -->
+  <section class="pbm-section pbm-extras">
+    <div class="pbm-container">
+      <p class="pbm-kicker text-center">Personalize ainda mais</p>
+      <h2 class="pbm-section-title text-center">Adicionais</h2>
+      <div class="pbm-extras-grid">
+        {pbmExtras.map((extra) => (
+          <div class="pbm-extra-card">
+            <span class="pbm-extra-name">{extra.name}</span>
+            <span class="pbm-extra-price">{extra.price}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="pbm-section pbm-cta">
+    <div class="pbm-container pbm-cta-inner">
+      <div>
+        <h2 class="pbm-section-title" style="margin-bottom:.5rem">Pronto para a missão?</h2>
+        <p style="color:var(--pbm-muted)">Fale agora pelo WhatsApp — respondemos em minutos.</p>
+      </div>
+      <a class="pbm-btn pbm-btn-primary pbm-btn-lg" href={pbmConfig.whatsappUrl} target="_blank" rel="noreferrer">
+        Falar no WhatsApp →
+      </a>
+    </div>
+  </section>
+
+</Shell>
+
+<style>
+.pbm-pkg-hero { background: var(--pbm-surface); padding-bottom: 1rem; }
+.pbm-pkg-sub {
+  text-align: center;
+  color: var(--pbm-muted);
+  max-width: 500px;
+  margin: 0 auto;
+  font-size: .95rem;
+}
+.pbm-pkgs { background: var(--pbm-bg); }
+.pbm-section { padding: 4rem 1.5rem; }
+.pbm-container { max-width: var(--pbm-max); margin: 0 auto; }
+.pbm-kicker {
+  color: var(--pbm-accent);
+  font-family: var(--pbm-heading);
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  margin-bottom: .5rem;
+}
+.pbm-section-title {
+  font-family: var(--pbm-heading);
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 800;
+  color: #fff;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  line-height: 1.1;
+}
+.text-center { text-align: center; }
+
+.pbm-pkg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  align-items: start;
+}
+.pbm-pkg-card {
+  background: var(--pbm-surface);
+  border: 1px solid var(--pbm-line);
+  border-radius: 16px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  position: relative;
+}
+.pbm-pkg-card.is-highlight {
+  border-color: var(--pbm-accent);
+  box-shadow: 0 0 0 1px var(--pbm-accent);
+}
+.pbm-pkg-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--pbm-accent);
+  color: #fff;
+  font-size: .75rem;
+  font-weight: 700;
+  padding: .25rem .85rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.pbm-pkg-name {
+  font-family: var(--pbm-heading);
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #fff;
+  text-transform: uppercase;
+}
+.pbm-pkg-tagline { color: var(--pbm-muted); font-size: .85rem; }
+.pbm-pkg-price-block { display: flex; align-items: baseline; gap: .4rem; }
+.pbm-pkg-price { font-family: var(--pbm-heading); font-size: 2.2rem; font-weight: 900; color: var(--pbm-accent); }
+.pbm-pkg-unit { font-size: .85rem; color: var(--pbm-muted); }
+.pbm-pkg-meta { display: flex; flex-direction: column; gap: .3rem; }
+.pbm-pkg-meta span { font-size: .85rem; color: rgba(255,255,255,.7); }
+.pbm-pkg-includes { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .4rem; }
+.pbm-pkg-includes li { font-size: .9rem; color: rgba(255,255,255,.8); }
+
+.pbm-extras { background: var(--pbm-surface); }
+.pbm-extras-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+.pbm-extra-card {
+  background: var(--pbm-card);
+  border: 1px solid var(--pbm-line);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.pbm-extra-name { color: rgba(255,255,255,.85); font-size: .9rem; }
+.pbm-extra-price { color: var(--pbm-accent); font-weight: 700; font-size: .9rem; white-space: nowrap; }
+
+.pbm-cta { background: var(--pbm-bg); }
+.pbm-cta-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  background: var(--pbm-surface);
+  border: 1px solid var(--pbm-line);
+  border-radius: 16px;
+  padding: 2.5rem;
+}
+</style>

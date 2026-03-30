@@ -1,0 +1,163 @@
+---
+export const prerender = false;
+
+import Shell from '~/tenants/paintballmaceio/Shell.astro';
+import { pbmContent } from '~/tenants/paintballmaceio/content';
+import { pbmConfig } from '~/tenants/paintballmaceio/config';
+
+const metadata = {
+  title: 'Contato — Paintball Maceió',
+  description: 'Entre em contato com o Paintball Maceió. WhatsApp, telefone e localização.',
+  ignoreTitleTemplate: true,
+};
+---
+
+<Shell page="contato" metadata={metadata}>
+
+  <section class="pbm-section pbm-contact-hero">
+    <div class="pbm-container">
+      <p class="pbm-kicker text-center">Fale conosco</p>
+      <h1 class="pbm-section-title text-center">Contato & Localização</h1>
+    </div>
+  </section>
+
+  <section class="pbm-section pbm-contact">
+    <div class="pbm-container pbm-contact-grid">
+
+      <!-- Contact cards -->
+      <div class="pbm-contact-cards">
+        <a class="pbm-contact-card pbm-contact-wa" href={pbmConfig.whatsappUrl} target="_blank" rel="noreferrer">
+          <span class="pbm-contact-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20.52 3.48A11.93 11.93 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.11.55 4.17 1.6 5.99L0 24l6.18-1.62A11.93 11.93 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.21-3.48-8.52zm-8.52 18.48a9.9 9.9 0 0 1-5.04-1.37l-.36-.21-3.67.96.98-3.58-.23-.37A9.9 9.9 0 0 1 2.1 12c0-5.46 4.44-9.9 9.9-9.9a9.9 9.9 0 0 1 0 19.8zm5.44-7.4c-.3-.15-1.77-.87-2.04-.97s-.47-.15-.67.15-.77.97-.94 1.17-.35.22-.64.07a8.12 8.12 0 0 1-2.39-1.47 8.98 8.98 0 0 1-1.65-2.05c-.17-.3-.02-.46.13-.6.13-.13.3-.35.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52s-.67-1.62-.92-2.22c-.24-.58-.48-.5-.67-.51h-.57c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.48 1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.09 4.49.71.31 1.27.49 1.7.63.72.23 1.37.2 1.89.12.58-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/>
+            </svg>
+          </span>
+          <div>
+            <p class="pbm-contact-label">WhatsApp</p>
+            <p class="pbm-contact-value">Falar agora →</p>
+          </div>
+        </a>
+
+        <a class="pbm-contact-card" href={`tel:${pbmConfig.phone}`}>
+          <span class="pbm-contact-icon">📞</span>
+          <div>
+            <p class="pbm-contact-label">Telefone</p>
+            <p class="pbm-contact-value">{pbmConfig.phone}</p>
+          </div>
+        </a>
+
+        <a class="pbm-contact-card" href={`mailto:${pbmConfig.email}`}>
+          <span class="pbm-contact-icon">✉️</span>
+          <div>
+            <p class="pbm-contact-label">E-mail</p>
+            <p class="pbm-contact-value">{pbmConfig.email}</p>
+          </div>
+        </a>
+
+        <div class="pbm-contact-card">
+          <span class="pbm-contact-icon">📍</span>
+          <div>
+            <p class="pbm-contact-label">Endereço</p>
+            <p class="pbm-contact-value">{pbmConfig.address}</p>
+          </div>
+        </div>
+
+        <div class="pbm-contact-card">
+          <span class="pbm-contact-icon">🕐</span>
+          <div>
+            <p class="pbm-contact-label">Horário</p>
+            <p class="pbm-contact-value">{pbmConfig.hours}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Map -->
+      <div class="pbm-contact-map">
+        <p class="pbm-kicker">{pbmContent.location.kicker}</p>
+        <h2 class="pbm-contact-map-title">{pbmContent.location.heading}</h2>
+        <p class="pbm-contact-map-sub">{pbmContent.location.subheading}</p>
+        <iframe
+          src={pbmConfig.mapsEmbed}
+          width="100%"
+          height="360"
+          style="border:0;border-radius:12px;margin-top:1.25rem"
+          allowfullscreen
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Localização Paintball Maceió"
+        ></iframe>
+        <a class="pbm-btn pbm-btn-primary" href={pbmConfig.mapsUrl} target="_blank" rel="noreferrer" style="margin-top:1rem">
+          📍 Abrir no Google Maps
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</Shell>
+
+<style>
+.pbm-contact-hero { background: var(--pbm-surface); padding-bottom: 1rem; }
+.pbm-contact { background: var(--pbm-bg); }
+.pbm-section { padding: 4rem 1.5rem; }
+.pbm-container { max-width: var(--pbm-max); margin: 0 auto; }
+.pbm-kicker {
+  color: var(--pbm-accent);
+  font-family: var(--pbm-heading);
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  margin-bottom: .5rem;
+}
+.pbm-section-title {
+  font-family: var(--pbm-heading);
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 800;
+  color: #fff;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  line-height: 1.1;
+}
+.text-center { text-align: center; }
+
+.pbm-contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 3rem;
+  align-items: start;
+}
+@media (max-width: 768px) { .pbm-contact-grid { grid-template-columns: 1fr; } }
+
+.pbm-contact-cards { display: flex; flex-direction: column; gap: .75rem; }
+.pbm-contact-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--pbm-surface);
+  border: 1px solid var(--pbm-line);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  text-decoration: none;
+  transition: border-color .2s;
+}
+.pbm-contact-card:hover { border-color: var(--pbm-accent); }
+.pbm-contact-card.pbm-contact-wa {
+  background: #075E54;
+  border-color: #25D366;
+}
+.pbm-contact-icon { font-size: 1.5rem; flex-shrink: 0; }
+.pbm-contact-label { font-size: .75rem; color: var(--pbm-muted); letter-spacing: .05em; text-transform: uppercase; margin-bottom: .2rem; }
+.pbm-contact-value { color: #fff; font-weight: 600; font-size: .95rem; }
+.pbm-contact-wa .pbm-contact-value { color: #25D366; }
+
+.pbm-contact-map-title {
+  font-family: var(--pbm-heading);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #fff;
+  text-transform: uppercase;
+  margin-bottom: .5rem;
+}
+.pbm-contact-map-sub { color: var(--pbm-muted); font-size: .9rem; line-height: 1.6; }
+</style>

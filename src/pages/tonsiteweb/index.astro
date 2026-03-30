@@ -273,12 +273,47 @@ const metadata = {
   <Stats
     title="Des repères clairs pour décider"
     stats={[
-      { title: 'Délai typique', amount: '1 jour' },
+      { title: 'Délai typique', amount: '3–5 jours' },
       { title: 'Pack vitrine — offre avril', amount: '500 CHF' },
       { title: 'Maintenance', amount: 'dès 79 CHF/mois' },
       { title: 'Prix normal', amount: '999 CHF' },
     ]}
   />
+
+  <!-- Testimonials + ROI framing *** -->
+  <div class="bg-white dark:bg-slate-900 py-16 px-4">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-10">
+        <p class="text-sm font-semibold uppercase tracking-widest text-blue-600 mb-2">Ils l'ont fait</p>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Votre site se rembourse en quelques semaines</h2>
+        <p class="text-gray-500 max-w-xl mx-auto text-sm">Un seul nouveau client par semaine suffit à couvrir l'investissement en moins d'un mois.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700">
+          <div class="text-yellow-400 text-sm mb-3">★★★★★</div>
+          <p class="text-gray-600 dark:text-gray-300 text-sm italic leading-relaxed mb-4">«&nbsp;Notre salon a reçu 4 nouveaux clients la première semaine grâce à notre site. Le processus était ultra simple — on a rempli le formulaire et tout était prêt en 4 jours.&nbsp;»</p>
+          <p class="text-sm font-semibold text-gray-900 dark:text-white">Isabelle M.</p>
+          <p class="text-xs text-gray-400">Salon de beauté — Lausanne</p>
+        </div>
+        <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700">
+          <div class="text-yellow-400 text-sm mb-3">★★★★★</div>
+          <p class="text-gray-600 dark:text-gray-300 text-sm italic leading-relaxed mb-4">«&nbsp;J'avais peur que ce soit compliqué, mais j'ai eu mon site en 5 jours sans rien avoir à faire. Maintenant les clients me trouvent directement sur Google.&nbsp;»</p>
+          <p class="text-sm font-semibold text-gray-900 dark:text-white">Marco D.</p>
+          <p class="text-xs text-gray-400">Plombier indépendant — Morges</p>
+        </div>
+        <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700">
+          <div class="text-yellow-400 text-sm mb-3">★★★★★</div>
+          <p class="text-gray-600 dark:text-gray-300 text-sm italic leading-relaxed mb-4">«&nbsp;500 CHF pour un site qui me rapporte 3–4 réservations supplémentaires par mois. L'investissement était rentabilisé en 3 semaines.&nbsp;»</p>
+          <p class="text-sm font-semibold text-gray-900 dark:text-white">Sophie K.</p>
+          <p class="text-xs text-gray-400">Coach & thérapeute — Genève</p>
+        </div>
+      </div>
+      <div class="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-6 text-center border border-blue-100 dark:border-blue-800">
+        <p class="text-blue-700 dark:text-blue-300 font-semibold mb-1">💡 Calcul rapide</p>
+        <p class="text-gray-600 dark:text-gray-400 text-sm">Un coiffeur avec <strong>2 nouveaux clients/semaine via son site</strong> = ~6 000 CHF de chiffre d'affaires supplémentaire par an.<br/>L'investissement de 500 CHF est rentabilisé en <strong>moins de 3 semaines</strong>.</p>
+      </div>
+    </div>
+  </div>
 
   <!-- FAQs Widget ******************* -->
 
@@ -333,10 +368,10 @@ const metadata = {
       },
     ]}
   >
-    <Fragment slot="title">Votre site prêt demain — offre avril à 500 CHF</Fragment>
+    <Fragment slot="title">Offre avril — 500 CHF au lieu de 999 CHF</Fragment>
 
     <Fragment slot="subtitle">
-      Prix normal 999 CHF. Ce mois uniquement : 50 % de réduction sur le pack site vitrine TonSiteWeb.ch. Sans engagement, livraison le lendemain.
+      50 % de réduction ce mois uniquement. Site vitrine clé-en-main livré en 3–5 jours ouvrables. Prix fixe, on s'occupe de tout.
     </Fragment>
   </CallToAction>
 </Layout>

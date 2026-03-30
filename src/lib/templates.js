@@ -5,6 +5,16 @@ export const ALLOWED_TEMPLATES = [
   'minimal-grid',
   'warm-landing',
   'artisan-folio',
+  // TonSiteWeb choose-template IDs
+  'lausanne-demenagement',
+  'tolo-coiffure',
+  'maison-cortes',
+  'onglesgel',
+  'restaurant',
+  'artisan',
+  'therapie',
+  'fiduciaire',
+  'surprise',
 ];
 
 export function isAllowedTemplate(id) {

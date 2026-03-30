@@ -36,8 +36,10 @@ const brandTenants: TenantConfig[] = Object.values(BRANDS)
             ? '/exostif-coiffure'
             : brand.key === 'onglesgel'
               ? '/onglesgel'
-              : undefined,
-    preserveBasePath: brand.key === 'ateliermemoire' || brand.key === 'tolo-coiffure' || brand.key === 'exostif-coiffure' || brand.key === 'onglesgel',
+              : brand.key === 'paintballmaceio'
+                ? '/paintballmaceio'
+                : undefined,
+    preserveBasePath: brand.key === 'ateliermemoire' || brand.key === 'tolo-coiffure' || brand.key === 'exostif-coiffure' || brand.key === 'onglesgel' || brand.key === 'paintballmaceio',
   }));
 
 const extraTenants: TenantConfig[] = [

@@ -35,7 +35,10 @@ type InventorySnapshot = Record<
 >;
 
 const productMap = new Map(maisonCortesProducts.map((item) => [item.id, item]));
-const dataFile = path.join(process.cwd(), 'data', 'maison-cortes-inventory.json');
+const dataDir = process.env.VERCEL || process.env.NODE_ENV === 'production'
+  ? '/tmp'
+  : path.join(process.cwd(), 'data');
+const dataFile = path.join(dataDir, 'maison-cortes-inventory.json');
 const defaultTotal = 9999;
 
 const randomId = () => crypto.randomUUID?.() ?? Math.random().toString(36).slice(2, 10);
@@ -117,8 +120,12 @@ const readInventory = async (): Promise<{ records: Record<string, InventoryRecor
 };
 
 const writeInventory = async (records: Record<string, InventoryRecord>) => {
-  await ensureDataDir();
-  await fs.writeFile(dataFile, JSON.stringify({ records }, null, 2), 'utf8');
+  try {
+    await ensureDataDir();
+    await fs.writeFile(dataFile, JSON.stringify({ records }, null, 2), 'utf8');
+  } catch (err) {
+    console.warn('[maison-cortes] inventory write failed (read-only fs?):', err);
+  }
 };
 
 const cleanExpiredReservations = (records: Record<string, InventoryRecord>, now: number): boolean => {

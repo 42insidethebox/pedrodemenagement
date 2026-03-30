@@ -19,9 +19,13 @@ const languageOptions: MaisonCortesLocale[] = ['fr', 'en', 'de', 'it'];
 import { parseSelectionCookie, SELECTION_COOKIE_NAME } from '../inventory';
 
 const selectionEntries = parseSelectionCookie(Astro.cookies.get(SELECTION_COOKIE_NAME)?.value);
+
+// Detect base path: when served under /maison-cortes/* on tonsiteweb.ch, prefix all links.
+const base = Astro.url.pathname.startsWith('/maison-cortes') ? '/maison-cortes' : '';
+
 const navLinks = [
-  { text: copy.navCatalogue, href: '/maison-cortes' },
-  ...(selectionEntries.length ? [{ text: copy.navSelection, href: '/maison-cortes/selection' }] : []),
+  { text: copy.navCatalogue, href: `${base}/` },
+  ...(selectionEntries.length ? [{ text: copy.navSelection, href: `${base}/selection` }] : []),
 ];
 
 const styleVars: Record<string, string> = {
@@ -38,7 +42,7 @@ const styleVars: Record<string, string> = {
 <Layout metadata={metadata} brandKey={maisonCortesTheme.brandKey} styleVars={styleVars}>
   <div class="mc-shell">
     <header class="mc-nav">
-      <a class="mc-wordmark" aria-label="Maison Cortes" href="/">
+      <a class="mc-wordmark" aria-label="Maison Cortes" href={`${base}/`}>
         <span class="mc-wordmark-top">{maisonCortesCopy.brandTop}</span>
         <span class="mc-wordmark-bottom">{maisonCortesCopy.brandBottom}</span>
       </a>

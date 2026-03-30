@@ -81,6 +81,8 @@ export default defineConfig({
         "www.tolocoiffure.ch",
         "exostif.ch",
         "www.exostif.ch",
+        "paintballmaceio.com.br",
+        "www.paintballmaceio.com.br",
       ],
     },
   },

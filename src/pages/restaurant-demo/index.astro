@@ -1,0 +1,271 @@
+---
+export const prerender = false;
+---
+
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Le Belvédère — Restaurant & Bar, Lausanne</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #1a1208;
+      --surface: #241a0d;
+      --amber: #d4933a;
+      --text: #f0e6d0;
+      --muted: #8a7560;
+      --border: #2e2010;
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.6; }
+    a { color: var(--amber); text-decoration: none; }
+    /* Nav */
+    nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 10; }
+    .nav-brand { font-family: 'Cormorant Garamond', serif; font-size: 22px; letter-spacing: 0.1em; color: var(--text); }
+    .nav-links { display: flex; gap: 28px; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+    .nav-links a { color: var(--muted); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta { background: var(--amber); color: #1a1208; font-weight: 600; font-size: 13px; padding: 10px 22px; border-radius: 4px; letter-spacing: 0.06em; }
+    /* Hero */
+    .hero { min-height: 88vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 60px 40px; position: relative; overflow: hidden; background: linear-gradient(160deg, #2a1a08 0%, #0e0905 60%); }
+    .hero::before { content: ''; position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1400&q=80') center/cover no-repeat; opacity: 0.22; }
+    .hero-content { position: relative; max-width: 680px; }
+    .hero-tag { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); margin-bottom: 16px; }
+    .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(42px, 7vw, 80px); line-height: 1.05; font-weight: 400; margin-bottom: 20px; }
+    .hero h1 em { font-style: italic; color: var(--amber); }
+    .hero p { font-size: 16px; color: var(--muted); max-width: 460px; margin-bottom: 32px; }
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn-primary { background: var(--amber); color: #1a1208; font-weight: 600; font-size: 14px; padding: 14px 28px; border-radius: 4px; letter-spacing: 0.04em; }
+    .btn-secondary { border: 1px solid var(--muted); color: var(--text); font-size: 14px; padding: 14px 28px; border-radius: 4px; }
+    /* Info bar */
+    .info-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1px; background: var(--border); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .info-item { background: var(--surface); padding: 20px 28px; display: flex; flex-direction: column; gap: 4px; }
+    .info-label { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+    .info-value { font-family: 'Cormorant Garamond', serif; font-size: 17px; color: var(--text); }
+    /* Menu section */
+    .section { padding: 72px 40px; max-width: 900px; margin: 0 auto; }
+    .section-tag { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); margin-bottom: 12px; }
+    .section h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(28px, 4vw, 40px); font-weight: 400; margin-bottom: 36px; }
+    .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; }
+    .menu-col h3 { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 20px; color: var(--amber); }
+    .menu-item { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 8px 0; border-bottom: 1px dotted var(--border); }
+    .menu-item-name { font-size: 15px; color: var(--text); }
+    .menu-item-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .menu-item-price { font-family: 'Cormorant Garamond', serif; font-size: 16px; color: var(--amber); white-space: nowrap; }
+    /* Testimonials */
+    .testimonials-bg { background: var(--surface); }
+    .testimonials { padding: 72px 40px; max-width: 900px; margin: 0 auto; }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-top: 36px; }
+    .testimonial { background: var(--bg); border: 1px solid var(--border); padding: 24px; border-radius: 4px; }
+    .testimonial-stars { color: var(--amber); font-size: 14px; margin-bottom: 10px; }
+    .testimonial-text { font-size: 14px; color: var(--muted); font-style: italic; line-height: 1.7; }
+    .testimonial-author { margin-top: 14px; font-size: 13px; font-weight: 500; color: var(--text); }
+    /* CTA reservation */
+    .cta-section { padding: 80px 40px; text-align: center; }
+    .cta-section h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(28px, 4vw, 44px); font-weight: 400; margin-bottom: 14px; }
+    .cta-section p { color: var(--muted); margin-bottom: 32px; }
+    /* Footer */
+    footer { background: var(--surface); border-top: 1px solid var(--border); padding: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 32px; max-width: 1100px; margin: 0 auto; }
+    .footer-brand { font-family: 'Cormorant Garamond', serif; font-size: 20px; margin-bottom: 8px; }
+    .footer-title { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+    .footer-list { list-style: none; display: grid; gap: 6px; font-size: 14px; color: var(--muted); }
+    .demo-badge { position: fixed; bottom: 20px; right: 20px; background: var(--amber); color: #1a1208; font-size: 12px; font-weight: 700; padding: 10px 16px; border-radius: 6px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); z-index: 100; letter-spacing: 0.04em; }
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 40px 20px; }
+      .section, .testimonials, .cta-section { padding: 48px 20px; }
+      footer { padding: 32px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-brand">Le Belvédère</span>
+  <div class="nav-links">
+    <a href="#">Menu</a>
+    <a href="#">Notre histoire</a>
+    <a href="#">Contact</a>
+  </div>
+  <a href="#reservation" class="nav-cta">Réserver une table</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <p class="hero-tag">Restaurant & Bar — Lausanne</p>
+    <h1>Une table, <em>une histoire</em></h1>
+    <p>Cuisine du marché, vins de producteurs, vue sur le lac. Ouvert du mardi au dimanche.</p>
+    <div class="hero-actions">
+      <a href="#reservation" class="btn-primary">Réserver une table →</a>
+      <a href="#menu" class="btn-secondary">Voir le menu</a>
+    </div>
+  </div>
+</section>
+
+<div class="info-bar">
+  <div class="info-item">
+    <span class="info-label">Horaires</span>
+    <span class="info-value">Mar–Dim, 12h–14h30 · 19h–22h</span>
+  </div>
+  <div class="info-item">
+    <span class="info-label">Adresse</span>
+    <span class="info-value">Quai d'Ouchy 14, Lausanne</span>
+  </div>
+  <div class="info-item">
+    <span class="info-label">Réservation</span>
+    <span class="info-value">+41 21 000 00 00</span>
+  </div>
+  <div class="info-item">
+    <span class="info-label">Cuisine</span>
+    <span class="info-value">Marché & bistronomie</span>
+  </div>
+</div>
+
+<section class="section" id="menu">
+  <p class="section-tag">Notre carte</p>
+  <h2>Le menu du moment</h2>
+  <div class="menu-grid">
+    <div class="menu-col">
+      <h3>Entrées</h3>
+      <div class="menu-item">
+        <div>
+          <div class="menu-item-name">Tartare de thon</div>
+          <div class="menu-item-desc">avocat, sésame, yuzu</div>
+        </div>
+        <span class="menu-item-price">26 CHF</span>
+      </div>
+      <div class="menu-item">
+        <div>
+          <div class="menu-item-name">Burrata du jour</div>
+          <div class="menu-item-desc">tomates confites, basilic, huile d'olive</div>
+        </div>
+        <span class="menu-item-price">22 CHF</span>
+      </div>
+      <div class="menu-item">
+        <div>
+          <div class="menu-item-name">Velouté de saison</div>
+          <div class="menu-item-desc">selon arrivage, crème fraîche</div>
+        </div>
+        <span class="menu-item-price">18 CHF</span>
+      </div>
+    </div>
+    <div class="menu-col">
+      <h3>Plats</h3>
+      <div class="menu-item">
+        <div>
+          <div class="menu-item-name">Filet de perche</div>
+          <div class="menu-item-desc">beurre citron, pommes vapeur, salade</div>
+        </div>
+        <span class="menu-item-price">48 CHF</span>
+      </div>
+      <div class="menu-item">
+        <div>
+          <div class="menu-item-name">Côte de veau</div>
+          <div class="menu-item-desc">jus corsé, légumes du marché</div>
+        </div>
+        <span class="menu-item-price">54 CHF</span>
+      </div>
+      <div class="menu-item">
+        <div>
+          <div class="menu-item-name">Risotto aux cèpes</div>
+          <div class="menu-item-desc">parmesan 24 mois, truffe noire</div>
+        </div>
+        <span class="menu-item-price">42 CHF</span>
+      </div>
+    </div>
+    <div class="menu-col">
+      <h3>Desserts</h3>
+      <div class="menu-item">
+        <div>
+          <div class="menu-item-name">Fondant chocolat</div>
+          <div class="menu-item-desc">glace vanille, caramel beurre salé</div>
+        </div>
+        <span class="menu-item-price">16 CHF</span>
+      </div>
+      <div class="menu-item">
+        <div>
+          <div class="menu-item-name">Tarte tatin</div>
+          <div class="menu-item-desc">pommes, crème fraîche épaisse</div>
+        </div>
+        <span class="menu-item-price">14 CHF</span>
+      </div>
+      <div class="menu-item">
+        <div>
+          <div class="menu-item-name">Fromages affinés</div>
+          <div class="menu-item-desc">sélection suisse, pain maison</div>
+        </div>
+        <span class="menu-item-price">18 CHF</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="testimonials-bg">
+  <div class="testimonials">
+    <p class="section-tag">Avis clients</p>
+    <h2>Ce qu'ils disent</h2>
+    <div class="testimonials-grid">
+      <div class="testimonial">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">«&nbsp;Un dîner inoubliable. La perche du lac était sublime, et la cave à vins impressionnante.&nbsp;»</p>
+        <p class="testimonial-author">— Sophie M., Lausanne</p>
+      </div>
+      <div class="testimonial">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">«&nbsp;Accueil chaleureux, vue magnifique sur le lac, cuisine du marché irréprochable. Notre table de référence.&nbsp;»</p>
+        <p class="testimonial-author">— Marc & Julie T., Pully</p>
+      </div>
+      <div class="testimonial">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">«&nbsp;Le meilleur risotto de Lausanne. On revient chaque mois depuis 3 ans.&nbsp;»</p>
+        <p class="testimonial-author">— Antoine R., Genève</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="cta-section" id="reservation">
+  <p class="section-tag">Réservation</p>
+  <h2>Réserver votre table</h2>
+  <p>Pour les groupes de 8 personnes et plus, merci de nous contacter directement.</p>
+  <a href="tel:+41210000000" class="btn-primary">+41 21 000 00 00 →</a>
+</section>
+
+<footer>
+  <div>
+    <p class="footer-brand">Le Belvédère</p>
+    <p style="color:var(--muted);font-size:13px;">Restaurant & Bar<br/>Lausanne</p>
+  </div>
+  <div>
+    <p class="footer-title">Horaires</p>
+    <ul class="footer-list">
+      <li>Mardi – Vendredi</li>
+      <li>12h–14h30 · 19h–22h</li>
+      <li>Samedi – Dimanche</li>
+      <li>12h–15h · 19h–22h30</li>
+    </ul>
+  </div>
+  <div>
+    <p class="footer-title">Contact</p>
+    <ul class="footer-list">
+      <li>Quai d'Ouchy 14</li>
+      <li>1006 Lausanne</li>
+      <li>+41 21 000 00 00</li>
+      <li>info@lebelvedere.ch</li>
+    </ul>
+  </div>
+  <div>
+    <p class="footer-title">Ce style vous convient ?</p>
+    <a href="/api/payment/redirect?plan=essential500&template=restaurant" style="display:inline-block;margin-top:8px;background:var(--amber);color:#1a1208;font-size:13px;font-weight:600;padding:10px 18px;border-radius:4px;">Commander ce style →</a>
+  </div>
+</footer>
+
+<a href="/api/payment/redirect?plan=essential500&template=restaurant" class="demo-badge">Ce style vous plaît ? Commander →</a>
+
+</body>
+</html>

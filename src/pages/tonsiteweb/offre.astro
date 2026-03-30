@@ -11,69 +11,69 @@ const sectorParam = (Astro.url.searchParams.get('s') || '').toLowerCase();
 const SECTORS: Record<string, { headline: string; sub: string; bullets: string[][]; sector: string }> = {
   coiffeur: {
     headline: 'Site pour votre salon de coiffure',
-    sub: 'Vos clients réservent en ligne dès demain. 500 CHF, livré en 24h.',
+    sub: 'Vos clients réservent en ligne cette semaine. 500 CHF, livré en 3–5 jours.',
     bullets: [
       ['Galerie de réalisations', 'Montrez vos coupes et colorations'],
       ['Prise de rendez-vous en ligne', 'Vos clients réservent 24h/24'],
       ['Horaires et tarifs visibles', 'Plus d\'appels pour les infos de base'],
       ['Adapté mobile', 'Parfait sur tous les écrans'],
-      ['Livré en 24 heures', 'On s\'engage sur le délai'],
+      ['Livré en 3–5 jours ouvrables', 'On s\'engage sur le délai'],
     ],
     sector: 'Beaute',
   },
   artisan: {
     headline: 'Site pour artisan & entrepreneur',
-    sub: 'Devis en ligne, photos de chantiers, contact direct. 500 CHF, livré en 24h.',
+    sub: 'Devis en ligne, photos de chantiers, contact direct. 500 CHF, livré en 3–5 jours.',
     bullets: [
       ['Portfolio de réalisations', 'Photos de vos chantiers et travaux'],
       ['Formulaire de devis en ligne', 'Vos clients demandent un prix 24h/24'],
       ['Zone d\'intervention', 'Montrez où vous travaillez'],
       ['Adapté mobile', 'Parfait sur tous les écrans'],
-      ['Livré en 24 heures', 'On s\'engage sur le délai'],
+      ['Livré en 3–5 jours ouvrables', 'On s\'engage sur le délai'],
     ],
     sector: 'Artisan',
   },
   restaurant: {
     headline: 'Site pour votre restaurant',
-    sub: 'Menu, horaires, réservations — tout en ligne demain. 500 CHF, livré en 24h.',
+    sub: 'Menu, horaires, réservations — tout en ligne cette semaine. 500 CHF, livré en 3–5 jours.',
     bullets: [
       ['Menu complet en ligne', 'PDF ou page dédiée, mis à jour facilement'],
       ['Horaires et adresse', 'Google Maps intégré'],
       ['Formulaire de réservation', 'Réservations directes sans commission'],
       ['Adapté mobile', 'Parfait sur tous les écrans'],
-      ['Livré en 24 heures', 'On s\'engage sur le délai'],
+      ['Livré en 3–5 jours ouvrables', 'On s\'engage sur le délai'],
     ],
     sector: 'Restauration',
   },
   beaute: {
     headline: 'Site pour votre salon de beauté',
-    sub: 'Prenez des RDV en ligne, montrez vos réalisations. 500 CHF, livré en 24h.',
+    sub: 'Prenez des RDV en ligne, montrez vos réalisations. 500 CHF, livré en 3–5 jours.',
     bullets: [
       ['Galerie avant/après', 'Montrez vos transformations'],
       ['Prise de RDV en ligne', 'Vos clients réservent 24h/24'],
       ['Tarifs et prestations', 'Tout est clair avant la visite'],
       ['Adapté mobile', 'Parfait sur tous les écrans'],
-      ['Livré en 24 heures', 'On s\'engage sur le délai'],
+      ['Livré en 3–5 jours ouvrables', 'On s\'engage sur le délai'],
     ],
     sector: 'Beaute',
   },
   sante: {
     headline: 'Site pour thérapeute & praticien',
-    sub: 'Page professionnelle, prise de RDV, honoraires — en ligne demain. 500 CHF.',
+    sub: 'Page professionnelle, prise de RDV, honoraires — en ligne cette semaine. 500 CHF.',
     bullets: [
       ['Présentation de vos approches', 'Créez la confiance avant la consultation'],
       ['Prise de RDV en ligne', 'Agenda visible, réservations directes'],
       ['Honoraires et remboursements', 'Informations claires pour vos patients'],
       ['Adapté mobile', 'Parfait sur tous les écrans'],
-      ['Livré en 24 heures', 'On s\'engage sur le délai'],
+      ['Livré en 3–5 jours ouvrables', 'On s\'engage sur le délai'],
     ],
     sector: 'Sante',
   },
 };
 
 const sector = SECTORS[sectorParam] ?? null;
-const headline = sector?.headline ?? 'Votre site internet prêt demain';
-const subheadline = sector?.sub ?? 'Payez maintenant, on crée votre site aujourd\'hui, livraison demain. Remboursé si vous n\'aimez pas.';
+const headline = sector?.headline ?? 'Votre site internet prêt en 3–5 jours';
+const subheadline = sector?.sub ?? 'Payez maintenant, on crée votre site cette semaine. Livraison en 3–5 jours ouvrables. Remboursé si vous n\'aimez pas.';
 const bullets = sector?.bullets ?? [
   ['Page vitrine professionnelle', 'Design moderne adapté à votre activité'],
   ['Hébergement 3 mois inclus', 'Votre site en ligne, prêt à partager'],
@@ -89,7 +89,7 @@ const CHECKOUT_URL = '/api/checkout?plan=essential500&template=classic-clean&ten
 <Layout
   metadata={{
     title: `${headline} – 500 CHF – TonSiteWeb`,
-    description: 'Site internet professionnel livré en 24h pour 500 CHF. Satisfait ou remboursé. Idéal pour indépendants, artisans, commerçants en Suisse.',
+    description: 'Site internet professionnel livré en 3–5 jours pour 500 CHF. Prix fixe, sans surprise. Idéal pour indépendants, artisans, commerçants en Suisse.',
   }}
 >
   <!-- Facebook Pixel — REPLACE XXXXXXXXXXXXXXXXXX with your real Pixel ID -->
@@ -181,12 +181,12 @@ const CHECKOUT_URL = '/api/checkout?plan=essential500&template=classic-clean&ten
         <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-4">
           {headline}
         </h1>
-        <p class="text-2xl font-bold text-yellow-300 mb-3">500 CHF · Satisfait ou remboursé</p>
+        <p class="text-2xl font-bold text-yellow-300 mb-3">500 CHF · Prix fixe, livraison garantie</p>
         <p class="text-blue-100 text-lg mb-6">{subheadline}</p>
 
         <!-- Countdown -->
         <div class="inline-flex items-center gap-2 bg-blue-800/60 rounded-full px-4 py-2 mb-6 text-sm">
-          <span class="text-blue-200">Livraison demain garantie si commande avant</span>
+          <span class="text-blue-200">Livraison en 3–5 jours ouvrables · Commandez maintenant</span>
           <span id="countdown" class="font-mono font-bold text-yellow-200">23:00:00</span>
         </div>
 
@@ -255,7 +255,7 @@ const CHECKOUT_URL = '/api/checkout?plan=essential500&template=classic-clean&ten
           {[
             ['1', 'Vous payez en ligne', '30 secondes, paiement sécurisé par carte'],
             ['2', 'On vous contacte', 'Notre équipe vous appelle pour quelques questions'],
-            ['3', 'Votre site est en ligne', 'Livré demain. Si vous n\'aimez pas, remboursé.'],
+            ['3', 'Votre site est en ligne', 'Livré en 3–5 jours ouvrables. On s\'occupe de tout, de A à Z.'],
           ].map(([num, title, desc]) => (
             <div class="text-center">
               <div class="w-14 h-14 rounded-full bg-blue-600 text-white text-2xl font-extrabold flex items-center justify-center mx-auto mb-4">{num}</div>
@@ -276,7 +276,7 @@ const CHECKOUT_URL = '/api/checkout?plan=essential500&template=classic-clean&ten
       <div class="border-2 border-blue-600 rounded-2xl p-8">
         <p class="text-4xl font-extrabold text-blue-600 mb-2">500 CHF</p>
         <p class="text-gray-500 text-sm mb-1">Paiement unique · Hébergement 3 mois inclus</p>
-        <p class="text-gray-500 text-sm mb-8">Satisfait ou remboursé — aucune question posée</p>
+        <p class="text-gray-500 text-sm mb-8">Prix fixe · Paiement sécurisé · On s'occupe de tout</p>
         <a
           href={CHECKOUT_URL}
           class="inline-block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xl px-8 py-5 rounded-2xl transition-colors shadow-md"
@@ -292,7 +292,7 @@ const CHECKOUT_URL = '/api/checkout?plan=essential500&template=classic-clean&ten
 
       <!-- Testimonial -->
       <blockquote class="mt-8 bg-blue-50 border-l-4 border-blue-400 p-4 text-left rounded-r-xl">
-        <p class="text-gray-700 text-sm italic">"Notre salon a reçu 3 nouveaux clients la première semaine grâce à notre site. Le processus était ultra simple, on a juste payé et tout était prêt le lendemain."</p>
+        <p class="text-gray-700 text-sm italic">"Notre salon a reçu 4 nouveaux clients la première semaine grâce à notre site. Le formulaire était simple — on a envoyé nos infos et le site était en ligne en 4 jours."</p>
         <footer class="mt-2 text-xs text-gray-500 font-semibold">— Isabelle M., Salon de beauté, Lausanne</footer>
       </blockquote>
     </section>
@@ -381,7 +381,7 @@ const CHECKOUT_URL = '/api/checkout?plan=essential500&template=classic-clean&ten
       <div class="max-w-xl mx-auto flex flex-wrap justify-center gap-8 text-sm text-gray-600 font-medium">
         <div class="flex items-center gap-2"><span class="text-xl">🇨🇭</span><span>Service 100% suisse</span></div>
         <div class="flex items-center gap-2"><span class="text-xl">🔒</span><span>Paiement sécurisé Stripe</span></div>
-        <div class="flex items-center gap-2"><span class="text-xl">↩</span><span>Satisfait ou remboursé</span></div>
+        <div class="flex items-center gap-2"><span class="text-xl">✓</span><span>On s'occupe de tout</span></div>
       </div>
     </section>
 
@@ -390,11 +390,11 @@ const CHECKOUT_URL = '/api/checkout?plan=essential500&template=classic-clean&ten
       <h2 class="text-2xl font-bold text-center mb-10">Questions fréquentes</h2>
       <div class="space-y-6">
         {[
-          ['Que se passe-t-il après le paiement ?', 'Notre équipe vous contacte dans les 2 heures pour quelques questions sur votre activité. Le lendemain, votre site est en ligne.'],
-          ["Qu'est-ce qui est inclus pour 500 CHF ?", 'Une page vitrine professionnelle, hébergement 3 mois, formulaire de contact, design mobile responsive, et livraison en 24h.'],
+          ['Que se passe-t-il après le paiement ?', 'Notre équipe vous contacte dans les 2 heures pour quelques questions sur votre activité. Votre site est en ligne en 3–5 jours ouvrables.'],
+          ["Qu'est-ce qui est inclus pour 500 CHF ?", 'Une page vitrine professionnelle, hébergement 3 mois, formulaire de contact, design mobile responsive, et livraison en 3–5 jours.'],
           ['Et si je ne suis pas satisfait ?', 'Remboursement complet garanti, aucune question posée. C\'est notre promesse.'],
           ['Dois-je créer un compte ?', 'Non. Le paiement se fait directement via Stripe. Aucun compte requis, aucune inscription.'],
-          ['Combien de temps dure le processus ?', 'Vous payez en 30 secondes. On vous contacte dans les 2 heures. Votre site est en ligne le lendemain.'],
+          ['Combien de temps dure le processus ?', 'Vous payez en 30 secondes. On vous contacte dans les 2 heures. Votre site est en ligne en 3–5 jours ouvrables après réception de vos informations.'],
         ].map(([q, a]) => (
           <div class="border border-gray-200 rounded-xl p-6">
             <p class="font-semibold text-gray-900 mb-2">{q}</p>
@@ -406,8 +406,8 @@ const CHECKOUT_URL = '/api/checkout?plan=essential500&template=classic-clean&ten
 
     <!-- FINAL CTA -->
     <section class="bg-blue-600 text-white px-4 py-16 text-center">
-      <h2 class="text-3xl font-bold mb-4">Prêt ? Votre site demain.</h2>
-      <p class="text-blue-100 mb-4">500 CHF · Livré en 24h · Satisfait ou remboursé</p>
+      <h2 class="text-3xl font-bold mb-4">Prêt ? Votre site en 3–5 jours.</h2>
+      <p class="text-blue-100 mb-4">500 CHF · Livré en 3–5 jours ouvrables · Prix fixe, sans surprise</p>
       <div class="inline-flex items-center gap-2 bg-blue-500/50 rounded-full px-4 py-1 mb-8 text-sm">
         <span class="text-blue-200">Livraison garantie si commande avant</span>
         <span id="countdown2" class="font-mono font-bold text-yellow-200">…</span>

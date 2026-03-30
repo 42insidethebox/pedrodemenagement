@@ -1,0 +1,348 @@
+---
+export const prerender = false;
+
+import Shell from '~/tenants/paintballmaceio/Shell.astro';
+import { pbmContent } from '~/tenants/paintballmaceio/content';
+import { pbmPackages } from '~/tenants/paintballmaceio/services';
+import { pbmHeroImage } from '~/tenants/paintballmaceio/gallery';
+import { pbmConfig } from '~/tenants/paintballmaceio/config';
+
+const metadata = {
+  title: 'Paintball Maceió — Adrenalina & diversão em Maceió, AL',
+  description: 'A maior arena de paintball de Maceió. Pacotes para grupos, aniversários, festas e eventos corporativos.',
+  ignoreTitleTemplate: true,
+};
+
+const highlightPkg = pbmPackages.find((p) => p.highlight);
+---
+
+<Shell page="home" metadata={metadata}>
+
+  <!-- HERO -->
+  <section class="pbm-hero" style={`background-image:url(${pbmHeroImage})`}>
+    <div class="pbm-hero-overlay"></div>
+    <div class="pbm-hero-content">
+      <p class="pbm-eyebrow">{pbmContent.hero.eyebrow}</p>
+      <h1 class="pbm-hero-title">
+        {pbmContent.hero.title.split('\n').map((line) => <span>{line}</span>)}
+      </h1>
+      <p class="pbm-hero-sub">{pbmContent.hero.subtitle}</p>
+      <div class="pbm-actions">
+        <a class="pbm-btn pbm-btn-primary pbm-btn-lg" href={pbmConfig.bookingUrl} target="_blank" rel="noreferrer">
+          {pbmContent.hero.cta}
+        </a>
+        <a class="pbm-btn pbm-btn-ghost pbm-btn-lg" href={pbmConfig.whatsappUrl} target="_blank" rel="noreferrer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M20.52 3.48A11.93 11.93 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.11.55 4.17 1.6 5.99L0 24l6.18-1.62A11.93 11.93 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.21-3.48-8.52zm-8.52 18.48a9.9 9.9 0 0 1-5.04-1.37l-.36-.21-3.67.96.98-3.58-.23-.37A9.9 9.9 0 0 1 2.1 12c0-5.46 4.44-9.9 9.9-9.9a9.9 9.9 0 0 1 0 19.8zm5.44-7.4c-.3-.15-1.77-.87-2.04-.97s-.47-.15-.67.15-.77.97-.94 1.17-.35.22-.64.07a8.12 8.12 0 0 1-2.39-1.47 8.98 8.98 0 0 1-1.65-2.05c-.17-.3-.02-.46.13-.6.13-.13.3-.35.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52s-.67-1.62-.92-2.22c-.24-.58-.48-.5-.67-.51h-.57c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.48 1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.09 4.49.71.31 1.27.49 1.7.63.72.23 1.37.2 1.89.12.58-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/>
+          </svg>
+          {pbmContent.hero.ctaWhatsapp}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section class="pbm-section pbm-why">
+    <div class="pbm-container">
+      <div class="pbm-why-grid">
+        {pbmContent.why.map((item) => (
+          <div class="pbm-why-card">
+            <span class="pbm-why-icon">{item.icon}</span>
+            <h3 class="pbm-why-title">{item.title}</h3>
+            <p class="pbm-why-desc">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="pbm-section pbm-about">
+    <div class="pbm-container pbm-about-inner">
+      <div class="pbm-about-text">
+        <p class="pbm-kicker">{pbmContent.about.kicker}</p>
+        <h2 class="pbm-section-title">{pbmContent.about.title}</h2>
+        {pbmContent.about.body.map((para) => <p class="pbm-about-para">{para}</p>)}
+        <a class="pbm-btn pbm-btn-primary pbm-btn-lg" href="/paintballmaceio/pacotes">Ver pacotes →</a>
+      </div>
+      <div class="pbm-about-visual">
+        <div class="pbm-about-badge">
+          <span class="pbm-badge-number">10+</span>
+          <span class="pbm-badge-label">anos de ação</span>
+        </div>
+        <div class="pbm-about-stat"><span class="pbm-stat-val">5 000+</span><span class="pbm-stat-lbl">eventos realizados</span></div>
+        <div class="pbm-about-stat"><span class="pbm-stat-val">98%</span><span class="pbm-stat-lbl">satisfação dos clientes</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PACKAGES TEASER -->
+  {highlightPkg && (
+    <section class="pbm-section pbm-pkg-teaser">
+      <div class="pbm-container">
+        <p class="pbm-kicker text-center">Nosso pacote mais popular</p>
+        <h2 class="pbm-section-title text-center">{highlightPkg.name} — {highlightPkg.tagline}</h2>
+        <div class="pbm-pkg-highlight-card">
+          <div class="pbm-pkg-hl-info">
+            <p class="pbm-pkg-hl-price">R$ {highlightPkg.price} <span>/ {highlightPkg.priceUnit}</span></p>
+            <p class="pbm-pkg-hl-meta">{highlightPkg.minPlayers}–{highlightPkg.maxPlayers} pessoas · {highlightPkg.shots} bolinhas · {highlightPkg.duration}</p>
+            <ul class="pbm-pkg-hl-list">
+              {highlightPkg.includes.map((item) => <li>✓ {item}</li>)}
+            </ul>
+          </div>
+          <div class="pbm-pkg-hl-actions">
+            <a class="pbm-btn pbm-btn-primary pbm-btn-lg" href={pbmConfig.whatsappUrl} target="_blank" rel="noreferrer">Reservar este pacote</a>
+            <a class="pbm-btn pbm-btn-ghost" href="/paintballmaceio/pacotes">Ver todos os pacotes →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- TESTIMONIALS -->
+  <section class="pbm-section pbm-reviews">
+    <div class="pbm-container">
+      <p class="pbm-kicker text-center">O que dizem nossos clientes</p>
+      <h2 class="pbm-section-title text-center">Avaliações reais</h2>
+      <div class="pbm-reviews-grid">
+        {pbmContent.testimonials.map((rev) => (
+          <div class="pbm-review-card">
+            <div class="pbm-review-stars">{'★'.repeat(rev.stars)}</div>
+            <p class="pbm-review-quote">"{rev.quote}"</p>
+            <div class="pbm-review-author">
+              <span class="pbm-review-name">{rev.author}</span>
+              <span class="pbm-review-when">{rev.when}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATION -->
+  <section class="pbm-section pbm-location">
+    <div class="pbm-container pbm-location-inner">
+      <div class="pbm-location-text">
+        <p class="pbm-kicker">{pbmContent.location.kicker}</p>
+        <h2 class="pbm-section-title">{pbmContent.location.heading}</h2>
+        <p class="pbm-location-sub">{pbmContent.location.subheading}</p>
+        <p class="pbm-location-addr">{pbmConfig.address}</p>
+        <div class="pbm-location-actions">
+          <a class="pbm-btn pbm-btn-primary" href={pbmConfig.mapsUrl} target="_blank" rel="noreferrer">📍 Abrir no Maps</a>
+          <a class="pbm-btn pbm-btn-ghost" href={pbmConfig.whatsappUrl} target="_blank" rel="noreferrer">Falar no WhatsApp</a>
+        </div>
+      </div>
+      <div class="pbm-map-embed">
+        <iframe
+          src={pbmConfig.mapsEmbed}
+          width="100%"
+          height="300"
+          style="border:0;border-radius:12px;"
+          allowfullscreen
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Localização Paintball Maceió"
+        ></iframe>
+      </div>
+    </div>
+  </section>
+
+</Shell>
+
+<style>
+/* ── Hero ── */
+.pbm-hero {
+  position: relative;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+}
+.pbm-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(9,12,7,.7) 0%, rgba(9,12,7,.85) 100%);
+}
+.pbm-hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: var(--pbm-max);
+  margin: 0 auto;
+  padding: 6rem 1.5rem 4rem;
+}
+.pbm-eyebrow {
+  color: var(--pbm-accent);
+  font-family: var(--pbm-heading);
+  font-size: .85rem;
+  font-weight: 700;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  margin-bottom: .75rem;
+}
+.pbm-hero-title {
+  font-family: var(--pbm-heading);
+  font-size: clamp(2.8rem, 8vw, 6rem);
+  font-weight: 900;
+  line-height: 1.0;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: -.02em;
+  margin-bottom: 1.25rem;
+}
+.pbm-hero-title span { display: block; }
+.pbm-hero-title span:last-child { color: var(--pbm-accent); }
+.pbm-hero-sub {
+  max-width: 560px;
+  color: rgba(255,255,255,.75);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+.pbm-actions { display: flex; gap: .75rem; flex-wrap: wrap; }
+
+/* ── Sections ── */
+.pbm-section { padding: 4rem 1.5rem; }
+.pbm-container { max-width: var(--pbm-max); margin: 0 auto; }
+.pbm-kicker {
+  color: var(--pbm-accent);
+  font-family: var(--pbm-heading);
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  margin-bottom: .5rem;
+}
+.pbm-section-title {
+  font-family: var(--pbm-heading);
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 800;
+  color: #fff;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  line-height: 1.1;
+}
+.text-center { text-align: center; }
+
+/* ── Why ── */
+.pbm-why { background: var(--pbm-surface); }
+.pbm-why-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+.pbm-why-card {
+  background: var(--pbm-card);
+  border: 1px solid var(--pbm-line);
+  border-radius: 12px;
+  padding: 1.75rem 1.5rem;
+}
+.pbm-why-icon { font-size: 2rem; display: block; margin-bottom: .75rem; }
+.pbm-why-title {
+  font-family: var(--pbm-heading);
+  font-weight: 700;
+  font-size: 1rem;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-bottom: .5rem;
+}
+.pbm-why-desc { color: var(--pbm-muted); font-size: .9rem; line-height: 1.55; }
+
+/* ── About ── */
+.pbm-about { background: var(--pbm-bg); }
+.pbm-about-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+@media (max-width: 768px) { .pbm-about-inner { grid-template-columns: 1fr; gap: 2rem; } }
+.pbm-about-para { color: var(--pbm-muted); line-height: 1.7; margin-bottom: 1rem; }
+.pbm-about-text .pbm-btn { margin-top: 1.5rem; }
+.pbm-about-visual {
+  background: var(--pbm-surface);
+  border: 1px solid var(--pbm-line);
+  border-radius: 16px;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+}
+.pbm-about-badge {
+  background: var(--pbm-accent);
+  color: #fff;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.pbm-badge-number { font-family: var(--pbm-heading); font-size: 2.5rem; font-weight: 900; line-height: 1; }
+.pbm-badge-label { font-size: .75rem; font-weight: 600; letter-spacing: .05em; }
+.pbm-about-stat { text-align: center; }
+.pbm-stat-val { display: block; font-family: var(--pbm-heading); font-size: 1.8rem; font-weight: 800; color: #fff; }
+.pbm-stat-lbl { font-size: .8rem; color: var(--pbm-muted); letter-spacing: .05em; }
+
+/* ── Package teaser ── */
+.pbm-pkg-teaser { background: var(--pbm-surface); }
+.pbm-pkg-highlight-card {
+  margin-top: 1.5rem;
+  background: var(--pbm-card);
+  border: 2px solid var(--pbm-accent);
+  border-radius: 16px;
+  padding: 2rem 2.5rem;
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.pbm-pkg-hl-price {
+  font-family: var(--pbm-heading);
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--pbm-accent);
+}
+.pbm-pkg-hl-price span { font-size: 1rem; color: var(--pbm-muted); }
+.pbm-pkg-hl-meta { color: var(--pbm-muted); font-size: .9rem; margin-bottom: 1rem; }
+.pbm-pkg-hl-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .4rem; }
+.pbm-pkg-hl-list li { color: rgba(255,255,255,.8); font-size: .9rem; }
+.pbm-pkg-hl-actions { display: flex; flex-direction: column; gap: .75rem; flex-shrink: 0; }
+
+/* ── Reviews ── */
+.pbm-reviews { background: var(--pbm-bg); }
+.pbm-reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+.pbm-review-card {
+  background: var(--pbm-surface);
+  border: 1px solid var(--pbm-line);
+  border-radius: 12px;
+  padding: 1.75rem;
+}
+.pbm-review-stars { color: #F59E0B; font-size: 1.1rem; margin-bottom: .75rem; }
+.pbm-review-quote { color: rgba(255,255,255,.85); font-size: .95rem; line-height: 1.6; margin-bottom: 1rem; font-style: italic; }
+.pbm-review-author { display: flex; justify-content: space-between; align-items: center; }
+.pbm-review-name { font-weight: 700; color: #fff; font-size: .9rem; }
+.pbm-review-when { font-size: .8rem; color: var(--pbm-muted); }
+
+/* ── Location ── */
+.pbm-location { background: var(--pbm-surface); }
+.pbm-location-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+@media (max-width: 768px) { .pbm-location-inner { grid-template-columns: 1fr; } }
+.pbm-location-sub { color: var(--pbm-muted); line-height: 1.6; margin-bottom: .75rem; }
+.pbm-location-addr { color: var(--pbm-accent); font-weight: 600; font-size: .95rem; margin-bottom: 1.5rem; }
+.pbm-location-actions { display: flex; gap: .75rem; flex-wrap: wrap; }
+.pbm-map-embed { border-radius: 12px; overflow: hidden; }
+</style>

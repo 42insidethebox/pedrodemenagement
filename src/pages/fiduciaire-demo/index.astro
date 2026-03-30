@@ -1,0 +1,286 @@
+---
+export const prerender = false;
+---
+
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Treuhand &amp; Partners — Fiduciaire & Comptabilité, Lausanne</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f1f5f9;
+      --surface: #ffffff;
+      --navy: #1e3a5f;
+      --indigo: #3730a3;
+      --slate: #334155;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --accent: #4f46e5;
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.6; }
+    a { color: var(--accent); text-decoration: none; }
+    /* Nav */
+    nav { background: var(--navy); padding: 0 60px; display: flex; justify-content: space-between; align-items: center; height: 64px; }
+    .nav-brand { color: #fff; font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
+    .nav-brand em { font-style: normal; color: rgba(255,255,255,0.5); font-weight: 400; margin-left: 6px; font-size: 14px; }
+    .nav-links { display: flex; gap: 32px; font-size: 13px; }
+    .nav-links a { color: rgba(255,255,255,0.65); transition: color 0.2s; letter-spacing: 0.02em; }
+    .nav-links a:hover { color: #fff; }
+    .nav-cta { border: 1px solid rgba(255,255,255,0.3); color: #fff; font-weight: 500; font-size: 13px; padding: 8px 20px; border-radius: 4px; transition: background 0.2s; }
+    .nav-cta:hover { background: rgba(255,255,255,0.1); }
+    /* Hero */
+    .hero { background: var(--navy); padding: 80px 60px 0; }
+    .hero-inner { max-width: 1060px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr; gap: 80px; align-items: end; }
+    .hero-tag { font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 18px; }
+    .hero h1 { font-size: clamp(32px, 4vw, 52px); font-weight: 700; line-height: 1.1; color: #fff; margin-bottom: 20px; letter-spacing: -0.02em; }
+    .hero p { color: rgba(255,255,255,0.65); font-size: 16px; margin-bottom: 36px; max-width: 420px; line-height: 1.7; }
+    .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 0; }
+    .btn-primary { background: #fff; color: var(--navy); font-weight: 700; font-size: 14px; padding: 13px 24px; border-radius: 4px; }
+    .btn-outline { border: 1px solid rgba(255,255,255,0.3); color: #fff; font-size: 14px; padding: 13px 24px; border-radius: 4px; }
+    .hero-stats { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-bottom: none; border-radius: 8px 8px 0 0; padding: 32px; display: grid; gap: 24px; }
+    .stat { display: flex; flex-direction: column; gap: 4px; }
+    .stat-num { font-size: 32px; font-weight: 700; color: #fff; letter-spacing: -0.02em; line-height: 1; }
+    .stat-label { font-size: 13px; color: rgba(255,255,255,0.5); }
+    /* Trust */
+    .trust-bar { background: var(--surface); border-bottom: 1px solid var(--border); }
+    .trust-inner { max-width: 1060px; margin: 0 auto; padding: 18px 60px; display: flex; gap: 48px; align-items: center; flex-wrap: wrap; }
+    .trust-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); font-weight: 500; }
+    /* Services */
+    .section { padding: 80px 60px; max-width: 1060px; margin: 0 auto; }
+    .section-tag { font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .section h2 { font-size: clamp(24px, 3vw, 36px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 10px; }
+    .section-sub { color: var(--muted); margin-bottom: 44px; max-width: 540px; }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2px; background: var(--border); border: 1px solid var(--border); }
+    .service-card { background: var(--surface); padding: 28px 32px; transition: background 0.15s; }
+    .service-card:hover { background: #f8faff; }
+    .service-num { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 12px; }
+    .service-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+    .service-card p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+    /* Canton */
+    .canton-bg { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .canton { padding: 72px 60px; max-width: 1060px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+    .canton h2 { font-size: clamp(22px, 3vw, 34px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 16px; }
+    .canton p { color: var(--muted); margin-bottom: 24px; line-height: 1.7; }
+    .canton-list { display: grid; gap: 10px; }
+    .canton-item { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+    .canton-item::before { content: '✓'; color: var(--accent); font-weight: 700; }
+    .canton-visual { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 32px; }
+    .canton-visual h4 { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+    .deadline-list { display: grid; gap: 14px; }
+    .deadline-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: var(--surface); border-radius: 6px; border: 1px solid var(--border); }
+    .deadline-label { font-size: 13px; font-weight: 500; }
+    .deadline-date { font-size: 12px; font-weight: 600; color: var(--accent); background: #eef2ff; padding: 4px 10px; border-radius: 4px; }
+    /* Team */
+    .team { padding: 80px 60px; max-width: 1060px; margin: 0 auto; }
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; margin-top: 44px; }
+    .team-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 28px; }
+    .team-avatar { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, var(--navy), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 16px; }
+    .team-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 3px; }
+    .team-card .team-role { font-size: 12px; color: var(--accent); font-weight: 600; letter-spacing: 0.04em; margin-bottom: 8px; text-transform: uppercase; }
+    .team-card p { font-size: 13px; color: var(--muted); }
+    /* CTA */
+    .cta-section { background: linear-gradient(135deg, var(--navy), var(--indigo)); padding: 80px 60px; text-align: center; }
+    .cta-section h2 { font-size: clamp(24px, 3.5vw, 40px); font-weight: 700; color: #fff; letter-spacing: -0.02em; margin-bottom: 14px; }
+    .cta-section p { color: rgba(255,255,255,0.7); margin-bottom: 32px; font-size: 16px; }
+    /* Footer */
+    footer { background: var(--navy); padding: 48px 60px; }
+    .footer-inner { max-width: 1060px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 32px; }
+    .footer-brand { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .footer-title { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 12px; }
+    .footer-list { list-style: none; display: grid; gap: 7px; font-size: 13px; color: rgba(255,255,255,0.6); }
+    .demo-badge { position: fixed; bottom: 20px; right: 20px; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; padding: 10px 16px; border-radius: 6px; box-shadow: 0 4px 20px rgba(0,0,0,0.25); z-index: 100; }
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-stats { display: none; }
+      .canton { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 48px 20px 0; }
+      .trust-inner { padding: 16px 20px; gap: 20px; }
+      .section, .team, .canton { padding: 48px 20px; }
+      .canton-bg .canton { padding: 48px 20px; }
+      .cta-section { padding: 48px 20px; }
+      footer { padding: 32px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Treuhand &amp; Partners <em>SA</em></div>
+  <div class="nav-links">
+    <a href="#">Services</a>
+    <a href="#">Notre approche</a>
+    <a href="#">L'équipe</a>
+    <a href="#">Contact</a>
+  </div>
+  <a href="#contact" class="nav-cta">Demander un devis</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div style="padding-bottom:80px">
+      <p class="hero-tag">Fiduciaire · Comptabilité · Fiscalité — Vaud &amp; Genève</p>
+      <h1>Votre fiduciaire suisse, disponible toute l'année</h1>
+      <p>Comptabilité, déclarations fiscales, constitution de sociétés, paie. Nous gérons les chiffres — vous pilotez votre entreprise.</p>
+      <div class="hero-ctas">
+        <a href="#contact" class="btn-primary">Demander un devis gratuit →</a>
+        <a href="#services" class="btn-outline">Nos services</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">350+</span><span class="stat-label">clients PME accompagnés</span></div>
+      <div class="stat"><span class="stat-num">18</span><span class="stat-label">ans d'expérience</span></div>
+      <div class="stat"><span class="stat-num">100%</span><span class="stat-label">dossiers livrés dans les délais</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="trust-bar">
+  <div class="trust-inner">
+    <div class="trust-item">✅ Membre FIDAG</div>
+    <div class="trust-item">🛡️ Agréé REE Vaud</div>
+    <div class="trust-item">🇨🇭 Facturation CHF/TVA suisse</div>
+    <div class="trust-item">⭐ 4.8/5 — 210 avis Google</div>
+    <div class="trust-item">🔒 Confidentialité absolue</div>
+  </div>
+</div>
+
+<section class="section" id="services">
+  <p class="section-tag">Nos services</p>
+  <h2>Tout ce dont votre PME a besoin</h2>
+  <p class="section-sub">Du mandat ponctuel à l'externalisation complète de votre département financier.</p>
+  <div class="services-grid">
+    <div class="service-card">
+      <p class="service-num">01</p>
+      <h3>Comptabilité</h3>
+      <p>Tenue des livres, bouclement annuel, bilan, compte de résultat. Normes CO et Swiss GAAP.</p>
+    </div>
+    <div class="service-card">
+      <p class="service-num">02</p>
+      <h3>Fiscalité</h3>
+      <p>Déclaration d'impôts personnes physiques et morales, optimisation fiscale, représentation fiscale.</p>
+    </div>
+    <div class="service-card">
+      <p class="service-num">03</p>
+      <h3>Salaires & RH</h3>
+      <p>Gestion de la paie, certificats de salaire, déclarations AVS/LPP/SUVA, permis de travail.</p>
+    </div>
+    <div class="service-card">
+      <p class="service-num">04</p>
+      <h3>Création d'entreprise</h3>
+      <p>Constitution Sàrl / SA, dépôt au RC, plans d'affaires, business angels, levée de fonds.</p>
+    </div>
+    <div class="service-card">
+      <p class="service-num">05</p>
+      <h3>TVA & Révision</h3>
+      <p>Assujettissement TVA, décomptes trimestriels, audit interne, révision restreinte CO.</p>
+    </div>
+    <div class="service-card">
+      <p class="service-num">06</p>
+      <h3>Conseil & Stratégie</h3>
+      <p>Budget, tableaux de bord, restructuration, succession d'entreprise, due diligence.</p>
+    </div>
+  </div>
+</section>
+
+<div class="canton-bg">
+  <div class="canton">
+    <div>
+      <p class="section-tag">Connaissance locale</p>
+      <h2>Spécialistes du droit fiscal vaudois et genevois</h2>
+      <p>Les règles fiscales varient fortement selon les cantons. Notre équipe maîtrise les particularités de Vaud, Genève, Fribourg et du Valais.</p>
+      <div class="canton-list">
+        <div class="canton-item">Réclamations et recours auprès des autorités cantonales</div>
+        <div class="canton-item">Optimisation inter-cantonale pour les groupes</div>
+        <div class="canton-item">Forfait fiscal pour résidents étrangers</div>
+        <div class="canton-item">Domiciliation et siège social dans les deux cantons</div>
+      </div>
+    </div>
+    <div class="canton-visual">
+      <h4>Prochaines échéances fiscales</h4>
+      <div class="deadline-list">
+        <div class="deadline-item"><span class="deadline-label">Déclaration IS — Vaud</span><span class="deadline-date">31 mars 2026</span></div>
+        <div class="deadline-item"><span class="deadline-label">TVA T4 2025</span><span class="deadline-date">28 fév. 2026</span></div>
+        <div class="deadline-item"><span class="deadline-label">Bouclement annuel</span><span class="deadline-date">31 mars 2026</span></div>
+        <div class="deadline-item"><span class="deadline-label">Certificats de salaire</span><span class="deadline-date">31 janv. 2026</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="team">
+  <p class="section-tag">L'équipe</p>
+  <h2>Des experts à votre service</h2>
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-avatar">👨‍💼</div>
+      <h3>Jean-Marc Treuhand</h3>
+      <p class="team-role">Expert-comptable agréé</p>
+      <p>18 ans d'expérience, ancien auditeur Big Four. Spécialiste PME industrielles et holdings.</p>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">👩‍💼</div>
+      <h3>Andrea Müller</h3>
+      <p class="team-role">Fiscaliste senior</p>
+      <p>Droit fiscal CH et international, optimisation transfrontalière, représentation fiscale.</p>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">👨‍💼</div>
+      <h3>Luca Ferretti</h3>
+      <p class="team-role">Responsable RH & Paie</p>
+      <p>Gestion complète des salaires, AVS/LPP, permis de travail, déclarations sociales.</p>
+    </div>
+  </div>
+</section>
+
+<div class="cta-section" id="contact">
+  <h2>Un devis gratuit sous 24h</h2>
+  <p>Décrivez votre situation, nous vous répondons avec une proposition claire et sans engagement.</p>
+  <a href="mailto:contact@treuhand-partners.ch" class="btn-primary" style="font-size:15px;padding:15px 30px;">✉️ Envoyer votre demande →</a>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <p class="footer-brand">Treuhand &amp; Partners SA</p>
+      <p style="color:rgba(255,255,255,0.45);font-size:13px;">Fiduciaire · Fiscalité · Paie<br/>Lausanne &amp; Genève</p>
+    </div>
+    <div>
+      <p class="footer-title">Services</p>
+      <ul class="footer-list">
+        <li>Comptabilité</li>
+        <li>Fiscalité</li>
+        <li>Salaires</li>
+        <li>Création entreprise</li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-title">Contact</p>
+      <ul class="footer-list">
+        <li>+41 21 000 00 00</li>
+        <li>contact@treuhand-partners.ch</li>
+        <li>Rue de Bourg 22, Lausanne</li>
+        <li>Rue du Rhône 14, Genève</li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-title">Ce style vous convient ?</p>
+      <a href="/api/payment/redirect?plan=essential500&template=fiduciaire" style="display:inline-block;margin-top:8px;background:#fff;color:var(--navy);font-size:13px;font-weight:700;padding:10px 18px;border-radius:4px;">Commander ce style →</a>
+    </div>
+  </div>
+</footer>
+
+<a href="/api/payment/redirect?plan=essential500&template=fiduciaire" class="demo-badge">Ce style vous plaît ? Commander →</a>
+
+</body>
+</html>

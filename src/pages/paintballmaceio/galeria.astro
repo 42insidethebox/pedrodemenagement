@@ -1,0 +1,121 @@
+---
+export const prerender = false;
+
+import Shell from '~/tenants/paintballmaceio/Shell.astro';
+import { pbmGallery } from '~/tenants/paintballmaceio/gallery';
+import { pbmConfig } from '~/tenants/paintballmaceio/config';
+
+const metadata = {
+  title: 'Galeria — Paintball Maceió',
+  description: 'Veja fotos das partidas, campos temáticos e eventos no Paintball Maceió.',
+  ignoreTitleTemplate: true,
+};
+---
+
+<Shell page="galeria" metadata={metadata}>
+
+  <section class="pbm-section pbm-gal-hero">
+    <div class="pbm-container">
+      <p class="pbm-kicker text-center">Nossa arena</p>
+      <h1 class="pbm-section-title text-center">Galeria de Fotos</h1>
+      <p class="pbm-gal-sub">Campos temáticos, equipamentos e muita adrenalina em cada partida.</p>
+    </div>
+  </section>
+
+  <section class="pbm-section pbm-gallery">
+    <div class="pbm-container">
+      <div class="pbm-gallery-grid">
+        {pbmGallery.map((item) => (
+          <figure class="pbm-gallery-item">
+            <img
+              src={item.src}
+              alt={item.alt}
+              loading="lazy"
+              class="pbm-gallery-img"
+            />
+            {item.caption && <figcaption class="pbm-gallery-caption">{item.caption}</figcaption>}
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="pbm-section pbm-gal-cta">
+    <div class="pbm-container" style="text-align:center">
+      <p class="pbm-kicker">Vem fazer parte disso</p>
+      <h2 class="pbm-section-title" style="margin-bottom:.75rem">Reserve agora e viva a adrenalina.</h2>
+      <a class="pbm-btn pbm-btn-primary pbm-btn-lg" href={pbmConfig.whatsappUrl} target="_blank" rel="noreferrer">
+        Falar no WhatsApp →
+      </a>
+    </div>
+  </section>
+
+</Shell>
+
+<style>
+.pbm-gal-hero { background: var(--pbm-surface); padding-bottom: 1rem; }
+.pbm-gal-sub {
+  text-align: center;
+  color: var(--pbm-muted);
+  max-width: 480px;
+  margin: 0 auto;
+  font-size: .95rem;
+}
+.pbm-gallery { background: var(--pbm-bg); }
+.pbm-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+.pbm-gallery-item {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 0;
+  aspect-ratio: 4/3;
+  background: var(--pbm-surface);
+}
+.pbm-gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .4s ease;
+}
+.pbm-gallery-item:hover .pbm-gallery-img { transform: scale(1.04); }
+.pbm-gallery-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,.75));
+  color: rgba(255,255,255,.9);
+  font-size: .8rem;
+  font-weight: 600;
+  padding: 1.5rem .75rem .6rem;
+  text-align: center;
+  letter-spacing: .04em;
+}
+.pbm-gal-cta { background: var(--pbm-surface); }
+.pbm-section { padding: 4rem 1.5rem; }
+.pbm-container { max-width: var(--pbm-max); margin: 0 auto; }
+.pbm-kicker {
+  color: var(--pbm-accent);
+  font-family: var(--pbm-heading);
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  margin-bottom: .5rem;
+}
+.pbm-section-title {
+  font-family: var(--pbm-heading);
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 800;
+  color: #fff;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  line-height: 1.1;
+}
+.text-center { text-align: center; }
+</style>

@@ -1,0 +1,297 @@
+---
+export const prerender = false;
+---
+
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dubois Rénovations — Plombier & Électricien, Vaud</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --navy: #0f2744;
+      --blue: #1d4ed8;
+      --sky: #0ea5e9;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --urgent: #dc2626;
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.6; }
+    a { color: var(--blue); text-decoration: none; }
+    /* Urgency bar */
+    .urgent-bar { background: var(--urgent); color: #fff; text-align: center; padding: 10px 20px; font-size: 14px; font-weight: 600; letter-spacing: 0.02em; }
+    .urgent-bar a { color: #fff; text-decoration: underline; }
+    /* Nav */
+    nav { background: var(--navy); padding: 0 40px; display: flex; justify-content: space-between; align-items: center; height: 64px; }
+    .nav-brand { color: #fff; font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
+    .nav-brand span { color: var(--sky); }
+    .nav-links { display: flex; gap: 28px; font-size: 13px; }
+    .nav-links a { color: rgba(255,255,255,0.75); transition: color 0.2s; }
+    .nav-links a:hover { color: #fff; }
+    .nav-cta { background: var(--sky); color: var(--navy); font-weight: 700; font-size: 13px; padding: 10px 20px; border-radius: 6px; }
+    /* Hero */
+    .hero { background: var(--navy); padding: 80px 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; max-width: 1100px; margin: 0 auto; }
+    .hero-tag { font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+    .hero h1 { font-size: clamp(32px, 4vw, 52px); font-weight: 700; line-height: 1.1; color: #fff; margin-bottom: 20px; }
+    .hero h1 em { font-style: normal; color: var(--sky); }
+    .hero p { color: rgba(255,255,255,0.7); font-size: 16px; margin-bottom: 32px; max-width: 440px; }
+    .hero-ctas { display: flex; flex-direction: column; gap: 12px; }
+    .btn-urgent { background: var(--urgent); color: #fff; font-weight: 700; font-size: 16px; padding: 16px 28px; border-radius: 8px; display: flex; align-items: center; gap: 10px; }
+    .btn-secondary { border: 1px solid rgba(255,255,255,0.3); color: #fff; font-size: 14px; padding: 13px 28px; border-radius: 8px; }
+    .hero-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 28px; }
+    .hero-card h3 { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 16px; }
+    .hero-stat { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .hero-stat:last-child { border-bottom: none; }
+    .hero-stat-icon { font-size: 20px; }
+    .hero-stat-label { font-size: 13px; color: rgba(255,255,255,0.6); }
+    .hero-stat-val { font-size: 15px; font-weight: 600; color: #fff; }
+    /* Trust bar */
+    .trust-bar { background: #fff; border-bottom: 1px solid var(--border); padding: 20px 40px; display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; }
+    .trust-item { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 500; color: var(--text); }
+    .trust-icon { font-size: 20px; }
+    /* Services */
+    .section { padding: 72px 40px; max-width: 1100px; margin: 0 auto; }
+    .section-tag { font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 10px; }
+    .section h2 { font-size: clamp(24px, 3.5vw, 36px); font-weight: 700; margin-bottom: 12px; }
+    .section-sub { color: var(--muted); margin-bottom: 40px; }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+    .service-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 24px; transition: box-shadow 0.2s, border-color 0.2s; }
+    .service-card:hover { border-color: var(--sky); box-shadow: 0 4px 20px rgba(14,165,233,0.12); }
+    .service-icon { font-size: 28px; margin-bottom: 12px; }
+    .service-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+    .service-card p { font-size: 14px; color: var(--muted); }
+    /* Zone */
+    .zone-bg { background: var(--navy); }
+    .zone { padding: 72px 40px; max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .zone h2 { font-size: clamp(24px, 3vw, 34px); font-weight: 700; color: #fff; margin-bottom: 16px; }
+    .zone p { color: rgba(255,255,255,0.65); margin-bottom: 24px; }
+    .zone-list { display: flex; flex-wrap: wrap; gap: 10px; }
+    .zone-tag { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.85); font-size: 13px; padding: 6px 14px; border-radius: 20px; }
+    .zone-map { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; height: 280px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.3); font-size: 14px; }
+    /* Testimonials */
+    .testimonials { padding: 72px 40px; max-width: 1100px; margin: 0 auto; }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-top: 36px; }
+    .testimonial { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 24px; }
+    .testimonial-stars { color: #f59e0b; font-size: 15px; margin-bottom: 10px; }
+    .testimonial-text { font-size: 14px; color: var(--muted); font-style: italic; line-height: 1.7; }
+    .testimonial-author { margin-top: 14px; font-size: 13px; font-weight: 600; color: var(--text); }
+    /* CTA urgence */
+    .cta-urgent { background: linear-gradient(135deg, #0f2744, #1d4ed8); padding: 72px 40px; text-align: center; }
+    .cta-urgent h2 { font-size: clamp(24px, 3.5vw, 38px); font-weight: 700; color: #fff; margin-bottom: 12px; }
+    .cta-urgent p { color: rgba(255,255,255,0.7); margin-bottom: 32px; font-size: 16px; }
+    .cta-urgent .btn-urgent { display: inline-flex; font-size: 18px; padding: 18px 36px; }
+    /* Footer */
+    footer { background: var(--navy); padding: 48px 40px; }
+    .footer-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 32px; }
+    .footer-brand { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .footer-brand span { color: var(--sky); }
+    .footer-title { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 12px; }
+    .footer-list { list-style: none; display: grid; gap: 7px; font-size: 14px; color: rgba(255,255,255,0.6); }
+    .demo-badge { position: fixed; bottom: 20px; right: 20px; background: var(--blue); color: #fff; font-size: 12px; font-weight: 700; padding: 10px 16px; border-radius: 6px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); z-index: 100; letter-spacing: 0.02em; }
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; gap: 32px; padding: 48px 20px; }
+      .hero-card { display: none; }
+      .zone { grid-template-columns: 1fr; padding: 48px 20px; }
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .trust-bar { gap: 24px; padding: 16px 20px; }
+      .section, .testimonials { padding: 48px 20px; }
+      .cta-urgent { padding: 48px 20px; }
+      footer { padding: 32px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="urgent-bar">
+  🚨 Urgence 24h/7j — <a href="tel:+41790000000">+41 79 000 00 00</a>
+</div>
+
+<nav>
+  <div class="nav-brand">Dubois <span>Rénovations</span></div>
+  <div class="nav-links">
+    <a href="#">Services</a>
+    <a href="#">Zone d'intervention</a>
+    <a href="#">Avis</a>
+    <a href="#">Contact</a>
+  </div>
+  <a href="tel:+41790000000" class="nav-cta">📞 Appeler</a>
+</nav>
+
+<section style="background:var(--navy)">
+  <div class="hero">
+    <div>
+      <p class="hero-tag">Plombier · Électricien · Rénovation — Vaud</p>
+      <h1>Votre artisan <em>de confiance</em> en Suisse romande</h1>
+      <p>Intervention rapide, devis gratuit, travail soigné. Certifié SIA, assurance RC professionnelle incluse.</p>
+      <div class="hero-ctas">
+        <a href="tel:+41790000000" class="btn-urgent">🚨 Urgence — +41 79 000 00 00</a>
+        <a href="#services" class="btn-secondary">Voir nos services →</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <h3>Pourquoi nous choisir ?</h3>
+      <div class="hero-stat">
+        <span class="hero-stat-icon">⚡</span>
+        <div>
+          <div class="hero-stat-label">Intervention urgence</div>
+          <div class="hero-stat-val">Dans les 2h</div>
+        </div>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-icon">📋</span>
+        <div>
+          <div class="hero-stat-label">Devis</div>
+          <div class="hero-stat-val">Gratuit et sans engagement</div>
+        </div>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-icon">🏅</span>
+        <div>
+          <div class="hero-stat-label">Expérience</div>
+          <div class="hero-stat-val">+15 ans dans le métier</div>
+        </div>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-icon">🔒</span>
+        <div>
+          <div class="hero-stat-label">Garantie travaux</div>
+          <div class="hero-stat-val">2 ans pièces & main d'œuvre</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="trust-bar">
+  <div class="trust-item"><span class="trust-icon">✅</span> Certifié SIA</div>
+  <div class="trust-item"><span class="trust-icon">🛡️</span> RC professionnelle</div>
+  <div class="trust-item"><span class="trust-icon">⭐</span> 4.9/5 — 180 avis Google</div>
+  <div class="trust-item"><span class="trust-icon">🇨🇭</span> Entreprise vaudoise</div>
+</div>
+
+<section class="section" id="services">
+  <p class="section-tag">Nos services</p>
+  <h2>Ce que nous faisons</h2>
+  <p class="section-sub">Du dépannage d'urgence aux travaux de rénovation complète.</p>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">🔧</div>
+      <h3>Plomberie</h3>
+      <p>Fuite, débouchage, installation sanitaire, chauffe-eau, VMC. Intervention sous 2h pour les urgences.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">⚡</div>
+      <h3>Électricité</h3>
+      <p>Tableau électrique, prises, éclairage, borne de recharge VE. Mise aux normes NIN 2020.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🏠</div>
+      <h3>Rénovation</h3>
+      <p>Salle de bains, cuisine, carrelage, peinture. Coordination complète des corps de métier.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🌡️</div>
+      <h3>Chauffage</h3>
+      <p>Entretien chaudière, installation PAC, radiateurs, plancher chauffant. Partenaire Viessmann.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🪟</div>
+      <h3>Menuiserie</h3>
+      <p>Portes, fenêtres, parquets, dressings sur mesure. Pose et finitions soignées.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🏢</div>
+      <h3>Entreprises</h3>
+      <p>Contrat de maintenance, permanence téléphonique, factures mensuelles. Devis sur mesure.</p>
+    </div>
+  </div>
+</section>
+
+<div class="zone-bg">
+  <div class="zone">
+    <div>
+      <p class="section-tag" style="color:var(--sky)">Zone d'intervention</p>
+      <h2>Nous intervenons dans tout le canton de Vaud</h2>
+      <p>Basés à Lausanne, nous couvrons un rayon de 40 km. Forfait déplacement offert dans les communes suivantes.</p>
+      <div class="zone-list">
+        {['Lausanne', 'Morges', 'Nyon', 'Yverdon', 'Renens', 'Prilly', 'Pully', 'Lutry', 'Vevey', 'Montreux', 'Aigle', 'Payerne'].map((c) => (
+          <span class="zone-tag">{c}</span>
+        ))}
+      </div>
+    </div>
+    <div class="zone-map">🗺️ Carte Google Maps intégrée</div>
+  </div>
+</div>
+
+<section class="testimonials">
+  <p class="section-tag">Témoignages</p>
+  <h2>Ce que disent nos clients</h2>
+  <div class="testimonials-grid">
+    <div class="testimonial">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">«&nbsp;Fuite un dimanche soir, ils étaient là en 45 minutes. Travail nickel, prix correct. Je recommande sans hésiter.&nbsp;»</p>
+      <p class="testimonial-author">— François B., Lausanne</p>
+    </div>
+    <div class="testimonial">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">«&nbsp;Rénovation complète de notre salle de bains. Équipe sérieuse, ponctuelle, et le résultat est superbe.&nbsp;»</p>
+      <p class="testimonial-author">— Isabelle M., Morges</p>
+    </div>
+    <div class="testimonial">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">«&nbsp;Contrat de maintenance depuis 2 ans. Réactivité exemplaire et facturation toujours claire.&nbsp;»</p>
+      <p class="testimonial-author">— PME Logistique SA, Renens</p>
+    </div>
+  </div>
+</section>
+
+<div class="cta-urgent">
+  <h2>Une urgence ? On arrive.</h2>
+  <p>Disponibles 24h/24, 7j/7. Aucun supplément le week-end pour les urgences déclarées.</p>
+  <a href="tel:+41790000000" class="btn-urgent">🚨 +41 79 000 00 00</a>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <p class="footer-brand">Dubois <span>Rénovations</span></p>
+      <p style="color:rgba(255,255,255,0.5);font-size:13px;">Plombier · Électricien · Rénovation<br/>Lausanne, Vaud</p>
+    </div>
+    <div>
+      <p class="footer-title">Services</p>
+      <ul class="footer-list">
+        <li>Plomberie & sanitaire</li>
+        <li>Électricité</li>
+        <li>Rénovation</li>
+        <li>Chauffage</li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-title">Contact</p>
+      <ul class="footer-list">
+        <li>+41 79 000 00 00</li>
+        <li>info@dubois-renovations.ch</li>
+        <li>Route de Berne 12</li>
+        <li>1004 Lausanne</li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-title">Ce style vous convient ?</p>
+      <a href="/api/payment/redirect?plan=essential500&template=artisan" style="display:inline-block;margin-top:8px;background:var(--sky);color:var(--navy);font-size:13px;font-weight:700;padding:10px 18px;border-radius:6px;">Commander ce style →</a>
+    </div>
+  </div>
+</footer>
+
+<a href="/api/payment/redirect?plan=essential500&template=artisan" class="demo-badge">Ce style vous plaît ? Commander →</a>
+
+</body>
+</html>
