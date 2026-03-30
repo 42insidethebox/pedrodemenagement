@@ -51,6 +51,12 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   const resolved = resolveTenantFromRequest(context.request);
   context.locals.tenant = resolved;
 
+  // Short-circuit for internally rewritten tonsiteweb requests to prevent redirect loops.
+  // Astro re-runs the full middleware chain when next(newRequest) is called with a different URL.
+  if (context.request.headers.get('x-tonsiteweb-rewrite') === '1') {
+    return next();
+  }
+
   const url = new URL(context.request.url);
   const hostCandidates = [context.request.headers.get('x-forwarded-host'), context.request.headers.get('host'), url.host]
     .flatMap((value) => (value || '').split(','))
@@ -212,6 +218,7 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   const TENANT_DEMO_PREFIXES = ['/maison-cortes', '/restaurant-demo', '/artisan-demo', '/therapie-demo', '/fiduciaire-demo'];
   const isTenantDemoPath = TENANT_DEMO_PREFIXES.some((p) => url.pathname.startsWith(p));
   if (isTonsitewebHost && !shouldSkip && !isTenantDemoPath) {
+    headers.set('x-tonsiteweb-rewrite', '1');
     url.pathname = `/tonsiteweb${url.pathname === '/' ? '' : url.pathname}`;
   }
 
