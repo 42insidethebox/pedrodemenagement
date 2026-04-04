@@ -117,6 +117,11 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object;
+      // Skip sessions that haven't actually been paid (free/no_payment_required are ok)
+      if (session.payment_status !== 'paid' && session.payment_status !== 'no_payment_required') {
+        console.log('[webhook] skipping unpaid session:', session.id, session.payment_status);
+        return new Response('ok');
+      }
       const metadata = extractMetadataFromSession(session);
       if (session?.metadata?.booking_id) {
         const booking = await finalizeBookingFromSession(session);
@@ -172,6 +177,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
         const { data, error } = await sb.from('orders').insert(dbPayload).select('*').maybeSingle();
         if (error) {
           console.error('Failed to insert order from Stripe webhook', { error, dbPayload });
+          return new Response('DB insert failed', { status: 500 });
         } else if (data) {
           orderRecord = { ...orderRecord, ...data };
         }

@@ -58,6 +58,8 @@ const T = {
     submit: 'Continuer vers le paiement — 500 CHF →',
     privacy: 'Vos informations sont sécurisées et utilisées uniquement pour créer votre site.',
     sectors: ['Commerce / Boutique','Artisan / Construction','Beauté / Bien-être','Restauration / Traiteur','Santé / Thérapeute','Immobilier / Conciergerie','Transport / Déménagement','Coiffure','Sport / Fitness','Autre'],
+    cName: 'Votre prénom et nom', cNamePh: 'Ex : Marie Dupont',
+    cEmail: 'Votre email', cEmailHint: 'Pour la confirmation de commande — pas affiché sur le site.',
   },
   en: {
     title: 'Describe your business — TonSiteWeb.ch',
@@ -97,6 +99,8 @@ const T = {
     submit: 'Continue to payment — CHF 500 →',
     privacy: 'Your information is secure and used solely to create your website.',
     sectors: ['Retail / Shop','Craftsman / Construction','Beauty / Wellness','Restaurant / Catering','Health / Therapist','Real Estate / Concierge','Transport / Moving','Hairdressing','Sport / Fitness','Other'],
+    cName: 'Your name', cNamePh: 'E.g.: Marie Dupont',
+    cEmail: 'Your email', cEmailHint: 'For order confirmation only — will not be shown on your site.',
   },
   de: {
     title: 'Beschreiben Sie Ihr Unternehmen — TonSiteWeb.ch',
@@ -136,6 +140,8 @@ const T = {
     submit: 'Weiter zur Zahlung — 500 CHF →',
     privacy: 'Ihre Daten sind sicher und werden ausschliesslich zur Erstellung Ihrer Website verwendet.',
     sectors: ['Handel / Geschäft','Handwerk / Bau','Schönheit / Wellness','Restaurant / Catering','Gesundheit / Therapeut','Immobilien / Concierge','Transport / Umzug','Friseur','Sport / Fitness','Sonstiges'],
+    cName: 'Ihr Vor- und Nachname', cNamePh: 'Z.B.: Marie Dupont',
+    cEmail: 'Ihre E-Mail-Adresse', cEmailHint: 'Für die Auftragsbestätigung — wird nicht auf der Website angezeigt.',
   },
   it: {
     title: 'Descrivete la vostra attività — TonSiteWeb.ch',
@@ -175,6 +181,8 @@ const T = {
     submit: 'Continua al pagamento — 500 CHF →',
     privacy: 'Le vostre informazioni sono sicure e utilizzate esclusivamente per creare il vostro sito.',
     sectors: ['Commercio / Negozio','Artigiano / Edilizia','Bellezza / Benessere','Ristorazione / Catering','Salute / Terapista','Immobiliare / Concierge','Trasporti / Traslochi','Parrucchiere','Sport / Fitness','Altro'],
+    cName: 'Nome e cognome', cNamePh: 'Es.: Marie Dupont',
+    cEmail: 'La vostra email', cEmailHint: "Per la conferma d'ordine — non verrà mostrata sul sito.",
   },
 } as const;
 
@@ -212,6 +220,27 @@ const t = T[locale];
       >
         <input type="hidden" name="plan" value={plan} />
         <input type="hidden" name="locale" value={locale} />
+
+        <!-- Customer contact -->
+        <div class="bg-blue-50 border border-blue-200 rounded-2xl p-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">
+                {t.cName} <span class="text-red-500">*</span>
+              </label>
+              <input type="text" name="customer_name" required placeholder={t.cNamePh}
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">
+                {t.cEmail} <span class="text-red-500">*</span>
+              </label>
+              <input type="email" name="customer_email" required placeholder="vous@exemple.ch"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <p class="text-xs text-blue-600 mt-1">{t.cEmailHint}</p>
+            </div>
+          </div>
+        </div>
 
         <!-- Section 1 -->
         <div class="bg-white rounded-2xl border border-gray-200 p-6">
@@ -540,11 +569,15 @@ const t = T[locale];
       }
 
       // Redirect to Stripe
+      const customerName = str('customer_name');
+      const customerEmail = str('customer_email');
       const params = new URLSearchParams({
         plan: PLAN,
         template: 'surprise',
-        name: businessName,
+        name: customerName || businessName,
+        email: customerEmail,
         phone: str('phone'),
+        company: businessName,
         locale: LOCALE,
       });
       if (submissionId) params.set('submission_id', submissionId);

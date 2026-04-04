@@ -114,6 +114,7 @@ async function handlePlanCheckout(ctx: CheckoutContext, config: PlanCheckoutConf
   const session = await stripe.checkout.sessions.create({
     mode: isSubscriptionPlan(plan) ? 'subscription' : 'payment',
     line_items: [{ price: priceId, quantity: 1 }],
+    customer_email: data.email || undefined,
     phone_number_collection: { enabled: true },
     success_url: buildSuccessUrl(origin, tenant.basePath || ''),
     cancel_url: buildCancelUrl(origin, tenant.basePath || ''),

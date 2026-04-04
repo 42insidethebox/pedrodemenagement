@@ -164,17 +164,11 @@ const waCustomUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Bonjo
         </div>
       ) : null}
 
-      <!-- ONBOARDING CTA — primary action -->
+      <!-- DOSSIER REÇU — confirmation block (onboarding was done pre-payment) -->
       <div class="bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl p-6 mb-6 text-center text-white">
-        <p class="text-2xl mb-2">🚀</p>
-        <h2 class="font-bold text-xl mb-2">Configurez votre site maintenant</h2>
-        <p class="text-blue-100 text-sm mb-5">Remplissez notre formulaire en 5 min — on s'occupe du reste.</p>
-        <a
-          href={`/onboarding${sessionId ? `?session_id=${encodeURIComponent(sessionId)}` : ''}`}
-          class="inline-block bg-white text-blue-700 font-bold text-base px-8 py-3 rounded-xl hover:bg-blue-50 transition-colors"
-        >
-          Commencer la configuration →
-        </a>
+        <p class="text-2xl mb-2">✅</p>
+        <h2 class="font-bold text-xl mb-2">Votre dossier est bien reçu</h2>
+        <p class="text-blue-100 text-sm">Nous avons bien votre brief. Notre équipe commence la production et vous contacte sous 24h.</p>
       </div>
 
       <!-- WHAT HAPPENS NEXT -->
@@ -206,7 +200,7 @@ const waCustomUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Bonjo
         <p class="font-bold text-xl text-gray-900 dark:text-white mb-1">Protégez votre site pour 79 CHF/mois</p>
         <p class="text-gray-500 text-sm mb-4">Hébergement continu · Mises à jour de sécurité · Support prioritaire</p>
         <a
-          href="/api/checkout?plan=care79&tenant=tonsiteweb"
+          href="/api/payment/redirect?plan=care79"
           class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold text-base px-8 py-3 rounded-xl transition-colors"
         >
           Ajouter la maintenance →
