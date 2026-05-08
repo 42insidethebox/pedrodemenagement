@@ -1,0 +1,136 @@
+---
+import PipelineDiagram from '~/tenants/precisionsystems/PipelineDiagram.astro';
+import Shell from '~/tenants/iopartner/Shell.astro';
+import { getIoPartnerBookingUrl, getIoPartnerWhatsAppUrl, iopartnerConfig } from '~/tenants/iopartner/config';
+import {
+  getIoPartnerCopy,
+  resolveIoPartnerBasePath,
+  resolveIoPartnerLocale,
+} from '~/tenants/iopartner/copy';
+
+const locale = resolveIoPartnerLocale(Astro.request, Astro.url);
+const copy = getIoPartnerCopy(locale);
+const basePath = resolveIoPartnerBasePath(Astro.request, Astro.url);
+const whatsappUrl = getIoPartnerWhatsAppUrl(copy.shell.whatsappPrefillMessage);
+const bookingUrl = getIoPartnerBookingUrl(copy.shell.whatsappPrefillMessage);
+const metadata = { ...copy.meta.home, ignoreTitleTemplate: true };
+type AreaCard = { title: string; body: string };
+---
+
+<Shell page="home" metadata={metadata} locale={locale}>
+  <section class="ps-section ps-hero">
+    <div class="ps-hero-copy">
+      <p class="ps-eyebrow">{copy.home.eyebrow}</p>
+      <h1 class="ps-title">{copy.home.title}</h1>
+      <p class="ps-lead">{copy.home.lead}</p>
+      <div class="ps-action-row">
+        <a class="ps-button" href={bookingUrl} target="_blank" rel="noreferrer">
+          {copy.home.ctaBook}
+        </a>
+        <a class="ps-button secondary" href={whatsappUrl} target="_blank" rel="noreferrer">
+          {copy.home.ctaWhatsapp}
+        </a>
+      </div>
+      <div class="ps-pills">
+        <span class="ps-pill">{iopartnerConfig.offerDuration}</span>
+        <span class="ps-pill">{iopartnerConfig.offerPrice}</span>
+        <span class="ps-pill">{copy.shell.swissBased}</span>
+        <span class="ps-pill">{copy.shell.deliveryArtifact}</span>
+      </div>
+    </div>
+
+    <aside class="ps-card ps-hero-side">
+      <p class="ps-eyebrow">{copy.home.heroCard.eyebrow}</p>
+      <h2>{copy.home.heroCard.title}</h2>
+      <ul class="ps-list">
+        {copy.home.heroCard.points.map((point: string) => <li>{point}</li>)}
+      </ul>
+      <p class="ps-note">{copy.home.heroCard.note}</p>
+    </aside>
+  </section>
+
+  <section class="ps-section">
+    <p class="ps-eyebrow">{copy.home.areas.eyebrow}</p>
+    <h2 class="ps-subtitle">{copy.home.areas.title}</h2>
+    <div class="ps-grid ps-grid-2">
+      {
+        copy.home.areas.cards.map((card: AreaCard) => (
+          <article class="ps-card">
+            <h3>{card.title}</h3>
+            <p>{card.body}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="ps-section">
+    <div class="ps-grid ps-grid-2">
+      <article class="ps-card">
+        <p class="ps-eyebrow">{copy.home.outcomes.deliverables.eyebrow}</p>
+        <h2>{copy.home.outcomes.deliverables.title}</h2>
+        <ul class="ps-list">
+          {copy.home.outcomes.deliverables.items.map((item: string) => <li>{item}</li>)}
+        </ul>
+      </article>
+      <article class="ps-card">
+        <p class="ps-eyebrow">{copy.home.outcomes.fit.eyebrow}</p>
+        <h2>{copy.home.outcomes.fit.title}</h2>
+        <ul class="ps-list">
+          {copy.home.outcomes.fit.items.map((item: string) => <li>{item}</li>)}
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="ps-section">
+    <PipelineDiagram
+      eyebrow={copy.home.pipeline.eyebrow}
+      title={copy.home.pipeline.title}
+      lead={copy.home.pipeline.lead}
+      nodes={copy.home.pipeline.nodes}
+    />
+  </section>
+
+  <section class="ps-section">
+    <div class="ps-card ps-closing-card">
+      <p class="ps-eyebrow">{copy.home.closing.eyebrow}</p>
+      <h2>{copy.home.closing.title(iopartnerConfig)}</h2>
+      <p class="ps-lead">{copy.home.closing.lead}</p>
+      <div class="ps-action-row">
+        <a class="ps-button" href={`${basePath}/contact`}>{copy.home.closing.ctaContact}</a>
+        <a class="ps-button secondary" href={`${basePath}/pricing`}>{copy.home.closing.ctaPricing}</a>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .ps-hero {
+      display: grid;
+      grid-template-columns: 1.25fr 0.95fr;
+      gap: 1.2rem;
+      align-items: start;
+      padding-top: 1rem;
+    }
+
+    .ps-hero-copy {
+      padding: 1.3rem 0 0;
+    }
+
+    .ps-hero-side {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.82)),
+        radial-gradient(circle at top right, var(--ps-haze), transparent 32%);
+    }
+
+    .ps-closing-card {
+      padding: 1.7rem;
+    }
+
+    @media (max-width: 980px) {
+      .ps-hero {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</Shell>

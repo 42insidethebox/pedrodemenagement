@@ -1,0 +1,233 @@
+---
+import PipelineDiagram from '~/tenants/precisionsystems/PipelineDiagram.astro';
+import Shell from '~/tenants/iopartner/Shell.astro';
+import {
+  getIoPartnerBookingUrl,
+  getIoPartnerWhatsAppUrl,
+  iopartnerLaunchOffers,
+  iopartnerSystemsOffers,
+} from '~/tenants/iopartner/config';
+import {
+  getIoPartnerCopy,
+  resolveIoPartnerBasePath,
+  resolveIoPartnerLocale,
+} from '~/tenants/iopartner/copy';
+
+const locale = resolveIoPartnerLocale(Astro.request, Astro.url);
+const copy = getIoPartnerCopy(locale);
+const basePath = resolveIoPartnerBasePath(Astro.request, Astro.url);
+const whatsappUrl = getIoPartnerWhatsAppUrl(copy.shell.whatsappPrefillMessage);
+const bookingUrl = getIoPartnerBookingUrl(copy.shell.whatsappPrefillMessage);
+const metadata = { ...copy.meta.pricing, ignoreTitleTemplate: true };
+type PricingCard = { title: string; body: string };
+
+const customSystemsCopy = {
+  fr: {
+    eyebrow: 'Custom systems',
+    title: 'Quand le sujet depasse les packs.',
+    lead: "Les sites, workflows et systemes plus lourds ne sont pas vendus comme un menu de cases. Ils sont scopes proprement apres le premier cadrage.",
+    items: [
+      'Custom code simple: a partir de 3k CHF.',
+      'Workflow et systemes operatoires plus lourds: souvent 5k a 8k CHF.',
+      'Architecture, portail, admin ou plateforme interne: 10k a 100k+ selon le scope.',
+    ],
+    cta: 'Parler du scope',
+  },
+  en: {
+    eyebrow: 'Custom systems',
+    title: 'When the work exceeds the packaged layers.',
+    lead: 'Heavier websites, workflows, and systems are scoped properly after the first framing step, not sold as vague promises.',
+    items: [
+      'Simple custom code: from CHF 3k.',
+      'Operational workflows and systems: often CHF 5k to 8k.',
+      'Architecture, portals, admin tools, or internal platforms: CHF 10k to 100k+ depending on scope.',
+    ],
+    cta: 'Discuss scope',
+  },
+  de: {
+    eyebrow: 'Custom systems',
+    title: 'Wenn das Thema die Pakete uebersteigt.',
+    lead: 'Groessere Websites, Workflows und Systeme werden nach dem ersten Framing sauber gescopt und nicht als vage Versprechen verkauft.',
+    items: [
+      'Einfacher Custom Code: ab 3k CHF.',
+      'Operative Workflows und Systeme: oft 5k bis 8k CHF.',
+      'Architektur, Portale, Admin-Tools oder interne Plattformen: 10k bis 100k+ je nach Umfang.',
+    ],
+    cta: 'Scope besprechen',
+  },
+  it: {
+    eyebrow: 'Custom systems',
+    title: 'Quando il lavoro supera i pacchetti.',
+    lead: 'Siti, workflow e sistemi piu pesanti vengono scoped in modo serio dopo il primo framing, non venduti come promesse vaghe.',
+    items: [
+      'Custom code semplice: da 3k CHF.',
+      'Workflow e sistemi operativi: spesso 5k a 8k CHF.',
+      'Architettura, portali, admin tool o piattaforme interne: 10k a 100k+ in base allo scope.',
+    ],
+    cta: 'Discutere lo scope',
+  },
+}[locale];
+---
+
+<Shell page="pricing" metadata={metadata} locale={locale}>
+  <section class="ps-section">
+    <p class="ps-eyebrow">{copy.pricing.eyebrow}</p>
+    <h1 class="ps-title">{copy.pricing.title}</h1>
+    <p class="ps-lead">{copy.pricing.lead}</p>
+  </section>
+
+  <section class="ps-section">
+    <p class="ps-eyebrow">{copy.pricing.launch.eyebrow}</p>
+    <h2 class="ps-subtitle">{copy.pricing.launch.title}</h2>
+    <p class="ps-lead">{copy.pricing.launch.lead}</p>
+  </section>
+
+  <section class="ps-section">
+    <div class="ps-pricing-shell">
+      {
+        iopartnerLaunchOffers.map((offer) => {
+          const tier = copy.pricing.launch.tiers[offer.key];
+          return (
+            <article class={`ps-card ${offer.key === 'launch' ? 'ps-pricing-card' : ''}`}>
+              <p class="ps-eyebrow">{tier.eyebrow}</p>
+              <h2>{tier.title}</h2>
+              <div class="ps-price-line">
+                <strong>{offer.price}</strong>
+                <span>{offer.duration}</span>
+              </div>
+              <p>{tier.summary}</p>
+              <ul class="ps-list">
+                {tier.items.map((item: string) => <li>{item}</li>)}
+              </ul>
+              <div class="ps-action-row">
+                <a class={offer.key === 'launch' ? 'ps-button' : 'ps-button secondary'} href={whatsappUrl} target="_blank" rel="noreferrer">
+                  {tier.cta}
+                </a>
+              </div>
+            </article>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <section class="ps-section">
+    <p class="ps-eyebrow">{copy.pricing.systems.eyebrow}</p>
+    <h2 class="ps-subtitle">{copy.pricing.systems.title}</h2>
+    <p class="ps-lead">{copy.pricing.systems.lead}</p>
+  </section>
+
+  <section class="ps-section">
+    <div class="ps-pricing-shell">
+      {
+        iopartnerSystemsOffers.map((offer) => {
+          const tier = copy.pricing.systems.tiers[offer.key];
+          const href = offer.key === 'diagnostic' ? bookingUrl : whatsappUrl;
+          return (
+            <article class={`ps-card ${offer.key === 'diagnostic' ? 'ps-pricing-card' : ''}`}>
+              <p class="ps-eyebrow">{tier.eyebrow}</p>
+              <h2>{tier.title}</h2>
+              <div class="ps-price-line">
+                <strong>{offer.price}</strong>
+                <span>{offer.duration}</span>
+              </div>
+              <p>{tier.summary}</p>
+              <ul class="ps-list">
+                {tier.items.map((item: string) => <li>{item}</li>)}
+              </ul>
+              <div class="ps-action-row">
+                <a class={offer.key === 'diagnostic' ? 'ps-button' : 'ps-button secondary'} href={href} target="_blank" rel="noreferrer">
+                  {tier.cta}
+                </a>
+              </div>
+            </article>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <section class="ps-section">
+    <PipelineDiagram
+      eyebrow={copy.pricing.process.eyebrow}
+      title={copy.pricing.process.title}
+      lead={copy.pricing.process.lead}
+      nodes={copy.pricing.process.nodes}
+    />
+  </section>
+
+  <section class="ps-section">
+    <div class="ps-grid ps-grid-2">
+      <article class="ps-card">
+        <p class="ps-eyebrow">{customSystemsCopy.eyebrow}</p>
+        <h2>{customSystemsCopy.title}</h2>
+        <p>{customSystemsCopy.lead}</p>
+        <ul class="ps-list">
+          {customSystemsCopy.items.map((item: string) => <li>{item}</li>)}
+        </ul>
+        <div class="ps-action-row">
+          <a class="ps-button secondary" href={`${basePath}/contact`}>{customSystemsCopy.cta}</a>
+        </div>
+      </article>
+
+      <article class="ps-card">
+        <div class="ps-grid ps-grid-1">
+          {copy.pricing.cards.map((card: PricingCard) => (
+            <div class="ps-card-fragment">
+              <h3>{card.title}</h3>
+              <p>{card.body}</p>
+            </div>
+          ))}
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <style>
+    .ps-pricing-shell {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.15rem;
+      align-items: start;
+    }
+
+    .ps-pricing-card {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(255, 255, 255, 0.84)),
+        radial-gradient(circle at top right, var(--ps-haze), transparent 36%);
+    }
+
+    .ps-price-line {
+      display: flex;
+      align-items: baseline;
+      gap: 0.8rem;
+      margin: 0 0 1rem;
+    }
+
+    .ps-price-line strong {
+      font-family: var(--ps-font-heading);
+      font-size: clamp(2.25rem, 4.8vw, 3.8rem);
+      line-height: 0.95;
+      letter-spacing: -0.05em;
+    }
+
+    .ps-price-line span {
+      color: var(--ps-muted);
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .ps-card-fragment + .ps-card-fragment {
+      margin-top: 1.15rem;
+      padding-top: 1.15rem;
+      border-top: 1px solid var(--ps-line);
+    }
+
+    @media (max-width: 980px) {
+      .ps-pricing-shell {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</Shell>

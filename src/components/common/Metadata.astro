@@ -13,6 +13,7 @@ import { adaptOpenGraphImages } from '~/utils/images';
 export interface Props extends MetaData {
   dontUseTitleTemplate?: boolean;
   lang?: string;
+  siteName?: string;
 }
 
 const {
@@ -24,6 +25,7 @@ const {
   openGraph = {},
   twitter = {},
   lang,
+  siteName,
 } = Astro.props;
 
 const path = Astro.url?.pathname || '/';
@@ -40,7 +42,7 @@ const seoProps: AstroSeoProps = merge(
     description: undefined,
     openGraph: {
       url: canonical,
-      site_name: SITE?.name,
+      site_name: siteName || SITE?.name,
       images: [],
       locale: routeLang || 'en',
       type: 'website',

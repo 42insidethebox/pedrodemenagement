@@ -13,7 +13,7 @@ import CallToAction from '~/components/widgets/CallToAction.astro';
 import { getImage } from '~/data/imageInventory';
 import type { ImageId } from '~/data/imageInventory';
 import { resolveLocaleFromRequest } from '~/lib/locale';
-import { resolveTenantFromRequest } from '~/lib/tenants';
+import { resolveTenantFromRequest, tenantBrand } from '~/lib/tenants';
 import { resolveTonSiteWebComponent } from '~/tenants/tonsiteweb/router';
 
 import type { MetaData } from '~/types';
@@ -96,15 +96,22 @@ if (tenant.slug === 'onglesgel' || hostCandidates.some((h) => h.includes('ongles
   return Astro.rewrite('/onglesgel');
 }
 
+if (tenant.slug === 'precisionsystems') {
+  return Astro.rewrite('/precisionsystems');
+}
+
+if (tenant.slug === 'iopartner') {
+  return Astro.rewrite('/iopartner');
+}
+
 // Route Atelier Mémoire hosts to the dedicated tenant pages to avoid fallback content
 if (tenant.slug === 'ateliermemoire' && !(Astro.url?.pathname || '').startsWith('/atelier-memoire')) {
   const target = new URL('/atelier-memoire', Astro.url instanceof URL ? Astro.url : new URL(Astro.request.url));
   return Astro.redirect(target.toString(), 308);
 }
 
-const host = Astro.request.headers.get('host');
-const brandKey = getBrandFromHost(host);
-const hostLower = (host || '').toLowerCase();
+const brandKey = (tenantBrand(tenant)?.key || 'pedro') as BrandKey;
+const hostLower = (tenant.host || Astro.request.headers.get('host') || '').toLowerCase();
 const isMaisonHost = hostLower.includes('maisoncortes');
 const maisonBasePath = isMaisonHost ? '' : '/maison-cortes';
 const isMaisonLanding = brandKey === 'maisoncortes';

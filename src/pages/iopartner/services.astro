@@ -1,0 +1,87 @@
+---
+import PipelineDiagram from '~/tenants/precisionsystems/PipelineDiagram.astro';
+import Shell from '~/tenants/iopartner/Shell.astro';
+import { getIoPartnerBookingUrl, iopartnerConfig } from '~/tenants/iopartner/config';
+import {
+  getIoPartnerCopy,
+  resolveIoPartnerBasePath,
+  resolveIoPartnerLocale,
+} from '~/tenants/iopartner/copy';
+
+const locale = resolveIoPartnerLocale(Astro.request, Astro.url);
+const copy = getIoPartnerCopy(locale);
+const basePath = resolveIoPartnerBasePath(Astro.request, Astro.url);
+const bookingUrl = getIoPartnerBookingUrl(copy.shell.whatsappPrefillMessage);
+const metadata = { ...copy.meta.services, ignoreTitleTemplate: true };
+type ServiceCard = { eyebrow: string; title: string; body: string; items: string[] };
+---
+
+<Shell page="services" metadata={metadata} locale={locale}>
+  <section class="ps-section">
+    <p class="ps-eyebrow">{copy.services.eyebrow}</p>
+    <h1 class="ps-title">{copy.services.title}</h1>
+    <p class="ps-lead">{copy.services.lead}</p>
+  </section>
+
+  <section class="ps-section">
+    <div class="ps-grid ps-grid-2">
+      {
+        copy.services.cards.map((card: ServiceCard) => (
+          <article class="ps-card">
+            <p class="ps-eyebrow">{card.eyebrow}</p>
+            <h2>{card.title}</h2>
+            <p>{card.body}</p>
+            <ul class="ps-list">
+              {card.items.map((item: string) => <li>{item}</li>)}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="ps-section">
+    <PipelineDiagram
+      eyebrow={copy.home.pipeline.eyebrow}
+      title={copy.home.pipeline.title}
+      lead={copy.home.pipeline.lead}
+      nodes={copy.home.pipeline.nodes}
+    />
+  </section>
+
+  <section class="ps-section">
+    <div class="ps-grid ps-grid-2">
+      <article class="ps-card">
+        <p class="ps-eyebrow">{copy.services.fit.good.eyebrow}</p>
+        <h2>{copy.services.fit.good.title}</h2>
+        <ul class="ps-list">
+          {copy.services.fit.good.items.map((item: string) => <li>{item}</li>)}
+        </ul>
+      </article>
+
+      <article class="ps-card">
+        <p class="ps-eyebrow">{copy.services.fit.bad.eyebrow}</p>
+        <h2>{copy.services.fit.bad.title}</h2>
+        <ul class="ps-list">
+          {copy.services.fit.bad.items.map((item: string) => <li>{item}</li>)}
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="ps-section">
+    <div class="ps-card">
+      <p class="ps-eyebrow">{copy.services.closing.eyebrow}</p>
+      <h2>{copy.services.closing.title(iopartnerConfig)}</h2>
+      <p class="ps-lead">{copy.services.closing.lead}</p>
+      <div class="ps-action-row">
+        <a class="ps-button" href={bookingUrl} target="_blank" rel="noreferrer">
+          {copy.services.closing.ctaBook}
+        </a>
+        <a class="ps-button secondary" href={`${basePath}/pricing`}>
+          {copy.services.closing.ctaPricing}
+        </a>
+      </div>
+    </div>
+  </section>
+</Shell>

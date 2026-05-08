@@ -7,7 +7,7 @@ import { BRANDS } from '~/lib/brands.config';
 import { getImage, getImageAlt } from '~/data/imageInventory';
 import type { ImageId } from '~/data/imageInventory';
 import { resolveLocaleFromRequest } from '~/lib/locale';
-import { resolveTenantFromRequest } from '~/lib/tenants';
+import { resolveTenantFromRequest, tenantBrand } from '~/lib/tenants';
 import { resolveTonSiteWebComponent } from '~/tenants/tonsiteweb/router';
 
 const tenant = resolveTenantFromRequest(Astro.request);
@@ -37,6 +37,14 @@ if (tenant.slug === 'tolo-coiffure' || isToloHost) {
   return Astro.rewrite('/tolo-coiffure/contact');
 }
 
+if (tenant.slug === 'precisionsystems') {
+  return Astro.rewrite('/precisionsystems/contact');
+}
+
+if (tenant.slug === 'iopartner') {
+  return Astro.rewrite('/iopartner/contact');
+}
+
 if (tenant.slug === 'ateliermemoire' && !(Astro.url?.pathname || '').startsWith('/atelier-memoire')) {
   const target = new URL('/atelier-memoire/contact', Astro.url instanceof URL ? Astro.url : new URL(Astro.request.url));
   return Astro.redirect(target.toString(), 308);
@@ -52,8 +60,7 @@ let lceData: {
   subtitle: string;
 } | null = null;
 
-const host = Astro.request.headers.get('host');
-const brandKey = getBrandFromHost(host) || 'pedro';
+const brandKey = (tenantBrand(tenant)?.key || 'pedro') as keyof typeof BRANDS;
 if (!TonComponent && brandKey === 'maisoncortes') {
   return Astro.redirect('/maison-cortes/contact');
 }

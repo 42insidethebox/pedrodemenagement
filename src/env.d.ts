@@ -5,9 +5,15 @@
 /// <reference types="../vendor/integration/types.d.ts" />
 
 import type { TenantContext } from './lib/tenants';
+import type { ResolvedWebsite } from './lib/website-resolver';
 
-declare namespace App {
-  interface Locals {
-    tenant?: TenantContext;
+declare global {
+  namespace App {
+    interface Locals {
+      tenant?: TenantContext;
+      website?: ResolvedWebsite;
+    }
   }
 }
+
+export {};

@@ -3,6 +3,7 @@ import '~/assets/styles/tailwind.css';
 
 import { I18N } from 'astrowind:config';
 import { getBrandFromHost, type BrandKey } from '~/lib/brand';
+import { BRANDS } from '~/lib/brands.config';
 
 import CommonMeta from '~/components/common/CommonMeta.astro';
 import Favicons from '~/components/Favicons.astro';
@@ -26,11 +27,18 @@ export interface Props {
 }
 
 const { metadata = {}, brandKey, styleVars = {}, lang } = Astro.props as Props;
-const resolvedBrandKey = (brandKey || getBrandFromHost(Astro.request?.headers.get('host'))) as BrandKey;
+const tenantFromLocals = Astro.locals?.tenant as { brandKey?: BrandKey; slug?: BrandKey } | undefined;
+const resolvedBrandKey = (
+  brandKey ||
+  tenantFromLocals?.brandKey ||
+  tenantFromLocals?.slug ||
+  getBrandFromHost(Astro.request?.headers.get('host'))
+) as BrandKey;
 const { textDirection } = I18N;
 const path = Astro.url?.pathname || '/';
 const match = path.match(/^\/(fr|en|de|it)(?=\/|$)/);
 const language = lang || (match && match[1]) || 'fr';
+const siteName = BRANDS[resolvedBrandKey]?.name;
 ---
 
 <!doctype html>
@@ -40,7 +48,7 @@ const language = lang || (match && match[1]) || 'fr';
     <Favicons brandKey={resolvedBrandKey} />
     <CustomStyles />
     <ApplyColorMode />
-    <Metadata {...metadata} lang={language} />
+    <Metadata {...metadata} lang={language} siteName={siteName} />
     <SiteVerification />
     <Analytics />
 

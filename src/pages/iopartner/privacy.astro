@@ -1,0 +1,46 @@
+---
+import Shell from '~/tenants/iopartner/Shell.astro';
+import { iopartnerConfig } from '~/tenants/iopartner/config';
+import { getIoPartnerCopy, resolveIoPartnerLocale } from '~/tenants/iopartner/copy';
+
+const locale = resolveIoPartnerLocale(Astro.request, Astro.url);
+const copy = getIoPartnerCopy(locale);
+const metadata = { ...copy.meta.privacy, ignoreTitleTemplate: true };
+---
+
+<Shell page="privacy" metadata={metadata} locale={locale}>
+  <section class="ps-section">
+    <p class="ps-eyebrow">{copy.privacy.eyebrow}</p>
+    <h1 class="ps-title">{copy.privacy.title}</h1>
+    <p class="ps-lead">{copy.privacy.lead(iopartnerConfig)}</p>
+  </section>
+
+  <section class="ps-section">
+    <div class="ps-grid ps-grid-2">
+      <article class="ps-card">
+        <h2>{copy.privacy.collected.title}</h2>
+        <ul class="ps-list">
+          {copy.privacy.collected.items.map((item: string) => <li>{item}</li>)}
+        </ul>
+      </article>
+
+      <article class="ps-card">
+        <h2>{copy.privacy.usage.title}</h2>
+        <ul class="ps-list">
+          {copy.privacy.usage.items.map((item: string) => <li>{item}</li>)}
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="ps-section">
+    <div class="ps-card">
+      <h2>{copy.privacy.tools.title}</h2>
+      <p>{copy.privacy.tools.body}</p>
+      <p>
+        {copy.privacy.tools.contactLead}{' '}
+        <a href={`mailto:${iopartnerConfig.email}`}>{iopartnerConfig.email}</a>.
+      </p>
+    </div>
+  </section>
+</Shell>

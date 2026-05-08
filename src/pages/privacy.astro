@@ -9,6 +9,14 @@ const TonComponent =
   tenant.slug === 'tonsiteweb'
     ? resolveTonSiteWebComponent('privacy', Astro.url instanceof URL ? Astro.url : new URL(Astro.request.url), Astro.request)
     : null;
+
+if (tenant.slug === 'precisionsystems') {
+  return Astro.rewrite('/precisionsystems/privacy');
+}
+
+if (tenant.slug === 'iopartner') {
+  return Astro.rewrite('/iopartner/privacy');
+}
 ---
 
 {TonComponent ? <TonComponent /> : <PrivacyContent />}

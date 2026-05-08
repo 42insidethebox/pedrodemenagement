@@ -11,11 +11,15 @@ import Metadata from '~/components/common/Metadata.astro';
 import SiteVerification from '~/components/common/SiteVerification.astro';
 import Analytics from '~/components/common/Analytics.astro';
 import { I18N } from 'astrowind:config';
-import { getBrandFromHost } from '~/lib/brand';
+import { getBrandFromHost, type BrandKey } from '~/lib/brand';
 
 const { pageTitle = 'Dashboard', children } = Astro.props;
 const { textDirection } = I18N;
-const brandKey = getBrandFromHost(Astro.request?.headers.get('host'));
+const tenantFromLocals = Astro.locals?.tenant as { brandKey?: BrandKey; slug?: BrandKey } | undefined;
+const brandKey =
+  tenantFromLocals?.brandKey ||
+  tenantFromLocals?.slug ||
+  getBrandFromHost(Astro.request?.headers.get('host'));
 const path = Astro.url?.pathname || '/';
 const match = path.match(/^\/(fr|en|de|it)(?=\/|$)/);
 const language = (match && match[1]) || 'fr';
