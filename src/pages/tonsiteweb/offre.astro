@@ -11,7 +11,7 @@ const sectorParam = (Astro.url.searchParams.get('s') || '').toLowerCase();
 const SECTORS: Record<string, { headline: string; sub: string; bullets: string[][]; sector: string }> = {
   coiffeur: {
     headline: 'Site pour votre salon de coiffure',
-    sub: 'Vos clients réservent en ligne cette semaine. 500 CHF, livré en 3–5 jours.',
+    sub: 'Vos clients réservent en ligne cette semaine. 999 CHF, livré en 3–5 jours.',
     bullets: [
       ['Galerie de réalisations', 'Montrez vos coupes et colorations'],
       ['Prise de rendez-vous en ligne', 'Vos clients réservent 24h/24'],
@@ -23,7 +23,7 @@ const SECTORS: Record<string, { headline: string; sub: string; bullets: string[]
   },
   artisan: {
     headline: 'Site pour artisan & entrepreneur',
-    sub: 'Devis en ligne, photos de chantiers, contact direct. 500 CHF, livré en 3–5 jours.',
+    sub: 'Devis en ligne, photos de chantiers, contact direct. 999 CHF, livré en 3–5 jours.',
     bullets: [
       ['Portfolio de réalisations', 'Photos de vos chantiers et travaux'],
       ['Formulaire de devis en ligne', 'Vos clients demandent un prix 24h/24'],
@@ -35,7 +35,7 @@ const SECTORS: Record<string, { headline: string; sub: string; bullets: string[]
   },
   restaurant: {
     headline: 'Site pour votre restaurant',
-    sub: 'Menu, horaires, réservations — tout en ligne cette semaine. 500 CHF, livré en 3–5 jours.',
+    sub: 'Menu, horaires, réservations — tout en ligne cette semaine. 999 CHF, livré en 3–5 jours.',
     bullets: [
       ['Menu complet en ligne', 'PDF ou page dédiée, mis à jour facilement'],
       ['Horaires et adresse', 'Google Maps intégré'],
@@ -47,7 +47,7 @@ const SECTORS: Record<string, { headline: string; sub: string; bullets: string[]
   },
   beaute: {
     headline: 'Site pour votre salon de beauté',
-    sub: 'Prenez des RDV en ligne, montrez vos réalisations. 500 CHF, livré en 3–5 jours.',
+    sub: 'Prenez des RDV en ligne, montrez vos réalisations. 999 CHF, livré en 3–5 jours.',
     bullets: [
       ['Galerie avant/après', 'Montrez vos transformations'],
       ['Prise de RDV en ligne', 'Vos clients réservent 24h/24'],
@@ -59,7 +59,7 @@ const SECTORS: Record<string, { headline: string; sub: string; bullets: string[]
   },
   sante: {
     headline: 'Site pour thérapeute & praticien',
-    sub: 'Page professionnelle, prise de RDV, honoraires — en ligne cette semaine. 500 CHF.',
+    sub: 'Page professionnelle, prise de RDV, honoraires — en ligne cette semaine. 999 CHF.',
     bullets: [
       ['Présentation de vos approches', 'Créez la confiance avant la consultation'],
       ['Prise de RDV en ligne', 'Agenda visible, réservations directes'],
@@ -83,13 +83,13 @@ const bullets = sector?.bullets ?? [
 ];
 const prefilledSector = sector?.sector ?? '';
 
-const CHECKOUT_URL = '/api/checkout?plan=essential500&template=classic-clean&tenant=tonsiteweb';
+const CHECKOUT_URL = '/api/checkout?plan=essential999&template=classic-clean&tenant=tonsiteweb';
 ---
 
 <Layout
   metadata={{
-    title: `${headline} – 500 CHF – TonSiteWeb`,
-    description: 'Site internet professionnel livré en 3–5 jours pour 500 CHF. Prix fixe, sans surprise. Idéal pour indépendants, artisans, commerçants en Suisse.',
+    title: `${headline} – 999 CHF – TonSiteWeb`,
+    description: 'Site internet professionnel livré en 3–5 jours pour 999 CHF. Prix fixe, sans surprise. Idéal pour indépendants, artisans, commerçants en Suisse.',
   }}
 >
   <!-- Facebook Pixel — REPLACE XXXXXXXXXXXXXXXXXX with your real Pixel ID -->
@@ -181,7 +181,7 @@ const CHECKOUT_URL = '/api/checkout?plan=essential500&template=classic-clean&ten
         <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-4">
           {headline}
         </h1>
-        <p class="text-2xl font-bold text-yellow-300 mb-3">500 CHF · Prix fixe, livraison garantie</p>
+        <p class="text-2xl font-bold text-yellow-300 mb-3">999 CHF · Prix fixe, livraison garantie</p>
         <p class="text-blue-100 text-lg mb-6">{subheadline}</p>
 
         <!-- Countdown -->
@@ -197,7 +197,7 @@ const CHECKOUT_URL = '/api/checkout?plan=essential500&template=classic-clean&ten
             href={CHECKOUT_URL}
             class="inline-block bg-yellow-400 hover:bg-yellow-300 text-blue-900 font-bold text-xl px-10 py-5 rounded-2xl transition-colors shadow-lg mb-3"
           >
-            Payer 500 CHF maintenant →
+            Payer 999 CHF maintenant →
           </a>
         </div>
 
@@ -233,7 +233,7 @@ const CHECKOUT_URL = '/api/checkout?plan=essential500&template=classic-clean&ten
 
     <!-- CE QUI EST INCLUS -->
     <section class="px-4 py-16 max-w-2xl mx-auto">
-      <h2 class="text-2xl font-bold text-center mb-10">Ce qui est inclus pour 500 CHF</h2>
+      <h2 class="text-2xl font-bold text-center mb-10">Ce qui est inclus pour 999 CHF</h2>
       <ul class="space-y-4">
         {bullets.map(([title, desc]) => (
           <li class="flex items-start gap-4 p-4 bg-blue-50 rounded-xl">
@@ -271,17 +271,17 @@ const CHECKOUT_URL = '/api/checkout?plan=essential500&template=classic-clean&ten
     <section class="px-4 py-16 max-w-xl mx-auto text-center">
       <!-- Price anchor -->
       <p class="text-sm text-gray-500 mb-2">Les agences web facturent <span class="line-through font-semibold">2 000–5 000 CHF</span> pour le même résultat.</p>
-      <p class="text-sm font-bold text-blue-600 mb-8">Aujourd'hui chez nous : <span class="text-2xl">500 CHF</span> tout compris.</p>
+      <p class="text-sm font-bold text-blue-600 mb-8">Aujourd'hui chez nous : <span class="text-2xl">999 CHF</span> tout compris.</p>
 
       <div class="border-2 border-blue-600 rounded-2xl p-8">
-        <p class="text-4xl font-extrabold text-blue-600 mb-2">500 CHF</p>
+        <p class="text-4xl font-extrabold text-blue-600 mb-2">999 CHF</p>
         <p class="text-gray-500 text-sm mb-1">Paiement unique · Hébergement 3 mois inclus</p>
         <p class="text-gray-500 text-sm mb-8">Prix fixe · Paiement sécurisé · On s'occupe de tout</p>
         <a
           href={CHECKOUT_URL}
           class="inline-block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xl px-8 py-5 rounded-2xl transition-colors shadow-md"
         >
-          Payer 500 CHF maintenant →
+          Payer 999 CHF maintenant →
         </a>
         <div class="flex justify-center gap-6 mt-6 text-xs text-gray-400">
           <span>🔒 SSL sécurisé</span>
@@ -391,7 +391,7 @@ const CHECKOUT_URL = '/api/checkout?plan=essential500&template=classic-clean&ten
       <div class="space-y-6">
         {[
           ['Que se passe-t-il après le paiement ?', 'Notre équipe vous contacte dans les 2 heures pour quelques questions sur votre activité. Votre site est en ligne en 3–5 jours ouvrables.'],
-          ["Qu'est-ce qui est inclus pour 500 CHF ?", 'Une page vitrine professionnelle, hébergement 3 mois, formulaire de contact, design mobile responsive, et livraison en 3–5 jours.'],
+          ["Qu'est-ce qui est inclus pour 999 CHF ?", 'Une page vitrine professionnelle, hébergement 3 mois, formulaire de contact, design mobile responsive, et livraison en 3–5 jours.'],
           ['Et si je ne suis pas satisfait ?', 'Remboursement complet garanti, aucune question posée. C\'est notre promesse.'],
           ['Dois-je créer un compte ?', 'Non. Le paiement se fait directement via Stripe. Aucun compte requis, aucune inscription.'],
           ['Combien de temps dure le processus ?', 'Vous payez en 30 secondes. On vous contacte dans les 2 heures. Votre site est en ligne en 3–5 jours ouvrables après réception de vos informations.'],
@@ -407,7 +407,7 @@ const CHECKOUT_URL = '/api/checkout?plan=essential500&template=classic-clean&ten
     <!-- FINAL CTA -->
     <section class="bg-blue-600 text-white px-4 py-16 text-center">
       <h2 class="text-3xl font-bold mb-4">Prêt ? Votre site en 3–5 jours.</h2>
-      <p class="text-blue-100 mb-4">500 CHF · Livré en 3–5 jours ouvrables · Prix fixe, sans surprise</p>
+      <p class="text-blue-100 mb-4">999 CHF · Livré en 3–5 jours ouvrables · Prix fixe, sans surprise</p>
       <div class="inline-flex items-center gap-2 bg-blue-500/50 rounded-full px-4 py-1 mb-8 text-sm">
         <span class="text-blue-200">Livraison garantie si commande avant</span>
         <span id="countdown2" class="font-mono font-bold text-yellow-200">…</span>
@@ -417,7 +417,7 @@ const CHECKOUT_URL = '/api/checkout?plan=essential500&template=classic-clean&ten
         href={CHECKOUT_URL}
         class="inline-block bg-yellow-400 hover:bg-yellow-300 text-blue-900 font-bold text-xl px-10 py-5 rounded-2xl transition-colors"
       >
-        Payer 500 CHF maintenant →
+        Payer 999 CHF maintenant →
       </a>
     </section>
 
@@ -444,7 +444,7 @@ const CHECKOUT_URL = '/api/checkout?plan=essential500&template=classic-clean&ten
       href={CHECKOUT_URL}
       class="block w-full bg-yellow-400 hover:bg-yellow-300 text-blue-900 font-bold text-center text-lg py-4 rounded-xl transition-colors"
     >
-      Payer 500 CHF maintenant →
+      Payer 999 CHF maintenant →
     </a>
     <p class="text-center text-xs text-gray-400 mt-1">🔒 Paiement sécurisé · ↩ Remboursé si insatisfait</p>
   </div>

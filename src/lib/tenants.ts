@@ -1,5 +1,5 @@
-import type { BrandKey } from './brand';
-import { BRANDS } from './brands.config';
+import type { BrandKey } from './brand.ts';
+import { BRANDS } from './brands.config.ts';
 
 export type TenantSlug = BrandKey | 'tonsiteweb' | 'maison-cortes';
 
@@ -38,8 +38,19 @@ const brandTenants: TenantConfig[] = Object.values(BRANDS)
               ? '/onglesgel'
               : brand.key === 'paintballmaceio'
                 ? '/paintballmaceio'
+                : brand.key === 'precisionsystems'
+                  ? '/precisionsystems'
+                  : brand.key === 'iopartner'
+                    ? '/iopartner'
                 : undefined,
-    preserveBasePath: brand.key === 'ateliermemoire' || brand.key === 'tolo-coiffure' || brand.key === 'exostif-coiffure' || brand.key === 'onglesgel' || brand.key === 'paintballmaceio',
+    preserveBasePath:
+      brand.key === 'ateliermemoire' ||
+      brand.key === 'tolo-coiffure' ||
+      brand.key === 'exostif-coiffure' ||
+      brand.key === 'onglesgel' ||
+      brand.key === 'paintballmaceio' ||
+      brand.key === 'precisionsystems' ||
+      brand.key === 'iopartner',
   }));
 
 const extraTenants: TenantConfig[] = [

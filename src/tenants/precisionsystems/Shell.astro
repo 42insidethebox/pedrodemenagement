@@ -1,0 +1,617 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import type { MetaData } from '~/types';
+
+import { getPrecisionSystemsBookingUrl, getPrecisionSystemsWhatsAppUrl, precisionSystemsConfig } from './config';
+import {
+  getPrecisionSystemsCopy,
+  PRECISION_SYSTEMS_LOCALES,
+  resolvePrecisionSystemsBasePath,
+  resolvePrecisionSystemsLocale,
+  type PrecisionSystemsLocale,
+  type PrecisionSystemsPageKey,
+} from './copy';
+import { precisionSystemsTheme } from './theme';
+
+interface Props {
+  page?: PrecisionSystemsPageKey;
+  metadata?: MetaData;
+  locale?: PrecisionSystemsLocale;
+}
+
+const { page = 'home', metadata = {}, locale: localeProp } = Astro.props as Props;
+const locale = localeProp || resolvePrecisionSystemsLocale(Astro.request, Astro.url);
+const copy = getPrecisionSystemsCopy(locale);
+const previewBasePath = resolvePrecisionSystemsBasePath(Astro.request, Astro.url);
+const withBase = (path = '/') => {
+  const normalized = path === '/' ? '' : path.startsWith('/') ? path : `/${path}`;
+  const full = `${previewBasePath}${normalized}`;
+  return full || '/';
+};
+const whatsappUrl = getPrecisionSystemsWhatsAppUrl(copy.shell.whatsappPrefillMessage);
+const bookingUrl = getPrecisionSystemsBookingUrl(copy.shell.whatsappPrefillMessage);
+
+const nav = [
+  { key: 'services', href: withBase('/services'), label: copy.shell.nav.services },
+  { key: 'pricing', href: withBase('/pricing'), label: copy.shell.nav.pricing },
+  { key: 'contact', href: withBase('/contact'), label: copy.shell.nav.contact },
+];
+const languageOptions = PRECISION_SYSTEMS_LOCALES.map((code) => ({
+  code,
+  label: code.toUpperCase(),
+}));
+
+const styleVars = {
+  '--ps-bg': precisionSystemsTheme.colors.background,
+  '--ps-surface': precisionSystemsTheme.colors.surface,
+  '--ps-panel': precisionSystemsTheme.colors.panel,
+  '--ps-text': precisionSystemsTheme.colors.text,
+  '--ps-muted': precisionSystemsTheme.colors.muted,
+  '--ps-accent': precisionSystemsTheme.colors.accent,
+  '--ps-line': precisionSystemsTheme.colors.line,
+  '--ps-dark': precisionSystemsTheme.colors.dark,
+  '--ps-haze': precisionSystemsTheme.colors.haze,
+  '--ps-max': precisionSystemsTheme.layout.maxWidth,
+  '--ps-gap': precisionSystemsTheme.layout.sectionGap,
+  '--ps-font-heading': precisionSystemsTheme.typography.heading,
+  '--ps-font-body': precisionSystemsTheme.typography.body,
+};
+---
+
+<Layout metadata={metadata} brandKey={precisionSystemsTheme.brandKey} styleVars={styleVars} lang={locale}>
+  <div class="ps-shell">
+    <div class="ps-noise" aria-hidden="true"></div>
+
+    <header class="ps-header">
+      <a class="ps-logo" href={withBase('/')} aria-label="Precision Systems">
+        <span class="ps-logo-mark">PS</span>
+        <span class="ps-logo-copy">
+          <span>Precision Systems</span>
+          <small>{copy.shell.logoTagline}</small>
+        </span>
+      </a>
+
+      <nav class="ps-nav" aria-label="Primary navigation">
+        {
+          nav.map((item) => (
+            <a class={item.key === page ? 'is-active' : ''} href={item.href}>
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+
+      <div class="ps-actions">
+        <div class="ps-language">
+          <select id="ps-lang-select" data-ps-lang-select data-initial={locale} aria-label={copy.shell.languageLabel}>
+            {
+              languageOptions.map((option) => (
+                <option value={option.code} selected={locale === option.code}>
+                  {option.label}
+                </option>
+              ))
+            }
+          </select>
+        </div>
+        <a class="ps-text-link" href={whatsappUrl} target="_blank" rel="noreferrer">
+          {copy.shell.whatsapp}
+        </a>
+        <a class="ps-cta" href={bookingUrl} target="_blank" rel="noreferrer">
+          {precisionSystemsConfig.offerDuration} / {precisionSystemsConfig.offerPrice}
+        </a>
+      </div>
+    </header>
+
+    <main class="ps-main">
+      <slot />
+    </main>
+
+    <footer class="ps-footer">
+      <div class="ps-footer-grid">
+        <div class="ps-footer-block">
+          <p class="ps-footer-label">{copy.shell.footer.positioningLabel}</p>
+          <h2>{copy.shell.footer.positioningTitle}</h2>
+          <p>{copy.shell.footer.positioningBody}</p>
+        </div>
+
+        <div class="ps-footer-block">
+          <p class="ps-footer-label">{copy.shell.footer.navigateLabel}</p>
+          <a href={withBase('/services')}>{copy.shell.nav.services}</a>
+          <a href={withBase('/pricing')}>{copy.shell.nav.pricing}</a>
+          <a href={withBase('/contact')}>{copy.shell.nav.contact}</a>
+          <a href={withBase('/privacy')}>{copy.shell.footer.privacy}</a>
+          <a href={withBase('/terms')}>{copy.shell.footer.terms}</a>
+        </div>
+
+        <div class="ps-footer-block">
+          <p class="ps-footer-label">{copy.shell.footer.directLabel}</p>
+          <a href={whatsappUrl} target="_blank" rel="noreferrer">
+            {copy.shell.whatsapp}
+          </a>
+          <a href={precisionSystemsConfig.telHref}>{precisionSystemsConfig.phone}</a>
+          <a href={`mailto:${precisionSystemsConfig.email}`}>{precisionSystemsConfig.email}</a>
+          <p>{copy.shell.footer.location}</p>
+        </div>
+      </div>
+
+      <div class="ps-footer-note">
+        <span>{precisionSystemsConfig.operator}</span>
+        <span>{copy.shell.deliveryArtifact}</span>
+      </div>
+    </footer>
+  </div>
+
+  <script is:inline define:vars={{ currentLocale: locale }}>
+    (() => {
+      const supported = ['fr', 'en', 'de', 'it'];
+      let activeLang = currentLocale;
+
+      const syncLang = (lang, selects) => {
+        activeLang = lang;
+        document.documentElement.lang = lang;
+        localStorage.setItem('aw-lang', lang);
+        document.cookie = `aw_lang=${lang}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
+        selects.forEach((select) => {
+          select.value = lang;
+        });
+      };
+
+      const bind = () => {
+        const selects = Array.from(document.querySelectorAll('[data-ps-lang-select]'));
+        if (!selects.length) return;
+
+        syncLang(activeLang, selects);
+
+        selects.forEach((select) => {
+          if (select.dataset.psLangBound === '1') return;
+          select.dataset.psLangBound = '1';
+          select.addEventListener('change', () => {
+            const nextLang = select.value;
+            if (!supported.includes(nextLang) || nextLang === activeLang) return;
+            syncLang(nextLang, selects);
+            window.location.reload();
+          });
+        });
+      };
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bind, { once: true });
+      } else {
+        bind();
+      }
+      window.addEventListener('pageshow', bind);
+    })();
+  </script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700&display=swap');
+
+    :global(body) {
+      background:
+        radial-gradient(circle at top left, rgba(139, 115, 85, 0.08), transparent 32%),
+        linear-gradient(180deg, #faf7f1 0%, var(--ps-bg) 38%, #efe8dc 100%);
+      color: var(--ps-text);
+      font-family: var(--ps-font-body);
+      letter-spacing: -0.012em;
+    }
+
+    :global(a) {
+      color: inherit;
+    }
+
+    :global(.ps-section) {
+      margin-bottom: var(--ps-gap);
+    }
+
+    :global(.ps-eyebrow) {
+      margin: 0 0 0.95rem;
+      color: var(--ps-muted);
+      font-size: 0.82rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    :global(.ps-title) {
+      margin: 0 0 1rem;
+      font-family: var(--ps-font-heading);
+      font-size: clamp(2.2rem, 4.6vw, 4.4rem);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+    }
+
+    :global(.ps-subtitle) {
+      margin: 0 0 1rem;
+      font-family: var(--ps-font-heading);
+      font-size: clamp(1.45rem, 2.8vw, 2.3rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+    }
+
+    :global(.ps-lead) {
+      max-width: 740px;
+      margin: 0;
+      color: var(--ps-muted);
+      font-size: 1.08rem;
+      line-height: 1.72;
+    }
+
+    :global(.ps-grid) {
+      display: grid;
+      gap: 1.15rem;
+    }
+
+    :global(.ps-grid-2) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    :global(.ps-grid-3) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    :global(.ps-card) {
+      padding: 1.45rem;
+      border: 1px solid var(--ps-line);
+      border-radius: 22px;
+      background: var(--ps-panel);
+      box-shadow: 0 22px 55px -48px rgba(17, 24, 39, 0.35);
+      backdrop-filter: blur(12px);
+    }
+
+    :global(.ps-card h2),
+    :global(.ps-card h3) {
+      margin: 0 0 0.7rem;
+      font-family: var(--ps-font-heading);
+      letter-spacing: -0.03em;
+    }
+
+    :global(.ps-card p),
+    :global(.ps-card li) {
+      color: var(--ps-muted);
+      line-height: 1.65;
+    }
+
+    :global(.ps-card strong) {
+      color: var(--ps-text);
+    }
+
+    :global(.ps-list) {
+      margin: 0;
+      padding-left: 1.1rem;
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    :global(.ps-pills) {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1.25rem;
+    }
+
+    :global(.ps-pill) {
+      border-radius: 999px;
+      border: 1px solid rgba(139, 115, 85, 0.24);
+      padding: 0.48rem 0.85rem;
+      font-size: 0.88rem;
+      color: var(--ps-text);
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    :global(.ps-action-row) {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      align-items: center;
+      margin-top: 1.6rem;
+    }
+
+    :global(.ps-button),
+    .ps-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      border-radius: 999px;
+      border: 1px solid var(--ps-text);
+      padding: 0.85rem 1.2rem;
+      text-decoration: none;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      transition:
+        transform 140ms ease,
+        background 140ms ease,
+        border-color 140ms ease;
+    }
+
+    :global(.ps-button) {
+      background: var(--ps-text);
+      color: #f9f5ef;
+      border-color: var(--ps-text);
+    }
+
+    :global(.ps-button:hover),
+    .ps-cta:hover {
+      transform: translateY(-1px);
+    }
+
+    :global(.ps-button.secondary) {
+      background: transparent;
+      color: var(--ps-text);
+      border-color: rgba(17, 24, 39, 0.18);
+    }
+
+    :global(.ps-note) {
+      margin: 0;
+      color: var(--ps-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .ps-shell {
+      position: relative;
+      min-height: 100vh;
+      overflow: clip;
+    }
+
+    .ps-noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 84% 8%, rgba(17, 24, 39, 0.05), transparent 18%),
+        radial-gradient(circle at 18% 24%, rgba(139, 115, 85, 0.12), transparent 22%);
+      opacity: 0.9;
+    }
+
+    .ps-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 1.25rem;
+      width: min(calc(var(--ps-max) + 4rem), 100%);
+      margin: 0 auto;
+      padding: 1.2rem 2rem;
+      backdrop-filter: blur(16px);
+      background: rgba(244, 240, 232, 0.72);
+      border-bottom: 1px solid rgba(17, 24, 39, 0.08);
+    }
+
+    .ps-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      text-decoration: none;
+    }
+
+    .ps-logo-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 0.85rem;
+      background: var(--ps-text);
+      color: #f9f5ef;
+      font-family: var(--ps-font-heading);
+      font-size: 0.95rem;
+      letter-spacing: -0.03em;
+    }
+
+    .ps-logo-copy {
+      display: grid;
+      gap: 0.15rem;
+      color: var(--ps-text);
+      font-family: var(--ps-font-heading);
+      line-height: 1;
+    }
+
+    .ps-logo-copy small {
+      color: var(--ps-muted);
+      font-family: var(--ps-font-body);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .ps-nav {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    .ps-nav a,
+    .ps-text-link {
+      position: relative;
+      text-decoration: none;
+      color: var(--ps-muted);
+      font-weight: 600;
+    }
+
+    .ps-nav a::after,
+    .ps-text-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -0.3rem;
+      width: 100%;
+      height: 1px;
+      background: var(--ps-text);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 140ms ease;
+    }
+
+    .ps-nav a:hover::after,
+    .ps-nav a.is-active::after,
+    .ps-text-link:hover::after {
+      transform: scaleX(1);
+    }
+
+    .ps-nav a.is-active {
+      color: var(--ps-text);
+    }
+
+    .ps-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      justify-content: flex-end;
+    }
+
+    .ps-language {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid rgba(17, 24, 39, 0.12);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: 0 16px 34px -26px rgba(17, 24, 39, 0.2);
+      overflow: hidden;
+    }
+
+    .ps-language::after {
+      content: '';
+      position: absolute;
+      right: 0.78rem;
+      top: 50%;
+      width: 0.38rem;
+      height: 0.38rem;
+      border-right: 1.4px solid rgba(17, 24, 39, 0.68);
+      border-bottom: 1.4px solid rgba(17, 24, 39, 0.68);
+      transform: translateY(-68%) rotate(45deg);
+      pointer-events: none;
+    }
+
+    .ps-language select {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      padding: 0.64rem 1.75rem 0.64rem 0.95rem;
+      color: var(--ps-text);
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .ps-cta {
+      background: rgba(255, 255, 255, 0.75);
+      color: var(--ps-text);
+      border-color: rgba(17, 24, 39, 0.16);
+    }
+
+    .ps-main {
+      width: min(calc(var(--ps-max) + 4rem), 100%);
+      margin: 0 auto;
+      padding: 2.4rem 2rem var(--ps-gap);
+      position: relative;
+      z-index: 1;
+    }
+
+    .ps-footer {
+      margin-top: 3rem;
+      padding: 2.8rem 2rem 2.4rem;
+      background: rgba(22, 24, 29, 0.96);
+      color: rgba(249, 245, 239, 0.92);
+      position: relative;
+      z-index: 1;
+    }
+
+    .ps-footer-grid {
+      width: min(calc(var(--ps-max) + 4rem), 100%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1fr;
+      gap: 1.4rem 2rem;
+    }
+
+    .ps-footer-block {
+      display: grid;
+      gap: 0.45rem;
+      align-content: start;
+    }
+
+    .ps-footer-block a,
+    .ps-footer-block p {
+      margin: 0;
+      color: rgba(249, 245, 239, 0.72);
+      text-decoration: none;
+      line-height: 1.6;
+    }
+
+    .ps-footer-block h2 {
+      margin: 0;
+      font-family: var(--ps-font-heading);
+      font-size: 1.4rem;
+      letter-spacing: -0.03em;
+    }
+
+    .ps-footer-label {
+      margin: 0;
+      color: rgba(249, 245, 239, 0.55);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+    }
+
+    .ps-footer-note {
+      width: min(calc(var(--ps-max) + 4rem), 100%);
+      margin: 1.8rem auto 0;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(249, 245, 239, 0.12);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem 1.4rem;
+      color: rgba(249, 245, 239, 0.55);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 980px) {
+      :global(.ps-grid-3) {
+        grid-template-columns: 1fr;
+      }
+
+      .ps-header {
+        grid-template-columns: 1fr;
+        justify-items: start;
+      }
+
+      .ps-nav,
+      .ps-actions {
+        justify-content: flex-start;
+      }
+
+      .ps-footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      :global(.ps-grid-2) {
+        grid-template-columns: 1fr;
+      }
+
+      .ps-header,
+      .ps-main,
+      .ps-footer {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      .ps-actions {
+        width: 100%;
+        flex-wrap: wrap;
+      }
+
+      .ps-language select {
+        min-width: 4.25rem;
+      }
+    }
+  </style>
+</Layout>

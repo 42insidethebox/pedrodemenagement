@@ -1,0 +1,528 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import type { MetaData } from '~/types';
+
+import { getIoPartnerBookingUrl, getIoPartnerWhatsAppUrl, iopartnerConfig } from './config';
+import {
+  getIoPartnerCopy,
+  IOPARTNER_LOCALES,
+  resolveIoPartnerBasePath,
+  resolveIoPartnerLocale,
+  type IoPartnerLocale,
+  type IoPartnerPageKey,
+} from './copy';
+import { iopartnerTheme } from './theme';
+
+interface Props {
+  page?: IoPartnerPageKey;
+  metadata?: MetaData;
+  locale?: IoPartnerLocale;
+}
+
+const { page = 'home', metadata = {}, locale: localeProp } = Astro.props as Props;
+const locale = localeProp || resolveIoPartnerLocale(Astro.request, Astro.url);
+const copy = getIoPartnerCopy(locale);
+const previewBasePath = resolveIoPartnerBasePath(Astro.request, Astro.url);
+const withBase = (path = '/') => {
+  const normalized = path === '/' ? '' : path.startsWith('/') ? path : `/${path}`;
+  const full = `${previewBasePath}${normalized}`;
+  return full || '/';
+};
+const whatsappUrl = getIoPartnerWhatsAppUrl(copy.shell.whatsappPrefillMessage);
+const bookingUrl = getIoPartnerBookingUrl(copy.shell.whatsappPrefillMessage);
+
+const nav = [
+  { key: 'services', href: withBase('/services'), label: copy.shell.nav.services },
+  { key: 'pricing', href: withBase('/pricing'), label: copy.shell.nav.pricing },
+  { key: 'contact', href: withBase('/contact'), label: copy.shell.nav.contact },
+];
+
+const languageOptions = IOPARTNER_LOCALES.map((code) => ({
+  code,
+  label: code.toUpperCase(),
+}));
+
+const styleVars = {
+  '--ps-bg': iopartnerTheme.colors.background,
+  '--ps-surface': iopartnerTheme.colors.surface,
+  '--ps-panel': iopartnerTheme.colors.panel,
+  '--ps-text': iopartnerTheme.colors.text,
+  '--ps-muted': iopartnerTheme.colors.muted,
+  '--ps-accent': iopartnerTheme.colors.accent,
+  '--ps-line': iopartnerTheme.colors.line,
+  '--ps-dark': iopartnerTheme.colors.dark,
+  '--ps-haze': iopartnerTheme.colors.haze,
+  '--ps-max': iopartnerTheme.layout.maxWidth,
+  '--ps-gap': iopartnerTheme.layout.sectionGap,
+  '--ps-font-heading': iopartnerTheme.typography.heading,
+  '--ps-font-body': iopartnerTheme.typography.body,
+};
+---
+
+<Layout metadata={metadata} brandKey={iopartnerTheme.brandKey} styleVars={styleVars} lang={locale}>
+  <div class="ps-shell">
+    <div class="ps-noise" aria-hidden="true"></div>
+
+    <header class="ps-header">
+      <a class="ps-logo" href={withBase('/')} aria-label="IO Partner">
+        <span class="ps-logo-mark">IO</span>
+        <span class="ps-logo-copy">
+          <span>IO Partner</span>
+          <small>{copy.shell.logoTagline}</small>
+        </span>
+      </a>
+
+      <nav class="ps-nav" aria-label="Primary navigation">
+        {
+          nav.map((item) => (
+            <a class={item.key === page ? 'is-active' : ''} href={item.href}>
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+
+      <div class="ps-actions">
+        <label class="ps-language" aria-label={copy.shell.languageLabel}>
+          <select data-io-lang-select data-initial={locale}>
+            {
+              languageOptions.map((option) => (
+                <option value={option.code} selected={locale === option.code}>
+                  {option.label}
+                </option>
+              ))
+            }
+          </select>
+        </label>
+        <a class="ps-text-link" href={whatsappUrl} target="_blank" rel="noreferrer">
+          {copy.shell.whatsapp}
+        </a>
+        <a class="ps-cta" href={bookingUrl} target="_blank" rel="noreferrer">
+          {iopartnerConfig.offerDuration} / {iopartnerConfig.offerPrice}
+        </a>
+      </div>
+    </header>
+
+    <main class="ps-main">
+      <slot />
+    </main>
+
+    <footer class="ps-footer">
+      <div class="ps-footer-grid">
+        <div class="ps-footer-block">
+          <p class="ps-footer-label">{copy.shell.footer.positioningLabel}</p>
+          <h2>{copy.shell.footer.positioningTitle}</h2>
+          <p>{copy.shell.footer.positioningBody}</p>
+        </div>
+
+        <div class="ps-footer-block">
+          <p class="ps-footer-label">{copy.shell.footer.navigateLabel}</p>
+          <a href={withBase('/services')}>{copy.shell.nav.services}</a>
+          <a href={withBase('/pricing')}>{copy.shell.nav.pricing}</a>
+          <a href={withBase('/contact')}>{copy.shell.nav.contact}</a>
+          <a href={withBase('/privacy')}>{copy.shell.footer.privacy}</a>
+          <a href={withBase('/terms')}>{copy.shell.footer.terms}</a>
+        </div>
+
+        <div class="ps-footer-block">
+          <p class="ps-footer-label">{copy.shell.footer.directLabel}</p>
+          <a href={whatsappUrl} target="_blank" rel="noreferrer">
+            {copy.shell.whatsapp}
+          </a>
+          <a href={iopartnerConfig.telHref}>{iopartnerConfig.phone}</a>
+          <a href={`mailto:${iopartnerConfig.email}`}>{iopartnerConfig.email}</a>
+          <p>{copy.shell.footer.location}</p>
+        </div>
+      </div>
+
+      <div class="ps-footer-note">
+        <span>{iopartnerConfig.operator}</span>
+        <span>{copy.shell.deliveryArtifact}</span>
+      </div>
+    </footer>
+  </div>
+
+  <script is:inline define:vars={{ currentLocale: locale }}>
+    (() => {
+      const supported = ['fr', 'en', 'de', 'it'];
+      let activeLang = currentLocale;
+
+      const syncLang = (lang, selects) => {
+        activeLang = lang;
+        document.documentElement.lang = lang;
+        localStorage.setItem('aw-lang', lang);
+        document.cookie = `aw_lang=${lang}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
+        selects.forEach((select) => {
+          select.value = lang;
+        });
+      };
+
+      const bind = () => {
+        const selects = Array.from(document.querySelectorAll('[data-io-lang-select]'));
+        if (!selects.length) return;
+
+        syncLang(activeLang, selects);
+
+        selects.forEach((select) => {
+          if (select.dataset.ioLangBound === '1') return;
+          select.dataset.ioLangBound = '1';
+          select.addEventListener('change', () => {
+            const nextLang = select.value;
+            if (!supported.includes(nextLang) || nextLang === activeLang) return;
+            syncLang(nextLang, selects);
+            window.location.reload();
+          });
+        });
+      };
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bind, { once: true });
+      } else {
+        bind();
+      }
+      window.addEventListener('pageshow', bind);
+    })();
+  </script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700&display=swap');
+
+    :global(body) {
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.1), transparent 28%),
+        linear-gradient(180deg, #f8fbff 0%, var(--ps-bg) 38%, #edf4ff 100%);
+      color: var(--ps-text);
+      font-family: var(--ps-font-body);
+      letter-spacing: -0.012em;
+    }
+
+    :global(a) {
+      color: inherit;
+    }
+
+    :global(.ps-section) {
+      margin-bottom: var(--ps-gap);
+    }
+
+    :global(.ps-eyebrow) {
+      margin: 0 0 0.95rem;
+      color: var(--ps-muted);
+      font-size: 0.82rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    :global(.ps-title) {
+      margin: 0 0 1rem;
+      font-family: var(--ps-font-heading);
+      font-size: clamp(2.3rem, 4.8vw, 4.7rem);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+    }
+
+    :global(.ps-subtitle) {
+      margin: 0 0 1rem;
+      font-family: var(--ps-font-heading);
+      font-size: clamp(1.45rem, 2.8vw, 2.3rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+    }
+
+    :global(.ps-lead) {
+      max-width: 760px;
+      margin: 0;
+      color: var(--ps-muted);
+      font-size: 1.06rem;
+      line-height: 1.72;
+    }
+
+    :global(.ps-grid) {
+      display: grid;
+      gap: 1.15rem;
+    }
+
+    :global(.ps-grid-2) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    :global(.ps-grid-3) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    :global(.ps-card) {
+      padding: 1.45rem;
+      border: 1px solid var(--ps-line);
+      border-radius: 22px;
+      background: var(--ps-panel);
+      box-shadow: 0 22px 55px -48px rgba(15, 23, 42, 0.35);
+      backdrop-filter: blur(12px);
+    }
+
+    :global(.ps-card h2),
+    :global(.ps-card h3) {
+      margin: 0 0 0.65rem;
+      font-family: var(--ps-font-heading);
+      letter-spacing: -0.03em;
+    }
+
+    :global(.ps-card p) {
+      color: var(--ps-muted);
+      line-height: 1.68;
+    }
+
+    :global(.ps-list) {
+      margin: 0;
+      padding-left: 1rem;
+      color: var(--ps-muted);
+      display: grid;
+      gap: 0.55rem;
+      line-height: 1.58;
+    }
+
+    :global(.ps-action-row) {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.2rem;
+    }
+
+    :global(.ps-button) {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0.85rem 1.15rem;
+      border-radius: 999px;
+      background: var(--ps-accent);
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
+      box-shadow: 0 18px 35px -26px rgba(37, 99, 235, 0.6);
+    }
+
+    :global(.ps-button:hover) {
+      transform: translateY(-1px);
+    }
+
+    :global(.ps-button.secondary) {
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--ps-text);
+      border: 1px solid var(--ps-line);
+      box-shadow: none;
+    }
+
+    .ps-shell {
+      position: relative;
+      width: min(var(--ps-max), calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 1.1rem 0 4rem;
+    }
+
+    .ps-noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.18;
+      background-image:
+        linear-gradient(rgba(15, 23, 42, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.58), transparent 92%);
+    }
+
+    .ps-header {
+      position: sticky;
+      top: 1rem;
+      z-index: 30;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 1rem;
+      align-items: center;
+      padding: 0.9rem 1rem;
+      margin-bottom: 2rem;
+      border: 1px solid var(--ps-line);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.82);
+      box-shadow: 0 24px 50px -46px rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(14px);
+    }
+
+    .ps-logo {
+      display: inline-flex;
+      gap: 0.85rem;
+      align-items: center;
+      text-decoration: none;
+      min-width: 0;
+    }
+
+    .ps-logo-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.7rem;
+      height: 2.7rem;
+      border-radius: 18px;
+      background: var(--ps-dark);
+      color: #eff6ff;
+      font-family: var(--ps-font-heading);
+      font-weight: 700;
+      letter-spacing: -0.05em;
+    }
+
+    .ps-logo-copy {
+      display: grid;
+      gap: 0.12rem;
+      min-width: 0;
+    }
+
+    .ps-logo-copy span {
+      font-family: var(--ps-font-heading);
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .ps-logo-copy small {
+      color: var(--ps-muted);
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .ps-nav {
+      display: inline-flex;
+      gap: 0.45rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .ps-nav a {
+      padding: 0.72rem 0.95rem;
+      border-radius: 999px;
+      color: var(--ps-muted);
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 120ms ease, color 120ms ease;
+    }
+
+    .ps-nav a.is-active,
+    .ps-nav a:hover {
+      background: rgba(37, 99, 235, 0.08);
+      color: var(--ps-text);
+    }
+
+    .ps-actions {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.7rem;
+      flex-wrap: wrap;
+    }
+
+    .ps-language select {
+      min-height: 42px;
+      padding: 0 0.9rem;
+      border-radius: 999px;
+      border: 1px solid var(--ps-line);
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--ps-text);
+    }
+
+    .ps-text-link {
+      color: var(--ps-muted);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .ps-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0.78rem 1rem;
+      border-radius: 999px;
+      background: var(--ps-dark);
+      color: #fff;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .ps-main {
+      display: grid;
+      gap: 0;
+    }
+
+    .ps-footer {
+      margin-top: 2rem;
+      padding: 1.25rem 0 0;
+      border-top: 1px solid rgba(15, 23, 42, 0.08);
+    }
+
+    .ps-footer-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 0.9fr 0.9fr;
+      gap: 1rem;
+    }
+
+    .ps-footer-block {
+      display: grid;
+      gap: 0.45rem;
+    }
+
+    .ps-footer-block h2 {
+      margin: 0;
+      font-family: var(--ps-font-heading);
+      letter-spacing: -0.03em;
+    }
+
+    .ps-footer-block p,
+    .ps-footer-block a {
+      margin: 0;
+      color: var(--ps-muted);
+      line-height: 1.64;
+      text-decoration: none;
+    }
+
+    .ps-footer-block a:hover {
+      color: var(--ps-text);
+    }
+
+    .ps-footer-label {
+      margin: 0;
+      color: var(--ps-muted);
+      font-size: 0.76rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .ps-footer-note {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-top: 1rem;
+      margin-top: 1rem;
+      border-top: 1px solid rgba(15, 23, 42, 0.08);
+      color: var(--ps-muted);
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 980px) {
+      :global(.ps-grid-2),
+      :global(.ps-grid-3),
+      .ps-footer-grid,
+      .ps-header {
+        grid-template-columns: 1fr;
+      }
+
+      .ps-nav,
+      .ps-actions {
+        justify-content: flex-start;
+      }
+
+      .ps-footer-note {
+        flex-direction: column;
+      }
+    }
+  </style>
+</Layout>

@@ -1,0 +1,125 @@
+---
+import PipelineDiagram from '~/tenants/precisionsystems/PipelineDiagram.astro';
+import Shell from '~/tenants/precisionsystems/Shell.astro';
+import {
+  getPrecisionSystemsBookingUrl,
+  getPrecisionSystemsWhatsAppUrl,
+  precisionSystemsConfig,
+} from '~/tenants/precisionsystems/config';
+import { getPrecisionSystemsCopy, resolvePrecisionSystemsLocale } from '~/tenants/precisionsystems/copy';
+
+const locale = resolvePrecisionSystemsLocale(Astro.request, Astro.url);
+const copy = getPrecisionSystemsCopy(locale);
+const whatsappUrl = getPrecisionSystemsWhatsAppUrl(copy.shell.whatsappPrefillMessage);
+const bookingUrl = getPrecisionSystemsBookingUrl(copy.shell.whatsappPrefillMessage);
+const metadata = { ...copy.meta.contact, ignoreTitleTemplate: true };
+---
+
+<Shell page="contact" metadata={metadata} locale={locale}>
+  <section class="ps-section">
+    <p class="ps-eyebrow">{copy.contact.eyebrow}</p>
+    <h1 class="ps-title">{copy.contact.title}</h1>
+    <p class="ps-lead">{copy.contact.lead}</p>
+  </section>
+
+  <section class="ps-section">
+    <div class="ps-grid ps-grid-3">
+      <article class="ps-card">
+        <p class="ps-eyebrow">{copy.contact.cards.whatsapp.eyebrow}</p>
+        <h2>{copy.contact.cards.whatsapp.title}</h2>
+        <p>{copy.contact.cards.whatsapp.body}</p>
+        <div class="ps-action-row">
+          <a class="ps-button" href={whatsappUrl} target="_blank" rel="noreferrer">
+            {copy.contact.cards.whatsapp.cta}
+          </a>
+        </div>
+      </article>
+
+      <article class="ps-card">
+        <p class="ps-eyebrow">{copy.contact.cards.booking.eyebrow}</p>
+        <h2>{copy.contact.cards.booking.title}</h2>
+        <p>
+          {
+            precisionSystemsConfig.calendlyUrl
+              ? copy.contact.cards.booking.liveBody
+              : copy.contact.cards.booking.fallbackBody
+          }
+        </p>
+        <div class="ps-action-row">
+          <a class="ps-button secondary" href={bookingUrl} target="_blank" rel="noreferrer">
+            {
+              precisionSystemsConfig.calendlyUrl
+                ? copy.contact.cards.booking.liveCta
+                : copy.contact.cards.booking.fallbackCta
+            }
+          </a>
+        </div>
+      </article>
+
+      <article class="ps-card">
+        <p class="ps-eyebrow">{copy.contact.cards.email.eyebrow}</p>
+        <h2>{copy.contact.cards.email.title}</h2>
+        <p>{copy.contact.cards.email.body}</p>
+        <div class="ps-action-row">
+          <a class="ps-button secondary" href={`mailto:${precisionSystemsConfig.email}`}>
+            {precisionSystemsConfig.email}
+          </a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  {
+    precisionSystemsConfig.calendlyUrl && (
+      <section class="ps-section">
+        <div class="ps-card ps-calendly-card">
+          <p class="ps-eyebrow">{copy.contact.cards.booking.eyebrow}</p>
+          <h2>{copy.contact.cards.booking.title}</h2>
+          <div class="calendly-inline-widget ps-calendly-widget" data-url={precisionSystemsConfig.calendlyUrl} />
+        </div>
+      </section>
+    )
+  }
+
+  <section class="ps-section">
+    <PipelineDiagram
+      eyebrow={copy.contact.pipeline.eyebrow}
+      title={copy.contact.pipeline.title}
+      lead={copy.contact.pipeline.lead}
+      nodes={copy.contact.pipeline.nodes}
+    />
+  </section>
+
+  <section class="ps-section">
+    <div class="ps-card">
+      <p class="ps-eyebrow">{copy.contact.notes.eyebrow}</p>
+      <ul class="ps-list">
+        {copy.contact.notes.items().map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  {
+    precisionSystemsConfig.calendlyUrl && (
+      <script is:inline src="https://assets.calendly.com/assets/external/widget.js" async />
+    )
+  }
+
+  <style>
+    .ps-calendly-card {
+      padding-bottom: 1rem;
+    }
+
+    .ps-calendly-widget {
+      min-width: 320px;
+      height: 760px;
+    }
+
+    @media (max-width: 720px) {
+      .ps-calendly-widget {
+        min-width: 100%;
+        height: 700px;
+      }
+    }
+  </style>
+</Shell>

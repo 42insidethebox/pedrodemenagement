@@ -1,0 +1,130 @@
+---
+import PipelineDiagram from '~/tenants/precisionsystems/PipelineDiagram.astro';
+import Shell from '~/tenants/precisionsystems/Shell.astro';
+import {
+  getPrecisionSystemsBookingUrl,
+  getPrecisionSystemsWhatsAppUrl,
+  precisionSystemsOffers,
+} from '~/tenants/precisionsystems/config';
+import { getPrecisionSystemsCopy, resolvePrecisionSystemsLocale } from '~/tenants/precisionsystems/copy';
+
+const locale = resolvePrecisionSystemsLocale(Astro.request, Astro.url);
+const copy = getPrecisionSystemsCopy(locale);
+const whatsappUrl = getPrecisionSystemsWhatsAppUrl(copy.shell.whatsappPrefillMessage);
+const bookingUrl = getPrecisionSystemsBookingUrl(copy.shell.whatsappPrefillMessage);
+const metadata = { ...copy.meta.pricing, ignoreTitleTemplate: true };
+---
+
+<Shell page="pricing" metadata={metadata} locale={locale}>
+  <section class="ps-section">
+    <p class="ps-eyebrow">{copy.pricing.eyebrow}</p>
+    <h1 class="ps-title">{copy.pricing.title}</h1>
+    <p class="ps-lead">{copy.pricing.lead}</p>
+  </section>
+
+  <section class="ps-section">
+    <p class="ps-eyebrow">{copy.pricing.tiersEyebrow}</p>
+    <h2 class="ps-subtitle">{copy.pricing.tiersTitle}</h2>
+    <p class="ps-lead">{copy.pricing.tiersLead}</p>
+  </section>
+
+  <section class="ps-section">
+    <div class="ps-pricing-shell">
+      {
+        precisionSystemsOffers.map((offer) => {
+          const tier = copy.pricing.tiers[offer.key];
+          return (
+            <article class={`ps-card ${offer.key === 'diagnostic' ? 'ps-pricing-card' : ''}`}>
+              <p class="ps-eyebrow">{tier.eyebrow}</p>
+              <h2>{tier.title}</h2>
+              <div class="ps-price-line">
+                <strong>{offer.price}</strong>
+                <span>{offer.duration}</span>
+              </div>
+              <p>{tier.summary}</p>
+              <ul class="ps-list">
+                {tier.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+              <div class="ps-action-row">
+                <a
+                  class={offer.key === 'diagnostic' ? 'ps-button' : 'ps-button secondary'}
+                  href={offer.key === 'diagnostic' ? bookingUrl : whatsappUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {tier.cta}
+                </a>
+              </div>
+            </article>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <section class="ps-section">
+    <PipelineDiagram
+      eyebrow={copy.pricing.process.eyebrow}
+      title={copy.pricing.process.title}
+      lead={copy.pricing.process.lead}
+      nodes={copy.pricing.process.nodes}
+    />
+  </section>
+
+  <section class="ps-section">
+    <div class="ps-grid ps-grid-3">
+      {
+        copy.pricing.cards.map((card) => (
+          <article class="ps-card">
+            <h3>{card.title}</h3>
+            <p>{card.body}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <style>
+    .ps-pricing-shell {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.15rem;
+      align-items: start;
+    }
+
+    .ps-pricing-card {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.82)),
+        radial-gradient(circle at top right, var(--ps-haze), transparent 36%);
+    }
+
+    .ps-price-line {
+      display: flex;
+      align-items: baseline;
+      gap: 0.8rem;
+      margin: 0 0 1rem;
+    }
+
+    .ps-price-line strong {
+      font-family: var(--ps-font-heading);
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      line-height: 0.95;
+      letter-spacing: -0.05em;
+    }
+
+    .ps-price-line span {
+      color: var(--ps-muted);
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    @media (max-width: 980px) {
+      .ps-pricing-shell {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</Shell>

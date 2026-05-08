@@ -12,6 +12,7 @@ import { adaptOpenGraphImages } from '~/utils/images';
 
 export interface Props extends MetaData {
   dontUseTitleTemplate?: boolean;
+  lang?: string;
 }
 
 const {
@@ -22,11 +23,12 @@ const {
   description,
   openGraph = {},
   twitter = {},
+  lang,
 } = Astro.props;
 
 const path = Astro.url?.pathname || '/';
 const match = path.match(/^\/(fr|en|de|it)(?=\/|$)/);
-const routeLang = (match && match[1]) || I18N?.language || 'fr';
+const routeLang = lang || (match && match[1]) || I18N?.language || 'fr';
 
 const seoProps: AstroSeoProps = merge(
   {

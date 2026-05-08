@@ -6,7 +6,7 @@ import { getStripe } from './stripe';
 import { assertRateLimit } from './rate-limit';
 import { resolveLocaleFromRequest } from './locale';
 import { getSupabaseAdmin } from './supabase';
-import { determineStripePriceId, isSubscriptionPlan } from './pricing.js';
+import { determineStripePriceId, isSubscriptionPlan, normalizePlanId } from './pricing.js';
 import { buildSuccessUrl, buildCancelUrl } from './urls.js';
 import { serializeMetadata } from './metadata.js';
 import { isAllowedTemplate } from './templates.js';
@@ -75,7 +75,7 @@ async function handlePlanCheckout(ctx: CheckoutContext, config: PlanCheckoutConf
     data = { ...data, ...parseBodyParams(body) };
   }
 
-  const plan = String(data.plan || 'essential').toLowerCase();
+  const plan = normalizePlanId(String(data.plan || 'essential').toLowerCase());
   if (!config.allowedPlans.includes(plan)) return new Response('Invalid plan', { status: 400 });
 
   const templateRaw = String(data.template || '').trim();

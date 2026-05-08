@@ -130,7 +130,7 @@ const WA_NUMBER = '41767982793';
 const waMessageBase = encodeURIComponent(`Bonjour, j'ai commandé un site sur TonSiteWeb.ch`);
 const waMessageWithSession = encodeURIComponent(`Bonjour, j'ai commandé un site sur TonSiteWeb.ch (ref: ${sessionId})`);
 const waUrl = `https://wa.me/${WA_NUMBER}?text=${hasSession ? waMessageWithSession : waMessageBase}`;
-const waCustomUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Bonjour, j'ai payé pour un site à 500 CHF et j'aimerais discuter d'un projet plus élaboré.")}`;
+const waCustomUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Bonjour, j'ai commandé un site TonSiteWeb et j'aimerais discuter d'un projet plus élaboré.")}`;
 ---
 
 <Layout metadata={metadata}>
@@ -252,9 +252,9 @@ const waCustomUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Bonjo
             // FB Pixel Purchase event — critical for ad optimization
             if (typeof fbq !== 'undefined' && data.payment_status === 'paid') {
               fbq('track', 'Purchase', {
-                value: typeof amountMinor === 'number' ? (amountMinor / 100).toFixed(2) : '500.00',
+                value: typeof amountMinor === 'number' ? (amountMinor / 100).toFixed(2) : '999.00',
                 currency: currency,
-                content_ids: [data.plan || 'essential500'],
+                content_ids: [data.plan || 'essential999'],
                 content_type: 'product',
               });
             }

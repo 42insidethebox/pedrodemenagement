@@ -1,0 +1,46 @@
+---
+import Shell from '~/tenants/precisionsystems/Shell.astro';
+import { precisionSystemsConfig } from '~/tenants/precisionsystems/config';
+import { getPrecisionSystemsCopy, resolvePrecisionSystemsLocale } from '~/tenants/precisionsystems/copy';
+
+const locale = resolvePrecisionSystemsLocale(Astro.request, Astro.url);
+const copy = getPrecisionSystemsCopy(locale);
+const metadata = { ...copy.meta.privacy, ignoreTitleTemplate: true };
+---
+
+<Shell page="privacy" metadata={metadata} locale={locale}>
+  <section class="ps-section">
+    <p class="ps-eyebrow">{copy.privacy.eyebrow}</p>
+    <h1 class="ps-title">{copy.privacy.title}</h1>
+    <p class="ps-lead">{copy.privacy.lead(precisionSystemsConfig)}</p>
+  </section>
+
+  <section class="ps-section">
+    <div class="ps-grid ps-grid-2">
+      <article class="ps-card">
+        <h2>{copy.privacy.collected.title}</h2>
+        <ul class="ps-list">
+          {copy.privacy.collected.items.map((item) => <li>{item}</li>)}
+        </ul>
+      </article>
+
+      <article class="ps-card">
+        <h2>{copy.privacy.usage.title}</h2>
+        <ul class="ps-list">
+          {copy.privacy.usage.items.map((item) => <li>{item}</li>)}
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="ps-section">
+    <div class="ps-card">
+      <h2>{copy.privacy.tools.title}</h2>
+      <p>{copy.privacy.tools.body}</p>
+      <p>
+        {copy.privacy.tools.contactLead}{' '}
+        <a href={`mailto:${precisionSystemsConfig.email}`}>{precisionSystemsConfig.email}</a>.
+      </p>
+    </div>
+  </section>
+</Shell>

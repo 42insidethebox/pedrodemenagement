@@ -1,5 +1,6 @@
 ---
 import Layout from '~/layouts/Layout.astro';
+import { normalizePlanId, TONSITEWEB_DEFAULT_PLAN } from '~/lib/pricing.js';
 
 export const prerender = false;
 
@@ -16,8 +17,29 @@ function resolveLocale(): Locale {
 }
 
 const locale = resolveLocale();
-const plan = Astro.url.searchParams.get('plan') || 'essential500';
+const plan = normalizePlanId(Astro.url.searchParams.get('plan') || TONSITEWEB_DEFAULT_PLAN);
 const error = Astro.url.searchParams.get('error') || '';
+
+const PLAN_PRICE_LABELS = {
+  essential999: {
+    fr: '999 CHF',
+    en: 'CHF 999',
+    de: '999 CHF',
+    it: '999 CHF',
+  },
+  essential1249: {
+    fr: '1 249 CHF',
+    en: 'CHF 1,249',
+    de: '1’249 CHF',
+    it: '1’249 CHF',
+  },
+  essential1500: {
+    fr: '1 500 CHF',
+    en: 'CHF 1,500',
+    de: '1’500 CHF',
+    it: '1’500 CHF',
+  },
+} as const;
 
 const T = {
   fr: {
@@ -55,7 +77,7 @@ const T = {
     s6: 'Informations complémentaires',
     refs: 'Sites que vous aimez (références)', refsPh: 'Collez des URLs ou décrivez le style…',
     notes: 'Questions ou demandes spéciales', notesPh: 'Tout ce qui vous semble important…',
-    submit: 'Continuer vers le paiement — 500 CHF →',
+    submitPrefix: 'Continuer vers le paiement',
     privacy: 'Vos informations sont sécurisées et utilisées uniquement pour créer votre site.',
     sectors: ['Commerce / Boutique','Artisan / Construction','Beauté / Bien-être','Restauration / Traiteur','Santé / Thérapeute','Immobilier / Conciergerie','Transport / Déménagement','Coiffure','Sport / Fitness','Autre'],
     cName: 'Votre prénom et nom', cNamePh: 'Ex : Marie Dupont',
@@ -96,7 +118,7 @@ const T = {
     s6: 'Additional information',
     refs: 'Sites you like (references)', refsPh: 'Paste URLs or describe styles you like…',
     notes: 'Questions or special requests', notesPh: 'Anything important for your site…',
-    submit: 'Continue to payment — CHF 500 →',
+    submitPrefix: 'Continue to payment',
     privacy: 'Your information is secure and used solely to create your website.',
     sectors: ['Retail / Shop','Craftsman / Construction','Beauty / Wellness','Restaurant / Catering','Health / Therapist','Real Estate / Concierge','Transport / Moving','Hairdressing','Sport / Fitness','Other'],
     cName: 'Your name', cNamePh: 'E.g.: Marie Dupont',
@@ -137,7 +159,7 @@ const T = {
     s6: 'Weitere Informationen',
     refs: 'Websites, die Sie mögen (Referenzen)', refsPh: 'URLs einfügen oder Stil beschreiben…',
     notes: 'Fragen oder besondere Wünsche', notesPh: 'Alles Wichtige für Ihre Website…',
-    submit: 'Weiter zur Zahlung — 500 CHF →',
+    submitPrefix: 'Weiter zur Zahlung',
     privacy: 'Ihre Daten sind sicher und werden ausschliesslich zur Erstellung Ihrer Website verwendet.',
     sectors: ['Handel / Geschäft','Handwerk / Bau','Schönheit / Wellness','Restaurant / Catering','Gesundheit / Therapeut','Immobilien / Concierge','Transport / Umzug','Friseur','Sport / Fitness','Sonstiges'],
     cName: 'Ihr Vor- und Nachname', cNamePh: 'Z.B.: Marie Dupont',
@@ -178,7 +200,7 @@ const T = {
     s6: 'Informazioni aggiuntive',
     refs: 'Siti che vi piacciono (riferimenti)', refsPh: 'Incollate URL o descrivete lo stile…',
     notes: 'Domande o richieste speciali', notesPh: 'Tutto ciò che è importante per il vostro sito…',
-    submit: 'Continua al pagamento — 500 CHF →',
+    submitPrefix: 'Continua al pagamento',
     privacy: 'Le vostre informazioni sono sicure e utilizzate esclusivamente per creare il vostro sito.',
     sectors: ['Commercio / Negozio','Artigiano / Edilizia','Bellezza / Benessere','Ristorazione / Catering','Salute / Terapista','Immobiliare / Concierge','Trasporti / Traslochi','Parrucchiere','Sport / Fitness','Altro'],
     cName: 'Nome e cognome', cNamePh: 'Es.: Marie Dupont',
@@ -187,6 +209,8 @@ const T = {
 } as const;
 
 const t = T[locale];
+const planPrice = PLAN_PRICE_LABELS[plan as keyof typeof PLAN_PRICE_LABELS] ?? PLAN_PRICE_LABELS[TONSITEWEB_DEFAULT_PLAN];
+const submitLabel = `${t.submitPrefix} — ${planPrice[locale]} →`;
 ---
 
 <Layout
@@ -448,7 +472,7 @@ const t = T[locale];
 
         <button type="submit" id="onboarding-submit"
           class="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white font-bold text-lg py-4 rounded-2xl transition-colors">
-          {t.submit}
+          {submitLabel}
         </button>
         <p class="text-center text-xs text-gray-400 pb-8">{t.privacy}</p>
       </form>

@@ -1,4 +1,4 @@
-import type { BrandKey } from './brand';
+import type { BrandKey } from './brand.ts';
 
 export type BrandProfile = {
   key: BrandKey;
@@ -395,6 +395,54 @@ export const BRANDS: Record<BrandKey, BrandProfile> = {
     whatsapp: 'https://wa.me/5582999990000',
     email: 'contato@paintballmaceio.com.br',
     legalOperator: 'Paintball Maceió',
+  },
+  precisionsystems: {
+    key: 'precisionsystems',
+    name: 'Precision Systems',
+    shortName: 'Precision Systems',
+    domain: 'precisionsystems.ch',
+    seoTitle: 'Precision Systems — Strategic clarity for founders and operators',
+    seoDescription:
+      'Short consulting engagements for decision clarity, offer positioning, systems review, and automation triage.',
+    primaryColor: '#111827',
+    secondaryColor: '#8b7355',
+    fonts: { sans: 'Manrope', heading: 'Sora' },
+    theme: {
+      bg: '#f4f0e8',
+      surface: 'rgba(255,255,255,0.72)',
+      card: 'rgba(255,255,255,0.9)',
+      accent: '#8b7355',
+      pattern: 'none',
+      shadow: '0 24px 70px -42px rgba(17,24,39,0.22)',
+    },
+    phone: '+41 76 798 27 93',
+    whatsapp: 'https://wa.me/41767982793',
+    email: 'support@tonsiteweb.ch',
+    legalOperator: 'TonSiteWeb Sàrl',
+  },
+  iopartner: {
+    key: 'iopartner',
+    name: 'IO Partner',
+    shortName: 'IO Partner',
+    domain: 'iopartner.ch',
+    seoTitle: 'IO Partner — Web systems, Linux infrastructure, and operator advisory',
+    seoDescription:
+      'IO Partner combines launch-ready websites, Teams diagnostics, Linux systems implementation, and advisory board support for modern operators.',
+    primaryColor: '#0f172a',
+    secondaryColor: '#2563eb',
+    fonts: { sans: 'Manrope', heading: 'Sora' },
+    theme: {
+      bg: '#eef3fb',
+      surface: 'rgba(255,255,255,0.74)',
+      card: 'rgba(255,255,255,0.92)',
+      accent: '#2563eb',
+      pattern: 'none',
+      shadow: '0 24px 70px -42px rgba(15,23,42,0.22)',
+    },
+    phone: '+41 76 798 27 93',
+    whatsapp: 'https://wa.me/41767982793',
+    email: 'support@iopartner.ch',
+    legalOperator: 'TonSiteWeb Sàrl',
   },
   'exostif-coiffure': {
     key: 'exostif-coiffure',

@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { ENV } from '~/lib/env';
 import { getSupabaseAdmin } from '~/lib/supabase';
 import { sendEmailTemplate } from '~/lib/email';
+import { normalizePlanId, TONSITEWEB_DEFAULT_PLAN } from '~/lib/pricing.js';
 
 export const prerender = false;
 
@@ -9,7 +10,7 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     const form = await request.formData();
 
-    const plan          = String(form.get('plan') || 'essential500').trim();
+    const plan          = normalizePlanId(String(form.get('plan') || TONSITEWEB_DEFAULT_PLAN).trim());
     const businessName  = String(form.get('business_name') || '').trim();
     const tagline       = String(form.get('tagline') || '').trim();
     const sector        = String(form.get('sector') || '').trim();

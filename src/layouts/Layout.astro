@@ -22,14 +22,15 @@ export interface Props {
   metadata?: MetaDataType;
   brandKey?: BrandKey;
   styleVars?: Record<string, string>;
+  lang?: string;
 }
 
-const { metadata = {}, brandKey, styleVars = {} } = Astro.props as Props;
+const { metadata = {}, brandKey, styleVars = {}, lang } = Astro.props as Props;
 const resolvedBrandKey = (brandKey || getBrandFromHost(Astro.request?.headers.get('host'))) as BrandKey;
 const { textDirection } = I18N;
 const path = Astro.url?.pathname || '/';
 const match = path.match(/^\/(fr|en|de|it)(?=\/|$)/);
-const language = (match && match[1]) || 'fr';
+const language = lang || (match && match[1]) || 'fr';
 ---
 
 <!doctype html>
@@ -39,7 +40,7 @@ const language = (match && match[1]) || 'fr';
     <Favicons brandKey={resolvedBrandKey} />
     <CustomStyles />
     <ApplyColorMode />
-    <Metadata {...metadata} />
+    <Metadata {...metadata} lang={language} />
     <SiteVerification />
     <Analytics />
 

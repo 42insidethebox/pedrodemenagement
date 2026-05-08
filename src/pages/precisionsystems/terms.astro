@@ -1,0 +1,47 @@
+---
+import Shell from '~/tenants/precisionsystems/Shell.astro';
+import { precisionSystemsConfig } from '~/tenants/precisionsystems/config';
+import { getPrecisionSystemsCopy, resolvePrecisionSystemsLocale } from '~/tenants/precisionsystems/copy';
+
+const locale = resolvePrecisionSystemsLocale(Astro.request, Astro.url);
+const copy = getPrecisionSystemsCopy(locale);
+const scopeItems = copy.terms.scope.items();
+const metadata = { ...copy.meta.terms, ignoreTitleTemplate: true };
+---
+
+<Shell page="terms" metadata={metadata} locale={locale}>
+  <section class="ps-section">
+    <p class="ps-eyebrow">{copy.terms.eyebrow}</p>
+    <h1 class="ps-title">{copy.terms.title}</h1>
+    <p class="ps-lead">{copy.terms.lead(precisionSystemsConfig)}</p>
+  </section>
+
+  <section class="ps-section">
+    <div class="ps-grid ps-grid-2">
+      <article class="ps-card">
+        <h2>{copy.terms.scope.title}</h2>
+        <ul class="ps-list">
+          {scopeItems.map((item) => <li>{item}</li>)}
+        </ul>
+      </article>
+
+      <article class="ps-card">
+        <h2>{copy.terms.scheduling.title}</h2>
+        <ul class="ps-list">
+          {copy.terms.scheduling.items.map((item) => <li>{item}</li>)}
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="ps-section">
+    <div class="ps-card">
+      <h2>{copy.terms.confidentiality.title}</h2>
+      <p>{copy.terms.confidentiality.body}</p>
+      <p>
+        {copy.terms.confidentiality.contactLead}{' '}
+        <a href={`mailto:${precisionSystemsConfig.email}`}>{precisionSystemsConfig.email}</a>.
+      </p>
+    </div>
+  </section>
+</Shell>

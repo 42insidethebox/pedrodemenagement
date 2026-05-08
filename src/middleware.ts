@@ -81,6 +81,12 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   const isPaintballHost =
     (resolved.source === 'host' && resolved.slug === 'paintballmaceio') ||
     hostCandidates.some((host) => host.includes('paintballmaceio.'));
+  const isPrecisionSystemsHost =
+    (resolved.source === 'host' && resolved.slug === 'precisionsystems') ||
+    hostCandidates.some((host) => host.includes('precisionsystems.ch'));
+  const isIoPartnerHost =
+    (resolved.source === 'host' && resolved.slug === 'iopartner') ||
+    hostCandidates.some((host) => host.includes('iopartner.ch'));
   const isTonsitewebHost =
     (resolved.source === 'host' && resolved.slug === 'tonsiteweb') ||
     hostCandidates.some((host) => host.includes('tonsiteweb.ch') || host.includes('tonwebsite.ch'));
@@ -203,6 +209,30 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   // Internally rewrite clean URLs to /paintballmaceio/* so Astro serves the right pages.
   if (isPaintballHost && !shouldSkip) {
     url.pathname = `/paintballmaceio${url.pathname === '/' ? '' : url.pathname}`;
+  }
+
+  // Canonicalize prefixed Precision Systems URLs to clean root paths.
+  if (isPrecisionSystemsHost && url.pathname.startsWith('/precisionsystems')) {
+    const stripped = url.pathname.replace(/^\/precisionsystems/, '') || '/';
+    const target = new URL(`${stripped}${url.search}`, url);
+    return Response.redirect(target.toString(), 308);
+  }
+
+  // Internally rewrite clean URLs to /precisionsystems/* so Astro serves the right pages.
+  if (isPrecisionSystemsHost && !shouldSkip) {
+    url.pathname = `/precisionsystems${url.pathname === '/' ? '' : url.pathname}`;
+  }
+
+  // Canonicalize prefixed IO Partner URLs to clean root paths.
+  if (isIoPartnerHost && url.pathname.startsWith('/iopartner')) {
+    const stripped = url.pathname.replace(/^\/iopartner/, '') || '/';
+    const target = new URL(`${stripped}${url.search}`, url);
+    return Response.redirect(target.toString(), 308);
+  }
+
+  // Internally rewrite clean URLs to /iopartner/* so Astro serves the right pages.
+  if (isIoPartnerHost && !shouldSkip) {
+    url.pathname = `/iopartner${url.pathname === '/' ? '' : url.pathname}`;
   }
 
   // Redirect away browser-visible /tonsiteweb/* prefix on TonSiteWeb host (canonical clean URLs).

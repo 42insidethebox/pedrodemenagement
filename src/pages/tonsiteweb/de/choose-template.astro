@@ -1,5 +1,6 @@
 ---
 export const prerender = false;
-const plan = Astro.url.searchParams.get('plan') || 'essential500';
+import { normalizePlanId, TONSITEWEB_DEFAULT_PLAN } from '~/lib/pricing.js';
+const plan = normalizePlanId(Astro.url.searchParams.get('plan') || TONSITEWEB_DEFAULT_PLAN);
 return Astro.redirect(`/choose-template?lang=de&plan=${encodeURIComponent(plan)}`);
 ---

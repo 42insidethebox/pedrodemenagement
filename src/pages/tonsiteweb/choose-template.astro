@@ -1,11 +1,12 @@
 ---
 import Layout from '~/layouts/Layout.astro';
 import { detectRequestLocale } from '~/lib/locale';
+import { normalizePlanId, TONSITEWEB_DEFAULT_PLAN } from '~/lib/pricing.js';
 
 export const prerender = false;
 
 const locale = detectRequestLocale(Astro.request, Astro.url);
-const plan = Astro.url.searchParams.get('plan') || 'essential500';
+const plan = normalizePlanId(Astro.url.searchParams.get('plan') || TONSITEWEB_DEFAULT_PLAN);
 
 const T = {
   fr: {
@@ -21,9 +22,9 @@ const T = {
     baseTemplate: 'Modèle de base',
     variation: 'variation',
     liveExamples: 'Exemples réels',
-    promoBadge: 'Offre spéciale avril',
-    promoTitle: 'Offre spéciale avril — 50 % sur le tarif initial TonSiteWeb',
-    promoDesc: 'Prix normal : 999 CHF → 500 CHF — valable uniquement en avril 2026. Livraison en 3–5 jours ouvrables.',
+    promoBadge: 'Pack Essentiel',
+    promoTitle: 'TonSiteWeb dès 999 CHF',
+    promoDesc: 'Prix fixe pour un site vitrine professionnel. Livraison en 3–5 jours ouvrables selon vos contenus.',
     promoBtn: 'Commander maintenant →',
   },
   en: {
@@ -39,9 +40,9 @@ const T = {
     baseTemplate: 'Base template',
     variation: 'variation',
     liveExamples: 'Live examples',
-    promoBadge: 'April special offer',
-    promoTitle: 'April special — 50% off TonSiteWeb\'s regular price',
-    promoDesc: 'Normal price: CHF 999 → CHF 500 — April 2026 only. Delivered in 3–5 business days.',
+    promoBadge: 'Essential pack',
+    promoTitle: 'TonSiteWeb from CHF 999',
+    promoDesc: 'Fixed price for a professional showcase site. Delivered in 3–5 business days depending on your content.',
     promoBtn: 'Order now →',
   },
   de: {
@@ -57,9 +58,9 @@ const T = {
     baseTemplate: 'Basis-Vorlage',
     variation: 'Variation',
     liveExamples: 'Live-Beispiele',
-    promoBadge: 'April-Sonderangebot',
-    promoTitle: 'April-Angebot — 50 % Rabatt auf den regulären TonSiteWeb-Preis',
-    promoDesc: 'Normalpreis: 999 CHF → 500 CHF — nur im April 2026 gültig. Lieferung in 3–5 Werktagen.',
+    promoBadge: 'Essentiel-Paket',
+    promoTitle: 'TonSiteWeb ab 999 CHF',
+    promoDesc: 'Fixpreis für eine professionelle Showcase-Website. Lieferung in 3–5 Arbeitstagen je nach Inhalt.',
     promoBtn: 'Jetzt bestellen →',
   },
   it: {
@@ -75,9 +76,9 @@ const T = {
     baseTemplate: 'Modello base',
     variation: 'variazione',
     liveExamples: 'Esempi reali',
-    promoBadge: 'Offerta speciale aprile',
-    promoTitle: 'Offerta aprile — 50% sul prezzo normale TonSiteWeb',
-    promoDesc: 'Prezzo normale: 999 CHF → 500 CHF — valido solo ad aprile 2026. Consegna in 3–5 giorni lavorativi.',
+    promoBadge: 'Pacchetto Essenziale',
+    promoTitle: 'TonSiteWeb da 999 CHF',
+    promoDesc: 'Prezzo fisso per un sito vetrina professionale. Consegna in 3–5 giorni lavorativi in base ai contenuti.',
     promoBtn: 'Ordina ora →',
   },
 } as const;
