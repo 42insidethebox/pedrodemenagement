@@ -57,7 +57,6 @@ export const buildHeaderData = (brand: NavigationBrand & { key?: BrandKey }, loc
           },
           { text: tonT(locale, 'Tarifs', 'Pricing', 'Preise', 'Prezzi'), href: getPermalink('/pricing') },
           { text: tonT(locale, 'Modèles', 'Templates', 'Vorlagen', 'Modelli'), href: getPermalink('/choose-template') },
-          { text: tonT(locale, 'À propos', 'About', 'Über uns', 'Chi siamo'), href: getPermalink('/about') },
           { text: 'FAQ', href: getPermalink('/contact#faq') },
           { text: tonT(locale, 'Contact', 'Contact', 'Kontakt', 'Contatto'), href: getPermalink('/contact') },
         ]
@@ -109,10 +108,7 @@ export const buildHeaderData = (brand: NavigationBrand & { key?: BrandKey }, loc
     links: navLinks,
     actions: [
       ...(brand.key === 'tonsiteweb'
-        ? [
-            { text: tonT(locale, 'Créer un compte', 'Create account', 'Konto erstellen', 'Crea un account'), href: getPermalink('/auth/signup'), variant: 'primary' },
-            { text: tonT(locale, 'Se connecter', 'Sign in', 'Anmelden', 'Accedi'), href: getPermalink('/auth/signin'), variant: 'secondary' },
-          ]
+        ? []
         : [
             {
               text: actionText,

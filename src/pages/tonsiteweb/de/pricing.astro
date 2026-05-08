@@ -20,7 +20,7 @@ const metadata = {
   <HeroText
     tagline="Preise"
     title="Transparente Pakete, in der Schweiz fakturiert"
-    subtitle="Jedes Paket umfasst Design, Launch und menschliche Begleitung. Betreuung und Automatisierungen nach Bedarf."
+    subtitle="Zwei Standardwege für einfache Launch-Sites, dann eine saubere Custom-Schicht, wenn das Thema die Vorlage übersteigt."
   />
 
   <!-- Starter pack banner -->
@@ -41,6 +41,11 @@ const metadata = {
         subtitle: 'Professionelle Showcase-Website ab 999 CHF',
         price: 999,
         period: 'einmalige Zahlung',
+        info: [
+          'CHF 999 deckt eine standardisierte Showcase-Seite mit 5 Sektionen auf der gemeinsamen TonSiteWeb-Infrastruktur ab.',
+          'Zusätzliche Seiten, Workshops/Brainstorming, Strukturänderungen oder neue Module werden separat offeriert.',
+          'Jede Leistung ausserhalb des Umfangs wird vor der Produktion separat verrechnet.',
+        ],
         items: [
           {
             description: 'Showcase-Seite mit 5 Sektionen + responsive Kontaktseite',
@@ -49,52 +54,40 @@ const metadata = {
             description: 'Inhalte vom Kunden geliefert; wir integrieren und formatieren',
           },
           {
-            description: 'Hosting nicht inbegriffen (Servicepläne ab 79 CHF/Monat)',
-          },
-          {
-            description: 'Video-Training + Checkliste für Eigenständigkeit',
+            description: 'Bereitstellung auf der gemeinsamen TonSiteWeb-Infrastruktur',
           },
         ],
-        callToAction: { text: 'Jetzt starten →', href: '/onboarding?plan=essential999' },
+        callToAction: { text: 'Stil wählen →', href: '/de/choose-template?plan=essential999' },
       },
       {
-        title: 'Erweitert',
-        subtitle: 'Website + erweiterte Funktionen',
-        price: 3000,
-        period: 'ab — einmalig',
-        items: [
-          { description: 'Enthält das Paket Essentiel' },
-          { description: 'Einfaches Backend oder spezifische Funktionen' },
-          { description: 'End-to-End-Tests und kurze Dokumentation' },
+        title: 'Paket CHF 1’500',
+        subtitle: 'Standardseite + WhatsApp + Calendly',
+        price: 1500,
+        period: 'einmalige Zahlung',
+        info: [
+          'Weiterhin innerhalb der Standardlogik von TonSiteWeb, ohne in einen privaten Build zu wechseln.',
+          'WhatsApp, Calendly und eine leichte Übergabe sind im validierten Umfang enthalten.',
+          'Zusätzliche Seiten, Workshops, Redesigns oder Extra-Module werden separat offeriert.',
         ],
-        callToAction: {
-          text: 'Angebot anfragen',
-          href: '/de/contact#form',
-        },
+        items: [
+          { description: 'Enthält die Basis zu CHF 999' },
+          { description: 'Klickbares WhatsApp + Calendly-Einbindung' },
+          { description: 'Leichte Erklärung und Übergabe' },
+        ],
+        callToAction: { text: 'Paket CHF 1’500 wählen →', href: '/de/choose-template?plan=essential1500' },
       },
       {
-        title: 'Serviceplan',
-        subtitle: 'Updates und Optionen je nach Stufe',
-        price: 79,
-        period: 'ab / Monat — ohne Überraschungen',
+        title: 'Custom systems',
+        subtitle: 'Private Codebase, Backend oder schwerere Architektur',
+        price: 2000,
+        period: 'ab — vor Build gescopt',
         items: [
-          {
-            description: 'Sicherheitsupdates und geplante Backups',
-          },
-          {
-            description: 'Uptime-Monitoring & priorisierte Korrekturen',
-          },
-          {
-            description: 'Pro-E-Mail & Schweizer Hosting ab 149–249 CHF/Monat',
-          },
-          {
-            description: 'Support per E-Mail & Video innerhalb eines Arbeitstages',
-          },
+          { description: 'CHF 2’000: private Codebase' },
+          { description: 'CHF 2’200: private Codebase + Übergabe' },
+          { description: 'CHF 4’500: leichtes Backend' },
+          { description: 'CHF 8’000+: Headless Shop oder schwereres System' },
         ],
-        callToAction: {
-          text: 'Serviceplan aktivieren',
-          href: '/de/contact#form',
-        },
+        callToAction: { text: 'Progression ansehen', href: '#modal-custom-de' },
       },
     ]}
   />
@@ -104,15 +97,28 @@ const metadata = {
       <PricingOptions
         id="modal-essential-de"
         triggerText=""
-        title="Essentiel-Pakete"
-        subtitle="Automationsgrad auswählen"
+        title="Standardpakete"
+        subtitle="Das richtige Niveau wählen, ohne zu früh Custom zu kaufen"
         ctaText="Wählen"
         tiers={[
-          { label: 'CHF 999', price: 'ab 999', features: ['Statische Seite', 'Einfaches Formular (E-Mail)'], href: '/de/choose-template?plan=essential999', info: ['Hosting & SSL inklusive (3 Monate)', '1 Runde kleiner Anpassungen (≤ 30 Min)', 'Kombinierbar mit Care 79 (Hosting & Sicherheit)'] },
-          { label: 'CHF 1’249', price: '1’249', features: ['Enthält Essentiel', '1 Automation (z. B. Buchung)'], href: '/de/choose-template?plan=essential1249', primary: true, info: ['Hosting & SSL inklusive (6 Monate)', '1 Runde kleiner Anpassungen (≤ 30 Min)', 'Kombinierbar mit Care 79 (Hosting & Sicherheit)'] },
-          { label: 'CHF 1’500', price: '1’500', features: ['Enthält Essentiel', '2–3 Automationen'], href: '/de/choose-template?plan=essential1500', info: ['Hosting & SSL inklusive (9 Monate)', '1 Runde kleiner Anpassungen (≤ 30 Min)', 'Kombinierbar mit Care 79 (Hosting & Sicherheit)'] },
+          { label: 'CHF 999', price: 'ab 999', features: ['Statische Seite', 'Einfaches Formular (E-Mail)'], href: '/de/choose-template?plan=essential999', info: ['Hosting & SSL inklusive (3 Monate)', 'Bereitstellung auf der gemeinsamen TonSiteWeb-Infrastruktur', 'Zusätzliche Seiten, Workshops oder Extra-Scope separat offeriert'] },
+          { label: 'CHF 1’500', price: '1’500', features: ['Enthält die CHF-999-Basis', 'WhatsApp + Calendly', 'Leichte Erklärung / Übergabe'], href: '/de/choose-template?plan=essential1500', primary: true, info: ['Weiterhin auf der gemeinsamen TonSiteWeb-Infrastruktur', 'WhatsApp und Calendly im validierten Umfang verkabelt', 'Zusätzliche Seiten, Workshops oder Extra-Scope separat offeriert'] },
         ]}
-        footnote="Hosting & SSL inklusive (3/6/9 Monate je nach Paket). Technischer Support inklusive. Inhalts-/Designänderungen separat verrechnet."
+        footnote="Geliefert wird der bestätigte Umfang; zusätzliche Seiten, Workshops/Brainstorming, Redesigns und Leistungen ausserhalb des Scopes werden separat verrechnet."
+      />
+      <PricingOptions
+        id="modal-custom-de"
+        triggerText=""
+        title="Custom progression"
+        subtitle="Wenn der richtige Zug kein einfacher Template-Launch mehr ist"
+        ctaText="Öffnen"
+        tiers={[
+          { label: 'CHF 2’000', price: 'private Codebase', features: ['Getrennte Codebase', 'Verlässt die gemeinsame Infrastruktur'], href: '/de/custom-systems?track=private-2000#diagnostic' },
+          { label: 'CHF 2’200', price: 'privat + Übergabe', features: ['Getrennte Codebase', 'Strukturierte Übergabe'], href: '/de/custom-systems?track=private-2200#diagnostic', primary: true },
+          { label: 'CHF 4’500', price: 'leichtes Backend', features: ['Leichte Business-Logik', 'Intake, Sync oder simples Portal'], href: '/de/custom-systems?track=backend-4500#diagnostic' },
+          { label: 'CHF 8’000+', price: 'schwereres System', features: ['Headless Shop', 'Admin, Portal oder tiefere Architektur'], href: '/de/custom-systems?track=shop-8000#diagnostic' },
+        ]}
+        footnote="Architektur-, Portal-, Admin- oder Plattformarbeit wird nach dem bezahlten 15-Min.-/CHF-80-Diagnostik sauber gescopt."
       />
     </div>
   </div>
@@ -179,8 +185,8 @@ const metadata = {
         icon: 'tabler:robot',
       },
       {
-        title: '4. Freigabe & Training',
-        description: 'Fertige Website, Video-Guide und nächste Schritte erhalten.',
+        title: '4. Freigabe & Go-Live',
+        description: 'Sie geben die finale Version frei, wir planen den Go-Live und offerieren jede Scope-Erweiterung separat.',
         icon: 'tabler:rocket',
       },
     ]}
@@ -208,8 +214,8 @@ const metadata = {
         description: 'Rund fünf Arbeitstage nach Eingang Ihrer Inhalte. Den genauen Zeitplan erhalten Sie beim Briefing.',
       },
       {
-        title: 'Wie verrechnet ihr Integrationen?',
-        description: 'Einfache Integrationen sind enthalten. API‑Anbindungen und komplexe Szenarien werden offeriert.',
+        title: 'Was passiert bei zusätzlichen Seiten oder weiterem Brainstorming?',
+        description: 'Zusätzliche Seiten, Workshops oder Brainstorming, Strukturänderungen und Leistungen ausserhalb des Umfangs werden vor Produktionsstart separat offeriert.',
       },
       {
         title: 'Ist der Serviceplan obligatorisch?',

@@ -1,4 +1,4 @@
-import type { BrandKey } from './brand.ts';
+import type { BrandKey } from './brand.js';
 
 export type BrandProfile = {
   key: BrandKey;

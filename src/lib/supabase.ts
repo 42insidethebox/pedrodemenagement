@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { ENV } from './env';
+import { ENV } from './env.js';
 
 export function getSupabaseAdmin() {
   const url = ENV.SUPABASE_URL;
@@ -14,4 +14,3 @@ export function getSupabaseAnon() {
   if (!url || !key) return null;
   return createClient(url, key, { auth: { autoRefreshToken: false, persistSession: false } });
 }
-

@@ -7,6 +7,7 @@ import {
   sanitizeOrderDbPayload,
 } from '~/lib/orders';
 import { getSupabaseAdmin } from '~/lib/supabase';
+import { fetchBookingById, resolveBookingTeamsUrl } from '~/lib/booking';
 import { sendAdminNotificationEmail, sendClientConfirmationEmail } from '~/lib/email';
 import { getTenantFromContext } from '~/utils/tenant';
 
@@ -21,6 +22,35 @@ export const GET: APIRoute = async ({ request, url, locals }) => {
 
   try {
     const session = await stripe.checkout.sessions.retrieve(sessionId);
+    const bookingId = session.metadata?.booking_id || '';
+    if (bookingId) {
+      const booking = await fetchBookingById(String(bookingId));
+      const tenantId = (session.metadata?.tenant_id as string) || booking?.tenant_id || getTenantFromContext({ request, locals }).slug;
+      return new Response(
+        JSON.stringify({
+          id: session.id,
+          mode: 'booking',
+          customer_email: booking?.customer_email || session.customer_details?.email || null,
+          payment_status: session.payment_status,
+          amount_total: session.amount_total,
+          currency: session.currency,
+          metadata: session.metadata || {},
+          tenant_id: tenantId,
+          booking: booking
+            ? {
+                id: booking.id,
+                service: booking.service,
+                start_time: booking.start_time,
+                end_time: booking.end_time,
+                locale: booking.locale,
+                teams_url: resolveBookingTeamsUrl(tenantId),
+              }
+            : null,
+        }),
+        { status: 200 },
+      );
+    }
+
     const tenantId = (session.metadata?.tenant_id as string) || getTenantFromContext({ request, locals }).slug;
     const admin = getSupabaseAdmin();
     let order = await fetchOrderBySessionId(sessionId);
@@ -66,6 +96,7 @@ export const GET: APIRoute = async ({ request, url, locals }) => {
       template: order?.template_key ?? session.metadata?.template ?? null,
       locale: order?.metadata?.locale ?? session.metadata?.locale ?? null,
       tenant_id: tenantId,
+      mode: 'order',
     };
 
     try {

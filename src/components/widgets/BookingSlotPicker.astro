@@ -1,0 +1,227 @@
+---
+export interface Props {
+  dateLabel: string;
+  slotLabel: string;
+  chooseDateText: string;
+  selectSlotText: string;
+  loadingText: string;
+  unavailableText: string;
+  missingSlotText: string;
+  locale?: string;
+  apiPath?: string;
+  theme?: 'light' | 'dark';
+  accent?: 'blue' | 'amber';
+  startHour?: number;
+  endHour?: number;
+  slotDurationMinutes?: number;
+  slotStepMinutes?: number;
+}
+
+const {
+  dateLabel,
+  slotLabel,
+  chooseDateText,
+  selectSlotText,
+  loadingText,
+  unavailableText,
+  missingSlotText,
+  apiPath = '/api/booking',
+  theme = 'dark',
+  accent = 'amber',
+  startHour = 8,
+  endHour = 18,
+  slotDurationMinutes = 120,
+  slotStepMinutes = 120,
+} = Astro.props as Props;
+
+const inputClass =
+  theme === 'light'
+    ? 'rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder:text-slate-400'
+    : 'rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-white placeholder:text-white/60';
+const statusClass = theme === 'light' ? 'text-xs text-slate-500' : 'text-xs text-white/60';
+const errorClass = theme === 'light' ? 'text-xs text-red-600 hidden' : 'text-xs text-amber-200/80 hidden';
+const lightEnabledSlotClass =
+  accent === 'blue'
+    ? 'booking-slot w-full rounded-xl border px-3 py-2 text-sm font-semibold transition border-slate-200 bg-white text-slate-700 hover:bg-blue-50 hover:border-blue-500'
+    : 'booking-slot w-full rounded-xl border px-3 py-2 text-sm font-semibold transition border-slate-200 bg-white text-slate-700 hover:bg-amber-50 hover:border-amber-400';
+const darkEnabledSlotClass =
+  accent === 'blue'
+    ? 'booking-slot w-full rounded-xl border px-3 py-2 text-sm font-semibold transition border-white/20 bg-white/10 text-white hover:border-blue-300 hover:bg-blue-100/10'
+    : 'booking-slot w-full rounded-xl border px-3 py-2 text-sm font-semibold transition border-white/20 bg-white/10 text-white hover:border-amber-300 hover:bg-amber-100/10';
+const enabledSlotClass =
+  theme === 'light' ? lightEnabledSlotClass : darkEnabledSlotClass;
+const disabledSlotClass =
+  theme === 'light'
+    ? 'booking-slot w-full rounded-xl border px-3 py-2 text-sm font-semibold transition border-slate-100 bg-slate-50 text-slate-300 cursor-not-allowed'
+    : 'booking-slot w-full rounded-xl border px-3 py-2 text-sm font-semibold transition border-white/10 bg-white/5 text-white/40 cursor-not-allowed';
+const selectedSlotClasses = accent === 'blue' ? ['ring-2', 'ring-blue-500', 'border-blue-500'] : ['ring-2', 'ring-amber-300'];
+---
+
+<div
+  class="space-y-4"
+  data-booking-widget
+  data-api-path={apiPath}
+  data-start-hour={String(startHour)}
+  data-end-hour={String(endHour)}
+  data-slot-duration={String(slotDurationMinutes)}
+  data-slot-step={String(slotStepMinutes)}
+  data-enabled-slot-class={enabledSlotClass}
+  data-disabled-slot-class={disabledSlotClass}
+  data-selected-slot-classes={selectedSlotClasses.join(' ')}
+  data-loading-text={loadingText}
+  data-select-slot-text={selectSlotText}
+  data-unavailable-text={unavailableText}
+>
+  <div class="grid gap-4">
+    <label class="text-sm font-semibold">{dateLabel}</label>
+    <input type="date" required class={inputClass} data-booking-date />
+  </div>
+  <div class="space-y-3">
+    <div class="flex items-center justify-between">
+      <label class="text-sm font-semibold">{slotLabel}</label>
+      <span class={statusClass} data-booking-status>{chooseDateText}</span>
+    </div>
+    <div class="grid gap-2 sm:grid-cols-2 md:grid-cols-3" data-booking-slots></div>
+    <p class={errorClass} data-booking-error>{missingSlotText}</p>
+  </div>
+  <input type="hidden" name="start_time" data-booking-start />
+  <input type="hidden" name="end_time" data-booking-end />
+  <input type="hidden" name="timezone" data-booking-timezone />
+</div>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[data-booking-widget]').forEach((root) => {
+      if (!(root instanceof HTMLElement) || root.dataset.bookingInit === '1') return;
+      root.dataset.bookingInit = '1';
+
+      const form = root.closest('form');
+      if (!(form instanceof HTMLFormElement)) return;
+
+      const dateInput = root.querySelector('[data-booking-date]');
+      const slotsEl = root.querySelector('[data-booking-slots]');
+      const statusEl = root.querySelector('[data-booking-status]');
+      const errorEl = root.querySelector('[data-booking-error]');
+      const startField = root.querySelector('[data-booking-start]');
+      const endField = root.querySelector('[data-booking-end]');
+      const timezoneField = root.querySelector('[data-booking-timezone]');
+
+      if (
+        !(dateInput instanceof HTMLInputElement) ||
+        !(slotsEl instanceof HTMLElement) ||
+        !(statusEl instanceof HTMLElement) ||
+        !(startField instanceof HTMLInputElement) ||
+        !(endField instanceof HTMLInputElement)
+      ) {
+        return;
+      }
+
+      if (timezoneField instanceof HTMLInputElement) {
+        timezoneField.value = Intl.DateTimeFormat().resolvedOptions().timeZone || 'Europe/Zurich';
+      }
+
+      const apiPath = root.dataset.apiPath || '/api/booking';
+      const startHour = Number(root.dataset.startHour || 8);
+      const endHour = Number(root.dataset.endHour || 18);
+      const slotDuration = Number(root.dataset.slotDuration || 120);
+      const slotStep = Number(root.dataset.slotStep || slotDuration || 120);
+      const loadingText = root.dataset.loadingText || 'Chargement…';
+      const selectSlotText = root.dataset.selectSlotText || 'Sélectionnez un créneau';
+      const unavailableText = root.dataset.unavailableText || 'Indisponible pour le moment';
+      const enabledSlotClass = root.dataset.enabledSlotClass || '';
+      const disabledSlotClass = root.dataset.disabledSlotClass || '';
+      const selectedSlotClasses = (root.dataset.selectedSlotClasses || '').split(' ').filter(Boolean);
+
+      const toISO = (dateStr, totalMinutes) => {
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+        const value = new Date(`${dateStr}T${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:00`);
+        return value.toISOString();
+      };
+
+      const formatTime = (totalMinutes) => {
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+        return `${String(hours).padStart(2, '0')}h${String(minutes).padStart(2, '0')}`;
+      };
+
+      const renderSlots = (dateStr, blocked) => {
+        slotsEl.innerHTML = '';
+        const slots = [];
+        for (let minutes = startHour * 60; minutes + slotDuration <= endHour * 60; minutes += slotStep) {
+          const start = toISO(dateStr, minutes);
+          const end = toISO(dateStr, minutes + slotDuration);
+          const overlap = blocked.some((b) => !(end <= b.start || start >= b.end));
+          slots.push({
+            label: `${formatTime(minutes)}–${formatTime(minutes + slotDuration)}`,
+            start,
+            end,
+            disabled: overlap,
+          });
+        }
+
+        if (!slots.length) {
+          statusEl.textContent = unavailableText;
+          return;
+        }
+
+        statusEl.textContent = selectSlotText;
+        slots.forEach((slot) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.dataset.slotStart = slot.start;
+          btn.dataset.slotEnd = slot.end;
+          btn.className = slot.disabled ? disabledSlotClass : enabledSlotClass;
+          btn.textContent = slot.label;
+          btn.disabled = slot.disabled;
+          btn.addEventListener('click', () => {
+            startField.value = slot.start;
+            endField.value = slot.end;
+            if (errorEl instanceof HTMLElement) errorEl.classList.add('hidden');
+            form.querySelectorAll('.booking-slot[data-selected="true"]').forEach((el) => {
+              el.removeAttribute('data-selected');
+              el.classList.remove(...selectedSlotClasses);
+            });
+            btn.dataset.selected = 'true';
+            btn.classList.add(...selectedSlotClasses);
+          });
+          slotsEl.appendChild(btn);
+        });
+      };
+
+      const loadAvailability = async (dateStr) => {
+        statusEl.textContent = loadingText;
+        try {
+          const res = await fetch(`${apiPath}?date=${encodeURIComponent(dateStr)}`);
+          if (!res.ok) throw new Error('Unavailable');
+          const data = await res.json();
+          const blocked = [];
+          (data.bookings || []).forEach((b) => blocked.push({ start: b.start_time, end: b.end_time }));
+          (data.blocks || []).forEach((b) => blocked.push({ start: b.start_time, end: b.end_time }));
+          renderSlots(dateStr, blocked);
+        } catch {
+          statusEl.textContent = unavailableText;
+          slotsEl.innerHTML = '';
+        }
+      };
+
+      dateInput.addEventListener('change', () => {
+        const dateStr = dateInput.value;
+        if (!dateStr) return;
+        startField.value = '';
+        endField.value = '';
+        loadAvailability(dateStr);
+      });
+
+      form.addEventListener('submit', (event) => {
+        if (!startField.value || !endField.value) {
+          event.preventDefault();
+          if (errorEl instanceof HTMLElement) {
+            errorEl.classList.remove('hidden');
+            errorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }
+      });
+    });
+  });
+</script>

@@ -1,6 +1,6 @@
 import type { MiddlewareHandler } from 'astro';
-import { resolveTenantFromRequest, tenantBasePath } from './lib/tenants';
-import { getWebsiteByHost } from './lib/website-resolver';
+import { resolveTenantFromRequest, tenantBasePath } from './lib/tenants.js';
+import { getWebsiteByHost } from './lib/website-resolver.js';
 
 const SKIP_PREFIXES = [
   '/api/',
@@ -94,6 +94,9 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   const shouldSkip = SKIP_PREFIXES.some((prefix) => url.pathname.startsWith(prefix));
   const headers = new Headers(context.request.headers);
   headers.set('x-tenant-id', resolved.slug);
+  if (!shouldSkip && resolved.source === 'host' && !headers.has('x-original-path')) {
+    headers.set('x-original-path', url.pathname || '/');
+  }
 
   // Tenant traffic geo lock: only CH in production unless explicitly disabled.
   if (isSwissIpOnlyEnabled() && !shouldSkip && resolved.source !== 'fallback') {
@@ -272,7 +275,7 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   // Inject tonsiteweb locale prefix from cookie so clean URLs serve translated pages.
   // e.g. /tonsiteweb/pricing + cookie aw_lang=de  →  renders /tonsiteweb/de/pricing (URL stays clean).
   // Only applies to pages that actually have locale-specific variants in en/de/it subdirectories.
-  const LOCALE_VARIANT_PATHS = ['/', '/pricing', '/about', '/contact', '/services', '/choose-template', '/thank-you', '/privacy', '/terms'];
+  const LOCALE_VARIANT_PATHS = ['/', '/pricing', '/about', '/contact', '/services', '/choose-template', '/custom-systems', '/thank-you', '/privacy', '/terms'];
   const isTonsitewebPath = url.pathname === '/tonsiteweb' || url.pathname.startsWith('/tonsiteweb/');
   if (!shouldSkip && isTonsitewebPath) {
     const afterBase = url.pathname.slice('/tonsiteweb'.length) || '/'; // e.g. /pricing or /

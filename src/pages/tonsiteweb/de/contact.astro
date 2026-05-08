@@ -12,12 +12,12 @@ const metadata = {
 ---
 
 <Layout metadata={metadata} header={headerDataDe} footer={footerDataDe}>
-  <HeroText tagline="Kontakt" title="Lassen Sie uns über Ihre Website sprechen" subtitle="Eine Expertin oder ein Experte meldet sich innerhalb eines Arbeitstages." />
+  <HeroText tagline="Kontakt" title="Sprechen wir über den richtigen TonSiteWeb-Weg" subtitle="Wir trennen Standard-Launches, private Builds und schwerere Systemarbeit ohne Zeitverlust." />
 
   <ContactUs
     id="form"
     title="Demo oder Angebot anfragen"
-    subtitle="Füllen Sie das Formular aus – wir melden uns per Telefon oder Video, um den Launch vorzubereiten (typischer Zeitrahmen: 5 Arbeitstage)."
+    subtitle="Füllen Sie das Formular aus und wir ordnen Sie der richtigen Ebene zu: CHF 999, CHF 1’500 oder bezahlter Custom-Diagnosepfad."
     inputs={[
       {
         type: 'text',
@@ -39,10 +39,10 @@ const metadata = {
         name: 'service',
         label: 'Gewünschtes Paket',
         options: [
-          { label: 'Essentiel', value: 'essentiel' },
-          { label: 'Automatisierung', value: 'automation' },
-          { label: 'Serviceplan', value: 'maintenance' },
-          { label: 'Individuell / zu definieren', value: 'custom' },
+          { label: 'Standardseite — CHF 999', value: 'essential999' },
+          { label: 'Standardseite + WhatsApp + Calendly — CHF 1’500', value: 'essential1500' },
+          { label: 'Private Codebase / leichtes Backend — CHF 2’000 bis 8’000+', value: 'custom' },
+          { label: 'Bezahlte Diagnose — 15 Min. / CHF 80', value: 'diagnostic80' },
         ],
       },
     ]}

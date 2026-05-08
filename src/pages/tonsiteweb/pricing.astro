@@ -20,7 +20,7 @@ const metadata = {
   <HeroText
     tagline="Tarifs"
     title="Des offres transparentes, facturées en Suisse"
-    subtitle="Chaque pack inclut la conception, la mise en ligne et un accompagnement humain. Maintenance et automatisations sont proposées selon vos besoins."
+    subtitle="Deux voies standards pour les sites simples, puis une couche custom cadrée proprement quand le sujet dépasse le template."
   />
 
   <!-- Starter pack banner -->
@@ -43,6 +43,11 @@ const metadata = {
         subtitle: 'Site vitrine professionnel dès 999 CHF',
         price: 999,
         period: 'paiement unique',
+        info: [
+          'Pack 999 = site vitrine standard de 5 sections sur l’infrastructure mutualisée TonSiteWeb.',
+          'Ajout de pages, brainstorming, changement de structure ou nouveaux modules sur devis.',
+          'Toute demande hors périmètre est facturée séparément avant production.',
+        ],
         items: [
           {
             description: 'Site vitrine 5 sections + page contact responsive',
@@ -50,46 +55,41 @@ const metadata = {
           {
             description: 'Intégration et mise en forme de vos contenus',
           },
-          
           {
-            description: "Guide vidéo et check‑list d'autonomie",
+            description: 'Déploiement sur l’infrastructure mutualisée TonSiteWeb',
           },
         ],
-        callToAction: { text: 'Démarrer ici →', href: '/onboarding?plan=essential999' },
+        callToAction: { text: 'Choisir un style →', href: '/choose-template?plan=essential999' },
       },
       {
-        title: 'Avancé',
-        subtitle: 'Site + fonctionnalités avancées',
-        price: 3000,
-        period: 'dès — paiement unique',
-        items: [
-          { description: 'Inclut tout le pack Essentiel' },
-          { description: "Back‑end simple + template (jusqu'à 5 000 CHF)" },
-          { description: 'Projets sur‑mesure 10 000 CHF+ — parlons‑en' },
-          { description: 'Tests de bout en bout et documentation simple' },
+        title: 'Pack 1 500',
+        subtitle: 'Site standard + WhatsApp + Calendly',
+        price: 1500,
+        period: 'paiement unique',
+        info: [
+          'Toujours dans la logique standard TonSiteWeb, sans entrer dans une build privée.',
+          'WhatsApp, Calendly et passation légère inclus dans le périmètre validé.',
+          'Pages en plus, redesign, brainstorming ou modules hors scope sur devis séparé.',
         ],
-        callToAction: '<a class="btn btn-primary" href="#modal-advanced">Découvrir</a>',
+        items: [
+          { description: 'Inclut la base 999 CHF' },
+          { description: 'WhatsApp cliquable + prise de rendez-vous Calendly' },
+          { description: 'Explication légère et handoff simple' },
+        ],
+        callToAction: { text: 'Choisir le pack 1 500 →', href: '/choose-template?plan=essential1500' },
       },
       {
-        title: 'Maintenance sécurité',
-        subtitle: 'Mises à jour et options selon niveau',
-        price: 79,
-        period: 'dès / mois — sans surprise',
+        title: 'Systèmes sur mesure',
+        subtitle: 'Codebase privée, back-end ou architecture plus lourde',
+        price: 2000,
+        period: 'dès — scope avant build',
         items: [
-          {
-            description: 'Mises à jour de sécurité et sauvegardes planifiées',
-          },
-          {
-            description: 'Surveillance de disponibilité & correctifs prioritaires',
-          },
-          {
-            description: 'Emails pro & hébergement suisse à partir de 149–249 CHF/mois',
-          },
-          {
-            description: 'Support email et visio sous un jour ouvré',
-          },
+          { description: '2 000 CHF: codebase privée' },
+          { description: '2 200 CHF: codebase privée + transmission' },
+          { description: '4 500 CHF: back-end léger' },
+          { description: '8 000+ CHF: headless shop ou système plus lourd' },
         ],
-        callToAction: '<a class="btn btn-primary" href="#modal-care">Choisir</a>',
+        callToAction: '<a class="btn btn-primary" href="#modal-custom">Voir la progression</a>',
       },
     ]}
   />
@@ -106,95 +106,64 @@ const metadata = {
         <PricingOptions
           id="modal-essential"
           triggerText=""
-          title="Packs Essentiel"
-          subtitle="Choisissez votre niveau d'automatisation"
+          title="Packs standards"
+          subtitle="Choisissez le bon niveau sans acheter du custom trop tôt"
           ctaText="Choisir"
           tiers={[
             {
               label: 'CHF 999',
               price: 'dès 999',
               features: ['Site statique', 'Formulaire simple (email)'],
-              href: '/onboarding?plan=essential999',
-              info: ['Hébergement & SSL inclus (3 mois)', '1 aller‑retour de petites retouches (≤ 30 min)', 'Combinable avec Care 79 (hébergement & sécurité)'],
-            },
-            {
-              label: 'CHF 1 249',
-              price: '1 249',
-              features: ['Inclut Essentiel', '1 automatisation (ex: prise de RDV)'],
-              href: '/onboarding?plan=essential1249',
-              primary: true,
-              info: ['Hébergement & SSL inclus (6 mois)', '1 aller‑retour de petites retouches (≤ 30 min)', 'Combinable avec Care 79 (hébergement & sécurité)'],
+              href: '/choose-template?plan=essential999',
+              info: ['Hébergement & SSL inclus (3 mois)', 'Déploiement sur l’infrastructure TonSiteWeb mutualisée', 'Pages en plus, brainstorming ou hors scope sur devis séparé'],
             },
             {
               label: 'CHF 1 500',
               price: '1 500',
-              features: ['Inclut Essentiel', '2–3 automatisations'],
-              href: '/onboarding?plan=essential1500',
-              info: ['Hébergement & SSL inclus (9 mois)', '1 aller‑retour de petites retouches (≤ 30 min)', 'Combinable avec Care 79 (hébergement & sécurité)'],
+              features: ['Inclut la base 999', 'WhatsApp + Calendly', 'Explication légère / passation'],
+              href: '/choose-template?plan=essential1500',
+              primary: true,
+              info: ['Toujours sur l’infrastructure TonSiteWeb mutualisée', 'WhatsApp et Calendly installés dans le périmètre validé', 'Pages en plus, brainstorming ou hors scope sur devis séparé'],
             },
           ]}
-          footnote="Hébergement & SSL inclus (3/6/9 mois selon le pack). Assistance technique incluse. Modifications de contenu ou design facturées séparément."
+          footnote="Le périmètre validé est livré tel quel ; ajout de pages, cadrage/brainstorming, redesign et demandes hors scope sont facturés séparément."
         />
       </div>
-      <div id="insert-advanced">
+      <div id="insert-custom">
         <PricingOptions
-          id="modal-advanced"
+          id="modal-custom"
           triggerText=""
-          title="Pack Avancé"
-          subtitle="Template + petit back‑end (3–5 k) ou sur‑mesure (10 k+)"
-          ctaText="Choisir"
+          title="Progression custom"
+          subtitle="Quand le bon mouvement n’est plus un simple template"
+          ctaText="Ouvrir"
           tiers={[
             {
-              label: "Jusqu'à 5 000 CHF",
-              price: 'dès 3 000',
-              features: ['Template + back‑end léger (ex : headless shop)', '1–2 automatisations'],
-              href: '/contact?plan=advanced_5k#form',
+              label: 'CHF 2 000',
+              price: 'codebase privée',
+              features: ['Codebase séparée', 'Sortie de l’infrastructure mutualisée'],
+              href: '/custom-systems?track=private-2000#diagnostic',
             },
             {
-              label: 'Sur‑mesure',
-              price: '10 000 CHF+',
-              features: ['Projet personnalisé', 'Cahier des charges & devis'],
-              href: '/contact?plan=bespoke_10k_plus#form',
+              label: 'CHF 2 200',
+              price: 'privé + transmission',
+              features: ['Codebase séparée', 'Transmission et explication structurée'],
               primary: true,
+              href: '/custom-systems?track=private-2200#diagnostic',
             },
             {
-              label: 'Conseil',
-              price: 'à définir',
-              features: ['Atelier cadrage', 'Architecture & stratégie'],
-              href: '/contact?plan=consulting#form',
+              label: 'CHF 4 500',
+              price: 'back‑end léger',
+              features: ['Logique métier légère', 'Collecte, sync ou portail simple'],
+              href: '/custom-systems?track=backend-4500#diagnostic',
+            },
+            {
+              label: 'CHF 8 000+',
+              price: 'système plus lourd',
+              features: ['Headless shop', 'Admin, portail ou architecture plus profonde'],
+              href: '/custom-systems?track=shop-8000#diagnostic',
             },
           ]}
-          footnote="Les demandes à fort trafic sont facturées à l'usage. Aucun serveur inclus."
-        />
-      </div>
-      <div id="insert-care">
-        <PricingOptions
-          id="modal-care"
-          triggerText=""
-          title="Plans Care (hébergement & sécurité)"
-          subtitle="Hébergement suisse + correctifs de sécurité"
-          ctaText="Choisir"
-          tiers={[
-            {
-              label: 'Care 79',
-              price: 'CHF 79/mois',
-              features: ['Hébergement & SSL', 'Mises à jour sécurité'],
-              href: '/api/payment/redirect?plan=care79',
-            },
-            {
-              label: 'Care 149',
-              price: 'CHF 149/mois',
-              features: ['Inclut Care 79', 'Support prioritaire léger'],
-              href: '/api/payment/redirect?plan=care149',
-              primary: true,
-            },
-            {
-              label: 'Care 249',
-              price: 'CHF 249/mois',
-              features: ['Inclut Care 149', 'Support étendu & évolutions mineures'],
-              href: '/api/payment/redirect?plan=care249',
-            },
-          ]}
+          footnote="Architecture, portail, admin ou plateforme interne sont scopes après le diagnostic payé 15 min / 80 CHF."
         />
       </div>
     </div>
@@ -262,8 +231,8 @@ const metadata = {
           icon: 'tabler:robot',
         },
         {
-          title: '4. Validation & formation',
-          description: 'Recevez votre site prêt, le guide vidéo et un récapitulatif de vos prochaines étapes.',
+          title: '4. Validation & mise en ligne',
+          description: 'Vous validez la version finale, nous programmons la mise en ligne et chiffrons séparément toute extension hors périmètre.',
           icon: 'tabler:rocket',
         },
       ]}
@@ -293,8 +262,8 @@ const metadata = {
         description: 'Comptez environ cinq jours ouvrés après réception de vos contenus. Nous vous donnons un planning précis lors du brief.',
       },
       {
-        title: 'Comment facturez-vous les intégrations ?',
-        description: "Les intégrations simples sont incluses. Les connexions API et scénarios avancés font l'objet d'un devis dédié.",
+        title: 'Que se passe-t-il si j’ai besoin d’autres pages ou d’un cadrage supplémentaire ?',
+        description: 'Nous chiffrons séparément les ajouts de pages, ateliers de cadrage ou brainstorming, changements de structure et demandes hors périmètre avant toute production.',
       },
       {
         title: 'La maintenance est-elle obligatoire ?',

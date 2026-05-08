@@ -1,5 +1,5 @@
-import { ENV } from './env';
-import { getSupabaseAdmin } from './supabase';
+import { ENV } from './env.js';
+import { getSupabaseAdmin } from './supabase.js';
 
 type Website = {
   id: string;
@@ -107,9 +107,10 @@ export async function getWebsiteByHost(host: string | null | undefined): Promise
     .eq('website_id', websiteId)
     .order('is_primary', { ascending: false })
     .order('created_at', { ascending: true });
+  const resolvedDomains = domains ?? [];
 
   const primaryDomain =
-    domains.find((d) => d.is_primary)?.domain ||
+    resolvedDomains.find((d) => d.is_primary)?.domain ||
     matchedDomain ||
     website.production_url?.replace(/^https?:\/\//, '') ||
     website.domain ||
@@ -120,11 +121,12 @@ export async function getWebsiteByHost(host: string | null | undefined): Promise
     .select('id, section_key, heading, content, media, google_doc_id, google_doc_heading')
     .eq('website_id', websiteId)
     .order('created_at', { ascending: true });
+  const resolvedSections = sections ?? [];
 
   return {
     website,
-    sections,
-    domains: domains.map((d) => ({ domain: d.domain, is_primary: !!d.is_primary })),
+    sections: resolvedSections,
+    domains: resolvedDomains.map((d) => ({ domain: d.domain, is_primary: !!d.is_primary })),
     primaryDomain,
     matchedDomain,
   };

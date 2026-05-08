@@ -2,6 +2,7 @@
 import Layout from '~/layouts/PageLayout.astro';
 import ContactUs from '~/components/widgets/Contact.astro';
 import Features2 from '~/components/widgets/Features2.astro';
+import BookingSlotPicker from '~/components/widgets/BookingSlotPicker.astro';
 import { getBrandFromHost } from '~/lib/brand';
 import { BRANDS } from '~/lib/brands.config';
 import { getImage, getImageAlt } from '~/data/imageInventory';
@@ -1090,33 +1091,23 @@ const processStates = [
                 action="/api/booking"
                 method="post"
                 class="space-y-4"
-                data-booking-form
-                data-locale={lang}
               >
-                <div class="grid gap-4">
-                  <label class="text-sm font-semibold">Date</label>
-                  <input
-                    type="date"
-                    name="date"
-                    required
-                    class="rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-white placeholder:text-white/60"
-                    data-booking-date
-                  />
-                </div>
-                <div class="space-y-3">
-                  <div class="flex items-center justify-between">
-                    <label class="text-sm font-semibold">Créneau</label>
-                    <span class="text-xs text-white/60" data-booking-status>Choisissez une date</span>
-                  </div>
-                  <div class="grid gap-2 sm:grid-cols-2" data-booking-slots></div>
-                  <p class="text-xs text-amber-200/80 hidden" data-booking-error>
-                    Merci de sélectionner un créneau disponible.
-                  </p>
-                </div>
-                <input type="hidden" name="start_time" data-booking-start />
-                <input type="hidden" name="end_time" data-booking-end />
                 <input type="hidden" name="locale" value={lang} />
-                <input type="hidden" name="timezone" data-booking-timezone />
+                <BookingSlotPicker
+                  dateLabel="Date"
+                  slotLabel="Créneau"
+                  chooseDateText="Choisissez une date"
+                  selectSlotText="Sélectionnez un créneau"
+                  loadingText="Chargement…"
+                  unavailableText="Indisponible pour le moment"
+                  missingSlotText="Merci de sélectionner un créneau disponible."
+                  theme="dark"
+                  accent="amber"
+                  startHour={8}
+                  endHour={18}
+                  slotDurationMinutes={120}
+                  slotStepMinutes={120}
+                />
 
                 <div class="grid gap-3">
                   <label class="text-sm font-semibold">{lamT('Service', 'Service', 'Service', 'Servizio')}</label>
@@ -1721,109 +1712,6 @@ const processStates = [
           target.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
       });
-    });
-  });
-</script>
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('[data-booking-form]');
-    if (!form) return;
-    const dateInput = form.querySelector('[data-booking-date]');
-    const slotsEl = form.querySelector('[data-booking-slots]');
-    const statusEl = form.querySelector('[data-booking-status]');
-    const errorEl = form.querySelector('[data-booking-error]');
-    const startField = form.querySelector('[data-booking-start]');
-    const endField = form.querySelector('[data-booking-end]');
-    const timezoneField = form.querySelector('[data-booking-timezone]');
-    if (timezoneField) {
-      timezoneField.value = Intl.DateTimeFormat().resolvedOptions().timeZone || 'Europe/Zurich';
-    }
-
-    const toISO = (dateStr, hour) => {
-      const d = new Date(`${dateStr}T${String(hour).padStart(2, '0')}:00:00`);
-      return d.toISOString();
-    };
-
-    const renderSlots = (dateStr, blocked) => {
-      if (!slotsEl || !statusEl) return;
-      slotsEl.innerHTML = '';
-      const slots = [];
-      for (let hour = 8; hour <= 16; hour += 2) {
-        const start = toISO(dateStr, hour);
-        const end = toISO(dateStr, hour + 2);
-        const overlap = blocked.some((b) => !(end <= b.start || start >= b.end));
-        slots.push({
-          label: `${String(hour).padStart(2, '0')}h–${String(hour + 2).padStart(2, '0')}h`,
-          start,
-          end,
-          disabled: overlap,
-        });
-      }
-      if (!slots.length) {
-        statusEl.textContent = 'Aucun créneau disponible';
-        return;
-      }
-      statusEl.textContent = 'Sélectionnez un créneau';
-      slots.forEach((slot) => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.dataset.slotStart = slot.start;
-        btn.dataset.slotEnd = slot.end;
-        btn.className =
-          'booking-slot w-full rounded-xl border px-3 py-2 text-sm font-semibold transition ' +
-          (slot.disabled
-            ? 'border-white/10 bg-white/5 text-white/40 cursor-not-allowed'
-            : 'border-white/20 bg-white/10 text-white hover:border-amber-300 hover:bg-amber-100/10');
-        btn.textContent = slot.label;
-        btn.disabled = slot.disabled;
-        btn.addEventListener('click', () => {
-          if (!startField || !endField) return;
-          startField.value = slot.start;
-          endField.value = slot.end;
-          errorEl?.classList.add('hidden');
-          form.querySelectorAll('.booking-slot[data-selected="true"]').forEach((el) => {
-            el.removeAttribute('data-selected');
-            el.classList.remove('ring-2', 'ring-amber-300');
-          });
-          btn.dataset.selected = 'true';
-          btn.classList.add('ring-2', 'ring-amber-300');
-        });
-        slotsEl.appendChild(btn);
-      });
-    };
-
-    const loadAvailability = async (dateStr) => {
-      if (!statusEl) return;
-      statusEl.textContent = 'Chargement…';
-      try {
-        const res = await fetch(`/api/booking?date=${dateStr}`);
-        if (!res.ok) throw new Error('Unavailable');
-        const data = await res.json();
-        const blocked = [];
-        (data.bookings || []).forEach((b) => blocked.push({ start: b.start_time, end: b.end_time }));
-        (data.blocks || []).forEach((b) => blocked.push({ start: b.start_time, end: b.end_time }));
-        renderSlots(dateStr, blocked);
-      } catch {
-        statusEl.textContent = 'Indisponible pour le moment';
-        if (slotsEl) slotsEl.innerHTML = '';
-      }
-    };
-
-    dateInput?.addEventListener('change', () => {
-      const dateStr = dateInput.value;
-      if (!dateStr) return;
-      startField && (startField.value = '');
-      endField && (endField.value = '');
-      loadAvailability(dateStr);
-    });
-
-    form.addEventListener('submit', (event) => {
-      if (!startField?.value || !endField?.value) {
-        event.preventDefault();
-        errorEl?.classList.remove('hidden');
-        errorEl?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
     });
   });
 </script>

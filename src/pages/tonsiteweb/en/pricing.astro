@@ -20,7 +20,7 @@ const metadata = {
   <HeroText
     tagline="Pricing"
     title="Transparent packages, billed in Switzerland"
-    subtitle="Every pack includes design, launch and human support. Care is optional; integrations on quote."
+    subtitle="Two standard routes for simple launch sites, then a clean custom layer when the work exceeds the template."
   />
 
   <!-- Starter pack banner -->
@@ -41,6 +41,11 @@ const metadata = {
         subtitle: 'Professional showcase site from CHF 999',
         price: 999,
         period: 'one-time payment',
+        info: [
+          "CHF 999 covers a standard 5-section showcase site on TonSiteWeb's shared platform.",
+          'Extra pages, brainstorming, structural changes, or new modules are quoted separately.',
+          'Any out-of-scope request is billed separately before production.',
+        ],
         items: [
           {
             description: 'Showcase site with 5 sections + responsive contact page',
@@ -49,44 +54,40 @@ const metadata = {
             description: 'Client-provided content; we integrate and format it',
           },
           {
-            description: 'Video training + autonomy checklist',
+            description: 'Deployment on TonSiteWeb shared infrastructure',
           },
         ],
-        callToAction: { text: 'Start here →', href: '/onboarding?plan=essential999' },
+        callToAction: { text: 'Choose a style →', href: '/en/choose-template?plan=essential999' },
       },
       {
-        title: 'Advanced',
-        subtitle: 'Site + advanced features',
-        price: 3000,
-        period: 'from — one-time',
-        items: [
-          { description: 'Includes the Essential pack' },
-          { description: 'Simple backend + template (up to 5,000 CHF)' },
-          { description: 'Bespoke projects 10,000 CHF+ — let’s talk' },
-          { description: 'End-to-end testing and concise docs' },
+        title: 'CHF 1,500 pack',
+        subtitle: 'Standard site + WhatsApp + Calendly',
+        price: 1500,
+        period: 'one-time payment',
+        info: [
+          'Still within the standard TonSiteWeb layer, without entering a private build.',
+          'WhatsApp, Calendly, and a light handoff are included in the validated scope.',
+          'Extra pages, redesign, workshops, or out-of-scope modules are quoted separately.',
         ],
-        callToAction: '<a class="btn btn-primary" href="#modal-advanced-en">Explore</a>',
+        items: [
+          { description: 'Includes the CHF 999 base layer' },
+          { description: 'Clickable WhatsApp + Calendly booking' },
+          { description: 'Light explanation and handoff' },
+        ],
+        callToAction: { text: 'Choose the CHF 1,500 pack →', href: '/en/choose-template?plan=essential1500' },
       },
       {
-        title: 'Care & security',
-        subtitle: 'Updates and options by tier',
-        price: 79,
-        period: 'from / month — no surprises',
+        title: 'Custom systems',
+        subtitle: 'Private codebase, backend, or heavier architecture',
+        price: 2000,
+        period: 'from — scoped before build',
         items: [
-          {
-            description: 'Security updates and scheduled backups',
-          },
-          {
-            description: 'Uptime monitoring & priority fixes',
-          },
-          {
-            description: 'Pro email & Swiss hosting from 149–249 CHF/month',
-          },
-          {
-            description: 'Email & video support within one business day',
-          },
+          { description: 'CHF 2,000: private codebase' },
+          { description: 'CHF 2,200: private codebase + handoff' },
+          { description: 'CHF 4,500: light backend' },
+          { description: 'CHF 8,000+: headless shop or heavier system' },
         ],
-        callToAction: '<a class="btn btn-primary" href="#modal-care-en">Choose</a>',
+        callToAction: '<a class="btn btn-primary" href="#modal-custom-en">See progression</a>',
       },
     ]}
   />
@@ -95,40 +96,28 @@ const metadata = {
       <PricingOptions
         id="modal-essential-en"
         triggerText=""
-        title="Essential packs"
-        subtitle="Choose your automation level"
+        title="Standard packs"
+        subtitle="Choose the right level without buying custom too early"
         ctaText="Choose"
         tiers={[
-          { label: 'CHF 999', price: 'from 999', features: ['Static site', 'Simple form (email)'], href: '/en/choose-template?plan=essential999', info: ['Hosting & SSL included (3 months)', '1 round of small edits (≤ 30min)', 'Can be combined with Care 79 (hosting & security)'] },
-          { label: 'CHF 1,249', price: '1,249', features: ['Includes Essential', '1 automation (e.g., booking)'], href: '/en/choose-template?plan=essential1249', primary: true, info: ['Hosting & SSL included (6 months)', '1 round of small edits (≤ 30min)', 'Can be combined with Care 79 (hosting & security)'] },
-          { label: 'CHF 1,500', price: '1,500', features: ['Includes Essential', '2–3 automations'], href: '/en/choose-template?plan=essential1500', info: ['Hosting & SSL included (9 months)', '1 round of small edits (≤ 30min)', 'Can be combined with Care 79 (hosting & security)'] },
+          { label: 'CHF 999', price: 'from 999', features: ['Static site', 'Simple form (email)'], href: '/en/choose-template?plan=essential999', info: ['Hosting & SSL included (3 months)', 'Deployed on TonSiteWeb shared infrastructure', 'Extra pages, workshops, or out-of-scope changes quoted separately'] },
+          { label: 'CHF 1,500', price: '1,500', features: ['Includes the CHF 999 base', 'WhatsApp + Calendly', 'Light explanation / handoff'], href: '/en/choose-template?plan=essential1500', primary: true, info: ['Still on TonSiteWeb shared infrastructure', 'WhatsApp and Calendly wired inside the validated scope', 'Extra pages, workshops, or out-of-scope changes quoted separately'] },
         ]}
-        footnote="Hosting & SSL included (3/6/9 months depending on pack). Technical assistance included. Content/design changes billed separately."
+        footnote="The validated scope is what gets delivered; extra pages, workshops/brainstorming, redesigns, and out-of-scope changes are billed separately."
       />
       <PricingOptions
-        id="modal-advanced-en"
+        id="modal-custom-en"
         triggerText=""
-        title="Advanced pack"
-        subtitle="Template + small backend (3–5k) or bespoke (10k+)"
-        ctaText="Choose"
+        title="Custom progression"
+        subtitle="When the right move is no longer a simple template"
+        ctaText="Open"
         tiers={[
-          { label: 'Up to 5,000 CHF', price: 'from 3,000', features: ['Template + light backend (e.g., headless shop)', '1–2 automations'], href: '/en/contact?plan=advanced_5k#form' },
-          { label: 'Bespoke', price: '10,000 CHF+', features: ['Custom project', 'Scope + quote'], href: '/en/contact?plan=bespoke_10k_plus#form', primary: true },
-          { label: 'Consulting', price: 'on request', features: ['Scoping workshop', 'Architecture & strategy'], href: '/en/contact?plan=consulting#form' },
+          { label: 'CHF 2,000', price: 'private codebase', features: ['Separate codebase', 'Leaves shared infrastructure'], href: '/en/custom-systems?track=private-2000#diagnostic' },
+          { label: 'CHF 2,200', price: 'private + handoff', features: ['Separate codebase', 'Structured handoff'], href: '/en/custom-systems?track=private-2200#diagnostic', primary: true },
+          { label: 'CHF 4,500', price: 'light backend', features: ['Light business logic', 'Intake, sync, or simple portal'], href: '/en/custom-systems?track=backend-4500#diagnostic' },
+          { label: 'CHF 8,000+', price: 'heavier system', features: ['Headless shop', 'Admin, portal, or deeper architecture'], href: '/en/custom-systems?track=shop-8000#diagnostic' },
         ]}
-        footnote="High‑traffic usage billed per use. No server included."
-      />
-      <PricingOptions
-        id="modal-care-en"
-        triggerText=""
-        title="Care plans (hosting & security)"
-        subtitle="Swiss hosting + security patches"
-        ctaText="Choose"
-        tiers={[
-          { label: 'Care 79', price: 'CHF 79/mo', features: ['Hosting & SSL', 'Security updates'], href: '/api/payment/redirect?plan=care79' },
-          { label: 'Care 149', price: 'CHF 149/mo', features: ['Includes Care 79', 'Priority support (light)'], href: '/api/payment/redirect?plan=care149', primary: true },
-          { label: 'Care 249', price: 'CHF 249/mo', features: ['Includes Care 149', 'Extended support & minor changes'], href: '/api/payment/redirect?plan=care249' },
-        ]}
+        footnote="Architecture, portal, admin, or internal platform work gets scoped after the paid 15 min / CHF 80 diagnostic."
       />
     </div>
   </div>
@@ -147,7 +136,7 @@ const metadata = {
       },
       {
         title: 'Swiss hosting included',
-        description: 'Servers in Switzerland with SSL included for the first 12 months.',
+        description: 'Servers in Switzerland with SSL included for the launch period, according to the selected pack.',
         icon: 'tabler:server',
       },
       {
@@ -195,8 +184,8 @@ const metadata = {
         icon: 'tabler:robot',
       },
       {
-        title: '4. Approval & training',
-        description: 'Receive your ready-to-use site, video guide and next steps recap.',
+        title: '4. Approval & go-live',
+        description: 'Approve the final version, then we schedule go-live and quote any out-of-scope extension separately.',
         icon: 'tabler:rocket',
       },
     ]}
@@ -224,8 +213,8 @@ const metadata = {
         description: 'Around five business days after we receive your content. We share a detailed schedule during the brief.',
       },
       {
-        title: 'How do you bill integrations?',
-        description: 'Simple integrations are included. API connections and advanced scenarios are quoted.',
+        title: 'What if I need extra pages or brainstorming?',
+        description: 'Extra pages, workshops or brainstorming, structural changes, and out-of-scope requests are quoted separately before production starts.',
       },
       {
         title: 'Is the care plan mandatory?',

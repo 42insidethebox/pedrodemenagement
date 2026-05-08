@@ -1,6 +1,6 @@
-import { detectRequestLocale } from '../../lib/locale.ts';
+import { detectRequestLocale } from '../../lib/locale.js';
 
-import { precisionSystemsConfig, precisionSystemsOffers, type PrecisionSystemsOfferKey } from './config.ts';
+import { precisionSystemsConfig, precisionSystemsOffers, type PrecisionSystemsOfferKey } from './config.js';
 
 export const PRECISION_SYSTEMS_LOCALES = ['fr', 'en', 'de', 'it'] as const;
 

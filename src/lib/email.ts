@@ -401,6 +401,7 @@ export async function sendBookingNotificationEmail(data: {
   notes?: string;
   startTime: string;
   endTime: string;
+  teamsUrl?: string;
   locale?: string | null;
   tenant?: TenantContext;
 }) {
@@ -418,6 +419,7 @@ export async function sendBookingNotificationEmail(data: {
       notes: data.notes || '',
       start_time: data.startTime,
       end_time: data.endTime,
+      teams_url: data.teamsUrl || '',
       tenant_id: data.tenant?.slug,
     },
     bccSupport: false,
@@ -431,6 +433,7 @@ export async function sendBookingConfirmationEmail(data: {
   service?: string;
   startTime?: string;
   endTime?: string;
+  teamsUrl?: string;
   locale?: string | null;
   tenant?: TenantContext;
 }) {
@@ -443,6 +446,7 @@ export async function sendBookingConfirmationEmail(data: {
       service: data.service || '',
       start_time: data.startTime || '',
       end_time: data.endTime || '',
+      teams_url: data.teamsUrl || '',
       tenant_id: data.tenant?.slug,
     },
     bccSupport: true,

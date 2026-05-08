@@ -568,6 +568,7 @@ export function renderEmailTemplate(
           <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%; border:1px solid #e2e8f0; border-radius:12px; overflow:hidden; font-size:14px; line-height:20px;">
             <tbody>${rows}</tbody>
           </table>
+          ${data?.teams_url ? `<p style="margin-top:16px;"><strong>Lien Teams :</strong> <a href="${escapeHtml(String(data.teams_url))}" target="_blank" rel="noopener">${escapeHtml(String(data.teams_url))}</a></p>` : ''}
           ${data?.notes ? `<blockquote style="margin:16px 0; padding:12px 16px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px;">${escapeHtml(String(data.notes))}</blockquote>` : ''}
         `;
         return renderLayout({ title: 'Nouvelle réservation confirmée', contentHtml: content });
@@ -577,6 +578,7 @@ export function renderEmailTemplate(
           <p>Votre réservation est confirmée${data?.customer_name ? `, ${escapeHtml(String(data.customer_name))}` : ''}.</p>
           <p><strong>Service :</strong> ${escapeHtml(String(data?.service || '—'))}</p>
           <p><strong>Créneau :</strong> ${escapeHtml(String(data?.start_time || '—'))} → ${escapeHtml(String(data?.end_time || '—'))}</p>
+          ${data?.teams_url ? `<p><strong>Lien Teams :</strong> <a href="${escapeHtml(String(data.teams_url))}" target="_blank" rel="noopener">Rejoindre la session</a></p>` : ''}
           <p>Merci pour votre confiance. Nous restons disponibles si vous avez des questions.</p>
         `;
         return renderLayout({ title: 'Réservation confirmée', preheader: 'Merci pour votre réservation', contentHtml: content });

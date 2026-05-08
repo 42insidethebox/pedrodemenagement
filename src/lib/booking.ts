@@ -40,6 +40,41 @@ export type BookingRecord = {
   currency: string | null;
 };
 
+type BookingConfig = {
+  priceChf: number | null;
+  currency: string;
+  productName: string;
+  teamsUrl: string;
+};
+
+function resolveLocalizedTonSiteWebPath(locale: string | undefined, path: string) {
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  const lang = (locale || '').toLowerCase();
+  return ['en', 'de', 'it'].includes(lang) ? `/${lang}${normalizedPath}` : normalizedPath;
+}
+
+function resolveBookingConfig(tenantId: string): BookingConfig {
+  if (tenantId === 'tonsiteweb') {
+    const price = Number(ENV.TONSITEWEB_DIAGNOSTIC_PRICE_CHF || 80);
+    return {
+      priceChf: Number.isFinite(price) && price > 0 ? price : 80,
+      currency: (ENV.TONSITEWEB_DIAGNOSTIC_CURRENCY || 'chf').toLowerCase(),
+      productName: ENV.TONSITEWEB_DIAGNOSTIC_PRODUCT_NAME || 'TonSiteWeb diagnostic 15 min',
+      teamsUrl: ENV.TONSITEWEB_DIAGNOSTIC_TEAMS_URL || '',
+    };
+  }
+
+  const price = Number(ENV.LAUSANNE_BOOKING_PRICE_CHF || 0);
+  return {
+    priceChf: Number.isFinite(price) && price > 0 ? price : null,
+    currency: (ENV.LAUSANNE_BOOKING_CURRENCY || 'chf').toLowerCase(),
+    productName:
+      ENV.LAUSANNE_BOOKING_PRODUCT_NAME ||
+      (tenantId === 'lausanne' ? 'Réservation déménagement – Lausanne' : 'Réservation'),
+    teamsUrl: '',
+  };
+}
+
 export function parseBookingPayload(request: Request, data: Record<string, any>): BookingPayload {
   const name = String(data.name || '').trim();
   const email = String(data.email || '').trim();
@@ -107,19 +142,41 @@ export async function checkBookingConflicts(tenantId: string, startTime: Date, e
 }
 
 export function resolveBookingAmountMinor(tenantId: string) {
-  const price = Number(ENV.LAUSANNE_BOOKING_PRICE_CHF || 0);
-  if (!Number.isFinite(price) || price <= 0) return null;
-  return Math.round(price * 100);
+  const price = resolveBookingConfig(tenantId).priceChf;
+  if (!Number.isFinite(price) || (price || 0) <= 0) return null;
+  return Math.round((price || 0) * 100);
 }
 
-export function resolveBookingCurrency() {
-  return (ENV.LAUSANNE_BOOKING_CURRENCY || 'chf').toLowerCase();
+export function resolveBookingCurrency(tenantId: string) {
+  return resolveBookingConfig(tenantId).currency;
 }
 
 export function resolveBookingProductName(tenantId: string) {
-  if (ENV.LAUSANNE_BOOKING_PRODUCT_NAME) return ENV.LAUSANNE_BOOKING_PRODUCT_NAME;
-  if (tenantId === 'lausanne') return 'Réservation déménagement – Lausanne';
-  return 'Réservation';
+  return resolveBookingConfig(tenantId).productName;
+}
+
+export function resolveBookingTeamsUrl(tenantId: string) {
+  return resolveBookingConfig(tenantId).teamsUrl;
+}
+
+function resolveBookingSuccessUrl(request: Request, payload: BookingPayload) {
+  const origin = ENV.ORIGIN || request.headers.get('origin') || new URL(request.url).origin;
+  if (payload.tenantId === 'tonsiteweb') {
+    const target = resolveLocalizedTonSiteWebPath(payload.locale, '/thank-you');
+    return `${origin.replace(/\/$/, '')}${target}?session_id={CHECKOUT_SESSION_ID}`;
+  }
+  const tenant = resolveTenantFromRequest(request);
+  return buildSuccessUrl(origin, tenant.basePath || '');
+}
+
+function resolveBookingCancelUrl(request: Request, payload: BookingPayload) {
+  const origin = ENV.ORIGIN || request.headers.get('origin') || new URL(request.url).origin;
+  if (payload.tenantId === 'tonsiteweb') {
+    const target = resolveLocalizedTonSiteWebPath(payload.locale, '/custom-systems');
+    return `${origin.replace(/\/$/, '')}${target}`;
+  }
+  const tenant = resolveTenantFromRequest(request);
+  return buildCancelUrl(origin, tenant.basePath || '');
 }
 
 export async function createBookingCheckoutSession(
@@ -129,11 +186,9 @@ export async function createBookingCheckoutSession(
 ) {
   const stripe = await getStripe();
   if (!stripe) return null;
-  const origin = ENV.ORIGIN || request.headers.get('origin') || new URL(request.url).origin;
-  const tenant = resolveTenantFromRequest(request);
   const amount = resolveBookingAmountMinor(payload.tenantId);
   if (!amount) return null;
-  const currency = resolveBookingCurrency();
+  const currency = resolveBookingCurrency(payload.tenantId);
   const productName = resolveBookingProductName(payload.tenantId);
 
   return stripe.checkout.sessions.create({
@@ -151,8 +206,8 @@ export async function createBookingCheckoutSession(
         quantity: 1,
       },
     ],
-    success_url: buildSuccessUrl(origin, tenant.basePath || ''),
-    cancel_url: buildCancelUrl(origin, tenant.basePath || ''),
+    success_url: resolveBookingSuccessUrl(request, payload),
+    cancel_url: resolveBookingCancelUrl(request, payload),
     metadata: {
       booking_id: bookingId,
       tenant_id: payload.tenantId,
@@ -201,6 +256,13 @@ export async function finalizeBookingFromSession(session: any) {
     currency: session.currency ?? null,
   };
   const { data } = await sb.from('bookings').update(update).eq('id', bookingId).select('*').maybeSingle();
+  return data as BookingRecord | null;
+}
+
+export async function fetchBookingById(bookingId: string) {
+  const sb = getSupabaseAdmin();
+  if (!sb || !bookingId) return null;
+  const { data } = await sb.from('bookings').select('*').eq('id', bookingId).maybeSingle();
   return data as BookingRecord | null;
 }
 

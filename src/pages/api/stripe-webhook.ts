@@ -16,7 +16,7 @@ import { provisionWebsiteWorkspace, shareFileWithEmail } from '~/lib/google-docs
 import { sendAdminNotificationEmail, sendBookingConfirmationEmail, sendBookingNotificationEmail, sendClientConfirmationEmail } from '~/lib/email';
 import { triggerTemplateDeployment } from '~/lib/deployment.js';
 import { getTenantFromContext } from '~/utils/tenant';
-import { finalizeBookingFromSession } from '~/lib/booking';
+import { finalizeBookingFromSession, resolveBookingTeamsUrl } from '~/lib/booking';
 import { resolveTenantFromRequest } from '~/lib/tenants';
 
 export const prerender = false;
@@ -134,13 +134,14 @@ export const POST: APIRoute = async ({ request, locals }) => {
               email: booking.customer_email || '',
               phone: booking.customer_phone || '',
               service: booking.service || '',
-              address: booking.address || '',
-              notes: booking.notes || '',
-              startTime: booking.start_time,
-              endTime: booking.end_time,
-              locale,
-              tenant,
-            });
+                address: booking.address || '',
+                notes: booking.notes || '',
+                startTime: booking.start_time,
+                endTime: booking.end_time,
+                teamsUrl: resolveBookingTeamsUrl(booking.tenant_id),
+                locale,
+                tenant,
+              });
           } catch {}
           if (booking.customer_email) {
             try {
@@ -150,6 +151,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
                 service: booking.service || '',
                 startTime: booking.start_time,
                 endTime: booking.end_time,
+                teamsUrl: resolveBookingTeamsUrl(booking.tenant_id),
                 locale,
                 tenant,
               });

@@ -1,4 +1,4 @@
-import { detectRequestLocale } from '../../lib/locale.ts';
+import { detectRequestLocale } from '../../lib/locale.js';
 
 import {
   iopartnerConfig,
@@ -6,7 +6,7 @@ import {
   iopartnerSystemsOffers,
   type IoPartnerLaunchOfferKey,
   type IoPartnerSystemsOfferKey,
-} from './config.ts';
+} from './config.js';
 
 export const IOPARTNER_LOCALES = ['fr', 'en', 'de', 'it'] as const;
 

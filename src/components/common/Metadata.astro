@@ -16,10 +16,36 @@ export interface Props extends MetaData {
   siteName?: string;
 }
 
+const normalizeHeaderValue = (value?: string | null) =>
+  (value || '')
+    .split(',')[0]
+    .trim()
+    .replace(/:\d+$/, '');
+
+const path = Astro.url?.pathname || '/';
+const canonicalPath = Astro.request?.headers.get('x-original-path') || path;
+const requestHost =
+  normalizeHeaderValue(Astro.request?.headers.get('x-forwarded-host')) ||
+  normalizeHeaderValue(Astro.request?.headers.get('host'));
+const forwardedProto = normalizeHeaderValue(Astro.request?.headers.get('x-forwarded-proto'));
+const isLocalHost =
+  !requestHost ||
+  requestHost === 'localhost' ||
+  requestHost === '127.0.0.1' ||
+  requestHost.endsWith('.local');
+const defaultCanonical = (() => {
+  const canonicalUrl = new URL(String(getCanonical(String(canonicalPath))));
+  if (!isLocalHost) {
+    canonicalUrl.host = requestHost;
+    canonicalUrl.protocol = forwardedProto ? `${forwardedProto}:` : Astro.url?.protocol || canonicalUrl.protocol;
+  }
+  return canonicalUrl.toString();
+})();
+
 const {
   title,
   ignoreTitleTemplate = false,
-  canonical = String(getCanonical(String(Astro.url.pathname))),
+  canonical = defaultCanonical,
   robots = {},
   description,
   openGraph = {},
@@ -28,7 +54,6 @@ const {
   siteName,
 } = Astro.props;
 
-const path = Astro.url?.pathname || '/';
 const match = path.match(/^\/(fr|en|de|it)(?=\/|$)/);
 const routeLang = lang || (match && match[1]) || I18N?.language || 'fr';
 

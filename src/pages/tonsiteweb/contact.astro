@@ -15,13 +15,13 @@ const metadata = {
   <HeroText
     tagline="Contact"
     title="Formulaire niveau FAANG"
-    subtitle="Un parcours guidé qui capte vos besoins (sites 1.5–5k CHF) et détecte les projets sur‑mesure 10–70k+ sans vous faire sentir la complexité."
+    subtitle="Un parcours guidé qui distingue les sites standards (999 / 1 500 CHF), les sujets custom 2 000–8 000+ CHF et les projets plus lourds, sans vous faire perdre de temps."
   />
 
   <ContactUs
     id="form"
     title="Brief express, sans jargon"
-    subtitle="4 mini-étapes, 2 minutes. Donnez-nous les grandes lignes, nous cadrons et décidons pour vous."
+    subtitle="4 mini-étapes, 2 minutes. Donnez le cadre, on vous oriente vers 999, 1 500 ou la bonne voie custom."
     inputs={[
       { type: 'section', label: 'Étape 1 — Votre activité' },
       { type: 'text', name: 'name', label: 'Nom et prénom', required: true, requiredMessage: 'Merci d’indiquer votre nom.' },
@@ -100,9 +100,9 @@ const metadata = {
         required: true,
         requiredMessage: 'Choisissez un ordre de grandeur.',
         options: [
-          { label: 'Site simple (≈1–1.5k)', value: 'entry' },
-          { label: 'Site évolutif (≈3–5k)', value: 'advanced' },
-          { label: 'Projet structurant (10k+)', value: 'custom' },
+          { label: 'Site standard (999–1 500 CHF)', value: 'entry' },
+          { label: 'Custom léger (≈2 000–8 000 CHF)', value: 'advanced' },
+          { label: 'Projet structurant (10 000+ CHF)', value: 'custom' },
           { label: 'Je ne sais pas encore', value: 'unknown' },
         ],
       },
@@ -110,7 +110,7 @@ const metadata = {
         type: 'text',
         name: 'delivery_track_entry',
         label: 'Voie projet',
-        attributes: { value: 'Essentiel (≈1–1.5k) — livraison rapide sans atelier', readOnly: true, disabled: true },
+        attributes: { value: 'Standard (999 / 1 500) — lancement rapide sans build privée', readOnly: true, disabled: true },
         className: 'bg-slate-50 dark:bg-slate-800/70 rounded-xl px-3 py-2',
         conditional: { source: 'budget', showOn: ['entry'] },
       },
@@ -118,7 +118,7 @@ const metadata = {
         type: 'text',
         name: 'delivery_track_avance',
         label: 'Voie projet',
-        attributes: { value: 'Avancé (≈3–5k) — template + logique métier légère', readOnly: true, disabled: true },
+        attributes: { value: 'Custom léger (≈2 000–8 000 CHF) — codebase privée ou back-end léger', readOnly: true, disabled: true },
         className: 'bg-slate-50 dark:bg-slate-800/70 rounded-xl px-3 py-2',
         conditional: { source: 'budget', showOn: ['advanced'] },
       },
@@ -126,7 +126,7 @@ const metadata = {
         type: 'text',
         name: 'delivery_track_custom',
         label: 'Voie projet',
-        attributes: { value: 'Sur-mesure (10k+) — cadrage + gouvernance', readOnly: true, disabled: true },
+        attributes: { value: 'Architecture / portail / plateforme (10 000+ CHF) — cadrage puis scope', readOnly: true, disabled: true },
         className: 'bg-amber-50 dark:bg-slate-800/70 rounded-xl px-3 py-2 text-amber-900',
         conditional: { source: 'budget', showOn: ['custom'] },
       },
@@ -172,8 +172,8 @@ const metadata = {
         name: 'next_step',
         label: 'Vous préférez',
         options: [
-          { label: 'Démarrer directement (1.5–5k)', value: 'start-now' },
-          { label: 'Un call de 10 minutes (projets 10–70k)', value: 'call-10' },
+          { label: 'Démarrer directement (999 / 1 500)', value: 'start-now' },
+          { label: 'Un diagnostic payé 15 min / 80 CHF', value: 'call-15-paid' },
         ],
       },
     ]}

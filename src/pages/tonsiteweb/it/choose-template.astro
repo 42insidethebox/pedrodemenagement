@@ -1,6 +1,5 @@
 ---
-export const prerender = false;
-import { normalizePlanId, TONSITEWEB_DEFAULT_PLAN } from '~/lib/pricing.js';
-const plan = normalizePlanId(Astro.url.searchParams.get('plan') || TONSITEWEB_DEFAULT_PLAN);
-return Astro.redirect(`/choose-template?lang=it&plan=${encodeURIComponent(plan)}`);
+import TonSiteWebChooseTemplate from '../choose-template.astro';
 ---
+
+<TonSiteWebChooseTemplate />

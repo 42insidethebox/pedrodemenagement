@@ -1,0 +1,581 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import BookingSlotPicker from '~/components/widgets/BookingSlotPicker.astro';
+import { detectRequestLocale } from '~/lib/locale';
+
+export const prerender = false;
+
+const locale = detectRequestLocale(Astro.request, Astro.url);
+const localePrefix = ['en', 'de', 'it'].includes(locale) ? `/${locale}` : '';
+const customSystemsPath = `${localePrefix}/custom-systems`;
+
+const track = (Astro.url.searchParams.get('track') || '').trim().toLowerCase();
+const pathFor = (path: string) => `${localePrefix}${path}`;
+
+const COPY = {
+  fr: {
+    title: 'TonSiteWeb — Systèmes sur mesure',
+    eyebrow: 'Quand le template ne suffit plus',
+    heroTitle: 'Besoin d’une solution privée ou d’un vrai back-end ?',
+    heroLead:
+      'TonSiteWeb garde la logique claire des sites de lancement, puis ouvre une seconde couche quand le sujet demande un codebase séparé, un back-end léger ou une architecture plus robuste.',
+    backing: 'Couche custom adossée à IO Partner, pour les sujets qui demandent plus qu’un simple site vitrine.',
+    exactLadder: 'Ladder exact',
+    tiers: [
+      {
+        key: 'starter-1500',
+        price: '1 500 CHF',
+        title: 'Site standard + WhatsApp + Calendly',
+        body: 'Toujours sur le moteur TonSiteWeb, avec la mise en place légère qui suffit à beaucoup de PME.',
+        cta: 'Commander le pack 1 500',
+        href: pathFor('/choose-template?plan=essential1500'),
+      },
+      {
+        key: 'private-2000',
+        price: '2 000 CHF',
+        title: 'Codebase privée',
+        body: 'Quand vous voulez sortir de l’infrastructure mutualisée et garder votre propre base de projet.',
+        cta: 'Réserver le diagnostic',
+        href: `${customSystemsPath}?track=private-2000#diagnostic`,
+      },
+      {
+        key: 'private-2200',
+        price: '2 200 CHF',
+        title: 'Codebase privée + transmission',
+        body: 'Même base privée, avec une vraie passation et une explication structurée de ce qui a été livré.',
+        cta: 'Réserver le diagnostic',
+        href: `${customSystemsPath}?track=private-2200#diagnostic`,
+      },
+      {
+        key: 'backend-4500',
+        price: '4 500 CHF',
+        title: 'Back-end léger',
+        body: 'Le bon niveau pour un “hello backend” sérieux : logique métier légère, collecte, synchronisation ou portail simple.',
+        cta: 'Réserver le diagnostic',
+        href: `${customSystemsPath}?track=backend-4500#diagnostic`,
+      },
+      {
+        key: 'shop-8000',
+        price: '8 000+ CHF',
+        title: 'Headless shop ou système plus lourd',
+        body: 'Quand il faut un vrai sujet d’architecture, de commerce headless, d’admin, de portail ou de plateforme interne.',
+        cta: 'Réserver le diagnostic',
+        href: `${customSystemsPath}?track=shop-8000#diagnostic`,
+      },
+    ],
+    belowTitle: 'En dessous de ce niveau ?',
+    belowBody:
+      'Si votre besoin tient encore dans un site standard, ne payez pas du custom trop tôt. Le bon mouvement est souvent 999 ou 1 500 CHF, pas plus.',
+    belowCtas: [
+      { text: 'Voir le pack 999', href: pathFor('/choose-template?plan=essential999') },
+      { text: 'Voir le pack 1 500', href: pathFor('/choose-template?plan=essential1500') },
+    ],
+    architectureTitle: 'Architecture, admin, portail, plateforme',
+    architectureBody:
+      'Ces sujets ne sont pas vendus à la volée. Le diagnostic décide si le vrai sujet est un back-end léger, un headless shop ou une architecture plus profonde.',
+    diagnosticEyebrow: 'Diagnostic payé',
+    diagnosticTitle: '15 min / 80 CHF pour cadrer correctement le custom.',
+    diagnosticLead:
+      'Le produit n’est pas un appel vague. Vous choisissez un créneau, vous payez, puis vous recevez la confirmation et le lien Teams partagé.',
+    diagnosticIncludesTitle: 'Le pipeline',
+    diagnosticIncludes: [
+      'Créneau de 15 minutes choisi avant paiement.',
+      'Paiement Stripe immédiat.',
+      'Confirmation par email avec le lien Teams partagé.',
+      'Qualification rapide: 2 000, 2 200, 4 500, 8 000+ ou sujet plus profond.',
+    ],
+    selectedTrackLabel: 'Sujet sélectionné',
+    selectedTrackFallback: 'Diagnostic TonSiteWeb — systèmes sur mesure',
+    selectedTrackMap: {
+      'private-2000': 'Codebase privée — 2 000 CHF',
+      'private-2200': 'Codebase privée + transmission — 2 200 CHF',
+      'backend-4500': 'Back-end léger — 4 500 CHF',
+      'shop-8000': 'Headless shop / système plus lourd — 8 000+ CHF',
+    },
+    form: {
+      dateLabel: 'Date',
+      slotLabel: 'Créneau',
+      chooseDate: 'Choisissez une date',
+      selectSlot: 'Sélectionnez un créneau',
+      loading: 'Chargement…',
+      unavailable: 'Indisponible pour le moment',
+      missingSlot: 'Merci de sélectionner un créneau disponible.',
+      name: 'Nom complet',
+      email: 'Email',
+      phone: 'Téléphone',
+      notes: 'Contexte',
+      notesPlaceholder: 'Décrivez le besoin, le budget visé et ce qui bloque déjà.',
+      submit: 'Réserver et payer 80 CHF',
+    },
+    note: 'Si vous cherchez du custom à moins de 2 000 CHF, le bon produit n’est généralement pas du custom. Prenez plutôt la voie 999 / 1 500.',
+  },
+  en: {
+    title: 'TonSiteWeb — Custom systems',
+    eyebrow: 'When the template stops being enough',
+    heroTitle: 'Need a private build or a real backend layer?',
+    heroLead:
+      'TonSiteWeb keeps the clean launch-site logic, then opens a second layer when the work needs a separate codebase, a light backend, or a heavier architecture.',
+    backing: 'Custom layer backed by IO Partner for work that exceeds a simple showcase site.',
+    exactLadder: 'Exact ladder',
+    tiers: [
+      {
+        key: 'starter-1500',
+        price: 'CHF 1,500',
+        title: 'Standard site + WhatsApp + Calendly',
+        body: 'Still on the TonSiteWeb engine, with the light orchestration many SMEs actually need.',
+        cta: 'Order the CHF 1,500 pack',
+        href: pathFor('/choose-template?plan=essential1500'),
+      },
+      {
+        key: 'private-2000',
+        price: 'CHF 2,000',
+        title: 'Private codebase',
+        body: 'For cases where you want to leave the shared infrastructure and keep a dedicated project base.',
+        cta: 'Book the diagnostic',
+        href: `${customSystemsPath}?track=private-2000#diagnostic`,
+      },
+      {
+        key: 'private-2200',
+        price: 'CHF 2,200',
+        title: 'Private codebase + handoff',
+        body: 'Same private base, with a real handoff and a structured explanation of what was delivered.',
+        cta: 'Book the diagnostic',
+        href: `${customSystemsPath}?track=private-2200#diagnostic`,
+      },
+      {
+        key: 'backend-4500',
+        price: 'CHF 4,500',
+        title: 'Light backend',
+        body: 'The right level for a serious “hello backend”: light business logic, intake, sync, or a simple portal.',
+        cta: 'Book the diagnostic',
+        href: `${customSystemsPath}?track=backend-4500#diagnostic`,
+      },
+      {
+        key: 'shop-8000',
+        price: 'CHF 8,000+',
+        title: 'Headless shop or heavier system',
+        body: 'For real architecture, headless commerce, admin tooling, portals, or internal platforms.',
+        cta: 'Book the diagnostic',
+        href: `${customSystemsPath}?track=shop-8000#diagnostic`,
+      },
+    ],
+    belowTitle: 'Below that threshold?',
+    belowBody:
+      'If the need still fits a standard site, do not buy custom too early. The rational move is usually CHF 999 or CHF 1,500.',
+    belowCtas: [
+      { text: 'See the CHF 999 pack', href: pathFor('/choose-template?plan=essential999') },
+      { text: 'See the CHF 1,500 pack', href: pathFor('/choose-template?plan=essential1500') },
+    ],
+    architectureTitle: 'Architecture, admin, portal, platform',
+    architectureBody:
+      'Those topics are not sold off a menu. The diagnostic decides whether the real subject is a light backend, a headless shop, or a deeper architecture layer.',
+    diagnosticEyebrow: 'Paid diagnostic',
+    diagnosticTitle: '15 min / CHF 80 to frame custom work properly.',
+    diagnosticLead:
+      'This is not a vague call. You choose a slot, pay, then receive the confirmation and shared Teams link.',
+    diagnosticIncludesTitle: 'The pipeline',
+    diagnosticIncludes: [
+      '15-minute slot selected before payment.',
+      'Immediate Stripe payment.',
+      'Confirmation email with the shared Teams link.',
+      'Fast qualification: 2,000, 2,200, 4,500, 8,000+, or a deeper architecture subject.',
+    ],
+    selectedTrackLabel: 'Selected topic',
+    selectedTrackFallback: 'TonSiteWeb diagnostic — custom systems',
+    selectedTrackMap: {
+      'private-2000': 'Private codebase — CHF 2,000',
+      'private-2200': 'Private codebase + handoff — CHF 2,200',
+      'backend-4500': 'Light backend — CHF 4,500',
+      'shop-8000': 'Headless shop / heavier system — CHF 8,000+',
+    },
+    form: {
+      dateLabel: 'Date',
+      slotLabel: 'Slot',
+      chooseDate: 'Choose a date',
+      selectSlot: 'Select a slot',
+      loading: 'Loading…',
+      unavailable: 'Unavailable right now',
+      missingSlot: 'Please select an available slot.',
+      name: 'Full name',
+      email: 'Email',
+      phone: 'Phone',
+      notes: 'Context',
+      notesPlaceholder: 'Describe the need, the budget band, and what is already slowing you down.',
+      submit: 'Book and pay CHF 80',
+    },
+    note: 'If you are looking for custom work below CHF 2,000, the right product is usually not custom. Start with CHF 999 / CHF 1,500 instead.',
+  },
+  de: {
+    title: 'TonSiteWeb — Custom systems',
+    eyebrow: 'Wenn die Vorlage nicht mehr reicht',
+    heroTitle: 'Brauchen Sie einen privaten Build oder ein echtes Backend?',
+    heroLead:
+      'TonSiteWeb behält die klare Launch-Logik und öffnet dann eine zweite Ebene, wenn die Arbeit eine eigene Codebase, ein leichtes Backend oder eine schwerere Architektur braucht.',
+    backing: 'Custom-Schicht mit subtiler IO-Partner-Absicherung für Arbeiten jenseits der einfachen Showcase-Seite.',
+    exactLadder: 'Exakte Leiter',
+    tiers: [
+      {
+        key: 'starter-1500',
+        price: 'CHF 1’500',
+        title: 'Standardseite + WhatsApp + Calendly',
+        body: 'Weiterhin auf dem TonSiteWeb-Engine, mit der leichten Orchestrierung, die viele KMU wirklich brauchen.',
+        cta: 'Paket zu CHF 1’500 bestellen',
+        href: pathFor('/choose-template?plan=essential1500'),
+      },
+      {
+        key: 'private-2000',
+        price: 'CHF 2’000',
+        title: 'Private Codebase',
+        body: 'Wenn Sie die gemeinsame Infrastruktur verlassen und eine eigene Projektbasis behalten wollen.',
+        cta: 'Diagnose buchen',
+        href: `${customSystemsPath}?track=private-2000#diagnostic`,
+      },
+      {
+        key: 'private-2200',
+        price: 'CHF 2’200',
+        title: 'Private Codebase + Übergabe',
+        body: 'Gleiche private Basis, mit echter Übergabe und strukturierter Erklärung des Lieferumfangs.',
+        cta: 'Diagnose buchen',
+        href: `${customSystemsPath}?track=private-2200#diagnostic`,
+      },
+      {
+        key: 'backend-4500',
+        price: 'CHF 4’500',
+        title: 'Leichtes Backend',
+        body: 'Das richtige Niveau für ein seriöses “Hello Backend”: leichte Business-Logik, Intake, Sync oder ein simples Portal.',
+        cta: 'Diagnose buchen',
+        href: `${customSystemsPath}?track=backend-4500#diagnostic`,
+      },
+      {
+        key: 'shop-8000',
+        price: 'CHF 8’000+',
+        title: 'Headless Shop oder schwereres System',
+        body: 'Für echte Architektur, Headless Commerce, Admin-Tools, Portale oder interne Plattformen.',
+        cta: 'Diagnose buchen',
+        href: `${customSystemsPath}?track=shop-8000#diagnostic`,
+      },
+    ],
+    belowTitle: 'Darunter?',
+    belowBody:
+      'Wenn der Bedarf noch in eine Standardseite passt, kaufen Sie nicht zu früh Custom. Der rationale Weg ist meist CHF 999 oder CHF 1’500.',
+    belowCtas: [
+      { text: 'CHF-999-Paket ansehen', href: pathFor('/choose-template?plan=essential999') },
+      { text: 'CHF-1’500-Paket ansehen', href: pathFor('/choose-template?plan=essential1500') },
+    ],
+    architectureTitle: 'Architektur, Admin, Portal, Plattform',
+    architectureBody:
+      'Diese Themen werden nicht als Menü verkauft. Die Diagnose entscheidet, ob das echte Thema ein leichtes Backend, ein Headless Shop oder eine tiefere Architekturebene ist.',
+    diagnosticEyebrow: 'Bezahlte Diagnose',
+    diagnosticTitle: '15 Min. / CHF 80, um Custom sauber zu rahmen.',
+    diagnosticLead:
+      'Das ist kein vager Call. Sie wählen einen Slot, zahlen und erhalten dann die Bestätigung und den geteilten Teams-Link.',
+    diagnosticIncludesTitle: 'Die Pipeline',
+    diagnosticIncludes: [
+      '15-Minuten-Slot vor der Zahlung gewählt.',
+      'Sofortige Stripe-Zahlung.',
+      'Bestätigungs-E-Mail mit dem geteilten Teams-Link.',
+      'Schnelle Qualifizierung: 2’000, 2’200, 4’500, 8’000+ oder ein tieferes Architekturthema.',
+    ],
+    selectedTrackLabel: 'Gewähltes Thema',
+    selectedTrackFallback: 'TonSiteWeb-Diagnose — Custom systems',
+    selectedTrackMap: {
+      'private-2000': 'Private Codebase — CHF 2’000',
+      'private-2200': 'Private Codebase + Übergabe — CHF 2’200',
+      'backend-4500': 'Leichtes Backend — CHF 4’500',
+      'shop-8000': 'Headless Shop / schwereres System — CHF 8’000+',
+    },
+    form: {
+      dateLabel: 'Datum',
+      slotLabel: 'Slot',
+      chooseDate: 'Datum wählen',
+      selectSlot: 'Slot wählen',
+      loading: 'Lädt…',
+      unavailable: 'Momentan nicht verfügbar',
+      missingSlot: 'Bitte wählen Sie einen verfügbaren Slot.',
+      name: 'Vollständiger Name',
+      email: 'E-Mail',
+      phone: 'Telefon',
+      notes: 'Kontext',
+      notesPlaceholder: 'Beschreiben Sie Bedarf, Budgetband und den aktuellen Engpass.',
+      submit: 'Buchen und CHF 80 bezahlen',
+    },
+    note: 'Wenn Sie Custom unter CHF 2’000 suchen, ist das richtige Produkt meist nicht Custom. Starten Sie eher mit CHF 999 / CHF 1’500.',
+  },
+  it: {
+    title: 'TonSiteWeb — Custom systems',
+    eyebrow: 'Quando il template non basta più',
+    heroTitle: 'Serve una build privata o un vero backend?',
+    heroLead:
+      'TonSiteWeb mantiene la logica chiara dei siti di lancio e apre un secondo livello quando il lavoro richiede un codebase separato, un backend leggero o un’architettura più pesante.',
+    backing: 'Strato custom sostenuto in modo discreto da IO Partner per lavori oltre il semplice sito vetrina.',
+    exactLadder: 'Ladder esatto',
+    tiers: [
+      {
+        key: 'starter-1500',
+        price: 'CHF 1’500',
+        title: 'Sito standard + WhatsApp + Calendly',
+        body: 'Sempre sul motore TonSiteWeb, con l’orchestrazione leggera che molte PMI richiedono davvero.',
+        cta: 'Ordina il pacchetto da CHF 1’500',
+        href: pathFor('/choose-template?plan=essential1500'),
+      },
+      {
+        key: 'private-2000',
+        price: 'CHF 2’000',
+        title: 'Codebase privato',
+        body: 'Per uscire dall’infrastruttura condivisa e mantenere una base di progetto dedicata.',
+        cta: 'Prenota la diagnosi',
+        href: `${customSystemsPath}?track=private-2000#diagnostic`,
+      },
+      {
+        key: 'private-2200',
+        price: 'CHF 2’200',
+        title: 'Codebase privato + passaggio',
+        body: 'Stessa base privata, con una vera consegna e una spiegazione strutturata di ciò che è stato rilasciato.',
+        cta: 'Prenota la diagnosi',
+        href: `${customSystemsPath}?track=private-2200#diagnostic`,
+      },
+      {
+        key: 'backend-4500',
+        price: 'CHF 4’500',
+        title: 'Backend leggero',
+        body: 'Il livello giusto per un “hello backend” serio: logica business leggera, intake, sync o portale semplice.',
+        cta: 'Prenota la diagnosi',
+        href: `${customSystemsPath}?track=backend-4500#diagnostic`,
+      },
+      {
+        key: 'shop-8000',
+        price: 'CHF 8’000+',
+        title: 'Headless shop o sistema più pesante',
+        body: 'Per vera architettura, commercio headless, admin tool, portali o piattaforme interne.',
+        cta: 'Prenota la diagnosi',
+        href: `${customSystemsPath}?track=shop-8000#diagnostic`,
+      },
+    ],
+    belowTitle: 'Sotto questa soglia?',
+    belowBody:
+      'Se il bisogno rientra ancora in un sito standard, non comprare custom troppo presto. La mossa razionale è spesso CHF 999 o CHF 1’500.',
+    belowCtas: [
+      { text: 'Vedi il pacchetto da CHF 999', href: pathFor('/choose-template?plan=essential999') },
+      { text: 'Vedi il pacchetto da CHF 1’500', href: pathFor('/choose-template?plan=essential1500') },
+    ],
+    architectureTitle: 'Architettura, admin, portale, piattaforma',
+    architectureBody:
+      'Questi temi non si vendono a catalogo. La diagnosi decide se il vero tema è un backend leggero, un headless shop o uno strato di architettura più profondo.',
+    diagnosticEyebrow: 'Diagnosi a pagamento',
+    diagnosticTitle: '15 min / CHF 80 per inquadrare bene il custom.',
+    diagnosticLead:
+      'Non è una chiamata vaga. Scegli uno slot, paghi, poi ricevi conferma e link Teams condiviso.',
+    diagnosticIncludesTitle: 'La pipeline',
+    diagnosticIncludes: [
+      'Slot da 15 minuti scelto prima del pagamento.',
+      'Pagamento Stripe immediato.',
+      'Email di conferma con il link Teams condiviso.',
+      'Qualificazione rapida: 2’000, 2’200, 4’500, 8’000+ o tema di architettura più profondo.',
+    ],
+    selectedTrackLabel: 'Tema selezionato',
+    selectedTrackFallback: 'Diagnosi TonSiteWeb — custom systems',
+    selectedTrackMap: {
+      'private-2000': 'Codebase privato — CHF 2’000',
+      'private-2200': 'Codebase privato + passaggio — CHF 2’200',
+      'backend-4500': 'Backend leggero — CHF 4’500',
+      'shop-8000': 'Headless shop / sistema più pesante — CHF 8’000+',
+    },
+    form: {
+      dateLabel: 'Data',
+      slotLabel: 'Slot',
+      chooseDate: 'Scegli una data',
+      selectSlot: 'Seleziona uno slot',
+      loading: 'Caricamento…',
+      unavailable: 'Non disponibile al momento',
+      missingSlot: 'Seleziona uno slot disponibile.',
+      name: 'Nome completo',
+      email: 'Email',
+      phone: 'Telefono',
+      notes: 'Contesto',
+      notesPlaceholder: 'Descrivi bisogno, fascia di budget e ciò che sta già creando attrito.',
+      submit: 'Prenota e paga CHF 80',
+    },
+    note: 'Se cerchi custom sotto CHF 2’000, il prodotto giusto di solito non è il custom. Meglio iniziare da CHF 999 / CHF 1’500.',
+  },
+} as const;
+
+const copy = COPY[locale as keyof typeof COPY] ?? COPY.fr;
+const selectedTrackLabel =
+  copy.selectedTrackMap[track as keyof typeof copy.selectedTrackMap] || copy.selectedTrackFallback;
+const diagnosticService =
+  selectedTrackLabel === copy.selectedTrackFallback
+    ? copy.selectedTrackFallback
+    : `${copy.selectedTrackFallback} — ${selectedTrackLabel}`;
+---
+
+<Layout metadata={{ title: copy.title }} brandKey="tonsiteweb">
+  <main class="min-h-screen bg-[linear-gradient(180deg,#f8fafc_0%,#eef2ff_42%,#f8fafc_100%)] py-12 px-4">
+    <div class="max-w-6xl mx-auto space-y-10">
+      <section class="rounded-[2rem] border border-slate-200 bg-white/90 shadow-xl shadow-slate-200/60 overflow-hidden">
+        <div class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] p-8 md:p-10">
+          <div class="space-y-5">
+            <p class="text-xs font-bold uppercase tracking-[0.28em] text-blue-700">{copy.eyebrow}</p>
+            <h1 class="text-4xl md:text-5xl font-black tracking-tight text-slate-950">{copy.heroTitle}</h1>
+            <p class="text-lg text-slate-600 max-w-2xl">{copy.heroLead}</p>
+            <p class="text-sm text-slate-500 max-w-2xl">{copy.backing}</p>
+            <div class="flex flex-wrap gap-3">
+              <a
+                href="#diagnostic"
+                class="inline-flex items-center rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white hover:bg-blue-700 transition-colors"
+              >
+                {copy.diagnosticTitle}
+              </a>
+              <a
+                href={pathFor('/choose-template?plan=essential1500')}
+                class="inline-flex items-center rounded-xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700 hover:border-slate-300 hover:bg-slate-50 transition-colors"
+              >
+                {copy.tiers[0].cta}
+              </a>
+            </div>
+          </div>
+
+          <div class="rounded-[1.5rem] bg-slate-950 p-6 md:p-7 text-white">
+            <p class="text-xs uppercase tracking-[0.28em] text-blue-200/80">{copy.exactLadder}</p>
+            <div class="mt-5 space-y-4">
+              {copy.tiers.map((tier) => (
+                <div class={`rounded-2xl border p-4 ${tier.key === track ? 'border-blue-300 bg-white/10' : 'border-white/10 bg-white/5'}`}>
+                  <div class="flex items-baseline justify-between gap-3">
+                    <h2 class="text-lg font-semibold">{tier.title}</h2>
+                    <span class="text-sm font-semibold text-blue-200">{tier.price}</span>
+                  </div>
+                  <p class="mt-2 text-sm text-white/75">{tier.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        {copy.tiers.map((tier) => (
+          <article class={`rounded-[1.7rem] border bg-white p-6 shadow-sm ${tier.key === track ? 'border-blue-400 shadow-blue-100' : 'border-slate-200'}`}>
+            <p class="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">{tier.price}</p>
+            <h2 class="mt-3 text-2xl font-bold text-slate-950">{tier.title}</h2>
+            <p class="mt-3 text-sm leading-6 text-slate-600">{tier.body}</p>
+            <a
+              href={tier.href}
+              class={`mt-6 inline-flex rounded-xl px-4 py-3 text-sm font-semibold transition-colors ${
+                tier.key === 'starter-1500'
+                  ? 'bg-slate-950 text-white hover:bg-slate-800'
+                  : 'bg-blue-600 text-white hover:bg-blue-700'
+              }`}
+            >
+              {tier.cta}
+            </a>
+          </article>
+        ))}
+
+        <article class="rounded-[1.7rem] border border-slate-200 bg-slate-50 p-6 shadow-sm">
+          <p class="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">{copy.belowTitle}</p>
+          <h2 class="mt-3 text-2xl font-bold text-slate-950">999 CHF ou 1 500 CHF</h2>
+          <p class="mt-3 text-sm leading-6 text-slate-600">{copy.belowBody}</p>
+          <div class="mt-6 flex flex-wrap gap-3">
+            {copy.belowCtas.map((cta) => (
+              <a
+                href={cta.href}
+                class="inline-flex rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 hover:border-slate-300 hover:bg-slate-100 transition-colors"
+              >
+                {cta.text}
+              </a>
+            ))}
+          </div>
+        </article>
+      </section>
+
+      <section class="rounded-[1.8rem] border border-slate-200 bg-white p-8 shadow-sm">
+        <div class="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-[0.28em] text-blue-700">{copy.architectureTitle}</p>
+            <h2 class="mt-3 text-3xl font-black tracking-tight text-slate-950">{copy.diagnosticTitle}</h2>
+            <p class="mt-4 text-slate-600 leading-7">{copy.architectureBody}</p>
+            <div class="mt-6 rounded-2xl border border-blue-100 bg-blue-50 p-4">
+              <p class="text-sm font-semibold text-blue-900">{copy.selectedTrackLabel}</p>
+              <p class="mt-1 text-sm text-blue-800">{selectedTrackLabel}</p>
+            </div>
+            <p class="mt-6 text-sm text-slate-500">{copy.note}</p>
+          </div>
+
+          <div class="rounded-[1.6rem] border border-slate-200 bg-slate-50 p-6 md:p-7" id="diagnostic">
+            <p class="text-xs font-bold uppercase tracking-[0.28em] text-blue-700">{copy.diagnosticEyebrow}</p>
+            <p class="mt-3 text-lg text-slate-600">{copy.diagnosticLead}</p>
+            <div class="mt-5 rounded-2xl border border-slate-200 bg-white p-4">
+              <p class="text-sm font-semibold text-slate-950">{copy.diagnosticIncludesTitle}</p>
+              <ul class="mt-3 space-y-2 text-sm text-slate-600">
+                {copy.diagnosticIncludes.map((item) => <li>• {item}</li>)}
+              </ul>
+            </div>
+
+            <form action="/api/booking" method="post" class="mt-6 space-y-4">
+              <BookingSlotPicker
+                dateLabel={copy.form.dateLabel}
+                slotLabel={copy.form.slotLabel}
+                chooseDateText={copy.form.chooseDate}
+                selectSlotText={copy.form.selectSlot}
+                loadingText={copy.form.loading}
+                unavailableText={copy.form.unavailable}
+                missingSlotText={copy.form.missingSlot}
+                theme="light"
+                accent="blue"
+                startHour={9}
+                endHour={17}
+                slotDurationMinutes={15}
+                slotStepMinutes={15}
+              />
+              <input type="hidden" name="locale" value={locale} />
+              <input type="hidden" name="service" value={diagnosticService} />
+              <div class="grid gap-3 md:grid-cols-2">
+                <div class="grid gap-2">
+                  <label class="text-sm font-semibold text-slate-800">{copy.form.name}</label>
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder:text-slate-400"
+                  />
+                </div>
+                <div class="grid gap-2">
+                  <label class="text-sm font-semibold text-slate-800">{copy.form.email}</label>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder:text-slate-400"
+                  />
+                </div>
+              </div>
+              <div class="grid gap-2">
+                <label class="text-sm font-semibold text-slate-800">{copy.form.phone}</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  required
+                  class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder:text-slate-400"
+                />
+              </div>
+              <div class="grid gap-2">
+                <label class="text-sm font-semibold text-slate-800">{copy.form.notes}</label>
+                <textarea
+                  name="notes"
+                  rows={4}
+                  placeholder={copy.form.notesPlaceholder}
+                  class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder:text-slate-400"
+                ></textarea>
+              </div>
+              <button
+                type="submit"
+                class="w-full rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-700 transition-colors"
+              >
+                {copy.form.submit}
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</Layout>

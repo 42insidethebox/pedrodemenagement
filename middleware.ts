@@ -1,1 +1,1 @@
-export { onRequest } from './src/middleware';
+export { onRequest } from './src/middleware.js';

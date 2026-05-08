@@ -2,11 +2,17 @@
 import Layout from '~/layouts/Layout.astro';
 import { detectRequestLocale } from '~/lib/locale';
 import { normalizePlanId, TONSITEWEB_DEFAULT_PLAN } from '~/lib/pricing.js';
+import pedroLogo from '~/assets/lausannedemenagement/logo.png';
+import toloPreview from '~/assets/tolocoiffure_images/template_preview.jpg';
+import maisonPreview from '~/assets/maisoncortes_images/lausanne-ring-02.png';
+import onglesPreview from '~/assets/onglesgel_images/01.png';
 
 export const prerender = false;
 
 const locale = detectRequestLocale(Astro.request, Astro.url);
 const plan = normalizePlanId(Astro.url.searchParams.get('plan') || TONSITEWEB_DEFAULT_PLAN);
+const toAssetSrc = (asset: string | { src: string }) => (typeof asset === 'string' ? asset : asset.src);
+const localePrefix = ['en', 'de', 'it'].includes(locale) ? `/${locale}` : '';
 
 const T = {
   fr: {
@@ -26,6 +32,16 @@ const T = {
     promoTitle: 'TonSiteWeb dès 999 CHF',
     promoDesc: 'Prix fixe pour un site vitrine professionnel. Livraison en 3–5 jours ouvrables selon vos contenus.',
     promoBtn: 'Commander maintenant →',
+    mergedTitle: 'Rester sur la voie standard',
+    mergedLead: 'Deux voies nettes: 999 ou 1 500 CHF si le sujet reste standard. Sinon, passez par la route custom.',
+    starterTitle: 'Voie standard',
+    starterItems: ['999 CHF: site vitrine 5 sections sur infrastructure mutualisée.', '1 500 CHF: site standard + WhatsApp + Calendly + explication légère.'],
+    starterCtaPrimary: 'Choisir 999 CHF',
+    starterCtaSecondary: 'Choisir 1 500 CHF',
+    customTitle: 'Template et tenant ne suffisent plus ?',
+    customLead: 'Codebase séparée, transmission, back-end léger, headless shop ou architecture plus lourde.',
+    customItems: ['2 000 CHF: codebase privée.', '2 200 CHF: codebase privée + transmission.', '4 500 CHF: back-end léger.', '8 000+ CHF: headless shop ou système plus lourd.', 'Entrée: diagnostic payé 15 min / 80 CHF.'],
+    customCta: 'Voir la progression custom →',
   },
   en: {
     title: 'Choose a style — TonSiteWeb.ch',
@@ -44,6 +60,16 @@ const T = {
     promoTitle: 'TonSiteWeb from CHF 999',
     promoDesc: 'Fixed price for a professional showcase site. Delivered in 3–5 business days depending on your content.',
     promoBtn: 'Order now →',
+    mergedTitle: 'Stay on the standard path',
+    mergedLead: 'Two clean paths: CHF 999 or CHF 1,500 if the work stays standard. Otherwise move into the custom route.',
+    starterTitle: 'Standard path',
+    starterItems: ['CHF 999: 5-section showcase site on shared infrastructure.', 'CHF 1,500: standard site + WhatsApp + Calendly + light handoff.'],
+    starterCtaPrimary: 'Choose CHF 999',
+    starterCtaSecondary: 'Choose CHF 1,500',
+    customTitle: 'Template and tenant not enough?',
+    customLead: 'Separate codebase, handoff, light backend, headless shop, or a heavier architecture layer.',
+    customItems: ['CHF 2,000: private codebase.', 'CHF 2,200: private codebase + handoff.', 'CHF 4,500: light backend.', 'CHF 8,000+: headless shop or heavier system.', 'Entry point: paid 15 min / CHF 80 diagnostic.'],
+    customCta: 'See the custom progression →',
   },
   de: {
     title: 'Stil wählen — TonSiteWeb.ch',
@@ -62,6 +88,16 @@ const T = {
     promoTitle: 'TonSiteWeb ab 999 CHF',
     promoDesc: 'Fixpreis für eine professionelle Showcase-Website. Lieferung in 3–5 Arbeitstagen je nach Inhalt.',
     promoBtn: 'Jetzt bestellen →',
+    mergedTitle: 'Im Standard bleiben',
+    mergedLead: 'Zwei saubere Wege: CHF 999 oder CHF 1’500, wenn das Thema standardisiert bleibt. Sonst wechseln Sie in die Custom-Route.',
+    starterTitle: 'Standardweg',
+    starterItems: ['CHF 999: 5-teilige Showcase-Seite auf gemeinsamer Infrastruktur.', 'CHF 1’500: Standardseite + WhatsApp + Calendly + leichte Übergabe.'],
+    starterCtaPrimary: 'CHF 999 wählen',
+    starterCtaSecondary: 'CHF 1’500 wählen',
+    customTitle: 'Reichen Vorlage und Tenant nicht aus?',
+    customLead: 'Getrennte Codebase, Übergabe, leichtes Backend, Headless Shop oder schwerere Architektur.',
+    customItems: ['CHF 2’000: private Codebase.', 'CHF 2’200: private Codebase + Übergabe.', 'CHF 4’500: leichtes Backend.', 'CHF 8’000+: Headless Shop oder schwereres System.', 'Einstieg: bezahlte 15 Min. / CHF 80 Diagnose.'],
+    customCta: 'Custom-Prozess ansehen →',
   },
   it: {
     title: 'Scegli uno stile — TonSiteWeb.ch',
@@ -80,13 +116,20 @@ const T = {
     promoTitle: 'TonSiteWeb da 999 CHF',
     promoDesc: 'Prezzo fisso per un sito vetrina professionale. Consegna in 3–5 giorni lavorativi in base ai contenuti.',
     promoBtn: 'Ordina ora →',
+    mergedTitle: 'Restare sul percorso standard',
+    mergedLead: 'Due vie pulite: CHF 999 o CHF 1’500 se il lavoro resta standard. Altrimenti passa alla via custom.',
+    starterTitle: 'Via standard',
+    starterItems: ['CHF 999: sito vetrina di 5 sezioni su infrastruttura condivisa.', 'CHF 1’500: sito standard + WhatsApp + Calendly + passaggio leggero.'],
+    starterCtaPrimary: 'Scegli CHF 999',
+    starterCtaSecondary: 'Scegli CHF 1’500',
+    customTitle: 'Template e tenant non bastano più?',
+    customLead: 'Codebase separato, passaggio, backend leggero, headless shop o architettura più pesante.',
+    customItems: ['CHF 2’000: codebase privato.', 'CHF 2’200: codebase privato + passaggio.', 'CHF 4’500: backend leggero.', 'CHF 8’000+: headless shop o sistema più pesante.', 'Ingresso: diagnosi a pagamento 15 min / CHF 80.'],
+    customCta: 'Vedi la progressione custom →',
   },
 } as const;
 
 const t = T[locale as keyof typeof T] ?? T.fr;
-
-const THUMB = (url: string) =>
-  `https://image.thum.io/get/width/1280/crop/800/noanimate/${url}`;
 
 const templates = [
   {
@@ -94,11 +137,13 @@ const templates = [
     name: 'Pedro Déménagement',
     sector: { fr: 'Services & déménagement', en: 'Services & moving', de: 'Dienstleistungen & Umzug', it: 'Servizi & trasloco' }[locale] ?? 'Services',
     desc: { fr: 'Design professionnel sobre, sections services, témoignages, CTA fort. Modèle de référence — les autres styles sont des variations de celui-ci.', en: 'Professional clean design, services sections, testimonials, strong CTA. The base template — all other styles are variations of this one.', de: 'Professionelles sauberes Design, Service-Sektionen, Referenzen, starker CTA. Basis-Vorlage — alle anderen Stile sind Variationen davon.', it: 'Design professionale sobrio, sezioni servizi, testimonianze, CTA forte. Modello di riferimento — gli altri stili sono variazioni di questo.' }[locale] ?? '',
-    url: 'https://lausannedemenagement.ch',
-    img: THUMB('https://lausannedemenagement.ch'),
+    url: 'https://pedrodemenagement.ch',
+    img: toAssetSrc(pedroLogo as string | { src: string }),
+    alt: 'Pedro Demenagement - logo et identite de marque',
+    imageClass: 'object-contain p-8 bg-gradient-to-br from-slate-50 to-blue-100',
     color: 'from-blue-600 to-blue-900',
     isBase: true,
-    variations: ['pedrodemenagement.ch', 'demenagementurgent.ch', 'debarraslausanne.ch', 'transportmeubles.ch', 'videmaison.ch'],
+    variations: ['lausannedemenagement.ch', 'demenagementurgent.ch', 'debarraslausanne.ch', 'transportmeubles.ch', 'videmaison.ch'],
   },
   {
     id: 'tolo-coiffure',
@@ -106,7 +151,8 @@ const templates = [
     sector: { fr: 'Beauté & coiffure', en: 'Beauty & hair salon', de: 'Beauty & Friseur', it: 'Bellezza & parrucchiere' }[locale] ?? 'Beauty',
     desc: { fr: 'Style moderne et chaleureux, galerie photos, prise de rendez-vous, palette claire.', en: 'Warm modern style, photo gallery, booking integration, light palette.', de: 'Warmes modernes Design, Fotogalerie, Terminbuchung, helle Palette.', it: 'Stile moderno e caldo, galleria foto, prenotazione appuntamenti, palette chiara.' }[locale] ?? '',
     url: 'https://tolocoiffure.ch',
-    img: THUMB('https://tolocoiffure.ch'),
+    img: toAssetSrc(toloPreview as string | { src: string }),
+    alt: 'Tolo Coiffure - balayage signature Lausanne',
     color: 'from-rose-400 to-pink-700',
     isBase: false,
     variations: [],
@@ -116,8 +162,9 @@ const templates = [
     name: 'Maison Cortès',
     sector: { fr: 'Hôtellerie & luxe', en: 'Hospitality & luxury', de: 'Hotellerie & Luxus', it: 'Ospitalità & lusso' }[locale] ?? 'Hospitality',
     desc: { fr: 'Élégant, typographie soignée, tons neutres, ambiance haut de gamme. Idéal pour boutique-hôtels, restaurants, artisans premium.', en: 'Elegant, refined typography, neutral tones, premium feel. Ideal for boutique hotels, restaurants, premium artisans.', de: 'Elegant, verfeinerte Typografie, neutrale Töne, Premium-Atmosphäre. Ideal für Boutique-Hotels, Restaurants, Premium-Handwerk.', it: 'Elegante, tipografia raffinata, toni neutri, atmosfera premium. Ideale per boutique hotel, ristoranti, artigiani premium.' }[locale] ?? '',
-    url: 'https://tonsiteweb.ch/maison-cortes',
-    img: THUMB('https://tonsiteweb.ch/maison-cortes'),
+    url: 'https://maisoncortes.ch',
+    img: toAssetSrc(maisonPreview as string | { src: string }),
+    alt: 'Maison Cortes - selection d objet premium',
     color: 'from-stone-600 to-stone-900',
     isBase: false,
     variations: [],
@@ -128,52 +175,9 @@ const templates = [
     sector: { fr: 'Beauté & ongles', en: 'Beauty & nails', de: 'Beauty & Nägel', it: 'Bellezza & unghie' }[locale] ?? 'Beauty',
     desc: { fr: 'Style féminin doux, palette pastel, mise en avant des prestations, portfolio visuel.', en: 'Soft feminine style, pastel palette, service highlights, visual portfolio.', de: 'Sanfter femininer Stil, Pastellpalette, Leistungspräsentation, visuelles Portfolio.', it: 'Stile femminile delicato, palette pastello, evidenziazione servizi, portfolio visivo.' }[locale] ?? '',
     url: 'https://onglesgel.ch',
-    img: THUMB('https://onglesgel.ch'),
+    img: toAssetSrc(onglesPreview as string | { src: string }),
+    alt: 'Ongles Gel - nail art et pose gel Lausanne',
     color: 'from-fuchsia-300 to-purple-600',
-    isBase: false,
-    variations: [],
-  },
-  {
-    id: 'restaurant',
-    name: 'Le Belvédère',
-    sector: { fr: 'Restauration & café', en: 'Restaurant & café', de: 'Restaurant & Café', it: 'Ristorante & café' }[locale] ?? 'Restaurant',
-    desc: { fr: 'Design sombre et chaleureux, grande photo hero, menu, réservation en ligne, horaires et localisation.', en: 'Warm dark design, large hero photo, menu, online booking, opening hours and location.', de: 'Warmes dunkles Design, großes Hero-Foto, Menü, Online-Reservierung, Öffnungszeiten und Standort.', it: 'Design caldo e scuro, grande foto hero, menu, prenotazione online, orari e posizione.' }[locale] ?? '',
-    url: 'https://tonsiteweb.ch/restaurant-demo',
-    img: THUMB('https://tonsiteweb.ch/restaurant-demo'),
-    color: 'from-amber-700 to-stone-900',
-    isBase: false,
-    variations: [],
-  },
-  {
-    id: 'artisan',
-    name: 'Dubois Rénovations',
-    sector: { fr: 'Artisan & services', en: 'Trades & home services', de: 'Handwerk & Heimdienste', it: 'Artigiano & servizi' }[locale] ?? 'Artisan',
-    desc: { fr: 'Design sobre et professionnel, CTA urgence visible, grille de services, zone d\'intervention, témoignages clients.', en: 'Clean professional design, visible emergency CTA, services grid, coverage zone, client testimonials.', de: 'Sauberes professionelles Design, sichtbarer Notfall-CTA, Leistungsraster, Einsatzgebiet, Kundenstimmen.', it: 'Design pulito e professionale, CTA urgenza visibile, griglia servizi, zona di copertura, testimonianze.' }[locale] ?? '',
-    url: 'https://tonsiteweb.ch/artisan-demo',
-    img: THUMB('https://tonsiteweb.ch/artisan-demo'),
-    color: 'from-sky-600 to-slate-800',
-    isBase: false,
-    variations: [],
-  },
-  {
-    id: 'therapie',
-    name: 'Cabinet Lumière',
-    sector: { fr: 'Santé & thérapie', en: 'Health & therapy', de: 'Gesundheit & Therapie', it: 'Salute & terapia' }[locale] ?? 'Santé',
-    desc: { fr: 'Ambiance apaisante, spécialités en avant, bouton de prise de RDV, témoignages et accréditations.', en: 'Calming feel, specialty highlights, appointment booking button, testimonials and credentials.', de: 'Beruhigende Atmosphäre, Spezialisierungen, Terminbuchungs-Button, Testimonials und Zertifikate.', it: 'Atmosfera rilassante, specialità in evidenza, pulsante prenotazione, testimonianze e credenziali.' }[locale] ?? '',
-    url: 'https://tonsiteweb.ch/therapie-demo',
-    img: THUMB('https://tonsiteweb.ch/therapie-demo'),
-    color: 'from-teal-500 to-emerald-800',
-    isBase: false,
-    variations: [],
-  },
-  {
-    id: 'fiduciaire',
-    name: 'Treuhand & Partners',
-    sector: { fr: 'Fiduciaire & compta', en: 'Accounting & tax', de: 'Treuhand & Buchhaltung', it: 'Fiduciaria & contabilità' }[locale] ?? 'Fiduciaire',
-    desc: { fr: 'Sobre et ultra-professionnel, liste de services, section équipe, appel à l\'action fiscal, adapté par canton.', en: 'Minimal and ultra-professional, services list, team section, tax CTA, canton-specific copy.', de: 'Minimalistisch und professionell, Leistungsübersicht, Teambereich, Steuer-CTA, kantonsspezifisch.', it: 'Minimale e ultra-professionale, lista servizi, sezione team, CTA fiscale, testo per cantone.' }[locale] ?? '',
-    url: 'https://tonsiteweb.ch/fiduciaire-demo',
-    img: THUMB('https://tonsiteweb.ch/fiduciaire-demo'),
-    color: 'from-indigo-700 to-slate-900',
     isBase: false,
     variations: [],
   },
@@ -220,8 +224,8 @@ const templates = [
             <div class="relative aspect-video overflow-hidden bg-gray-100">
               <img
                 src={tpl.img}
-                alt={tpl.name}
-                class="w-full h-full object-cover object-top"
+                alt={tpl.alt || tpl.name}
+                class={`w-full h-full ${tpl.imageClass || 'object-cover object-top'}`}
                 loading="lazy"
                 onerror={`this.style.display='none';this.nextElementSibling.style.display='flex'`}
               />
@@ -299,17 +303,45 @@ const templates = [
         ))}
       </div>
 
-      <!-- Bottom promo CTA -->
-      <div class="mt-10 bg-white border border-orange-200 rounded-2xl p-6 text-center shadow-sm">
-        <p class="text-sm font-semibold text-orange-600 uppercase tracking-wide mb-1">{t.promoBadge}</p>
-        <p class="text-xl font-bold text-gray-900 mb-1">{t.promoTitle}</p>
-        <p class="text-gray-500 text-sm mb-5">{t.promoDesc}</p>
-        <a
-          href={`/api/payment/redirect?plan=${encodeURIComponent(plan)}&template=surprise`}
-          class="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold px-8 py-3.5 rounded-xl transition-colors shadow-sm"
-        >
-          {t.promoBtn}
-        </a>
+      <!-- Bottom path split -->
+      <div class="mt-10 grid gap-6 lg:grid-cols-2">
+        <article class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+          <p class="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-1">{t.starterTitle}</p>
+          <h2 class="text-2xl font-bold text-gray-900">{t.mergedTitle}</h2>
+          <p class="mt-3 text-sm text-gray-500">{t.mergedLead}</p>
+          <ul class="mt-5 space-y-2 text-sm text-slate-700">
+            {t.starterItems.map((item) => <li>• {item}</li>)}
+          </ul>
+          <div class="mt-6 flex flex-wrap gap-3">
+            <a
+              href={`${localePrefix}/choose-template?plan=essential999`}
+              class="inline-block bg-slate-950 hover:bg-slate-800 text-white font-semibold px-5 py-3 rounded-xl transition-colors"
+            >
+              {t.starterCtaPrimary}
+            </a>
+            <a
+              href={`${localePrefix}/choose-template?plan=essential1500`}
+              class="inline-block border border-slate-200 hover:border-slate-300 text-slate-700 font-semibold px-5 py-3 rounded-xl transition-colors"
+            >
+              {t.starterCtaSecondary}
+            </a>
+          </div>
+        </article>
+
+        <article class="bg-slate-950 border border-slate-900 rounded-2xl p-6 shadow-sm text-white">
+          <p class="text-sm font-semibold text-blue-200 uppercase tracking-wide mb-1">{t.customTitle}</p>
+          <h2 class="text-2xl font-bold">{t.customTitle}</h2>
+          <p class="mt-3 text-sm text-white/75">{t.customLead}</p>
+          <ul class="mt-5 space-y-2 text-sm text-white/80">
+            {t.customItems.map((item) => <li>• {item}</li>)}
+          </ul>
+          <a
+            href={`${localePrefix}/custom-systems`}
+            class="mt-6 inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-xl transition-colors"
+          >
+            {t.customCta}
+          </a>
+        </article>
       </div>
 
     </div>

@@ -12,12 +12,12 @@ const metadata = {
 ---
 
 <Layout metadata={metadata} header={headerDataEn} footer={footerDataEn}>
-  <HeroText tagline="Contact" title="Let’s discuss your turnkey site" subtitle="A TonSiteWeb.ch expert replies within one business day." />
+  <HeroText tagline="Contact" title="Let’s discuss the right TonSiteWeb path" subtitle="We separate standard launches, private builds, and heavier systems work without wasting time." />
 
   <ContactUs
     id="form"
     title="Request a demo or quote"
-    subtitle="Fill out the form and we’ll call or schedule a video meeting to prepare your launch (typical timeline: 5 business days)."
+    subtitle="Fill out the form and we’ll route you toward the right layer: CHF 999, CHF 1,500, or the custom diagnostic path."
     inputs={[
       {
         type: 'text',
@@ -39,10 +39,10 @@ const metadata = {
         name: 'service',
         label: 'Desired pack',
         options: [
-          { label: 'Essential', value: 'essential' },
-          { label: 'Automation', value: 'automation' },
-          { label: 'Care & security', value: 'maintenance' },
-          { label: 'Custom / to define', value: 'custom' },
+          { label: 'Standard site — CHF 999', value: 'essential999' },
+          { label: 'Standard site + WhatsApp + Calendly — CHF 1,500', value: 'essential1500' },
+          { label: 'Private codebase / light backend — CHF 2,000 to 8,000+', value: 'custom' },
+          { label: 'Paid diagnostic — 15 min / CHF 80', value: 'diagnostic80' },
         ],
       },
     ]}

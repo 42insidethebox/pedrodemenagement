@@ -12,12 +12,12 @@ const metadata = {
 ---
 
 <Layout metadata={metadata} header={headerDataIt} footer={footerDataIt}>
-  <HeroText tagline="Contatto" title="Parliamo del tuo sito chiavi in mano" subtitle="Un esperto TonSiteWeb.ch risponde entro un giorno lavorativo." />
+  <HeroText tagline="Contatto" title="Parliamo della via TonSiteWeb giusta" subtitle="Separiamo siti standard, build private e sistemi più pesanti senza perdere tempo." />
 
   <ContactUs
     id="form"
     title="Richiedi demo o preventivo"
-    subtitle="Compila il modulo: ti richiameremo o fisseremo una videochiamata per preparare il lancio (timeline tipica: 5 giorni lavorativi)."
+    subtitle="Compila il modulo e ti orientiamo verso il livello giusto: CHF 999, CHF 1’500 o diagnosi custom a pagamento."
     inputs={[
       {
         type: 'text',
@@ -39,10 +39,10 @@ const metadata = {
         name: 'service',
         label: 'Pacchetto desiderato',
         options: [
-          { label: 'Essenziale', value: 'essentiel' },
-          { label: 'Automazione', value: 'automation' },
-          { label: 'Piano di cura', value: 'maintenance' },
-          { label: 'Altro / da definire', value: 'custom' },
+          { label: 'Sito standard — CHF 999', value: 'essential999' },
+          { label: 'Sito standard + WhatsApp + Calendly — CHF 1’500', value: 'essential1500' },
+          { label: 'Codebase privato / backend leggero — CHF 2’000 a 8’000+', value: 'custom' },
+          { label: 'Diagnosi a pagamento — 15 min / CHF 80', value: 'diagnostic80' },
         ],
       },
     ]}
