@@ -1,0 +1,364 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import { detectRequestLocale } from '~/lib/locale';
+import { normalizePlanId, TONSITEWEB_DEFAULT_PLAN } from '~/lib/pricing.js';
+import {
+  IOPARTNER_FR_PRICE_LABELS,
+  IOPARTNER_FR_WEBSITE_FUNNEL,
+} from '~/data/iopartnerPricing.fr';
+import pedroLogo from '~/assets/lausannedemenagement/logo.png';
+import toloPreview from '~/assets/tolocoiffure_images/template_preview.jpg';
+import maisonPreview from '~/assets/maisoncortes_images/lausanne-ring-02.png';
+import onglesPreview from '~/assets/onglesgel_images/01.png';
+
+export const prerender = false;
+
+const locale = detectRequestLocale(Astro.request, Astro.url);
+const plan = normalizePlanId(Astro.url.searchParams.get('plan') || TONSITEWEB_DEFAULT_PLAN);
+const toAssetSrc = (asset: string | { src: string }) => (typeof asset === 'string' ? asset : asset.src);
+const localePrefix = ['en', 'de', 'it'].includes(locale) ? `/${locale}` : '';
+const frCustomItems = [
+  `${IOPARTNER_FR_PRICE_LABELS.websiteCustom}: website privé / système web sur mesure.`,
+  `${IOPARTNER_FR_PRICE_LABELS.privateCodebaseHandoff}: codebase privée + transmission.`,
+  `${IOPARTNER_FR_PRICE_LABELS.backendLight}: back-end léger.`,
+  `${IOPARTNER_FR_PRICE_LABELS.heavierSystems}: headless shop ou système plus lourd.`,
+  `Entrée: diagnostic payé ${IOPARTNER_FR_WEBSITE_FUNNEL.diagnosticLabel}.`,
+];
+
+const T = {
+  fr: {
+    title: 'Choisissez un style — IOPartner.ch',
+    heading: 'Quel style pour votre site ?',
+    sub: 'Choisissez parmi nos réalisations réelles — on adapte tout à votre secteur et contenu.',
+    planLabel: 'Plan',
+    select: 'Choisir ce style',
+    preview: 'Voir le site →',
+    surprise: '🎲 Laissez-nous choisir',
+    surpriseDesc: 'Vous nous faites confiance, on choisit le style le plus adapté à votre secteur et vos contenus.',
+    surpriseBtn: 'Continuer sans choisir →',
+    baseTemplate: 'Modèle de base',
+    variation: 'variation',
+    liveExamples: 'Exemples réels',
+    promoBadge: 'Pack Essentiel',
+    promoTitle: `IOPartner dès ${IOPARTNER_FR_PRICE_LABELS.websiteLaunch}`,
+    promoDesc: 'Prix fixe pour un site vitrine professionnel. Livraison en 3–5 jours ouvrables selon vos contenus.',
+    promoBtn: 'Commander maintenant →',
+    mergedTitle: 'Rester sur la voie website standard',
+    mergedLead: IOPARTNER_FR_WEBSITE_FUNNEL.standardPathLead,
+    starterTitle: 'Voie website',
+    starterItems: [
+      `${IOPARTNER_FR_PRICE_LABELS.websiteLaunch}: site vitrine 5 sections sur infrastructure mutualisée.`,
+      `${IOPARTNER_FR_PRICE_LABELS.websiteSprint}: optimisation, migration ou remise à niveau sur devis.`,
+      `${IOPARTNER_FR_PRICE_LABELS.websiteGrowth}: site standard + WhatsApp + Calendly + explication légère.`,
+    ],
+    starterCtaPrimary: `Choisir ${IOPARTNER_FR_PRICE_LABELS.websiteLaunch}`,
+    starterCtaSecondary: `Choisir ${IOPARTNER_FR_PRICE_LABELS.websiteGrowth}`,
+    customTitle: 'Template et tenant ne suffisent plus ?',
+    customLead: 'Codebase séparée, transmission, back-end léger, headless shop ou architecture plus lourde.',
+    customItems: frCustomItems,
+    customCta: 'Voir la progression custom →',
+  },
+  en: {
+    title: 'Choose a style — IOPartner.ch',
+    heading: 'Which style for your site?',
+    sub: 'Choose from our real projects — we adapt everything to your sector and content.',
+    planLabel: 'Plan',
+    select: 'Choose this style',
+    preview: 'View live site →',
+    surprise: '🎲 Let us choose',
+    surpriseDesc: 'You trust us, we pick the style that best fits your industry and content.',
+    surpriseBtn: 'Continue without choosing →',
+    baseTemplate: 'Base template',
+    variation: 'variation',
+    liveExamples: 'Live examples',
+    promoBadge: 'Essential pack',
+    promoTitle: 'IOPartner from CHF 999',
+    promoDesc: 'Fixed price for a professional showcase site. Delivered in 3–5 business days depending on your content.',
+    promoBtn: 'Order now →',
+    mergedTitle: 'Stay on the standard path',
+    mergedLead: 'Two clean paths: CHF 999 or CHF 1,500 if the work stays standard. Otherwise move into the custom route.',
+    starterTitle: 'Standard path',
+    starterItems: ['CHF 999: 5-section showcase site on shared infrastructure.', 'CHF 1,500: standard site + WhatsApp + Calendly + light handoff.'],
+    starterCtaPrimary: 'Choose CHF 999',
+    starterCtaSecondary: 'Choose CHF 1,500',
+    customTitle: 'Template and tenant not enough?',
+    customLead: 'Separate codebase, handoff, light backend, headless shop, or a heavier architecture layer.',
+    customItems: ['CHF 2,000: private codebase.', 'CHF 2,200: private codebase + handoff.', 'CHF 4,500: light backend.', 'CHF 8,000+: headless shop or heavier system.', 'Entry point: paid 15 min / CHF 80 diagnostic.'],
+    customCta: 'See the custom progression →',
+  },
+  de: {
+    title: 'Stil wählen — IOPartner.ch',
+    heading: 'Welcher Stil für Ihre Website?',
+    sub: 'Wählen Sie aus unseren echten Projekten — wir passen alles an Ihre Branche an.',
+    planLabel: 'Paket',
+    select: 'Diesen Stil wählen',
+    preview: 'Live-Site ansehen →',
+    surprise: '🎲 Wir wählen für Sie',
+    surpriseDesc: 'Sie vertrauen uns, wir wählen den passendsten Stil für Ihre Branche und Ihre Inhalte.',
+    surpriseBtn: 'Weiter ohne Auswahl →',
+    baseTemplate: 'Basis-Vorlage',
+    variation: 'Variation',
+    liveExamples: 'Live-Beispiele',
+    promoBadge: 'Essentiel-Paket',
+    promoTitle: 'IOPartner ab 999 CHF',
+    promoDesc: 'Fixpreis für eine professionelle Showcase-Website. Lieferung in 3–5 Arbeitstagen je nach Inhalt.',
+    promoBtn: 'Jetzt bestellen →',
+    mergedTitle: 'Im Standard bleiben',
+    mergedLead: 'Zwei saubere Wege: CHF 999 oder CHF 1’500, wenn das Thema standardisiert bleibt. Sonst wechseln Sie in die Custom-Route.',
+    starterTitle: 'Standardweg',
+    starterItems: ['CHF 999: 5-teilige Showcase-Seite auf gemeinsamer Infrastruktur.', 'CHF 1’500: Standardseite + WhatsApp + Calendly + leichte Übergabe.'],
+    starterCtaPrimary: 'CHF 999 wählen',
+    starterCtaSecondary: 'CHF 1’500 wählen',
+    customTitle: 'Reichen Vorlage und Tenant nicht aus?',
+    customLead: 'Getrennte Codebase, Übergabe, leichtes Backend, Headless Shop oder schwerere Architektur.',
+    customItems: ['CHF 2’000: private Codebase.', 'CHF 2’200: private Codebase + Übergabe.', 'CHF 4’500: leichtes Backend.', 'CHF 8’000+: Headless Shop oder schwereres System.', 'Einstieg: bezahlte 15 Min. / CHF 80 Diagnose.'],
+    customCta: 'Custom-Prozess ansehen →',
+  },
+  it: {
+    title: 'Scegli uno stile — IOPartner.ch',
+    heading: 'Quale stile per il vostro sito?',
+    sub: 'Scegliete tra i nostri progetti reali — adattiamo tutto al vostro settore.',
+    planLabel: 'Piano',
+    select: 'Scegli questo stile',
+    preview: 'Vedi il sito →',
+    surprise: '🎲 Lasciamo scegliere a noi',
+    surpriseDesc: 'Vi fidate di noi, scegliamo lo stile più adatto al vostro settore e ai vostri contenuti.',
+    surpriseBtn: 'Continua senza scegliere →',
+    baseTemplate: 'Modello base',
+    variation: 'variazione',
+    liveExamples: 'Esempi reali',
+    promoBadge: 'Pacchetto Essenziale',
+    promoTitle: 'IOPartner da 999 CHF',
+    promoDesc: 'Prezzo fisso per un sito vetrina professionale. Consegna in 3–5 giorni lavorativi in base ai contenuti.',
+    promoBtn: 'Ordina ora →',
+    mergedTitle: 'Restare sul percorso standard',
+    mergedLead: 'Due vie pulite: CHF 999 o CHF 1’500 se il lavoro resta standard. Altrimenti passa alla via custom.',
+    starterTitle: 'Via standard',
+    starterItems: ['CHF 999: sito vetrina di 5 sezioni su infrastruttura condivisa.', 'CHF 1’500: sito standard + WhatsApp + Calendly + passaggio leggero.'],
+    starterCtaPrimary: 'Scegli CHF 999',
+    starterCtaSecondary: 'Scegli CHF 1’500',
+    customTitle: 'Template e tenant non bastano più?',
+    customLead: 'Codebase separato, passaggio, backend leggero, headless shop o architettura più pesante.',
+    customItems: ['CHF 2’000: codebase privato.', 'CHF 2’200: codebase privato + passaggio.', 'CHF 4’500: backend leggero.', 'CHF 8’000+: headless shop o sistema più pesante.', 'Ingresso: diagnosi a pagamento 15 min / CHF 80.'],
+    customCta: 'Vedi la progressione custom →',
+  },
+} as const;
+
+const t = T[locale as keyof typeof T] ?? T.fr;
+
+const templates = [
+  {
+    id: 'lausanne-demenagement',
+    name: 'Pedro Déménagement',
+    sector: { fr: 'Services & déménagement', en: 'Services & moving', de: 'Dienstleistungen & Umzug', it: 'Servizi & trasloco' }[locale] ?? 'Services',
+    desc: { fr: 'Design professionnel sobre, sections services, témoignages, CTA fort. Modèle de référence — les autres styles sont des variations de celui-ci.', en: 'Professional clean design, services sections, testimonials, strong CTA. The base template — all other styles are variations of this one.', de: 'Professionelles sauberes Design, Service-Sektionen, Referenzen, starker CTA. Basis-Vorlage — alle anderen Stile sind Variationen davon.', it: 'Design professionale sobrio, sezioni servizi, testimonianze, CTA forte. Modello di riferimento — gli altri stili sono variazioni di questo.' }[locale] ?? '',
+    url: 'https://pedrodemenagement.ch',
+    img: toAssetSrc(pedroLogo as string | { src: string }),
+    alt: 'Pedro Demenagement - logo et identite de marque',
+    imageClass: 'object-contain p-8 bg-gradient-to-br from-slate-50 to-blue-100',
+    color: 'from-blue-600 to-blue-900',
+    isBase: true,
+    variations: ['lausannedemenagement.ch', 'demenagementurgent.ch', 'debarraslausanne.ch', 'transportmeubles.ch', 'videmaison.ch'],
+  },
+  {
+    id: 'tolo-coiffure',
+    name: 'Tolo Coiffure',
+    sector: { fr: 'Beauté & coiffure', en: 'Beauty & hair salon', de: 'Beauty & Friseur', it: 'Bellezza & parrucchiere' }[locale] ?? 'Beauty',
+    desc: { fr: 'Style moderne et chaleureux, galerie photos, prise de rendez-vous, palette claire.', en: 'Warm modern style, photo gallery, booking integration, light palette.', de: 'Warmes modernes Design, Fotogalerie, Terminbuchung, helle Palette.', it: 'Stile moderno e caldo, galleria foto, prenotazione appuntamenti, palette chiara.' }[locale] ?? '',
+    url: 'https://tolocoiffure.ch',
+    img: toAssetSrc(toloPreview as string | { src: string }),
+    alt: 'Tolo Coiffure - balayage signature Lausanne',
+    color: 'from-rose-400 to-pink-700',
+    isBase: false,
+    variations: [],
+  },
+  {
+    id: 'maison-cortes',
+    name: 'Maison Cortès',
+    sector: { fr: 'Hôtellerie & luxe', en: 'Hospitality & luxury', de: 'Hotellerie & Luxus', it: 'Ospitalità & lusso' }[locale] ?? 'Hospitality',
+    desc: { fr: 'Élégant, typographie soignée, tons neutres, ambiance haut de gamme. Idéal pour boutique-hôtels, restaurants, artisans premium.', en: 'Elegant, refined typography, neutral tones, premium feel. Ideal for boutique hotels, restaurants, premium artisans.', de: 'Elegant, verfeinerte Typografie, neutrale Töne, Premium-Atmosphäre. Ideal für Boutique-Hotels, Restaurants, Premium-Handwerk.', it: 'Elegante, tipografia raffinata, toni neutri, atmosfera premium. Ideale per boutique hotel, ristoranti, artigiani premium.' }[locale] ?? '',
+    url: 'https://maisoncortes.ch',
+    img: toAssetSrc(maisonPreview as string | { src: string }),
+    alt: 'Maison Cortes - selection d objet premium',
+    color: 'from-stone-600 to-stone-900',
+    isBase: false,
+    variations: [],
+  },
+  {
+    id: 'onglesgel',
+    name: 'Ongles Gel',
+    sector: { fr: 'Beauté & ongles', en: 'Beauty & nails', de: 'Beauty & Nägel', it: 'Bellezza & unghie' }[locale] ?? 'Beauty',
+    desc: { fr: 'Style féminin doux, palette pastel, mise en avant des prestations, portfolio visuel.', en: 'Soft feminine style, pastel palette, service highlights, visual portfolio.', de: 'Sanfter femininer Stil, Pastellpalette, Leistungspräsentation, visuelles Portfolio.', it: 'Stile femminile delicato, palette pastello, evidenziazione servizi, portfolio visivo.' }[locale] ?? '',
+    url: 'https://onglesgel.ch',
+    img: toAssetSrc(onglesPreview as string | { src: string }),
+    alt: 'Ongles Gel - nail art et pose gel Lausanne',
+    color: 'from-fuchsia-300 to-purple-600',
+    isBase: false,
+    variations: [],
+  },
+];
+---
+
+<Layout metadata={{ title: t.title }} brandKey="iopartner">
+  <!-- Promo banner -->
+  <div class="bg-gradient-to-r from-orange-500 to-red-500 text-white text-center px-4 py-3">
+    <span class="inline-block bg-white/20 text-xs font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full mr-2">{t.promoBadge}</span>
+    <span class="font-semibold text-sm">{t.promoTitle}</span>
+    <span class="hidden sm:inline text-white/80 text-sm mx-2">—</span>
+    <span class="block sm:inline text-white/90 text-xs sm:text-sm mt-0.5 sm:mt-0">{t.promoDesc}</span>
+  </div>
+
+  <main class="min-h-screen bg-gray-50 py-12 px-4">
+    <div class="max-w-5xl mx-auto">
+
+      <div class="text-center mb-10">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">{t.heading}</h1>
+        <p class="text-gray-500 max-w-xl mx-auto">{t.sub}</p>
+        {plan && <p class="mt-2 text-xs text-blue-600 font-medium uppercase tracking-wide">{t.planLabel}: {plan}</p>}
+      </div>
+
+      <!-- Surprise / let us choose — TOP -->
+      <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-6 text-white text-center mb-10 shadow-lg">
+        <p class="text-3xl mb-2">🎲</p>
+        <h2 class="font-bold text-xl mb-1">{t.surprise}</h2>
+        <p class="text-blue-100 text-sm mb-5 max-w-md mx-auto">{t.surpriseDesc}</p>
+        <a
+          href={`/api/payment/redirect?plan=${encodeURIComponent(plan)}&template=surprise`}
+          class="inline-block bg-white text-blue-700 font-semibold text-sm px-6 py-3 rounded-xl hover:bg-blue-50 transition-colors shadow"
+        >
+          {t.surpriseBtn}
+        </a>
+      </div>
+
+      <!-- Real template cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {templates.map((tpl) => (
+          <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col hover:border-blue-400 hover:shadow-md transition-all">
+
+            <!-- Screenshot preview -->
+            <div class="relative aspect-video overflow-hidden bg-gray-100">
+              <img
+                src={tpl.img}
+                alt={tpl.alt || tpl.name}
+                class={`w-full h-full ${tpl.imageClass || 'object-cover object-top'}`}
+                loading="lazy"
+                onerror={`this.style.display='none';this.nextElementSibling.style.display='flex'`}
+              />
+              <!-- Fallback gradient if screenshot fails to load -->
+              <div class={`absolute inset-0 bg-gradient-to-br ${tpl.color} hidden items-center justify-center text-white/60 text-sm font-medium`}>
+                {tpl.name}
+              </div>
+              <!-- Hover overlay -->
+              <a
+                href={tpl.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="absolute inset-0 flex items-center justify-center bg-black/0 hover:bg-black/40 transition-colors group"
+              >
+                <span class="opacity-0 group-hover:opacity-100 bg-white text-gray-900 text-sm font-semibold px-4 py-2 rounded-full transition-opacity shadow-lg">
+                  {t.preview}
+                </span>
+              </a>
+              {tpl.isBase && (
+                <div class="absolute top-3 left-3">
+                  <span class="bg-blue-600 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow">
+                    {t.baseTemplate}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            <!-- Content -->
+            <div class="p-5 flex-1 flex flex-col">
+              <div class="mb-3">
+                <div class="flex items-start justify-between gap-2 mb-1">
+                  <h3 class="font-bold text-gray-900">{tpl.name}</h3>
+                  <span class="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full whitespace-nowrap shrink-0">{tpl.sector}</span>
+                </div>
+                <p class="text-gray-500 text-sm leading-relaxed">{tpl.desc}</p>
+              </div>
+
+              {tpl.isBase && tpl.variations.length > 0 && (
+                <div class="mb-4 bg-blue-50 rounded-xl px-3 py-2.5">
+                  <p class="text-xs font-semibold text-blue-700 mb-1.5">{t.liveExamples} — {tpl.variations.length} {t.variation}s</p>
+                  <div class="flex flex-wrap gap-1.5">
+                    {tpl.variations.map((domain) => (
+                      <a
+                        href={`https://${domain}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-xs text-blue-600 hover:underline"
+                      >
+                        {domain}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div class="mt-auto flex gap-2">
+                <a
+                  href={tpl.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex-1 text-center border border-gray-200 hover:border-gray-300 text-gray-600 text-sm font-medium px-4 py-2.5 rounded-xl transition-colors"
+                >
+                  {t.preview}
+                </a>
+                <a
+                  href={`/api/payment/redirect?plan=${encodeURIComponent(plan)}&template=${encodeURIComponent(tpl.id)}`}
+                  class="flex-1 text-center bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors"
+                >
+                  {t.select} →
+                </a>
+              </div>
+            </div>
+
+          </div>
+        ))}
+      </div>
+
+      <!-- Bottom path split -->
+      <div class="mt-10 grid gap-6 lg:grid-cols-2">
+        <article class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+          <p class="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-1">{t.starterTitle}</p>
+          <h2 class="text-2xl font-bold text-gray-900">{t.mergedTitle}</h2>
+          <p class="mt-3 text-sm text-gray-500">{t.mergedLead}</p>
+          <ul class="mt-5 space-y-2 text-sm text-slate-700">
+            {t.starterItems.map((item) => <li>• {item}</li>)}
+          </ul>
+          <div class="mt-6 flex flex-wrap gap-3">
+            <a
+              href={`${localePrefix}/choose-template?plan=essential999`}
+              class="inline-block bg-slate-950 hover:bg-slate-800 text-white font-semibold px-5 py-3 rounded-xl transition-colors"
+            >
+              {t.starterCtaPrimary}
+            </a>
+            <a
+              href={`${localePrefix}/choose-template?plan=essential1500`}
+              class="inline-block border border-slate-200 hover:border-slate-300 text-slate-700 font-semibold px-5 py-3 rounded-xl transition-colors"
+            >
+              {t.starterCtaSecondary}
+            </a>
+          </div>
+        </article>
+
+        <article class="bg-slate-950 border border-slate-900 rounded-2xl p-6 shadow-sm text-white">
+          <p class="text-sm font-semibold text-blue-200 uppercase tracking-wide mb-1">{t.customTitle}</p>
+          <h2 class="text-2xl font-bold">{t.customTitle}</h2>
+          <p class="mt-3 text-sm text-white/75">{t.customLead}</p>
+          <ul class="mt-5 space-y-2 text-sm text-white/80">
+            {t.customItems.map((item) => <li>• {item}</li>)}
+          </ul>
+          <a
+            href={`${localePrefix}/custom-systems`}
+            class="mt-6 inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-xl transition-colors"
+          >
+            {t.customCta}
+          </a>
+        </article>
+      </div>
+
+    </div>
+  </main>
+</Layout>

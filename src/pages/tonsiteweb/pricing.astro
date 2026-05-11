@@ -1,9 +1,6 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
 import HeroText from '~/components/widgets/HeroText.astro';
-import Prices from '~/components/widgets/Pricing.astro';
-import PricingOptions from '~/components/widgets/PricingOptions.astro';
-import Note from '~/components/widgets/Note.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import Steps from '~/components/widgets/Steps.astro';
 import Features3 from '~/components/widgets/Features3.astro';
@@ -12,6 +9,86 @@ import CallToAction from '~/components/widgets/CallToAction.astro';
 const metadata = {
   title: 'Tarifs',
 };
+
+const pricingTabs = [
+  { key: 'website', label: 'Website building' },
+  { key: 'consulting', label: 'Consulting' },
+  { key: 'custom', label: 'Custom infra & software' },
+];
+
+const websiteOffers = [
+  {
+    title: 'Essentiel',
+    subtitle: 'Site vitrine professionnel dès 999 CHF',
+    price: '999',
+    period: 'paiement unique',
+    info: [
+      'Pack 999 = site vitrine standard de 5 sections sur l’infrastructure mutualisée TonSiteWeb.',
+      'Ajout de pages, brainstorming, changement de structure ou nouveaux modules sur devis.',
+      'Toute demande hors périmètre est facturée séparément avant production.',
+    ],
+    items: [
+      'Site vitrine 5 sections + page contact responsive',
+      'Intégration et mise en forme de vos contenus',
+      'Déploiement sur l’infrastructure mutualisée TonSiteWeb',
+    ],
+    cta: { text: 'Choisir un style →', href: '/choose-template?plan=essential999' },
+  },
+  {
+    title: 'Pack 1 500',
+    subtitle: 'Site standard + WhatsApp + Calendly',
+    price: '1500',
+    period: 'paiement unique',
+    info: [
+      'Toujours dans la logique standard TonSiteWeb, sans entrer dans une build privée.',
+      'WhatsApp, Calendly et passation légère inclus dans le périmètre validé.',
+      'Pages en plus, redesign, brainstorming ou modules hors scope sur devis séparé.',
+    ],
+    items: [
+      'Inclut la base 999 CHF',
+      'WhatsApp cliquable + prise de rendez-vous Calendly',
+      'Explication légère et handoff simple',
+    ],
+    cta: { text: 'Choisir le pack 1 500 →', href: '/choose-template?plan=essential1500' },
+  },
+];
+
+const consultingOffers = [
+  {
+    title: 'Sprint 15 minutes',
+    subtitle: 'Payé d’avance',
+    price: '60',
+    period: '15 min payés d’avance',
+    info: [
+      'À utiliser pour une question technique ciblée ou un blocage précis.',
+      'Réservation et paiement avant le créneau.',
+      'Le bon format pour obtenir de la clarté avant un périmètre plus large.',
+    ],
+    items: [
+      'Arbitrage rapide ou mini-appel d’architecture',
+      'Déblocage technique, question d’intégration ou validation de direction',
+      'Réponse rapide sans engager tout de suite un projet complet',
+    ],
+    cta: { text: 'Réserver le consulting 15 min →', href: '/contact#form' },
+  },
+  {
+    title: 'Consulting technique',
+    subtitle: 'Support engineering senior',
+    price: '140',
+    period: 'CHF / heure',
+    info: [
+      'Pour revue d’architecture, debugging, delivery planning ou accompagnement d’implémentation.',
+      'Le travail horaire démarre une fois le sujet confirmé.',
+      'Le bon format quand le besoin dépasse largement 15 minutes.',
+    ],
+    items: [
+      'Code review, debugging, revue d’architecture',
+      'Guidage delivery et direction d’implémentation',
+      'Support horaire pour les sujets techniques ouverts',
+    ],
+    cta: { text: 'Demander du consulting horaire →', href: '/contact#form' },
+  },
+];
 ---
 
 <Layout metadata={metadata}>
@@ -20,156 +97,501 @@ const metadata = {
   <HeroText
     tagline="Tarifs"
     title="Des offres transparentes, facturées en Suisse"
-    subtitle="Deux voies standards pour les sites simples, puis une couche custom cadrée proprement quand le sujet dépasse le template."
+    subtitle="Deux voies standards pour les sites simples, puis du consulting et une couche custom cadrée proprement quand le sujet dépasse réellement le template."
   />
 
-  <!-- Starter pack banner -->
   <div class="max-w-3xl mx-auto px-4 mb-2">
     <div class="rounded-2xl border-2 border-blue-200 bg-blue-50 dark:bg-blue-900/20 px-6 py-4 text-center">
       <p class="text-lg font-bold text-blue-900 dark:text-blue-100">Pack Essentiel — dès 999 CHF</p>
-      <p class="mt-1 text-sm text-blue-700 dark:text-blue-200">Prix fixe pour un site vitrine professionnel. Livraison typique en 3–5 jours ouvrables selon vos contenus.</p>
-      <a href="/onboarding?plan=essential999" class="mt-3 inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm px-6 py-2 rounded-xl transition-colors">Commander maintenant →</a>
+      <p class="mt-1 text-sm text-blue-700 dark:text-blue-200">
+        Prix fixe pour un site vitrine professionnel. Livraison typique en 3–5 jours ouvrables selon vos contenus.
+      </p>
+      <a
+        href="/onboarding?plan=essential999"
+        class="mt-3 inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm px-6 py-2 rounded-xl transition-colors"
+        >Commander maintenant →</a
+      >
     </div>
   </div>
 
-  <!-- Pricing Widget ******************* -->
-
-  <Prices
-    title="Nos packs clés-en-main"
-    subtitle="Choisissez l'offre qui correspond à votre besoin. Sans frais cachés."
-    prices={[
-      {
-        title: 'Essentiel',
-        subtitle: 'Site vitrine professionnel dès 999 CHF',
-        price: 999,
-        period: 'paiement unique',
-        info: [
-          'Pack 999 = site vitrine standard de 5 sections sur l’infrastructure mutualisée TonSiteWeb.',
-          'Ajout de pages, brainstorming, changement de structure ou nouveaux modules sur devis.',
-          'Toute demande hors périmètre est facturée séparément avant production.',
-        ],
-        items: [
-          {
-            description: 'Site vitrine 5 sections + page contact responsive',
-          },
-          {
-            description: 'Intégration et mise en forme de vos contenus',
-          },
-          {
-            description: 'Déploiement sur l’infrastructure mutualisée TonSiteWeb',
-          },
-        ],
-        callToAction: { text: 'Choisir un style →', href: '/choose-template?plan=essential999' },
-      },
-      {
-        title: 'Pack 1 500',
-        subtitle: 'Site standard + WhatsApp + Calendly',
-        price: 1500,
-        period: 'paiement unique',
-        info: [
-          'Toujours dans la logique standard TonSiteWeb, sans entrer dans une build privée.',
-          'WhatsApp, Calendly et passation légère inclus dans le périmètre validé.',
-          'Pages en plus, redesign, brainstorming ou modules hors scope sur devis séparé.',
-        ],
-        items: [
-          { description: 'Inclut la base 999 CHF' },
-          { description: 'WhatsApp cliquable + prise de rendez-vous Calendly' },
-          { description: 'Explication légère et handoff simple' },
-        ],
-        callToAction: { text: 'Choisir le pack 1 500 →', href: '/choose-template?plan=essential1500' },
-      },
-      {
-        title: 'Systèmes sur mesure',
-        subtitle: 'Codebase privée, back-end ou architecture plus lourde',
-        price: 2000,
-        period: 'dès — scope avant build',
-        items: [
-          { description: '2 000 CHF: codebase privée' },
-          { description: '2 200 CHF: codebase privée + transmission' },
-          { description: '4 500 CHF: back-end léger' },
-          { description: '8 000+ CHF: headless shop ou système plus lourd' },
-        ],
-        callToAction: '<a class="btn btn-primary" href="#modal-custom">Voir la progression</a>',
-      },
-    ]}
-  />
-
-  <!-- Pricing selectors (modals) -->
-  <div class="sr-only" aria-hidden="true"></div>
-  <div class="mt-0 grid gap-0">
-    <div class="hidden" id="modals"></div>
-  </div>
-
-  <div class="mt-6 grid gap-4 max-w-7xl mx-auto px-4">
-    <div class="flex flex-wrap gap-4">
-      <div id="insert-essential">
-        <PricingOptions
-          id="modal-essential"
-          triggerText=""
-          title="Packs standards"
-          subtitle="Choisissez le bon niveau sans acheter du custom trop tôt"
-          ctaText="Choisir"
-          tiers={[
-            {
-              label: 'CHF 999',
-              price: 'dès 999',
-              features: ['Site statique', 'Formulaire simple (email)'],
-              href: '/choose-template?plan=essential999',
-              info: ['Hébergement & SSL inclus (3 mois)', 'Déploiement sur l’infrastructure TonSiteWeb mutualisée', 'Pages en plus, brainstorming ou hors scope sur devis séparé'],
-            },
-            {
-              label: 'CHF 1 500',
-              price: '1 500',
-              features: ['Inclut la base 999', 'WhatsApp + Calendly', 'Explication légère / passation'],
-              href: '/choose-template?plan=essential1500',
-              primary: true,
-              info: ['Toujours sur l’infrastructure TonSiteWeb mutualisée', 'WhatsApp et Calendly installés dans le périmètre validé', 'Pages en plus, brainstorming ou hors scope sur devis séparé'],
-            },
-          ]}
-          footnote="Le périmètre validé est livré tel quel ; ajout de pages, cadrage/brainstorming, redesign et demandes hors scope sont facturés séparément."
-        />
+  <section class="relative not-prose scroll-mt-[72px]">
+    <div class="relative mx-auto max-w-7xl px-4 md:px-6 py-12 md:py-16 lg:py-20 text-default">
+      <div class="mb-8 md:mx-auto md:mb-12 text-center max-w-3xl">
+        <h2 class="font-bold leading-tighter tracking-tighter font-heading text-heading text-3xl md:text-4xl">
+          Nos packs clés-en-main
+        </h2>
+        <p class="mt-4 text-muted text-xl">Choisissez l'offre qui correspond à votre besoin. Sans frais cachés.</p>
       </div>
-      <div id="insert-custom">
-        <PricingOptions
-          id="modal-custom"
-          triggerText=""
-          title="Progression custom"
-          subtitle="Quand le bon mouvement n’est plus un simple template"
-          ctaText="Ouvrir"
-          tiers={[
-            {
-              label: 'CHF 2 000',
-              price: 'codebase privée',
-              features: ['Codebase séparée', 'Sortie de l’infrastructure mutualisée'],
-              href: '/custom-systems?track=private-2000#diagnostic',
-            },
-            {
-              label: 'CHF 2 200',
-              price: 'privé + transmission',
-              features: ['Codebase séparée', 'Transmission et explication structurée'],
-              primary: true,
-              href: '/custom-systems?track=private-2200#diagnostic',
-            },
-            {
-              label: 'CHF 4 500',
-              price: 'back‑end léger',
-              features: ['Logique métier légère', 'Collecte, sync ou portail simple'],
-              href: '/custom-systems?track=backend-4500#diagnostic',
-            },
-            {
-              label: 'CHF 8 000+',
-              price: 'système plus lourd',
-              features: ['Headless shop', 'Admin, portail ou architecture plus profonde'],
-              href: '/custom-systems?track=shop-8000#diagnostic',
-            },
-          ]}
-          footnote="Architecture, portail, admin ou plateforme interne sont scopes après le diagnostic payé 15 min / 80 CHF."
+
+      <div class="tsw-pricing-tabs">
+        <input
+          class="tsw-pricing-switch"
+          type="radio"
+          name="tsw-pricing-tabs-fr"
+          id="tsw-pricing-tab-website"
+          checked
         />
+        <input class="tsw-pricing-switch" type="radio" name="tsw-pricing-tabs-fr" id="tsw-pricing-tab-consulting" />
+        <input class="tsw-pricing-switch" type="radio" name="tsw-pricing-tabs-fr" id="tsw-pricing-tab-custom" />
+
+        <div class="tsw-pricing-tablist" aria-label="Parcours tarifaires TonSiteWeb">
+          {
+            pricingTabs.map((tab) => (
+              <label class="tsw-pricing-tab" for={`tsw-pricing-tab-${tab.key}`}>
+                {tab.label}
+              </label>
+            ))
+          }
+        </div>
+
+        <div class="mt-8 tsw-pricing-panels">
+          <section class="tsw-pricing-panel tsw-pricing-panel-website">
+            <div class="tsw-pricing-grid">
+              {
+                websiteOffers.map((offer) => (
+                  <article class="tsw-price-card">
+                    <div class="px-2 py-0">
+                      <div class="mb-2 flex items-center justify-center gap-2">
+                        <h3 class="text-center text-xl font-semibold uppercase leading-6 tracking-wider">
+                          {offer.title}
+                        </h3>
+                        <div class="relative inline-block group">
+                          <button
+                            type="button"
+                            class="inline-flex h-5 w-5 items-center justify-center rounded-full border border-gray-300 text-[11px] leading-none text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary dark:text-gray-300"
+                            aria-label="Info"
+                          >
+                            i
+                          </button>
+                          <div class="pointer-events-none absolute left-1/2 top-full z-30 mt-2 hidden w-72 -translate-x-1/2 rounded-md border border-gray-200 bg-white p-3 text-left text-sm shadow-xl group-hover:block group-focus-within:block dark:border-gray-700 dark:bg-slate-900">
+                            <ul class="space-y-1">
+                              {offer.info.map((line) => (
+                                <li>• {line}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                      <p class="font-light sm:text-lg text-gray-600 dark:text-slate-400">{offer.subtitle}</p>
+                      <div class="my-8">
+                        <div class="flex items-center justify-center text-center mb-1">
+                          <span class="text-2xl mr-2">CHF</span>
+                          <span class="text-6xl font-extrabold">{offer.price}</span>
+                        </div>
+                        <span class="text-base leading-6 lowercase text-gray-600 dark:text-slate-400">
+                          {offer.period}
+                        </span>
+                      </div>
+                      <ul class="my-8 md:my-10 space-y-3 text-center">
+                        {offer.items.map((item) => (
+                          <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                            <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                              <span class="text-white text-sm font-bold">✓</span>
+                            </div>
+                            <span class="text-base">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div class="flex justify-center">
+                      <a class="btn btn-primary" href={offer.cta.href}>
+                        {offer.cta.text}
+                      </a>
+                    </div>
+                  </article>
+                ))
+              }
+
+              <article class="tsw-price-card tsw-price-card-muted">
+                <div class="px-2 py-0">
+                  <h3 class="text-center text-xl font-semibold uppercase leading-6 tracking-wider">
+                    Besoin de plus qu’un site standard ?
+                  </h3>
+                  <p class="mt-3 font-light sm:text-lg text-gray-600 dark:text-slate-400">
+                    Gardez la structure, puis passez en consulting ou en custom dès que le sujet devient réellement
+                    technique.
+                  </p>
+                  <ul class="my-8 md:my-10 space-y-3 text-center">
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">→</span>
+                      </div>
+                      <span class="text-base"
+                        >Utilisez le consulting pour arbitrer vite ou débloquer un point précis</span
+                      >
+                    </li>
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">→</span>
+                      </div>
+                      <span class="text-base"
+                        >Utilisez le custom pour codebase privée, backend, infra ou intégrations</span
+                      >
+                    </li>
+                  </ul>
+                </div>
+                <div class="flex justify-center gap-3 flex-wrap">
+                  <label class="btn cursor-pointer" for="tsw-pricing-tab-consulting">Voir le consulting</label>
+                  <label class="btn btn-primary cursor-pointer" for="tsw-pricing-tab-custom">Voir le custom</label>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="tsw-pricing-panel tsw-pricing-panel-consulting">
+            <div class="tsw-pricing-grid">
+              {
+                consultingOffers.map((offer) => (
+                  <article class="tsw-price-card">
+                    <div class="px-2 py-0">
+                      <div class="mb-2 flex items-center justify-center gap-2">
+                        <h3 class="text-center text-xl font-semibold uppercase leading-6 tracking-wider">
+                          {offer.title}
+                        </h3>
+                        <div class="relative inline-block group">
+                          <button
+                            type="button"
+                            class="inline-flex h-5 w-5 items-center justify-center rounded-full border border-gray-300 text-[11px] leading-none text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary dark:text-gray-300"
+                            aria-label="Info"
+                          >
+                            i
+                          </button>
+                          <div class="pointer-events-none absolute left-1/2 top-full z-30 mt-2 hidden w-72 -translate-x-1/2 rounded-md border border-gray-200 bg-white p-3 text-left text-sm shadow-xl group-hover:block group-focus-within:block dark:border-gray-700 dark:bg-slate-900">
+                            <ul class="space-y-1">
+                              {offer.info.map((line) => (
+                                <li>• {line}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                      <p class="font-light sm:text-lg text-gray-600 dark:text-slate-400">{offer.subtitle}</p>
+                      <div class="my-8">
+                        <div class="flex items-center justify-center text-center mb-1">
+                          <span class="text-2xl mr-2">CHF</span>
+                          <span class="text-6xl font-extrabold">{offer.price}</span>
+                        </div>
+                        <span class="text-base leading-6 text-gray-600 dark:text-slate-400">{offer.period}</span>
+                      </div>
+                      <ul class="my-8 md:my-10 space-y-3 text-center">
+                        {offer.items.map((item) => (
+                          <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                            <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                              <span class="text-white text-sm font-bold">✓</span>
+                            </div>
+                            <span class="text-base">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div class="flex justify-center">
+                      <a class="btn btn-primary" href={offer.cta.href}>
+                        {offer.cta.text}
+                      </a>
+                    </div>
+                  </article>
+                ))
+              }
+
+              <article class="tsw-price-card tsw-price-card-muted">
+                <div class="px-2 py-0">
+                  <h3 class="text-center text-xl font-semibold uppercase leading-6 tracking-wider">
+                    Cas d’usage typiques
+                  </h3>
+                  <p class="mt-3 font-light sm:text-lg text-gray-600 dark:text-slate-400">
+                    Achetez d’abord de la clarté quand le sujet n’a pas encore besoin d’un scope de build complet.
+                  </p>
+                  <ul class="my-8 md:my-10 space-y-3 text-center">
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">•</span>
+                      </div>
+                      <span class="text-base">Choisir entre template, codebase privée, backend ou vrai système</span>
+                    </li>
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">•</span>
+                      </div>
+                      <span class="text-base"
+                        >Relire une architecture, un plan d’intégration ou une direction delivery</span
+                      >
+                    </li>
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">•</span>
+                      </div>
+                      <span class="text-base">Débloquer un problème avant qu’un projet plus large ne démarre</span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="flex justify-center">
+                  <label class="btn cursor-pointer" for="tsw-pricing-tab-custom"
+                    >Le consulting peut ouvrir vers le custom</label
+                  >
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="tsw-pricing-panel tsw-pricing-panel-custom">
+            <div class="tsw-pricing-grid">
+              <article class="tsw-price-card">
+                <div class="px-2 py-0">
+                  <h3 class="text-center text-xl font-semibold uppercase leading-6 tracking-wider">Custom systems</h3>
+                  <p class="font-light sm:text-lg text-gray-600 dark:text-slate-400">
+                    Codebase privée, backend, ou architecture plus lourde
+                  </p>
+                  <div class="my-8">
+                    <div class="flex items-center justify-center text-center mb-1">
+                      <span class="text-sm uppercase tracking-wide mr-2">dès</span>
+                      <span class="text-2xl mr-2">CHF</span>
+                      <span class="text-6xl font-extrabold">2000</span>
+                    </div>
+                    <span class="text-base leading-6 text-gray-600 dark:text-slate-400">scope avant build</span>
+                  </div>
+                  <ul class="my-8 md:my-10 space-y-3 text-center">
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">✓</span>
+                      </div>
+                      <span class="text-base">2 000 CHF: codebase privée</span>
+                    </li>
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">✓</span>
+                      </div>
+                      <span class="text-base">2 200 CHF: codebase privée + transmission</span>
+                    </li>
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">✓</span>
+                      </div>
+                      <span class="text-base">4 500 CHF: back-end léger</span>
+                    </li>
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">✓</span>
+                      </div>
+                      <span class="text-base">8 000+ CHF: headless shop ou système plus lourd</span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="flex justify-center">
+                  <a class="btn btn-primary" href="/contact#form">Voir la progression</a>
+                </div>
+              </article>
+
+              <article class="tsw-price-card tsw-price-card-muted">
+                <div class="px-2 py-0">
+                  <h3 class="text-center text-xl font-semibold uppercase leading-6 tracking-wider">
+                    Scope engineering typique
+                  </h3>
+                  <p class="mt-3 font-light sm:text-lg text-gray-600 dark:text-slate-400">
+                    Custom infra, integration, et développement logiciel plus traditionnel.
+                  </p>
+                  <ul class="my-8 md:my-10 space-y-3 text-center">
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">•</span>
+                      </div>
+                      <span class="text-base">Angular, React, JavaScript, TypeScript, delivery full-stack</span>
+                    </li>
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">•</span>
+                      </div>
+                      <span class="text-base">Bash scripting, Linux infra, automation, intégrations</span>
+                    </li>
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">•</span>
+                      </div>
+                      <span class="text-base"
+                        >Python, C, C++, structures de données, algorithmes, sujets engineering rigoureux</span
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </article>
+
+              <article class="tsw-price-card tsw-price-card-muted">
+                <div class="px-2 py-0">
+                  <h3 class="text-center text-xl font-semibold uppercase leading-6 tracking-wider">
+                    Commencer proprement
+                  </h3>
+                  <p class="mt-3 font-light sm:text-lg text-gray-600 dark:text-slate-400">
+                    Utilisez d’abord le consulting payé quand la vraie taille du sujet doit encore être cadrée.
+                  </p>
+                  <ul class="my-8 md:my-10 space-y-3 text-center">
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">→</span>
+                      </div>
+                      <span class="text-base">60 CHF / 15 min pour une entrée ciblée et payée d’avance</span>
+                    </li>
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">→</span>
+                      </div>
+                      <span class="text-base"
+                        >140 CHF / heure quand il faut aller plus loin en support ou en delivery</span
+                      >
+                    </li>
+                  </ul>
+                </div>
+                <div class="flex justify-center">
+                  <label class="btn cursor-pointer" for="tsw-pricing-tab-consulting">Voir le consulting d’abord</label>
+                </div>
+              </article>
+            </div>
+          </section>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  
+  <style>
+    .tsw-pricing-tabs {
+      display: grid;
+      gap: 1.5rem;
+      position: relative;
+    }
+
+    .tsw-pricing-switch {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .tsw-pricing-tablist {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.7rem;
+    }
+
+    .tsw-pricing-tab {
+      appearance: none;
+      border: 1px solid #cbd5e1;
+      border-radius: 999px;
+      background: #fff;
+      color: #334155;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      padding: 0.8rem 1.15rem;
+      transition:
+        background-color 180ms ease,
+        border-color 180ms ease,
+        color 180ms ease,
+        transform 180ms ease;
+    }
+
+    .tsw-pricing-tab:hover {
+      border-color: #93c5fd;
+      background: #eff6ff;
+    }
+
+    .tsw-pricing-tab:focus-visible {
+      outline: 2px solid #2563eb;
+      outline-offset: 2px;
+    }
+
+    .tsw-pricing-panel {
+      display: none;
+    }
+
+    .tsw-pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+      gap: 1.25rem;
+      align-items: stretch;
+    }
+
+    .tsw-price-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 0.75rem;
+      background: #fff;
+      box-shadow: 0 10px 30px -18px rgba(15, 23, 42, 0.28);
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: center;
+      transition:
+        transform 200ms ease,
+        box-shadow 200ms ease;
+    }
+
+    .tsw-price-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 38px -22px rgba(15, 23, 42, 0.3);
+    }
+
+    .tsw-price-card-muted {
+      background: #f8fafc;
+    }
+
+    #tsw-pricing-tab-website:checked ~ .tsw-pricing-tablist label[for='tsw-pricing-tab-website'],
+    #tsw-pricing-tab-consulting:checked ~ .tsw-pricing-tablist label[for='tsw-pricing-tab-consulting'],
+    #tsw-pricing-tab-custom:checked ~ .tsw-pricing-tablist label[for='tsw-pricing-tab-custom'] {
+      border-color: #1d4ed8;
+      background: linear-gradient(135deg, #1d4ed8, #1e293b);
+      color: #eff6ff;
+      transform: translateY(-1px);
+    }
+
+    #tsw-pricing-tab-website:checked ~ .tsw-pricing-panels .tsw-pricing-panel-website,
+    #tsw-pricing-tab-consulting:checked ~ .tsw-pricing-panels .tsw-pricing-panel-consulting,
+    #tsw-pricing-tab-custom:checked ~ .tsw-pricing-panels .tsw-pricing-panel-custom {
+      display: grid;
+    }
+
+    :global(.dark) .tsw-pricing-tab {
+      border-color: #334155;
+      background: #0f172a;
+      color: #cbd5e1;
+    }
+
+    :global(.dark) .tsw-pricing-tab:hover {
+      border-color: #60a5fa;
+      background: #172554;
+    }
+
+    #tsw-pricing-tab-website:checked ~ .tsw-pricing-tablist label[for='tsw-pricing-tab-website'],
+    #tsw-pricing-tab-consulting:checked ~ .tsw-pricing-tablist label[for='tsw-pricing-tab-consulting'],
+    #tsw-pricing-tab-custom:checked ~ .tsw-pricing-tablist label[for='tsw-pricing-tab-custom'] {
+      border-color: #60a5fa;
+      background: linear-gradient(135deg, #2563eb, #0f172a);
+      color: #eff6ff;
+    }
+
+    :global(.dark) .tsw-price-card {
+      border-color: #374151;
+      background: #0f172a;
+      box-shadow: none;
+    }
+
+    :global(.dark) .tsw-price-card-muted {
+      background: #111827;
+    }
+
+    @media (min-width: 640px) {
+      .tsw-pricing-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 1280px) {
+      .tsw-pricing-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+  </style>
 
   <!-- Features3 Widget ************** -->
 
@@ -183,7 +605,7 @@ const metadata = {
         description: 'Accompagnement par email et téléphone, réponses sous un jour ouvré.',
         icon: 'tabler:headset',
       },
-      
+
       {
         title: 'Processus simple',
         description: "Échanges par email et validations par étapes (pas d'espace client à gérer).",
@@ -210,42 +632,45 @@ const metadata = {
 
   <!-- Steps Widget ****************** -->
 
-    <Steps
-      title="Comment se déroule votre projet"
-      tagline="Parcours"
-      isReversed={true}
-      items={[
-        {
-          title: '1. Signature numérique',
-          description: 'Validez le pack choisi et recevez votre accès onboarding.',
-          icon: 'tabler:edit',
-        },
-        {
-          title: '2. Questionnaire intelligent',
-          description: 'Renseignez vos informations clés, importez vos visuels et sélectionnez vos modules.',
-          icon: 'tabler:clipboard-list',
-        },
-        {
-          title: '3. Production supervisée',
-          description: 'Notre plateforme génère votre site, nos experts ajustent et contrôlent.',
-          icon: 'tabler:robot',
-        },
-        {
-          title: '4. Validation & mise en ligne',
-          description: 'Vous validez la version finale, nous programmons la mise en ligne et chiffrons séparément toute extension hors périmètre.',
-          icon: 'tabler:rocket',
-        },
-      ]}
-    >
-      <Fragment slot="image">
-        <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-white shadow-xl">
-          <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Process</p>
-          <p class="mt-6 max-w-xs text-base text-blue-100/90">
-            Brief, intégration de vos contenus et validations par email.
-          </p>
-        </div>
-      </Fragment>
-    </Steps>
+  <Steps
+    title="Comment se déroule votre projet"
+    tagline="Parcours"
+    isReversed={true}
+    items={[
+      {
+        title: '1. Signature numérique',
+        description: 'Validez le pack choisi et recevez votre accès onboarding.',
+        icon: 'tabler:edit',
+      },
+      {
+        title: '2. Questionnaire intelligent',
+        description: 'Renseignez vos informations clés, importez vos visuels et sélectionnez vos modules.',
+        icon: 'tabler:clipboard-list',
+      },
+      {
+        title: '3. Production supervisée',
+        description: 'Notre plateforme génère votre site, nos experts ajustent et contrôlent.',
+        icon: 'tabler:robot',
+      },
+      {
+        title: '4. Validation & mise en ligne',
+        description:
+          'Vous validez la version finale, nous programmons la mise en ligne et chiffrons séparément toute extension hors périmètre.',
+        icon: 'tabler:rocket',
+      },
+    ]}
+  >
+    <Fragment slot="image">
+      <div
+        class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-white shadow-xl"
+      >
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Process</p>
+        <p class="mt-6 max-w-xs text-base text-blue-100/90">
+          Brief, intégration de vos contenus et validations par email.
+        </p>
+      </div>
+    </Fragment>
+  </Steps>
 
   <!-- FAQs Widget ******************* -->
 
@@ -259,11 +684,13 @@ const metadata = {
       },
       {
         title: 'Quel est le délai moyen pour le pack Essentiel ?',
-        description: 'Comptez environ cinq jours ouvrés après réception de vos contenus. Nous vous donnons un planning précis lors du brief.',
+        description:
+          'Comptez environ cinq jours ouvrés après réception de vos contenus. Nous vous donnons un planning précis lors du brief.',
       },
       {
         title: 'Que se passe-t-il si j’ai besoin d’autres pages ou d’un cadrage supplémentaire ?',
-        description: 'Nous chiffrons séparément les ajouts de pages, ateliers de cadrage ou brainstorming, changements de structure et demandes hors périmètre avant toute production.',
+        description:
+          'Nous chiffrons séparément les ajouts de pages, ateliers de cadrage ou brainstorming, changements de structure et demandes hors périmètre avant toute production.',
       },
       {
         title: 'La maintenance est-elle obligatoire ?',
@@ -271,7 +698,8 @@ const metadata = {
       },
       {
         title: 'Quels moyens de paiement acceptez-vous ?',
-        description: 'Cartes suisses, Twint, virement bancaire et facturation QR. Les abonnements peuvent être payés mensuellement ou annuellement.',
+        description:
+          'Cartes suisses, Twint, virement bancaire et facturation QR. Les abonnements peuvent être payés mensuellement ou annuellement.',
       },
     ]}
   />
@@ -292,9 +720,7 @@ const metadata = {
       },
     ]}
   >
-    <Fragment slot="title">
-      Votre site vitrine dès 999 CHF
-    </Fragment>
+    <Fragment slot="title"> Votre site vitrine dès 999 CHF </Fragment>
 
     <Fragment slot="subtitle">
       Pack Essentiel TonSiteWeb.ch au tarif standard. Livraison typique en 3–5 jours ouvrables selon vos contenus.

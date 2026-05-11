@@ -1,0 +1,310 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import { detectRequestLocale } from '~/lib/locale';
+
+const locale = detectRequestLocale(Astro.request, Astro.url);
+const localePrefix = ['en', 'de', 'it'].includes(locale) ? `/${locale}` : '';
+const sessionId = Astro.url.searchParams.get('session_id') || '';
+const hasSession = Boolean(sessionId);
+
+const COPY = {
+  fr: {
+    title: 'Merci — IOPartner.ch',
+    heading: hasSession ? 'Paiement confirmé' : 'Merci',
+    descLoading: 'Nous confirmons votre paiement…',
+    descGeneric: 'Nous revenons vers vous sous un jour ouvré.',
+    descOrder: 'Votre paiement est confirmé. Nous lançons maintenant la production.',
+    descBooking: 'Votre paiement est confirmé. Votre diagnostic est réservé.',
+    home: "Revenir à l'accueil",
+    summary: {
+      email: 'Email',
+      amount: 'Montant',
+      status: 'Statut',
+      template: 'Template',
+      plan: 'Plan',
+      order: 'Commande',
+      service: 'Service',
+      slot: 'Créneau',
+      teams: 'Teams',
+    },
+    loading: 'Chargement des détails…',
+    error: 'Impossible de charger les détails. Merci de contacter le support.',
+    orderTitle: 'Votre site est en cours de lancement',
+    orderLead: 'Nous avons bien votre brief et votre commande. Les demandes hors scope restent chiffrées séparément avant exécution.',
+    orderBullets: [
+      'Intégration et mise en forme des contenus validés.',
+      'Livraison typique en 3–5 jours ouvrables selon vos contenus.',
+      'Support humain par email ou WhatsApp sous un jour ouvré.',
+    ],
+    bookingTitle: 'Votre diagnostic custom est réservé',
+    bookingLead: 'Le créneau est bloqué. Vous recevrez aussi les détails par email, avec le lien Teams partagé.',
+    bookingBullets: [
+      'Session courte et payée, pas un call vague.',
+      'Le diagnostic qualifie la bonne couche: 2 000, 2 200, 4 500, 8 000+ ou architecture plus profonde.',
+      'Si le bon mouvement reste 999 ou 1 500, nous vous le dirons clairement.',
+    ],
+    customTitle: 'Besoin d’aller plus loin ?',
+    customDesc: 'Si le diagnostic ouvre une vraie surface de travail, la suite se scope proprement après cette première lecture.',
+    customBtn: 'Voir les systèmes custom',
+    whatsappLabel: 'Questions ? Écrivez-nous sur WhatsApp',
+    whatsappBtn: 'Écrire sur WhatsApp',
+    currencyLocale: 'fr-CH',
+  },
+  en: {
+    title: 'Thank you — IOPartner.ch',
+    heading: hasSession ? 'Payment confirmed' : 'Thank you',
+    descLoading: 'We are confirming your payment…',
+    descGeneric: 'We will get back to you within one business day.',
+    descOrder: 'Your payment is confirmed. Production is now starting.',
+    descBooking: 'Your payment is confirmed. Your diagnostic is booked.',
+    home: 'Back to home',
+    summary: {
+      email: 'Email',
+      amount: 'Amount',
+      status: 'Status',
+      template: 'Template',
+      plan: 'Plan',
+      order: 'Order',
+      service: 'Service',
+      slot: 'Slot',
+      teams: 'Teams',
+    },
+    loading: 'Loading details…',
+    error: 'Could not load the details. Please contact support.',
+    orderTitle: 'Your site is moving into production',
+    orderLead: 'We have your brief and your order. Out-of-scope requests remain quoted separately before execution.',
+    orderBullets: [
+      'Integration and formatting of the validated content.',
+      'Typical delivery in 3–5 business days depending on your content.',
+      'Human support by email or WhatsApp within one business day.',
+    ],
+    bookingTitle: 'Your custom diagnostic is booked',
+    bookingLead: 'The slot is locked. You will also receive the details by email, including the shared Teams link.',
+    bookingBullets: [
+      'Short paid session, not a vague exploratory call.',
+      'The diagnostic qualifies the right layer: 2,000, 2,200, 4,500, 8,000+, or a deeper architecture subject.',
+      'If the right move is still 999 or 1,500, we will tell you clearly.',
+    ],
+    customTitle: 'Need to go further?',
+    customDesc: 'If the diagnostic opens a real implementation surface, the next step gets scoped properly after this first pass.',
+    customBtn: 'See custom systems',
+    whatsappLabel: 'Questions? Message us on WhatsApp',
+    whatsappBtn: 'Message on WhatsApp',
+    currencyLocale: 'en-CH',
+  },
+  de: {
+    title: 'Danke — IOPartner.ch',
+    heading: hasSession ? 'Zahlung bestätigt' : 'Danke',
+    descLoading: 'Wir bestätigen Ihre Zahlung…',
+    descGeneric: 'Wir melden uns innerhalb eines Arbeitstages.',
+    descOrder: 'Ihre Zahlung ist bestätigt. Die Produktion startet jetzt.',
+    descBooking: 'Ihre Zahlung ist bestätigt. Ihre Diagnose ist gebucht.',
+    home: 'Zur Startseite',
+    summary: {
+      email: 'E-Mail',
+      amount: 'Betrag',
+      status: 'Status',
+      template: 'Vorlage',
+      plan: 'Plan',
+      order: 'Bestellung',
+      service: 'Service',
+      slot: 'Slot',
+      teams: 'Teams',
+    },
+    loading: 'Details werden geladen…',
+    error: 'Details konnten nicht geladen werden. Bitte Support kontaktieren.',
+    orderTitle: 'Ihre Website geht jetzt in die Produktion',
+    orderLead: 'Wir haben Ihr Briefing und Ihre Bestellung. Leistungen ausserhalb des Scopes werden vor Ausführung separat offeriert.',
+    orderBullets: [
+      'Integration und Formatierung der validierten Inhalte.',
+      'Typische Lieferung in 3–5 Arbeitstagen je nach Inhalt.',
+      'Menschlicher Support per E-Mail oder WhatsApp innerhalb eines Arbeitstages.',
+    ],
+    bookingTitle: 'Ihre Custom-Diagnose ist gebucht',
+    bookingLead: 'Der Slot ist blockiert. Sie erhalten die Details auch per E-Mail, inklusive geteiltem Teams-Link.',
+    bookingBullets: [
+      'Kurze bezahlte Session, kein vager Explorationscall.',
+      'Die Diagnose qualifiziert die richtige Ebene: 2’000, 2’200, 4’500, 8’000+ oder tiefere Architektur.',
+      'Wenn der richtige Weg weiterhin 999 oder 1’500 ist, sagen wir das klar.',
+    ],
+    customTitle: 'Brauchen Sie mehr Tiefe?',
+    customDesc: 'Wenn die Diagnose eine echte Umsetzungsfläche öffnet, wird der nächste Schritt nach dieser ersten Lesart sauber gescopt.',
+    customBtn: 'Custom systems ansehen',
+    whatsappLabel: 'Fragen? Schreiben Sie uns auf WhatsApp',
+    whatsappBtn: 'Auf WhatsApp schreiben',
+    currencyLocale: 'de-CH',
+  },
+  it: {
+    title: 'Grazie — IOPartner.ch',
+    heading: hasSession ? 'Pagamento confermato' : 'Grazie',
+    descLoading: 'Stiamo confermando il pagamento…',
+    descGeneric: 'Ti ricontatteremo entro un giorno lavorativo.',
+    descOrder: 'Il pagamento è confermato. La produzione parte ora.',
+    descBooking: 'Il pagamento è confermato. La tua diagnosi è prenotata.',
+    home: 'Torna alla home',
+    summary: {
+      email: 'Email',
+      amount: 'Importo',
+      status: 'Stato',
+      template: 'Template',
+      plan: 'Piano',
+      order: 'Ordine',
+      service: 'Servizio',
+      slot: 'Slot',
+      teams: 'Teams',
+    },
+    loading: 'Caricamento dettagli…',
+    error: 'Impossibile caricare i dettagli. Contatta il supporto.',
+    orderTitle: 'Il tuo sito entra ora in produzione',
+    orderLead: 'Abbiamo brief e ordine. Le richieste fuori perimetro restano preventivate separatamente prima dell’esecuzione.',
+    orderBullets: [
+      'Integrazione e impaginazione dei contenuti validati.',
+      'Consegna tipica in 3–5 giorni lavorativi in base ai contenuti.',
+      'Supporto umano via email o WhatsApp entro un giorno lavorativo.',
+    ],
+    bookingTitle: 'La tua diagnosi custom è prenotata',
+    bookingLead: 'Lo slot è bloccato. Riceverai anche i dettagli via email, incluso il link Teams condiviso.',
+    bookingBullets: [
+      'Sessione breve e pagata, non una call vaga.',
+      'La diagnosi qualifica il livello giusto: 2’000, 2’200, 4’500, 8’000+ o architettura più profonda.',
+      'Se la mossa giusta resta 999 o 1’500, te lo diremo chiaramente.',
+    ],
+    customTitle: 'Serve andare oltre?',
+    customDesc: 'Se la diagnosi apre una vera superficie di implementazione, il passo successivo viene scoped bene dopo questa prima lettura.',
+    customBtn: 'Vedi custom systems',
+    whatsappLabel: 'Domande? Scrivici su WhatsApp',
+    whatsappBtn: 'Scrivi su WhatsApp',
+    currencyLocale: 'it-CH',
+  },
+} as const;
+
+const copy = COPY[locale as keyof typeof COPY] ?? COPY.fr;
+const waMessageBase = encodeURIComponent("Bonjour, j'ai une question concernant IOPartner.");
+const waUrl = `https://wa.me/41767982793?text=${waMessageBase}`;
+---
+
+<Layout metadata={{ title: copy.title }} brandKey="iopartner">
+  <section class="py-16 px-4 bg-slate-50">
+    <div class="container mx-auto max-w-3xl">
+      <div class="text-center mb-10">
+        <div class="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
+          <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <h1 class="text-3xl font-bold text-slate-950">{copy.heading}</h1>
+        <p class="mt-3 text-slate-500" id="desc">{hasSession ? copy.descLoading : copy.descGeneric}</p>
+      </div>
+
+      {hasSession ? (
+        <div id="session" class="mb-8 rounded-2xl border border-slate-200 bg-white p-5 text-sm shadow-sm">
+          <div id="loader">{copy.loading}</div>
+          <div id="content" class="hidden space-y-2">
+            <p><strong>{copy.summary.email}:</strong> <span id="email">—</span></p>
+            <p><strong>{copy.summary.amount}:</strong> <span id="amount">—</span></p>
+            <p><strong>{copy.summary.status}:</strong> <span id="status">—</span></p>
+            <p data-order-row><strong>{copy.summary.template}:</strong> <span id="template">—</span></p>
+            <p data-order-row><strong>{copy.summary.plan}:</strong> <span id="plan">—</span></p>
+            <p data-booking-row class="hidden"><strong>{copy.summary.service}:</strong> <span id="service">—</span></p>
+            <p data-booking-row class="hidden"><strong>{copy.summary.slot}:</strong> <span id="slot">—</span></p>
+            <p data-booking-row class="hidden"><strong>{copy.summary.teams}:</strong> <a id="teams" href="#" target="_blank" rel="noreferrer" class="text-blue-600 hover:underline">—</a></p>
+          </div>
+          <div id="error" class="hidden text-red-600">{copy.error}</div>
+        </div>
+      ) : null}
+
+      <div id="order-panel" class="rounded-3xl border border-blue-100 bg-blue-50 p-6 md:p-8 shadow-sm">
+        <h2 class="text-2xl font-bold text-blue-950">{copy.orderTitle}</h2>
+        <p class="mt-3 text-blue-900/80">{copy.orderLead}</p>
+        <ul class="mt-5 space-y-2 text-sm text-blue-900/75">
+          {copy.orderBullets.map((item) => <li>• {item}</li>)}
+        </ul>
+      </div>
+
+      <div id="booking-panel" class="hidden rounded-3xl border border-emerald-100 bg-emerald-50 p-6 md:p-8 shadow-sm">
+        <h2 class="text-2xl font-bold text-emerald-950">{copy.bookingTitle}</h2>
+        <p class="mt-3 text-emerald-900/80">{copy.bookingLead}</p>
+        <ul class="mt-5 space-y-2 text-sm text-emerald-900/75">
+          {copy.bookingBullets.map((item) => <li>• {item}</li>)}
+        </ul>
+      </div>
+
+      <div class="mt-8 rounded-3xl border border-slate-200 bg-white p-6 text-center shadow-sm">
+        <p class="text-sm text-slate-500 mb-4">{copy.whatsappLabel}</p>
+        <a
+          href={waUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white font-semibold text-base px-7 py-4 rounded-xl transition-colors"
+        >
+          {copy.whatsappBtn}
+        </a>
+      </div>
+
+      <div class="mt-8 rounded-3xl border border-slate-200 bg-white p-6 text-center shadow-sm">
+        <p class="font-bold text-slate-950 mb-2">{copy.customTitle}</p>
+        <p class="text-slate-500 text-sm mb-4">{copy.customDesc}</p>
+        <a
+          href={`${localePrefix}/custom-systems`}
+          class="inline-block border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700 font-medium text-sm px-6 py-3 rounded-xl transition-colors"
+        >
+          {copy.customBtn} →
+        </a>
+      </div>
+
+      <div class="text-center mt-8">
+        <a href={localePrefix || '/'} class="text-sm text-slate-400 hover:text-slate-600 underline">{copy.home}</a>
+      </div>
+    </div>
+  </section>
+
+  {hasSession ? (
+    <script is:inline define:vars={{ copy }}>
+      const params = new URLSearchParams(location.search);
+      const id = params.get('session_id');
+      if (id) {
+        fetch(`/api/payment/session?session_id=${encodeURIComponent(id)}`)
+          .then((r) => (r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))))
+          .then((data) => {
+            const amountMinor =
+              typeof data.amount_total_order === 'number'
+                ? data.amount_total_order
+                : typeof data.amount_total === 'number'
+                  ? data.amount_total
+                  : null;
+            const currency = (data.currency || 'CHF').toUpperCase();
+            const formatter = new Intl.NumberFormat(copy.currencyLocale, { style: 'currency', currency });
+
+            document.getElementById('email').textContent = data.customer_email || data.metadata?.email || '—';
+            document.getElementById('amount').textContent = typeof amountMinor === 'number' ? formatter.format((amountMinor || 0) / 100) : '—';
+            document.getElementById('status').textContent = data.payment_status || '—';
+            document.getElementById('loader').classList.add('hidden');
+            document.getElementById('content').classList.remove('hidden');
+
+            if (data.mode === 'booking' && data.booking) {
+              document.getElementById('desc').textContent = copy.descBooking;
+              document.getElementById('order-panel').classList.add('hidden');
+              document.getElementById('booking-panel').classList.remove('hidden');
+              document.querySelectorAll('[data-order-row]').forEach((el) => el.classList.add('hidden'));
+              document.querySelectorAll('[data-booking-row]').forEach((el) => el.classList.remove('hidden'));
+              document.getElementById('service').textContent = data.booking.service || '—';
+              document.getElementById('slot').textContent = `${data.booking.start_time || '—'} → ${data.booking.end_time || '—'}`;
+              const teams = document.getElementById('teams');
+              if (teams && data.booking.teams_url) {
+                teams.href = data.booking.teams_url;
+                teams.textContent = data.booking.teams_url;
+              }
+            } else {
+              document.getElementById('desc').textContent = copy.descOrder;
+              document.getElementById('template').textContent = data.template || data.metadata?.template || '—';
+              document.getElementById('plan').textContent = data.plan || data.metadata?.plan || '—';
+            }
+          })
+          .catch(() => {
+            document.getElementById('loader').classList.add('hidden');
+            document.getElementById('error').classList.remove('hidden');
+          });
+      }
+    </script>
+  ) : null}
+</Layout>

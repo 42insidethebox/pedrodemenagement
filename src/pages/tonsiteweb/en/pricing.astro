@@ -1,9 +1,6 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
 import HeroText from '~/components/widgets/HeroText.astro';
-import Prices from '~/components/widgets/Pricing.astro';
-import PricingOptions from '~/components/widgets/PricingOptions.astro';
-import Note from '~/components/widgets/Note.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import Steps from '~/components/widgets/Steps.astro';
 import Features3 from '~/components/widgets/Features3.astro';
@@ -14,6 +11,86 @@ import { headerDataEn, footerDataEn } from '~/navigation';
 const metadata = {
   title: 'Pricing',
 };
+
+const pricingTabs = [
+  { key: 'website', label: 'Website building' },
+  { key: 'consulting', label: 'Consulting' },
+  { key: 'custom', label: 'Custom infra & software' },
+];
+
+const websiteOffers = [
+  {
+    title: 'Essential',
+    subtitle: 'Professional showcase site from CHF 999',
+    price: '999',
+    period: 'one-time payment',
+    info: [
+      "CHF 999 covers a standard 5-section showcase site on TonSiteWeb's shared platform.",
+      'Extra pages, brainstorming, structural changes, or new modules are quoted separately.',
+      'Any out-of-scope request is billed separately before production.',
+    ],
+    items: [
+      'Showcase site with 5 sections + responsive contact page',
+      'Client-provided content; we integrate and format it',
+      'Deployment on TonSiteWeb shared infrastructure',
+    ],
+    cta: { text: 'Choose a style →', href: '/en/choose-template?plan=essential999' },
+  },
+  {
+    title: 'CHF 1,500 pack',
+    subtitle: 'Standard site + WhatsApp + Calendly',
+    price: '1500',
+    period: 'one-time payment',
+    info: [
+      'Still within the standard TonSiteWeb layer, without entering a private build.',
+      'WhatsApp, Calendly, and a light handoff are included in the validated scope.',
+      'Extra pages, redesign, workshops, or out-of-scope modules are quoted separately.',
+    ],
+    items: [
+      'Includes the CHF 999 base layer',
+      'Clickable WhatsApp + Calendly booking',
+      'Light explanation and handoff',
+    ],
+    cta: { text: 'Choose the CHF 1,500 pack →', href: '/en/choose-template?plan=essential1500' },
+  },
+];
+
+const consultingOffers = [
+  {
+    title: '15-minute sprint',
+    subtitle: 'Paid in advance',
+    price: '60',
+    period: '15 min paid in advance',
+    info: [
+      'Use this for a focused technical question or a quick unblock.',
+      'Booked and paid before the session starts.',
+      'Best when you need clarity before buying more build time.',
+    ],
+    items: [
+      'Quick architecture or direction call',
+      'Technical unblock, integration question, or scope check',
+      'Fast answer without committing to a full project first',
+    ],
+    cta: { text: 'Book the 15-minute consult →', href: '/en/contact#form' },
+  },
+  {
+    title: 'Technical consulting',
+    subtitle: 'Senior engineering support',
+    price: '140',
+    period: 'CHF / hour',
+    info: [
+      'For reviews, debugging, architecture, delivery planning, or implementation support.',
+      'Hourly work starts after the scope is confirmed.',
+      'Best when the topic is too large for a 15-minute sprint.',
+    ],
+    items: [
+      'Code review, debugging, architecture review',
+      'Delivery guidance and implementation direction',
+      'Hourly support for open-ended technical work',
+    ],
+    cta: { text: 'Request hourly consulting →', href: '/en/contact#form' },
+  },
+];
 ---
 
 <Layout metadata={metadata} header={headerDataEn} footer={footerDataEn}>
@@ -27,102 +104,482 @@ const metadata = {
   <div class="max-w-3xl mx-auto px-4 mb-2">
     <div class="rounded-2xl border-2 border-blue-200 bg-blue-50 dark:bg-blue-900/20 px-6 py-4 text-center">
       <p class="text-lg font-bold text-blue-900 dark:text-blue-100">Essential pack — from CHF 999</p>
-      <p class="mt-1 text-sm text-blue-700 dark:text-blue-200">Fixed price for a professional showcase site. Typical delivery in 3–5 business days depending on your content.</p>
-      <a href="/onboarding?plan=essential999" class="mt-3 inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm px-6 py-2 rounded-xl transition-colors">Order now →</a>
+      <p class="mt-1 text-sm text-blue-700 dark:text-blue-200">
+        Fixed price for a professional showcase site. Typical delivery in 3–5 business days depending on your content.
+      </p>
+      <a
+        href="/onboarding?plan=essential999"
+        class="mt-3 inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm px-6 py-2 rounded-xl transition-colors"
+        >Order now →</a
+      >
     </div>
   </div>
 
-  <Prices
-    title="Our turnkey packs"
-    subtitle="Choose the offer that fits your needs. No hidden fees."
-    prices={[
-      {
-        title: 'Essential',
-        subtitle: 'Professional showcase site from CHF 999',
-        price: 999,
-        period: 'one-time payment',
-        info: [
-          "CHF 999 covers a standard 5-section showcase site on TonSiteWeb's shared platform.",
-          'Extra pages, brainstorming, structural changes, or new modules are quoted separately.',
-          'Any out-of-scope request is billed separately before production.',
-        ],
-        items: [
-          {
-            description: 'Showcase site with 5 sections + responsive contact page',
-          },
-          {
-            description: 'Client-provided content; we integrate and format it',
-          },
-          {
-            description: 'Deployment on TonSiteWeb shared infrastructure',
-          },
-        ],
-        callToAction: { text: 'Choose a style →', href: '/en/choose-template?plan=essential999' },
-      },
-      {
-        title: 'CHF 1,500 pack',
-        subtitle: 'Standard site + WhatsApp + Calendly',
-        price: 1500,
-        period: 'one-time payment',
-        info: [
-          'Still within the standard TonSiteWeb layer, without entering a private build.',
-          'WhatsApp, Calendly, and a light handoff are included in the validated scope.',
-          'Extra pages, redesign, workshops, or out-of-scope modules are quoted separately.',
-        ],
-        items: [
-          { description: 'Includes the CHF 999 base layer' },
-          { description: 'Clickable WhatsApp + Calendly booking' },
-          { description: 'Light explanation and handoff' },
-        ],
-        callToAction: { text: 'Choose the CHF 1,500 pack →', href: '/en/choose-template?plan=essential1500' },
-      },
-      {
-        title: 'Custom systems',
-        subtitle: 'Private codebase, backend, or heavier architecture',
-        price: 2000,
-        period: 'from — scoped before build',
-        items: [
-          { description: 'CHF 2,000: private codebase' },
-          { description: 'CHF 2,200: private codebase + handoff' },
-          { description: 'CHF 4,500: light backend' },
-          { description: 'CHF 8,000+: headless shop or heavier system' },
-        ],
-        callToAction: '<a class="btn btn-primary" href="#modal-custom-en">See progression</a>',
-      },
-    ]}
-  />
-  <div class="mt-6 grid gap-4 max-w-7xl mx-auto px-4">
-    <div class="flex flex-wrap gap-4">
-      <PricingOptions
-        id="modal-essential-en"
-        triggerText=""
-        title="Standard packs"
-        subtitle="Choose the right level without buying custom too early"
-        ctaText="Choose"
-        tiers={[
-          { label: 'CHF 999', price: 'from 999', features: ['Static site', 'Simple form (email)'], href: '/en/choose-template?plan=essential999', info: ['Hosting & SSL included (3 months)', 'Deployed on TonSiteWeb shared infrastructure', 'Extra pages, workshops, or out-of-scope changes quoted separately'] },
-          { label: 'CHF 1,500', price: '1,500', features: ['Includes the CHF 999 base', 'WhatsApp + Calendly', 'Light explanation / handoff'], href: '/en/choose-template?plan=essential1500', primary: true, info: ['Still on TonSiteWeb shared infrastructure', 'WhatsApp and Calendly wired inside the validated scope', 'Extra pages, workshops, or out-of-scope changes quoted separately'] },
-        ]}
-        footnote="The validated scope is what gets delivered; extra pages, workshops/brainstorming, redesigns, and out-of-scope changes are billed separately."
-      />
-      <PricingOptions
-        id="modal-custom-en"
-        triggerText=""
-        title="Custom progression"
-        subtitle="When the right move is no longer a simple template"
-        ctaText="Open"
-        tiers={[
-          { label: 'CHF 2,000', price: 'private codebase', features: ['Separate codebase', 'Leaves shared infrastructure'], href: '/en/custom-systems?track=private-2000#diagnostic' },
-          { label: 'CHF 2,200', price: 'private + handoff', features: ['Separate codebase', 'Structured handoff'], href: '/en/custom-systems?track=private-2200#diagnostic', primary: true },
-          { label: 'CHF 4,500', price: 'light backend', features: ['Light business logic', 'Intake, sync, or simple portal'], href: '/en/custom-systems?track=backend-4500#diagnostic' },
-          { label: 'CHF 8,000+', price: 'heavier system', features: ['Headless shop', 'Admin, portal, or deeper architecture'], href: '/en/custom-systems?track=shop-8000#diagnostic' },
-        ]}
-        footnote="Architecture, portal, admin, or internal platform work gets scoped after the paid 15 min / CHF 80 diagnostic."
-      />
-    </div>
-  </div>
+  <section class="relative not-prose scroll-mt-[72px]">
+    <div class="relative mx-auto max-w-7xl px-4 md:px-6 py-12 md:py-16 lg:py-20 text-default">
+      <div class="mb-8 md:mx-auto md:mb-12 text-center max-w-3xl">
+        <h2 class="font-bold leading-tighter tracking-tighter font-heading text-heading text-3xl md:text-4xl">
+          Our turnkey packs
+        </h2>
+        <p class="mt-4 text-muted text-xl">Choose the offer that fits your needs. No hidden fees.</p>
+      </div>
 
-  
+      <div class="tsw-pricing-tabs">
+        <input
+          class="tsw-pricing-switch"
+          type="radio"
+          name="tsw-pricing-tabs-en"
+          id="tsw-pricing-tab-website"
+          checked
+        />
+        <input class="tsw-pricing-switch" type="radio" name="tsw-pricing-tabs-en" id="tsw-pricing-tab-consulting" />
+        <input class="tsw-pricing-switch" type="radio" name="tsw-pricing-tabs-en" id="tsw-pricing-tab-custom" />
+
+        <div class="tsw-pricing-tablist" aria-label="TonSiteWeb pricing tracks">
+          {
+            pricingTabs.map((tab) => (
+              <label class="tsw-pricing-tab" for={`tsw-pricing-tab-${tab.key}`}>
+                {tab.label}
+              </label>
+            ))
+          }
+        </div>
+
+        <div class="mt-8 tsw-pricing-panels">
+          <section class="tsw-pricing-panel tsw-pricing-panel-website">
+            <div class="tsw-pricing-grid">
+              {
+                websiteOffers.map((offer) => (
+                  <article class="tsw-price-card">
+                    <div class="px-2 py-0">
+                      <div class="mb-2 flex items-center justify-center gap-2">
+                        <h3 class="text-center text-xl font-semibold uppercase leading-6 tracking-wider">
+                          {offer.title}
+                        </h3>
+                        <div class="relative inline-block group">
+                          <button
+                            type="button"
+                            class="inline-flex h-5 w-5 items-center justify-center rounded-full border border-gray-300 text-[11px] leading-none text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary dark:text-gray-300"
+                            aria-label="Info"
+                          >
+                            i
+                          </button>
+                          <div class="pointer-events-none absolute left-1/2 top-full z-30 mt-2 hidden w-72 -translate-x-1/2 rounded-md border border-gray-200 bg-white p-3 text-left text-sm shadow-xl group-hover:block group-focus-within:block dark:border-gray-700 dark:bg-slate-900">
+                            <ul class="space-y-1">
+                              {offer.info.map((line) => (
+                                <li>• {line}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                      <p class="font-light sm:text-lg text-gray-600 dark:text-slate-400">{offer.subtitle}</p>
+                      <div class="my-8">
+                        <div class="flex items-center justify-center text-center mb-1">
+                          <span class="text-2xl mr-2">CHF</span>
+                          <span class="text-6xl font-extrabold">{offer.price}</span>
+                        </div>
+                        <span class="text-base leading-6 lowercase text-gray-600 dark:text-slate-400">
+                          {offer.period}
+                        </span>
+                      </div>
+                      <ul class="my-8 md:my-10 space-y-3 text-center">
+                        {offer.items.map((item) => (
+                          <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                            <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                              <span class="text-white text-sm font-bold">✓</span>
+                            </div>
+                            <span class="text-base">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div class="flex justify-center">
+                      <a class="btn btn-primary" href={offer.cta.href}>
+                        {offer.cta.text}
+                      </a>
+                    </div>
+                  </article>
+                ))
+              }
+
+              <article class="tsw-price-card tsw-price-card-muted">
+                <div class="px-2 py-0">
+                  <h3 class="text-center text-xl font-semibold uppercase leading-6 tracking-wider">
+                    Need more than a standard site?
+                  </h3>
+                  <p class="mt-3 font-light sm:text-lg text-gray-600 dark:text-slate-400">
+                    Keep the structure, but move into consulting or custom as soon as the work becomes real engineering.
+                  </p>
+                  <ul class="my-8 md:my-10 space-y-3 text-center">
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">→</span>
+                      </div>
+                      <span class="text-base">Use consulting for fast decisions or technical unblock</span>
+                    </li>
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">→</span>
+                      </div>
+                      <span class="text-base">Use custom for private codebases, backend, infra, or integrations</span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="flex justify-center gap-3 flex-wrap">
+                  <label class="btn cursor-pointer" for="tsw-pricing-tab-consulting">See consulting</label>
+                  <label class="btn btn-primary cursor-pointer" for="tsw-pricing-tab-custom">See custom</label>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="tsw-pricing-panel tsw-pricing-panel-consulting">
+            <div class="tsw-pricing-grid">
+              {
+                consultingOffers.map((offer) => (
+                  <article class="tsw-price-card">
+                    <div class="px-2 py-0">
+                      <div class="mb-2 flex items-center justify-center gap-2">
+                        <h3 class="text-center text-xl font-semibold uppercase leading-6 tracking-wider">
+                          {offer.title}
+                        </h3>
+                        <div class="relative inline-block group">
+                          <button
+                            type="button"
+                            class="inline-flex h-5 w-5 items-center justify-center rounded-full border border-gray-300 text-[11px] leading-none text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary dark:text-gray-300"
+                            aria-label="Info"
+                          >
+                            i
+                          </button>
+                          <div class="pointer-events-none absolute left-1/2 top-full z-30 mt-2 hidden w-72 -translate-x-1/2 rounded-md border border-gray-200 bg-white p-3 text-left text-sm shadow-xl group-hover:block group-focus-within:block dark:border-gray-700 dark:bg-slate-900">
+                            <ul class="space-y-1">
+                              {offer.info.map((line) => (
+                                <li>• {line}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                      <p class="font-light sm:text-lg text-gray-600 dark:text-slate-400">{offer.subtitle}</p>
+                      <div class="my-8">
+                        <div class="flex items-center justify-center text-center mb-1">
+                          <span class="text-2xl mr-2">CHF</span>
+                          <span class="text-6xl font-extrabold">{offer.price}</span>
+                        </div>
+                        <span class="text-base leading-6 text-gray-600 dark:text-slate-400">{offer.period}</span>
+                      </div>
+                      <ul class="my-8 md:my-10 space-y-3 text-center">
+                        {offer.items.map((item) => (
+                          <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                            <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                              <span class="text-white text-sm font-bold">✓</span>
+                            </div>
+                            <span class="text-base">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div class="flex justify-center">
+                      <a class="btn btn-primary" href={offer.cta.href}>
+                        {offer.cta.text}
+                      </a>
+                    </div>
+                  </article>
+                ))
+              }
+
+              <article class="tsw-price-card tsw-price-card-muted">
+                <div class="px-2 py-0">
+                  <h3 class="text-center text-xl font-semibold uppercase leading-6 tracking-wider">
+                    Typical consulting uses
+                  </h3>
+                  <p class="mt-3 font-light sm:text-lg text-gray-600 dark:text-slate-400">
+                    Buy clarity first when you do not yet need a full build scope.
+                  </p>
+                  <ul class="my-8 md:my-10 space-y-3 text-center">
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">•</span>
+                      </div>
+                      <span class="text-base">Choosing between template, private codebase, or real backend</span>
+                    </li>
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">•</span>
+                      </div>
+                      <span class="text-base">Reviewing architecture, integration plans, or delivery direction</span>
+                    </li>
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">•</span>
+                      </div>
+                      <span class="text-base">Debugging a blocker before a wider project starts</span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="flex justify-center">
+                  <label class="btn cursor-pointer" for="tsw-pricing-tab-custom">Consulting can lead into custom</label>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="tsw-pricing-panel tsw-pricing-panel-custom">
+            <div class="tsw-pricing-grid">
+              <article class="tsw-price-card">
+                <div class="px-2 py-0">
+                  <h3 class="text-center text-xl font-semibold uppercase leading-6 tracking-wider">Custom systems</h3>
+                  <p class="font-light sm:text-lg text-gray-600 dark:text-slate-400">
+                    Private codebase, backend, or heavier architecture
+                  </p>
+                  <div class="my-8">
+                    <div class="flex items-center justify-center text-center mb-1">
+                      <span class="text-sm uppercase tracking-wide mr-2">from</span>
+                      <span class="text-2xl mr-2">CHF</span>
+                      <span class="text-6xl font-extrabold">2000</span>
+                    </div>
+                    <span class="text-base leading-6 text-gray-600 dark:text-slate-400">scoped before build</span>
+                  </div>
+                  <ul class="my-8 md:my-10 space-y-3 text-center">
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">✓</span>
+                      </div>
+                      <span class="text-base">CHF 2,000: private codebase</span>
+                    </li>
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">✓</span>
+                      </div>
+                      <span class="text-base">CHF 2,200: private codebase + handoff</span>
+                    </li>
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">✓</span>
+                      </div>
+                      <span class="text-base">CHF 4,500: light backend</span>
+                    </li>
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">✓</span>
+                      </div>
+                      <span class="text-base">CHF 8,000+: headless shop or heavier system</span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="flex justify-center">
+                  <a class="btn btn-primary" href="/en/contact#form">See progression</a>
+                </div>
+              </article>
+
+              <article class="tsw-price-card tsw-price-card-muted">
+                <div class="px-2 py-0">
+                  <h3 class="text-center text-xl font-semibold uppercase leading-6 tracking-wider">
+                    Typical engineering scope
+                  </h3>
+                  <p class="mt-3 font-light sm:text-lg text-gray-600 dark:text-slate-400">
+                    Custom infra, integration, and traditional software development.
+                  </p>
+                  <ul class="my-8 md:my-10 space-y-3 text-center">
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">•</span>
+                      </div>
+                      <span class="text-base">Angular, React, JavaScript, TypeScript, full-stack delivery</span>
+                    </li>
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">•</span>
+                      </div>
+                      <span class="text-base">Bash scripting, Linux infrastructure, automation, integration work</span>
+                    </li>
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">•</span>
+                      </div>
+                      <span class="text-base"
+                        >Python, C, C++, data structures, algorithms, rigorous engineering problems</span
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </article>
+
+              <article class="tsw-price-card tsw-price-card-muted">
+                <div class="px-2 py-0">
+                  <h3 class="text-center text-xl font-semibold uppercase leading-6 tracking-wider">Start cleanly</h3>
+                  <p class="mt-3 font-light sm:text-lg text-gray-600 dark:text-slate-400">
+                    Use the paid consult first when the real size of the work still needs to be framed.
+                  </p>
+                  <ul class="my-8 md:my-10 space-y-3 text-center">
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">→</span>
+                      </div>
+                      <span class="text-base">CHF 60 / 15 min for a focused paid entry point</span>
+                    </li>
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">→</span>
+                      </div>
+                      <span class="text-base">CHF 140 / hour when deeper support or delivery work is needed</span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="flex justify-center">
+                  <label class="btn cursor-pointer" for="tsw-pricing-tab-consulting">See consulting first</label>
+                </div>
+              </article>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .tsw-pricing-tabs {
+      display: grid;
+      gap: 1.5rem;
+      position: relative;
+    }
+
+    .tsw-pricing-switch {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .tsw-pricing-tablist {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.7rem;
+    }
+
+    .tsw-pricing-tab {
+      appearance: none;
+      border: 1px solid #cbd5e1;
+      border-radius: 999px;
+      background: #fff;
+      color: #334155;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      padding: 0.8rem 1.15rem;
+      transition:
+        background-color 180ms ease,
+        border-color 180ms ease,
+        color 180ms ease,
+        transform 180ms ease;
+    }
+
+    .tsw-pricing-tab:hover {
+      border-color: #93c5fd;
+      background: #eff6ff;
+    }
+
+    .tsw-pricing-tab:focus-visible {
+      outline: 2px solid #2563eb;
+      outline-offset: 2px;
+    }
+
+    .tsw-pricing-panel {
+      display: none;
+    }
+
+    .tsw-pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+      gap: 1.25rem;
+      align-items: stretch;
+    }
+
+    .tsw-price-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 0.75rem;
+      background: #fff;
+      box-shadow: 0 10px 30px -18px rgba(15, 23, 42, 0.28);
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: center;
+      transition:
+        transform 200ms ease,
+        box-shadow 200ms ease;
+    }
+
+    .tsw-price-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 38px -22px rgba(15, 23, 42, 0.3);
+    }
+
+    .tsw-price-card-muted {
+      background: #f8fafc;
+    }
+
+    #tsw-pricing-tab-website:checked ~ .tsw-pricing-tablist label[for='tsw-pricing-tab-website'],
+    #tsw-pricing-tab-consulting:checked ~ .tsw-pricing-tablist label[for='tsw-pricing-tab-consulting'],
+    #tsw-pricing-tab-custom:checked ~ .tsw-pricing-tablist label[for='tsw-pricing-tab-custom'] {
+      border-color: #1d4ed8;
+      background: linear-gradient(135deg, #1d4ed8, #1e293b);
+      color: #eff6ff;
+      transform: translateY(-1px);
+    }
+
+    #tsw-pricing-tab-website:checked ~ .tsw-pricing-panels .tsw-pricing-panel-website,
+    #tsw-pricing-tab-consulting:checked ~ .tsw-pricing-panels .tsw-pricing-panel-consulting,
+    #tsw-pricing-tab-custom:checked ~ .tsw-pricing-panels .tsw-pricing-panel-custom {
+      display: grid;
+    }
+
+    :global(.dark) .tsw-pricing-tab {
+      border-color: #334155;
+      background: #0f172a;
+      color: #cbd5e1;
+    }
+
+    :global(.dark) .tsw-pricing-tab:hover {
+      border-color: #60a5fa;
+      background: #172554;
+    }
+
+    #tsw-pricing-tab-website:checked ~ .tsw-pricing-tablist label[for='tsw-pricing-tab-website'],
+    #tsw-pricing-tab-consulting:checked ~ .tsw-pricing-tablist label[for='tsw-pricing-tab-consulting'],
+    #tsw-pricing-tab-custom:checked ~ .tsw-pricing-tablist label[for='tsw-pricing-tab-custom'] {
+      border-color: #60a5fa;
+      background: linear-gradient(135deg, #2563eb, #0f172a);
+      color: #eff6ff;
+    }
+
+    :global(.dark) .tsw-price-card {
+      border-color: #374151;
+      background: #0f172a;
+      box-shadow: none;
+    }
+
+    :global(.dark) .tsw-price-card-muted {
+      background: #111827;
+    }
+
+    @media (min-width: 640px) {
+      .tsw-pricing-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 1280px) {
+      .tsw-pricing-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+  </style>
 
   <Features3
     title="What our offers can include"
@@ -185,13 +642,16 @@ const metadata = {
       },
       {
         title: '4. Approval & go-live',
-        description: 'Approve the final version, then we schedule go-live and quote any out-of-scope extension separately.',
+        description:
+          'Approve the final version, then we schedule go-live and quote any out-of-scope extension separately.',
         icon: 'tabler:rocket',
       },
     ]}
   >
     <Fragment slot="image">
-      <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-white shadow-xl">
+      <div
+        class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-white shadow-xl"
+      >
         <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Process</p>
         <p class="mt-6 max-w-xs text-base text-blue-100/90">
           Simple journey: brief, content integration and approvals by email.
@@ -210,11 +670,13 @@ const metadata = {
       },
       {
         title: 'What is the average timeline for the Essential pack?',
-        description: 'Around five business days after we receive your content. We share a detailed schedule during the brief.',
+        description:
+          'Around five business days after we receive your content. We share a detailed schedule during the brief.',
       },
       {
         title: 'What if I need extra pages or brainstorming?',
-        description: 'Extra pages, workshops or brainstorming, structural changes, and out-of-scope requests are quoted separately before production starts.',
+        description:
+          'Extra pages, workshops or brainstorming, structural changes, and out-of-scope requests are quoted separately before production starts.',
       },
       {
         title: 'Is the care plan mandatory?',
@@ -241,12 +703,8 @@ const metadata = {
       },
     ]}
   >
-    <Fragment slot="title">
-      Need a tailored quote?
-    </Fragment>
+    <Fragment slot="title"> Need a tailored quote? </Fragment>
 
-    <Fragment slot="subtitle">
-      We adapt each offer to the specifics of your business in the Léman Arc.
-    </Fragment>
+    <Fragment slot="subtitle"> We adapt each offer to the specifics of your business in the Léman Arc. </Fragment>
   </CallToAction>
 </Layout>

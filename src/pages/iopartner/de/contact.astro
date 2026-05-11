@@ -1,0 +1,99 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import ContactUs from '~/components/widgets/Contact.astro';
+import Features2 from '~/components/widgets/Features2.astro';
+
+import { iopartnerHeaderDataDe, iopartnerFooterDataDe } from '~/navigation';
+
+const metadata = {
+  title: 'Kontakt IOPartner',
+  description:
+    'Sprechen Sie mit IOPartner über Websites, KI-Automatisierung, Open-Source-Infrastruktur oder Managed Support.',
+  openGraph: {
+    type: 'website',
+  },
+  twitter: {
+    cardType: 'summary',
+  },
+};
+---
+
+<Layout metadata={metadata} header={iopartnerHeaderDataDe} footer={iopartnerFooterDataDe}>
+  <HeroText tagline="Kontakt" title="Sprechen wir über den richtigen IOPartner-Weg" subtitle="Wir trennen Standard-Launches, private Builds und schwerere Systemarbeit ohne Zeitverlust." />
+
+  <ContactUs
+    id="form"
+    title="Demo oder Angebot anfragen"
+    subtitle="Füllen Sie das Formular aus und wir ordnen Sie der richtigen Ebene zu: CHF 999, CHF 1’500 oder bezahlter Custom-Diagnosepfad."
+    inputs={[
+      {
+        type: 'text',
+        name: 'name',
+        label: 'Vor- und Nachname',
+      },
+      {
+        type: 'email',
+        name: 'email',
+        label: 'Geschäftliche E-Mail',
+      },
+      {
+        type: 'text',
+        name: 'company',
+        label: 'Unternehmen',
+      },
+      {
+        type: 'select',
+        name: 'service',
+        label: 'Gewünschtes Paket',
+        options: [
+          { label: 'Standardseite — CHF 999', value: 'essential999' },
+          { label: 'Standardseite + WhatsApp + Calendly — CHF 1’500', value: 'essential1500' },
+          { label: 'Private Codebase / leichtes Backend — CHF 2’000 bis 8’000+', value: 'custom' },
+          { label: 'Bezahlte Diagnose — 15 Min. / CHF 80', value: 'diagnostic80' },
+        ],
+      },
+    ]}
+    textarea={{
+      label: 'Ihr Projekt',
+      placeholder: 'Beschreiben Sie Ihr Unternehmen, Ziele und Zeitplan.',
+    }}
+    disclaimer={{
+      label:
+        'Mit dem Absenden stimmen Sie zu, dass IOPartner.ch Ihre Daten verarbeitet, um Ihre Anfrage zu beantworten – gemäss unserer Datenschutzerklärung.',
+    }}
+    description="Unsere Büros sind Montag bis Freitag von 9–17 Uhr geöffnet. Wir sprechen Französisch, Englisch und Deutsch."
+  />
+
+  <Features2
+    title="Direkter Kontakt"
+    subtitle="Wählen Sie den Kanal, der zu Ihnen passt."
+    items={[
+      {
+        title: 'Telefon',
+        description: '+41 76 798 27 93',
+        icon: 'tabler:phone',
+      },
+      {
+        title: 'E-Mail',
+    description: 'support@iopartner.ch',
+        icon: 'tabler:mail',
+      },
+      {
+        title: 'Adresse',
+        description: 'Avenue de la Gare 29, 1003 Lausanne',
+        icon: 'tabler:map-pin',
+      },
+      {
+        title: 'Erreichbarkeit',
+        description: 'Montag bis Freitag, 09:00 – 17:00',
+        icon: 'tabler:calendar-time',
+      },
+      {
+        title: 'Kundensupport',
+    description: 'support@iopartner.ch — Antwort innerhalb eines Arbeitstages',
+        icon: 'tabler:help',
+      },
+    ]}
+  />
+</Layout>

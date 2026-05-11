@@ -1,0 +1,207 @@
+---
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import Content from '~/components/widgets/Content.astro';
+import Features2 from '~/components/widgets/Features2.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import Layout from '~/layouts/PageLayout.astro';
+
+import { iopartnerHeaderDataEn, iopartnerFooterDataEn } from '~/navigation';
+
+const metadata = {
+  title: 'IOPartner Services',
+  description:
+    'Websites, AI automation, open-source infrastructure, and managed support for modern businesses.',
+  openGraph: {
+    type: 'website',
+  },
+  twitter: {
+    cardType: 'summary',
+  },
+};
+---
+
+<Layout metadata={metadata} header={iopartnerHeaderDataEn} footer={iopartnerFooterDataEn}>
+  <Hero
+    id="services"
+    tagline="Services"
+    title="Websites, automation, infrastructure, support"
+    subtitle="IOPartner organises its work around four clear service layers so modern businesses can get the right technical help without unnecessary complexity."
+    actions={[{ variant: 'primary', text: 'See pricing', href: '/en/pricing' }]}
+  >
+    <Fragment slot="image">
+      <div class="relative aspect-[5/3] overflow-hidden rounded-2xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-left text-white shadow-2xl">
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">IOPartner capabilities</p>
+        <h4 class="mt-4 text-4xl font-semibold">Website delivery · AI workflows · Open ops</h4>
+        <p class="mt-6 max-w-xl text-lg text-blue-100/90">
+          Same layout, broader positioning: this tenant now presents IOPartner as a technical operations partner, not only a site builder.
+        </p>
+      </div>
+    </Fragment>
+  </Hero>
+
+  <Features2
+    id="websites"
+    title="Websites"
+    subtitle="The visible layer of your business, delivered cleanly and connected to the rest."
+    columns={3}
+    items={[
+      {
+        title: 'Launches',
+        description: 'Marketing sites, showcase pages, lean redesigns, and launch-ready web presence with a clear scope.',
+        icon: 'tabler:layout',
+      },
+      {
+        title: 'Enhancements',
+        description: 'New pages, conversion improvements, forms, and targeted front-end integrations.',
+        icon: 'tabler:browser-plus',
+      },
+      {
+        title: 'Migrations',
+        description: 'Moving toward a faster stack, content cleanup, and gradual technical consolidation.',
+        icon: 'tabler:arrows-shuffle',
+      },
+    ]}
+  />
+
+  <Content
+    id="ai-automation"
+    isReversed
+    title="AI & Automation"
+    subtitle="Useful workflows with human review where it matters."
+    items={[
+      {
+        title: 'Qualification & routing',
+        description: 'Incoming requests sorted, enriched, and sent to the right tool or operator.',
+        icon: 'tabler:route',
+      },
+      {
+        title: 'Focused assistants',
+        description: 'Internal copilots, knowledge helpers, structured drafts, and support assistance.',
+        icon: 'tabler:message-chatbot',
+      },
+      {
+        title: 'API or no-code links',
+        description: 'Connections across forms, calendars, CRM, email, dashboards, and existing systems.',
+        icon: 'tabler:api',
+      },
+      {
+        title: 'Operational guardrails',
+        description: 'Logging, limits, approvals, and checks before any sensitive automation goes live.',
+        icon: 'tabler:shield-lock',
+      },
+    ]}
+  >
+    <Fragment slot="content">
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Automation that survives production</h3>
+      We avoid flashy demos with no operational life. Every workflow needs to stay readable, testable, and maintainable.
+    </Fragment>
+
+    <Fragment slot="image">
+      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl">
+        <h4 class="text-3xl font-semibold">From intake to action</h4>
+        <p class="mt-6 max-w-sm text-blue-100/90">
+          Form, triage, assisted response, assignment, follow-up: the flow stays useful because the control points are explicit.
+        </p>
+      </div>
+    </Fragment>
+  </Content>
+
+  <Content
+    id="open-infrastructure"
+    isAfterContent
+    title="Open Infrastructure"
+    subtitle="Open building blocks when they make the stack more durable."
+    items={[
+      {
+        title: 'Deployment',
+        description: 'Git, hosting, DNS, domains, certificates, and release routines adapted to the right level of complexity.',
+        icon: 'tabler:cloud-upload',
+      },
+      {
+        title: 'Observability',
+        description: 'Monitoring, alerts, and visibility on the points that should not fail silently.',
+        icon: 'tabler:activity-heartbeat',
+      },
+      {
+        title: 'Portability',
+        description: 'Open tools or proven standards that reduce unnecessary lock-in over time.',
+        icon: 'tabler:brand-open-source',
+      },
+      {
+        title: 'Documentation',
+        description: 'Essential access, dependencies, and procedures recorded for continuity.',
+        icon: 'tabler:file-description',
+      },
+    ]}
+  >
+    <Fragment slot="content">
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Infrastructure you can actually operate</h3>
+      No complexity for its own sake. We aim for the right level of robustness now, with a clear path if the business grows.
+    </Fragment>
+
+    <Fragment slot="image">
+      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-left text-white shadow-xl">
+        <h4 class="text-3xl font-semibold">Open by default, pragmatic by necessity</h4>
+        <p class="mt-6 max-w-sm text-blue-100/90">
+          The architecture stays legible so deployments, incidents, and handoffs remain manageable over time.
+        </p>
+      </div>
+    </Fragment>
+  </Content>
+
+  <Features2
+    id="managed-support"
+    title="Managed Support"
+    subtitle="The day-to-day follow-through that prevents every issue from becoming a fresh project."
+    columns={3}
+    items={[
+      {
+        title: 'Responsive support',
+        description: 'Replies within one business day, active issue follow-up, and prioritisation based on business impact.',
+        icon: 'tabler:headset',
+      },
+      {
+        title: 'Maintenance',
+        description: 'Updates, backups, fixes, and recurring technical checks.',
+        icon: 'tabler:tools',
+      },
+      {
+        title: 'Monitoring',
+        description: 'Availability checks, weak-signal detection, and alerts on sensitive services.',
+        icon: 'tabler:antenna',
+      },
+      {
+        title: 'Coordination',
+        description: 'A partner who keeps context when product, operations, and third parties need alignment.',
+        icon: 'tabler:git-merge',
+      },
+      {
+        title: 'Short-cycle improvements',
+        description: 'Small enhancements and iterative fixes without reopening a full project every time.',
+        icon: 'tabler:arrows-left-right',
+      },
+      {
+        title: 'Clear scope control',
+        description: 'When something turns into a larger system, we re-scope it cleanly instead of stretching it silently.',
+        icon: 'tabler:stack-2',
+      },
+    ]}
+  />
+
+  <CallToAction
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Talk to IOPartner',
+        href: '/en/contact#form',
+        icon: 'tabler:device-desktop-analytics',
+      },
+    ]}
+  >
+    <Fragment slot="title">Choose the right intervention layer</Fragment>
+
+    <Fragment slot="subtitle">
+      We help you separate what belongs to a website launch, an automation project, a more structured infrastructure layer, or ongoing managed support.
+    </Fragment>
+  </CallToAction>
+</Layout>
