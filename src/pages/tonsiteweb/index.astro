@@ -13,10 +13,9 @@ import Stats from '~/components/widgets/Stats.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 
 const metadata = {
-  title: 'TonSiteWeb.ch — Sites vitrines suisses pour l’Arc lémanique',
+  title: 'TonSiteWeb.ch — Consulting technique, projets web et outils numériques sur mesure',
   ignoreTitleTemplate: true,
 };
- 
 ---
 
 <Layout metadata={metadata}>
@@ -27,75 +26,71 @@ const metadata = {
     actions={[
       {
         variant: 'primary',
-        text: 'Démarrer — 999 CHF',
-        href: '/onboarding?plan=essential999',
+        text: 'Parler de votre besoin',
+        href: '/contact#form',
         icon: 'tabler:arrow-right',
       },
       { text: 'Voir les tarifs', href: '/pricing' },
     ]}
     image={{ src: '~/assets/images/light_minimalist.png', alt: 'Interface TonSiteWeb.ch' }}
   >
-    <Fragment slot="title">
-      Votre site clé-en-main, pensé pour le marché lémanique
-    </Fragment>
+    <Fragment slot="title">Consulting technique, projets web et outils numériques sur mesure</Fragment>
 
     <Fragment slot="subtitle">
-      Design suisse, performance maîtrisée. TonSiteWeb.ch combine automatisation et expertise locale pour livrer des sites vitrines
-      fiables aux PME et indépendants de l'Arc lémanique, sans promesse irréaliste ni surcharge technique.
+      TonSiteWeb.ch aide les PME et indépendants à cadrer un besoin technique, débloquer un sujet précis ou livrer un
+      projet plus proprement. Et quand un site standard suffit, l’offre de lancement dès 999 CHF reste disponible.
     </Fragment>
   </Hero>
 
   <!-- Note Widget ******************* -->
 
   <Note
-    title="Engagement"
-    description="Service local, support humain et orchestrations automatisées pour un résultat impeccable sans effort."
+    title="Le bon niveau d’intervention"
+    description="Le site standard reste une option simple. Mais la valeur ne s’arrête pas là: nous intervenons aussi en consulting technique, intégration, automatisation et développement sur des sujets plus larges."
   />
-
-  
 
   <!-- Features Widget *************** -->
 
   <Features
     id="features"
-    tagline="Pourquoi nous choisir"
-    title="La précision suisse appliquée au digital"
-    subtitle="Chaque projet suit un cadre clair&nbsp;: collecte des informations, conception, validation et mise en ligne accompagnée."
+    tagline="Ce que nous faisons"
+    title="Consulting d’abord, projet sur mesure ensuite, site standard si cela suffit"
+    subtitle="Nous commençons par le besoin réel: arbitrer, construire, ou aller au plus simple quand un site standardisé suffit."
     items={[
       {
-        title: 'Délai maîtrisé',
+        title: 'Consulting technique',
         description:
-          'Brief, design et mise en ligne sont réalisés en moyenne sous cinq jours ouvrés, selon la complexité de vos contenus et intégrations.',
-        icon: 'tabler:calendar-time',
-      },
-      {
-        title: 'Design premium sur mesure',
-        description:
-          'Charte typographique Inter/Montserrat, palettes sobres et animations légères pour un rendu haut de gamme et cohérent.',
+          '60 CHF / 15 min ou 140 CHF / h pour cadrer un sujet, arbitrer une décision, débloquer une implémentation ou éviter un mauvais chantier.',
         icon: 'tabler:sparkles',
       },
       {
-        title: 'Balises de base',
+        title: 'Projets sur mesure',
         description:
-          'Titres et méta-descriptions de base pour un affichage propre sur les moteurs de recherche (sans prestation SEO).',
+          'Intégrations, automatisations, codebase privée, backend léger, outillage interne ou développement plus avancé quand le standard ne suffit plus.',
         icon: 'tabler:map-pin',
       },
       {
-        title: 'Hébergement de lancement inclus',
+        title: 'Sites web standardisés',
         description:
-          'Hébergement & SSL inclus pour la phase de lancement selon le pack choisi, puis renouvellement ou plan Care selon vos besoins.',
+          'Une offre simple dès 999 CHF pour les cas où une présence en ligne propre et rapide est vraiment tout ce qu’il faut.',
+        icon: 'tabler:calendar-time',
+      },
+      {
+        title: 'Périmètre clair',
+        description:
+          'Chaque besoin est rangé dans la bonne catégorie: consulting court, projet cadré, ou lancement standardisé sans surconstruire.',
         icon: 'tabler:server',
       },
       {
-        title: 'Facturation suisse transparente',
+        title: 'Continuité de support',
         description:
-          'Contrats clairs, TVA incluse et paiement en francs suisses via les principaux moyens helvétiques.',
+          'Un interlocuteur répond sous un jour ouvré et peut suivre le sujet après le cadrage, le lancement ou la mise en production.',
         icon: 'tabler:receipt',
       },
       {
-        title: 'Support humain local',
+        title: 'Contact & rendez-vous',
         description:
-          'Nos experts basés sur l’Arc lémanique vous répondent sous un jour ouvré par email ou téléphone, avec suivi planifié.',
+          'Formulaire, WhatsApp, Calendly ou prise de rendez-vous simple selon qu’il s’agisse d’un site, d’un cadrage ou d’un projet plus large.',
         icon: 'tabler:headset',
       },
     ]}
@@ -105,38 +100,43 @@ const metadata = {
 
   <Content
     isReversed
-    tagline="Processus"
-    title="Une orchestration en 3 temps"
+    tagline="Méthode"
+    title="On commence par clarifier, puis on livre au bon niveau"
     items={[
       {
-        title: 'Brief structuré',
+        title: 'Diagnostic rapide',
         description:
-          'Un questionnaire ciblé collecte vos services, horaires, témoignages et visuels pour alimenter notre IA propriétaire.',
+          'On distingue vite si le sujet relève d’un échange de cadrage, d’un projet sur mesure, ou simplement d’un site standard à lancer.',
       },
       {
-        title: 'Design & intégration',
+        title: 'Périmètre net',
         description:
-          'Nos designers adaptent les sections, calibrent la typographie et intègrent vos contenus, médias et appels à l’action.',
+          'Vous savez ce qui est standard, ce qui demande une build privée, et ce qui peut être tranché en consulting court.',
       },
       {
-        title: 'Contrôle qualité',
+        title: 'Exécution suivie',
         description:
-          'Relecture humaine, tests de performance et checklist RGPD avant validation finale et mise en ligne.',
+          'Une fois le bon format choisi, nous exécutons proprement et restons disponibles pour la suite si le besoin évolue.',
       },
     ]}
   >
     <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Votre site prêt sans stress</h3>
-      Trois étapes automatisées, validées par un expert local.
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
+        Pas de survente, pas de détour inutile
+      </h3>
+      Le bon service n’est pas toujours le plus gros projet. Parfois il faut juste un site. Parfois il faut d’abord trancher
+      une décision technique.
     </Fragment>
 
     <Fragment slot="image">
-      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl">
-        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Workflow maîtrisé</p>
-        <h4 class="mt-4 text-3xl font-semibold">Brief → Création → Mise en ligne</h4>
-          <p class="mt-6 max-w-xs text-base text-blue-100/90">
-            Brief clair, intégration de vos contenus et validations par email.
-          </p>
+      <div
+        class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl"
+      >
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Parcours clair</p>
+        <h4 class="mt-4 text-3xl font-semibold">Diagnostic → Exécution → Suivi</h4>
+        <p class="mt-6 max-w-xs text-base text-blue-100/90">
+          On choisit d’abord le bon niveau d’intervention, puis on avance sans vous noyer dans la technique.
+        </p>
       </div>
     </Fragment>
 
@@ -147,41 +147,48 @@ const metadata = {
 
   <!-- Steps Widget ****************** -->
 
-    <Steps
-      title="Notre méthode encadrée"
-      tagline="Parcours client"
-      items={[
-        {
-          title: 'Signature en ligne',
-          description: 'Choisissez votre pack, signez électroniquement et recevez votre accès client pour lancer le brief.',
-          icon: 'tabler:edit',
-        },
-        {
-          title: 'Onboarding guidé',
-          description: 'Notre assistant collecte vos informations clés et propose une arborescence adaptée à votre métier.',
-          icon: 'tabler:clipboard-list',
-        },
-        {
-          title: 'Production supervisée',
-          description: 'Nos pipelines génèrent le site, intègrent vos contenus et notifient notre équipe pour relecture.',
-          icon: 'tabler:robot',
-        },
+  <Steps
+    title="Une méthode simple pour cadrer puis livrer"
+    tagline="Parcours"
+    items={[
       {
-        title: 'Validation & lancement',
-        description: 'Vous validez la version finale, nous programmons la mise en ligne et cadrons séparément toute extension hors périmètre.',
+        title: 'Premier échange',
+        description:
+          'Vous décrivez le besoin, le blocage ou le projet, et nous identifions rapidement la bonne porte d’entrée.',
+        icon: 'tabler:edit',
+      },
+      {
+        title: 'Cadrage adapté',
+        description:
+          'Consulting court, projet sur mesure ou site standardisé: le format est clarifié avant d’engager du temps inutile.',
+        icon: 'tabler:clipboard-list',
+      },
+      {
+        title: 'Exécution supervisée',
+        description:
+          'Nous produisons, intégrons ou débloquons le sujet avec un périmètre clair et un point de contact unique.',
+        icon: 'tabler:robot',
+      },
+      {
+        title: 'Suivi ou extension',
+        description:
+          'Une fois la première étape livrée, nous pouvons rester en support, ouvrir un second chantier ou simplement clôturer proprement.',
         icon: 'tabler:rocket',
       },
-      ]}
-    >
-      <Fragment slot="image">
-        <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
-          <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Timeline</p>
-          <p class="mt-6 max-w-xs text-base text-blue-100/90">
-            Délai typique&nbsp;: cinq jours ouvrés après réception des contenus. Nous ajustons le planning selon vos priorités.
-          </p>
-        </div>
-      </Fragment>
-    </Steps>
+    ]}
+  >
+    <Fragment slot="image">
+      <div
+        class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl"
+      >
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Timeline</p>
+        <p class="mt-6 max-w-xs text-base text-blue-100/90">
+          Un site standard se lance vite. Un consulting court peut débloquer un sujet en une session. Un projet sur
+          mesure suit ensuite un cadrage séparé, sans confusion entre les niveaux.
+        </p>
+      </div>
+    </Fragment>
+  </Steps>
 
   <!-- Content Widget **************** -->
 
@@ -189,36 +196,41 @@ const metadata = {
     isAfterContent
     items={[
       {
-        title: 'Contenus multilingues',
+        title: 'Cadrage & arbitrage',
         description:
-          'Français en standard, option anglaise ou allemande sur devis pour accompagner votre croissance régionale.',
+          'Audit rapide, décisions techniques, priorisation et regard externe quand il faut trancher proprement.',
       },
       {
-        title: 'Performance optimisée',
+        title: 'Intégration & automatisation',
         description:
-          'Architecture Astro, hébergement rapide en Suisse et optimisation d’images pour charger vite sur mobile.',
+          'Connexion d’outils, formulaires, rendez-vous, flux métier ou scripts ciblés quand le besoin sort du simple site.',
       },
       {
-        title: 'Fonctionnalités essentielles',
+        title: 'Site standardisé',
         description:
-          'Formulaire de contact et prise de rendez-vous. Pour les grands projets, intégrations API possibles sur devis.',
+          'Une présence en ligne simple, crédible et rapide à déployer quand le sujet n’a pas besoin d’une build lourde.',
       },
       {
-        title: 'Périmètre clair',
+        title: 'Support & continuité',
         description:
-          'Le pack 999 couvre un site vitrine standard sur TonSiteWeb. Pages supplémentaires, ateliers de cadrage et demandes hors périmètre sont chiffrés séparément.',
+          'Maintenance, tickets, suivi ou second chantier si vous avez besoin de continuité après la première livraison.',
       },
     ]}
   >
-    <Fragment slot="content">Une présence en ligne qui reflète la précision de votre entreprise.</Fragment>
+    <Fragment slot="content">
+      Tous les sujets n’ont pas besoin du même niveau d’effort. L’important est de choisir la formule utile, pas de
+      pousser tout le monde vers la même offre.
+    </Fragment>
 
     <Fragment slot="image">
-      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
-        <h4 class="text-3xl font-semibold">Performances maîtrisées</h4>
+      <div
+        class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl"
+      >
+        <h4 class="text-3xl font-semibold">Le standard quand il suffit. Le sur mesure quand il faut.</h4>
         <ul class="mt-6 space-y-3 text-left text-blue-100/90">
-          <li>✓ Conception mobile-first</li>
-          <li>✓ Temps de chargement optimisé</li>
-          <li>✓ Hébergement de lancement inclus</li>
+          <li>✓ Consulting court pour arbitrer vite</li>
+          <li>✓ Projet plus large quand il faut construire</li>
+          <li>✓ Site standard dès 999 CHF quand le besoin est simple</li>
         </ul>
       </div>
     </Fragment>
@@ -232,34 +244,43 @@ const metadata = {
 
   <Features2
     id="included"
-    title="Ce que peut inclure votre projet"
-    subtitle="Selon le pack choisi et vos besoins"
-    tagline="Exemples d’options"
+    title="Formats d’intervention"
+    subtitle="Selon le niveau de complexité et ce qu’il est vraiment utile de construire"
+    tagline="Concrètement"
     items={[
       {
-        title: 'Emails professionnels',
-        description: 'Comptes email @votredomaine.ch configurés lors de l’option maintenance (79 CHF/mois).',
-        icon: 'tabler:mail',
+        title: 'Consulting ciblé',
+        description: 'Une session courte pour cadrer, arbitrer, challenger une solution ou débloquer un chantier.',
+        icon: 'tabler:world',
       },
       {
-        title: 'Balises on‑page',
-        description: 'Titres et méta‑descriptions de base.',
-        icon: 'tabler:map-pin',
+        title: 'Projet sur mesure',
+        description: 'Build privée, backend léger, intégration métier ou développement plus poussé quand nécessaire.',
+        icon: 'tabler:git-branch',
       },
       {
-        title: 'Support planifié',
-        description: 'Accompagnement par email et visio, réponses sous un jour ouvré pour chaque demande.',
-        icon: 'tabler:message',
+        title: 'Site standardisé',
+        description:
+          'Une option rapide et propre pour les lancements simples, sans transformer un besoin basique en gros projet.',
+        icon: 'tabler:cpu',
       },
       {
-        title: 'Périmètre maîtrisé',
-        description: 'Ajout de pages, formulaires avancés, brainstorming ou nouvelles fonctionnalités sur devis séparé.',
-        icon: 'tabler:video',
+        title: 'Support continu',
+        description:
+          'Mises à jour, tickets, maintenance et suivi après livraison si vous voulez une continuité claire.',
+        icon: 'tabler:ruler-measure',
       },
       {
-        title: 'Modules évolutifs',
-        description: 'Ajout de pages ou formulaires avancés sur devis dédié.',
-        icon: 'tabler:puzzle',
+        title: 'Automatisation utile',
+        description:
+          'Scripts, formulaires, rendez-vous, notifications ou connexions ciblées quand cela fait vraiment gagner du temps.',
+        icon: 'tabler:receipt',
+      },
+      {
+        title: 'Coordination technique',
+        description:
+          'Un interlocuteur pour garder le sujet lisible entre besoin métier, exécution et prochaines décisions.',
+        icon: 'tabler:route',
       },
     ]}
   >
@@ -271,46 +292,63 @@ const metadata = {
   <!-- Stats Widget ****************** -->
 
   <Stats
-    title="Des repères clairs pour décider"
+    title="Repères de départ"
     stats={[
-      { title: 'Délai typique', amount: '3–5 jours' },
-      { title: 'Pack vitrine', amount: '999 CHF' },
-      { title: 'Maintenance', amount: 'dès 79 CHF/mois' },
-      { title: 'Automations', amount: 'jusqu’à 1 500 CHF' },
+      { title: 'Consulting express', amount: '60 CHF / 15 min' },
+      { title: 'Consulting', amount: '140 CHF / h' },
+      { title: 'Sur mesure', amount: '2 000+ CHF' },
+      { title: 'Site standard', amount: '999 CHF' },
     ]}
   />
 
-  <!-- Testimonials + ROI framing *** -->
+  <!-- Use cases ******************** -->
   <div class="bg-white dark:bg-slate-900 py-16 px-4">
     <div class="max-w-6xl mx-auto">
       <div class="text-center mb-10">
-        <p class="text-sm font-semibold uppercase tracking-widest text-blue-600 mb-2">Ils l'ont fait</p>
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Votre site se rembourse en quelques semaines</h2>
-        <p class="text-gray-500 max-w-xl mx-auto text-sm">Un seul nouveau client par semaine suffit à couvrir l'investissement en moins d'un mois.</p>
+        <p class="text-sm font-semibold uppercase tracking-widest text-blue-600 mb-2">Cas typiques</p>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Le bon point d’entrée dépend du besoin</h2>
+        <p class="text-gray-500 max-w-xl mx-auto text-sm">
+          Nous n’essayons pas de faire entrer chaque demande dans la même boîte. Le bon format dépend du niveau de
+          complexité et de l’urgence réelle.
+        </p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
         <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700">
-          <div class="text-yellow-400 text-sm mb-3">★★★★★</div>
-          <p class="text-gray-600 dark:text-gray-300 text-sm italic leading-relaxed mb-4">«&nbsp;Notre salon a reçu 4 nouveaux clients la première semaine grâce à notre site. Le processus était ultra simple — on a rempli le formulaire et tout était prêt en 4 jours.&nbsp;»</p>
-          <p class="text-sm font-semibold text-gray-900 dark:text-white">Isabelle M.</p>
-          <p class="text-xs text-gray-400">Salon de beauté — Lausanne</p>
+          <p class="text-blue-700 dark:text-blue-300 font-semibold text-sm mb-3">Consulting</p>
+          <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4">
+            Vous avez un doute technique, un arbitrage à faire, un devis à challenger ou un chantier qui part dans tous
+            les sens.
+          </p>
+          <p class="text-sm font-semibold text-gray-900 dark:text-white">On commence court</p>
+          <p class="text-xs text-gray-400">15 min ou 1 h pour décider avant de surconstruire</p>
         </div>
         <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700">
-          <div class="text-yellow-400 text-sm mb-3">★★★★★</div>
-          <p class="text-gray-600 dark:text-gray-300 text-sm italic leading-relaxed mb-4">«&nbsp;J'avais peur que ce soit compliqué, mais j'ai eu mon site en 5 jours sans rien avoir à faire. Maintenant les clients me trouvent directement sur Google.&nbsp;»</p>
-          <p class="text-sm font-semibold text-gray-900 dark:text-white">Marco D.</p>
-          <p class="text-xs text-gray-400">Plombier indépendant — Morges</p>
+          <p class="text-blue-700 dark:text-blue-300 font-semibold text-sm mb-3">Projet sur mesure</p>
+          <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4">
+            Il faut connecter des outils, automatiser un flux, structurer un backend léger ou sortir d’un template
+            standard.
+          </p>
+          <p class="text-sm font-semibold text-gray-900 dark:text-white">On cadre avant de builder</p>
+          <p class="text-xs text-gray-400">Périmètre, chiffrage et prochaine étape lisibles</p>
         </div>
         <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700">
-          <div class="text-yellow-400 text-sm mb-3">★★★★★</div>
-          <p class="text-gray-600 dark:text-gray-300 text-sm italic leading-relaxed mb-4">«&nbsp;999 CHF pour un site qui me rapporte 3–4 réservations supplémentaires par mois. L'investissement a été rentabilisé en moins de deux mois.&nbsp;»</p>
-          <p class="text-sm font-semibold text-gray-900 dark:text-white">Sophie K.</p>
-          <p class="text-xs text-gray-400">Coach & thérapeute — Genève</p>
+          <p class="text-blue-700 dark:text-blue-300 font-semibold text-sm mb-3">Site standardisé</p>
+          <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4">
+            Vous avez surtout besoin d’une présence en ligne propre, crédible et rapide, sans budget ni complexité de
+            build privée.
+          </p>
+          <p class="text-sm font-semibold text-gray-900 dark:text-white">On lance simplement</p>
+          <p class="text-xs text-gray-400">Offre standard dès 999 CHF quand cela suffit</p>
         </div>
       </div>
-      <div class="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-6 text-center border border-blue-100 dark:border-blue-800">
-        <p class="text-blue-700 dark:text-blue-300 font-semibold mb-1">💡 Calcul rapide</p>
-        <p class="text-gray-600 dark:text-gray-400 text-sm">Un coiffeur avec <strong>2 nouveaux clients/semaine via son site</strong> = ~6 000 CHF de chiffre d'affaires supplémentaire par an.<br/>L'investissement de 999 CHF est rentabilisé en <strong>moins de deux mois</strong>.</p>
+      <div
+        class="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-6 text-center border border-blue-100 dark:border-blue-800"
+      >
+        <p class="text-blue-700 dark:text-blue-300 font-semibold mb-1">Point important</p>
+        <p class="text-gray-600 dark:text-gray-400 text-sm">
+          Le pack site reste utile et rentable dans beaucoup de cas. La différence est que nous ne réduisons plus toute
+          la relation à cela: consulting, exécution technique et support restent aussi des portes d’entrée normales.
+        </p>
       </div>
     </div>
   </div>
@@ -325,29 +363,29 @@ const metadata = {
     classes={{ container: 'max-w-6xl' }}
     items={[
       {
-        title: 'Quel est le délai de livraison ?',
+        title: 'Quand faut-il choisir le consulting plutôt qu’un pack site ?',
         description:
-          'Après réception des contenus, nous livrons généralement la première version en cinq jours ouvrés. Les projets avec automatisations peuvent nécessiter davantage de temps, annoncé dès le devis.',
+          'Quand le vrai besoin est de trancher une décision, débloquer un sujet technique, challenger une implémentation ou cadrer un chantier avant d’écrire plus de code.',
       },
       {
-        title: 'Le contenu est-il inclus ?',
+        title: 'Prenez-vous aussi des projets plus techniques ?',
         description:
-          'Oui, nous rédigeons ou retravaillons vos textes en français avec une optimisation locale de base. Les versions anglaise ou allemande sont proposées sur devis.',
+          'Oui. Intégrations, automatisations, scripts, Linux, backend léger, code privé, ou développement plus large si le sujet dépasse l’offre standardisée.',
       },
       {
-        title: 'Quels sont les niveaux de maintenance ?',
+        title: 'Le site dès 999 CHF existe toujours ?',
         description:
-          'Maintenance dès 79 CHF/mois avec mises à jour et sauvegardes. Options additionnelles selon vos besoins.',
+          'Oui. Il reste pertinent quand vous avez surtout besoin d’une présence en ligne propre et rapide. Nous le traitons simplement comme une offre standard, pas comme l’unique identité du site.',
       },
       {
-        title: 'Proposez-vous des intégrations ?',
+        title: 'Comment cadrez-vous un projet sur mesure ?',
         description:
-          'Oui. Les intégrations simples (formulaire, rendez‑vous) sont incluses. Pour des connexions API ou workflows complexes, nous établissons un devis dédié.',
+          'Nous clarifions d’abord le besoin, les contraintes, le périmètre utile et le niveau d’effort. Ensuite seulement nous proposons un chiffrage et une séquence de livraison.',
       },
       {
-        title: 'Comment se déroule le support après la mise en ligne ?',
+        title: 'Pouvez-vous rester ensuite en support ?',
         description:
-          'Vous disposez d’un accès à notre espace client pour ouvrir des tickets. Les réponses sont apportées sous un jour ouvré via email ou visio planifiée.',
+          'Oui. Nous pouvons rester disponibles en maintenance, tickets, visio planifiée ou accompagnement plus continu selon le sujet.',
       },
     ]}
   />
@@ -358,8 +396,8 @@ const metadata = {
     actions={[
       {
         variant: 'primary',
-        text: 'Démarrer — 999 CHF',
-        href: '/onboarding?plan=essential999',
+        text: 'Parler de votre besoin',
+        href: '/contact#form',
         icon: 'tabler:arrow-right',
       },
       {
@@ -368,10 +406,11 @@ const metadata = {
       },
     ]}
   >
-    <Fragment slot="title">Votre site vitrine dès 999 CHF</Fragment>
+    <Fragment slot="title">Commencez par le bon niveau d’intervention</Fragment>
 
     <Fragment slot="subtitle">
-      Prix fixe pour le pack Essentiel TonSiteWeb.ch. Site vitrine clé-en-main livré en 3–5 jours ouvrables selon vos contenus.
+      Consulting technique, projet sur mesure ou site standard dès 999 CHF: nous vous aidons à choisir l’option utile au
+      lieu de pousser tout le monde vers la même offre.
     </Fragment>
   </CallToAction>
 </Layout>

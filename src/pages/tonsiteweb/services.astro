@@ -21,11 +21,14 @@ const metadata = {
     actions={[{ variant: 'primary', text: 'Voir les packs', href: '/pricing' }]}
   >
     <Fragment slot="image">
-      <div class="relative aspect-[5/3] overflow-hidden rounded-2xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-left text-white shadow-2xl">
+      <div
+        class="relative aspect-[5/3] overflow-hidden rounded-2xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-left text-white shadow-2xl"
+      >
         <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Services automatisés</p>
         <h4 class="mt-4 text-4xl font-semibold">Design · Contenu · Maintenance</h4>
         <p class="mt-6 max-w-xl text-lg text-blue-100/90">
-          Une plateforme propriétaire qui orchestre la production pendant que nos experts se concentrent sur la qualité et la relation client.
+          Une plateforme propriétaire qui orchestre la production pendant que nos experts se concentrent sur la qualité
+          et la relation client.
         </p>
       </div>
     </Fragment>
@@ -40,20 +43,18 @@ const metadata = {
     items={[
       {
         title: 'Essentiel',
-        description:
-          'Site vitrine de 5 sections, intégration de vos contenus et mise en ligne accompagnée.',
+        description: 'Site vitrine de 5 sections, intégration de vos contenus et mise en ligne accompagnée.',
         icon: 'tabler:layout',
       },
       {
         title: 'Automatisation',
-        description:
-          'Formulaires, prises de rendez‑vous et intégrations API sur devis pour automatiser vos flux.',
+        description: 'Formulaires, prises de rendez‑vous et intégrations API sur devis pour automatiser vos flux.',
         icon: 'tabler:api',
       },
       {
-        title: 'Maintenance sécurité',
+        title: 'Continuité technique',
         description:
-          'Mises à jour techniques, sauvegardes, gestion d’emails pro et support planifié à 79 CHF/mois.',
+          'Mises à jour techniques, sauvegardes, gestion d’emails pro et accompagnement continu selon le périmètre opérationnel.',
         icon: 'tabler:shield-check',
       },
     ]}
@@ -85,8 +86,7 @@ const metadata = {
       },
       {
         title: 'Suivi essentiel',
-        description:
-          'Points de contrôle réguliers, assistance pour vos mises à jour et recommandations pragmatiques.',
+        description: 'Points de contrôle réguliers, assistance pour vos mises à jour et recommandations pragmatiques.',
         icon: 'tabler:report-analytics',
       },
     ]}
@@ -97,7 +97,9 @@ const metadata = {
     </Fragment>
 
     <Fragment slot="image">
-      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl">
+      <div
+        class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl"
+      >
         <h4 class="text-3xl font-semibold">Pipeline supervisé</h4>
         <p class="mt-6 max-w-sm text-blue-100/90">
           Chaque projet suit un contrôle humain complet&nbsp;: contenus, design, conformité RGPD et tests de navigation.
@@ -114,8 +116,7 @@ const metadata = {
     items={[
       {
         title: 'Balises on‑page',
-        description:
-          'Titres et méta‑descriptions de base.',
+        description: 'Titres et méta‑descriptions de base.',
         icon: 'tabler:map-pin',
       },
       {
@@ -126,14 +127,12 @@ const metadata = {
       },
       {
         title: 'Campagnes d’acquisition',
-        description:
-          'Landing pages, formulaires et scénarios email automatisés sur devis selon vos objectifs.',
+        description: 'Landing pages, formulaires et scénarios email automatisés sur devis selon vos objectifs.',
         icon: 'tabler:send',
       },
       {
         title: 'Processus simple',
-        description:
-          'Échanges par email et validations par étapes. Pas d’espace client à gérer.',
+        description: 'Échanges par email et validations par étapes. Pas d’espace client à gérer.',
         icon: 'tabler:layout-dashboard',
       },
     ]}
@@ -144,10 +143,13 @@ const metadata = {
     </Fragment>
 
     <Fragment slot="image">
-      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-left text-white shadow-xl">
+      <div
+        class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-left text-white shadow-xl"
+      >
         <h4 class="text-3xl font-semibold">Acquisition maîtrisée</h4>
         <p class="mt-6 max-w-sm text-blue-100/90">
-          Nous vous aidons à prioriser les leviers efficaces et à mesurer les résultats réellement utiles à votre activité.
+          Nous vous aidons à prioriser les leviers efficaces et à mesurer les résultats réellement utiles à votre
+          activité.
         </p>
       </div>
     </Fragment>
@@ -157,38 +159,42 @@ const metadata = {
 
   <Features2
     id="support"
-    title="Support & maintenance"
-    subtitle="Restez concentrés sur votre métier, nous gérons le reste."
+    title="Systems & operations"
+    subtitle="Continuité technique, supervision et accompagnement après livraison."
     columns={3}
     items={[
       {
-        title: 'Support planifié',
-        description: 'Réponses sous un jour ouvré par email ou téléphone, suivi via votre espace client.',
+        title: 'Continuité technique',
+        description: 'Un point de contact stable pour garder le contexte après mise en ligne ou entre deux chantiers.',
         icon: 'tabler:headset',
       },
       {
-        title: 'Surveillance essentielle',
-        description: 'Vérifications régulières des performances et alertes en cas de problème détecté.',
+        title: 'Supervision',
+        description:
+          'Vérifications régulières, monitoring, alertes et suivi opérationnel selon les systèmes concernés.',
         icon: 'tabler:antenna',
       },
       {
-        title: 'Mises à jour sécurité',
-        description: 'Application des correctifs critiques, sauvegardes et restauration si nécessaire.',
+        title: 'Infrastructure',
+        description: 'DNS, SSL, sauvegardes, restauration, emails, déploiement et base Linux plus propre.',
         icon: 'tabler:tools',
       },
       {
-        title: 'Conformité RGPD',
-        description: 'Politique de cookies, mentions légales et bannière de consentement adaptées à la Suisse.',
+        title: 'Automatisation',
+        description:
+          'Workflows, intégrations et réduction des tâches manuelles quand le besoin dépasse le simple site.',
         icon: 'tabler:shield-check',
       },
       {
-        title: 'Gestion des emails',
-        description: 'Configuration et support de vos comptes @votredomaine.ch avec SPF/DKIM.',
+        title: 'Support opérationnel',
+        description:
+          'Tickets, incidents, petites corrections et coordination technique légère selon le niveau attendu.',
         icon: 'tabler:mail',
       },
       {
         title: 'Évolutions sur devis',
-        description: 'Ajout de pages, modules ou automatisations supplémentaires selon vos objectifs.',
+        description:
+          'Le périmètre d’accompagnement dépend du niveau de continuité, de l’infrastructure et des objectifs.',
         icon: 'tabler:arrows-left-right',
       },
     ]}
@@ -206,9 +212,7 @@ const metadata = {
       },
     ]}
   >
-    <Fragment slot="title">
-      Discutons de votre prochaine mise en ligne
-    </Fragment>
+    <Fragment slot="title"> Discutons de votre prochaine mise en ligne </Fragment>
 
     <Fragment slot="subtitle">
       Partagez vos objectifs; nous préparons un plan de lancement pragmatique avec TonSiteWeb.ch.
