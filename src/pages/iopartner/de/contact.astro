@@ -7,20 +7,16 @@ import Features2 from '~/components/widgets/Features2.astro';
 import { iopartnerHeaderDataDe, iopartnerFooterDataDe } from '~/navigation';
 
 const metadata = {
-  title: 'Kontakt IOPartner',
-  description:
-    'Sprechen Sie mit IOPartner über Websites, KI-Automatisierung, Open-Source-Infrastruktur oder Managed Support.',
-  openGraph: {
-    type: 'website',
-  },
-  twitter: {
-    cardType: 'summary',
-  },
+  title: 'Kontakt',
 };
 ---
 
 <Layout metadata={metadata} header={iopartnerHeaderDataDe} footer={iopartnerFooterDataDe}>
-  <HeroText tagline="Kontakt" title="Sprechen wir über den richtigen IOPartner-Weg" subtitle="Wir trennen Standard-Launches, private Builds und schwerere Systemarbeit ohne Zeitverlust." />
+  <HeroText
+    tagline="Kontakt"
+    title="Sprechen wir über den richtigen IOPartner-Weg"
+    subtitle="Wir trennen Standard-Launches, private Builds und schwerere Systemarbeit ohne Zeitverlust."
+  />
 
   <ContactUs
     id="form"
@@ -76,7 +72,7 @@ const metadata = {
       },
       {
         title: 'E-Mail',
-    description: 'support@iopartner.ch',
+        description: 'support@iopartner.ch',
         icon: 'tabler:mail',
       },
       {
@@ -91,7 +87,7 @@ const metadata = {
       },
       {
         title: 'Kundensupport',
-    description: 'support@iopartner.ch — Antwort innerhalb eines Arbeitstages',
+        description: 'support@iopartner.ch — Antwort innerhalb eines Arbeitstages',
         icon: 'tabler:help',
       },
     ]}

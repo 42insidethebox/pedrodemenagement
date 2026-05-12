@@ -2,7 +2,6 @@
 import Layout from '~/layouts/Layout.astro';
 import BookingSlotPicker from '~/components/widgets/BookingSlotPicker.astro';
 import { detectRequestLocale } from '~/lib/locale';
-import { IOPARTNER_FR_PRICE_LABELS } from '~/data/iopartnerPricing.fr';
 
 export const prerender = false;
 
@@ -25,15 +24,15 @@ const COPY = {
     tiers: [
       {
         key: 'starter-1500',
-        price: IOPARTNER_FR_PRICE_LABELS.websiteGrowth,
+        price: '1 500 CHF',
         title: 'Site standard + WhatsApp + Calendly',
         body: 'Toujours sur le moteur IOPartner, avec la mise en place légère qui suffit à beaucoup de PME.',
-        cta: `Commander le pack ${IOPARTNER_FR_PRICE_LABELS.websiteGrowth}`,
+        cta: 'Commander le pack 1 500',
         href: pathFor('/choose-template?plan=essential1500'),
       },
       {
         key: 'private-2000',
-        price: IOPARTNER_FR_PRICE_LABELS.privateCodebase,
+        price: '2 000 CHF',
         title: 'Codebase privée',
         body: 'Quand vous voulez sortir de l’infrastructure mutualisée et garder votre propre base de projet.',
         cta: 'Réserver le diagnostic',
@@ -41,7 +40,7 @@ const COPY = {
       },
       {
         key: 'private-2200',
-        price: IOPARTNER_FR_PRICE_LABELS.privateCodebaseHandoff,
+        price: '2 200 CHF',
         title: 'Codebase privée + transmission',
         body: 'Même base privée, avec une vraie passation et une explication structurée de ce qui a été livré.',
         cta: 'Réserver le diagnostic',
@@ -49,7 +48,7 @@ const COPY = {
       },
       {
         key: 'backend-4500',
-        price: IOPARTNER_FR_PRICE_LABELS.backendLight,
+        price: '4 500 CHF',
         title: 'Back-end léger',
         body: 'Le bon niveau pour un “hello backend” sérieux : logique métier légère, collecte, synchronisation ou portail simple.',
         cta: 'Réserver le diagnostic',
@@ -57,7 +56,7 @@ const COPY = {
       },
       {
         key: 'shop-8000',
-        price: IOPARTNER_FR_PRICE_LABELS.heavierSystems,
+        price: '8 000+ CHF',
         title: 'Headless shop ou système plus lourd',
         body: 'Quand il faut un vrai sujet d’architecture, de commerce headless, d’admin, de portail ou de plateforme interne.',
         cta: 'Réserver le diagnostic',
@@ -65,19 +64,17 @@ const COPY = {
       },
     ],
     belowTitle: 'En dessous de ce niveau ?',
-    belowHeadline: `${IOPARTNER_FR_PRICE_LABELS.websiteLaunch}, ${IOPARTNER_FR_PRICE_LABELS.websiteSprint} ou ${IOPARTNER_FR_PRICE_LABELS.websiteGrowth}`,
     belowBody:
-      `Si votre besoin tient encore dans un website standard, ne payez pas du custom trop tôt. Le bon mouvement est souvent ${IOPARTNER_FR_PRICE_LABELS.websiteLaunch}, ${IOPARTNER_FR_PRICE_LABELS.websiteSprint} ou ${IOPARTNER_FR_PRICE_LABELS.websiteGrowth}, pas plus.`,
+      'Si votre besoin tient encore dans un site standard, ne payez pas du custom trop tôt. Le bon mouvement est souvent 999 ou 1 500 CHF, pas plus.',
     belowCtas: [
-      { text: `Voir le pack ${IOPARTNER_FR_PRICE_LABELS.websiteLaunch}`, href: pathFor('/choose-template?plan=essential999') },
-      { text: `Demander le sprint ${IOPARTNER_FR_PRICE_LABELS.websiteSprint}`, href: pathFor('/contact#form') },
-      { text: `Voir le pack ${IOPARTNER_FR_PRICE_LABELS.websiteGrowth}`, href: pathFor('/choose-template?plan=essential1500') },
+      { text: 'Voir le pack 999', href: pathFor('/choose-template?plan=essential999') },
+      { text: 'Voir le pack 1 500', href: pathFor('/choose-template?plan=essential1500') },
     ],
     architectureTitle: 'Architecture, admin, portail, plateforme',
     architectureBody:
       'Ces sujets ne sont pas vendus à la volée. Le diagnostic décide si le vrai sujet est un back-end léger, un headless shop ou une architecture plus profonde.',
     diagnosticEyebrow: 'Diagnostic payé',
-    diagnosticTitle: `15 min / ${IOPARTNER_FR_PRICE_LABELS.diagnostic.replace(' / 15 min', '')} pour cadrer correctement le custom.`,
+    diagnosticTitle: '15 min / 80 CHF pour cadrer correctement le custom.',
     diagnosticLead:
       'Le produit n’est pas un appel vague. Vous choisissez un créneau, vous payez, puis vous recevez la confirmation et le lien Teams partagé.',
     diagnosticIncludesTitle: 'Le pipeline',
@@ -85,15 +82,15 @@ const COPY = {
       'Créneau de 15 minutes choisi avant paiement.',
       'Paiement Stripe immédiat.',
       'Confirmation par email avec le lien Teams partagé.',
-      `Qualification rapide: ${IOPARTNER_FR_PRICE_LABELS.privateCodebase}, ${IOPARTNER_FR_PRICE_LABELS.privateCodebaseHandoff}, ${IOPARTNER_FR_PRICE_LABELS.backendLight}, ${IOPARTNER_FR_PRICE_LABELS.heavierSystems} ou sujet plus profond.`,
+      'Qualification rapide: 2 000, 2 200, 4 500, 8 000+ ou sujet plus profond.',
     ],
     selectedTrackLabel: 'Sujet sélectionné',
     selectedTrackFallback: 'Diagnostic IOPartner — systèmes sur mesure',
     selectedTrackMap: {
-      'private-2000': `Codebase privée — ${IOPARTNER_FR_PRICE_LABELS.privateCodebase}`,
-      'private-2200': `Codebase privée + transmission — ${IOPARTNER_FR_PRICE_LABELS.privateCodebaseHandoff}`,
-      'backend-4500': `Back-end léger — ${IOPARTNER_FR_PRICE_LABELS.backendLight}`,
-      'shop-8000': `Headless shop / système plus lourd — ${IOPARTNER_FR_PRICE_LABELS.heavierSystems}`,
+      'private-2000': 'Codebase privée — 2 000 CHF',
+      'private-2200': 'Codebase privée + transmission — 2 200 CHF',
+      'backend-4500': 'Back-end léger — 4 500 CHF',
+      'shop-8000': 'Headless shop / système plus lourd — 8 000+ CHF',
     },
     form: {
       dateLabel: 'Date',
@@ -108,9 +105,9 @@ const COPY = {
       phone: 'Téléphone',
       notes: 'Contexte',
       notesPlaceholder: 'Décrivez le besoin, le budget visé et ce qui bloque déjà.',
-      submit: `Réserver et payer ${IOPARTNER_FR_PRICE_LABELS.diagnostic.replace(' / 15 min', '')}`,
+      submit: 'Réserver et payer 80 CHF',
     },
-    note: `Si vous cherchez du custom à moins de ${IOPARTNER_FR_PRICE_LABELS.privateCodebase}, le bon produit n’est généralement pas du custom. Prenez plutôt la voie ${IOPARTNER_FR_PRICE_LABELS.websiteLaunch} / ${IOPARTNER_FR_PRICE_LABELS.websiteSprint} / ${IOPARTNER_FR_PRICE_LABELS.websiteGrowth}.`,
+    note: 'Si vous cherchez du custom à moins de 2 000 CHF, le bon produit n’est généralement pas du custom. Prenez plutôt la voie 999 / 1 500.',
   },
   en: {
     title: 'IOPartner — Custom systems',
@@ -163,7 +160,6 @@ const COPY = {
       },
     ],
     belowTitle: 'Below that threshold?',
-    belowHeadline: 'CHF 999 or CHF 1,500',
     belowBody:
       'If the need still fits a standard site, do not buy custom too early. The rational move is usually CHF 999 or CHF 1,500.',
     belowCtas: [
@@ -260,7 +256,6 @@ const COPY = {
       },
     ],
     belowTitle: 'Darunter?',
-    belowHeadline: 'CHF 999 oder CHF 1’500',
     belowBody:
       'Wenn der Bedarf noch in eine Standardseite passt, kaufen Sie nicht zu früh Custom. Der rationale Weg ist meist CHF 999 oder CHF 1’500.',
     belowCtas: [
@@ -357,7 +352,6 @@ const COPY = {
       },
     ],
     belowTitle: 'Sotto questa soglia?',
-    belowHeadline: 'CHF 999 o CHF 1’500',
     belowBody:
       'Se il bisogno rientra ancora in un sito standard, non comprare custom troppo presto. La mossa razionale è spesso CHF 999 o CHF 1’500.',
     belowCtas: [
@@ -369,8 +363,7 @@ const COPY = {
       'Questi temi non si vendono a catalogo. La diagnosi decide se il vero tema è un backend leggero, un headless shop o uno strato di architettura più profondo.',
     diagnosticEyebrow: 'Diagnosi a pagamento',
     diagnosticTitle: '15 min / CHF 80 per inquadrare bene il custom.',
-    diagnosticLead:
-      'Non è una chiamata vaga. Scegli uno slot, paghi, poi ricevi conferma e link Teams condiviso.',
+    diagnosticLead: 'Non è una chiamata vaga. Scegli uno slot, paghi, poi ricevi conferma e link Teams condiviso.',
     diagnosticIncludesTitle: 'La pipeline',
     diagnosticIncludes: [
       'Slot da 15 minuti scelto prima del pagamento.',
@@ -406,13 +399,12 @@ const COPY = {
 } as const;
 
 const copy = COPY[locale as keyof typeof COPY] ?? COPY.fr;
-const selectedTrackMap = copy.selectedTrackMap as Record<string, string>;
-const selectedTrackFallback = copy.selectedTrackFallback as string;
-const selectedTrackLabel = selectedTrackMap[track] || selectedTrackFallback;
+const selectedTrackLabel =
+  copy.selectedTrackMap[track as keyof typeof copy.selectedTrackMap] || copy.selectedTrackFallback;
 const diagnosticService =
-  selectedTrackLabel === selectedTrackFallback
-    ? selectedTrackFallback
-    : `${selectedTrackFallback} — ${selectedTrackLabel}`;
+  selectedTrackLabel === copy.selectedTrackFallback
+    ? copy.selectedTrackFallback
+    : `${copy.selectedTrackFallback} — ${selectedTrackLabel}`;
 ---
 
 <Layout metadata={{ title: copy.title }} brandKey="iopartner">
@@ -444,52 +436,62 @@ const diagnosticService =
           <div class="rounded-[1.5rem] bg-slate-950 p-6 md:p-7 text-white">
             <p class="text-xs uppercase tracking-[0.28em] text-blue-200/80">{copy.exactLadder}</p>
             <div class="mt-5 space-y-4">
-              {copy.tiers.map((tier) => (
-                <div class={`rounded-2xl border p-4 ${tier.key === track ? 'border-blue-300 bg-white/10' : 'border-white/10 bg-white/5'}`}>
-                  <div class="flex items-baseline justify-between gap-3">
-                    <h2 class="text-lg font-semibold">{tier.title}</h2>
-                    <span class="text-sm font-semibold text-blue-200">{tier.price}</span>
+              {
+                copy.tiers.map((tier) => (
+                  <div
+                    class={`rounded-2xl border p-4 ${tier.key === track ? 'border-blue-300 bg-white/10' : 'border-white/10 bg-white/5'}`}
+                  >
+                    <div class="flex items-baseline justify-between gap-3">
+                      <h2 class="text-lg font-semibold">{tier.title}</h2>
+                      <span class="text-sm font-semibold text-blue-200">{tier.price}</span>
+                    </div>
+                    <p class="mt-2 text-sm text-white/75">{tier.body}</p>
                   </div>
-                  <p class="mt-2 text-sm text-white/75">{tier.body}</p>
-                </div>
-              ))}
+                ))
+              }
             </div>
           </div>
         </div>
       </section>
 
       <section class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-        {copy.tiers.map((tier) => (
-          <article class={`rounded-[1.7rem] border bg-white p-6 shadow-sm ${tier.key === track ? 'border-blue-400 shadow-blue-100' : 'border-slate-200'}`}>
-            <p class="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">{tier.price}</p>
-            <h2 class="mt-3 text-2xl font-bold text-slate-950">{tier.title}</h2>
-            <p class="mt-3 text-sm leading-6 text-slate-600">{tier.body}</p>
-            <a
-              href={tier.href}
-              class={`mt-6 inline-flex rounded-xl px-4 py-3 text-sm font-semibold transition-colors ${
-                tier.key === 'starter-1500'
-                  ? 'bg-slate-950 text-white hover:bg-slate-800'
-                  : 'bg-blue-600 text-white hover:bg-blue-700'
-              }`}
+        {
+          copy.tiers.map((tier) => (
+            <article
+              class={`rounded-[1.7rem] border bg-white p-6 shadow-sm ${tier.key === track ? 'border-blue-400 shadow-blue-100' : 'border-slate-200'}`}
             >
-              {tier.cta}
-            </a>
-          </article>
-        ))}
+              <p class="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">{tier.price}</p>
+              <h2 class="mt-3 text-2xl font-bold text-slate-950">{tier.title}</h2>
+              <p class="mt-3 text-sm leading-6 text-slate-600">{tier.body}</p>
+              <a
+                href={tier.href}
+                class={`mt-6 inline-flex rounded-xl px-4 py-3 text-sm font-semibold transition-colors ${
+                  tier.key === 'starter-1500'
+                    ? 'bg-slate-950 text-white hover:bg-slate-800'
+                    : 'bg-blue-600 text-white hover:bg-blue-700'
+                }`}
+              >
+                {tier.cta}
+              </a>
+            </article>
+          ))
+        }
 
         <article class="rounded-[1.7rem] border border-slate-200 bg-slate-50 p-6 shadow-sm">
           <p class="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">{copy.belowTitle}</p>
-          <h2 class="mt-3 text-2xl font-bold text-slate-950">{copy.belowHeadline}</h2>
+          <h2 class="mt-3 text-2xl font-bold text-slate-950">999 CHF ou 1 500 CHF</h2>
           <p class="mt-3 text-sm leading-6 text-slate-600">{copy.belowBody}</p>
           <div class="mt-6 flex flex-wrap gap-3">
-            {copy.belowCtas.map((cta) => (
-              <a
-                href={cta.href}
-                class="inline-flex rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 hover:border-slate-300 hover:bg-slate-100 transition-colors"
-              >
-                {cta.text}
-              </a>
-            ))}
+            {
+              copy.belowCtas.map((cta) => (
+                <a
+                  href={cta.href}
+                  class="inline-flex rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 hover:border-slate-300 hover:bg-slate-100 transition-colors"
+                >
+                  {cta.text}
+                </a>
+              ))
+            }
           </div>
         </article>
       </section>

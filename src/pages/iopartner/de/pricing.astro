@@ -3,6 +3,7 @@ import Layout from '~/layouts/PageLayout.astro';
 import HeroText from '~/components/widgets/HeroText.astro';
 import Prices from '~/components/widgets/Pricing.astro';
 import PricingOptions from '~/components/widgets/PricingOptions.astro';
+import Note from '~/components/widgets/Note.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import Steps from '~/components/widgets/Steps.astro';
 import Features3 from '~/components/widgets/Features3.astro';
@@ -11,15 +12,7 @@ import CallToAction from '~/components/widgets/CallToAction.astro';
 import { iopartnerHeaderDataDe, iopartnerFooterDataDe } from '~/navigation';
 
 const metadata = {
-  title: 'IOPartner Preise',
-  description:
-    'IOPartner Preise für Websites, KI-Automatisierung, strukturiert aufgebaute Systeme und Managed Support.',
-  openGraph: {
-    type: 'website',
-  },
-  twitter: {
-    cardType: 'summary',
-  },
+  title: 'Preise',
 };
 ---
 
@@ -34,8 +27,14 @@ const metadata = {
   <div class="max-w-3xl mx-auto px-4 mb-2">
     <div class="rounded-2xl border-2 border-blue-200 bg-blue-50 dark:bg-blue-900/20 px-6 py-4 text-center">
       <p class="text-lg font-bold text-blue-900 dark:text-blue-100">Essentiel-Paket — ab 999 CHF</p>
-      <p class="mt-1 text-sm text-blue-700 dark:text-blue-200">Fixpreis für eine professionelle Showcase-Website. Typische Lieferung in 3–5 Arbeitstagen je nach Inhalt.</p>
-      <a href="/onboarding?plan=essential999" class="mt-3 inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm px-6 py-2 rounded-xl transition-colors">Jetzt bestellen →</a>
+      <p class="mt-1 text-sm text-blue-700 dark:text-blue-200">
+        Fixpreis für eine professionelle Showcase-Website. Typische Lieferung in 3–5 Arbeitstagen je nach Inhalt.
+      </p>
+      <a
+        href="/onboarding?plan=essential999"
+        class="mt-3 inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm px-6 py-2 rounded-xl transition-colors"
+        >Jetzt bestellen →</a
+      >
     </div>
   </div>
 
@@ -108,8 +107,29 @@ const metadata = {
         subtitle="Das richtige Niveau wählen, ohne zu früh Custom zu kaufen"
         ctaText="Wählen"
         tiers={[
-          { label: 'CHF 999', price: 'ab 999', features: ['Statische Seite', 'Einfaches Formular (E-Mail)'], href: '/de/choose-template?plan=essential999', info: ['Hosting & SSL inklusive (3 Monate)', 'Bereitstellung auf der gemeinsamen IOPartner-Infrastruktur', 'Zusätzliche Seiten, Workshops oder Extra-Scope separat offeriert'] },
-          { label: 'CHF 1’500', price: '1’500', features: ['Enthält die CHF-999-Basis', 'WhatsApp + Calendly', 'Leichte Erklärung / Übergabe'], href: '/de/choose-template?plan=essential1500', primary: true, info: ['Weiterhin auf der gemeinsamen IOPartner-Infrastruktur', 'WhatsApp und Calendly im validierten Umfang verkabelt', 'Zusätzliche Seiten, Workshops oder Extra-Scope separat offeriert'] },
+          {
+            label: 'CHF 999',
+            price: 'ab 999',
+            features: ['Statische Seite', 'Einfaches Formular (E-Mail)'],
+            href: '/de/choose-template?plan=essential999',
+            info: [
+              'Hosting & SSL inklusive (3 Monate)',
+              'Bereitstellung auf der gemeinsamen IOPartner-Infrastruktur',
+              'Zusätzliche Seiten, Workshops oder Extra-Scope separat offeriert',
+            ],
+          },
+          {
+            label: 'CHF 1’500',
+            price: '1’500',
+            features: ['Enthält die CHF-999-Basis', 'WhatsApp + Calendly', 'Leichte Erklärung / Übergabe'],
+            href: '/de/choose-template?plan=essential1500',
+            primary: true,
+            info: [
+              'Weiterhin auf der gemeinsamen IOPartner-Infrastruktur',
+              'WhatsApp und Calendly im validierten Umfang verkabelt',
+              'Zusätzliche Seiten, Workshops oder Extra-Scope separat offeriert',
+            ],
+          },
         ]}
         footnote="Geliefert wird der bestätigte Umfang; zusätzliche Seiten, Workshops/Brainstorming, Redesigns und Leistungen ausserhalb des Scopes werden separat verrechnet."
       />
@@ -120,17 +140,36 @@ const metadata = {
         subtitle="Wenn der richtige Zug kein einfacher Template-Launch mehr ist"
         ctaText="Öffnen"
         tiers={[
-          { label: 'CHF 2’000', price: 'private Codebase', features: ['Getrennte Codebase', 'Verlässt die gemeinsame Infrastruktur'], href: '/de/custom-systems?track=private-2000#diagnostic' },
-          { label: 'CHF 2’200', price: 'privat + Übergabe', features: ['Getrennte Codebase', 'Strukturierte Übergabe'], href: '/de/custom-systems?track=private-2200#diagnostic', primary: true },
-          { label: 'CHF 4’500', price: 'leichtes Backend', features: ['Leichte Business-Logik', 'Intake, Sync oder simples Portal'], href: '/de/custom-systems?track=backend-4500#diagnostic' },
-          { label: 'CHF 8’000+', price: 'schwereres System', features: ['Headless Shop', 'Admin, Portal oder tiefere Architektur'], href: '/de/custom-systems?track=shop-8000#diagnostic' },
+          {
+            label: 'CHF 2’000',
+            price: 'private Codebase',
+            features: ['Getrennte Codebase', 'Verlässt die gemeinsame Infrastruktur'],
+            href: '/de/custom-systems?track=private-2000#diagnostic',
+          },
+          {
+            label: 'CHF 2’200',
+            price: 'privat + Übergabe',
+            features: ['Getrennte Codebase', 'Strukturierte Übergabe'],
+            href: '/de/custom-systems?track=private-2200#diagnostic',
+            primary: true,
+          },
+          {
+            label: 'CHF 4’500',
+            price: 'leichtes Backend',
+            features: ['Leichte Business-Logik', 'Intake, Sync oder simples Portal'],
+            href: '/de/custom-systems?track=backend-4500#diagnostic',
+          },
+          {
+            label: 'CHF 8’000+',
+            price: 'schwereres System',
+            features: ['Headless Shop', 'Admin, Portal oder tiefere Architektur'],
+            href: '/de/custom-systems?track=shop-8000#diagnostic',
+          },
         ]}
         footnote="Architektur-, Portal-, Admin- oder Plattformarbeit wird nach dem bezahlten 15-Min.-/CHF-80-Diagnostik sauber gescopt."
       />
     </div>
   </div>
-
-  
 
   <Features3
     title="Was unsere Angebote beinhalten können"
@@ -193,17 +232,20 @@ const metadata = {
       },
       {
         title: '4. Freigabe & Go-Live',
-        description: 'Sie geben die finale Version frei, wir planen den Go-Live und offerieren jede Scope-Erweiterung separat.',
+        description:
+          'Sie geben die finale Version frei, wir planen den Go-Live und offerieren jede Scope-Erweiterung separat.',
         icon: 'tabler:rocket',
       },
     ]}
   >
     <Fragment slot="image">
-      <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-white shadow-xl">
+      <div
+        class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-white shadow-xl"
+      >
         <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Prozess</p>
-          <p class="mt-6 max-w-xs text-base text-blue-100/90">
-            Einfacher Ablauf: Briefing, Inhaltsintegration und Freigaben per E‑Mail.
-          </p>
+        <p class="mt-6 max-w-xs text-base text-blue-100/90">
+          Einfacher Ablauf: Briefing, Inhaltsintegration und Freigaben per E‑Mail.
+        </p>
       </div>
     </Fragment>
   </Steps>
@@ -218,11 +260,13 @@ const metadata = {
       },
       {
         title: 'Wie lange dauert das Paket Essentiel?',
-        description: 'Rund fünf Arbeitstage nach Eingang Ihrer Inhalte. Den genauen Zeitplan erhalten Sie beim Briefing.',
+        description:
+          'Rund fünf Arbeitstage nach Eingang Ihrer Inhalte. Den genauen Zeitplan erhalten Sie beim Briefing.',
       },
       {
         title: 'Was passiert bei zusätzlichen Seiten oder weiterem Brainstorming?',
-        description: 'Zusätzliche Seiten, Workshops oder Brainstorming, Strukturänderungen und Leistungen ausserhalb des Umfangs werden vor Produktionsstart separat offeriert.',
+        description:
+          'Zusätzliche Seiten, Workshops oder Brainstorming, Strukturänderungen und Leistungen ausserhalb des Umfangs werden vor Produktionsstart separat offeriert.',
       },
       {
         title: 'Ist der Serviceplan obligatorisch?',
@@ -230,7 +274,8 @@ const metadata = {
       },
       {
         title: 'Welche Zahlungsmittel akzeptiert ihr?',
-        description: 'Schweizer Karten, Twint, Banküberweisung und QR-Rechnung. Abonnemente monatlich oder jährlich zahlbar.',
+        description:
+          'Schweizer Karten, Twint, Banküberweisung und QR-Rechnung. Abonnemente monatlich oder jährlich zahlbar.',
       },
     ]}
   />

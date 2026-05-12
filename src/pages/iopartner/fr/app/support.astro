@@ -4,10 +4,13 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
 
 <BackendLayout pageTitle="Support">
   <section class="space-y-8">
-    <div class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40">
+    <div
+      class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40"
+    >
       <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Créer une demande client</h2>
       <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
-        Chaque demande crée un ticket traçable, envoie un email à support@iopartner.ch et conserve l’historique pour la facturation.
+        Chaque demande crée un ticket traçable, envoie un email à support@iopartner.ch et conserve l’historique pour la
+        facturation.
       </p>
       <form id="support-form" class="mt-6 grid gap-4 lg:grid-cols-2">
         <div>
@@ -91,7 +94,9 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
       </form>
     </div>
 
-    <div class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40">
+    <div
+      class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40"
+    >
       <div class="flex items-center justify-between">
         <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Backlog des tickets</h2>
         <span class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Synchronisation auto</span>
@@ -107,9 +112,14 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
               <th class="px-4 py-3 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody id="support-table" class="divide-y divide-slate-200 dark:divide-slate-800 text-slate-700 dark:text-slate-200">
+          <tbody
+            id="support-table"
+            class="divide-y divide-slate-200 dark:divide-slate-800 text-slate-700 dark:text-slate-200"
+          >
             <tr>
-              <td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">Chargement des tickets…</td>
+              <td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400"
+                >Chargement des tickets…</td
+              >
             </tr>
           </tbody>
         </table>
@@ -136,7 +146,8 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
     tableBody.innerHTML = '';
 
     if (!tickets.length) {
-      tableBody.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">Aucun ticket. Ajoutez-en un ci-dessus.</td></tr>';
+      tableBody.innerHTML =
+        '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">Aucun ticket. Ajoutez-en un ci-dessus.</td></tr>';
       return;
     }
 
@@ -187,7 +198,8 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
 
   const loadTickets = async () => {
     if (tableBody) {
-      tableBody.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">Chargement des tickets…</td></tr>';
+      tableBody.innerHTML =
+        '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">Chargement des tickets…</td></tr>';
     }
     try {
       const response = await authFetch('/support');
@@ -195,7 +207,8 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
     } catch (error) {
       console.error(error);
       if (tableBody) {
-        tableBody.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-red-400">Impossible de charger les tickets support.</td></tr>';
+        tableBody.innerHTML =
+          '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-red-400">Impossible de charger les tickets support.</td></tr>';
       }
     }
   };

@@ -4,10 +4,13 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
 
 <BackendLayout pageTitle="Sites web">
   <section class="space-y-8">
-    <div class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40">
+    <div
+      class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40"
+    >
       <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Connecter un site</h2>
       <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
-        Capturez l'espace de production pour un site client. Les Google Docs et dossiers sont créés automatiquement si vous laissez ces champs vides.
+        Capturez l'espace de production pour un site client. Les Google Docs et dossiers sont créés automatiquement si
+        vous laissez ces champs vides.
       </p>
       <form id="website-form" class="mt-6 grid gap-4 lg:grid-cols-2">
         <div class="lg:col-span-2 grid gap-4 sm:grid-cols-2">
@@ -56,7 +59,9 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
           />
         </div>
         <div>
-          <label class="block text-sm text-slate-600 dark:text-slate-300" for="preview_url">URL de prévisualisation</label>
+          <label class="block text-sm text-slate-600 dark:text-slate-300" for="preview_url"
+            >URL de prévisualisation</label
+          >
           <input
             id="preview_url"
             name="preview_url"
@@ -65,7 +70,9 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
           />
         </div>
         <div>
-          <label class="block text-sm text-slate-600 dark:text-slate-300" for="google_doc_id">ID Google Doc (optionnel)</label>
+          <label class="block text-sm text-slate-600 dark:text-slate-300" for="google_doc_id"
+            >ID Google Doc (optionnel)</label
+          >
           <input
             id="google_doc_id"
             name="google_doc_id"
@@ -74,7 +81,9 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
           />
         </div>
         <div>
-          <label class="block text-sm text-slate-600 dark:text-slate-300" for="template_key">Clé de template (optionnel)</label>
+          <label class="block text-sm text-slate-600 dark:text-slate-300" for="template_key"
+            >Clé de template (optionnel)</label
+          >
           <input
             id="template_key"
             name="template_key"
@@ -95,7 +104,9 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
       </form>
     </div>
 
-    <div class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40">
+    <div
+      class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40"
+    >
       <div class="flex items-center justify-between">
         <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Pipeline de livraison</h2>
         <span class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Temps réel</span>
@@ -111,9 +122,14 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
               <th class="px-4 py-3 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody id="website-table" class="divide-y divide-slate-200 dark:divide-slate-800 text-slate-700 dark:text-slate-200">
+          <tbody
+            id="website-table"
+            class="divide-y divide-slate-200 dark:divide-slate-800 text-slate-700 dark:text-slate-200"
+          >
             <tr>
-              <td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">Chargement des sites…</td>
+              <td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400"
+                >Chargement des sites…</td
+              >
             </tr>
           </tbody>
         </table>
@@ -189,8 +205,8 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
       if (isSelected) hasSelected = true;
       options.push(
         `<option value="${htmlEscape(client.id)}" ${isSelected ? 'selected' : ''}>${htmlEscape(
-          client.company_name,
-        )}</option>`,
+          client.company_name
+        )}</option>`
       );
     });
     if (selectedId && !hasSelected) {
@@ -440,7 +456,8 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
     tableBody.innerHTML = '';
 
     if (!websites.length) {
-      tableBody.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">Aucun site pour le moment. Ajoutez-en un ci-dessus.</td></tr>';
+      tableBody.innerHTML =
+        '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">Aucun site pour le moment. Ajoutez-en un ci-dessus.</td></tr>';
       return;
     }
 
@@ -513,9 +530,7 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
 
     const clientEl = row.querySelector('[data-field="client"]');
     if (clientEl)
-      clientEl.textContent = website.client_id
-        ? clientLookup[website.client_id] || website.client_id
-        : 'No client';
+      clientEl.textContent = website.client_id ? clientLookup[website.client_id] || website.client_id : 'No client';
 
     const domainEl = row.querySelector('[data-field="domain"]');
     if (domainEl)
@@ -684,7 +699,11 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
       });
     } catch (error) {
       console.error(error);
-      showFeedback(feedback, error instanceof Error ? error.message : "Échec de l'enregistrement de la section.", 'error');
+      showFeedback(
+        feedback,
+        error instanceof Error ? error.message : "Échec de l'enregistrement de la section.",
+        'error'
+      );
     } finally {
       if (submit) {
         submit.classList.remove('animate-pulse');
@@ -763,7 +782,8 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
 
   const loadWebsites = async () => {
     if (tableBody) {
-      tableBody.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">Chargement des sites…</td></tr>';
+      tableBody.innerHTML =
+        '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">Chargement des sites…</td></tr>';
     }
     try {
       const response = await authFetch('/websites');
@@ -771,7 +791,8 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
     } catch (error) {
       console.error(error);
       if (tableBody) {
-        tableBody.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-red-400">Impossible de charger les sites.</td></tr>';
+        tableBody.innerHTML =
+          '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-red-400">Impossible de charger les sites.</td></tr>';
       }
     }
   };
@@ -933,9 +954,14 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
         const row = target.closest('tr');
         const container = row?.querySelector(`[data-sections="${websiteId}"]`);
         const sectionForm = container?.querySelector(`[data-section-form="${sectionDeleteId}"]`);
-        const feedback = sectionForm?.querySelector('[data-feedback]') ?? container?.querySelector('[data-section-global]');
+        const feedback =
+          sectionForm?.querySelector('[data-feedback]') ?? container?.querySelector('[data-section-global]');
         if (feedback) {
-          showFeedback(feedback, error instanceof Error ? error.message : 'Échec de la suppression de la section.', 'error');
+          showFeedback(
+            feedback,
+            error instanceof Error ? error.message : 'Échec de la suppression de la section.',
+            'error'
+          );
         }
       } finally {
         target.classList.remove('animate-pulse');

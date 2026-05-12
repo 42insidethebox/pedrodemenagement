@@ -4,29 +4,51 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
 
 <BackendLayout pageTitle="Attività">
   <section class="space-y-8">
-    <div class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40">
+    <div
+      class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40"
+    >
       <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Crea un'attività</h2>
-      <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Assegna consegne a progetti e responsabili con scadenze.</p>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
+        Assegna consegne a progetti e responsabili con scadenze.
+      </p>
       <form id="task-form" class="mt-6 grid gap-4 lg:grid-cols-2">
         <div>
           <label class="block text-sm text-slate-600 dark:text-slate-300" for="title">Titolo</label>
-          <input id="title" name="title" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white" />
+          <input
+            id="title"
+            name="title"
+            required
+            class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"
+          />
         </div>
         <div>
           <label class="block text-sm text-slate-600 dark:text-slate-300" for="project_id">Progetto</label>
-          <select id="project_id" name="project_id" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white">
+          <select
+            id="project_id"
+            name="project_id"
+            required
+            class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"
+          >
             <option value="">Caricamento progetti…</option>
           </select>
         </div>
         <div>
           <label class="block text-sm text-slate-600 dark:text-slate-300" for="assignee_id">Assegnatario</label>
-          <select id="assignee_id" name="assignee_id" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white">
+          <select
+            id="assignee_id"
+            name="assignee_id"
+            class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"
+          >
             <option value="">Non assegnato</option>
           </select>
         </div>
         <div>
           <label class="block text-sm text-slate-600 dark:text-slate-300" for="status">Stato</label>
-          <select id="status" name="status" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white">
+          <select
+            id="status"
+            name="status"
+            class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"
+          >
             <option value="todo">Da fare</option>
             <option value="in_progress">In corso</option>
             <option value="blocked">Bloccata</option>
@@ -35,7 +57,11 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
         </div>
         <div>
           <label class="block text-sm text-slate-600 dark:text-slate-300" for="priority">Priorità</label>
-          <select id="priority" name="priority" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white">
+          <select
+            id="priority"
+            name="priority"
+            class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"
+          >
             <option value="low">Bassa</option>
             <option value="medium">Media</option>
             <option value="high">Alta</option>
@@ -44,20 +70,37 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
         </div>
         <div>
           <label class="block text-sm text-slate-600 dark:text-slate-300" for="due_date">Scadenza</label>
-          <input id="due_date" name="due_date" type="date" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white" />
+          <input
+            id="due_date"
+            name="due_date"
+            type="date"
+            class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"
+          />
         </div>
         <div class="lg:col-span-2">
           <label class="block text-sm text-slate-600 dark:text-slate-300" for="description">Descrizione</label>
-          <textarea id="description" name="description" rows="3" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"></textarea>
+          <textarea
+            id="description"
+            name="description"
+            rows="3"
+            class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"
+          ></textarea>
         </div>
         <div class="lg:col-span-2 flex items-center gap-3">
-          <button id="task-submit" type="submit" class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-blue-500/30 transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-70">Salva attività</button>
+          <button
+            id="task-submit"
+            type="submit"
+            class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-blue-500/30 transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-70"
+            >Salva attività</button
+          >
           <p id="task-message" class="text-sm text-slate-500 dark:text-slate-400"></p>
         </div>
       </form>
     </div>
 
-    <div class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40">
+    <div
+      class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40"
+    >
       <div class="flex items-center justify-between">
         <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Board operativo</h2>
         <span class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Vista operativa</span>
@@ -75,9 +118,14 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
               <th class="px-4 py-3 text-right">Azioni</th>
             </tr>
           </thead>
-          <tbody id="task-table" class="divide-y divide-slate-200 text-slate-700 dark:divide-slate-800 dark:text-slate-200">
+          <tbody
+            id="task-table"
+            class="divide-y divide-slate-200 text-slate-700 dark:divide-slate-800 dark:text-slate-200"
+          >
             <tr>
-              <td colspan="7" class="px-4 py-6 text-center text-sm text-slate-500 dark:text-slate-400">Caricamento delle attività…</td>
+              <td colspan="7" class="px-4 py-6 text-center text-sm text-slate-500 dark:text-slate-400"
+                >Caricamento delle attività…</td
+              >
             </tr>
           </tbody>
         </table>
@@ -101,13 +149,13 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
 
   const loadProjects = async () => {
     if (!projectSelect) return;
-      projectSelect.innerHTML = '<option value="">Caricamento progetti…</option>';
+    projectSelect.innerHTML = '<option value="">Caricamento progetti…</option>';
     Object.keys(projectLookup).forEach((key) => delete projectLookup[key]);
     try {
       const response = await authFetch('/projects');
       const projects = response.projects ?? [];
       if (!projects.length) {
-      projectSelect.innerHTML = '<option value="">Aggiungi prima un progetto</option>';
+        projectSelect.innerHTML = '<option value="">Aggiungi prima un progetto</option>';
         return;
       }
       projectSelect.innerHTML = projects
@@ -132,7 +180,8 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
       members.forEach((member) => {
         teamLookup[member.user_id] = member.full_name ?? member.user_id;
       });
-      assigneeSelect.innerHTML = '<option value="">Non assegnato</option>' +
+      assigneeSelect.innerHTML =
+        '<option value="">Non assegnato</option>' +
         members
           .map((member) => `<option value="${member.user_id}">${member.full_name ?? member.user_id}</option>`)
           .join('');
@@ -146,7 +195,8 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
     tableBody.innerHTML = '';
 
     if (!tasks.length) {
-      tableBody.innerHTML = '<tr><td colspan="7" class="px-4 py-6 text-center text-sm text-slate-500 dark:text-slate-400">Nessuna attività. Pianificane una sopra.</td></tr>';
+      tableBody.innerHTML =
+        '<tr><td colspan="7" class="px-4 py-6 text-center text-sm text-slate-500 dark:text-slate-400">Nessuna attività. Pianificane una sopra.</td></tr>';
       return;
     }
 
@@ -176,7 +226,8 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
     } catch (error) {
       console.error(error);
       if (tableBody) {
-        tableBody.innerHTML = '<tr><td colspan="7" class="px-4 py-6 text-center text-sm text-red-400">Impossibile caricare le attività.</td></tr>';
+        tableBody.innerHTML =
+          '<tr><td colspan="7" class="px-4 py-6 text-center text-sm text-red-400">Impossibile caricare le attività.</td></tr>';
       }
     }
   };
@@ -219,7 +270,7 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
         console.error(error);
         if (message) {
           message.classList.add('text-red-400');
-        message.textContent = error instanceof Error ? error.message : "Impossibile salvare l'attività.";
+          message.textContent = error instanceof Error ? error.message : "Impossibile salvare l'attività.";
         }
       } finally {
         if (submitButton) {

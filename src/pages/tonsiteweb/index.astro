@@ -3,7 +3,6 @@ export const prerender = false;
 import Layout from '~/layouts/PageLayout.astro';
 
 import Hero from '~/components/widgets/Hero.astro';
-import Note from '~/components/widgets/Note.astro';
 import Features from '~/components/widgets/Features.astro';
 import Features2 from '~/components/widgets/Features2.astro';
 import Steps from '~/components/widgets/Steps.astro';
@@ -23,6 +22,8 @@ const metadata = {
 
   <Hero
     id="process"
+    class="tsw-home-hero"
+    tagline="Consulting technique · Systems & operations · Sites standardisés"
     actions={[
       {
         variant: 'primary',
@@ -32,30 +33,80 @@ const metadata = {
       },
       { text: 'Voir les tarifs', href: '/pricing' },
     ]}
-    image={{ src: '~/assets/images/light_minimalist.png', alt: 'Interface TonSiteWeb.ch' }}
   >
-    <Fragment slot="title">Consulting technique, projets web et outils numériques sur mesure</Fragment>
+    <Fragment slot="title">Clarté technique, delivery propre et sites web quand le standard suffit.</Fragment>
 
     <Fragment slot="subtitle">
-      TonSiteWeb.ch aide les PME et indépendants à cadrer un besoin technique, débloquer un sujet précis ou livrer un
-      projet plus proprement. Et quand un site standard suffit, l’offre de lancement dès 999 CHF reste disponible.
+      Nous aidons les PME et indépendants à choisir le bon niveau d’intervention: cadrer vite, construire sur mesure, ou
+      lancer un site simple dès 999 CHF.
+    </Fragment>
+
+    <Fragment slot="bg">
+      <div class="tsw-home-hero-bg"></div>
+      <div class="tsw-home-hero-glow tsw-home-hero-glow--warm" aria-hidden="true"></div>
+      <div class="tsw-home-hero-glow tsw-home-hero-glow--cool" aria-hidden="true"></div>
+      <div class="tsw-home-hero-plate" aria-hidden="true"></div>
+      <div class="tsw-home-hero-axis" aria-hidden="true"></div>
+      <div class="tsw-home-hero-orbit" aria-hidden="true"></div>
+    </Fragment>
+
+    <Fragment slot="image">
+      <div class="tsw-home-hero-shell">
+        <div class="tsw-home-hero-visual">
+          <div class="tsw-home-hero-bar">
+            <span class="tsw-home-hero-chip">TonSiteWeb.ch</span>
+            <span class="tsw-home-hero-meta">Consulting technique • Systems & operations • Sites standardisés</span>
+          </div>
+
+          <article class="tsw-home-hero-intro">
+            <p class="tsw-home-hero-kicker">Choisir le bon point d’entrée</p>
+            <h3>Trois portes claires selon le besoin réel.</h3>
+            <p>
+              Consulting pour clarifier ou débloquer, systems & operations pour construire plus sérieusement, site
+              standardisé quand une présence web simple suffit vraiment.
+            </p>
+          </article>
+
+          <div class="tsw-home-hero-entry-grid">
+            <a class="tsw-home-hero-entry tsw-home-hero-entry--consulting" href="/contact#form">
+              <div class="tsw-home-hero-entry-head">
+                <span class="tsw-home-hero-entry-label">Consulting technique</span>
+                <strong>60 CHF / 15 min</strong>
+              </div>
+              <p>Arbitrer, débloquer, valider une direction.</p>
+              <span class="tsw-home-hero-entry-cta">Réserver un consulting</span>
+            </a>
+
+            <a class="tsw-home-hero-entry tsw-home-hero-entry--systems" href="/contact#form">
+              <div class="tsw-home-hero-entry-head">
+                <span class="tsw-home-hero-entry-label">Systems & operations</span>
+                <strong>Sur devis</strong>
+              </div>
+              <p>Codebase privée, backend, infra, automatisation, continuité.</p>
+              <span class="tsw-home-hero-entry-cta">Discuter du scope</span>
+            </a>
+
+            <a class="tsw-home-hero-entry tsw-home-hero-entry--website" href="/pricing?tab=website#pricing-options">
+              <div class="tsw-home-hero-entry-head">
+                <span class="tsw-home-hero-entry-label">Site standardisé</span>
+                <strong>Dès 999 CHF</strong>
+              </div>
+              <p>Site vitrine simple, rapide et propre quand cela suffit.</p>
+              <span class="tsw-home-hero-entry-cta">Voir les packs site</span>
+            </a>
+          </div>
+        </div>
+      </div>
     </Fragment>
   </Hero>
-
-  <!-- Note Widget ******************* -->
-
-  <Note
-    title="Le bon niveau d’intervention"
-    description="Le site standard reste une option simple. Mais la valeur ne s’arrête pas là: nous intervenons aussi en consulting technique, intégration, automatisation et développement sur des sujets plus larges."
-  />
 
   <!-- Features Widget *************** -->
 
   <Features
     id="features"
     tagline="Ce que nous faisons"
-    title="Consulting d’abord, projet sur mesure ensuite, site standard si cela suffit"
-    subtitle="Nous commençons par le besoin réel: arbitrer, construire, ou aller au plus simple quand un site standardisé suffit."
+    title="Trois points d’entrée, selon le besoin réel"
+    subtitle="Clarifier vite, construire proprement, ou lancer un site standard quand c’est suffisant."
     items={[
       {
         title: 'Consulting technique',
@@ -64,34 +115,16 @@ const metadata = {
         icon: 'tabler:sparkles',
       },
       {
-        title: 'Projets sur mesure',
+        title: 'Systems & operations',
         description:
-          'Intégrations, automatisations, codebase privée, backend léger, outillage interne ou développement plus avancé quand le standard ne suffit plus.',
-        icon: 'tabler:map-pin',
-      },
-      {
-        title: 'Sites web standardisés',
-        description:
-          'Une offre simple dès 999 CHF pour les cas où une présence en ligne propre et rapide est vraiment tout ce qu’il faut.',
-        icon: 'tabler:calendar-time',
-      },
-      {
-        title: 'Périmètre clair',
-        description:
-          'Chaque besoin est rangé dans la bonne catégorie: consulting court, projet cadré, ou lancement standardisé sans surconstruire.',
+          'Codebase privée, backend, intégrations, automatisations, infrastructure et continuité technique quand le standard ne suffit plus.',
         icon: 'tabler:server',
       },
       {
-        title: 'Continuité de support',
+        title: 'Site standardisé',
         description:
-          'Un interlocuteur répond sous un jour ouvré et peut suivre le sujet après le cadrage, le lancement ou la mise en production.',
-        icon: 'tabler:receipt',
-      },
-      {
-        title: 'Contact & rendez-vous',
-        description:
-          'Formulaire, WhatsApp, Calendly ou prise de rendez-vous simple selon qu’il s’agisse d’un site, d’un cadrage ou d’un projet plus large.',
-        icon: 'tabler:headset',
+          'Une offre simple dès 999 CHF pour les cas où une présence en ligne propre et rapide est vraiment tout ce qu’il faut.',
+        icon: 'tabler:layout',
       },
     ]}
   />
@@ -130,7 +163,7 @@ const metadata = {
 
     <Fragment slot="image">
       <div
-        class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl"
+        class="tsw-home-figure tsw-home-figure--method relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl"
       >
         <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Parcours clair</p>
         <h4 class="mt-4 text-3xl font-semibold">Diagnostic → Exécution → Suivi</h4>
@@ -179,7 +212,7 @@ const metadata = {
   >
     <Fragment slot="image">
       <div
-        class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl"
+        class="tsw-home-figure tsw-home-figure--timeline relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl"
       >
         <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Timeline</p>
         <p class="mt-6 max-w-xs text-base text-blue-100/90">
@@ -224,7 +257,7 @@ const metadata = {
 
     <Fragment slot="image">
       <div
-        class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl"
+        class="tsw-home-figure tsw-home-figure--decision relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl"
       >
         <h4 class="text-3xl font-semibold">Le standard quand il suffit. Le sur mesure quand il faut.</h4>
         <ul class="mt-6 space-y-3 text-left text-blue-100/90">
@@ -296,62 +329,10 @@ const metadata = {
     stats={[
       { title: 'Consulting express', amount: '60 CHF / 15 min' },
       { title: 'Consulting', amount: '140 CHF / h' },
-      { title: 'Sur mesure', amount: '2 000+ CHF' },
+      { title: 'Sur mesure', amount: 'scope sur devis' },
       { title: 'Site standard', amount: '999 CHF' },
     ]}
   />
-
-  <!-- Use cases ******************** -->
-  <div class="bg-white dark:bg-slate-900 py-16 px-4">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-10">
-        <p class="text-sm font-semibold uppercase tracking-widest text-blue-600 mb-2">Cas typiques</p>
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Le bon point d’entrée dépend du besoin</h2>
-        <p class="text-gray-500 max-w-xl mx-auto text-sm">
-          Nous n’essayons pas de faire entrer chaque demande dans la même boîte. Le bon format dépend du niveau de
-          complexité et de l’urgence réelle.
-        </p>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700">
-          <p class="text-blue-700 dark:text-blue-300 font-semibold text-sm mb-3">Consulting</p>
-          <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4">
-            Vous avez un doute technique, un arbitrage à faire, un devis à challenger ou un chantier qui part dans tous
-            les sens.
-          </p>
-          <p class="text-sm font-semibold text-gray-900 dark:text-white">On commence court</p>
-          <p class="text-xs text-gray-400">15 min ou 1 h pour décider avant de surconstruire</p>
-        </div>
-        <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700">
-          <p class="text-blue-700 dark:text-blue-300 font-semibold text-sm mb-3">Projet sur mesure</p>
-          <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4">
-            Il faut connecter des outils, automatiser un flux, structurer un backend léger ou sortir d’un template
-            standard.
-          </p>
-          <p class="text-sm font-semibold text-gray-900 dark:text-white">On cadre avant de builder</p>
-          <p class="text-xs text-gray-400">Périmètre, chiffrage et prochaine étape lisibles</p>
-        </div>
-        <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700">
-          <p class="text-blue-700 dark:text-blue-300 font-semibold text-sm mb-3">Site standardisé</p>
-          <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4">
-            Vous avez surtout besoin d’une présence en ligne propre, crédible et rapide, sans budget ni complexité de
-            build privée.
-          </p>
-          <p class="text-sm font-semibold text-gray-900 dark:text-white">On lance simplement</p>
-          <p class="text-xs text-gray-400">Offre standard dès 999 CHF quand cela suffit</p>
-        </div>
-      </div>
-      <div
-        class="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-6 text-center border border-blue-100 dark:border-blue-800"
-      >
-        <p class="text-blue-700 dark:text-blue-300 font-semibold mb-1">Point important</p>
-        <p class="text-gray-600 dark:text-gray-400 text-sm">
-          Le pack site reste utile et rentable dans beaucoup de cas. La différence est que nous ne réduisons plus toute
-          la relation à cela: consulting, exécution technique et support restent aussi des portes d’entrée normales.
-        </p>
-      </div>
-    </div>
-  </div>
 
   <!-- FAQs Widget ******************* -->
 
@@ -413,4 +394,744 @@ const metadata = {
       lieu de pousser tout le monde vers la même offre.
     </Fragment>
   </CallToAction>
+
+  <style>
+    .tsw-home-hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 10% 8%, rgba(249, 115, 22, 0.18), transparent 24%),
+        radial-gradient(circle at 88% 10%, rgba(59, 130, 246, 0.14), transparent 28%),
+        radial-gradient(circle at 74% 76%, rgba(239, 68, 68, 0.1), transparent 18%),
+        radial-gradient(circle at 18% 78%, rgba(14, 165, 233, 0.08), transparent 22%),
+        linear-gradient(180deg, rgba(248, 250, 252, 0.92), rgba(255, 255, 255, 0));
+    }
+
+    .tsw-home-hero-glow,
+    .tsw-home-hero-plate,
+    .tsw-home-hero-axis,
+    .tsw-home-hero-orbit {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .tsw-home-hero-glow {
+      filter: blur(24px);
+      opacity: 0.9;
+    }
+
+    .tsw-home-hero-glow--warm {
+      inset: 2.2rem auto auto 4%;
+      width: min(18rem, 26vw);
+      height: min(18rem, 26vw);
+      border-radius: 999px;
+      background:
+        radial-gradient(circle, rgba(251, 146, 60, 0.3) 0%, rgba(249, 115, 22, 0.18) 38%, transparent 72%),
+        radial-gradient(circle at 65% 65%, rgba(239, 68, 68, 0.16), transparent 62%);
+    }
+
+    .tsw-home-hero-glow--cool {
+      inset: auto 4% 1.6rem auto;
+      width: min(19rem, 28vw);
+      height: min(19rem, 28vw);
+      border-radius: 999px;
+      background:
+        radial-gradient(circle, rgba(14, 165, 233, 0.18) 0%, rgba(37, 99, 235, 0.14) 38%, transparent 74%),
+        radial-gradient(circle at 35% 35%, rgba(125, 211, 252, 0.1), transparent 62%);
+    }
+
+    .tsw-home-hero-plate {
+      inset: 2.5rem max(1rem, 8vw) auto;
+      height: 15rem;
+      border: 1px solid rgba(100, 116, 139, 0.12);
+      border-radius: 1.7rem;
+      background:
+        linear-gradient(90deg, rgba(71, 85, 105, 0.04) 1px, transparent 1px),
+        linear-gradient(rgba(71, 85, 105, 0.04) 1px, transparent 1px),
+        linear-gradient(135deg, rgba(249, 115, 22, 0.06), transparent 32%, rgba(37, 99, 235, 0.04) 78%, transparent),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.08));
+      background-size:
+        22px 22px,
+        22px 22px,
+        100% 100%,
+        100% 100%;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.74),
+        0 18px 54px -42px rgba(51, 65, 85, 0.22);
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.2));
+    }
+
+    .tsw-home-hero-plate::before,
+    .tsw-home-hero-plate::after {
+      content: '';
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .tsw-home-hero-plate::before {
+      left: 1rem;
+      right: 1rem;
+      top: 1rem;
+      bottom: 1rem;
+      border: 1px dashed rgba(100, 116, 139, 0.15);
+      border-radius: 1rem;
+    }
+
+    .tsw-home-hero-plate::after {
+      left: 50%;
+      top: 0.9rem;
+      bottom: 0.9rem;
+      width: 1px;
+      background: linear-gradient(180deg, rgba(14, 165, 233, 0.1), rgba(71, 85, 105, 0.03));
+      transform: translateX(-0.5px);
+      opacity: 0.8;
+    }
+
+    .tsw-home-hero-axis::before,
+    .tsw-home-hero-axis::after {
+      content: '';
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .tsw-home-hero-axis::before {
+      left: 10%;
+      right: 10%;
+      top: 8.5rem;
+      height: 1px;
+      background:
+        linear-gradient(90deg, transparent, rgba(100, 116, 139, 0.24) 12%, rgba(100, 116, 139, 0.24) 88%, transparent),
+        linear-gradient(
+          90deg,
+          transparent 0%,
+          transparent 15%,
+          rgba(100, 116, 139, 0.18) 15%,
+          rgba(100, 116, 139, 0.18) 15.4%,
+          transparent 15.4%,
+          transparent 49.3%,
+          rgba(14, 165, 233, 0.18) 49.3%,
+          rgba(14, 165, 233, 0.18) 50.7%,
+          transparent 50.7%,
+          transparent 84.6%,
+          rgba(100, 116, 139, 0.18) 84.6%,
+          rgba(100, 116, 139, 0.18) 85%,
+          transparent 85%
+        );
+      opacity: 0.62;
+    }
+
+    .tsw-home-hero-axis::after {
+      top: 4.6rem;
+      bottom: 4.2rem;
+      left: 50%;
+      width: 1px;
+      background:
+        linear-gradient(180deg, transparent, rgba(100, 116, 139, 0.18) 18%, rgba(100, 116, 139, 0.18) 82%, transparent),
+        linear-gradient(
+          180deg,
+          transparent 0%,
+          transparent 18%,
+          rgba(100, 116, 139, 0.15) 18%,
+          rgba(100, 116, 139, 0.15) 18.5%,
+          transparent 18.5%,
+          transparent 49.3%,
+          rgba(14, 165, 233, 0.16) 49.3%,
+          rgba(14, 165, 233, 0.16) 50.7%,
+          transparent 50.7%,
+          transparent 81.5%,
+          rgba(100, 116, 139, 0.15) 81.5%,
+          rgba(100, 116, 139, 0.15) 82%,
+          transparent 82%
+        );
+      transform: translateX(-0.5px);
+      opacity: 0.5;
+    }
+
+    .tsw-home-hero-orbit::before,
+    .tsw-home-hero-orbit::after {
+      content: '';
+      position: absolute;
+      border-radius: 999px;
+      pointer-events: none;
+    }
+
+    .tsw-home-hero-orbit::before {
+      right: max(1.5rem, 7vw);
+      top: 2.9rem;
+      width: 14rem;
+      height: 14rem;
+      border: 1px solid rgba(100, 116, 139, 0.12);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+      opacity: 0.72;
+    }
+
+    .tsw-home-hero-orbit::after {
+      left: max(1.5rem, 8vw);
+      top: 3.7rem;
+      width: 8.5rem;
+      height: 8.5rem;
+      border: 1px dashed rgba(100, 116, 139, 0.15);
+      opacity: 0.68;
+    }
+
+    .tsw-home-hero-shell {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(100, 116, 139, 0.14);
+      border-radius: 1.9rem;
+      padding: 0.8rem;
+      background:
+        linear-gradient(90deg, rgba(71, 85, 105, 0.035) 1px, transparent 1px),
+        linear-gradient(rgba(71, 85, 105, 0.035) 1px, transparent 1px),
+        linear-gradient(140deg, rgba(249, 115, 22, 0.05), transparent 30%, rgba(37, 99, 235, 0.04) 74%, transparent),
+        linear-gradient(180deg, rgba(241, 245, 249, 0.34), rgba(255, 255, 255, 0));
+      background-size:
+        24px 24px,
+        24px 24px,
+        100% 100%,
+        100% 100%;
+      box-shadow: 0 30px 72px -56px rgba(51, 65, 85, 0.24);
+    }
+
+    .tsw-home-hero-shell::before,
+    .tsw-home-hero-shell::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .tsw-home-hero-shell::before {
+      background:
+        radial-gradient(circle at 0% 0%, rgba(249, 115, 22, 0.12), transparent 24%),
+        radial-gradient(circle at 100% 12%, rgba(59, 130, 246, 0.08), transparent 22%),
+        linear-gradient(130deg, transparent 0%, rgba(255, 255, 255, 0.12) 48%, transparent 100%);
+      opacity: 0.82;
+    }
+
+    .tsw-home-hero-shell::after {
+      inset: auto -8% -20% auto;
+      width: 15rem;
+      height: 15rem;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle, rgba(37, 99, 235, 0.08), transparent 68%),
+        radial-gradient(circle at 36% 36%, rgba(249, 115, 22, 0.08), transparent 58%);
+      filter: blur(12px);
+    }
+
+    :global(.dark) .tsw-home-hero-bg {
+      background:
+        radial-gradient(circle at 15% 0%, rgba(100, 116, 139, 0.16), transparent 28%),
+        radial-gradient(circle at 100% 10%, rgba(14, 165, 233, 0.1), transparent 24%),
+        linear-gradient(180deg, rgba(2, 6, 23, 0.9), rgba(15, 23, 42, 0));
+    }
+
+    :global(.dark) .tsw-home-hero-plate {
+      border-color: rgba(34, 211, 238, 0.08);
+      background:
+        linear-gradient(90deg, rgba(34, 211, 238, 0.035) 1px, transparent 1px),
+        linear-gradient(rgba(34, 211, 238, 0.035) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(15, 23, 42, 0.34), rgba(2, 6, 23, 0.08));
+      background-size:
+        22px 22px,
+        22px 22px,
+        100% 100%;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.03),
+        0 18px 54px -42px rgba(2, 6, 23, 0.72);
+    }
+
+    :global(.dark) .tsw-home-hero-plate::before {
+      border-color: rgba(34, 211, 238, 0.08);
+    }
+
+    :global(.dark) .tsw-home-hero-plate::after {
+      background: linear-gradient(180deg, rgba(34, 211, 238, 0.14), rgba(34, 211, 238, 0.02));
+    }
+
+    :global(.dark) .tsw-home-hero-axis::before {
+      background:
+        linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.16) 12%, rgba(34, 211, 238, 0.16) 88%, transparent),
+        linear-gradient(
+          90deg,
+          transparent 0%,
+          transparent 15%,
+          rgba(34, 211, 238, 0.14) 15%,
+          rgba(34, 211, 238, 0.14) 15.4%,
+          transparent 15.4%,
+          transparent 49.3%,
+          rgba(34, 211, 238, 0.2) 49.3%,
+          rgba(34, 211, 238, 0.2) 50.7%,
+          transparent 50.7%,
+          transparent 84.6%,
+          rgba(34, 211, 238, 0.14) 84.6%,
+          rgba(34, 211, 238, 0.14) 85%,
+          transparent 85%
+        );
+    }
+
+    :global(.dark) .tsw-home-hero-axis::after {
+      background:
+        linear-gradient(180deg, transparent, rgba(34, 211, 238, 0.14) 18%, rgba(34, 211, 238, 0.14) 82%, transparent),
+        linear-gradient(
+          180deg,
+          transparent 0%,
+          transparent 18%,
+          rgba(34, 211, 238, 0.12) 18%,
+          rgba(34, 211, 238, 0.12) 18.5%,
+          transparent 18.5%,
+          transparent 49.3%,
+          rgba(34, 211, 238, 0.18) 49.3%,
+          rgba(34, 211, 238, 0.18) 50.7%,
+          transparent 50.7%,
+          transparent 81.5%,
+          rgba(34, 211, 238, 0.12) 81.5%,
+          rgba(34, 211, 238, 0.12) 82%,
+          transparent 82%
+        );
+    }
+
+    :global(.dark) .tsw-home-hero-orbit::before,
+    :global(.dark) .tsw-home-hero-orbit::after {
+      border-color: rgba(34, 211, 238, 0.1);
+    }
+
+    .tsw-home-hero-visual {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(103, 232, 249, 0.24);
+      border-radius: 1.6rem;
+      padding: 1rem;
+      background:
+        linear-gradient(140deg, rgba(7, 18, 36, 0.98), rgba(15, 23, 42, 0.98)),
+        linear-gradient(90deg, rgba(34, 211, 238, 0.08) 1px, transparent 1px),
+        linear-gradient(rgba(34, 211, 238, 0.08) 1px, transparent 1px),
+        linear-gradient(145deg, rgba(249, 115, 22, 0.08), transparent 28%, rgba(59, 130, 246, 0.06) 74%, transparent);
+      background-size:
+        100% 100%,
+        22px 22px,
+        22px 22px,
+        100% 100%;
+      box-shadow: 0 32px 90px -48px rgba(8, 145, 178, 0.72);
+    }
+
+    .tsw-home-hero-visual::before,
+    .tsw-home-hero-visual::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .tsw-home-hero-visual::before {
+      background:
+        radial-gradient(circle at 100% 0%, rgba(249, 115, 22, 0.2), transparent 24%),
+        radial-gradient(circle at 0% 0%, rgba(34, 211, 238, 0.28), transparent 26%),
+        linear-gradient(125deg, transparent 10%, rgba(255, 255, 255, 0.06) 48%, transparent 100%),
+        linear-gradient(180deg, rgba(251, 146, 60, 0.05), transparent 30%);
+    }
+
+    .tsw-home-hero-visual::after {
+      inset: auto -12% -22% auto;
+      width: 18rem;
+      height: 18rem;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle, rgba(14, 165, 233, 0.22), transparent 68%),
+        radial-gradient(circle at 34% 34%, rgba(249, 115, 22, 0.16), transparent 52%);
+      filter: blur(10px);
+    }
+
+    .tsw-home-hero-bar,
+    .tsw-home-hero-intro,
+    .tsw-home-hero-entry-grid {
+      position: relative;
+      z-index: 1;
+    }
+
+    .tsw-home-hero-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+      padding-bottom: 0.85rem;
+      border-bottom: 1px solid rgba(103, 232, 249, 0.16);
+    }
+
+    .tsw-home-hero-chip {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid rgba(103, 232, 249, 0.26);
+      border-radius: 999px;
+      padding: 0.4rem 0.7rem;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #67e8f9;
+      background: rgba(8, 47, 73, 0.44);
+    }
+
+    .tsw-home-hero-meta {
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(186, 230, 253, 0.72);
+    }
+
+    .tsw-home-hero-intro,
+    .tsw-home-hero-entry {
+      position: relative;
+      overflow: hidden;
+      --entry-border: rgba(103, 232, 249, 0.18);
+      --entry-border-hover: rgba(103, 232, 249, 0.34);
+      --entry-label: #7dd3fc;
+      --entry-grid: rgba(34, 211, 238, 0.05);
+      --entry-accent: rgba(34, 211, 238, 0.22);
+      --entry-shadow: rgba(8, 145, 178, 0.66);
+      --entry-bg-top: rgba(8, 47, 73, 0.36);
+      --entry-bg-bottom: rgba(2, 6, 23, 0.52);
+      --entry-bg-top-hover: rgba(12, 74, 110, 0.42);
+      --entry-bg-bottom-hover: rgba(2, 6, 23, 0.62);
+      --entry-focus: rgba(125, 211, 252, 0.9);
+      border: 1px solid var(--entry-border);
+      border-radius: 1.2rem;
+      padding: 1.1rem 1.15rem;
+      background: linear-gradient(180deg, var(--entry-bg-top), var(--entry-bg-bottom));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .tsw-home-hero-entry--consulting {
+      --entry-border: rgba(125, 211, 252, 0.2);
+      --entry-border-hover: rgba(125, 211, 252, 0.36);
+      --entry-label: #bae6fd;
+      --entry-grid: rgba(125, 211, 252, 0.06);
+      --entry-accent: rgba(125, 211, 252, 0.2);
+      --entry-shadow: rgba(37, 99, 235, 0.46);
+      --entry-bg-top: rgba(11, 37, 78, 0.42);
+      --entry-bg-bottom: rgba(2, 6, 23, 0.52);
+      --entry-bg-top-hover: rgba(14, 60, 126, 0.48);
+      --entry-bg-bottom-hover: rgba(2, 6, 23, 0.64);
+      --entry-focus: rgba(125, 211, 252, 0.95);
+    }
+
+    .tsw-home-hero-entry--systems {
+      --entry-border: rgba(103, 232, 249, 0.18);
+      --entry-border-hover: rgba(103, 232, 249, 0.34);
+      --entry-label: #67e8f9;
+      --entry-grid: rgba(34, 211, 238, 0.05);
+      --entry-accent: rgba(34, 211, 238, 0.22);
+      --entry-shadow: rgba(8, 145, 178, 0.66);
+      --entry-bg-top: rgba(8, 47, 73, 0.36);
+      --entry-bg-bottom: rgba(2, 6, 23, 0.52);
+      --entry-bg-top-hover: rgba(12, 74, 110, 0.42);
+      --entry-bg-bottom-hover: rgba(2, 6, 23, 0.62);
+      --entry-focus: rgba(103, 232, 249, 0.9);
+    }
+
+    .tsw-home-hero-entry--website {
+      --entry-border: rgba(251, 146, 60, 0.24);
+      --entry-border-hover: rgba(251, 146, 60, 0.42);
+      --entry-label: #fdba74;
+      --entry-grid: rgba(251, 146, 60, 0.06);
+      --entry-accent: rgba(249, 115, 22, 0.26);
+      --entry-shadow: rgba(234, 88, 12, 0.54);
+      --entry-bg-top: rgba(120, 53, 15, 0.3);
+      --entry-bg-bottom: rgba(30, 10, 5, 0.58);
+      --entry-bg-top-hover: rgba(154, 52, 18, 0.38);
+      --entry-bg-bottom-hover: rgba(41, 13, 7, 0.66);
+      --entry-focus: rgba(251, 146, 60, 0.95);
+    }
+
+    .tsw-home-hero-entry {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+      min-height: 100%;
+      text-decoration: none;
+      transition:
+        transform 220ms ease,
+        border-color 220ms ease,
+        box-shadow 220ms ease,
+        background 220ms ease;
+    }
+
+    .tsw-home-hero-intro::before,
+    .tsw-home-hero-entry::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, var(--entry-grid) 1px, transparent 1px),
+        linear-gradient(var(--entry-grid) 1px, transparent 1px),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.04), transparent 36%, rgba(255, 255, 255, 0.02) 68%, transparent);
+      background-size:
+        18px 18px,
+        18px 18px,
+        100% 100%;
+      opacity: 0.55;
+    }
+
+    .tsw-home-hero-entry::after {
+      content: '';
+      position: absolute;
+      inset: auto -14% -26% auto;
+      width: 7rem;
+      height: 7rem;
+      border-radius: 999px;
+      background: radial-gradient(circle, var(--entry-accent), transparent 72%);
+      filter: blur(8px);
+      opacity: 0.34;
+      transition:
+        opacity 220ms ease,
+        transform 220ms ease;
+      pointer-events: none;
+    }
+
+    .tsw-home-hero-intro > *,
+    .tsw-home-hero-entry > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .tsw-home-hero-intro h3 {
+      margin: 0;
+      font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+      color: #f8fafc;
+    }
+
+    .tsw-home-hero-intro p,
+    .tsw-home-hero-entry p,
+    .tsw-home-hero-entry-label {
+      color: rgba(226, 232, 240, 0.82);
+    }
+
+    .tsw-home-hero-intro p {
+      margin: 0.85rem 0 0;
+      font-size: 1rem;
+      line-height: 1.72;
+      max-width: 34rem;
+    }
+
+    .tsw-home-hero-kicker {
+      margin: 0 0 0.75rem;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #67e8f9;
+    }
+
+    .tsw-home-hero-entry-grid {
+      display: grid;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .tsw-home-hero-entry-head {
+      display: grid;
+      gap: 0.35rem;
+    }
+
+    .tsw-home-hero-entry-head strong {
+      font-size: 1rem;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: #f8fafc;
+    }
+
+    .tsw-home-hero-entry-label {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--entry-label);
+    }
+
+    .tsw-home-hero-entry p {
+      margin: 0.85rem 0 0;
+      line-height: 1.6;
+    }
+
+    .tsw-home-hero-entry-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-top: auto;
+      padding-top: 1rem;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #f8fafc;
+    }
+
+    .tsw-home-hero-entry-cta::after {
+      content: '→';
+      transition: transform 220ms ease;
+    }
+
+    .tsw-home-hero-entry:hover,
+    .tsw-home-hero-entry:focus-visible {
+      transform: translateY(-6px) scale(1.01);
+      border-color: var(--entry-border-hover);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.06),
+        0 22px 52px -34px var(--entry-shadow);
+      background: linear-gradient(180deg, var(--entry-bg-top-hover), var(--entry-bg-bottom-hover));
+    }
+
+    .tsw-home-hero-entry:hover::after,
+    .tsw-home-hero-entry:focus-visible::after {
+      opacity: 0.62;
+      transform: scale(1.14);
+    }
+
+    .tsw-home-hero-entry:hover .tsw-home-hero-entry-cta::after,
+    .tsw-home-hero-entry:focus-visible .tsw-home-hero-entry-cta::after {
+      transform: translateX(0.3rem);
+    }
+
+    .tsw-home-hero-entry:focus-visible {
+      outline: 2px solid var(--entry-focus);
+      outline-offset: 3px;
+    }
+
+    .tsw-home-figure {
+      position: relative;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      isolation: isolate;
+    }
+
+    .tsw-home-figure::before,
+    .tsw-home-figure::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .tsw-home-figure::before {
+      background:
+        linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+        linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.06), transparent 32%, rgba(255, 255, 255, 0.02) 72%, transparent);
+      background-size:
+        22px 22px,
+        22px 22px,
+        100% 100%;
+      opacity: 0.8;
+    }
+
+    .tsw-home-figure::after {
+      inset: auto -12% -28% auto;
+      width: 15rem;
+      height: 15rem;
+      border-radius: 999px;
+      filter: blur(12px);
+      opacity: 0.58;
+    }
+
+    .tsw-home-figure > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .tsw-home-figure--method {
+      border-color: rgba(96, 165, 250, 0.2);
+      background: linear-gradient(
+        145deg,
+        rgba(15, 23, 42, 0.98),
+        rgba(9, 35, 75, 0.96) 48%,
+        rgba(124, 45, 18, 0.92) 112%
+      );
+      box-shadow: 0 28px 72px -44px rgba(37, 99, 235, 0.38);
+    }
+
+    .tsw-home-figure--method::after {
+      background:
+        radial-gradient(circle, rgba(249, 115, 22, 0.24), transparent 62%),
+        radial-gradient(circle at 35% 35%, rgba(59, 130, 246, 0.16), transparent 52%);
+    }
+
+    .tsw-home-figure--timeline {
+      border-color: rgba(56, 189, 248, 0.2);
+      background: linear-gradient(
+        150deg,
+        rgba(15, 23, 42, 0.98),
+        rgba(7, 45, 83, 0.95) 52%,
+        rgba(153, 52, 18, 0.92) 118%
+      );
+      box-shadow: 0 28px 72px -44px rgba(8, 145, 178, 0.42);
+    }
+
+    .tsw-home-figure--timeline::after {
+      background:
+        radial-gradient(circle, rgba(14, 165, 233, 0.24), transparent 62%),
+        radial-gradient(circle at 38% 38%, rgba(251, 146, 60, 0.18), transparent 56%);
+    }
+
+    .tsw-home-figure--decision {
+      border-color: rgba(59, 130, 246, 0.18);
+      background: linear-gradient(
+        145deg,
+        rgba(17, 24, 39, 0.98),
+        rgba(14, 43, 87, 0.95) 44%,
+        rgba(124, 45, 18, 0.92) 115%
+      );
+      box-shadow: 0 28px 72px -44px rgba(30, 64, 175, 0.38);
+    }
+
+    .tsw-home-figure--decision::after {
+      background:
+        radial-gradient(circle, rgba(249, 115, 22, 0.24), transparent 62%),
+        radial-gradient(circle at 32% 32%, rgba(59, 130, 246, 0.16), transparent 52%);
+    }
+
+    @keyframes tsw-home-hero-card-in {
+      0% {
+        opacity: 0;
+        transform: translateY(18px) scale(0.985);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .tsw-home-hero-entry {
+        animation: tsw-home-hero-card-in 680ms cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+
+      .tsw-home-hero-entry:nth-child(2) {
+        animation-delay: 90ms;
+      }
+
+      .tsw-home-hero-entry:nth-child(3) {
+        animation-delay: 180ms;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .tsw-home-hero-visual {
+        padding: 1.25rem;
+      }
+
+      .tsw-home-hero-entry-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+  </style>
 </Layout>

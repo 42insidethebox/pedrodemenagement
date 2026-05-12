@@ -2,10 +2,6 @@
 import Layout from '~/layouts/Layout.astro';
 import { detectRequestLocale } from '~/lib/locale';
 import { normalizePlanId, TONSITEWEB_DEFAULT_PLAN } from '~/lib/pricing.js';
-import {
-  IOPARTNER_FR_PRICE_LABELS,
-  IOPARTNER_FR_WEBSITE_FUNNEL,
-} from '~/data/iopartnerPricing.fr';
 import pedroLogo from '~/assets/lausannedemenagement/logo.png';
 import toloPreview from '~/assets/tolocoiffure_images/template_preview.jpg';
 import maisonPreview from '~/assets/maisoncortes_images/lausanne-ring-02.png';
@@ -17,13 +13,6 @@ const locale = detectRequestLocale(Astro.request, Astro.url);
 const plan = normalizePlanId(Astro.url.searchParams.get('plan') || TONSITEWEB_DEFAULT_PLAN);
 const toAssetSrc = (asset: string | { src: string }) => (typeof asset === 'string' ? asset : asset.src);
 const localePrefix = ['en', 'de', 'it'].includes(locale) ? `/${locale}` : '';
-const frCustomItems = [
-  `${IOPARTNER_FR_PRICE_LABELS.websiteCustom}: website privé / système web sur mesure.`,
-  `${IOPARTNER_FR_PRICE_LABELS.privateCodebaseHandoff}: codebase privée + transmission.`,
-  `${IOPARTNER_FR_PRICE_LABELS.backendLight}: back-end léger.`,
-  `${IOPARTNER_FR_PRICE_LABELS.heavierSystems}: headless shop ou système plus lourd.`,
-  `Entrée: diagnostic payé ${IOPARTNER_FR_WEBSITE_FUNNEL.diagnosticLabel}.`,
-];
 
 const T = {
   fr: {
@@ -40,22 +29,18 @@ const T = {
     variation: 'variation',
     liveExamples: 'Exemples réels',
     promoBadge: 'Pack Essentiel',
-    promoTitle: `IOPartner dès ${IOPARTNER_FR_PRICE_LABELS.websiteLaunch}`,
+    promoTitle: 'IOPartner dès 999 CHF',
     promoDesc: 'Prix fixe pour un site vitrine professionnel. Livraison en 3–5 jours ouvrables selon vos contenus.',
     promoBtn: 'Commander maintenant →',
-    mergedTitle: 'Rester sur la voie website standard',
-    mergedLead: IOPARTNER_FR_WEBSITE_FUNNEL.standardPathLead,
-    starterTitle: 'Voie website',
-    starterItems: [
-      `${IOPARTNER_FR_PRICE_LABELS.websiteLaunch}: site vitrine 5 sections sur infrastructure mutualisée.`,
-      `${IOPARTNER_FR_PRICE_LABELS.websiteSprint}: optimisation, migration ou remise à niveau sur devis.`,
-      `${IOPARTNER_FR_PRICE_LABELS.websiteGrowth}: site standard + WhatsApp + Calendly + explication légère.`,
-    ],
-    starterCtaPrimary: `Choisir ${IOPARTNER_FR_PRICE_LABELS.websiteLaunch}`,
-    starterCtaSecondary: `Choisir ${IOPARTNER_FR_PRICE_LABELS.websiteGrowth}`,
+    mergedTitle: 'Rester sur la voie standard',
+    mergedLead: 'Deux voies nettes: 999 ou 1 500 CHF si le sujet reste standard. Sinon, passez par la route custom.',
+    starterTitle: 'Voie standard',
+    starterItems: ['999 CHF: site vitrine 5 sections sur infrastructure mutualisée.', '1 500 CHF: site standard + WhatsApp + Calendly + explication légère.'],
+    starterCtaPrimary: 'Choisir 999 CHF',
+    starterCtaSecondary: 'Choisir 1 500 CHF',
     customTitle: 'Template et tenant ne suffisent plus ?',
     customLead: 'Codebase séparée, transmission, back-end léger, headless shop ou architecture plus lourde.',
-    customItems: frCustomItems,
+    customItems: ['2 000 CHF: codebase privée.', '2 200 CHF: codebase privée + transmission.', '4 500 CHF: back-end léger.', '8 000+ CHF: headless shop ou système plus lourd.', 'Entrée: diagnostic payé 15 min / 80 CHF.'],
     customCta: 'Voir la progression custom →',
   },
   en: {

@@ -11,15 +11,7 @@ import CallToAction from '~/components/widgets/CallToAction.astro';
 import { iopartnerHeaderDataIt, iopartnerFooterDataIt } from '~/navigation';
 
 const metadata = {
-  title: 'Prezzi IOPartner',
-  description:
-    'Prezzi IOPartner per websites, automazione AI, sistemi più strutturati e supporto gestito.',
-  openGraph: {
-    type: 'website',
-  },
-  twitter: {
-    cardType: 'summary',
-  },
+  title: 'Prezzi',
 };
 ---
 
@@ -34,8 +26,14 @@ const metadata = {
   <div class="max-w-3xl mx-auto px-4 mb-2">
     <div class="rounded-2xl border-2 border-blue-200 bg-blue-50 dark:bg-blue-900/20 px-6 py-4 text-center">
       <p class="text-lg font-bold text-blue-900 dark:text-blue-100">Pacchetto Essenziale — da 999 CHF</p>
-      <p class="mt-1 text-sm text-blue-700 dark:text-blue-200">Prezzo fisso per un sito vetrina professionale. Consegna tipica in 3–5 giorni lavorativi in base ai contenuti.</p>
-      <a href="/onboarding?plan=essential999" class="mt-3 inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm px-6 py-2 rounded-xl transition-colors">Ordina ora →</a>
+      <p class="mt-1 text-sm text-blue-700 dark:text-blue-200">
+        Prezzo fisso per un sito vetrina professionale. Consegna tipica in 3–5 giorni lavorativi in base ai contenuti.
+      </p>
+      <a
+        href="/onboarding?plan=essential999"
+        class="mt-3 inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm px-6 py-2 rounded-xl transition-colors"
+        >Ordina ora →</a
+      >
     </div>
   </div>
 
@@ -49,7 +47,7 @@ const metadata = {
         price: 999,
         period: 'pagamento unico',
         info: [
-          "CHF 999 copre un sito vetrina standard di 5 sezioni sulla piattaforma condivisa di IOPartner.",
+          'CHF 999 copre un sito vetrina standard di 5 sezioni sulla piattaforma condivisa di IOPartner.',
           'Pagine aggiuntive, workshop/brainstorming, cambi strutturali o nuovi moduli sono preventivati a parte.',
           'Ogni richiesta fuori perimetro viene fatturata separatamente prima della produzione.',
         ],
@@ -94,7 +92,7 @@ const metadata = {
           { description: 'CHF 4’500: backend leggero' },
           { description: 'CHF 8’000+: headless shop o sistema più pesante' },
         ],
-        callToAction: { text: 'Vedi progressione', href: '#modal-custom-it' },
+        callToAction: '<a class="btn btn-primary" href="#modal-custom-it">Vedi progressione</a>',
       },
     ]}
   />
@@ -107,8 +105,29 @@ const metadata = {
         subtitle="Scegli il livello giusto senza comprare custom troppo presto"
         ctaText="Scegli"
         tiers={[
-          { label: 'CHF 999', price: 'da 999', features: ['Sito statico', 'Form semplice (email)'], href: '/it/choose-template?plan=essential999', info: ['Hosting & SSL inclusi (3 mesi)', 'Deploy sulla piattaforma condivisa IOPartner', 'Pagine extra, workshop o fuori scope preventivati a parte'] },
-          { label: 'CHF 1’500', price: '1’500', features: ['Include la base da CHF 999', 'WhatsApp + Calendly', 'Spiegazione leggera / handoff'], href: '/it/choose-template?plan=essential1500', primary: true, info: ['Sempre sulla piattaforma condivisa IOPartner', 'WhatsApp e Calendly cablati nel perimetro validato', 'Pagine extra, workshop o fuori scope preventivati a parte'] },
+          {
+            label: 'CHF 999',
+            price: 'da 999',
+            features: ['Sito statico', 'Form semplice (email)'],
+            href: '/it/choose-template?plan=essential999',
+            info: [
+              'Hosting & SSL inclusi (3 mesi)',
+              'Deploy sulla piattaforma condivisa IOPartner',
+              'Pagine extra, workshop o fuori scope preventivati a parte',
+            ],
+          },
+          {
+            label: 'CHF 1’500',
+            price: '1’500',
+            features: ['Include la base da CHF 999', 'WhatsApp + Calendly', 'Spiegazione leggera / handoff'],
+            href: '/it/choose-template?plan=essential1500',
+            primary: true,
+            info: [
+              'Sempre sulla piattaforma condivisa IOPartner',
+              'WhatsApp e Calendly cablati nel perimetro validato',
+              'Pagine extra, workshop o fuori scope preventivati a parte',
+            ],
+          },
         ]}
         footnote="Viene consegnato il perimetro validato; pagine extra, workshop/brainstorming, redesign e richieste fuori scope sono fatturati separatamente."
       />
@@ -119,10 +138,31 @@ const metadata = {
         subtitle="Quando la mossa giusta non è più un semplice template"
         ctaText="Apri"
         tiers={[
-          { label: 'CHF 2’000', price: 'codebase privato', features: ['Codebase separato', 'Esce dall’infrastruttura condivisa'], href: '/it/custom-systems?track=private-2000#diagnostic' },
-          { label: 'CHF 2’200', price: 'privato + passaggio', features: ['Codebase separato', 'Passaggio strutturato'], href: '/it/custom-systems?track=private-2200#diagnostic', primary: true },
-          { label: 'CHF 4’500', price: 'backend leggero', features: ['Logica business leggera', 'Intake, sync o portale semplice'], href: '/it/custom-systems?track=backend-4500#diagnostic' },
-          { label: 'CHF 8’000+', price: 'sistema più pesante', features: ['Headless shop', 'Admin, portale o architettura più profonda'], href: '/it/custom-systems?track=shop-8000#diagnostic' },
+          {
+            label: 'CHF 2’000',
+            price: 'codebase privato',
+            features: ['Codebase separato', 'Esce dall’infrastruttura condivisa'],
+            href: '/it/custom-systems?track=private-2000#diagnostic',
+          },
+          {
+            label: 'CHF 2’200',
+            price: 'privato + passaggio',
+            features: ['Codebase separato', 'Passaggio strutturato'],
+            href: '/it/custom-systems?track=private-2200#diagnostic',
+            primary: true,
+          },
+          {
+            label: 'CHF 4’500',
+            price: 'backend leggero',
+            features: ['Logica business leggera', 'Intake, sync o portale semplice'],
+            href: '/it/custom-systems?track=backend-4500#diagnostic',
+          },
+          {
+            label: 'CHF 8’000+',
+            price: 'sistema più pesante',
+            features: ['Headless shop', 'Admin, portale o architettura più profonda'],
+            href: '/it/custom-systems?track=shop-8000#diagnostic',
+          },
         ]}
         footnote="Architettura, portale, admin o piattaforma interna vengono scoped dopo la diagnosi a pagamento 15 min / CHF 80."
       />
@@ -190,13 +230,16 @@ const metadata = {
       },
       {
         title: '4. Validazione & messa online',
-        description: 'Approvi la versione finale, poi pianifichiamo la messa online e preventiviamo a parte ogni estensione fuori perimetro.',
+        description:
+          'Approvi la versione finale, poi pianifichiamo la messa online e preventiviamo a parte ogni estensione fuori perimetro.',
         icon: 'tabler:rocket',
       },
     ]}
   >
     <Fragment slot="image">
-      <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-white shadow-xl">
+      <div
+        class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-white shadow-xl"
+      >
         <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Processo</p>
         <p class="mt-6 max-w-xs text-base text-blue-100/90">
           Dalla firma al lancio, ogni fase è tracciata e documentata nel tuo spazio cliente.
@@ -215,19 +258,23 @@ const metadata = {
       },
       {
         title: 'Qual è la tempistica media per l’Essenziale?',
-        description: 'Circa cinque giorni lavorativi dopo aver ricevuto i contenuti. Condividiamo il planning durante il brief.',
+        description:
+          'Circa cinque giorni lavorativi dopo aver ricevuto i contenuti. Condividiamo il planning durante il brief.',
       },
       {
         title: 'Cosa succede se mi servono pagine extra o più brainstorming?',
-        description: 'Pagine aggiuntive, workshop o brainstorming, cambi strutturali e richieste fuori perimetro vengono preventivati separatamente prima dell’avvio della produzione.',
+        description:
+          'Pagine aggiuntive, workshop o brainstorming, cambi strutturali e richieste fuori perimetro vengono preventivati separatamente prima dell’avvio della produzione.',
       },
       {
         title: 'Il piano di cura è obbligatorio?',
-        description: 'No. Puoi gestire il sito in autonomia oppure affidarci il piano da CHF 79/mese, disdicibile con 30 giorni di preavviso.',
+        description:
+          'No. Puoi gestire il sito in autonomia oppure affidarci il piano da CHF 79/mese, disdicibile con 30 giorni di preavviso.',
       },
       {
         title: 'Quali metodi di pagamento accettate?',
-        description: 'Carte svizzere, Twint, bonifico bancario e fattura QR. Gli abbonamenti possono essere mensili o annuali.',
+        description:
+          'Carte svizzere, Twint, bonifico bancario e fattura QR. Gli abbonamenti possono essere mensili o annuali.',
       },
     ]}
   />
@@ -246,9 +293,7 @@ const metadata = {
       },
     ]}
   >
-    <Fragment slot="title">
-      Hai bisogno di un preventivo su misura?
-    </Fragment>
+    <Fragment slot="title"> Hai bisogno di un preventivo su misura? </Fragment>
 
     <Fragment slot="subtitle">
       Adattiamo ogni offerta alle specificità della tua attività nell’Arco lemanico.

@@ -3,14 +3,7 @@ import type { APIRoute } from 'astro';
 export const prerender = false;
 
 // Routes that must pass through directly
-const AUTH_DIRECT = new Set([
-  'signin',
-  'signup',
-  'forgot',
-  'reset',
-  'callback',
-  'verify'
-]);
+const AUTH_DIRECT = new Set(['signin', 'signup', 'forgot', 'reset', 'callback', 'verify']);
 
 export const GET: APIRoute = ({ params, request }) => {
   const p = params.path as string[] | string | undefined;

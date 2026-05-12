@@ -1,87 +1,221 @@
 ---
-import PipelineDiagram from '~/tenants/precisionsystems/PipelineDiagram.astro';
-import Shell from '~/tenants/iopartner/Shell.astro';
-import { getIoPartnerBookingUrl, iopartnerConfig } from '~/tenants/iopartner/config';
-import {
-  getIoPartnerCopy,
-  resolveIoPartnerBasePath,
-  resolveIoPartnerLocale,
-} from '~/tenants/iopartner/copy';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import Content from '~/components/widgets/Content.astro';
+import Features2 from '~/components/widgets/Features2.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import Layout from '~/layouts/PageLayout.astro';
 
-const locale = resolveIoPartnerLocale(Astro.request, Astro.url);
-const copy = getIoPartnerCopy(locale);
-const basePath = resolveIoPartnerBasePath(Astro.request, Astro.url);
-const bookingUrl = getIoPartnerBookingUrl(copy.shell.whatsappPrefillMessage);
-const metadata = { ...copy.meta.services, ignoreTitleTemplate: true };
-type ServiceCard = { eyebrow: string; title: string; body: string; items: string[] };
+const metadata = {
+  title: 'Services',
+};
 ---
 
-<Shell page="services" metadata={metadata} locale={locale}>
-  <section class="ps-section">
-    <p class="ps-eyebrow">{copy.services.eyebrow}</p>
-    <h1 class="ps-title">{copy.services.title}</h1>
-    <p class="ps-lead">{copy.services.lead}</p>
-  </section>
+<Layout metadata={metadata}>
+  <!-- Hero Widget ******************* -->
 
-  <section class="ps-section">
-    <div class="ps-grid ps-grid-2">
-      {
-        copy.services.cards.map((card: ServiceCard) => (
-          <article class="ps-card">
-            <p class="ps-eyebrow">{card.eyebrow}</p>
-            <h2>{card.title}</h2>
-            <p>{card.body}</p>
-            <ul class="ps-list">
-              {card.items.map((item: string) => <li>{item}</li>)}
-            </ul>
-          </article>
-        ))
-      }
-    </div>
-  </section>
-
-  <section class="ps-section">
-    <PipelineDiagram
-      eyebrow={copy.home.pipeline.eyebrow}
-      title={copy.home.pipeline.title}
-      lead={copy.home.pipeline.lead}
-      nodes={copy.home.pipeline.nodes}
-    />
-  </section>
-
-  <section class="ps-section">
-    <div class="ps-grid ps-grid-2">
-      <article class="ps-card">
-        <p class="ps-eyebrow">{copy.services.fit.good.eyebrow}</p>
-        <h2>{copy.services.fit.good.title}</h2>
-        <ul class="ps-list">
-          {copy.services.fit.good.items.map((item: string) => <li>{item}</li>)}
-        </ul>
-      </article>
-
-      <article class="ps-card">
-        <p class="ps-eyebrow">{copy.services.fit.bad.eyebrow}</p>
-        <h2>{copy.services.fit.bad.title}</h2>
-        <ul class="ps-list">
-          {copy.services.fit.bad.items.map((item: string) => <li>{item}</li>)}
-        </ul>
-      </article>
-    </div>
-  </section>
-
-  <section class="ps-section">
-    <div class="ps-card">
-      <p class="ps-eyebrow">{copy.services.closing.eyebrow}</p>
-      <h2>{copy.services.closing.title(iopartnerConfig)}</h2>
-      <p class="ps-lead">{copy.services.closing.lead}</p>
-      <div class="ps-action-row">
-        <a class="ps-button" href={bookingUrl} target="_blank" rel="noreferrer">
-          {copy.services.closing.ctaBook}
-        </a>
-        <a class="ps-button secondary" href={`${basePath}/pricing`}>
-          {copy.services.closing.ctaPricing}
-        </a>
+  <Hero
+    id="services"
+    tagline="Nos services"
+    title="Des sites vitrines clé-en-main, pensés pour les PME romandes"
+    subtitle="IOPartner.ch combine automatisation et expertise humaine pour livrer des sites haut de gamme."
+    actions={[{ variant: 'primary', text: 'Voir les packs', href: '/pricing' }]}
+  >
+    <Fragment slot="image">
+      <div
+        class="relative aspect-[5/3] overflow-hidden rounded-2xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-left text-white shadow-2xl"
+      >
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Services automatisés</p>
+        <h4 class="mt-4 text-4xl font-semibold">Design · Contenu · Maintenance</h4>
+        <p class="mt-6 max-w-xl text-lg text-blue-100/90">
+          Une plateforme propriétaire qui orchestre la production pendant que nos experts se concentrent sur la qualité
+          et la relation client.
+        </p>
       </div>
-    </div>
-  </section>
-</Shell>
+    </Fragment>
+  </Hero>
+
+  <!-- Features2 Widget ************** -->
+
+  <Features2
+    title="Trois offres, une même exigence"
+    subtitle="Choisissez la formule qui correspond à votre rythme de croissance."
+    columns={3}
+    items={[
+      {
+        title: 'Essentiel',
+        description: 'Site vitrine de 5 sections, intégration de vos contenus et mise en ligne accompagnée.',
+        icon: 'tabler:layout',
+      },
+      {
+        title: 'Automatisation',
+        description: 'Formulaires, prises de rendez‑vous et intégrations API sur devis pour automatiser vos flux.',
+        icon: 'tabler:api',
+      },
+      {
+        title: 'Continuité technique',
+        description:
+          'Mises à jour techniques, sauvegardes, gestion d’emails pro et accompagnement continu selon le périmètre opérationnel.',
+        icon: 'tabler:shield-check',
+      },
+    ]}
+  />
+
+  <!-- Content Widget **************** -->
+
+  <Content
+    id="content"
+    isReversed
+    items={[
+      {
+        title: 'Production automatisée',
+        description:
+          'Notre pipeline assemble votre site en s’appuyant sur des gabarits sectoriels que nous adaptons à votre identité.',
+        icon: 'tabler:cube',
+      },
+      {
+        title: 'Contrôle humain',
+        description:
+          'Designers, rédacteurs et experts SEO valident chaque livrable pour garantir cohérence et conformité.',
+        icon: 'tabler:shield-check',
+      },
+      {
+        title: 'Livraison planifiée',
+        description:
+          'Nous partageons un rétroplanning clair et adaptons la mise en ligne selon vos contraintes métier.',
+        icon: 'tabler:inbox',
+      },
+      {
+        title: 'Suivi essentiel',
+        description: 'Points de contrôle réguliers, assistance pour vos mises à jour et recommandations pragmatiques.',
+        icon: 'tabler:report-analytics',
+      },
+    ]}
+  >
+    <Fragment slot="content">
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Notre méthodologie hybride</h3>
+      Automatisation pour la vitesse, experts pour la qualité.
+    </Fragment>
+
+    <Fragment slot="image">
+      <div
+        class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl"
+      >
+        <h4 class="text-3xl font-semibold">Pipeline supervisé</h4>
+        <p class="mt-6 max-w-sm text-blue-100/90">
+          Chaque projet suit un contrôle humain complet&nbsp;: contenus, design, conformité RGPD et tests de navigation.
+        </p>
+      </div>
+    </Fragment>
+  </Content>
+
+  <!-- Content Widget **************** -->
+
+  <Content
+    id="seo"
+    isAfterContent
+    items={[
+      {
+        title: 'Balises on‑page',
+        description: 'Titres et méta‑descriptions de base.',
+        icon: 'tabler:map-pin',
+      },
+      {
+        title: 'Contenus visuels',
+        description:
+          'Sélection de visuels libres de droits ou coordination avec vos prestataires locaux pour un rendu cohérent.',
+        icon: 'tabler:photo',
+      },
+      {
+        title: 'Campagnes d’acquisition',
+        description: 'Landing pages, formulaires et scénarios email automatisés sur devis selon vos objectifs.',
+        icon: 'tabler:send',
+      },
+      {
+        title: 'Processus simple',
+        description: 'Échanges par email et validations par étapes. Pas d’espace client à gérer.',
+        icon: 'tabler:layout-dashboard',
+      },
+    ]}
+  >
+    <Fragment slot="content">
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Des leviers pour durer</h3>
+      Nous activons les bons outils pour générer des résultats mesurables.
+    </Fragment>
+
+    <Fragment slot="image">
+      <div
+        class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-left text-white shadow-xl"
+      >
+        <h4 class="text-3xl font-semibold">Acquisition maîtrisée</h4>
+        <p class="mt-6 max-w-sm text-blue-100/90">
+          Nous vous aidons à prioriser les leviers efficaces et à mesurer les résultats réellement utiles à votre
+          activité.
+        </p>
+      </div>
+    </Fragment>
+  </Content>
+
+  <!-- Features2 Widget ************** -->
+
+  <Features2
+    id="support"
+    title="Systems & operations"
+    subtitle="Continuité technique, supervision et accompagnement après livraison."
+    columns={3}
+    items={[
+      {
+        title: 'Continuité technique',
+        description: 'Un point de contact stable pour garder le contexte après mise en ligne ou entre deux chantiers.',
+        icon: 'tabler:headset',
+      },
+      {
+        title: 'Supervision',
+        description:
+          'Vérifications régulières, monitoring, alertes et suivi opérationnel selon les systèmes concernés.',
+        icon: 'tabler:antenna',
+      },
+      {
+        title: 'Infrastructure',
+        description: 'DNS, SSL, sauvegardes, restauration, emails, déploiement et base Linux plus propre.',
+        icon: 'tabler:tools',
+      },
+      {
+        title: 'Automatisation',
+        description:
+          'Workflows, intégrations et réduction des tâches manuelles quand le besoin dépasse le simple site.',
+        icon: 'tabler:shield-check',
+      },
+      {
+        title: 'Support opérationnel',
+        description:
+          'Tickets, incidents, petites corrections et coordination technique légère selon le niveau attendu.',
+        icon: 'tabler:mail',
+      },
+      {
+        title: 'Évolutions sur devis',
+        description:
+          'Le périmètre d’accompagnement dépend du niveau de continuité, de l’infrastructure et des objectifs.',
+        icon: 'tabler:arrows-left-right',
+      },
+    ]}
+  />
+
+  <!-- CallToAction Widget *********** -->
+
+  <CallToAction
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Planifier une démo',
+        href: '/contact#form',
+        icon: 'tabler:device-desktop-analytics',
+      },
+    ]}
+  >
+    <Fragment slot="title"> Discutons de votre prochaine mise en ligne </Fragment>
+
+    <Fragment slot="subtitle">
+      Partagez vos objectifs; nous préparons un plan de lancement pragmatique avec IOPartner.ch.
+    </Fragment>
+  </CallToAction>
+</Layout>

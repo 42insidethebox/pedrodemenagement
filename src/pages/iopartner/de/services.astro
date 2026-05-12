@@ -8,182 +8,181 @@ import Layout from '~/layouts/PageLayout.astro';
 import { iopartnerHeaderDataDe, iopartnerFooterDataDe } from '~/navigation';
 
 const metadata = {
-  title: 'IOPartner Leistungen',
-  description:
-    'Websites, KI-Automatisierung, Open-Source-Infrastruktur und Managed Support für moderne Unternehmen.',
-  openGraph: {
-    type: 'website',
-  },
-  twitter: {
-    cardType: 'summary',
-  },
+  title: 'Leistungen',
 };
 ---
 
 <Layout metadata={metadata} header={iopartnerHeaderDataDe} footer={iopartnerFooterDataDe}>
   <Hero
     id="services"
-    tagline="Leistungen"
-    title="Websites, Automatisierung, Infrastruktur, Support"
-    subtitle="IOPartner strukturiert die Arbeit in vier klare Leistungsblöcke, damit moderne Unternehmen das richtige technische Niveau ohne unnötige Komplexität erhalten."
-    actions={[{ variant: 'primary', text: 'Preise ansehen', href: '/de/pricing' }]}
+    tagline="Unsere Leistungen"
+    title="Schlüsselfertige Showcase-Seiten für KMU der Romandie"
+    subtitle="IOPartner.ch kombiniert Automatisierung und menschliche Expertise, um hochwertige Websites zu liefern."
+    actions={[{ variant: 'primary', text: 'Pakete ansehen', href: '/de/pricing' }]}
   >
     <Fragment slot="image">
-      <div class="relative aspect-[5/3] overflow-hidden rounded-2xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-left text-white shadow-2xl">
-        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">IOPartner capabilities</p>
-        <h4 class="mt-4 text-4xl font-semibold">Website delivery · AI workflows · Open ops</h4>
+      <div
+        class="relative aspect-[5/3] overflow-hidden rounded-2xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-left text-white shadow-2xl"
+      >
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Automatisierte Services</p>
+        <h4 class="mt-4 text-4xl font-semibold">Design · Inhalt · Betreuung</h4>
         <p class="mt-6 max-w-xl text-lg text-blue-100/90">
-          Gleiches Layout, breitere Positionierung: Dieser Tenant beschreibt IOPartner jetzt als Partner für technische Betriebsführung, nicht nur als Website-Anbieter.
+          Eine eigene Plattform orchestriert die Produktion, während sich unsere Expert·innen um Qualität und Beziehung
+          kümmern.
         </p>
       </div>
     </Fragment>
   </Hero>
 
   <Features2
-    id="websites"
-    title="Websites"
-    subtitle="Die sichtbare Schicht Ihres Unternehmens, sauber ausgeliefert und mit dem Rest verbunden."
+    title="Drei Angebote, ein Anspruch"
+    subtitle="Wählen Sie die Formel, die zu Ihrem Wachstum passt."
     columns={3}
     items={[
       {
-        title: 'Launches',
-        description: 'Marketingseiten, Showcase-Websites, schlanke Redesigns und Launch-Präsenzen mit klarem Umfang.',
+        title: 'Essentiel',
+        description: 'Showcase-Seite mit fünf Sektionen, Texte für den Genfersee-Raum und begleiteter Launch.',
         icon: 'tabler:layout',
       },
       {
-        title: 'Weiterentwicklungen',
-        description: 'Neue Seiten, Conversion-Verbesserungen, Formulare und gezielte Frontend-Integrationen.',
-        icon: 'tabler:browser-plus',
+        title: 'Automatisierung',
+        description:
+          'Anbindung Ihrer Tools via Zapier oder Make für automatisierte Formulare, Buchungen und Benachrichtigungen.',
+        icon: 'tabler:api',
       },
       {
-        title: 'Migrationen',
-        description: 'Wechsel auf eine schnellere Stack, Content-Bereinigung und schrittweise technische Konsolidierung.',
-        icon: 'tabler:arrows-shuffle',
+        title: 'Serviceplan',
+        description: 'Technische Updates, Backups, E-Mail-Management und geplanter Support für CHF 79/Monat.',
+        icon: 'tabler:shield-check',
       },
     ]}
   />
 
   <Content
-    id="ai-automation"
+    id="content"
     isReversed
-    title="KI & Automatisierung"
-    subtitle="Nützliche Workflows mit menschlicher Freigabe dort, wo sie nötig ist."
     items={[
       {
-        title: 'Qualifizierung & Routing',
-        description: 'Eingehende Anfragen werden sortiert, angereichert und an das richtige Tool oder die richtige Person geleitet.',
-        icon: 'tabler:route',
+        title: 'Automatisierte Produktion',
+        description:
+          'Unsere Pipeline baut Ihre Website auf Basis branchenspezifischer Templates, angepasst an Ihre Identität.',
+        icon: 'tabler:cube',
       },
       {
-        title: 'Gezielte Assistenten',
-        description: 'Interne Copiloten, Wissenshilfen, strukturierte Entwürfe und Support-Unterstützung.',
-        icon: 'tabler:message-chatbot',
+        title: 'Menschliche Kontrolle',
+        description:
+          'Designer·innen, Texter·innen und SEO-Expert·innen prüfen jedes Ergebnis für Kohärenz und Compliance.',
+        icon: 'tabler:shield-check',
       },
       {
-        title: 'API- oder No-Code-Verbindungen',
-        description: 'Anbindungen zwischen Formularen, Kalendern, CRM, E-Mail, Dashboards und bestehenden Systemen.',
-        icon: 'tabler:api',
+        title: 'Geplante Auslieferung',
+        description: 'Wir teilen einen klaren Retro-Plan und richten den Launch nach Ihren betrieblichen Vorgaben aus.',
+        icon: 'tabler:inbox',
       },
       {
-        title: 'Operative Leitplanken',
-        description: 'Logging, Limits, Freigaben und Kontrollen, bevor sensible Automatisierungen live gehen.',
-        icon: 'tabler:shield-lock',
+        title: 'Essentielles Follow-up',
+        description: 'Regelmässige Check-ins, Unterstützung bei Updates und pragmatische Empfehlungen.',
+        icon: 'tabler:report-analytics',
       },
     ]}
   >
     <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Automatisierung, die in Produktion bestehen bleibt</h3>
-      Keine spektakulären Demos ohne Betriebsrealität. Jeder Workflow muss lesbar, testbar und wartbar bleiben.
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Unsere hybride Methodik</h3>
+      Automatisierung für Geschwindigkeit, Expert·innen für Qualität.
     </Fragment>
 
     <Fragment slot="image">
-      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl">
-        <h4 class="text-3xl font-semibold">Vom Intake zur Aktion</h4>
+      <div
+        class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl"
+      >
+        <h4 class="text-3xl font-semibold">Überwachte Pipeline</h4>
         <p class="mt-6 max-w-sm text-blue-100/90">
-          Formular, Triage, assistierte Antwort, Zuweisung, Follow-up: Der Nutzen bleibt, weil die Kontrollpunkte explizit definiert sind.
+          Jedes Projekt durchläuft manuelle Checks: Inhalte, Design, DSGVO-Konformität und Usability-Tests.
         </p>
       </div>
     </Fragment>
   </Content>
 
   <Content
-    id="open-infrastructure"
+    id="seo"
     isAfterContent
-    title="Open Infrastructure"
-    subtitle="Offene Bausteine, wenn sie die Stack langlebiger machen."
     items={[
       {
-        title: 'Deployment',
-        description: 'Git, Hosting, DNS, Domains, Zertifikate und Release-Routinen passend zur richtigen Komplexitätsstufe.',
-        icon: 'tabler:cloud-upload',
+        title: 'Lokales SEO & Google-Profile',
+        description: 'Technische Optimierung, Meta-Texte und Beratung für Ihr Google Business Profile.',
+        icon: 'tabler:map-pin',
       },
       {
-        title: 'Observability',
-        description: 'Monitoring, Alerts und Sichtbarkeit auf Punkte, die nicht still ausfallen dürfen.',
-        icon: 'tabler:activity-heartbeat',
+        title: 'Visuelle Inhalte',
+        description:
+          'Auswahl lizenzfreier Visuals oder Koordination mit Ihren lokalen Partnern für ein stimmiges Erscheinungsbild.',
+        icon: 'tabler:photo',
       },
       {
-        title: 'Portabilität',
-        description: 'Open-Source-Tools oder bewährte Standards, die unnötigen Lock-in reduzieren.',
-        icon: 'tabler:brand-open-source',
+        title: 'Akquise-Kampagnen',
+        description: 'Landing Pages, Formulare und automatisierte E-Mail-Strecken – je nach Zielsetzung.',
+        icon: 'tabler:send',
       },
       {
-        title: 'Dokumentation',
-        description: 'Wesentliche Zugänge, Abhängigkeiten und Abläufe werden für Kontinuität festgehalten.',
-        icon: 'tabler:file-description',
+        title: 'Kunden-Dashboard',
+        description:
+          'Zugang zu einem Kundenbereich, um Deliverables zu verfolgen, Inhalte zu teilen und Schritte freizugeben.',
+        icon: 'tabler:layout-dashboard',
       },
     ]}
   >
     <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Infrastruktur, die sich wirklich betreiben lässt</h3>
-      Keine Komplexität um ihrer selbst willen. Wir wählen die richtige Robustheit für heute und eine klare Route, falls das Unternehmen wächst.
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Hebel für nachhaltigen Erfolg</h3>
+      Wir aktivieren die passenden Tools für messbare Resultate.
     </Fragment>
 
     <Fragment slot="image">
-      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-left text-white shadow-xl">
-        <h4 class="text-3xl font-semibold">Open by default, pragmatic by necessity</h4>
+      <div
+        class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-left text-white shadow-xl"
+      >
+        <h4 class="text-3xl font-semibold">Kontrollierte Akquise</h4>
         <p class="mt-6 max-w-sm text-blue-100/90">
-          Die Architektur bleibt lesbar, damit Deployments, Incidents und Übergaben langfristig handhabbar bleiben.
+          Wir priorisieren gemeinsam wirksame Kanäle und messen, was für Ihr Geschäft zählt.
         </p>
       </div>
     </Fragment>
   </Content>
 
   <Features2
-    id="managed-support"
-    title="Managed Support"
-    subtitle="Die tägliche Nachführung, damit nicht jedes Problem wieder ein neues Projekt wird."
+    id="support"
+    title="Support & Betreuung"
+    subtitle="Sie konzentrieren sich auf Ihr Business – wir kümmern uns um den Rest."
     columns={3}
     items={[
       {
-        title: 'Reaktiver Support',
-        description: 'Antwort innerhalb eines Arbeitstages, Nachverfolgung aktiver Themen und Priorisierung nach Geschäftsauswirkung.',
+        title: 'Geplanter Support',
+        description: 'Antworten innerhalb eines Arbeitstages per E-Mail oder Telefon, dokumentiert im Kundenbereich.',
         icon: 'tabler:headset',
       },
       {
-        title: 'Wartung',
-        description: 'Updates, Backups, Fixes und wiederkehrende technische Kontrollen.',
-        icon: 'tabler:tools',
-      },
-      {
-        title: 'Überwachung',
-        description: 'Verfügbarkeitschecks, Schwachsignal-Erkennung und Alerts für sensible Services.',
+        title: 'Essentielles Monitoring',
+        description: 'Regelmässige Performance-Checks und Alarme bei erkannten Problemen.',
         icon: 'tabler:antenna',
       },
       {
-        title: 'Koordination',
-        description: 'Ein Partner, der den Kontext hält, wenn Produkt, Betrieb und Dritte abgestimmt werden müssen.',
-        icon: 'tabler:git-merge',
+        title: 'Sicherheits-Updates',
+        description: 'Kritische Patches, Backups und Wiederherstellung bei Bedarf.',
+        icon: 'tabler:tools',
       },
       {
-        title: 'Kurze Iterationen',
-        description: 'Kleine Verbesserungen und laufende Korrekturen ohne jedes Mal ein Vollprojekt zu eröffnen.',
+        title: 'DSGVO-Konformität',
+        description: 'Cookie-Richtlinie, Rechtstexte und Consent-Banner passend zur Schweiz.',
+        icon: 'tabler:shield-check',
+      },
+      {
+        title: 'E-Mail-Verwaltung',
+        description: 'Einrichtung und Support Ihrer @ihredomain.ch Konten mit SPF/DKIM.',
+        icon: 'tabler:mail',
+      },
+      {
+        title: 'Erweiterungen auf Anfrage',
+        description: 'Zusätzliche Seiten, Module oder Automationen passend zu Ihren Zielen.',
         icon: 'tabler:arrows-left-right',
-      },
-      {
-        title: 'Klare Scope-Kontrolle',
-        description: 'Wenn etwas zu einem grösseren System wird, scopeen wir es sauber neu statt es still zu strecken.',
-        icon: 'tabler:stack-2',
       },
     ]}
   />
@@ -192,16 +191,16 @@ const metadata = {
     actions={[
       {
         variant: 'primary',
-        text: 'Mit IOPartner sprechen',
+        text: 'Demo vereinbaren',
         href: '/de/contact#form',
         icon: 'tabler:device-desktop-analytics',
       },
     ]}
   >
-    <Fragment slot="title">Wählen Sie die richtige Eingriffsebene</Fragment>
+    <Fragment slot="title">Sprechen wir über Ihren nächsten Launch</Fragment>
 
     <Fragment slot="subtitle">
-      Wir helfen Ihnen zu trennen, was ein Website-Launch, ein Automatisierungsprojekt, eine strukturiertere Infrastruktur oder laufender Managed Support ist.
+      Teilen Sie Ihre Ziele – wir erstellen einen pragmatischen Launch‑Plan mit IOPartner.ch.
     </Fragment>
   </CallToAction>
 </Layout>

@@ -3,6 +3,7 @@ import defaultFavIcon from '~/assets/favicons/favicon.ico';
 import defaultFavIconSvg from '~/assets/favicons/favicon.svg';
 import defaultAppleTouchIcon from '~/assets/favicons/apple-touch-icon.png';
 import tonsitewebFavicon from '~/assets/tonsiteweb/favicon.png';
+import iopartnerFavicon from '~/assets/iopartner/logo.png';
 import laclemanExperienceFavicon from '~/assets/laclemanexperience/favicon.png';
 import lausanneFavicon from '~/assets/lausannedemenagement/favicon.png';
 import atelierMemoireFavicon from '~/assets/ateliermemoire/favicon.png';
@@ -17,6 +18,7 @@ const { brandKey = 'pedro' } = Astro.props as Props;
 
 const brandFavicons: Record<string, string | undefined> = {
   tonsiteweb: tonsitewebFavicon.src,
+  iopartner: iopartnerFavicon.src,
   laclemanexperience: laclemanExperienceFavicon.src,
   'lac-leman-experience': laclemanExperienceFavicon.src,
   lausanne: lausanneFavicon.src,

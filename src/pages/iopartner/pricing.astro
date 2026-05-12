@@ -1,233 +1,2126 @@
 ---
-import PipelineDiagram from '~/tenants/precisionsystems/PipelineDiagram.astro';
-import Shell from '~/tenants/iopartner/Shell.astro';
-import {
-  getIoPartnerBookingUrl,
-  getIoPartnerWhatsAppUrl,
-  iopartnerLaunchOffers,
-  iopartnerSystemsOffers,
-} from '~/tenants/iopartner/config';
-import {
-  getIoPartnerCopy,
-  resolveIoPartnerBasePath,
-  resolveIoPartnerLocale,
-} from '~/tenants/iopartner/copy';
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import Steps from '~/components/widgets/Steps.astro';
+import Features3 from '~/components/widgets/Features3.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
 
-const locale = resolveIoPartnerLocale(Astro.request, Astro.url);
-const copy = getIoPartnerCopy(locale);
-const basePath = resolveIoPartnerBasePath(Astro.request, Astro.url);
-const whatsappUrl = getIoPartnerWhatsAppUrl(copy.shell.whatsappPrefillMessage);
-const bookingUrl = getIoPartnerBookingUrl(copy.shell.whatsappPrefillMessage);
-const metadata = { ...copy.meta.pricing, ignoreTitleTemplate: true };
-type PricingCard = { title: string; body: string };
+const metadata = {
+  title: 'Tarifs',
+};
 
-const customSystemsCopy = {
-  fr: {
-    eyebrow: 'Custom systems',
-    title: 'Quand le sujet depasse les packs.',
-    lead: "Les sites, workflows et systemes plus lourds ne sont pas vendus comme un menu de cases. Ils sont scopes proprement apres le premier cadrage.",
-    items: [
-      'Custom code simple: a partir de 3k CHF.',
-      'Workflow et systemes operatoires plus lourds: souvent 5k a 8k CHF.',
-      'Architecture, portail, admin ou plateforme interne: 10k a 100k+ selon le scope.',
+const pricingTabs = [
+  { key: 'website', label: 'Website building' },
+  { key: 'consulting', label: 'Consulting' },
+  { key: 'systems', label: 'Systems & operations' },
+];
+
+const requestedTabRaw = Astro.url.searchParams.get('tab');
+const requestedTab =
+  requestedTabRaw === 'custom' ||
+  requestedTabRaw === 'operations' ||
+  requestedTabRaw === 'support' ||
+  requestedTabRaw === 'systems'
+    ? 'systems'
+    : requestedTabRaw;
+const defaultPricingTab = pricingTabs.some((tab) => tab.key === requestedTab) ? requestedTab : 'consulting';
+
+const websiteOffers = [
+  {
+    title: 'Essentiel',
+    subtitle: 'Site vitrine professionnel dès 999 CHF',
+    price: '999',
+    period: 'paiement unique',
+    info: [
+      'Pack 999 = site vitrine standard de 5 sections sur l’infrastructure mutualisée IOPartner.',
+      'Ajout de pages, brainstorming, changement de structure ou nouveaux modules sur devis.',
+      'Toute demande hors périmètre est facturée séparément avant production.',
     ],
-    cta: 'Parler du scope',
-  },
-  en: {
-    eyebrow: 'Custom systems',
-    title: 'When the work exceeds the packaged layers.',
-    lead: 'Heavier websites, workflows, and systems are scoped properly after the first framing step, not sold as vague promises.',
     items: [
-      'Simple custom code: from CHF 3k.',
-      'Operational workflows and systems: often CHF 5k to 8k.',
-      'Architecture, portals, admin tools, or internal platforms: CHF 10k to 100k+ depending on scope.',
+      'Site vitrine 5 sections + page contact responsive',
+      'Intégration et mise en forme de vos contenus',
+      'Déploiement sur l’infrastructure mutualisée IOPartner',
     ],
-    cta: 'Discuss scope',
+    cta: { text: 'Choisir un style →', href: '/choose-template?plan=essential999' },
   },
-  de: {
-    eyebrow: 'Custom systems',
-    title: 'Wenn das Thema die Pakete uebersteigt.',
-    lead: 'Groessere Websites, Workflows und Systeme werden nach dem ersten Framing sauber gescopt und nicht als vage Versprechen verkauft.',
+  {
+    title: 'Pack 1 500',
+    subtitle: 'Site standard + WhatsApp + Calendly',
+    price: '1500',
+    period: 'paiement unique',
+    info: [
+      'Toujours dans la logique standard IOPartner, sans entrer dans une build privée.',
+      'WhatsApp, Calendly et passation légère inclus dans le périmètre validé.',
+      'Pages en plus, redesign, brainstorming ou modules hors scope sur devis séparé.',
+    ],
     items: [
-      'Einfacher Custom Code: ab 3k CHF.',
-      'Operative Workflows und Systeme: oft 5k bis 8k CHF.',
-      'Architektur, Portale, Admin-Tools oder interne Plattformen: 10k bis 100k+ je nach Umfang.',
+      'Inclut la base 999 CHF',
+      'WhatsApp cliquable + prise de rendez-vous Calendly',
+      'Explication légère et handoff simple',
     ],
-    cta: 'Scope besprechen',
+    cta: { text: 'Choisir le pack 1 500 →', href: '/choose-template?plan=essential1500' },
   },
-  it: {
-    eyebrow: 'Custom systems',
-    title: 'Quando il lavoro supera i pacchetti.',
-    lead: 'Siti, workflow e sistemi piu pesanti vengono scoped in modo serio dopo il primo framing, non venduti come promesse vaghe.',
+];
+
+const consultingOffers = [
+  {
+    title: 'Sprint 15 minutes',
+    subtitle: 'Payé d’avance',
+    price: '60',
+    period: '15 min payés d’avance',
+    info: [
+      'À utiliser pour une question technique ciblée ou un blocage précis.',
+      'Réservation et paiement avant le créneau.',
+      'Le bon format pour obtenir de la clarté avant un périmètre plus large.',
+    ],
     items: [
-      'Custom code semplice: da 3k CHF.',
-      'Workflow e sistemi operativi: spesso 5k a 8k CHF.',
-      'Architettura, portali, admin tool o piattaforme interne: 10k a 100k+ in base allo scope.',
+      'Arbitrage rapide ou mini-appel d’architecture',
+      'Déblocage technique, question d’intégration ou validation de direction',
+      'Réponse rapide sans engager tout de suite un projet complet',
     ],
-    cta: 'Discutere lo scope',
+    cta: { text: 'Réserver le consulting 15 min →', href: '/contact#form' },
   },
-}[locale];
+  {
+    title: 'Consulting technique',
+    subtitle: 'Support engineering senior',
+    price: '140',
+    period: 'CHF / heure',
+    info: [
+      'Pour revue d’architecture, debugging, delivery planning ou accompagnement d’implémentation.',
+      'Le travail horaire démarre une fois le sujet confirmé.',
+      'Le bon format quand le besoin dépasse largement 15 minutes.',
+    ],
+    items: [
+      'Code review, debugging, revue d’architecture',
+      'Guidage delivery et direction d’implémentation',
+      'Support horaire pour les sujets techniques ouverts',
+    ],
+    cta: { text: 'Demander du consulting horaire →', href: '/contact#form' },
+  },
+];
+
+const operationsOffers = [
+  {
+    title: 'Continuité technique',
+    subtitle:
+      'Gardez un point de contact technique stable après la mise en ligne ou entre deux projets plus complexes.',
+    price: 'à cadrer',
+    period: 'selon niveau de continuité',
+    info: [
+      'L’accompagnement continu dépend du niveau de support attendu, des systèmes concernés et du degré d’autonomie souhaité.',
+      'Certaines structures ont seulement besoin d’un suivi léger, d’autres d’un véritable relais technique externe.',
+      'Le bon format quand vous voulez éviter que les sujets techniques retombent entre deux projets.',
+    ],
+    items: [
+      'Continuité technique après livraison ou entre deux projets',
+      'DNS, emails, sauvegardes, contenu, monitoring ou incidents opérationnels courants',
+      'Un interlocuteur qui garde le contexte et évite les pertes de continuité',
+    ],
+    cta: { text: 'Parler de la continuité →', href: '/contact#form' },
+  },
+  {
+    title: 'Infrastructure',
+    subtitle: 'Déploiement, supervision et maintenance d’environnements techniques plus solides.',
+    price: 'à cadrer',
+    period: 'selon environnement',
+    info: [
+      'Pour VPS, Linux, Docker, reverse proxy, SSL, monitoring ou migrations.',
+      'Le périmètre dépend de la stack, du niveau de criticité et du besoin de supervision.',
+      'Peut suivre un projet systems & operations ou exister comme chantier séparé.',
+    ],
+    items: [
+      'VPS, Linux, Docker, reverse proxy, SSL / DNS',
+      'Backups, monitoring, migrations et déploiement',
+      'Base technique plus propre pour outils internes ou systèmes web',
+    ],
+    cta: { text: 'Demander un scope infra →', href: '/contact#form' },
+  },
+  {
+    title: 'Automatisation',
+    subtitle: 'Réduction des tâches manuelles et orchestration de workflows simples ou avancés.',
+    price: 'à cadrer',
+    period: 'selon workflow',
+    info: [
+      'Pour relier des outils, supprimer des étapes manuelles ou fluidifier un processus interne.',
+      'Peut inclure n8n, Zapier, CRM sync, onboarding, notifications ou pipelines documentaires.',
+      'Le consulting payant reste la meilleure entrée si le workflow n’est pas encore clair.',
+    ],
+    items: [
+      'n8n, Zapier, CRM sync, onboarding et notifications',
+      'Flows documentaires, automatisations métier et workflows IA assistés',
+      'Moins de tâches manuelles, plus de continuité opérationnelle',
+    ],
+    cta: { text: 'Demander un scope automation →', href: '/contact#form' },
+  },
+];
 ---
 
-<Shell page="pricing" metadata={metadata} locale={locale}>
-  <section class="ps-section">
-    <p class="ps-eyebrow">{copy.pricing.eyebrow}</p>
-    <h1 class="ps-title">{copy.pricing.title}</h1>
-    <p class="ps-lead">{copy.pricing.lead}</p>
-  </section>
+<Layout metadata={metadata}>
+  <!-- HeroText Widget ******************* -->
 
-  <section class="ps-section">
-    <p class="ps-eyebrow">{copy.pricing.launch.eyebrow}</p>
-    <h2 class="ps-subtitle">{copy.pricing.launch.title}</h2>
-    <p class="ps-lead">{copy.pricing.launch.lead}</p>
-  </section>
+  <HeroText
+    class="tsw-pricing-hero"
+    tagline="Tarifs"
+    title="Des offres transparentes, facturées en Suisse"
+    subtitle="Deux voies standards pour les sites simples, puis du consulting et une couche systems & operations pour les sujets qui dépassent réellement le template."
+  >
+    <Fragment slot="bg">
+      <div class="tsw-pricing-hero-bg"></div>
+      <div class="tsw-pricing-hero-plate" aria-hidden="true"></div>
+      <div class="tsw-pricing-hero-axis" aria-hidden="true"></div>
+      <div class="tsw-pricing-hero-orbit" aria-hidden="true"></div>
+    </Fragment>
+  </HeroText>
 
-  <section class="ps-section">
-    <div class="ps-pricing-shell">
-      {
-        iopartnerLaunchOffers.map((offer) => {
-          const tier = copy.pricing.launch.tiers[offer.key];
-          return (
-            <article class={`ps-card ${offer.key === 'launch' ? 'ps-pricing-card' : ''}`}>
-              <p class="ps-eyebrow">{tier.eyebrow}</p>
-              <h2>{tier.title}</h2>
-              <div class="ps-price-line">
-                <strong>{offer.price}</strong>
-                <span>{offer.duration}</span>
-              </div>
-              <p>{tier.summary}</p>
-              <ul class="ps-list">
-                {tier.items.map((item: string) => <li>{item}</li>)}
-              </ul>
-              <div class="ps-action-row">
-                <a class={offer.key === 'launch' ? 'ps-button' : 'ps-button secondary'} href={whatsappUrl} target="_blank" rel="noreferrer">
-                  {tier.cta}
-                </a>
-              </div>
-            </article>
-          );
-        })
-      }
+  <div class="max-w-3xl mx-auto px-4 mb-2">
+    <div
+      class="tsw-pricing-banner rounded-2xl border-2 border-slate-200 bg-stone-50 dark:bg-slate-900/30 px-6 py-4 text-center intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade"
+    >
+      <p class="text-lg font-bold text-slate-900 dark:text-slate-100">Pack Essentiel — dès 999 CHF</p>
+      <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">
+        Prix fixe pour un site vitrine professionnel. Livraison typique en 3–5 jours ouvrables selon vos contenus.
+      </p>
+      <a
+        href="/onboarding?plan=essential999"
+        class="mt-3 inline-block bg-slate-900 hover:bg-slate-700 text-white font-bold text-sm px-6 py-2 rounded-xl transition-colors"
+        >Commander maintenant →</a
+      >
     </div>
-  </section>
+  </div>
 
-  <section class="ps-section">
-    <p class="ps-eyebrow">{copy.pricing.systems.eyebrow}</p>
-    <h2 class="ps-subtitle">{copy.pricing.systems.title}</h2>
-    <p class="ps-lead">{copy.pricing.systems.lead}</p>
-  </section>
+  <section class="relative not-prose scroll-mt-[72px]">
+    <div class="relative mx-auto max-w-7xl px-4 md:px-6 py-12 md:py-16 lg:py-20 text-default">
+      <div class="mb-8 md:mx-auto md:mb-12 text-center max-w-3xl">
+        <h2 class="font-bold leading-tighter tracking-tighter font-heading text-heading text-3xl md:text-4xl">
+          Nos packs clés-en-main
+        </h2>
+        <p class="mt-4 text-muted text-xl">Choisissez l'offre qui correspond à votre besoin. Sans frais cachés.</p>
+      </div>
 
-  <section class="ps-section">
-    <div class="ps-pricing-shell">
-      {
-        iopartnerSystemsOffers.map((offer) => {
-          const tier = copy.pricing.systems.tiers[offer.key];
-          const href = offer.key === 'diagnostic' ? bookingUrl : whatsappUrl;
-          return (
-            <article class={`ps-card ${offer.key === 'diagnostic' ? 'ps-pricing-card' : ''}`}>
-              <p class="ps-eyebrow">{tier.eyebrow}</p>
-              <h2>{tier.title}</h2>
-              <div class="ps-price-line">
-                <strong>{offer.price}</strong>
-                <span>{offer.duration}</span>
-              </div>
-              <p>{tier.summary}</p>
-              <ul class="ps-list">
-                {tier.items.map((item: string) => <li>{item}</li>)}
-              </ul>
-              <div class="ps-action-row">
-                <a class={offer.key === 'diagnostic' ? 'ps-button' : 'ps-button secondary'} href={href} target="_blank" rel="noreferrer">
-                  {tier.cta}
-                </a>
-              </div>
-            </article>
-          );
-        })
-      }
-    </div>
-  </section>
+      <div
+        id="pricing-options"
+        class="tsw-pricing-tabs tsw-pricing-shell scroll-mt-32 intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade"
+      >
+        <input
+          class="tsw-pricing-switch"
+          type="radio"
+          name="tsw-pricing-tabs-fr"
+          id="tsw-pricing-tab-website"
+          checked={defaultPricingTab === 'website'}
+        />
+        <input
+          class="tsw-pricing-switch"
+          type="radio"
+          name="tsw-pricing-tabs-fr"
+          id="tsw-pricing-tab-consulting"
+          checked={defaultPricingTab === 'consulting'}
+        />
+        <input
+          class="tsw-pricing-switch"
+          type="radio"
+          name="tsw-pricing-tabs-fr"
+          id="tsw-pricing-tab-systems"
+          checked={defaultPricingTab === 'systems'}
+        />
 
-  <section class="ps-section">
-    <PipelineDiagram
-      eyebrow={copy.pricing.process.eyebrow}
-      title={copy.pricing.process.title}
-      lead={copy.pricing.process.lead}
-      nodes={copy.pricing.process.nodes}
-    />
-  </section>
-
-  <section class="ps-section">
-    <div class="ps-grid ps-grid-2">
-      <article class="ps-card">
-        <p class="ps-eyebrow">{customSystemsCopy.eyebrow}</p>
-        <h2>{customSystemsCopy.title}</h2>
-        <p>{customSystemsCopy.lead}</p>
-        <ul class="ps-list">
-          {customSystemsCopy.items.map((item: string) => <li>{item}</li>)}
-        </ul>
-        <div class="ps-action-row">
-          <a class="ps-button secondary" href={`${basePath}/contact`}>{customSystemsCopy.cta}</a>
+        <div class="tsw-pricing-tablist" aria-label="Parcours tarifaires IOPartner">
+          {
+            pricingTabs.map((tab) => (
+              <label class="tsw-pricing-tab" for={`tsw-pricing-tab-${tab.key}`}>
+                {tab.label}
+              </label>
+            ))
+          }
         </div>
-      </article>
 
-      <article class="ps-card">
-        <div class="ps-grid ps-grid-1">
-          {copy.pricing.cards.map((card: PricingCard) => (
-            <div class="ps-card-fragment">
-              <h3>{card.title}</h3>
-              <p>{card.body}</p>
+        <div class="mt-8 tsw-pricing-panels">
+          <section id="website-building" class="tsw-pricing-panel tsw-pricing-panel-website scroll-mt-32">
+            <div class="tsw-pricing-grid">
+              {
+                websiteOffers.map((offer) => (
+                  <article class="tsw-price-card tsw-price-card-tooltip">
+                    <div class="px-2 py-0">
+                      <div class="mb-2 flex items-center justify-center gap-2">
+                        <h3 class="text-center text-xl font-semibold uppercase leading-6 tracking-wider">
+                          {offer.title}
+                        </h3>
+                        <div class="relative inline-block group">
+                          <button
+                            type="button"
+                            class="inline-flex h-5 w-5 items-center justify-center rounded-full border border-gray-300 text-[11px] leading-none text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary dark:text-gray-300"
+                            aria-label="Info"
+                          >
+                            i
+                          </button>
+                          <div class="pointer-events-none absolute left-1/2 top-full z-30 mt-2 hidden w-72 -translate-x-1/2 rounded-md border border-gray-200 bg-white p-3 text-left text-sm shadow-xl group-hover:block group-focus-within:block dark:border-gray-700 dark:bg-slate-900">
+                            <ul class="space-y-1">
+                              {offer.info.map((line) => (
+                                <li>• {line}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                      <p class="font-light sm:text-lg text-gray-600 dark:text-slate-400">{offer.subtitle}</p>
+                      <div class="my-8">
+                        <div class="flex items-center justify-center text-center mb-1">
+                          <span class="text-2xl mr-2">CHF</span>
+                          <span class="text-6xl font-extrabold">{offer.price}</span>
+                        </div>
+                        <span class="text-base leading-6 lowercase text-gray-600 dark:text-slate-400">
+                          {offer.period}
+                        </span>
+                      </div>
+                      <ul class="my-8 md:my-10 space-y-3 text-center">
+                        {offer.items.map((item) => (
+                          <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                            <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                              <span class="text-white text-sm font-bold">✓</span>
+                            </div>
+                            <span class="text-base">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div class="flex justify-center">
+                      <a class="btn btn-primary" href={offer.cta.href}>
+                        {offer.cta.text}
+                      </a>
+                    </div>
+                  </article>
+                ))
+              }
+
+              <article class="tsw-price-card tsw-price-card-muted">
+                <div class="px-2 py-0">
+                  <h3 class="text-center text-xl font-semibold uppercase leading-6 tracking-wider">
+                    Besoin de plus qu’un site standard ?
+                  </h3>
+                  <p class="mt-3 font-light sm:text-lg text-gray-600 dark:text-slate-400">
+                    Gardez la structure, puis passez en consulting ou en systems & operations dès que le sujet devient
+                    réellement technique.
+                  </p>
+                  <ul class="my-8 md:my-10 space-y-3 text-center">
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">→</span>
+                      </div>
+                      <span class="text-base"
+                        >Utilisez le consulting pour arbitrer vite ou débloquer un point précis</span
+                      >
+                    </li>
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">→</span>
+                      </div>
+                      <span class="text-base"
+                        >Utilisez systems & operations pour codebase privée, backend, infra ou intégrations</span
+                      >
+                    </li>
+                  </ul>
+                </div>
+                <div class="flex justify-center gap-3 flex-wrap">
+                  <label class="btn cursor-pointer" for="tsw-pricing-tab-consulting">Voir le consulting</label>
+                  <label class="btn btn-primary cursor-pointer" for="tsw-pricing-tab-systems"
+                    >Voir systems & operations</label
+                  >
+                </div>
+              </article>
             </div>
-          ))}
+          </section>
+
+          <section id="consulting" class="tsw-pricing-panel tsw-pricing-panel-consulting scroll-mt-32">
+            <div class="tsw-pricing-grid">
+              {
+                consultingOffers.map((offer) => (
+                  <article class="tsw-price-card tsw-price-card-tooltip">
+                    <div class="px-2 py-0">
+                      <div class="mb-2 flex items-center justify-center gap-2">
+                        <h3 class="text-center text-xl font-semibold uppercase leading-6 tracking-wider">
+                          {offer.title}
+                        </h3>
+                        <div class="relative inline-block group">
+                          <button
+                            type="button"
+                            class="inline-flex h-5 w-5 items-center justify-center rounded-full border border-gray-300 text-[11px] leading-none text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary dark:text-gray-300"
+                            aria-label="Info"
+                          >
+                            i
+                          </button>
+                          <div class="pointer-events-none absolute left-1/2 top-full z-30 mt-2 hidden w-72 -translate-x-1/2 rounded-md border border-gray-200 bg-white p-3 text-left text-sm shadow-xl group-hover:block group-focus-within:block dark:border-gray-700 dark:bg-slate-900">
+                            <ul class="space-y-1">
+                              {offer.info.map((line) => (
+                                <li>• {line}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                      <p class="font-light sm:text-lg text-gray-600 dark:text-slate-400">{offer.subtitle}</p>
+                      <div class="my-8">
+                        <div class="flex items-center justify-center text-center mb-1">
+                          <span class="text-2xl mr-2">CHF</span>
+                          <span class="text-6xl font-extrabold">{offer.price}</span>
+                        </div>
+                        <span class="text-base leading-6 text-gray-600 dark:text-slate-400">{offer.period}</span>
+                      </div>
+                      <ul class="my-8 md:my-10 space-y-3 text-center">
+                        {offer.items.map((item) => (
+                          <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                            <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                              <span class="text-white text-sm font-bold">✓</span>
+                            </div>
+                            <span class="text-base">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div class="flex justify-center">
+                      <a class="btn btn-primary" href={offer.cta.href}>
+                        {offer.cta.text}
+                      </a>
+                    </div>
+                  </article>
+                ))
+              }
+
+              <article class="tsw-price-card tsw-price-card-muted">
+                <div class="px-2 py-0">
+                  <h3 class="text-center text-xl font-semibold uppercase leading-6 tracking-wider">
+                    Cas d’usage typiques
+                  </h3>
+                  <p class="mt-3 font-light sm:text-lg text-gray-600 dark:text-slate-400">
+                    Achetez d’abord de la clarté quand le sujet n’a pas encore besoin d’un scope de build complet.
+                  </p>
+                  <ul class="my-8 md:my-10 space-y-3 text-center">
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">•</span>
+                      </div>
+                      <span class="text-base">Choisir entre template, codebase privée, backend ou vrai système</span>
+                    </li>
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">•</span>
+                      </div>
+                      <span class="text-base"
+                        >Relire une architecture, un plan d’intégration ou une direction delivery</span
+                      >
+                    </li>
+                    <li class="mb-1.5 flex items-center justify-center gap-3 leading-7 text-center">
+                      <div class="rounded-full bg-primary flex items-center justify-center w-7 h-7">
+                        <span class="text-white text-sm font-bold">•</span>
+                      </div>
+                      <span class="text-base">Débloquer un problème avant qu’un projet plus large ne démarre</span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="flex justify-center">
+                  <label class="btn cursor-pointer" for="tsw-pricing-tab-systems"
+                    >Le consulting peut ouvrir vers systems & operations</label
+                  >
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section id="systems-operations" class="tsw-pricing-panel tsw-pricing-panel-systems scroll-mt-32">
+            <div class="tsw-systems-layout">
+              <article class="tsw-price-card tsw-blueprint-card tsw-blueprint-card-wide">
+                <div class="tsw-blueprint-layout">
+                  <div class="tsw-blueprint-copy">
+                    <p class="tsw-blueprint-kicker">Engineering blueprint</p>
+                    <h3 class="tsw-blueprint-title">
+                      Infrastructure, automatisation, développement logiciel et continuité technique.
+                    </h3>
+                    <p class="tsw-blueprint-lead">
+                      Une seule couche avancée pour les sujets qui dépassent un simple site vitrine: build systems,
+                      environnements techniques, workflows et relais opérationnel.
+                    </p>
+                  </div>
+                  <div class="tsw-blueprint-map" aria-hidden="true">
+                    <div class="tsw-blueprint-node">
+                      <strong>Build systems</strong>
+                      <span>codebase privée · backend · API · outils internes</span>
+                    </div>
+                    <div class="tsw-blueprint-node">
+                      <strong>Infra</strong>
+                      <span>VPS · Docker · DNS · SSL · monitoring</span>
+                    </div>
+                    <div class="tsw-blueprint-node">
+                      <strong>Automation</strong>
+                      <span>n8n · CRM sync · notifications · flows documentaires</span>
+                    </div>
+                    <div class="tsw-blueprint-node">
+                      <strong>Continuity</strong>
+                      <span>incidents · support léger · coordination · suivi</span>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <div class="tsw-systems-main-grid">
+                <article class="tsw-price-card tsw-systems-build-panel">
+                  <div class="tsw-systems-panel-head">
+                    <p class="tsw-systems-panel-kicker">Scoped build</p>
+                    <h3 class="tsw-systems-panel-title">Systèmes sur mesure</h3>
+                    <p class="tsw-systems-panel-lead">
+                      Codebase privée, backend, automatisation ou architecture plus lourde quand le sujet demande un
+                      vrai système dédié et un périmètre cadré proprement.
+                    </p>
+                  </div>
+
+                  <div class="tsw-systems-build-split">
+                    <div class="tsw-systems-price-mark">
+                      <span class="tsw-systems-price-prefix">à discuter</span>
+                      <strong>Scope cadré avant build</strong>
+                      <em
+                        >Le niveau d’effort dépend du périmètre, des intégrations et du niveau de continuité attendu.</em
+                      >
+                    </div>
+                    <div class="tsw-systems-capability-grid">
+                      <div class="tsw-systems-scope-areas">
+                        <div class="tsw-systems-scope-card">
+                          <strong>Frontend & apps</strong>
+                          <span>Angular, React, JavaScript, TypeScript, delivery full-stack</span>
+                        </div>
+                        <div class="tsw-systems-scope-card">
+                          <strong>Infra & automation</strong>
+                          <span>Bash scripting, Linux infra, automation, intégrations</span>
+                        </div>
+                        <div class="tsw-systems-scope-card">
+                          <strong>Engineering rigoureux</strong>
+                          <span>Python, C, C++, structures de données, algorithmes, sujets plus exigeants</span>
+                        </div>
+                      </div>
+
+                      <ul class="tsw-systems-runway">
+                        <li>
+                          <strong>Build privée</strong>
+                          <span
+                            >Codebase dédiée, structure propriétaire ou handoff quand le standard ne suffit plus</span
+                          >
+                        </li>
+                        <li>
+                          <strong>Backend & logique métier</strong>
+                          <span>API, dashboard, intégration ou logique applicative plus sérieuse</span>
+                        </li>
+                        <li>
+                          <strong>Infrastructure & automatisation</strong>
+                          <span>Environnements plus propres, orchestration, scripts et workflows métier</span>
+                        </li>
+                        <li>
+                          <strong>Systèmes plus lourds</strong>
+                          <span>Projets plus ambitieux cadrés selon risque, architecture et continuité</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div class="flex justify-center sm:justify-start">
+                    <a class="btn btn-primary" href="/contact#form">Discuter du scope</a>
+                  </div>
+                </article>
+
+                <article class="tsw-price-card tsw-systems-ramp-panel">
+                  <div class="tsw-systems-panel-head">
+                    <p class="tsw-systems-panel-kicker">Paid clarity first</p>
+                    <h3 class="tsw-systems-panel-title">Commencer proprement</h3>
+                    <p class="tsw-systems-panel-lead">
+                      Utilisez d’abord le consulting payé quand la vraie taille du sujet, le risque technique ou la
+                      direction delivery doivent encore être cadrés.
+                    </p>
+                  </div>
+
+                  <div class="tsw-systems-ramp-steps">
+                    <div class="tsw-systems-ramp-step">
+                      <strong>60 CHF / 15 min</strong>
+                      <span>entrée ciblée, payée d’avance, pour arbitrer vite ou débloquer un point précis</span>
+                    </div>
+                    <div class="tsw-systems-ramp-step">
+                      <strong>140 CHF / heure</strong>
+                      <span>quand il faut aller plus loin en support, cadrage ou delivery technique</span>
+                    </div>
+                  </div>
+
+                  <div class="flex justify-center sm:justify-start">
+                    <label class="btn cursor-pointer" for="tsw-pricing-tab-consulting">Voir le consulting d’abord</label
+                    >
+                  </div>
+                </article>
+              </div>
+
+              <div class="tsw-systems-stack">
+                {
+                  operationsOffers.map((offer, index) => (
+                    <article class={`tsw-price-card tsw-systems-stack-card tsw-systems-stack-card-${index + 1}`}>
+                      <div class="tsw-systems-stack-meta">
+                        <span class="tsw-systems-stack-badge">{offer.period}</span>
+                        <span class="tsw-systems-stack-price">{offer.price}</span>
+                      </div>
+
+                      <h3 class="tsw-systems-stack-title">{offer.title}</h3>
+                      <p class="tsw-systems-stack-lead">{offer.subtitle}</p>
+
+                      <ul class="tsw-systems-stack-list">
+                        {offer.items.map((item) => (
+                          <li>{item}</li>
+                        ))}
+                      </ul>
+
+                      <div class="flex justify-center sm:justify-start">
+                        <a class="btn btn-primary" href={offer.cta.href}>
+                          {offer.cta.text}
+                        </a>
+                      </div>
+                    </article>
+                  ))
+                }
+              </div>
+
+              <article class="tsw-price-card tsw-systems-ops-band">
+                <div class="tsw-systems-ops-copy">
+                  <p class="tsw-systems-panel-kicker">Continuity layer</p>
+                  <h3 class="tsw-systems-panel-title">Opérations & support</h3>
+                  <p class="tsw-systems-panel-lead">
+                    Le support reste une composante opérationnelle parmi d’autres: coordination légère, incidents,
+                    corrections et continuité après livraison.
+                  </p>
+                </div>
+
+                <ul class="tsw-systems-ops-list">
+                  <li>Tickets, incidents, corrections, contenu et coordination technique légère</li>
+                  <li>Continuité après site, systems & operations, consulting ou chantier d’infrastructure</li>
+                  <li>Consulting payé d’abord si le vrai périmètre opérationnel reste encore flou</li>
+                </ul>
+
+                <div class="flex justify-center sm:justify-start gap-3 flex-wrap">
+                  <label class="btn cursor-pointer" for="tsw-pricing-tab-consulting">Voir le consulting</label>
+                  <a class="btn btn-primary" href="/contact#form">Demander un scope</a>
+                </div>
+              </article>
+            </div>
+          </section>
         </div>
-      </article>
+      </div>
     </div>
   </section>
 
   <style>
-    .ps-pricing-shell {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1.15rem;
-      align-items: start;
+    .tsw-pricing-hero {
+      overflow: hidden;
     }
 
-    .ps-pricing-card {
+    .tsw-pricing-hero-bg {
+      position: absolute;
+      inset: 0;
       background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(255, 255, 255, 0.84)),
-        radial-gradient(circle at top right, var(--ps-haze), transparent 36%);
+        radial-gradient(circle at 12% 0%, rgba(100, 116, 139, 0.12), transparent 26%),
+        radial-gradient(circle at 100% 8%, rgba(14, 165, 233, 0.08), transparent 18%),
+        linear-gradient(180deg, rgba(248, 250, 252, 0.96), rgba(255, 255, 255, 0.42));
     }
 
-    .ps-price-line {
+    .tsw-pricing-hero-bg::before,
+    .tsw-pricing-hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .tsw-pricing-hero-bg::before {
+      background:
+        linear-gradient(90deg, rgba(71, 85, 105, 0.045) 1px, transparent 1px),
+        linear-gradient(rgba(71, 85, 105, 0.045) 1px, transparent 1px);
+      background-size:
+        24px 24px,
+        24px 24px;
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.88), rgba(0, 0, 0, 0.28));
+    }
+
+    .tsw-pricing-hero-bg::after {
+      inset: auto -8% -16% auto;
+      width: 18rem;
+      height: 18rem;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(100, 116, 139, 0.1), transparent 70%);
+      filter: blur(14px);
+    }
+
+    .tsw-pricing-hero-plate,
+    .tsw-pricing-hero-axis,
+    .tsw-pricing-hero-orbit {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .tsw-pricing-hero-plate {
+      inset: 2.2rem max(1rem, 8vw) auto;
+      height: 14rem;
+      border: 1px solid rgba(100, 116, 139, 0.12);
+      border-radius: 1.6rem;
+      background:
+        linear-gradient(90deg, rgba(71, 85, 105, 0.04) 1px, transparent 1px),
+        linear-gradient(rgba(71, 85, 105, 0.04) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.1));
+      background-size:
+        20px 20px,
+        20px 20px,
+        100% 100%;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.75),
+        0 18px 48px -42px rgba(51, 65, 85, 0.24);
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.25));
+    }
+
+    .tsw-pricing-hero-plate::before,
+    .tsw-pricing-hero-plate::after {
+      content: '';
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .tsw-pricing-hero-plate::before {
+      left: 1rem;
+      right: 1rem;
+      top: 1rem;
+      bottom: 1rem;
+      border: 1px dashed rgba(100, 116, 139, 0.16);
+      border-radius: 1rem;
+    }
+
+    .tsw-pricing-hero-plate::after {
+      left: 50%;
+      top: 0.95rem;
+      bottom: 0.95rem;
+      width: 1px;
+      background: linear-gradient(180deg, rgba(14, 165, 233, 0.12), rgba(71, 85, 105, 0.04));
+      transform: translateX(-0.5px);
+      opacity: 0.8;
+    }
+
+    .tsw-pricing-hero-axis::before,
+    .tsw-pricing-hero-axis::after {
+      content: '';
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .tsw-pricing-hero-axis::before {
+      left: 8%;
+      right: 8%;
+      top: 7.9rem;
+      height: 1px;
+      background:
+        linear-gradient(90deg, transparent, rgba(100, 116, 139, 0.28) 12%, rgba(100, 116, 139, 0.28) 88%, transparent),
+        linear-gradient(
+          90deg,
+          transparent 0%,
+          transparent 11.5%,
+          rgba(100, 116, 139, 0.25) 11.5%,
+          rgba(100, 116, 139, 0.25) 11.8%,
+          transparent 11.8%,
+          transparent 49.5%,
+          rgba(14, 165, 233, 0.24) 49.5%,
+          rgba(14, 165, 233, 0.24) 50.5%,
+          transparent 50.5%,
+          transparent 88.2%,
+          rgba(100, 116, 139, 0.25) 88.2%,
+          rgba(100, 116, 139, 0.25) 88.5%,
+          transparent 88.5%
+        );
+      opacity: 0.7;
+    }
+
+    .tsw-pricing-hero-axis::after {
+      top: 4rem;
+      bottom: 3rem;
+      left: 50%;
+      width: 1px;
+      background:
+        linear-gradient(180deg, transparent, rgba(100, 116, 139, 0.22) 18%, rgba(100, 116, 139, 0.22) 82%, transparent),
+        linear-gradient(
+          180deg,
+          transparent 0%,
+          transparent 19%,
+          rgba(100, 116, 139, 0.18) 19%,
+          rgba(100, 116, 139, 0.18) 19.5%,
+          transparent 19.5%,
+          transparent 49.3%,
+          rgba(14, 165, 233, 0.2) 49.3%,
+          rgba(14, 165, 233, 0.2) 50.7%,
+          transparent 50.7%,
+          transparent 80.5%,
+          rgba(100, 116, 139, 0.18) 80.5%,
+          rgba(100, 116, 139, 0.18) 81%,
+          transparent 81%
+        );
+      transform: translateX(-0.5px);
+      opacity: 0.55;
+    }
+
+    .tsw-pricing-hero-orbit::before,
+    .tsw-pricing-hero-orbit::after {
+      content: '';
+      position: absolute;
+      border-radius: 999px;
+      pointer-events: none;
+    }
+
+    .tsw-pricing-hero-orbit::before {
+      right: max(1.5rem, 7vw);
+      top: 2.6rem;
+      width: 13rem;
+      height: 13rem;
+      border: 1px solid rgba(100, 116, 139, 0.14);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+      opacity: 0.75;
+    }
+
+    .tsw-pricing-hero-orbit::after {
+      left: max(1.8rem, 8vw);
+      top: 3.4rem;
+      width: 8rem;
+      height: 8rem;
+      border: 1px dashed rgba(100, 116, 139, 0.16);
+      opacity: 0.7;
+    }
+
+    .tsw-pricing-tabs {
+      display: grid;
+      gap: 1.5rem;
+      position: relative;
+    }
+
+    .tsw-pricing-banner {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(148, 163, 184, 0.18), transparent 34%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(245, 245, 244, 0.94));
+      box-shadow: 0 26px 65px -38px rgba(51, 65, 85, 0.26);
+    }
+
+    .tsw-pricing-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(71, 85, 105, 0.05) 1px, transparent 1px),
+        linear-gradient(rgba(71, 85, 105, 0.05) 1px, transparent 1px),
+        linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.32) 48%, transparent 100%);
+      background-size:
+        24px 24px,
+        24px 24px,
+        100% 100%;
+      opacity: 0.95;
+    }
+
+    .tsw-pricing-banner > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .tsw-pricing-shell {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(148, 163, 184, 0.26);
+      border-radius: 1.75rem;
+      padding: 1.2rem;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(100, 116, 139, 0.09), transparent 30%),
+        radial-gradient(circle at 100% 10%, rgba(148, 163, 184, 0.08), transparent 26%),
+        linear-gradient(180deg, rgba(250, 250, 249, 0.98), rgba(245, 245, 244, 0.95));
+      box-shadow: 0 28px 80px -52px rgba(15, 23, 42, 0.28);
+    }
+
+    .tsw-pricing-shell::before,
+    .tsw-pricing-shell::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .tsw-pricing-shell::before {
+      background:
+        linear-gradient(90deg, rgba(71, 85, 105, 0.045) 1px, transparent 1px),
+        linear-gradient(rgba(71, 85, 105, 0.045) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.26), transparent 50%);
+      background-size:
+        22px 22px,
+        22px 22px,
+        100% 100%;
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.45));
+      opacity: 0.9;
+    }
+
+    .tsw-pricing-shell::after {
+      inset: auto -8% -22% auto;
+      width: 19rem;
+      height: 19rem;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(100, 116, 139, 0.1), transparent 68%);
+      filter: blur(8px);
+    }
+
+    .tsw-pricing-shell > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .tsw-pricing-switch {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .tsw-pricing-tablist {
       display: flex;
-      align-items: baseline;
-      gap: 0.8rem;
-      margin: 0 0 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.7rem;
+      width: fit-content;
+      margin: 0 auto;
+      padding: 0.5rem;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(14px);
     }
 
-    .ps-price-line strong {
-      font-family: var(--ps-font-heading);
-      font-size: clamp(2.25rem, 4.8vw, 3.8rem);
-      line-height: 0.95;
-      letter-spacing: -0.05em;
+    .tsw-pricing-tab {
+      appearance: none;
+      border: 1px solid #cbd5e1;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.88);
+      color: #334155;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      padding: 0.8rem 1.15rem;
+      transition:
+        background-color 180ms ease,
+        border-color 180ms ease,
+        color 180ms ease,
+        transform 180ms ease,
+        box-shadow 180ms ease;
+      box-shadow: 0 16px 30px -28px rgba(15, 23, 42, 0.7);
     }
 
-    .ps-price-line span {
-      color: var(--ps-muted);
-      font-size: 1rem;
+    .tsw-pricing-tab:hover {
+      border-color: #94a3b8;
+      background: #f8fafc;
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 18px 34px -24px rgba(51, 65, 85, 0.18);
+    }
+
+    .tsw-pricing-tab:focus-visible {
+      outline: 2px solid #2563eb;
+      outline-offset: 2px;
+    }
+
+    .tsw-pricing-panel {
+      display: none;
+      gap: 1.25rem;
+    }
+
+    .tsw-pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+      gap: 1.25rem;
+      align-items: stretch;
+    }
+
+    .tsw-price-card {
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.75rem;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.98));
+      box-shadow: 0 18px 42px -30px rgba(15, 23, 42, 0.32);
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: center;
+      transition:
+        transform 220ms ease,
+        box-shadow 220ms ease,
+        border-color 220ms ease;
+    }
+
+    .tsw-price-card::before,
+    .tsw-price-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .tsw-price-card::before {
+      background:
+        linear-gradient(90deg, rgba(71, 85, 105, 0.035) 1px, transparent 1px),
+        linear-gradient(rgba(71, 85, 105, 0.035) 1px, transparent 1px),
+        radial-gradient(circle at 100% 0%, rgba(148, 163, 184, 0.12), transparent 34%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.58));
+      background-size:
+        18px 18px,
+        18px 18px,
+        100% 100%,
+        100% 100%;
+      z-index: -2;
+    }
+
+    .tsw-price-card::after {
+      inset: auto -26% -48% auto;
+      width: 11rem;
+      height: 11rem;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(100, 116, 139, 0.1), transparent 68%);
+      z-index: -1;
+      transition: transform 260ms ease;
+    }
+
+    .tsw-price-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .tsw-price-card:hover {
+      transform: translateY(-6px) scale(1.01);
+      box-shadow: 0 24px 52px -30px rgba(15, 23, 42, 0.34);
+    }
+
+    .tsw-price-card:hover::after {
+      transform: scale(1.16);
+    }
+
+    .tsw-price-card-muted {
+      background: linear-gradient(180deg, rgba(248, 250, 252, 0.98), rgba(241, 245, 249, 0.98));
+    }
+
+    .tsw-price-card-tooltip {
+      overflow: visible;
+    }
+
+    .tsw-price-card-tooltip:hover,
+    .tsw-price-card-tooltip:focus-within {
+      z-index: 30;
+    }
+
+    .tsw-pricing-grid > * {
+      --tsw-reveal-delay: 0s;
+    }
+
+    .tsw-pricing-grid > *:nth-child(1) {
+      --tsw-reveal-delay: 0.04s;
+    }
+
+    .tsw-pricing-grid > *:nth-child(2) {
+      --tsw-reveal-delay: 0.1s;
+    }
+
+    .tsw-pricing-grid > *:nth-child(3) {
+      --tsw-reveal-delay: 0.16s;
+    }
+
+    .tsw-pricing-grid > *:nth-child(4) {
+      --tsw-reveal-delay: 0.22s;
+    }
+
+    .tsw-pricing-grid > *:nth-child(5) {
+      --tsw-reveal-delay: 0.28s;
+    }
+
+    .tsw-pricing-grid > *:nth-child(6) {
+      --tsw-reveal-delay: 0.34s;
+    }
+
+    .tsw-pricing-grid > *:nth-child(7) {
+      --tsw-reveal-delay: 0.4s;
+    }
+
+    .tsw-pricing-grid > *:nth-child(8) {
+      --tsw-reveal-delay: 0.46s;
+    }
+
+    .tsw-systems-layout {
+      display: grid;
+      gap: 1.25rem;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(100, 116, 139, 0.16);
+      border-radius: 1.75rem;
+      padding: 1rem;
+      background:
+        linear-gradient(90deg, rgba(71, 85, 105, 0.04) 1px, transparent 1px),
+        linear-gradient(rgba(71, 85, 105, 0.04) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(241, 245, 249, 0.78), rgba(255, 255, 255, 0));
+      background-size:
+        24px 24px,
+        24px 24px,
+        100% 100%;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+    }
+
+    .tsw-systems-layout::before,
+    .tsw-systems-layout::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .tsw-systems-layout::before {
+      background:
+        radial-gradient(circle at 0% 0%, rgba(148, 163, 184, 0.08), transparent 26%),
+        linear-gradient(140deg, transparent 0%, rgba(255, 255, 255, 0.16) 48%, transparent 100%);
+      opacity: 0.84;
+    }
+
+    .tsw-systems-layout::after {
+      inset: auto -10% -24% auto;
+      width: 16rem;
+      height: 16rem;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(100, 116, 139, 0.08), transparent 68%);
+      filter: blur(12px);
+    }
+
+    .tsw-systems-layout > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .tsw-systems-layout > * {
+      --tsw-reveal-delay: 0s;
+    }
+
+    .tsw-systems-layout > *:nth-child(1) {
+      --tsw-reveal-delay: 0.04s;
+    }
+
+    .tsw-systems-layout > *:nth-child(2) {
+      --tsw-reveal-delay: 0.12s;
+    }
+
+    .tsw-systems-layout > *:nth-child(3) {
+      --tsw-reveal-delay: 0.2s;
+    }
+
+    .tsw-systems-layout > *:nth-child(4) {
+      --tsw-reveal-delay: 0.28s;
+    }
+
+    .tsw-systems-main-grid,
+    .tsw-systems-stack {
+      display: grid;
+      gap: 1.25rem;
+    }
+
+    .tsw-systems-main-grid > *,
+    .tsw-systems-stack > * {
+      --tsw-reveal-delay: 0s;
+    }
+
+    .tsw-systems-main-grid > *:nth-child(1),
+    .tsw-systems-stack > *:nth-child(1) {
+      --tsw-reveal-delay: 0.08s;
+    }
+
+    .tsw-systems-main-grid > *:nth-child(2),
+    .tsw-systems-stack > *:nth-child(2) {
+      --tsw-reveal-delay: 0.16s;
+    }
+
+    .tsw-systems-main-grid > *:nth-child(3),
+    .tsw-systems-stack > *:nth-child(3) {
+      --tsw-reveal-delay: 0.24s;
+    }
+
+    .tsw-systems-build-panel,
+    .tsw-systems-ramp-panel,
+    .tsw-systems-stack-card,
+    .tsw-systems-ops-band {
+      text-align: left;
+      align-items: flex-start;
+      gap: 1.35rem;
+    }
+
+    .tsw-systems-panel-head {
+      display: grid;
+      gap: 0.7rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .tsw-systems-panel-kicker {
+      margin: 0;
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
+      color: #0891b2;
     }
 
-    .ps-card-fragment + .ps-card-fragment {
-      margin-top: 1.15rem;
-      padding-top: 1.15rem;
-      border-top: 1px solid var(--ps-line);
+    .tsw-systems-panel-title {
+      margin: 0;
+      font-size: clamp(1.3rem, 2vw, 1.85rem);
+      line-height: 1.08;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #0f172a;
     }
 
-    @media (max-width: 980px) {
-      .ps-pricing-shell {
-        grid-template-columns: 1fr;
+    .tsw-systems-panel-lead {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.72;
+      color: #475569;
+    }
+
+    .tsw-systems-build-split {
+      display: grid;
+      gap: 1rem;
+      width: 100%;
+    }
+
+    .tsw-systems-capability-grid {
+      display: grid;
+      gap: 1rem;
+      width: 100%;
+    }
+
+    .tsw-systems-price-mark {
+      display: grid;
+      gap: 0.3rem;
+      width: 100%;
+      padding: 1rem 1.1rem;
+      border: 1px solid rgba(100, 116, 139, 0.18);
+      border-radius: 1rem;
+      background: linear-gradient(180deg, rgba(250, 250, 249, 0.94), rgba(241, 245, 249, 0.84));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+
+    .tsw-systems-price-prefix {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #475569;
+    }
+
+    .tsw-systems-price-mark strong {
+      font-size: clamp(1.8rem, 4vw, 2.75rem);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: #0f172a;
+    }
+
+    .tsw-systems-price-mark em {
+      font-style: normal;
+      font-size: 0.95rem;
+      color: #475569;
+    }
+
+    .tsw-systems-runway,
+    .tsw-systems-stack-list,
+    .tsw-systems-ops-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .tsw-systems-runway {
+      display: grid;
+      gap: 0.75rem;
+      width: 100%;
+    }
+
+    .tsw-systems-runway li {
+      position: relative;
+      display: grid;
+      gap: 0.16rem;
+      padding: 0.1rem 0 0.1rem 1rem;
+      border-left: 2px solid rgba(14, 165, 233, 0.22);
+    }
+
+    .tsw-systems-runway li::before {
+      content: '';
+      position: absolute;
+      left: -0.35rem;
+      top: 0.5rem;
+      width: 0.55rem;
+      height: 0.55rem;
+      border-radius: 999px;
+      background: #0ea5e9;
+      box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.14);
+    }
+
+    .tsw-systems-runway strong {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .tsw-systems-runway span {
+      font-size: 0.95rem;
+      line-height: 1.55;
+      color: #475569;
+    }
+
+    .tsw-systems-scope-areas {
+      display: grid;
+      gap: 0.8rem;
+      width: 100%;
+    }
+
+    .tsw-systems-scope-card {
+      display: grid;
+      gap: 0.3rem;
+      padding: 0.95rem 1rem;
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 1rem;
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82);
+    }
+
+    .tsw-systems-scope-card strong {
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #0369a1;
+    }
+
+    .tsw-systems-scope-card span {
+      font-size: 0.95rem;
+      line-height: 1.58;
+      color: #334155;
+    }
+
+    .tsw-systems-ramp-steps {
+      display: grid;
+      gap: 0.85rem;
+      width: 100%;
+    }
+
+    .tsw-systems-ramp-step {
+      display: grid;
+      gap: 0.28rem;
+      padding: 0.95rem 1rem;
+      border: 1px solid rgba(245, 158, 11, 0.24);
+      border-radius: 1rem;
+      background: linear-gradient(180deg, rgba(255, 251, 235, 0.96), rgba(255, 247, 237, 0.8));
+    }
+
+    .tsw-systems-ramp-step strong {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #9a3412;
+    }
+
+    .tsw-systems-ramp-step span {
+      font-size: 0.95rem;
+      line-height: 1.55;
+      color: #7c2d12;
+    }
+
+    .tsw-systems-stack {
+      width: 100%;
+    }
+
+    .tsw-systems-stack-card {
+      width: 100%;
+    }
+
+    .tsw-systems-stack-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+      width: 100%;
+      flex-wrap: wrap;
+    }
+
+    .tsw-systems-stack-badge {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      border-radius: 999px;
+      padding: 0.38rem 0.7rem;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #475569;
+      background: rgba(248, 250, 252, 0.88);
+    }
+
+    .tsw-systems-stack-price {
+      font-size: 0.95rem;
+      font-weight: 800;
+      text-transform: lowercase;
+      color: #0f172a;
+    }
+
+    .tsw-systems-stack-title {
+      margin: 0;
+      font-size: 1.3rem;
+      line-height: 1.12;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #0f172a;
+    }
+
+    .tsw-systems-stack-lead {
+      margin: 0;
+      font-size: 0.98rem;
+      line-height: 1.68;
+      color: #475569;
+    }
+
+    .tsw-systems-stack-list,
+    .tsw-systems-ops-list {
+      display: grid;
+      gap: 0.7rem;
+      width: 100%;
+    }
+
+    .tsw-systems-stack-list li,
+    .tsw-systems-ops-list li {
+      position: relative;
+      padding-left: 1rem;
+      font-size: 0.96rem;
+      line-height: 1.58;
+      color: #334155;
+    }
+
+    .tsw-systems-stack-list li::before,
+    .tsw-systems-ops-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.62rem;
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #22d3ee, #0ea5e9);
+      box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.12);
+    }
+
+    .tsw-systems-ops-band {
+      width: 100%;
+    }
+
+    .tsw-systems-ops-copy {
+      display: grid;
+      gap: 0.7rem;
+    }
+
+    .tsw-blueprint-card-wide {
+      grid-column: 1 / -1;
+    }
+
+    .tsw-blueprint-card {
+      background:
+        linear-gradient(140deg, rgba(11, 27, 52, 0.98), rgba(15, 23, 42, 0.98)),
+        linear-gradient(90deg, rgba(56, 189, 248, 0.08) 1px, transparent 1px),
+        linear-gradient(rgba(56, 189, 248, 0.08) 1px, transparent 1px);
+      background-size:
+        100% 100%,
+        24px 24px,
+        24px 24px;
+      border-color: rgba(103, 232, 249, 0.34);
+      box-shadow: 0 30px 75px -42px rgba(8, 145, 178, 0.85);
+      color: #e0f2fe;
+    }
+
+    .tsw-blueprint-card::before {
+      background:
+        radial-gradient(circle at 0% 0%, rgba(14, 165, 233, 0.3), transparent 32%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.04), transparent 45%);
+    }
+
+    .tsw-blueprint-card::after {
+      inset: auto -16% -32% auto;
+      width: 16rem;
+      height: 16rem;
+      background: radial-gradient(circle, rgba(34, 211, 238, 0.26), transparent 70%);
+    }
+
+    .tsw-blueprint-layout {
+      display: grid;
+      gap: 1.5rem;
+      align-items: end;
+    }
+
+    .tsw-blueprint-copy {
+      max-width: 42rem;
+    }
+
+    .tsw-blueprint-kicker {
+      margin: 0;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(103, 232, 249, 0.88);
+    }
+
+    .tsw-blueprint-title {
+      margin: 0.75rem 0 0;
+      font-size: clamp(1.85rem, 3.4vw, 2.8rem);
+      line-height: 1.02;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #f0f9ff;
+      max-width: 15ch;
+    }
+
+    .tsw-blueprint-lead {
+      margin: 1rem 0 0;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: rgba(224, 242, 254, 0.78);
+      max-width: 38rem;
+    }
+
+    .tsw-blueprint-map {
+      display: grid;
+      gap: 0.9rem;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    .tsw-blueprint-node {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(103, 232, 249, 0.22);
+      border-radius: 1rem;
+      padding: 1rem 1rem 1rem 1.2rem;
+      text-align: left;
+      background: linear-gradient(180deg, rgba(8, 47, 73, 0.4), rgba(15, 23, 42, 0.58));
+      backdrop-filter: blur(8px);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .tsw-blueprint-node::before {
+      content: '';
+      position: absolute;
+      left: 0.75rem;
+      top: 0.95rem;
+      bottom: 0.95rem;
+      width: 2px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(34, 211, 238, 0.95), rgba(125, 211, 252, 0.12));
+    }
+
+    .tsw-blueprint-node strong {
+      display: block;
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #67e8f9;
+    }
+
+    .tsw-blueprint-node span {
+      display: block;
+      margin-top: 0.42rem;
+      font-size: 0.95rem;
+      line-height: 1.55;
+      color: rgba(224, 242, 254, 0.9);
+    }
+
+    .tsw-pricing-panel-website .tsw-price-card {
+      border-color: rgba(147, 197, 253, 0.7);
+    }
+
+    .tsw-pricing-panel-consulting .tsw-price-card {
+      border-color: rgba(71, 85, 105, 0.34);
+      background: linear-gradient(180deg, rgba(248, 250, 252, 0.99), rgba(241, 245, 249, 0.96));
+    }
+
+    .tsw-pricing-panel-consulting .tsw-price-card::before {
+      background:
+        linear-gradient(90deg, rgba(71, 85, 105, 0.05) 1px, transparent 1px),
+        linear-gradient(rgba(71, 85, 105, 0.05) 1px, transparent 1px),
+        radial-gradient(circle at 100% 0%, rgba(148, 163, 184, 0.18), transparent 34%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0), rgba(226, 232, 240, 0.66));
+      background-size:
+        18px 18px,
+        18px 18px,
+        100% 100%,
+        100% 100%;
+    }
+
+    .tsw-pricing-panel-consulting .tsw-price-card::after {
+      background: radial-gradient(circle, rgba(100, 116, 139, 0.12), transparent 70%);
+    }
+
+    .tsw-pricing-panel-systems .tsw-price-card:not(.tsw-blueprint-card) {
+      border-color: rgba(148, 163, 184, 0.28);
+      background: linear-gradient(180deg, rgba(252, 252, 251, 0.98), rgba(248, 250, 252, 0.98));
+    }
+
+    .tsw-pricing-panel-systems .tsw-price-card:not(.tsw-blueprint-card)::before {
+      background:
+        linear-gradient(90deg, rgba(71, 85, 105, 0.04) 1px, transparent 1px),
+        linear-gradient(rgba(71, 85, 105, 0.04) 1px, transparent 1px),
+        radial-gradient(circle at 100% 0%, rgba(148, 163, 184, 0.12), transparent 34%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0), rgba(241, 245, 249, 0.46));
+      background-size:
+        18px 18px,
+        18px 18px,
+        100% 100%,
+        100% 100%;
+    }
+
+    .tsw-systems-build-panel {
+      box-shadow: 0 24px 58px -34px rgba(14, 116, 144, 0.38);
+    }
+
+    .tsw-systems-build-panel::before,
+    .tsw-systems-stack-card::before,
+    .tsw-systems-ops-band::before {
+      background:
+        linear-gradient(90deg, rgba(71, 85, 105, 0.05) 1px, transparent 1px),
+        linear-gradient(rgba(71, 85, 105, 0.05) 1px, transparent 1px),
+        radial-gradient(circle at 100% 0%, rgba(148, 163, 184, 0.12), transparent 34%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0), rgba(241, 245, 249, 0.44));
+      background-size:
+        18px 18px,
+        18px 18px,
+        100% 100%,
+        100% 100%;
+    }
+
+    .tsw-systems-ramp-panel {
+      border-color: rgba(71, 85, 105, 0.3);
+      background: linear-gradient(180deg, rgba(241, 245, 249, 0.98), rgba(226, 232, 240, 0.82));
+    }
+
+    .tsw-systems-ramp-panel::before {
+      background:
+        linear-gradient(90deg, rgba(71, 85, 105, 0.06) 1px, transparent 1px),
+        linear-gradient(rgba(71, 85, 105, 0.06) 1px, transparent 1px),
+        radial-gradient(circle at 100% 0%, rgba(148, 163, 184, 0.16), transparent 34%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0), rgba(226, 232, 240, 0.7));
+      background-size:
+        18px 18px,
+        18px 18px,
+        100% 100%,
+        100% 100%;
+    }
+
+    .tsw-systems-stack-card-1 {
+      border-color: rgba(96, 165, 250, 0.64);
+    }
+
+    .tsw-systems-stack-card-2 {
+      border-color: rgba(34, 197, 94, 0.44);
+    }
+
+    .tsw-systems-stack-card-3 {
+      border-color: rgba(129, 140, 248, 0.48);
+    }
+
+    .tsw-systems-ops-band {
+      background: linear-gradient(180deg, rgba(250, 250, 249, 0.98), rgba(248, 250, 252, 0.98));
+    }
+
+    #tsw-pricing-tab-website:checked ~ .tsw-pricing-tablist label[for='tsw-pricing-tab-website'] {
+      border-color: #2563eb;
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      color: #eff6ff;
+      transform: translateY(-1px);
+      box-shadow: 0 20px 36px -24px rgba(37, 99, 235, 0.54);
+    }
+
+    #tsw-pricing-tab-consulting:checked ~ .tsw-pricing-tablist label[for='tsw-pricing-tab-consulting'] {
+      border-color: #334155;
+      background: linear-gradient(135deg, #334155, #0f172a);
+      color: #e2e8f0;
+      transform: translateY(-1px);
+      box-shadow: 0 20px 36px -24px rgba(15, 23, 42, 0.52);
+    }
+
+    #tsw-pricing-tab-systems:checked ~ .tsw-pricing-tablist label[for='tsw-pricing-tab-systems'] {
+      border-color: #0891b2;
+      background: linear-gradient(135deg, #0ea5e9, #0f172a);
+      color: #ecfeff;
+      transform: translateY(-1px);
+      box-shadow: 0 20px 36px -24px rgba(8, 145, 178, 0.56);
+    }
+
+    #tsw-pricing-tab-website:checked ~ .tsw-pricing-panels .tsw-pricing-panel-website,
+    #tsw-pricing-tab-consulting:checked ~ .tsw-pricing-panels .tsw-pricing-panel-consulting,
+    #tsw-pricing-tab-systems:checked ~ .tsw-pricing-panels .tsw-pricing-panel-systems {
+      display: grid;
+      animation: tswPanelReveal 0.52s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    }
+
+    #tsw-pricing-tab-website:checked ~ .tsw-pricing-panels .tsw-pricing-panel-website .tsw-pricing-grid > *,
+    #tsw-pricing-tab-consulting:checked ~ .tsw-pricing-panels .tsw-pricing-panel-consulting .tsw-pricing-grid > *,
+    #tsw-pricing-tab-systems:checked ~ .tsw-pricing-panels .tsw-pricing-panel-systems .tsw-systems-layout > *,
+    #tsw-pricing-tab-systems:checked ~ .tsw-pricing-panels .tsw-pricing-panel-systems .tsw-systems-main-grid > *,
+    #tsw-pricing-tab-systems:checked ~ .tsw-pricing-panels .tsw-pricing-panel-systems .tsw-systems-stack > * {
+      opacity: 0;
+      transform: translateY(22px) scale(0.97);
+      animation: tswCardReveal 0.68s cubic-bezier(0.2, 0.8, 0.2, 1) var(--tsw-reveal-delay) forwards;
+    }
+
+    :global(.dark) .tsw-pricing-tab {
+      border-color: #334155;
+      background: #0f172a;
+      color: #cbd5e1;
+    }
+
+    :global(.dark) .tsw-pricing-hero-bg {
+      background:
+        radial-gradient(circle at 12% 0%, rgba(100, 116, 139, 0.16), transparent 26%),
+        radial-gradient(circle at 100% 8%, rgba(14, 165, 233, 0.12), transparent 18%),
+        linear-gradient(180deg, rgba(2, 6, 23, 0.94), rgba(15, 23, 42, 0.72));
+    }
+
+    :global(.dark) .tsw-pricing-hero-plate {
+      border-color: rgba(34, 211, 238, 0.08);
+      background:
+        linear-gradient(90deg, rgba(34, 211, 238, 0.035) 1px, transparent 1px),
+        linear-gradient(rgba(34, 211, 238, 0.035) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(15, 23, 42, 0.42), rgba(2, 6, 23, 0.08));
+      background-size:
+        20px 20px,
+        20px 20px,
+        100% 100%;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.03),
+        0 18px 48px -42px rgba(2, 6, 23, 0.72);
+    }
+
+    :global(.dark) .tsw-pricing-hero-plate::before {
+      border-color: rgba(34, 211, 238, 0.1);
+    }
+
+    :global(.dark) .tsw-pricing-hero-plate::after {
+      background: linear-gradient(180deg, rgba(34, 211, 238, 0.16), rgba(34, 211, 238, 0.02));
+    }
+
+    :global(.dark) .tsw-pricing-hero-axis::before {
+      background:
+        linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.18) 12%, rgba(34, 211, 238, 0.18) 88%, transparent),
+        linear-gradient(
+          90deg,
+          transparent 0%,
+          transparent 11.5%,
+          rgba(34, 211, 238, 0.16) 11.5%,
+          rgba(34, 211, 238, 0.16) 11.8%,
+          transparent 11.8%,
+          transparent 49.5%,
+          rgba(34, 211, 238, 0.22) 49.5%,
+          rgba(34, 211, 238, 0.22) 50.5%,
+          transparent 50.5%,
+          transparent 88.2%,
+          rgba(34, 211, 238, 0.16) 88.2%,
+          rgba(34, 211, 238, 0.16) 88.5%,
+          transparent 88.5%
+        );
+    }
+
+    :global(.dark) .tsw-pricing-hero-axis::after {
+      background:
+        linear-gradient(180deg, transparent, rgba(34, 211, 238, 0.16) 18%, rgba(34, 211, 238, 0.16) 82%, transparent),
+        linear-gradient(
+          180deg,
+          transparent 0%,
+          transparent 19%,
+          rgba(34, 211, 238, 0.14) 19%,
+          rgba(34, 211, 238, 0.14) 19.5%,
+          transparent 19.5%,
+          transparent 49.3%,
+          rgba(34, 211, 238, 0.22) 49.3%,
+          rgba(34, 211, 238, 0.22) 50.7%,
+          transparent 50.7%,
+          transparent 80.5%,
+          rgba(34, 211, 238, 0.14) 80.5%,
+          rgba(34, 211, 238, 0.14) 81%,
+          transparent 81%
+        );
+    }
+
+    :global(.dark) .tsw-pricing-hero-orbit::before,
+    :global(.dark) .tsw-pricing-hero-orbit::after {
+      border-color: rgba(34, 211, 238, 0.12);
+    }
+
+    :global(.dark) .tsw-pricing-banner {
+      border-color: rgba(96, 165, 250, 0.3);
+      background:
+        radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.32), transparent 34%),
+        linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(30, 41, 59, 0.95));
+      box-shadow: 0 24px 62px -42px rgba(8, 47, 73, 0.72);
+    }
+
+    :global(.dark) .tsw-pricing-shell {
+      border-color: rgba(30, 64, 175, 0.3);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(30, 64, 175, 0.22), transparent 30%),
+        radial-gradient(circle at 100% 10%, rgba(8, 145, 178, 0.18), transparent 28%),
+        linear-gradient(180deg, rgba(2, 6, 23, 0.96), rgba(15, 23, 42, 0.98));
+      box-shadow: 0 28px 82px -56px rgba(2, 6, 23, 0.92);
+    }
+
+    :global(.dark) .tsw-pricing-tablist {
+      border-color: rgba(51, 65, 85, 0.8);
+      background: rgba(2, 6, 23, 0.72);
+    }
+
+    :global(.dark) .tsw-pricing-tab:hover {
+      border-color: #60a5fa;
+      background: #172554;
+    }
+
+    :global(.dark) .tsw-price-card {
+      border-color: #374151;
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.94));
+      box-shadow: 0 18px 50px -36px rgba(2, 6, 23, 0.88);
+    }
+
+    :global(.dark) .tsw-price-card-muted {
+      background: linear-gradient(180deg, rgba(17, 24, 39, 0.98), rgba(15, 23, 42, 0.95));
+    }
+
+    :global(.dark) .tsw-pricing-panel-consulting .tsw-price-card {
+      border-color: rgba(100, 116, 139, 0.34);
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(30, 41, 59, 0.88));
+    }
+
+    :global(.dark) .tsw-pricing-panel-systems .tsw-price-card:not(.tsw-blueprint-card) {
+      border-color: rgba(34, 211, 238, 0.3);
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(8, 47, 73, 0.36));
+    }
+
+    :global(.dark) .tsw-systems-layout {
+      border-color: rgba(34, 211, 238, 0.16);
+      background:
+        linear-gradient(90deg, rgba(34, 211, 238, 0.04) 1px, transparent 1px),
+        linear-gradient(rgba(34, 211, 238, 0.04) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(8, 47, 73, 0.28), rgba(2, 6, 23, 0.2));
+      background-size:
+        24px 24px,
+        24px 24px,
+        100% 100%;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    }
+
+    :global(.dark) .tsw-blueprint-card {
+      border-color: rgba(34, 211, 238, 0.32);
+      background:
+        linear-gradient(140deg, rgba(2, 6, 23, 0.98), rgba(8, 47, 73, 0.9)),
+        linear-gradient(90deg, rgba(34, 211, 238, 0.08) 1px, transparent 1px),
+        linear-gradient(rgba(34, 211, 238, 0.08) 1px, transparent 1px);
+      background-size:
+        100% 100%,
+        24px 24px,
+        24px 24px;
+    }
+
+    :global(.dark) .tsw-blueprint-node {
+      background: linear-gradient(180deg, rgba(8, 47, 73, 0.46), rgba(2, 6, 23, 0.72));
+    }
+
+    :global(.dark) .tsw-systems-panel-kicker,
+    :global(.dark) .tsw-systems-scope-card strong,
+    :global(.dark) .tsw-systems-stack-badge {
+      color: #67e8f9;
+    }
+
+    :global(.dark) .tsw-systems-panel-title,
+    :global(.dark) .tsw-systems-price-mark strong,
+    :global(.dark) .tsw-systems-runway strong,
+    :global(.dark) .tsw-systems-stack-price,
+    :global(.dark) .tsw-systems-stack-title {
+      color: #f8fafc;
+    }
+
+    :global(.dark) .tsw-systems-panel-lead,
+    :global(.dark) .tsw-systems-price-mark em,
+    :global(.dark) .tsw-systems-runway span,
+    :global(.dark) .tsw-systems-scope-card span,
+    :global(.dark) .tsw-systems-stack-lead,
+    :global(.dark) .tsw-systems-stack-list li,
+    :global(.dark) .tsw-systems-ops-list li {
+      color: #cbd5e1;
+    }
+
+    :global(.dark) .tsw-systems-price-mark,
+    :global(.dark) .tsw-systems-scope-card {
+      border-color: rgba(34, 211, 238, 0.22);
+      background: rgba(2, 6, 23, 0.38);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+
+    :global(.dark) .tsw-systems-ramp-step {
+      border-color: rgba(100, 116, 139, 0.22);
+      background: linear-gradient(180deg, rgba(30, 41, 59, 0.72), rgba(15, 23, 42, 0.56));
+    }
+
+    :global(.dark) .tsw-systems-ramp-step strong {
+      color: #e2e8f0;
+    }
+
+    :global(.dark) .tsw-systems-ramp-step span {
+      color: #cbd5e1;
+    }
+
+    :global(.dark) .tsw-systems-stack-badge {
+      border-color: rgba(34, 211, 238, 0.22);
+      background: rgba(8, 47, 73, 0.44);
+    }
+
+    @keyframes tswPanelReveal {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes tswCardReveal {
+      from {
+        opacity: 0;
+        transform: translateY(22px) scale(0.97);
+      }
+
+      60% {
+        opacity: 1;
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .tsw-pricing-tab,
+      .tsw-price-card,
+      .tsw-price-card::after {
+        transition: none;
+      }
+
+      #tsw-pricing-tab-website:checked ~ .tsw-pricing-panels .tsw-pricing-panel-website,
+      #tsw-pricing-tab-consulting:checked ~ .tsw-pricing-panels .tsw-pricing-panel-consulting,
+      #tsw-pricing-tab-systems:checked ~ .tsw-pricing-panels .tsw-pricing-panel-systems,
+      #tsw-pricing-tab-website:checked ~ .tsw-pricing-panels .tsw-pricing-panel-website .tsw-pricing-grid > *,
+      #tsw-pricing-tab-consulting:checked ~ .tsw-pricing-panels .tsw-pricing-panel-consulting .tsw-pricing-grid > *,
+      #tsw-pricing-tab-systems:checked ~ .tsw-pricing-panels .tsw-pricing-panel-systems .tsw-systems-layout > *,
+      #tsw-pricing-tab-systems:checked ~ .tsw-pricing-panels .tsw-pricing-panel-systems .tsw-systems-main-grid > *,
+      #tsw-pricing-tab-systems:checked ~ .tsw-pricing-panels .tsw-pricing-panel-systems .tsw-systems-stack > * {
+        animation: none;
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    @media (min-width: 640px) {
+      .tsw-pricing-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .tsw-pricing-shell {
+        padding: 1.6rem;
+      }
+
+      .tsw-systems-layout {
+        padding: 1.25rem;
+      }
+
+      .tsw-blueprint-map {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .tsw-systems-stack {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .tsw-blueprint-layout {
+        grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.95fr);
+      }
+
+      .tsw-systems-main-grid {
+        grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.8fr);
+      }
+
+      .tsw-systems-capability-grid {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        align-items: start;
+      }
+
+      .tsw-systems-ops-band {
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+        align-items: end;
+      }
+    }
+
+    @media (min-width: 1280px) {
+      .tsw-pricing-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .tsw-systems-stack {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
     }
   </style>
-</Shell>
+
+  <!-- Features3 Widget ************** -->
+
+  <Features3
+    title="Ce que peuvent inclure nos offres"
+    subtitle="Selon le pack choisi et vos besoins."
+    columns={2}
+    items={[
+      {
+        title: 'Support humain',
+        description: 'Accompagnement par email et téléphone, réponses sous un jour ouvré.',
+        icon: 'tabler:headset',
+      },
+
+      {
+        title: 'Processus simple',
+        description: "Échanges par email et validations par étapes (pas d'espace client à gérer).",
+        icon: 'tabler:layout-dashboard',
+      },
+      {
+        title: 'Facturation claire',
+        description: 'TVA incluse, facture QR ou Twint, mensualisation disponible.',
+        icon: 'tabler:receipt',
+      },
+      {
+        title: 'Performance optimisée',
+        description: "Architecture Astro et optimisation d'images pour un chargement rapide.",
+        icon: 'tabler:gauge',
+      },
+      {
+        title: 'Sécurité renforcée',
+        description: 'Sauvegardes initiales, pare-feu applicatif et mises à jour régulières.',
+        icon: 'tabler:lock',
+      },
+    ]}
+    classes={{ container: 'max-w-5xl' }}
+  />
+
+  <!-- Steps Widget ****************** -->
+
+  <Steps
+    title="Comment se déroule votre projet"
+    tagline="Parcours"
+    isReversed={true}
+    items={[
+      {
+        title: '1. Signature numérique',
+        description: 'Validez le pack choisi et recevez votre accès onboarding.',
+        icon: 'tabler:edit',
+      },
+      {
+        title: '2. Questionnaire intelligent',
+        description: 'Renseignez vos informations clés, importez vos visuels et sélectionnez vos modules.',
+        icon: 'tabler:clipboard-list',
+      },
+      {
+        title: '3. Production supervisée',
+        description: 'Notre plateforme génère votre site, nos experts ajustent et contrôlent.',
+        icon: 'tabler:robot',
+      },
+      {
+        title: '4. Validation & mise en ligne',
+        description:
+          'Vous validez la version finale, nous programmons la mise en ligne et chiffrons séparément toute extension hors périmètre.',
+        icon: 'tabler:rocket',
+      },
+    ]}
+  >
+    <Fragment slot="image">
+      <div
+        class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-white shadow-xl"
+      >
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Process</p>
+        <p class="mt-6 max-w-xs text-base text-blue-100/90">
+          Brief, intégration de vos contenus et validations par email.
+        </p>
+      </div>
+    </Fragment>
+  </Steps>
+
+  <!-- FAQs Widget ******************* -->
+
+  <FAQs
+    title="Questions sur nos tarifs"
+    subtitle="Nous croyons en une transparence totale."
+    items={[
+      {
+        title: 'Les prix incluent-ils la TVA ?',
+        description: 'Oui, tous les montants sont affichés TTC. La facture mentionne la TVA suisse et le numéro IDE.',
+      },
+      {
+        title: 'Quel est le délai moyen pour le pack Essentiel ?',
+        description:
+          'Comptez environ cinq jours ouvrés après réception de vos contenus. Nous vous donnons un planning précis lors du brief.',
+      },
+      {
+        title: 'Que se passe-t-il si j’ai besoin d’autres pages ou d’un cadrage supplémentaire ?',
+        description:
+          'Nous chiffrons séparément les ajouts de pages, ateliers de cadrage ou brainstorming, changements de structure et demandes hors périmètre avant toute production.',
+      },
+      {
+        title: 'La maintenance est-elle obligatoire ?',
+        description:
+          'Non. Un accompagnement continu peut être mis en place selon les besoins opérationnels, les systèmes concernés et le niveau de support attendu.',
+      },
+      {
+        title: 'Quels moyens de paiement acceptez-vous ?',
+        description:
+          'Cartes suisses, Twint, virement bancaire et facturation QR. Les abonnements peuvent être payés mensuellement ou annuellement.',
+      },
+    ]}
+  />
+
+  <!-- CallToAction Widget *********** -->
+
+  <CallToAction
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Choisir un modèle — 999 CHF',
+        href: '/onboarding?plan=essential999',
+        icon: 'tabler:arrow-right',
+      },
+      {
+        text: 'Contacter un expert',
+        href: '/contact#form',
+      },
+    ]}
+  >
+    <Fragment slot="title"> Votre site vitrine dès 999 CHF </Fragment>
+
+    <Fragment slot="subtitle">
+      Pack Essentiel IOPartner.ch au tarif standard. Livraison typique en 3–5 jours ouvrables selon vos contenus.
+    </Fragment>
+  </CallToAction>
+</Layout>

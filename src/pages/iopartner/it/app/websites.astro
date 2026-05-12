@@ -4,10 +4,13 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
 
 <BackendLayout pageTitle="Siti web">
   <section class="space-y-8">
-    <div class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40">
+    <div
+      class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40"
+    >
       <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Collega un sito</h2>
       <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
-        Cattura l'area di delivery per un sito cliente. I documenti e le cartelle Google vengono creati automaticamente se lasci questi campi vuoti.
+        Cattura l'area di delivery per un sito cliente. I documenti e le cartelle Google vengono creati automaticamente
+        se lasci questi campi vuoti.
       </p>
       <form id="website-form" class="mt-6 grid gap-4 lg:grid-cols-2">
         <div class="lg:col-span-2 grid gap-4 sm:grid-cols-2">
@@ -65,7 +68,9 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
           />
         </div>
         <div>
-          <label class="block text-sm text-slate-600 dark:text-slate-300" for="google_doc_id">ID Google Doc (opzionale)</label>
+          <label class="block text-sm text-slate-600 dark:text-slate-300" for="google_doc_id"
+            >ID Google Doc (opzionale)</label
+          >
           <input
             id="google_doc_id"
             name="google_doc_id"
@@ -74,7 +79,9 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
           />
         </div>
         <div>
-          <label class="block text-sm text-slate-600 dark:text-slate-300" for="template_key">Chiave template (opzionale)</label>
+          <label class="block text-sm text-slate-600 dark:text-slate-300" for="template_key"
+            >Chiave template (opzionale)</label
+          >
           <input
             id="template_key"
             name="template_key"
@@ -95,7 +102,9 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
       </form>
     </div>
 
-    <div class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40">
+    <div
+      class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40"
+    >
       <div class="flex items-center justify-between">
         <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Pipeline di consegna</h2>
         <span class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Tempo reale</span>
@@ -111,9 +120,14 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
               <th class="px-4 py-3 text-right">Azioni</th>
             </tr>
           </thead>
-          <tbody id="website-table" class="divide-y divide-slate-200 dark:divide-slate-800 text-slate-700 dark:text-slate-200">
+          <tbody
+            id="website-table"
+            class="divide-y divide-slate-200 dark:divide-slate-800 text-slate-700 dark:text-slate-200"
+          >
             <tr>
-              <td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">Caricamento siti…</td>
+              <td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400"
+                >Caricamento siti…</td
+              >
             </tr>
           </tbody>
         </table>
@@ -189,8 +203,8 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
       if (isSelected) hasSelected = true;
       options.push(
         `<option value="${htmlEscape(client.id)}" ${isSelected ? 'selected' : ''}>${htmlEscape(
-          client.company_name,
-        )}</option>`,
+          client.company_name
+        )}</option>`
       );
     });
     if (selectedId && !hasSelected) {
@@ -440,7 +454,8 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
     tableBody.innerHTML = '';
 
     if (!websites.length) {
-      tableBody.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">Nessun sito. Registrane uno sopra.</td></tr>';
+      tableBody.innerHTML =
+        '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">Nessun sito. Registrane uno sopra.</td></tr>';
       return;
     }
 
@@ -513,9 +528,7 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
 
     const clientEl = row.querySelector('[data-field="client"]');
     if (clientEl)
-      clientEl.textContent = website.client_id
-        ? clientLookup[website.client_id] || website.client_id
-        : 'No client';
+      clientEl.textContent = website.client_id ? clientLookup[website.client_id] || website.client_id : 'No client';
 
     const domainEl = row.querySelector('[data-field="domain"]');
     if (domainEl)
@@ -763,7 +776,8 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
 
   const loadWebsites = async () => {
     if (tableBody) {
-      tableBody.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">Caricamento siti…</td></tr>';
+      tableBody.innerHTML =
+        '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">Caricamento siti…</td></tr>';
     }
     try {
       const response = await authFetch('/websites');
@@ -771,7 +785,8 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
     } catch (error) {
       console.error(error);
       if (tableBody) {
-        tableBody.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-red-400">Impossibile caricare i siti.</td></tr>';
+        tableBody.innerHTML =
+          '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-red-400">Impossibile caricare i siti.</td></tr>';
       }
     }
   };
@@ -933,7 +948,8 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
         const row = target.closest('tr');
         const container = row?.querySelector(`[data-sections="${websiteId}"]`);
         const sectionForm = container?.querySelector(`[data-section-form="${sectionDeleteId}"]`);
-        const feedback = sectionForm?.querySelector('[data-feedback]') ?? container?.querySelector('[data-section-global]');
+        const feedback =
+          sectionForm?.querySelector('[data-feedback]') ?? container?.querySelector('[data-section-global]');
         if (feedback) {
           showFeedback(feedback, error instanceof Error ? error.message : 'Impossibile eliminare la sezione.', 'error');
         }

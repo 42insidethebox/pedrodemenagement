@@ -4,9 +4,13 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
 
 <BackendLayout pageTitle="Abonnements">
   <section class="space-y-8">
-    <div class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40">
+    <div
+      class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40"
+    >
       <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Abonnement verwalten</h2>
-      <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Geben Sie eine Stripe-Abonnement-ID ein, um zu kündigen oder zu aktualisieren.</p>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
+        Geben Sie eine Stripe-Abonnement-ID ein, um zu kündigen oder zu aktualisieren.
+      </p>
       <form id="sub-form" class="mt-6 grid gap-4 lg:grid-cols-3">
         <div class="lg:col-span-1">
           <label class="block text-sm text-slate-600 dark:text-slate-300" for="subscription_id">Abonnement-ID</label>
@@ -38,23 +42,40 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
           >
         </div>
         <div class="lg:col-span-3 flex items-center gap-3">
-          <button id="update-btn" type="button" class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-blue-500/30 transition hover:bg-blue-500">Aktualisieren</button>
-          <button id="cancel-btn" type="button" class="rounded-lg border border-red-500 px-4 py-2 text-sm font-semibold text-red-300 hover:bg-red-500/10">Sofort kündigen</button>
+          <button
+            id="update-btn"
+            type="button"
+            class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-blue-500/30 transition hover:bg-blue-500"
+            >Aktualisieren</button
+          >
+          <button
+            id="cancel-btn"
+            type="button"
+            class="rounded-lg border border-red-500 px-4 py-2 text-sm font-semibold text-red-300 hover:bg-red-500/10"
+            >Sofort kündigen</button
+          >
           <p id="sub-message" class="text-sm text-slate-600 dark:text-slate-400"></p>
         </div>
       </form>
     </div>
 
-    <div class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40">
+    <div
+      class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40"
+    >
       <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div>
           <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Abonnement-Ereignisse</h2>
-          <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">Prüfen Sie Stripe-Webhooks und Statusänderungen, die vom Backend erfasst wurden.</p>
+          <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">
+            Prüfen Sie Stripe-Webhooks und Statusänderungen, die vom Backend erfasst wurden.
+          </p>
           <p id="events-error" class="mt-2 hidden text-sm text-red-500"></p>
         </div>
         <form id="sub-filters" class="grid w-full gap-3 sm:grid-cols-2 lg:grid-cols-5">
           <div>
-            <label class="block text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400" for="filter-subscription">Abonnement</label>
+            <label
+              class="block text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400"
+              for="filter-subscription">Abonnement</label
+            >
             <input
               id="filter-subscription"
               name="subscription"
@@ -63,7 +84,9 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
             />
           </div>
           <div>
-            <label class="block text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400" for="filter-email">Kunden-E-Mail</label>
+            <label class="block text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400" for="filter-email"
+              >Kunden-E-Mail</label
+            >
             <input
               id="filter-email"
               name="email"
@@ -73,7 +96,10 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
             />
           </div>
           <div>
-            <label class="block text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400" for="filter-event-type">Ereignistyp</label>
+            <label
+              class="block text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400"
+              for="filter-event-type">Ereignistyp</label
+            >
             <input
               id="filter-event-type"
               name="eventType"
@@ -82,7 +108,9 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
             />
           </div>
           <div>
-            <label class="block text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400" for="filter-search">Search</label>
+            <label class="block text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400" for="filter-search"
+              >Search</label
+            >
             <input
               id="filter-search"
               name="search"
@@ -91,7 +119,9 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
             />
           </div>
           <div class="flex items-end gap-2">
-            <label class="flex flex-1 items-center gap-2 text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
+            <label
+              class="flex flex-1 items-center gap-2 text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400"
+            >
               Seitengröße
               <select
                 id="events-page-size"
@@ -102,8 +132,17 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
                 <option value="100">100</option>
               </select>
             </label>
-            <button type="submit" class="rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm shadow-blue-500/40 transition hover:bg-blue-500">Anwenden</button>
-            <button id="events-refresh" type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">Aktualisieren</button>
+            <button
+              type="submit"
+              class="rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm shadow-blue-500/40 transition hover:bg-blue-500"
+              >Anwenden</button
+            >
+            <button
+              id="events-refresh"
+              type="button"
+              class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+              >Aktualisieren</button
+            >
           </div>
         </form>
       </div>
@@ -119,16 +158,23 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
               <th class="px-4 py-3 text-right">Payload</th>
             </tr>
           </thead>
-          <tbody id="sub-events-body" class="divide-y divide-slate-200 text-slate-700 dark:divide-slate-800 dark:text-slate-200">
+          <tbody
+            id="sub-events-body"
+            class="divide-y divide-slate-200 text-slate-700 dark:divide-slate-800 dark:text-slate-200"
+          >
             <tr>
-              <td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">Ereignisse werden geladen…</td>
+              <td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400"
+                >Ereignisse werden geladen…</td
+              >
             </tr>
           </tbody>
         </table>
       </div>
 
       <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p id="events-pagination" class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Noch keine Ereignisse</p>
+        <p id="events-pagination" class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
+          Noch keine Ereignisse
+        </p>
         <div class="flex gap-2">
           <button
             id="events-prev"
@@ -223,7 +269,8 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
     eventsTableBody.innerHTML = '';
 
     if (!Array.isArray(events) || events.length === 0) {
-      eventsTableBody.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">No subscription events recorded yet.</td></tr>';
+      eventsTableBody.innerHTML =
+        '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">No subscription events recorded yet.</td></tr>';
       return;
     }
 
@@ -266,7 +313,8 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
 
   const loadEvents = async (page = 1) => {
     if (!eventsTableBody) return;
-    eventsTableBody.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">Ereignisse werden geladen…</td></tr>';
+    eventsTableBody.innerHTML =
+      '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">Ereignisse werden geladen…</td></tr>';
     if (eventsError) {
       eventsError.textContent = '';
       eventsError.classList.add('hidden');
@@ -285,7 +333,8 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
       eventsTotalPages = 0;
       updatePagination();
       if (eventsTableBody) {
-        eventsTableBody.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-red-400">Unable to load subscription events.</td></tr>';
+        eventsTableBody.innerHTML =
+          '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-red-400">Unable to load subscription events.</td></tr>';
       }
       if (eventsError) {
         eventsError.textContent = error instanceof Error ? error.message : 'Unable to load subscription events.';

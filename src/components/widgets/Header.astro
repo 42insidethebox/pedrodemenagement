@@ -48,7 +48,7 @@ const {
 } = Astro.props;
 
 const urlObj = new URL(Astro.url);
-const currentPath = `/${trimSlash(urlObj.pathname)}` || '/';
+const currentPath = `/${trimSlash(urlObj.pathname)}`;
 const filteredLinks = links ?? [];
 const isUrgent = brandKey === 'urgent';
 const isLaclemanExperience = brandKey === 'laclemanexperience';
@@ -62,6 +62,7 @@ const brandLangs: Record<string, string[]> = {
   laclemanexperience: ['fr', 'en', 'de', 'it', 'ar', 'zh'],
   lausanne: ['fr', 'en', 'de', 'it'],
   tonsiteweb: ['fr', 'en', 'de', 'it'],
+  iopartner: ['fr', 'en', 'de', 'it'],
 };
 const supportedLangs = brandLangs[brandKey] ?? ['fr'];
 const brandDefaultLocale = brandKey === 'laclemanexperience' ? 'en' : 'fr';
@@ -243,8 +244,8 @@ const flagClasses: Record<string, string> = {
                 id="lang-select"
                 data-initial={initialLang}
                 data-aw-lang-select
-                {...(langUrlRouting ? { 'data-aw-lang-url-routing': '' } : {})}
-                {...(langBase ? { 'data-aw-lang-base': langBase } : {})}
+                {...langUrlRouting ? { 'data-aw-lang-url-routing': '' } : {}}
+                {...langBase ? { 'data-aw-lang-base': langBase } : {}}
                 onchange="window.__awSetLang && window.__awSetLang(this.value)"
                 class="aw-lang-select-input"
               >
@@ -300,6 +301,8 @@ const flagClasses: Record<string, string> = {
 
 <script>
   (() => {
+    const awWindow = window as Window & { __awSetLang?: (lang: string) => void };
+
     const getSupported = () => {
       const selects = Array.from(document.querySelectorAll('[data-aw-lang-select]'));
       const opts = new Set();
@@ -350,15 +353,16 @@ const flagClasses: Record<string, string> = {
       updateFlags(lang);
     };
 
-    if (!(window as any).__awSetLang) {
-      (window as any).__awSetLang = (lang: string) => {
+    if (!awWindow.__awSetLang) {
+      awWindow.__awSetLang = (lang: string) => {
         if (!getSupported().includes(lang)) return;
         const selects = Array.from(document.querySelectorAll('[data-aw-lang-select]')) as HTMLSelectElement[];
         applyLang(lang, selects);
         // If any lang selector has URL routing enabled, navigate to the locale URL
         const hasRouting = selects.some((s) => s.hasAttribute('data-aw-lang-url-routing'));
         if (hasRouting) {
-          const base = (selects.find((s) => s.dataset.awLangBase) as HTMLSelectElement | undefined)?.dataset.awLangBase || '';
+          const base =
+            (selects.find((s) => s.dataset.awLangBase) as HTMLSelectElement | undefined)?.dataset.awLangBase || '';
           const path = window.location.pathname;
           let newPath: string;
           if (base && path.startsWith(base)) {
@@ -590,32 +594,44 @@ const flagClasses: Record<string, string> = {
   }
   /* TonSiteWeb: force white for nav links, keep CTA button styling */
   :global(.brand-tonsiteweb .aw-header nav a),
-  :global(.brand-tonsiteweb .aw-header .dropdown-menu a) {
+  :global(.brand-tonsiteweb .aw-header .dropdown-menu a),
+  :global(.brand-iopartner .aw-header nav a),
+  :global(.brand-iopartner .aw-header .dropdown-menu a) {
     color: #f8fafc !important;
   }
   :global(.brand-tonsiteweb .aw-header nav a:hover),
   :global(.brand-tonsiteweb .aw-header nav a:focus-visible),
   :global(.brand-tonsiteweb .aw-header .dropdown-menu a:hover),
-  :global(.brand-tonsiteweb .aw-header .dropdown-menu a:focus-visible) {
+  :global(.brand-tonsiteweb .aw-header .dropdown-menu a:focus-visible),
+  :global(.brand-iopartner .aw-header nav a:hover),
+  :global(.brand-iopartner .aw-header nav a:focus-visible),
+  :global(.brand-iopartner .aw-header .dropdown-menu a:hover),
+  :global(.brand-iopartner .aw-header .dropdown-menu a:focus-visible) {
     color: #e2e8f0 !important;
   }
-  :global(.brand-tonsiteweb .aw-header .dropdown-menu) {
+  :global(.brand-tonsiteweb .aw-header .dropdown-menu),
+  :global(.brand-iopartner .aw-header .dropdown-menu) {
     background: rgba(15, 23, 42, 0.96);
     border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: 0 14px 38px -18px rgba(0, 0, 0, 0.6);
   }
-  :global(.brand-tonsiteweb .aw-header .dropdown-menu a) {
+  :global(.brand-tonsiteweb .aw-header .dropdown-menu a),
+  :global(.brand-iopartner .aw-header .dropdown-menu a) {
     color: #f8fafc !important;
   }
   :global(.brand-tonsiteweb .aw-header .dropdown-menu a:hover),
-  :global(.brand-tonsiteweb .aw-header .dropdown-menu a:focus-visible) {
+  :global(.brand-tonsiteweb .aw-header .dropdown-menu a:focus-visible),
+  :global(.brand-iopartner .aw-header .dropdown-menu a:hover),
+  :global(.brand-iopartner .aw-header .dropdown-menu a:focus-visible) {
     background: rgba(255, 255, 255, 0.06);
     color: #e2e8f0 !important;
   }
-  :global(.brand-tonsiteweb .aw-header .dropdown > button) {
+  :global(.brand-tonsiteweb .aw-header .dropdown > button),
+  :global(.brand-iopartner .aw-header .dropdown > button) {
     color: #f8fafc !important;
   }
-  :global(.brand-tonsiteweb .aw-header .dropdown > button:hover) {
+  :global(.brand-tonsiteweb .aw-header .dropdown > button:hover),
+  :global(.brand-iopartner .aw-header .dropdown > button:hover) {
     color: #e2e8f0 !important;
   }
   /* Maison Cortes: light header with dark text/links */

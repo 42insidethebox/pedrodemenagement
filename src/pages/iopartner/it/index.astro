@@ -14,16 +14,8 @@ import CallToAction from '~/components/widgets/CallToAction.astro';
 import { iopartnerHeaderDataIt, iopartnerFooterDataIt } from '~/navigation';
 
 const metadata = {
-  title: 'IOPartner.ch — Operazioni tecniche per aziende moderne',
-  description:
-    'IOPartner supporta aziende moderne con websites, automazione AI, infrastruttura open-source e supporto gestito.',
+  title: 'IOPartner.ch — Siti svizzeri chiavi in mano per l’Arco lemanico',
   ignoreTitleTemplate: true,
-  openGraph: {
-    type: 'website',
-  },
-  twitter: {
-    cardType: 'summary',
-  },
 };
 ---
 
@@ -33,29 +25,26 @@ const metadata = {
     actions={[
       {
         variant: 'primary',
-        text: 'Richiedi una proposta',
-        href: '/it/contact#form',
+        text: 'Inizia ora — 999 CHF',
+        href: '/choose-template?plan=essential999',
         icon: 'tabler:arrow-right',
       },
-      { text: 'Scopri i prezzi', href: '/it/pricing' },
+      { text: 'Parla con un esperto', href: '/it/contact#form' },
     ]}
     image={{ src: '~/assets/images/light_minimalist.png', alt: 'Interfaccia IOPartner.ch' }}
   >
-    <Fragment slot="title">
-      Operazioni tecniche per aziende moderne
-    </Fragment>
+    <Fragment slot="title"> Il tuo sito chiavi in mano pensato per il mercato lemanico </Fragment>
 
     <Fragment slot="subtitle">
-      IOPartner segue websites, automazione AI, infrastruttura open-source e supporto gestito come un unico perimetro tecnico.
+      Design svizzero, performance controllata. IOPartner.ch combina automazione ed esperienza locale per consegnare
+      siti affidabili a PMI e indipendenti dell’Arco lemanico, senza promesse irrealistiche né complessità tecnica.
     </Fragment>
   </Hero>
 
   <Note
-    title="Posizionamento"
-    description="Un solo team per consegnare, collegare, distribuire e supportare il livello tecnico della tua attività."
+    title="Impegno"
+    description="Servizio locale, supporto umano e orchestrazione automatizzata per un risultato impeccabile senza sforzo."
   />
-
-  
 
   <Features
     id="features"
@@ -108,7 +97,8 @@ const metadata = {
     items={[
       {
         title: 'Brief strutturato',
-        description: 'Un questionario mirato raccoglie servizi, orari, testimonianze e visual per la nostra IA proprietaria.',
+        description:
+          'Un questionario mirato raccoglie servizi, orari, testimonianze e visual per la nostra IA proprietaria.',
       },
       {
         title: 'Design & integrazione',
@@ -117,7 +107,8 @@ const metadata = {
       },
       {
         title: 'Quality assurance',
-        description: 'Revisione umana, test di performance e checklist GDPR prima della validazione finale e messa online.',
+        description:
+          'Revisione umana, test di performance e checklist GDPR prima della validazione finale e messa online.',
       },
     ]}
   >
@@ -127,7 +118,9 @@ const metadata = {
     </Fragment>
 
     <Fragment slot="image">
-      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl">
+      <div
+        class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl"
+      >
         <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Workflow controllato</p>
         <h4 class="mt-4 text-3xl font-semibold">Brief → Creazione → Lancio</h4>
         <p class="mt-6 max-w-xs text-base text-blue-100/90">
@@ -152,7 +145,8 @@ const metadata = {
       },
       {
         title: 'Onboarding guidato',
-        description: 'Il nostro assistente raccoglie le informazioni chiave e propone una struttura adatta al tuo settore.',
+        description:
+          'Il nostro assistente raccoglie le informazioni chiave e propone una struttura adatta al tuo settore.',
         icon: 'tabler:clipboard-list',
       },
       {
@@ -162,16 +156,20 @@ const metadata = {
       },
       {
         title: 'Validazione & lancio',
-        description: 'Approvi la versione finale, poi pianifichiamo la messa online e preventiviamo a parte ogni estensione fuori perimetro.',
+        description:
+          'Approvi la versione finale, poi pianifichiamo la messa online e preventiviamo a parte ogni estensione fuori perimetro.',
         icon: 'tabler:rocket',
       },
     ]}
   >
     <Fragment slot="image">
-      <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
+      <div
+        class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl"
+      >
         <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Timeline</p>
         <p class="mt-6 max-w-xs text-base text-blue-100/90">
-          Consegna tipica: cinque giorni lavorativi dopo aver ricevuto i contenuti. Adeguiamo la pianificazione alle tue priorità.
+          Consegna tipica: cinque giorni lavorativi dopo aver ricevuto i contenuti. Adeguiamo la pianificazione alle tue
+          priorità.
         </p>
       </div>
     </Fragment>
@@ -194,14 +192,17 @@ const metadata = {
       },
       {
         title: 'Perimetro chiaro',
-        description: 'CHF 999 copre un deployment vetrina standard sulla piattaforma condivisa IOPartner. Pagine extra, workshop e richieste fuori perimetro sono fatturate separatamente.',
+        description:
+          'CHF 999 copre un deployment vetrina standard sulla piattaforma condivisa IOPartner. Pagine extra, workshop e richieste fuori perimetro sono fatturate separatamente.',
       },
     ]}
   >
     <Fragment slot="content">Una presenza online che riflette la precisione della tua azienda.</Fragment>
 
     <Fragment slot="image">
-      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
+      <div
+        class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl"
+      >
         <h4 class="text-3xl font-semibold">Performance misurata</h4>
         <ul class="mt-6 space-y-3 text-left text-blue-100/90">
           <li>✓ Design mobile-first</li>
@@ -244,7 +245,8 @@ const metadata = {
       },
       {
         title: 'Evoluzioni con scope',
-        description: 'Pagine extra, workshop, form avanzati o nuove funzionalità vengono preventivati prima della produzione.',
+        description:
+          'Pagine extra, workshop, form avanzati o nuove funzionalità vengono preventivati prima della produzione.',
         icon: 'tabler:video',
       },
       {
@@ -283,8 +285,7 @@ const metadata = {
       },
       {
         title: 'I testi sono inclusi?',
-        description:
-          'Sì, scriviamo o adattiamo i testi in francese. Versioni inglese o tedesca sono quotate a parte.',
+        description: 'Sì, scriviamo o adattiamo i testi in francese. Versioni inglese o tedesca sono quotate a parte.',
       },
       {
         title: 'Cosa include il piano di cura?',
@@ -298,8 +299,7 @@ const metadata = {
       },
       {
         title: 'Come funziona il supporto dopo il lancio?',
-        description:
-          'Supporto via e‑mail o video pianificata, risposta entro un giorno lavorativo.',
+        description: 'Supporto via e‑mail o video pianificata, risposta entro un giorno lavorativo.',
       },
     ]}
   />
@@ -321,7 +321,7 @@ const metadata = {
     <Fragment slot="title">Pronti a chiarire la vostra presenza online?</Fragment>
 
     <Fragment slot="subtitle">
-      Analizziamo le esigenze e definiamo un piano realistico per websites, automazione, infrastruttura e supporto.
+      Analizziamo le esigenze e definiamo un piano d’azione realistico per la tua attività nell’Arco lemanico.
     </Fragment>
   </CallToAction>
 </Layout>

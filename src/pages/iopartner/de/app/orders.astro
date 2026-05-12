@@ -5,22 +5,32 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
 <BackendLayout pageTitle="Bestellungen">
   <section class="space-y-8">
     <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/60 dark:shadow-slate-950/40">
+      <div
+        class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/60 dark:shadow-slate-950/40"
+      >
         <p class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Bestellungen gesamt</p>
         <p id="metric-total" class="mt-3 text-3xl font-semibold text-slate-900 dark:text-white">—</p>
         <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">Rolling window based on API query.</p>
       </div>
-      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/60 dark:shadow-slate-950/40">
+      <div
+        class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/60 dark:shadow-slate-950/40"
+      >
         <p class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Wiederkehrende Abos</p>
         <p id="metric-recurring" class="mt-3 text-3xl font-semibold text-slate-900 dark:text-white">—</p>
-        <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">Active or recently created subscription checkouts.</p>
+        <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">
+          Active or recently created subscription checkouts.
+        </p>
       </div>
-      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/60 dark:shadow-slate-950/40">
+      <div
+        class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/60 dark:shadow-slate-950/40"
+      >
         <p class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Eingenommener Umsatz</p>
         <p id="metric-revenue" class="mt-3 text-3xl font-semibold text-emerald-600 dark:text-emerald-400">—</p>
         <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">Sum of paid checkouts in the current view.</p>
       </div>
-      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/60 dark:shadow-slate-950/40">
+      <div
+        class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/60 dark:shadow-slate-950/40"
+      >
         <p class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Neueste Bestellung</p>
         <div class="mt-3 text-sm text-slate-600 dark:text-slate-300">
           <p id="metric-latest-email" class="font-medium">—</p>
@@ -29,17 +39,24 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
       </div>
     </div>
 
-    <div class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40">
+    <div
+      class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40"
+    >
       <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Bestellverlauf</h2>
-          <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">Abfrage der von Stripe-Webhooks erfassten Bestellungen in Supabase.</p>
+          <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">
+            Abfrage der von Stripe-Webhooks erfassten Bestellungen in Supabase.
+          </p>
           <p id="orders-error" class="mt-2 hidden text-sm text-red-500"></p>
         </div>
         <div class="flex flex-wrap items-center gap-3">
           <label class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
             Status
-            <select id="status-filter" class="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white">
+            <select
+              id="status-filter"
+              class="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"
+            >
               <option value="">Alle</option>
               <option value="paid">Bezahlt</option>
               <option value="open">Offen</option>
@@ -49,15 +66,26 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
           </label>
           <label class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
             Limit
-            <select id="limit-filter" class="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white">
+            <select
+              id="limit-filter"
+              class="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"
+            >
               <option value="25">25</option>
               <option value="50" selected>50</option>
               <option value="100">100</option>
               <option value="200">200</option>
             </select>
           </label>
-          <button id="refresh-orders" class="rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm shadow-blue-500/40 transition hover:bg-blue-500">Aktualisieren</button>
-          <button id="export-csv" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">CSV exportieren</button>
+          <button
+            id="refresh-orders"
+            class="rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm shadow-blue-500/40 transition hover:bg-blue-500"
+            >Aktualisieren</button
+          >
+          <button
+            id="export-csv"
+            class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+            >CSV exportieren</button
+          >
         </div>
       </div>
 
@@ -77,18 +105,30 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
               <th class="px-4 py-3 text-right">Aktionen</th>
             </tr>
           </thead>
-          <tbody id="orders-table" class="divide-y divide-slate-200 text-slate-700 dark:divide-slate-800 dark:text-slate-200">
+          <tbody
+            id="orders-table"
+            class="divide-y divide-slate-200 text-slate-700 dark:divide-slate-800 dark:text-slate-200"
+          >
             <tr>
-              <td colspan="10" class="px-4 py-6 text-center text-sm text-slate-500 dark:text-slate-400">Bestellungen werden geladen…</td>
+              <td colspan="10" class="px-4 py-6 text-center text-sm text-slate-500 dark:text-slate-400"
+                >Bestellungen werden geladen…</td
+              >
             </tr>
           </tbody>
         </table>
       </div>
 
-      <div id="order-detail" class="mt-6 hidden rounded-xl border border-slate-200 bg-slate-50 p-6 text-sm text-slate-600 dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-300">
+      <div
+        id="order-detail"
+        class="mt-6 hidden rounded-xl border border-slate-200 bg-slate-50 p-6 text-sm text-slate-600 dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-300"
+      >
         <div class="flex items-center justify-between">
           <h3 class="text-base font-semibold text-slate-900 dark:text-white">Bestelldetails</h3>
-          <button id="close-detail" class="rounded-lg border border-slate-300 px-3 py-1 text-xs uppercase tracking-wide text-slate-500 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800">Schließen</button>
+          <button
+            id="close-detail"
+            class="rounded-lg border border-slate-300 px-3 py-1 text-xs uppercase tracking-wide text-slate-500 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+            >Schließen</button
+          >
         </div>
         <dl id="order-detail-body" class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3"></dl>
       </div>
@@ -182,7 +222,8 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
     tableBody.innerHTML = '';
 
     if (!orders.length) {
-      tableBody.innerHTML = '<tr><td colspan="10" class="px-4 py-6 text-center text-sm text-slate-500 dark:text-slate-400">Keine Bestellungen für diesen Filter.</td></tr>';
+      tableBody.innerHTML =
+        '<tr><td colspan="10" class="px-4 py-6 text-center text-sm text-slate-500 dark:text-slate-400">Keine Bestellungen für diesen Filter.</td></tr>';
       return;
     }
 
@@ -208,7 +249,10 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
       const statusSelect = `
         <select data-status="${order.id}" data-prev="${normalizedStatus}" class="rounded-lg border border-slate-300 bg-white px-2 py-1 text-xs text-slate-700 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-700 dark:bg-slate-950 dark:text-white">
           ${statusOptions
-            .map((option) => `<option value="${option.value}" ${normalizedStatus === option.value ? 'selected' : ''}>${option.label}</option>`)
+            .map(
+              (option) =>
+                `<option value="${option.value}" ${normalizedStatus === option.value ? 'selected' : ''}>${option.label}</option>`
+            )
             .join('')}
         </select>
       `;
@@ -274,7 +318,7 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
             <dt class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">${label}</dt>
             <dd class="mt-2 whitespace-pre-wrap break-words text-sm text-slate-700 dark:text-slate-200">${value ?? '—'}</dd>
           </div>
-        `,
+        `
       )
       .join('');
 
@@ -335,7 +379,8 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
 
   const loadOrders = async () => {
     if (!tableBody) return;
-    tableBody.innerHTML = '<tr><td colspan="10" class="px-4 py-6 text-center text-sm text-slate-500 dark:text-slate-400">Bestellungen werden geladen…</td></tr>';
+    tableBody.innerHTML =
+      '<tr><td colspan="10" class="px-4 py-6 text-center text-sm text-slate-500 dark:text-slate-400">Bestellungen werden geladen…</td></tr>';
     if (errorLabel) {
       errorLabel.textContent = '';
       errorLabel.classList.add('hidden');
@@ -355,7 +400,8 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
         errorLabel.textContent = error instanceof Error ? error.message : 'Unable to load orders';
         errorLabel.classList.remove('hidden');
       }
-      tableBody.innerHTML = '<tr><td colspan="10" class="px-4 py-6 text-center text-sm text-red-400">Bestellungen konnten nicht geladen werden.</td></tr>';
+      tableBody.innerHTML =
+        '<tr><td colspan="10" class="px-4 py-6 text-center text-sm text-red-400">Bestellungen konnten nicht geladen werden.</td></tr>';
     }
   };
 
@@ -391,7 +437,9 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
         method: 'PATCH',
         body: JSON.stringify({ status: target.value }),
       });
-      const updatedStatusRaw = response?.order?.status ? String(response.order.status).toLowerCase() : target.value.toLowerCase();
+      const updatedStatusRaw = response?.order?.status
+        ? String(response.order.status).toLowerCase()
+        : target.value.toLowerCase();
       const normalized = updatedStatusRaw === 'canceled' ? 'cancelled' : updatedStatusRaw;
       target.setAttribute('data-prev', normalized);
       await loadOrders();

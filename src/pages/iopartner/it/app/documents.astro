@@ -4,17 +4,30 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
 
 <BackendLayout pageTitle="Documenti">
   <section class="space-y-8">
-    <div class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40">
+    <div
+      class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40"
+    >
       <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Registra un documento</h2>
-      <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Tieni traccia di proposte, contratti, brief e asset in un unico sistema.</p>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
+        Tieni traccia di proposte, contratti, brief e asset in un unico sistema.
+      </p>
       <form id="document-form" class="mt-6 grid gap-4 lg:grid-cols-2">
         <div>
           <label class="block text-sm text-slate-600 dark:text-slate-300" for="title">Titolo</label>
-          <input id="title" name="title" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white" />
+          <input
+            id="title"
+            name="title"
+            required
+            class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"
+          />
         </div>
         <div>
           <label class="block text-sm text-slate-600 dark:text-slate-300" for="document_type">Tipo</label>
-          <select id="document_type" name="document_type" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white">
+          <select
+            id="document_type"
+            name="document_type"
+            class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"
+          >
             <option value="proposal">Proposta</option>
             <option value="contract">Contratto</option>
             <option value="brief">Brief</option>
@@ -24,7 +37,11 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
         </div>
         <div>
           <label class="block text-sm text-slate-600 dark:text-slate-300" for="status">Stato</label>
-          <select id="status" name="status" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white">
+          <select
+            id="status"
+            name="status"
+            class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"
+          >
             <option value="draft">Bozza</option>
             <option value="sent">Inviato</option>
             <option value="signed">Firmato</option>
@@ -32,21 +49,41 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
           </select>
         </div>
         <div>
-          <label class="block text-sm text-slate-600 dark:text-slate-300" for="storage_path">Percorso di archiviazione o URL</label>
-          <input id="storage_path" name="storage_path" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white" />
+          <label class="block text-sm text-slate-600 dark:text-slate-300" for="storage_path"
+            >Percorso di archiviazione o URL</label
+          >
+          <input
+            id="storage_path"
+            name="storage_path"
+            required
+            class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"
+          />
         </div>
         <div class="lg:col-span-2">
           <label class="block text-sm text-slate-600 dark:text-slate-300" for="metadata">Metadati (JSON)</label>
-          <textarea id="metadata" name="metadata" rows="3" placeholder='{"key":"value"}' class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"></textarea>
+          <textarea
+            id="metadata"
+            name="metadata"
+            rows="3"
+            placeholder='{"key":"value"}'
+            class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-800 dark:bg-slate-950 dark:text-white"
+          ></textarea>
         </div>
         <div class="lg:col-span-2 flex items-center gap-3">
-          <button id="document-submit" type="submit" class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-blue-500/30 transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-70">Salva documento</button>
+          <button
+            id="document-submit"
+            type="submit"
+            class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-blue-500/30 transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-70"
+            >Salva documento</button
+          >
           <p id="document-message" class="text-sm text-slate-600 dark:text-slate-400"></p>
         </div>
       </form>
     </div>
 
-    <div class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40">
+    <div
+      class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-md shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/40 dark:shadow-lg dark:shadow-slate-950/40"
+    >
       <div class="flex items-center justify-between">
         <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Archivio</h2>
         <span class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Base di conoscenza</span>
@@ -62,9 +99,14 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
               <th class="px-4 py-3 text-right">Azioni</th>
             </tr>
           </thead>
-          <tbody id="document-table" class="divide-y divide-slate-200 dark:divide-slate-800 text-slate-700 dark:text-slate-200">
+          <tbody
+            id="document-table"
+            class="divide-y divide-slate-200 dark:divide-slate-800 text-slate-700 dark:text-slate-200"
+          >
             <tr>
-              <td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">Caricamento documenti…</td>
+              <td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400"
+                >Caricamento documenti…</td
+              >
             </tr>
           </tbody>
         </table>
@@ -99,7 +141,8 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
     tableBody.innerHTML = '';
 
     if (!Array.isArray(docs) || docs.length === 0) {
-      tableBody.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">Nessun documento. Aggiungine uno sopra.</td></tr>';
+      tableBody.innerHTML =
+        '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">Nessun documento. Aggiungine uno sopra.</td></tr>';
       return;
     }
 
@@ -127,7 +170,8 @@ import BackendLayout from '~/layouts/BackendLayout.astro';
     } catch (error) {
       console.error(error);
       if (tableBody) {
-        tableBody.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-red-400">Impossibile caricare i documenti.</td></tr>';
+        tableBody.innerHTML =
+          '<tr><td colspan="5" class="px-4 py-6 text-center text-sm text-red-400">Impossibile caricare i documenti.</td></tr>';
       }
     }
   };

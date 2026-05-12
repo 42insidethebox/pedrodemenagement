@@ -14,16 +14,8 @@ import CallToAction from '~/components/widgets/CallToAction.astro';
 import { iopartnerHeaderDataDe, iopartnerFooterDataDe } from '~/navigation';
 
 const metadata = {
-  title: 'IOPartner.ch — Technische Betriebsführung für moderne Unternehmen',
-  description:
-    'IOPartner unterstützt moderne Unternehmen bei Websites, KI-Automatisierung, Open-Source-Infrastruktur und Managed Support.',
+  title: 'IOPartner.ch — Schweizer Websites für den Genfersee-Raum',
   ignoreTitleTemplate: true,
-  openGraph: {
-    type: 'website',
-  },
-  twitter: {
-    cardType: 'summary',
-  },
 };
 ---
 
@@ -33,29 +25,27 @@ const metadata = {
     actions={[
       {
         variant: 'primary',
-        text: 'Angebot anfragen',
-        href: '/de/contact#form',
+        text: 'Jetzt starten — 999 CHF',
+        href: '/choose-template?plan=essential999',
         icon: 'tabler:arrow-right',
       },
-      { text: 'Preise ansehen', href: '/de/pricing' },
+      { text: 'Mit Expert·in sprechen', href: '/de/contact#form' },
     ]}
     image={{ src: '~/assets/images/light_minimalist.png', alt: 'IOPartner.ch Oberfläche' }}
   >
-    <Fragment slot="title">
-      Technische Betriebsführung für moderne Unternehmen
-    </Fragment>
+    <Fragment slot="title"> Ihre schlüsselfertige Website für den Markt am Genfersee </Fragment>
 
     <Fragment slot="subtitle">
-      IOPartner betreut Websites, KI-Automatisierung, Open-Source-Infrastruktur und Managed Support als ein zusammenhängendes technisches System.
+      Schweizer Design, kontrollierte Performance. IOPartner.ch verbindet Automatisierung mit lokaler Expertise, um
+      verlässliche Showcase-Seiten für KMU und Selbstständige im Genfersee-Bogen zu liefern – ohne unrealistische
+      Versprechen oder technischen Ballast.
     </Fragment>
   </Hero>
 
   <Note
-    title="Positionierung"
-    description="Ein Team für Umsetzung, Deployment, Betrieb und Weiterentwicklung Ihrer technischen Basis."
+    title="Versprechen"
+    description="Lokaler Service, menschlicher Support und automatisierte Abläufe für ein makelloses Resultat ohne Zusatzaufwand."
   />
-
-  
 
   <Features
     id="features"
@@ -108,7 +98,8 @@ const metadata = {
     items={[
       {
         title: 'Strukturiertes Briefing',
-        description: 'Ein fokussierter Fragebogen sammelt Leistungen, Öffnungszeiten, Testimonials und Visuals für unsere eigene KI.',
+        description:
+          'Ein fokussierter Fragebogen sammelt Leistungen, Öffnungszeiten, Testimonials und Visuals für unsere eigene KI.',
       },
       {
         title: 'Design & Integration',
@@ -117,7 +108,8 @@ const metadata = {
       },
       {
         title: 'Qualitätssicherung',
-        description: 'Manuelles Lektorat, Performance-Tests und DSGVO-Checkliste vor der finalen Freigabe und dem Go-Live.',
+        description:
+          'Manuelles Lektorat, Performance-Tests und DSGVO-Checkliste vor der finalen Freigabe und dem Go-Live.',
       },
     ]}
   >
@@ -127,11 +119,14 @@ const metadata = {
     </Fragment>
 
     <Fragment slot="image">
-      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl">
+      <div
+        class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl"
+      >
         <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Kontrollierter Workflow</p>
         <h4 class="mt-4 text-3xl font-semibold">Briefing → Kreation → Launch</h4>
         <p class="mt-6 max-w-xs text-base text-blue-100/90">
-          Jeder Meilenstein wird in Ihrem Kundenbereich mit Benachrichtigungen, Retro-Planung und klaren Freigaben dokumentiert.
+          Jeder Meilenstein wird in Ihrem Kundenbereich mit Benachrichtigungen, Retro-Planung und klaren Freigaben
+          dokumentiert.
         </p>
       </div>
     </Fragment>
@@ -152,23 +147,28 @@ const metadata = {
       },
       {
         title: 'Geführtes Onboarding',
-        description: 'Unser Assistent sammelt die wichtigsten Informationen und schlägt eine Struktur passend zu Ihrem Gewerbe vor.',
+        description:
+          'Unser Assistent sammelt die wichtigsten Informationen und schlägt eine Struktur passend zu Ihrem Gewerbe vor.',
         icon: 'tabler:clipboard-list',
       },
       {
         title: 'Überwachte Produktion',
-        description: 'Pipelines generieren die Website, integrieren Inhalte und benachrichtigen unser Team zur Kontrolle.',
+        description:
+          'Pipelines generieren die Website, integrieren Inhalte und benachrichtigen unser Team zur Kontrolle.',
         icon: 'tabler:robot',
       },
       {
         title: 'Freigabe & Launch',
-        description: 'Sie geben die finale Version frei; wir planen den Go-Live und offerieren jede Scope-Erweiterung separat.',
+        description:
+          'Sie geben die finale Version frei; wir planen den Go-Live und offerieren jede Scope-Erweiterung separat.',
         icon: 'tabler:rocket',
       },
     ]}
   >
     <Fragment slot="image">
-      <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
+      <div
+        class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl"
+      >
         <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Timeline</p>
         <p class="mt-6 max-w-xs text-base text-blue-100/90">
           Typische Lieferung: fünf Arbeitstage nach Eingang Ihrer Inhalte. Wir passen den Plan an Ihre Prioritäten an.
@@ -182,7 +182,8 @@ const metadata = {
     items={[
       {
         title: 'Mehrsprachige Inhalte',
-        description: 'Französisch als Standard, optionale englische oder deutsche Versionen auf Anfrage – für Ihr Wachstum.',
+        description:
+          'Französisch als Standard, optionale englische oder deutsche Versionen auf Anfrage – für Ihr Wachstum.',
       },
       {
         title: 'Optimierte Performance',
@@ -194,14 +195,17 @@ const metadata = {
       },
       {
         title: 'Klarer Umfang',
-        description: 'CHF 999 deckt einen standardisierten Showcase-Launch auf der gemeinsamen IOPartner-Plattform ab. Zusätzliche Seiten, Workshops und Leistungen ausserhalb des Umfangs werden separat verrechnet.',
+        description:
+          'CHF 999 deckt einen standardisierten Showcase-Launch auf der gemeinsamen IOPartner-Plattform ab. Zusätzliche Seiten, Workshops und Leistungen ausserhalb des Umfangs werden separat verrechnet.',
       },
     ]}
   >
     <Fragment slot="content">Eine Online-Präsenz, die Ihre Präzision widerspiegelt.</Fragment>
 
     <Fragment slot="image">
-      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
+      <div
+        class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl"
+      >
         <h4 class="text-3xl font-semibold">Messbare Performance</h4>
         <ul class="mt-6 space-y-3 text-left text-blue-100/90">
           <li>✓ Mobile-First Design</li>
@@ -244,7 +248,8 @@ const metadata = {
       },
       {
         title: 'Erweiterungen mit Scope',
-        description: 'Zusätzliche Seiten, Workshops, erweiterte Formulare oder neue Funktionen werden vor der Produktion separat offeriert.',
+        description:
+          'Zusätzliche Seiten, Workshops, erweiterte Formulare oder neue Funktionen werden vor der Produktion separat offeriert.',
         icon: 'tabler:video',
       },
       {
@@ -298,8 +303,7 @@ const metadata = {
       },
       {
         title: 'Wie funktioniert der Support nach dem Launch?',
-        description:
-          'Support per E‑Mail oder geplanter Video‑Session, Antwort innerhalb eines Arbeitstages.',
+        description: 'Support per E‑Mail oder geplanter Video‑Session, Antwort innerhalb eines Arbeitstages.',
       },
     ]}
   />
@@ -321,7 +325,7 @@ const metadata = {
     <Fragment slot="title">Bereit für eine klar strukturierte Online-Präsenz?</Fragment>
 
     <Fragment slot="subtitle">
-      Wir analysieren den Bedarf und definieren einen realistischen Plan für Websites, Automatisierung, Infrastruktur und Support.
+      Wir analysieren Ihren Bedarf und erstellen einen realistischen Aktionsplan für Ihr Unternehmen im Genfersee-Bogen.
     </Fragment>
   </CallToAction>
 </Layout>

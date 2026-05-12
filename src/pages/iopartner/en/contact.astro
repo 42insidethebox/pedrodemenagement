@@ -7,20 +7,16 @@ import Features2 from '~/components/widgets/Features2.astro';
 import { iopartnerHeaderDataEn, iopartnerFooterDataEn } from '~/navigation';
 
 const metadata = {
-  title: 'Contact IOPartner',
-  description:
-    'Talk to IOPartner about websites, AI automation, open-source infrastructure, or managed support.',
-  openGraph: {
-    type: 'website',
-  },
-  twitter: {
-    cardType: 'summary',
-  },
+  title: 'Contact',
 };
 ---
 
 <Layout metadata={metadata} header={iopartnerHeaderDataEn} footer={iopartnerFooterDataEn}>
-  <HeroText tagline="Contact" title="Let’s discuss the right IOPartner path" subtitle="We separate standard launches, private builds, and heavier systems work without wasting time." />
+  <HeroText
+    tagline="Contact"
+    title="Let’s discuss the right IOPartner path"
+    subtitle="We separate standard launches, private builds, and heavier systems work without wasting time."
+  />
 
   <ContactUs
     id="form"
@@ -50,7 +46,7 @@ const metadata = {
           { label: 'Standard site — CHF 999', value: 'essential999' },
           { label: 'Standard site + WhatsApp + Calendly — CHF 1,500', value: 'essential1500' },
           { label: 'Private codebase / light backend — CHF 2,000 to 8,000+', value: 'custom' },
-          { label: 'Paid diagnostic — 15 min / CHF 80', value: 'diagnostic80' },
+          { label: 'Paid consulting — 15 min / CHF 60', value: 'diagnostic80' },
         ],
       },
     ]}

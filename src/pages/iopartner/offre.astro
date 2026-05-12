@@ -1,15 +1,9 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
-import { IOPARTNER_FR_PRICE_LABELS } from '~/data/iopartnerPricing.fr';
 
 export const prerender = false;
 
 const error = Astro.url.searchParams.get('error');
-const launchPrice = IOPARTNER_FR_PRICE_LABELS.websiteLaunch;
-const sprintPrice = IOPARTNER_FR_PRICE_LABELS.websiteSprint;
-const growthPrice = IOPARTNER_FR_PRICE_LABELS.websiteGrowth;
-const customPrice = IOPARTNER_FR_PRICE_LABELS.websiteCustom;
-const websiteTierNote = `Autres niveaux website: sprint ${sprintPrice}, site croissance ${growthPrice}, puis custom dès ${customPrice}.`;
 
 // Sector-specific copy — driven by ?s= URL param
 const sectorParam = (Astro.url.searchParams.get('s') || '').toLowerCase();
@@ -17,61 +11,61 @@ const sectorParam = (Astro.url.searchParams.get('s') || '').toLowerCase();
 const SECTORS: Record<string, { headline: string; sub: string; bullets: string[][]; sector: string }> = {
   coiffeur: {
     headline: 'Site pour votre salon de coiffure',
-    sub: `Vos clients réservent en ligne cette semaine. ${launchPrice}, livré en 3–5 jours.`,
+    sub: 'Vos clients réservent en ligne cette semaine. 999 CHF, livré en 3–5 jours.',
     bullets: [
       ['Galerie de réalisations', 'Montrez vos coupes et colorations'],
       ['Prise de rendez-vous en ligne', 'Vos clients réservent 24h/24'],
-      ['Horaires et tarifs visibles', 'Plus d\'appels pour les infos de base'],
+      ['Horaires et tarifs visibles', "Plus d'appels pour les infos de base"],
       ['Adapté mobile', 'Parfait sur tous les écrans'],
-      ['Livré en 3–5 jours ouvrables', 'On s\'engage sur le délai'],
+      ['Livré en 3–5 jours ouvrables', "On s'engage sur le délai"],
     ],
     sector: 'Beaute',
   },
   artisan: {
     headline: 'Site pour artisan & entrepreneur',
-    sub: `Devis en ligne, photos de chantiers, contact direct. ${launchPrice}, livré en 3–5 jours.`,
+    sub: 'Devis en ligne, photos de chantiers, contact direct. 999 CHF, livré en 3–5 jours.',
     bullets: [
       ['Portfolio de réalisations', 'Photos de vos chantiers et travaux'],
       ['Formulaire de devis en ligne', 'Vos clients demandent un prix 24h/24'],
-      ['Zone d\'intervention', 'Montrez où vous travaillez'],
+      ["Zone d'intervention", 'Montrez où vous travaillez'],
       ['Adapté mobile', 'Parfait sur tous les écrans'],
-      ['Livré en 3–5 jours ouvrables', 'On s\'engage sur le délai'],
+      ['Livré en 3–5 jours ouvrables', "On s'engage sur le délai"],
     ],
     sector: 'Artisan',
   },
   restaurant: {
     headline: 'Site pour votre restaurant',
-    sub: `Menu, horaires, réservations — tout en ligne cette semaine. ${launchPrice}, livré en 3–5 jours.`,
+    sub: 'Menu, horaires, réservations — tout en ligne cette semaine. 999 CHF, livré en 3–5 jours.',
     bullets: [
       ['Menu complet en ligne', 'PDF ou page dédiée, mis à jour facilement'],
       ['Horaires et adresse', 'Google Maps intégré'],
       ['Formulaire de réservation', 'Réservations directes sans commission'],
       ['Adapté mobile', 'Parfait sur tous les écrans'],
-      ['Livré en 3–5 jours ouvrables', 'On s\'engage sur le délai'],
+      ['Livré en 3–5 jours ouvrables', "On s'engage sur le délai"],
     ],
     sector: 'Restauration',
   },
   beaute: {
     headline: 'Site pour votre salon de beauté',
-    sub: `Prenez des RDV en ligne, montrez vos réalisations. ${launchPrice}, livré en 3–5 jours.`,
+    sub: 'Prenez des RDV en ligne, montrez vos réalisations. 999 CHF, livré en 3–5 jours.',
     bullets: [
       ['Galerie avant/après', 'Montrez vos transformations'],
       ['Prise de RDV en ligne', 'Vos clients réservent 24h/24'],
       ['Tarifs et prestations', 'Tout est clair avant la visite'],
       ['Adapté mobile', 'Parfait sur tous les écrans'],
-      ['Livré en 3–5 jours ouvrables', 'On s\'engage sur le délai'],
+      ['Livré en 3–5 jours ouvrables', "On s'engage sur le délai"],
     ],
     sector: 'Beaute',
   },
   sante: {
     headline: 'Site pour thérapeute & praticien',
-    sub: `Page professionnelle, prise de RDV, honoraires — en ligne cette semaine. ${launchPrice}.`,
+    sub: 'Page professionnelle, prise de RDV, honoraires — en ligne cette semaine. 999 CHF.',
     bullets: [
       ['Présentation de vos approches', 'Créez la confiance avant la consultation'],
       ['Prise de RDV en ligne', 'Agenda visible, réservations directes'],
       ['Honoraires et remboursements', 'Informations claires pour vos patients'],
       ['Adapté mobile', 'Parfait sur tous les écrans'],
-      ['Livré en 3–5 jours ouvrables', 'On s\'engage sur le délai'],
+      ['Livré en 3–5 jours ouvrables', "On s'engage sur le délai"],
     ],
     sector: 'Sante',
   },
@@ -79,23 +73,26 @@ const SECTORS: Record<string, { headline: string; sub: string; bullets: string[]
 
 const sector = SECTORS[sectorParam] ?? null;
 const headline = sector?.headline ?? 'Votre site internet prêt en 3–5 jours';
-const subheadline = sector?.sub ?? `Payez maintenant, on crée votre site cette semaine. Livraison en 3–5 jours ouvrables. Remboursé si vous n'aimez pas.`;
+const subheadline =
+  sector?.sub ??
+  "Payez maintenant, on crée votre site cette semaine. Livraison en 3–5 jours ouvrables. Remboursé si vous n'aimez pas.";
 const bullets = sector?.bullets ?? [
   ['Page vitrine professionnelle', 'Design moderne adapté à votre activité'],
   ['Hébergement 3 mois inclus', 'Votre site en ligne, prêt à partager'],
   ['Formulaire de contact intégré', 'Vos clients vous écrivent directement'],
   ['Adapté mobile et tablette', 'Parfait sur tous les écrans'],
-  ['Livré en 24 heures', 'On s\'engage sur le délai'],
+  ['Livré en 24 heures', "On s'engage sur le délai"],
 ];
 const prefilledSector = sector?.sector ?? '';
 
-const CHECKOUT_URL = '/api/checkout?plan=essential999&template=classic-clean&tenant=iopartner';
+const CHECKOUT_URL = '/api/checkout?plan=essential999&template=classic-clean&tenant=tonsiteweb';
 ---
 
 <Layout
   metadata={{
-    title: `${headline} – ${launchPrice} – IOPartner`,
-    description: `Site internet professionnel livré en 3–5 jours pour ${launchPrice}. Prix fixe, sans surprise, avec autres niveaux website à ${sprintPrice}, ${growthPrice} et ${customPrice}.`,
+    title: `${headline} – 999 CHF – IOPartner`,
+    description:
+      'Site internet professionnel livré en 3–5 jours pour 999 CHF. Prix fixe, sans surprise. Idéal pour indépendants, artisans, commerçants en Suisse.',
   }}
 >
   <!-- Facebook Pixel — REPLACE XXXXXXXXXXXXXXXXXX with your real Pixel ID -->
@@ -120,7 +117,13 @@ const CHECKOUT_URL = '/api/checkout?plan=essential999&template=classic-clean&ten
     fbq('track', 'PageView');
   </script>
   <noscript>
-    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXXXXX&ev=PageView&noscript=1" alt="" />
+    <img
+      height="1"
+      width="1"
+      style="display:none"
+      src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXXXXX&ev=PageView&noscript=1"
+      alt=""
+    />
   </noscript>
 
   <!-- UTM capture + scarcity + sticky CTA logic -->
@@ -137,23 +140,39 @@ const CHECKOUT_URL = '/api/checkout?plan=essential999&template=classic-clean&ten
       var slots = [4, 3, 5, 2, 3, 5, 4]; // Sun=0 … Sat=6
       var todaySlots = slots[new Date().getDay()];
       var scarEl = document.getElementById('scarcity-count');
-      if (scarEl) scarEl.textContent = 'Plus que ' + todaySlots + ' créneau' + (todaySlots > 1 ? 'x' : '') + ' disponible' + (todaySlots > 1 ? 's' : '') + ' aujourd\'hui';
+      if (scarEl)
+        scarEl.textContent =
+          'Plus que ' +
+          todaySlots +
+          ' créneau' +
+          (todaySlots > 1 ? 'x' : '') +
+          ' disponible' +
+          (todaySlots > 1 ? 's' : '') +
+          " aujourd'hui";
 
       // Live order counter (async, no block)
-      fetch('/api/iopartner/count').then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
-        if (!d) return;
-        var el = document.getElementById('order-count');
-        if (el) el.textContent = 'Déjà ' + d.count + ' sites créés pour des indépendants suisses';
-      }).catch(function () {});
+      fetch('/api/tonsiteweb/count')
+        .then(function (r) {
+          return r.ok ? r.json() : null;
+        })
+        .then(function (d) {
+          if (!d) return;
+          var el = document.getElementById('order-count');
+          if (el) el.textContent = 'Déjà ' + d.count + ' sites créés pour des indépendants suisses';
+        })
+        .catch(function () {});
 
       // Sticky mobile CTA
       var hero = document.getElementById('hero-cta');
       var sticky = document.getElementById('sticky-bar');
       if (hero && sticky) {
-        var io = new IntersectionObserver(function (entries) {
-          sticky.classList.toggle('translate-y-full', entries[0].isIntersecting);
-          sticky.classList.toggle('opacity-0', entries[0].isIntersecting);
-        }, { threshold: 0.1 });
+        var io = new IntersectionObserver(
+          function (entries) {
+            sticky.classList.toggle('translate-y-full', entries[0].isIntersecting);
+            sticky.classList.toggle('opacity-0', entries[0].isIntersecting);
+          },
+          { threshold: 0.1 }
+        );
         io.observe(hero);
       }
     });
@@ -168,28 +187,31 @@ const CHECKOUT_URL = '/api/checkout?plan=essential999&template=classic-clean&ten
       var h = Math.floor(diff / 3600000);
       var m = Math.floor((diff % 3600000) / 60000);
       var s = Math.floor((diff % 60000) / 1000);
-      var pad = function (n) { return n < 10 ? '0' + n : '' + n; };
+      var pad = function (n) {
+        return n < 10 ? '0' + n : '' + n;
+      };
       var el = document.getElementById('countdown');
       if (el) {
         el.textContent = pad(h) + ':' + pad(m) + ':' + pad(s);
-        el.className = diff < 3600000 ? 'font-mono font-bold text-red-300 animate-pulse' : 'font-mono font-bold text-yellow-200';
+        el.className =
+          diff < 3600000 ? 'font-mono font-bold text-red-300 animate-pulse' : 'font-mono font-bold text-yellow-200';
       }
       setTimeout(tick, 1000);
     })();
   </script>
 
   <main class="bg-white text-gray-900">
-
     <!-- HERO -->
     <section class="bg-gradient-to-br from-blue-900 to-blue-700 text-white px-4 py-20 text-center">
       <div class="max-w-2xl mx-auto">
-        <p class="text-blue-200 text-sm font-semibold uppercase tracking-widest mb-4">Pour indépendants · Artisans · Commerçants · Suisse</p>
+        <p class="text-blue-200 text-sm font-semibold uppercase tracking-widest mb-4">
+          Pour indépendants · Artisans · Commerçants · Suisse
+        </p>
         <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-4">
           {headline}
         </h1>
-        <p class="text-2xl font-bold text-yellow-300 mb-3">{launchPrice} · Prix fixe, livraison garantie</p>
+        <p class="text-2xl font-bold text-yellow-300 mb-3">999 CHF · Prix fixe, livraison garantie</p>
         <p class="text-blue-100 text-lg mb-6">{subheadline}</p>
-        <p class="text-blue-200 text-sm mb-6">{websiteTierNote}</p>
 
         <!-- Countdown -->
         <div class="inline-flex items-center gap-2 bg-blue-800/60 rounded-full px-4 py-2 mb-6 text-sm">
@@ -204,21 +226,22 @@ const CHECKOUT_URL = '/api/checkout?plan=essential999&template=classic-clean&ten
             href={CHECKOUT_URL}
             class="inline-block bg-yellow-400 hover:bg-yellow-300 text-blue-900 font-bold text-xl px-10 py-5 rounded-2xl transition-colors shadow-lg mb-3"
           >
-            {`Payer ${launchPrice} maintenant →`}
+            Payer 999 CHF maintenant →
           </a>
         </div>
 
         <!-- Scarcity badge -->
         <div class="mt-2 mb-4">
-          <span id="scarcity-count" class="inline-block bg-orange-500/20 border border-orange-400/40 text-orange-200 text-sm font-medium px-3 py-1 rounded-full">
+          <span
+            id="scarcity-count"
+            class="inline-block bg-orange-500/20 border border-orange-400/40 text-orange-200 text-sm font-medium px-3 py-1 rounded-full"
+          >
             Créneaux limités aujourd'hui
           </span>
         </div>
 
         <!-- Secondary: callback -->
-        <a href="#form" class="text-blue-200 text-sm underline">
-          Préférez être rappelé d'abord ? ↓
-        </a>
+        <a href="#form" class="text-blue-200 text-sm underline"> Préférez être rappelé d'abord ? ↓ </a>
       </div>
     </section>
 
@@ -240,17 +263,21 @@ const CHECKOUT_URL = '/api/checkout?plan=essential999&template=classic-clean&ten
 
     <!-- CE QUI EST INCLUS -->
     <section class="px-4 py-16 max-w-2xl mx-auto">
-      <h2 class="text-2xl font-bold text-center mb-10">{`Ce qui est inclus pour ${launchPrice}`}</h2>
+      <h2 class="text-2xl font-bold text-center mb-10">Ce qui est inclus pour 999 CHF</h2>
       <ul class="space-y-4">
-        {bullets.map(([title, desc]) => (
-          <li class="flex items-start gap-4 p-4 bg-blue-50 rounded-xl">
-            <span class="flex-shrink-0 w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">✓</span>
-            <div>
-              <p class="font-semibold text-gray-900">{title}</p>
-              <p class="text-gray-500 text-sm">{desc}</p>
-            </div>
-          </li>
-        ))}
+        {
+          bullets.map(([title, desc]) => (
+            <li class="flex items-start gap-4 p-4 bg-blue-50 rounded-xl">
+              <span class="flex-shrink-0 w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                ✓
+              </span>
+              <div>
+                <p class="font-semibold text-gray-900">{title}</p>
+                <p class="text-gray-500 text-sm">{desc}</p>
+              </div>
+            </li>
+          ))
+        }
       </ul>
     </section>
 
@@ -259,17 +286,21 @@ const CHECKOUT_URL = '/api/checkout?plan=essential999&template=classic-clean&ten
       <div class="max-w-2xl mx-auto text-center">
         <h2 class="text-2xl font-bold mb-12">Comment ça marche ?</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            ['1', 'Vous payez en ligne', '30 secondes, paiement sécurisé par carte'],
-            ['2', 'On vous contacte', 'Notre équipe vous appelle pour quelques questions'],
-            ['3', 'Votre site est en ligne', 'Livré en 3–5 jours ouvrables. On s\'occupe de tout, de A à Z.'],
-          ].map(([num, title, desc]) => (
-            <div class="text-center">
-              <div class="w-14 h-14 rounded-full bg-blue-600 text-white text-2xl font-extrabold flex items-center justify-center mx-auto mb-4">{num}</div>
-              <p class="font-bold text-gray-900 mb-2">{title}</p>
-              <p class="text-gray-500 text-sm">{desc}</p>
-            </div>
-          ))}
+          {
+            [
+              ['1', 'Vous payez en ligne', '30 secondes, paiement sécurisé par carte'],
+              ['2', 'On vous contacte', 'Notre équipe vous appelle pour quelques questions'],
+              ['3', 'Votre site est en ligne', "Livré en 3–5 jours ouvrables. On s'occupe de tout, de A à Z."],
+            ].map(([num, title, desc]) => (
+              <div class="text-center">
+                <div class="w-14 h-14 rounded-full bg-blue-600 text-white text-2xl font-extrabold flex items-center justify-center mx-auto mb-4">
+                  {num}
+                </div>
+                <p class="font-bold text-gray-900 mb-2">{title}</p>
+                <p class="text-gray-500 text-sm">{desc}</p>
+              </div>
+            ))
+          }
         </div>
       </div>
     </section>
@@ -277,19 +308,23 @@ const CHECKOUT_URL = '/api/checkout?plan=essential999&template=classic-clean&ten
     <!-- PRICE ANCHOR + DIRECT PAY -->
     <section class="px-4 py-16 max-w-xl mx-auto text-center">
       <!-- Price anchor -->
-      <p class="text-sm text-gray-500 mb-2">Les agences web facturent souvent <span class="line-through font-semibold">2 000–8 000 CHF</span> pour un niveau de travail comparable.</p>
-      <p class="text-sm font-bold text-blue-600 mb-3">Aujourd'hui chez nous : <span class="text-2xl">{launchPrice}</span> tout compris.</p>
-      <p class="text-xs text-gray-500 mb-8">{websiteTierNote}</p>
+      <p class="text-sm text-gray-500 mb-2">
+        Les agences web facturent souvent <span class="line-through font-semibold">2 000–8 000 CHF</span> pour un niveau
+        de travail comparable.
+      </p>
+      <p class="text-sm font-bold text-blue-600 mb-8">
+        Aujourd'hui chez nous : <span class="text-2xl">999 CHF</span> tout compris.
+      </p>
 
       <div class="border-2 border-blue-600 rounded-2xl p-8">
-        <p class="text-4xl font-extrabold text-blue-600 mb-2">{launchPrice}</p>
+        <p class="text-4xl font-extrabold text-blue-600 mb-2">999 CHF</p>
         <p class="text-gray-500 text-sm mb-1">Paiement unique · Hébergement 3 mois inclus</p>
         <p class="text-gray-500 text-sm mb-8">Prix fixe · Paiement sécurisé · On s'occupe de tout</p>
         <a
           href={CHECKOUT_URL}
           class="inline-block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xl px-8 py-5 rounded-2xl transition-colors shadow-md"
         >
-          {`Payer ${launchPrice} maintenant →`}
+          Payer 999 CHF maintenant →
         </a>
         <div class="flex justify-center gap-6 mt-6 text-xs text-gray-400">
           <span>🔒 SSL sécurisé</span>
@@ -300,7 +335,10 @@ const CHECKOUT_URL = '/api/checkout?plan=essential999&template=classic-clean&ten
 
       <!-- Testimonial -->
       <blockquote class="mt-8 bg-blue-50 border-l-4 border-blue-400 p-4 text-left rounded-r-xl">
-        <p class="text-gray-700 text-sm italic">"Notre salon a reçu 4 nouveaux clients la première semaine grâce à notre site. Le formulaire était simple — on a envoyé nos infos et le site était en ligne en 4 jours."</p>
+        <p class="text-gray-700 text-sm italic">
+          "Notre salon a reçu 4 nouveaux clients la première semaine grâce à notre site. Le formulaire était simple — on
+          a envoyé nos infos et le site était en ligne en 4 jours."
+        </p>
         <footer class="mt-2 text-xs text-gray-500 font-semibold">— Isabelle M., Salon de beauté, Lausanne</footer>
       </blockquote>
     </section>
@@ -308,24 +346,32 @@ const CHECKOUT_URL = '/api/checkout?plan=essential999&template=classic-clean&ten
     <!-- CALLBACK FORM (secondary) -->
     <section id="form" class="px-4 py-16 max-w-xl mx-auto bg-gray-50 rounded-2xl">
       <h2 class="text-xl font-bold text-center mb-2">Vous préférez être rappelé d'abord ?</h2>
-      <p class="text-gray-500 text-center text-sm mb-8">Laissez votre numéro — on vous rappelle dans les 2 heures, gratuitement, sans engagement.</p>
+      <p class="text-gray-500 text-center text-sm mb-8">
+        Laissez votre numéro — on vous rappelle dans les 2 heures, gratuitement, sans engagement.
+      </p>
 
-      {error && (
-        <div class="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-lg mb-6">
-          {error === 'missing'
-            ? 'Veuillez indiquer votre prénom et téléphone.'
-            : 'Une erreur est survenue. Veuillez réessayer.'}
-        </div>
-      )}
+      {
+        error && (
+          <div class="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-lg mb-6">
+            {error === 'missing'
+              ? 'Veuillez indiquer votre prénom et téléphone.'
+              : 'Une erreur est survenue. Veuillez réessayer.'}
+          </div>
+        )
+      }
 
-      <form method="POST" action="/api/iopartner/lead-offre" class="space-y-5">
+      <form method="POST" action="/api/tonsiteweb/lead-offre" class="space-y-5">
         <div>
           <label for="prenom" class="block text-sm font-semibold text-gray-700 mb-1">
             Prénom <span class="text-red-500">*</span>
           </label>
           <input
-            id="prenom" name="prenom" type="text" required
-            placeholder="Jean" autocomplete="given-name"
+            id="prenom"
+            name="prenom"
+            type="text"
+            required
+            placeholder="Jean"
+            autocomplete="given-name"
             class="w-full border border-gray-300 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
           />
         </div>
@@ -335,8 +381,12 @@ const CHECKOUT_URL = '/api/checkout?plan=essential999&template=classic-clean&ten
             Téléphone <span class="text-red-500">*</span>
           </label>
           <input
-            id="telephone" name="telephone" type="tel" required
-            placeholder="+41 79 000 00 00" autocomplete="tel"
+            id="telephone"
+            name="telephone"
+            type="tel"
+            required
+            placeholder="+41 79 000 00 00"
+            autocomplete="tel"
             class="w-full border border-gray-300 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
           />
         </div>
@@ -344,8 +394,11 @@ const CHECKOUT_URL = '/api/checkout?plan=essential999&template=classic-clean&ten
         <div>
           <label for="email" class="block text-sm font-semibold text-gray-700 mb-1">Email (optionnel)</label>
           <input
-            id="email" name="email" type="email"
-            placeholder="jean@exemple.ch" autocomplete="email"
+            id="email"
+            name="email"
+            type="email"
+            placeholder="jean@exemple.ch"
+            autocomplete="email"
             class="w-full border border-gray-300 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
           />
         </div>
@@ -353,14 +406,18 @@ const CHECKOUT_URL = '/api/checkout?plan=essential999&template=classic-clean&ten
         <div>
           <label for="secteur" class="block text-sm font-semibold text-gray-700 mb-1">Secteur d'activité</label>
           <select
-            id="secteur" name="secteur"
+            id="secteur"
+            name="secteur"
             class="w-full border border-gray-300 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg bg-white"
           >
             <option value="">-- Choisissez --</option>
             <option value="Commerce" selected={prefilledSector === 'Commerce' || undefined}>Commerce / Boutique</option>
-            <option value="Artisan" selected={prefilledSector === 'Artisan' || undefined}>Artisan / Construction</option>
+            <option value="Artisan" selected={prefilledSector === 'Artisan' || undefined}>Artisan / Construction</option
+            >
             <option value="Beaute" selected={prefilledSector === 'Beaute' || undefined}>Beauté / Bien-être</option>
-            <option value="Restauration" selected={prefilledSector === 'Restauration' || undefined}>Restauration / Traiteur</option>
+            <option value="Restauration" selected={prefilledSector === 'Restauration' || undefined}
+              >Restauration / Traiteur</option
+            >
             <option value="Sante" selected={prefilledSector === 'Sante' || undefined}>Santé / Thérapeute</option>
             <option value="Immobilier">Immobilier / Conciergerie</option>
             <option value="Transport">Transport / Déménagement</option>
@@ -397,27 +454,42 @@ const CHECKOUT_URL = '/api/checkout?plan=essential999&template=classic-clean&ten
     <section class="px-4 py-16 max-w-2xl mx-auto">
       <h2 class="text-2xl font-bold text-center mb-10">Questions fréquentes</h2>
       <div class="space-y-6">
-        {[
-          ['Que se passe-t-il après le paiement ?', 'Notre équipe vous contacte dans les 2 heures pour quelques questions sur votre activité. Votre site est en ligne en 3–5 jours ouvrables.'],
-          [`Qu'est-ce qui est inclus pour ${launchPrice} ?`, 'Une page vitrine professionnelle, hébergement 3 mois, formulaire de contact, design mobile responsive, et livraison en 3–5 jours.'],
-          ['Et si j’ai besoin d’un autre niveau website ?', `Le sprint optimisation/migration démarre à ${sprintPrice}, le site croissance à ${growthPrice}, puis la voie custom commence dès ${customPrice}.`],
-          ['Et si je ne suis pas satisfait ?', 'Remboursement complet garanti, aucune question posée. C\'est notre promesse.'],
-          ['Dois-je créer un compte ?', 'Non. Le paiement se fait directement via Stripe. Aucun compte requis, aucune inscription.'],
-          ['Combien de temps dure le processus ?', 'Vous payez en 30 secondes. On vous contacte dans les 2 heures. Votre site est en ligne en 3–5 jours ouvrables après réception de vos informations.'],
-        ].map(([q, a]) => (
-          <div class="border border-gray-200 rounded-xl p-6">
-            <p class="font-semibold text-gray-900 mb-2">{q}</p>
-            <p class="text-gray-500 text-sm">{a}</p>
-          </div>
-        ))}
+        {
+          [
+            [
+              'Que se passe-t-il après le paiement ?',
+              'Notre équipe vous contacte dans les 2 heures pour quelques questions sur votre activité. Votre site est en ligne en 3–5 jours ouvrables.',
+            ],
+            [
+              "Qu'est-ce qui est inclus pour 999 CHF ?",
+              'Une page vitrine professionnelle, hébergement 3 mois, formulaire de contact, design mobile responsive, et livraison en 3–5 jours.',
+            ],
+            [
+              'Et si je ne suis pas satisfait ?',
+              "Remboursement complet garanti, aucune question posée. C'est notre promesse.",
+            ],
+            [
+              'Dois-je créer un compte ?',
+              'Non. Le paiement se fait directement via Stripe. Aucun compte requis, aucune inscription.',
+            ],
+            [
+              'Combien de temps dure le processus ?',
+              'Vous payez en 30 secondes. On vous contacte dans les 2 heures. Votre site est en ligne en 3–5 jours ouvrables après réception de vos informations.',
+            ],
+          ].map(([q, a]) => (
+            <div class="border border-gray-200 rounded-xl p-6">
+              <p class="font-semibold text-gray-900 mb-2">{q}</p>
+              <p class="text-gray-500 text-sm">{a}</p>
+            </div>
+          ))
+        }
       </div>
     </section>
 
     <!-- FINAL CTA -->
     <section class="bg-blue-600 text-white px-4 py-16 text-center">
       <h2 class="text-3xl font-bold mb-4">Prêt ? Votre site en 3–5 jours.</h2>
-      <p class="text-blue-100 mb-4">{`${launchPrice} · Livré en 3–5 jours ouvrables · Prix fixe, sans surprise`}</p>
-      <p class="text-blue-200 text-sm mb-4">{websiteTierNote}</p>
+      <p class="text-blue-100 mb-4">999 CHF · Livré en 3–5 jours ouvrables · Prix fixe, sans surprise</p>
       <div class="inline-flex items-center gap-2 bg-blue-500/50 rounded-full px-4 py-1 mb-8 text-sm">
         <span class="text-blue-200">Livraison garantie si commande avant</span>
         <span id="countdown2" class="font-mono font-bold text-yellow-200">…</span>
@@ -427,7 +499,7 @@ const CHECKOUT_URL = '/api/checkout?plan=essential999&template=classic-clean&ten
         href={CHECKOUT_URL}
         class="inline-block bg-yellow-400 hover:bg-yellow-300 text-blue-900 font-bold text-xl px-10 py-5 rounded-2xl transition-colors"
       >
-        {`Payer ${launchPrice} maintenant →`}
+        Payer 999 CHF maintenant →
       </a>
     </section>
 
@@ -435,14 +507,13 @@ const CHECKOUT_URL = '/api/checkout?plan=essential999&template=classic-clean&ten
     <footer class="px-4 py-8 text-center text-xs text-gray-400">
       <p>© {new Date().getFullYear()} IOPartner.ch · Lausanne, Suisse</p>
       <p class="mt-1">
-        <a href="/iopartner" class="hover:underline">Accueil</a>
+        <a href="/tonsiteweb" class="hover:underline">Accueil</a>
         {' · '}
         <a href="/privacy" class="hover:underline">Confidentialité</a>
         {' · '}
         <a href="/terms" class="hover:underline">CGV</a>
       </p>
     </footer>
-
   </main>
 
   <!-- STICKY MOBILE CTA (md+ hidden, shown after hero scrolls off) -->
@@ -454,7 +525,7 @@ const CHECKOUT_URL = '/api/checkout?plan=essential999&template=classic-clean&ten
       href={CHECKOUT_URL}
       class="block w-full bg-yellow-400 hover:bg-yellow-300 text-blue-900 font-bold text-center text-lg py-4 rounded-xl transition-colors"
     >
-      {`Payer ${launchPrice} maintenant →`}
+      Payer 999 CHF maintenant →
     </a>
     <p class="text-center text-xs text-gray-400 mt-1">🔒 Paiement sécurisé · ↩ Remboursé si insatisfait</p>
   </div>
@@ -464,9 +535,14 @@ const CHECKOUT_URL = '/api/checkout?plan=essential999&template=classic-clean&ten
     (function syncCountdown2() {
       var el1 = document.getElementById('countdown');
       var el2 = document.getElementById('countdown2');
-      if (!el1 || !el2) { setTimeout(syncCountdown2, 200); return; }
-      setInterval(function () { el2.textContent = el1.textContent; el2.className = el1.className; }, 1000);
+      if (!el1 || !el2) {
+        setTimeout(syncCountdown2, 200);
+        return;
+      }
+      setInterval(function () {
+        el2.textContent = el1.textContent;
+        el2.className = el1.className;
+      }, 1000);
     })();
   </script>
-
 </Layout>

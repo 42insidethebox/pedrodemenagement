@@ -8,182 +8,176 @@ import Layout from '~/layouts/PageLayout.astro';
 import { iopartnerHeaderDataEn, iopartnerFooterDataEn } from '~/navigation';
 
 const metadata = {
-  title: 'IOPartner Services',
-  description:
-    'Websites, AI automation, open-source infrastructure, and managed support for modern businesses.',
-  openGraph: {
-    type: 'website',
-  },
-  twitter: {
-    cardType: 'summary',
-  },
+  title: 'Services',
 };
 ---
 
 <Layout metadata={metadata} header={iopartnerHeaderDataEn} footer={iopartnerFooterDataEn}>
   <Hero
     id="services"
-    tagline="Services"
-    title="Websites, automation, infrastructure, support"
-    subtitle="IOPartner organises its work around four clear service layers so modern businesses can get the right technical help without unnecessary complexity."
+    tagline="Our services"
+    title="Turnkey showcase sites for Romandie SMEs"
+    subtitle="IOPartner.ch blends automation and human expertise to deliver high‑quality websites."
     actions={[{ variant: 'primary', text: 'See pricing', href: '/en/pricing' }]}
   >
     <Fragment slot="image">
-      <div class="relative aspect-[5/3] overflow-hidden rounded-2xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-left text-white shadow-2xl">
-        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">IOPartner capabilities</p>
-        <h4 class="mt-4 text-4xl font-semibold">Website delivery · AI workflows · Open ops</h4>
+      <div
+        class="relative aspect-[5/3] overflow-hidden rounded-2xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-left text-white shadow-2xl"
+      >
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Automated services</p>
+        <h4 class="mt-4 text-4xl font-semibold">Design · Content · Care</h4>
         <p class="mt-6 max-w-xl text-lg text-blue-100/90">
-          Same layout, broader positioning: this tenant now presents IOPartner as a technical operations partner, not only a site builder.
+          A proprietary platform orchestrates production while our experts focus on quality and client relationships.
         </p>
       </div>
     </Fragment>
   </Hero>
 
   <Features2
-    id="websites"
-    title="Websites"
-    subtitle="The visible layer of your business, delivered cleanly and connected to the rest."
+    title="Three offers, one standard"
+    subtitle="Pick the formula that matches your growth pace."
     columns={3}
     items={[
       {
-        title: 'Launches',
-        description: 'Marketing sites, showcase pages, lean redesigns, and launch-ready web presence with a clear scope.',
+        title: 'Essential',
+        description: 'Five‑section showcase site, your content integrated and a guided launch.',
         icon: 'tabler:layout',
       },
       {
-        title: 'Enhancements',
-        description: 'New pages, conversion improvements, forms, and targeted front-end integrations.',
-        icon: 'tabler:browser-plus',
+        title: 'Automation',
+        description: 'Forms, bookings and API integrations quoted for larger projects.',
+        icon: 'tabler:api',
       },
       {
-        title: 'Migrations',
-        description: 'Moving toward a faster stack, content cleanup, and gradual technical consolidation.',
-        icon: 'tabler:arrows-shuffle',
+        title: 'Care & security',
+        description: 'Technical updates, backups, pro email management and planned support at CHF 79/month.',
+        icon: 'tabler:shield-check',
       },
     ]}
   />
 
   <Content
-    id="ai-automation"
+    id="content"
     isReversed
-    title="AI & Automation"
-    subtitle="Useful workflows with human review where it matters."
     items={[
       {
-        title: 'Qualification & routing',
-        description: 'Incoming requests sorted, enriched, and sent to the right tool or operator.',
-        icon: 'tabler:route',
+        title: 'Automated production',
+        description: 'Our pipeline assembles your site using industry templates that we tailor to your identity.',
+        icon: 'tabler:cube',
       },
       {
-        title: 'Focused assistants',
-        description: 'Internal copilots, knowledge helpers, structured drafts, and support assistance.',
-        icon: 'tabler:message-chatbot',
+        title: 'Human control',
+        description:
+          'Designers, writers and SEO specialists review each deliverable to ensure coherence and compliance.',
+        icon: 'tabler:shield-check',
       },
       {
-        title: 'API or no-code links',
-        description: 'Connections across forms, calendars, CRM, email, dashboards, and existing systems.',
-        icon: 'tabler:api',
+        title: 'Planned delivery',
+        description: 'We share a clear retro-planning and adapt launch timing to your business constraints.',
+        icon: 'tabler:inbox',
       },
       {
-        title: 'Operational guardrails',
-        description: 'Logging, limits, approvals, and checks before any sensitive automation goes live.',
-        icon: 'tabler:shield-lock',
+        title: 'Essential follow-up',
+        description: 'Regular checkpoints, assistance with updates and pragmatic recommendations.',
+        icon: 'tabler:report-analytics',
       },
     ]}
   >
     <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Automation that survives production</h3>
-      We avoid flashy demos with no operational life. Every workflow needs to stay readable, testable, and maintainable.
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Our hybrid methodology</h3>
+      Automation for speed, experts for quality.
     </Fragment>
 
     <Fragment slot="image">
-      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl">
-        <h4 class="text-3xl font-semibold">From intake to action</h4>
+      <div
+        class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl"
+      >
+        <h4 class="text-3xl font-semibold">Supervised pipeline</h4>
         <p class="mt-6 max-w-sm text-blue-100/90">
-          Form, triage, assisted response, assignment, follow-up: the flow stays useful because the control points are explicit.
+          Every project goes through full human checks: content, design, GDPR compliance and navigation tests.
         </p>
       </div>
     </Fragment>
   </Content>
 
   <Content
-    id="open-infrastructure"
+    id="seo"
     isAfterContent
-    title="Open Infrastructure"
-    subtitle="Open building blocks when they make the stack more durable."
     items={[
       {
-        title: 'Deployment',
-        description: 'Git, hosting, DNS, domains, certificates, and release routines adapted to the right level of complexity.',
-        icon: 'tabler:cloud-upload',
+        title: 'On‑page basics',
+        description: 'Basic titles and meta descriptions (no full SEO service).',
+        icon: 'tabler:map-pin',
       },
       {
-        title: 'Observability',
-        description: 'Monitoring, alerts, and visibility on the points that should not fail silently.',
-        icon: 'tabler:activity-heartbeat',
+        title: 'Visual content',
+        description: 'Curated royalty-free visuals or coordination with your local providers for consistent imagery.',
+        icon: 'tabler:photo',
       },
       {
-        title: 'Portability',
-        description: 'Open tools or proven standards that reduce unnecessary lock-in over time.',
-        icon: 'tabler:brand-open-source',
+        title: 'Acquisition campaigns',
+        description: 'Landing pages, forms and automated email scenarios quoted according to your goals.',
+        icon: 'tabler:send',
       },
       {
-        title: 'Documentation',
-        description: 'Essential access, dependencies, and procedures recorded for continuity.',
-        icon: 'tabler:file-description',
+        title: 'Simple process',
+        description: 'Email‑based exchanges and step approvals. No client portal to manage.',
+        icon: 'tabler:layout-dashboard',
       },
     ]}
   >
     <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Infrastructure you can actually operate</h3>
-      No complexity for its own sake. We aim for the right level of robustness now, with a clear path if the business grows.
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Levers built to last</h3>
+      We activate the right tools to deliver measurable outcomes.
     </Fragment>
 
     <Fragment slot="image">
-      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-left text-white shadow-xl">
-        <h4 class="text-3xl font-semibold">Open by default, pragmatic by necessity</h4>
+      <div
+        class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-left text-white shadow-xl"
+      >
+        <h4 class="text-3xl font-semibold">Controlled acquisition</h4>
         <p class="mt-6 max-w-sm text-blue-100/90">
-          The architecture stays legible so deployments, incidents, and handoffs remain manageable over time.
+          We help you prioritise effective channels and measure what truly matters to your activity.
         </p>
       </div>
     </Fragment>
   </Content>
 
   <Features2
-    id="managed-support"
-    title="Managed Support"
-    subtitle="The day-to-day follow-through that prevents every issue from becoming a fresh project."
+    id="support"
+    title="Support & care"
+    subtitle="Focus on your business—we handle the rest."
     columns={3}
     items={[
       {
-        title: 'Responsive support',
-        description: 'Replies within one business day, active issue follow-up, and prioritisation based on business impact.',
+        title: 'Planned support',
+        description: 'Replies within one business day by email or phone, tracked via your client area.',
         icon: 'tabler:headset',
       },
       {
-        title: 'Maintenance',
-        description: 'Updates, backups, fixes, and recurring technical checks.',
-        icon: 'tabler:tools',
-      },
-      {
-        title: 'Monitoring',
-        description: 'Availability checks, weak-signal detection, and alerts on sensitive services.',
+        title: 'Essential monitoring',
+        description: 'Regular performance checks and alerts whenever an issue is detected.',
         icon: 'tabler:antenna',
       },
       {
-        title: 'Coordination',
-        description: 'A partner who keeps context when product, operations, and third parties need alignment.',
-        icon: 'tabler:git-merge',
+        title: 'Security updates',
+        description: 'Critical patches, backups and restoration whenever needed.',
+        icon: 'tabler:tools',
       },
       {
-        title: 'Short-cycle improvements',
-        description: 'Small enhancements and iterative fixes without reopening a full project every time.',
+        title: 'GDPR compliance',
+        description: 'Cookie policy, legal mentions and consent banner tailored to Switzerland.',
+        icon: 'tabler:shield-check',
+      },
+      {
+        title: 'Email management',
+        description: 'Setup and support for your @yourdomain.ch accounts with SPF/DKIM.',
+        icon: 'tabler:mail',
+      },
+      {
+        title: 'Enhancements on demand',
+        description: 'Additional pages, modules or automations quoted to match your objectives.',
         icon: 'tabler:arrows-left-right',
-      },
-      {
-        title: 'Clear scope control',
-        description: 'When something turns into a larger system, we re-scope it cleanly instead of stretching it silently.',
-        icon: 'tabler:stack-2',
       },
     ]}
   />
@@ -192,16 +186,14 @@ const metadata = {
     actions={[
       {
         variant: 'primary',
-        text: 'Talk to IOPartner',
+        text: 'Schedule a demo',
         href: '/en/contact#form',
         icon: 'tabler:device-desktop-analytics',
       },
     ]}
   >
-    <Fragment slot="title">Choose the right intervention layer</Fragment>
+    <Fragment slot="title"> Let’s discuss your next launch </Fragment>
 
-    <Fragment slot="subtitle">
-      We help you separate what belongs to a website launch, an automation project, a more structured infrastructure layer, or ongoing managed support.
-    </Fragment>
+    <Fragment slot="subtitle"> Share your goals and we’ll prepare a pragmatic launch plan with IOPartner.ch. </Fragment>
   </CallToAction>
 </Layout>

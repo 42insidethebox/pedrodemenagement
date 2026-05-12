@@ -1,12 +1,11 @@
 ---
 import Layout from '~/layouts/Layout.astro';
 import { normalizePlanId, TONSITEWEB_DEFAULT_PLAN } from '~/lib/pricing.js';
-import { IOPARTNER_FR_PRICE_LABELS } from '~/data/iopartnerPricing.fr';
 
 export const prerender = false;
 
 const SUPPORTED_LOCALES = ['fr', 'en', 'it', 'de'] as const;
-type Locale = typeof SUPPORTED_LOCALES[number];
+type Locale = (typeof SUPPORTED_LOCALES)[number];
 
 function resolveLocale(): Locale {
   const query = Astro.url.searchParams.get('lang');
@@ -23,19 +22,19 @@ const error = Astro.url.searchParams.get('error') || '';
 
 const PLAN_PRICE_LABELS = {
   essential999: {
-    fr: IOPARTNER_FR_PRICE_LABELS.websiteLaunch,
+    fr: '999 CHF',
     en: 'CHF 999',
     de: '999 CHF',
     it: '999 CHF',
   },
   essential1249: {
-    fr: IOPARTNER_FR_PRICE_LABELS.websiteSprint,
+    fr: '1 249 CHF',
     en: 'CHF 1,249',
     de: '1’249 CHF',
     it: '1’249 CHF',
   },
   essential1500: {
-    fr: IOPARTNER_FR_PRICE_LABELS.websiteGrowth,
+    fr: '1 500 CHF',
     en: 'CHF 1,500',
     de: '1’500 CHF',
     it: '1’500 CHF',
@@ -46,43 +45,76 @@ const T = {
   fr: {
     title: 'Décrivez votre activité — IOPartner.ch',
     heading: 'Décrivez votre activité',
-    sub: 'Remplissez ce formulaire en 3 minutes — nous produisons ensuite votre website selon le niveau choisi.',
+    sub: 'Remplissez ce formulaire en 3 minutes — nous créons votre site, vous payez ensuite.',
     errorMsg: 'Une erreur est survenue. Veuillez réessayer ou nous écrire sur WhatsApp.',
     s1: 'Votre entreprise',
-    bizName: "Nom de l'entreprise", bizNamePh: 'Ex : Salon Bella, Plomberie Dupont…',
-    tagline: 'Slogan / accroche', taglinePh: "Ex : L'artisan de confiance depuis 1990",
-    sector: "Secteur d'activité", sectorPh: '-- Choisissez --',
-    desc: 'Décrivez votre activité en 2-3 phrases', descPh: 'Qui êtes-vous, ce que vous faites, pour qui…',
-    s2: 'Vos services', s2sub: 'Listez vos 1 à 4 services principaux affichés sur le site.',
-    svcLabel: 'Service', optional: '(optionnel)', svcName: 'Nom', svcDesc: 'Description courte',
-    svcDescPh: 'En une phrase', svcPrice: 'Prix indicatif', svcPricePh: 'Optionnel ou sur devis',
+    bizName: "Nom de l'entreprise",
+    bizNamePh: 'Ex : Salon Bella, Plomberie Dupont…',
+    tagline: 'Slogan / accroche',
+    taglinePh: "Ex : L'artisan de confiance depuis 1990",
+    sector: "Secteur d'activité",
+    sectorPh: '-- Choisissez --',
+    desc: 'Décrivez votre activité en 2-3 phrases',
+    descPh: 'Qui êtes-vous, ce que vous faites, pour qui…',
+    s2: 'Vos services',
+    s2sub: 'Listez vos 1 à 4 services principaux affichés sur le site.',
+    svcLabel: 'Service',
+    optional: '(optionnel)',
+    svcName: 'Nom',
+    svcDesc: 'Description courte',
+    svcDescPh: 'En une phrase',
+    svcPrice: 'Prix indicatif',
+    svcPricePh: 'dès 80 CHF',
     s3: 'Contact & Localisation',
-    address: 'Adresse complète', addressPh: 'Rue, numéro, ville, NPA',
+    address: 'Adresse complète',
+    addressPh: 'Rue, numéro, ville, NPA',
     phone: 'Téléphone affiché sur le site',
-    email: 'Email affiché sur le site', emailPh: 'contact@monentreprise.ch',
-    hours: "Horaires d'ouverture", hoursPh: 'Lun–Ven 9h–18h, Sam 10h–16h, Dim fermé',
+    email: 'Email affiché sur le site',
+    emailPh: 'contact@monentreprise.ch',
+    hours: "Horaires d'ouverture",
+    hoursPh: 'Lun–Ven 9h–18h, Sam 10h–16h, Dim fermé',
     s4: 'Identité visuelle',
-    colorMain: 'Couleur principale', colorSec: 'Couleur secondaire',
+    colorMain: 'Couleur principale',
+    colorSec: 'Couleur secondaire',
     styleLabel: 'Style préféré',
     styles: [
       { value: 'moderne', label: 'Moderne / Minimaliste', emoji: '✦' },
       { value: 'chaleureux', label: 'Chaleureux / Artisanal', emoji: '🪵' },
       { value: 'corporate', label: 'Professionnel / Corporate', emoji: '💼' },
     ],
-    logo: 'Logo', logoPh: 'optionnel — PNG, JPG, SVG',
-    photos: 'Photos (jusqu\'à 3)', photosPh: 'optionnel — votre équipe, local, travaux…',
+    logo: 'Logo',
+    logoPh: 'optionnel — PNG, JPG, SVG',
+    photos: "Photos (jusqu'à 3)",
+    photosPh: 'optionnel — votre équipe, local, travaux…',
     s5: 'Réseaux sociaux & domaine',
-    igPh: 'https://instagram.com/moncompte', fbPh: 'https://facebook.com/mapage',
-    domain: 'Domaine souhaité', domainPh: 'Ex : moncoiffeur.ch…',
+    igPh: 'https://instagram.com/moncompte',
+    fbPh: 'https://facebook.com/mapage',
+    domain: 'Domaine souhaité',
+    domainPh: 'Ex : moncoiffeur.ch…',
     domainOwned: "J'ai déjà acheté ce domaine",
     s6: 'Informations complémentaires',
-    refs: 'Sites que vous aimez (références)', refsPh: 'Collez des URLs ou décrivez le style…',
-    notes: 'Questions ou demandes spéciales', notesPh: 'Tout ce qui vous semble important…',
+    refs: 'Sites que vous aimez (références)',
+    refsPh: 'Collez des URLs ou décrivez le style…',
+    notes: 'Questions ou demandes spéciales',
+    notesPh: 'Tout ce qui vous semble important…',
     submitPrefix: 'Continuer vers le paiement',
     privacy: 'Vos informations sont sécurisées et utilisées uniquement pour créer votre site.',
-    sectors: ['Commerce / Boutique','Artisan / Construction','Beauté / Bien-être','Restauration / Traiteur','Santé / Thérapeute','Immobilier / Conciergerie','Transport / Déménagement','Coiffure','Sport / Fitness','Autre'],
-    cName: 'Votre prénom et nom', cNamePh: 'Ex : Marie Dupont',
-    cEmail: 'Votre email', cEmailHint: 'Pour la confirmation de commande — pas affiché sur le site.',
+    sectors: [
+      'Commerce / Boutique',
+      'Artisan / Construction',
+      'Beauté / Bien-être',
+      'Restauration / Traiteur',
+      'Santé / Thérapeute',
+      'Immobilier / Conciergerie',
+      'Transport / Déménagement',
+      'Coiffure',
+      'Sport / Fitness',
+      'Autre',
+    ],
+    cName: 'Votre prénom et nom',
+    cNamePh: 'Ex : Marie Dupont',
+    cEmail: 'Votre email',
+    cEmailHint: 'Pour la confirmation de commande — pas affiché sur le site.',
   },
   en: {
     title: 'Describe your business — IOPartner.ch',
@@ -90,40 +122,73 @@ const T = {
     sub: 'Fill in this form in 3 minutes — we build your site, you pay after.',
     errorMsg: 'An error occurred. Please try again or message us on WhatsApp.',
     s1: 'Your business',
-    bizName: 'Business name', bizNamePh: 'E.g.: Bella Salon, Dupont Plumbing…',
-    tagline: 'Tagline / slogan', taglinePh: 'E.g.: Trusted craftsman since 1990',
-    sector: 'Industry / sector', sectorPh: '-- Select --',
-    desc: 'Describe your business in 2-3 sentences', descPh: 'Who you are, what you do, for whom…',
-    s2: 'Your services', s2sub: 'List your 1 to 4 main services shown on the site.',
-    svcLabel: 'Service', optional: '(optional)', svcName: 'Name', svcDesc: 'Short description',
-    svcDescPh: 'In one sentence', svcPrice: 'Indicative price', svcPricePh: 'From CHF 80',
+    bizName: 'Business name',
+    bizNamePh: 'E.g.: Bella Salon, Dupont Plumbing…',
+    tagline: 'Tagline / slogan',
+    taglinePh: 'E.g.: Trusted craftsman since 1990',
+    sector: 'Industry / sector',
+    sectorPh: '-- Select --',
+    desc: 'Describe your business in 2-3 sentences',
+    descPh: 'Who you are, what you do, for whom…',
+    s2: 'Your services',
+    s2sub: 'List your 1 to 4 main services shown on the site.',
+    svcLabel: 'Service',
+    optional: '(optional)',
+    svcName: 'Name',
+    svcDesc: 'Short description',
+    svcDescPh: 'In one sentence',
+    svcPrice: 'Indicative price',
+    svcPricePh: 'From CHF 80',
     s3: 'Contact & Location',
-    address: 'Full address', addressPh: 'Street, number, city, postcode',
+    address: 'Full address',
+    addressPh: 'Street, number, city, postcode',
     phone: 'Phone displayed on site',
-    email: 'Email displayed on site', emailPh: 'contact@mybusiness.ch',
-    hours: 'Opening hours', hoursPh: 'Mon–Fri 9am–6pm, Sat 10am–4pm, Sun closed',
+    email: 'Email displayed on site',
+    emailPh: 'contact@mybusiness.ch',
+    hours: 'Opening hours',
+    hoursPh: 'Mon–Fri 9am–6pm, Sat 10am–4pm, Sun closed',
     s4: 'Visual identity',
-    colorMain: 'Primary colour', colorSec: 'Secondary colour',
+    colorMain: 'Primary colour',
+    colorSec: 'Secondary colour',
     styleLabel: 'Preferred style',
     styles: [
       { value: 'moderne', label: 'Modern / Minimalist', emoji: '✦' },
       { value: 'chaleureux', label: 'Warm / Artisan', emoji: '🪵' },
       { value: 'corporate', label: 'Professional / Corporate', emoji: '💼' },
     ],
-    logo: 'Logo', logoPh: 'optional — PNG, JPG, SVG',
-    photos: 'Photos (up to 3)', photosPh: 'optional — team, premises, work…',
+    logo: 'Logo',
+    logoPh: 'optional — PNG, JPG, SVG',
+    photos: 'Photos (up to 3)',
+    photosPh: 'optional — team, premises, work…',
     s5: 'Social media & domain',
-    igPh: 'https://instagram.com/myaccount', fbPh: 'https://facebook.com/mypage',
-    domain: 'Desired domain name', domainPh: 'E.g.: myhairdresser.ch…',
+    igPh: 'https://instagram.com/myaccount',
+    fbPh: 'https://facebook.com/mypage',
+    domain: 'Desired domain name',
+    domainPh: 'E.g.: myhairdresser.ch…',
     domainOwned: 'I already own this domain',
     s6: 'Additional information',
-    refs: 'Sites you like (references)', refsPh: 'Paste URLs or describe styles you like…',
-    notes: 'Questions or special requests', notesPh: 'Anything important for your site…',
+    refs: 'Sites you like (references)',
+    refsPh: 'Paste URLs or describe styles you like…',
+    notes: 'Questions or special requests',
+    notesPh: 'Anything important for your site…',
     submitPrefix: 'Continue to payment',
     privacy: 'Your information is secure and used solely to create your website.',
-    sectors: ['Retail / Shop','Craftsman / Construction','Beauty / Wellness','Restaurant / Catering','Health / Therapist','Real Estate / Concierge','Transport / Moving','Hairdressing','Sport / Fitness','Other'],
-    cName: 'Your name', cNamePh: 'E.g.: Marie Dupont',
-    cEmail: 'Your email', cEmailHint: 'For order confirmation only — will not be shown on your site.',
+    sectors: [
+      'Retail / Shop',
+      'Craftsman / Construction',
+      'Beauty / Wellness',
+      'Restaurant / Catering',
+      'Health / Therapist',
+      'Real Estate / Concierge',
+      'Transport / Moving',
+      'Hairdressing',
+      'Sport / Fitness',
+      'Other',
+    ],
+    cName: 'Your name',
+    cNamePh: 'E.g.: Marie Dupont',
+    cEmail: 'Your email',
+    cEmailHint: 'For order confirmation only — will not be shown on your site.',
   },
   de: {
     title: 'Beschreiben Sie Ihr Unternehmen — IOPartner.ch',
@@ -131,40 +196,73 @@ const T = {
     sub: 'Füllen Sie dieses Formular in 3 Minuten aus — wir erstellen Ihre Website, Sie zahlen danach.',
     errorMsg: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut oder schreiben Sie uns auf WhatsApp.',
     s1: 'Ihr Unternehmen',
-    bizName: 'Unternehmensname', bizNamePh: 'Z.B.: Salon Bella, Klempner Müller…',
-    tagline: 'Slogan / Claim', taglinePh: 'Z.B.: Ihr Handwerker seit 1990',
-    sector: 'Branche', sectorPh: '-- Auswählen --',
-    desc: 'Beschreiben Sie Ihr Unternehmen in 2-3 Sätzen', descPh: 'Wer Sie sind, was Sie tun, für wen…',
-    s2: 'Ihre Leistungen', s2sub: 'Listen Sie Ihre 1 bis 4 Hauptleistungen auf der Website auf.',
-    svcLabel: 'Leistung', optional: '(optional)', svcName: 'Name', svcDesc: 'Kurzbeschreibung',
-    svcDescPh: 'In einem Satz', svcPrice: 'Richtpreis', svcPricePh: 'Ab 80 CHF',
+    bizName: 'Unternehmensname',
+    bizNamePh: 'Z.B.: Salon Bella, Klempner Müller…',
+    tagline: 'Slogan / Claim',
+    taglinePh: 'Z.B.: Ihr Handwerker seit 1990',
+    sector: 'Branche',
+    sectorPh: '-- Auswählen --',
+    desc: 'Beschreiben Sie Ihr Unternehmen in 2-3 Sätzen',
+    descPh: 'Wer Sie sind, was Sie tun, für wen…',
+    s2: 'Ihre Leistungen',
+    s2sub: 'Listen Sie Ihre 1 bis 4 Hauptleistungen auf der Website auf.',
+    svcLabel: 'Leistung',
+    optional: '(optional)',
+    svcName: 'Name',
+    svcDesc: 'Kurzbeschreibung',
+    svcDescPh: 'In einem Satz',
+    svcPrice: 'Richtpreis',
+    svcPricePh: 'Ab 80 CHF',
     s3: 'Kontakt & Standort',
-    address: 'Vollständige Adresse', addressPh: 'Strasse, Nummer, Stadt, PLZ',
+    address: 'Vollständige Adresse',
+    addressPh: 'Strasse, Nummer, Stadt, PLZ',
     phone: 'Telefon auf der Website',
-    email: 'E-Mail auf der Website', emailPh: 'kontakt@meinunternehmen.ch',
-    hours: 'Öffnungszeiten', hoursPh: 'Mo–Fr 9–18 Uhr, Sa 10–16 Uhr, So geschlossen',
+    email: 'E-Mail auf der Website',
+    emailPh: 'kontakt@meinunternehmen.ch',
+    hours: 'Öffnungszeiten',
+    hoursPh: 'Mo–Fr 9–18 Uhr, Sa 10–16 Uhr, So geschlossen',
     s4: 'Visuelles Design',
-    colorMain: 'Hauptfarbe', colorSec: 'Sekundärfarbe',
+    colorMain: 'Hauptfarbe',
+    colorSec: 'Sekundärfarbe',
     styleLabel: 'Bevorzugter Stil',
     styles: [
       { value: 'moderne', label: 'Modern / Minimalistisch', emoji: '✦' },
       { value: 'chaleureux', label: 'Warm / Handwerklich', emoji: '🪵' },
       { value: 'corporate', label: 'Professionell / Corporate', emoji: '💼' },
     ],
-    logo: 'Logo', logoPh: 'optional — PNG, JPG, SVG',
-    photos: 'Fotos (bis zu 3)', photosPh: 'optional — Team, Räume, Arbeiten…',
+    logo: 'Logo',
+    logoPh: 'optional — PNG, JPG, SVG',
+    photos: 'Fotos (bis zu 3)',
+    photosPh: 'optional — Team, Räume, Arbeiten…',
     s5: 'Soziale Medien & Domain',
-    igPh: 'https://instagram.com/meinprofil', fbPh: 'https://facebook.com/meinseite',
-    domain: 'Gewünschte Domain', domainPh: 'Z.B.: meinfriseursalon.ch…',
+    igPh: 'https://instagram.com/meinprofil',
+    fbPh: 'https://facebook.com/meinseite',
+    domain: 'Gewünschte Domain',
+    domainPh: 'Z.B.: meinfriseursalon.ch…',
     domainOwned: 'Ich habe diese Domain bereits gekauft',
     s6: 'Weitere Informationen',
-    refs: 'Websites, die Sie mögen (Referenzen)', refsPh: 'URLs einfügen oder Stil beschreiben…',
-    notes: 'Fragen oder besondere Wünsche', notesPh: 'Alles Wichtige für Ihre Website…',
+    refs: 'Websites, die Sie mögen (Referenzen)',
+    refsPh: 'URLs einfügen oder Stil beschreiben…',
+    notes: 'Fragen oder besondere Wünsche',
+    notesPh: 'Alles Wichtige für Ihre Website…',
     submitPrefix: 'Weiter zur Zahlung',
     privacy: 'Ihre Daten sind sicher und werden ausschliesslich zur Erstellung Ihrer Website verwendet.',
-    sectors: ['Handel / Geschäft','Handwerk / Bau','Schönheit / Wellness','Restaurant / Catering','Gesundheit / Therapeut','Immobilien / Concierge','Transport / Umzug','Friseur','Sport / Fitness','Sonstiges'],
-    cName: 'Ihr Vor- und Nachname', cNamePh: 'Z.B.: Marie Dupont',
-    cEmail: 'Ihre E-Mail-Adresse', cEmailHint: 'Für die Auftragsbestätigung — wird nicht auf der Website angezeigt.',
+    sectors: [
+      'Handel / Geschäft',
+      'Handwerk / Bau',
+      'Schönheit / Wellness',
+      'Restaurant / Catering',
+      'Gesundheit / Therapeut',
+      'Immobilien / Concierge',
+      'Transport / Umzug',
+      'Friseur',
+      'Sport / Fitness',
+      'Sonstiges',
+    ],
+    cName: 'Ihr Vor- und Nachname',
+    cNamePh: 'Z.B.: Marie Dupont',
+    cEmail: 'Ihre E-Mail-Adresse',
+    cEmailHint: 'Für die Auftragsbestätigung — wird nicht auf der Website angezeigt.',
   },
   it: {
     title: 'Descrivete la vostra attività — IOPartner.ch',
@@ -172,77 +270,106 @@ const T = {
     sub: 'Compilate questo modulo in 3 minuti — creiamo il vostro sito, pagate dopo.',
     errorMsg: 'Si è verificato un errore. Riprovate o scriveteci su WhatsApp.',
     s1: 'La vostra azienda',
-    bizName: "Nome dell'azienda", bizNamePh: 'Es.: Salone Bella, Idraulico Rossi…',
-    tagline: 'Slogan', taglinePh: 'Es.: Artigiano di fiducia dal 1990',
-    sector: 'Settore di attività', sectorPh: '-- Selezionate --',
-    desc: 'Descrivete la vostra attività in 2-3 frasi', descPh: 'Chi siete, cosa fate, per chi…',
-    s2: 'I vostri servizi', s2sub: 'Elencate da 1 a 4 servizi principali da mostrare sul sito.',
-    svcLabel: 'Servizio', optional: '(facoltativo)', svcName: 'Nome', svcDesc: 'Descrizione breve',
-    svcDescPh: 'In una frase', svcPrice: 'Prezzo indicativo', svcPricePh: 'Da 80 CHF',
+    bizName: "Nome dell'azienda",
+    bizNamePh: 'Es.: Salone Bella, Idraulico Rossi…',
+    tagline: 'Slogan',
+    taglinePh: 'Es.: Artigiano di fiducia dal 1990',
+    sector: 'Settore di attività',
+    sectorPh: '-- Selezionate --',
+    desc: 'Descrivete la vostra attività in 2-3 frasi',
+    descPh: 'Chi siete, cosa fate, per chi…',
+    s2: 'I vostri servizi',
+    s2sub: 'Elencate da 1 a 4 servizi principali da mostrare sul sito.',
+    svcLabel: 'Servizio',
+    optional: '(facoltativo)',
+    svcName: 'Nome',
+    svcDesc: 'Descrizione breve',
+    svcDescPh: 'In una frase',
+    svcPrice: 'Prezzo indicativo',
+    svcPricePh: 'Da 80 CHF',
     s3: 'Contatto & Localizzazione',
-    address: 'Indirizzo completo', addressPh: 'Via, numero, città, CAP',
+    address: 'Indirizzo completo',
+    addressPh: 'Via, numero, città, CAP',
     phone: 'Telefono visualizzato sul sito',
-    email: 'Email visualizzata sul sito', emailPh: 'contatto@miazienda.ch',
-    hours: 'Orari di apertura', hoursPh: 'Lun–Ven 9–18, Sab 10–16, Dom chiuso',
+    email: 'Email visualizzata sul sito',
+    emailPh: 'contatto@miazienda.ch',
+    hours: 'Orari di apertura',
+    hoursPh: 'Lun–Ven 9–18, Sab 10–16, Dom chiuso',
     s4: 'Identità visiva',
-    colorMain: 'Colore principale', colorSec: 'Colore secondario',
+    colorMain: 'Colore principale',
+    colorSec: 'Colore secondario',
     styleLabel: 'Stile preferito',
     styles: [
       { value: 'moderne', label: 'Moderno / Minimalista', emoji: '✦' },
       { value: 'chaleureux', label: 'Caldo / Artigianale', emoji: '🪵' },
       { value: 'corporate', label: 'Professionale / Corporate', emoji: '💼' },
     ],
-    logo: 'Logo', logoPh: 'facoltativo — PNG, JPG, SVG',
-    photos: 'Foto (fino a 3)', photosPh: 'facoltativo — team, locale, lavori…',
+    logo: 'Logo',
+    logoPh: 'facoltativo — PNG, JPG, SVG',
+    photos: 'Foto (fino a 3)',
+    photosPh: 'facoltativo — team, locale, lavori…',
     s5: 'Social media & dominio',
-    igPh: 'https://instagram.com/mioaccount', fbPh: 'https://facebook.com/miapagina',
-    domain: 'Dominio desiderato', domainPh: 'Es.: mioparrucchiere.ch…',
+    igPh: 'https://instagram.com/mioaccount',
+    fbPh: 'https://facebook.com/miapagina',
+    domain: 'Dominio desiderato',
+    domainPh: 'Es.: mioparrucchiere.ch…',
     domainOwned: 'Ho già acquistato questo dominio',
     s6: 'Informazioni aggiuntive',
-    refs: 'Siti che vi piacciono (riferimenti)', refsPh: 'Incollate URL o descrivete lo stile…',
-    notes: 'Domande o richieste speciali', notesPh: 'Tutto ciò che è importante per il vostro sito…',
+    refs: 'Siti che vi piacciono (riferimenti)',
+    refsPh: 'Incollate URL o descrivete lo stile…',
+    notes: 'Domande o richieste speciali',
+    notesPh: 'Tutto ciò che è importante per il vostro sito…',
     submitPrefix: 'Continua al pagamento',
     privacy: 'Le vostre informazioni sono sicure e utilizzate esclusivamente per creare il vostro sito.',
-    sectors: ['Commercio / Negozio','Artigiano / Edilizia','Bellezza / Benessere','Ristorazione / Catering','Salute / Terapista','Immobiliare / Concierge','Trasporti / Traslochi','Parrucchiere','Sport / Fitness','Altro'],
-    cName: 'Nome e cognome', cNamePh: 'Es.: Marie Dupont',
-    cEmail: 'La vostra email', cEmailHint: "Per la conferma d'ordine — non verrà mostrata sul sito.",
+    sectors: [
+      'Commercio / Negozio',
+      'Artigiano / Edilizia',
+      'Bellezza / Benessere',
+      'Ristorazione / Catering',
+      'Salute / Terapista',
+      'Immobiliare / Concierge',
+      'Trasporti / Traslochi',
+      'Parrucchiere',
+      'Sport / Fitness',
+      'Altro',
+    ],
+    cName: 'Nome e cognome',
+    cNamePh: 'Es.: Marie Dupont',
+    cEmail: 'La vostra email',
+    cEmailHint: "Per la conferma d'ordine — non verrà mostrata sul sito.",
   },
 } as const;
 
 const t = T[locale];
-const planPrice = PLAN_PRICE_LABELS[plan as keyof typeof PLAN_PRICE_LABELS] ?? PLAN_PRICE_LABELS[TONSITEWEB_DEFAULT_PLAN];
+const planPrice =
+  PLAN_PRICE_LABELS[plan as keyof typeof PLAN_PRICE_LABELS] ?? PLAN_PRICE_LABELS[TONSITEWEB_DEFAULT_PLAN];
 const submitLabel = `${t.submitPrefix} — ${planPrice[locale]} →`;
 ---
 
-<Layout
-  metadata={{ title: t.title }}
-  brandKey="iopartner"
->
+<Layout metadata={{ title: t.title }} brandKey="iopartner">
   <main class="min-h-screen bg-gray-50 py-12 px-4">
     <div class="max-w-2xl mx-auto">
-
       <div class="text-center mb-10">
         <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-4">
           <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
           </svg>
         </div>
         <h1 class="text-3xl font-bold text-gray-900 mb-2">{t.heading}</h1>
         <p class="text-gray-500">{t.sub}</p>
       </div>
 
-      {error && (
-        <div class="bg-red-50 border border-red-200 text-red-700 rounded-xl p-4 mb-6 text-sm">
-          {t.errorMsg}
-        </div>
-      )}
+      {
+        error && (
+          <div class="bg-red-50 border border-red-200 text-red-700 rounded-xl p-4 mb-6 text-sm">{t.errorMsg}</div>
+        )
+      }
 
-      <form
-        method="POST"
-        action="/api/iopartner/onboarding"
-        enctype="multipart/form-data"
-        class="space-y-8"
-      >
+      <form method="POST" action="/api/tonsiteweb/onboarding" enctype="multipart/form-data" class="space-y-8">
         <input type="hidden" name="plan" value={plan} />
         <input type="hidden" name="locale" value={locale} />
 
@@ -251,17 +378,29 @@ const submitLabel = `${t.submitPrefix} — ${planPrice[locale]} →`;
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">
-                {t.cName} <span class="text-red-500">*</span>
+                {t.cName}
+                <span class="text-red-500">*</span>
               </label>
-              <input type="text" name="customer_name" required placeholder={t.cNamePh}
-                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input
+                type="text"
+                name="customer_name"
+                required
+                placeholder={t.cNamePh}
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">
-                {t.cEmail} <span class="text-red-500">*</span>
+                {t.cEmail}
+                <span class="text-red-500">*</span>
               </label>
-              <input type="email" name="customer_email" required placeholder="vous@exemple.ch"
-                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input
+                type="email"
+                name="customer_email"
+                required
+                placeholder="vous@exemple.ch"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
               <p class="text-xs text-blue-600 mt-1">{t.cEmailHint}</p>
             </div>
           </div>
@@ -270,35 +409,56 @@ const submitLabel = `${t.submitPrefix} — ${planPrice[locale]} →`;
         <!-- Section 1 -->
         <div class="bg-white rounded-2xl border border-gray-200 p-6">
           <h2 class="text-lg font-bold text-gray-900 mb-5 flex items-center gap-2">
-            <span class="w-7 h-7 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">1</span>
+            <span class="w-7 h-7 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold"
+              >1</span
+            >
             {t.s1}
           </h2>
           <div class="space-y-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">
-                {t.bizName} <span class="text-red-500">*</span>
+                {t.bizName}
+                <span class="text-red-500">*</span>
               </label>
-              <input type="text" name="business_name" required placeholder={t.bizNamePh}
-                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input
+                type="text"
+                name="business_name"
+                required
+                placeholder={t.bizNamePh}
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">{t.tagline}</label>
-              <input type="text" name="tagline" placeholder={t.taglinePh}
-                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input
+                type="text"
+                name="tagline"
+                placeholder={t.taglinePh}
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">{t.sector}</label>
-              <select name="sector" class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+              <select
+                name="sector"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+              >
                 <option value="">{t.sectorPh}</option>
                 {t.sectors.map((s) => <option>{s}</option>)}
               </select>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">
-                {t.desc} <span class="text-red-500">*</span>
+                {t.desc}
+                <span class="text-red-500">*</span>
               </label>
-              <textarea name="description" required rows="3" placeholder={t.descPh}
-                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+              <textarea
+                name="description"
+                required
+                rows="3"
+                placeholder={t.descPh}
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              ></textarea>
             </div>
           </div>
         </div>
@@ -306,61 +466,97 @@ const submitLabel = `${t.submitPrefix} — ${planPrice[locale]} →`;
         <!-- Section 2 -->
         <div class="bg-white rounded-2xl border border-gray-200 p-6">
           <h2 class="text-lg font-bold text-gray-900 mb-5 flex items-center gap-2">
-            <span class="w-7 h-7 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">2</span>
+            <span class="w-7 h-7 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold"
+              >2</span
+            >
             {t.s2}
           </h2>
           <p class="text-xs text-gray-400 mb-4">{t.s2sub}</p>
-          {[1, 2, 3, 4].map((i) => (
-            <div class={`grid grid-cols-1 sm:grid-cols-3 gap-3 ${i < 4 ? 'mb-4 pb-4 border-b border-gray-100' : ''}`}>
-              <div>
-                <label class="block text-xs font-medium text-gray-600 mb-1">
-                  {t.svcLabel} {i} {i === 1 ? <span class="text-red-500">*</span> : <span class="text-gray-400">{t.optional}</span>}
-                </label>
-                <input type="text" name={`service_${i}_name`} required={i === 1} placeholder={t.svcName}
-                  class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          {
+            [1, 2, 3, 4].map((i) => (
+              <div class={`grid grid-cols-1 sm:grid-cols-3 gap-3 ${i < 4 ? 'mb-4 pb-4 border-b border-gray-100' : ''}`}>
+                <div>
+                  <label class="block text-xs font-medium text-gray-600 mb-1">
+                    {t.svcLabel} {i}{' '}
+                    {i === 1 ? <span class="text-red-500">*</span> : <span class="text-gray-400">{t.optional}</span>}
+                  </label>
+                  <input
+                    type="text"
+                    name={`service_${i}_name`}
+                    required={i === 1}
+                    placeholder={t.svcName}
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-gray-600 mb-1">{t.svcDesc}</label>
+                  <input
+                    type="text"
+                    name={`service_${i}_desc`}
+                    placeholder={t.svcDescPh}
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-gray-600 mb-1">{t.svcPrice}</label>
+                  <input
+                    type="text"
+                    name={`service_${i}_price`}
+                    placeholder={t.svcPricePh}
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
               </div>
-              <div>
-                <label class="block text-xs font-medium text-gray-600 mb-1">{t.svcDesc}</label>
-                <input type="text" name={`service_${i}_desc`} placeholder={t.svcDescPh}
-                  class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-              </div>
-              <div>
-                <label class="block text-xs font-medium text-gray-600 mb-1">{t.svcPrice}</label>
-                <input type="text" name={`service_${i}_price`} placeholder={t.svcPricePh}
-                  class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-              </div>
-            </div>
-          ))}
+            ))
+          }
         </div>
 
         <!-- Section 3 -->
         <div class="bg-white rounded-2xl border border-gray-200 p-6">
           <h2 class="text-lg font-bold text-gray-900 mb-5 flex items-center gap-2">
-            <span class="w-7 h-7 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">3</span>
+            <span class="w-7 h-7 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold"
+              >3</span
+            >
             {t.s3}
           </h2>
           <div class="space-y-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">{t.address}</label>
-              <input type="text" name="address" placeholder={t.addressPh}
-                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input
+                type="text"
+                name="address"
+                placeholder={t.addressPh}
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">{t.phone}</label>
-                <input type="tel" name="phone" placeholder="+41 79 000 00 00"
-                  class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder="+41 79 000 00 00"
+                  class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">{t.email}</label>
-                <input type="email" name="site_email" placeholder={t.emailPh}
-                  class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                <input
+                  type="email"
+                  name="site_email"
+                  placeholder={t.emailPh}
+                  class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
               </div>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">{t.hours}</label>
-              <textarea name="hours" rows="2" placeholder={t.hoursPh}
-                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+              <textarea
+                name="hours"
+                rows="2"
+                placeholder={t.hoursPh}
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              ></textarea>
             </div>
           </div>
         </div>
@@ -368,7 +564,9 @@ const submitLabel = `${t.submitPrefix} — ${planPrice[locale]} →`;
         <!-- Section 4 -->
         <div class="bg-white rounded-2xl border border-gray-200 p-6">
           <h2 class="text-lg font-bold text-gray-900 mb-5 flex items-center gap-2">
-            <span class="w-7 h-7 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">4</span>
+            <span class="w-7 h-7 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold"
+              >4</span
+            >
             {t.s4}
           </h2>
           <div class="space-y-5">
@@ -376,46 +574,82 @@ const submitLabel = `${t.submitPrefix} — ${planPrice[locale]} →`;
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">{t.colorMain}</label>
                 <div class="flex items-center gap-2">
-                  <input type="color" name="color_primary" value="#1d4ed8" class="h-10 w-14 rounded border border-gray-300 cursor-pointer p-0.5" />
-                  <input type="text" name="color_primary_hex" placeholder="#1d4ed8" maxlength="7"
-                    class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono" />
+                  <input
+                    type="color"
+                    name="color_primary"
+                    value="#1d4ed8"
+                    class="h-10 w-14 rounded border border-gray-300 cursor-pointer p-0.5"
+                  />
+                  <input
+                    type="text"
+                    name="color_primary_hex"
+                    placeholder="#1d4ed8"
+                    maxlength="7"
+                    class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
+                  />
                 </div>
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">
-                  {t.colorSec} <span class="text-gray-400 text-xs">{t.optional}</span>
+                  {t.colorSec}
+                  <span class="text-gray-400 text-xs">{t.optional}</span>
                 </label>
                 <div class="flex items-center gap-2">
-                  <input type="color" name="color_secondary" value="#f59e0b" class="h-10 w-14 rounded border border-gray-300 cursor-pointer p-0.5" />
-                  <input type="text" name="color_secondary_hex" placeholder="#f59e0b" maxlength="7"
-                    class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono" />
+                  <input
+                    type="color"
+                    name="color_secondary"
+                    value="#f59e0b"
+                    class="h-10 w-14 rounded border border-gray-300 cursor-pointer p-0.5"
+                  />
+                  <input
+                    type="text"
+                    name="color_secondary_hex"
+                    placeholder="#f59e0b"
+                    maxlength="7"
+                    class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
+                  />
                 </div>
               </div>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">{t.styleLabel}</label>
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {t.styles.map(({ value, label, emoji }) => (
-                  <label class="flex items-center gap-2 border border-gray-200 rounded-xl p-3 cursor-pointer hover:border-blue-400 has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50 transition-colors">
-                    <input type="radio" name="style" value={value} class="accent-blue-600" />
-                    <span class="text-sm">{emoji} {label}</span>
-                  </label>
-                ))}
+                {
+                  t.styles.map(({ value, label, emoji }) => (
+                    <label class="flex items-center gap-2 border border-gray-200 rounded-xl p-3 cursor-pointer hover:border-blue-400 has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50 transition-colors">
+                      <input type="radio" name="style" value={value} class="accent-blue-600" />
+                      <span class="text-sm">
+                        {emoji} {label}
+                      </span>
+                    </label>
+                  ))
+                }
               </div>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">
-                {t.logo} <span class="text-gray-400 text-xs">({t.logoPh})</span>
+                {t.logo}
+                <span class="text-gray-400 text-xs">({t.logoPh})</span>
               </label>
-              <input type="file" name="logo" accept="image/*"
-                class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+              <input
+                type="file"
+                name="logo"
+                accept="image/*"
+                class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+              />
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">
-                {t.photos} <span class="text-gray-400 text-xs">({t.photosPh})</span>
+                {t.photos}
+                <span class="text-gray-400 text-xs">({t.photosPh})</span>
               </label>
-              <input type="file" name="photos" accept="image/*" multiple
-                class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+              <input
+                type="file"
+                name="photos"
+                accept="image/*"
+                multiple
+                class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+              />
             </div>
           </div>
         </div>
@@ -423,26 +657,40 @@ const submitLabel = `${t.submitPrefix} — ${planPrice[locale]} →`;
         <!-- Section 5 -->
         <div class="bg-white rounded-2xl border border-gray-200 p-6">
           <h2 class="text-lg font-bold text-gray-900 mb-5 flex items-center gap-2">
-            <span class="w-7 h-7 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">5</span>
+            <span class="w-7 h-7 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold"
+              >5</span
+            >
             {t.s5}
           </h2>
           <div class="space-y-4">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Instagram</label>
-                <input type="url" name="instagram" placeholder={t.igPh}
-                  class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                <input
+                  type="url"
+                  name="instagram"
+                  placeholder={t.igPh}
+                  class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Facebook</label>
-                <input type="url" name="facebook" placeholder={t.fbPh}
-                  class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                <input
+                  type="url"
+                  name="facebook"
+                  placeholder={t.fbPh}
+                  class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
               </div>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">{t.domain}</label>
-              <input type="text" name="domain_desired" placeholder={t.domainPh}
-                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input
+                type="text"
+                name="domain_desired"
+                placeholder={t.domainPh}
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
             </div>
             <label class="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" name="domain_owned" value="yes" class="accent-blue-600 w-4 h-4" />
@@ -454,25 +702,38 @@ const submitLabel = `${t.submitPrefix} — ${planPrice[locale]} →`;
         <!-- Section 6 -->
         <div class="bg-white rounded-2xl border border-gray-200 p-6">
           <h2 class="text-lg font-bold text-gray-900 mb-5 flex items-center gap-2">
-            <span class="w-7 h-7 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">6</span>
+            <span class="w-7 h-7 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold"
+              >6</span
+            >
             {t.s6}
           </h2>
           <div class="space-y-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">{t.refs}</label>
-              <textarea name="references" rows="2" placeholder={t.refsPh}
-                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+              <textarea
+                name="references"
+                rows="2"
+                placeholder={t.refsPh}
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              ></textarea>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">{t.notes}</label>
-              <textarea name="notes" rows="3" placeholder={t.notesPh}
-                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+              <textarea
+                name="notes"
+                rows="3"
+                placeholder={t.notesPh}
+                class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              ></textarea>
             </div>
           </div>
         </div>
 
-        <button type="submit" id="onboarding-submit"
-          class="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white font-bold text-lg py-4 rounded-2xl transition-colors">
+        <button
+          type="submit"
+          id="onboarding-submit"
+          class="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white font-bold text-lg py-4 rounded-2xl transition-colors"
+        >
           {submitLabel}
         </button>
         <p class="text-center text-xs text-gray-400 pb-8">{t.privacy}</p>
@@ -481,138 +742,154 @@ const submitLabel = `${t.submitPrefix} — ${planPrice[locale]} →`;
   </main>
 </Layout>
 
-<script is:inline define:vars={{ _sbUrl: import.meta.env.SUPABASE_URL, _sbKey: import.meta.env.SUPABASE_ANON_KEY, _plan: plan, _locale: locale }}>
-(function () {
-  const SB_URL = _sbUrl;
-  const SB_KEY = _sbKey;
-  const PLAN = _plan;
-  const LOCALE = _locale;
+<script
+  is:inline
+  define:vars={{
+    _sbUrl: import.meta.env.SUPABASE_URL,
+    _sbKey: import.meta.env.SUPABASE_ANON_KEY,
+    _plan: plan,
+    _locale: locale,
+  }}
+>
+  (function () {
+    const SB_URL = _sbUrl;
+    const SB_KEY = _sbKey;
+    const PLAN = _plan;
+    const LOCALE = _locale;
 
-  const form = document.querySelector('form');
-  const btn = document.getElementById('onboarding-submit');
-  if (!form || !SB_URL || !SB_KEY) return;
+    const form = document.querySelector('form');
+    const btn = document.getElementById('onboarding-submit');
+    if (!form || !SB_URL || !SB_KEY) return;
 
-  const originalText = btn ? btn.textContent : '';
+    const originalText = btn ? btn.textContent : '';
 
-  async function uploadFile(file, path) {
-    const res = await fetch(`${SB_URL}/storage/v1/object/onboarding-assets/${path}`, {
-      method: 'POST',
-      headers: {
-        apikey: SB_KEY,
-        Authorization: `Bearer ${SB_KEY}`,
-        'Content-Type': file.type || 'application/octet-stream',
-        'x-upsert': 'true',
-      },
-      body: file,
-    });
-    if (!res.ok) return null;
-    return `${SB_URL}/storage/v1/object/public/onboarding-assets/${path}`;
-  }
-
-  form.addEventListener('submit', async function (e) {
-    e.preventDefault();
-    if (btn) { btn.disabled = true; btn.textContent = '⏳ Envoi en cours…'; }
-
-    try {
-      const fd = new FormData(form);
-      const ts = Date.now();
-      const str = (k) => String(fd.get(k) || '').trim();
-
-      // Upload logo
-      let logoUrl = null;
-      const logoFile = fd.get('logo');
-      if (logoFile instanceof File && logoFile.size > 0) {
-        const ext = logoFile.name.split('.').pop() || 'png';
-        logoUrl = await uploadFile(logoFile, `${ts}/logo.${ext}`);
-      }
-
-      // Upload photos
-      const photoUrls = [];
-      for (const photo of Array.from(fd.getAll('photos')).slice(0, 3)) {
-        if (!(photo instanceof File) || photo.size === 0) continue;
-        const ext = photo.name.split('.').pop() || 'jpg';
-        const url = await uploadFile(photo, `${ts}/photo_${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`);
-        if (url) photoUrls.push(url);
-      }
-
-      // Collect services
-      const services = [];
-      for (let i = 1; i <= 4; i++) {
-        const name = str(`service_${i}_name`);
-        if (!name) continue;
-        services.push({ name, desc: str(`service_${i}_desc`), price: str(`service_${i}_price`) });
-      }
-
-      const businessName = str('business_name');
-      const description = str('description');
-
-      if (!businessName || !description) {
-        window.location.href = `/iopartner/onboarding?error=missing&plan=${encodeURIComponent(PLAN)}`;
-        return;
-      }
-
-      const payload = {
-        tenant_id: 'iopartner',
-        session_id: null,
-        business_name: businessName,
-        tagline: str('tagline') || null,
-        sector: str('sector') || null,
-        description,
-        services,
-        address: str('address') || null,
-        phone: str('phone') || null,
-        email: str('site_email') || null,
-        hours: str('hours') || null,
-        color_primary: (str('color_primary_hex') || str('color_primary')) || null,
-        color_secondary: (str('color_secondary_hex') || str('color_secondary')) || null,
-        style: str('style') || null,
-        logo_url: logoUrl,
-        photo_urls: photoUrls.length > 0 ? photoUrls : null,
-        instagram: str('instagram') || null,
-        facebook: str('facebook') || null,
-        domain_desired: str('domain_desired') || null,
-        domain_owned: fd.get('domain_owned') === 'yes',
-        references: str('references') || null,
-        notes: str('notes') || null,
-      };
-
-      // Insert directly to Supabase
-      let submissionId = null;
-      const insertRes = await fetch(`${SB_URL}/rest/v1/onboarding_submissions`, {
+    async function uploadFile(file, path) {
+      const res = await fetch(`${SB_URL}/storage/v1/object/onboarding-assets/${path}`, {
         method: 'POST',
         headers: {
           apikey: SB_KEY,
           Authorization: `Bearer ${SB_KEY}`,
-          'Content-Type': 'application/json',
-          Prefer: 'return=representation',
+          'Content-Type': file.type || 'application/octet-stream',
+          'x-upsert': 'true',
         },
-        body: JSON.stringify(payload),
+        body: file,
       });
-      if (insertRes.ok) {
-        const rows = await insertRes.json();
-        submissionId = (Array.isArray(rows) ? rows[0] : rows)?.id ?? null;
+      if (!res.ok) return null;
+      return `${SB_URL}/storage/v1/object/public/onboarding-assets/${path}`;
+    }
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = '⏳ Envoi en cours…';
       }
 
-      // Redirect to Stripe
-      const customerName = str('customer_name');
-      const customerEmail = str('customer_email');
-      const params = new URLSearchParams({
-        plan: PLAN,
-        template: 'surprise',
-        name: customerName || businessName,
-        email: customerEmail,
-        phone: str('phone'),
-        company: businessName,
-        locale: LOCALE,
-      });
-      if (submissionId) params.set('submission_id', submissionId);
-      window.location.href = `/api/payment/redirect?${params.toString()}`;
+      try {
+        const fd = new FormData(form);
+        const ts = Date.now();
+        const str = (k) => String(fd.get(k) || '').trim();
 
-    } catch (err) {
-      console.error('[onboarding]', err);
-      if (btn) { btn.disabled = false; btn.textContent = originalText; }
-      window.location.href = `/onboarding?error=server&plan=${encodeURIComponent(PLAN)}`;
-    }
-  });
-})();
+        // Upload logo
+        let logoUrl = null;
+        const logoFile = fd.get('logo');
+        if (logoFile instanceof File && logoFile.size > 0) {
+          const ext = logoFile.name.split('.').pop() || 'png';
+          logoUrl = await uploadFile(logoFile, `${ts}/logo.${ext}`);
+        }
+
+        // Upload photos
+        const photoUrls = [];
+        for (const photo of Array.from(fd.getAll('photos')).slice(0, 3)) {
+          if (!(photo instanceof File) || photo.size === 0) continue;
+          const ext = photo.name.split('.').pop() || 'jpg';
+          const url = await uploadFile(
+            photo,
+            `${ts}/photo_${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`
+          );
+          if (url) photoUrls.push(url);
+        }
+
+        // Collect services
+        const services = [];
+        for (let i = 1; i <= 4; i++) {
+          const name = str(`service_${i}_name`);
+          if (!name) continue;
+          services.push({ name, desc: str(`service_${i}_desc`), price: str(`service_${i}_price`) });
+        }
+
+        const businessName = str('business_name');
+        const description = str('description');
+
+        if (!businessName || !description) {
+          window.location.href = `/onboarding?error=missing&plan=${encodeURIComponent(PLAN)}`;
+          return;
+        }
+
+        const payload = {
+          tenant_id: 'tonsiteweb',
+          session_id: null,
+          business_name: businessName,
+          tagline: str('tagline') || null,
+          sector: str('sector') || null,
+          description,
+          services,
+          address: str('address') || null,
+          phone: str('phone') || null,
+          email: str('site_email') || null,
+          hours: str('hours') || null,
+          color_primary: str('color_primary_hex') || str('color_primary') || null,
+          color_secondary: str('color_secondary_hex') || str('color_secondary') || null,
+          style: str('style') || null,
+          logo_url: logoUrl,
+          photo_urls: photoUrls.length > 0 ? photoUrls : null,
+          instagram: str('instagram') || null,
+          facebook: str('facebook') || null,
+          domain_desired: str('domain_desired') || null,
+          domain_owned: fd.get('domain_owned') === 'yes',
+          references: str('references') || null,
+          notes: str('notes') || null,
+        };
+
+        // Insert directly to Supabase
+        let submissionId = null;
+        const insertRes = await fetch(`${SB_URL}/rest/v1/onboarding_submissions`, {
+          method: 'POST',
+          headers: {
+            apikey: SB_KEY,
+            Authorization: `Bearer ${SB_KEY}`,
+            'Content-Type': 'application/json',
+            Prefer: 'return=representation',
+          },
+          body: JSON.stringify(payload),
+        });
+        if (insertRes.ok) {
+          const rows = await insertRes.json();
+          submissionId = (Array.isArray(rows) ? rows[0] : rows)?.id ?? null;
+        }
+
+        // Redirect to Stripe
+        const customerName = str('customer_name');
+        const customerEmail = str('customer_email');
+        const params = new URLSearchParams({
+          plan: PLAN,
+          template: 'surprise',
+          name: customerName || businessName,
+          email: customerEmail,
+          phone: str('phone'),
+          company: businessName,
+          locale: LOCALE,
+        });
+        if (submissionId) params.set('submission_id', submissionId);
+        window.location.href = `/api/payment/redirect?${params.toString()}`;
+      } catch (err) {
+        console.error('[onboarding]', err);
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = originalText;
+        }
+        window.location.href = `/onboarding?error=server&plan=${encodeURIComponent(PLAN)}`;
+      }
+    });
+  })();
 </script>

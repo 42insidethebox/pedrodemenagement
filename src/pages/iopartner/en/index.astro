@@ -14,18 +14,9 @@ import CallToAction from '~/components/widgets/CallToAction.astro';
 import { iopartnerHeaderDataEn, iopartnerFooterDataEn } from '~/navigation';
 
 const metadata = {
-  title: 'IOPartner.ch — Technical operations for modern businesses',
-  description:
-    'IOPartner supports modern businesses across websites, AI automation, open-source infrastructure, and managed support.',
+  title: 'IOPartner.ch — Fast websites and online presence for the Léman Arc',
   ignoreTitleTemplate: true,
-  openGraph: {
-    type: 'website',
-  },
-  twitter: {
-    cardType: 'summary',
-  },
 };
- 
 ---
 
 <Layout metadata={metadata} header={iopartnerHeaderDataEn} footer={iopartnerFooterDataEn}>
@@ -34,70 +25,64 @@ const metadata = {
     actions={[
       {
         variant: 'primary',
-        text: 'Request a proposal',
-        href: '/en/contact#form',
+        text: 'Get started — CHF 999',
+        href: '/choose-template?plan=essential999',
         icon: 'tabler:arrow-right',
       },
-      { text: 'Explore pricing', href: '/en/pricing' },
+      { text: 'Talk to an expert', href: '/en/contact#form' },
     ]}
     image={{ src: '~/assets/images/light_minimalist.png', alt: 'IOPartner.ch interface' }}
   >
-    <Fragment slot="title">
-      Technical operations for modern businesses
-    </Fragment>
+    <Fragment slot="title">Fast, clean websites designed to grow with your business</Fragment>
 
     <Fragment slot="subtitle">
-      IOPartner helps modern businesses run websites, AI automation, open-source infrastructure, and managed support
-      through one pragmatic technical partner.
+      IOPartner.ch launches your online presence clearly from CHF 999, then stays with you if the business later needs
+      automation, workflows, or more advanced development.
     </Fragment>
   </Hero>
 
   <Note
-    title="Positioning"
-    description="One team to deliver, connect, deploy, and support the technical layer behind your business."
+    title="Simple start"
+    description="A professional website launched quickly, easy to maintain, with extra support available if the business grows."
   />
-
-  
 
   <Features
     id="features"
     tagline="Why work with us"
-    title="Swiss precision applied to digital"
-    subtitle="Every project follows a clear framework: discovery, design, validation and guided go-live."
+    title="Useful online presence from day one"
+    subtitle="Clarity, speed, and guidance to help your business look credible, generate contacts, and stay simple."
     items={[
       {
-        title: 'Managed timeline',
+        title: 'Fast launch',
         description:
-          'Briefing, design and launch are typically completed within five business days, depending on content and integrations.',
+          'Brief, integration, and launch within a few business days depending on your content and readiness.',
         icon: 'tabler:calendar-time',
       },
       {
-        title: 'Premium bespoke design',
-        description:
-          'Inter/Montserrat typography, refined palettes and subtle animations for a high-end, cohesive visual identity.',
+        title: 'Professional image',
+        description: 'A clean, reassuring website that helps visitors trust your business from the first visit.',
         icon: 'tabler:sparkles',
       },
       {
-        title: 'Essential local SEO',
-        description:
-          'Structure, tags and copy tuned for Lausanne, Geneva, Montreux and neighbouring towns to showcase your local roots.',
+        title: 'Contact & bookings',
+        description: 'Forms, WhatsApp, Calendly, or simple booking flows depending on the selected package.',
         icon: 'tabler:map-pin',
       },
       {
-        title: 'Launch hosting included',
-        description:
-          'Hosting & SSL are included for the launch period according to the selected pack, then renewed through care or a separate hosting option.',
+        title: 'Mobile performance',
+        description: 'Fast architecture and reliable hosting so the site loads well on mobile and desktop.',
         icon: 'tabler:server',
       },
       {
-        title: 'Transparent Swiss billing',
-        description: 'Clear contracts, VAT included and CHF payments through the main Swiss methods.',
+        title: 'Human support',
+        description:
+          'A real person replies within one business day and keeps the project straightforward from brief to launch.',
         icon: 'tabler:receipt',
       },
       {
-        title: 'Local human support',
+        title: 'Room to grow',
         description:
-          'Experts based around the Léman Arc answer within one business day by email or phone, with scheduled follow-up.',
+          'If the business needs more later, we can add automation, consulting, or more advanced development.',
         icon: 'tabler:headset',
       },
     ]}
@@ -106,34 +91,40 @@ const metadata = {
   <Content
     isReversed
     tagline="Process"
-    title="A three-step orchestration"
+    title="A clean launch without unnecessary complexity"
     items={[
       {
-        title: 'Structured brief',
-        description: 'A focused questionnaire gathers your services, hours, testimonials and visuals for our proprietary AI.',
-      },
-      {
-        title: 'Design & integration',
+        title: 'Guided brief',
         description:
-          'Our designers adapt sections, fine-tune typography and integrate your content, media and calls to action.',
+          'We collect your services, contact details, hours, visuals, and priorities so the project moves quickly.',
       },
       {
-        title: 'Quality assurance',
-        description: 'Human proofreading, performance tests and GDPR checklist before the final approval and launch.',
+        title: 'Content integration',
+        description:
+          'We shape your content, calls to action, and contact points inside a simple and consistent structure.',
+      },
+      {
+        title: 'Guided go-live',
+        description:
+          'You approve the final version, we publish it, and we stay available if the business needs more later.',
       },
     ]}
   >
     <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Your site delivered without stress</h3>
-      Three automated steps, validated by a local expert.
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
+        Your online presence without the usual friction
+      </h3>
+      You move quickly, with a simple framework and clear approvals.
     </Fragment>
 
     <Fragment slot="image">
-      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl">
-        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Controlled workflow</p>
-        <h4 class="mt-4 text-3xl font-semibold">Brief → Creation → Launch</h4>
+      <div
+        class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl"
+      >
+        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Simple process</p>
+        <h4 class="mt-4 text-3xl font-semibold">Brief → Integration → Launch</h4>
         <p class="mt-6 max-w-xs text-base text-blue-100/90">
-          Each milestone is tracked in your client space with notifications, retro-planning and clear approvals.
+          Everything is structured to move quickly without drowning you in technical detail.
         </p>
       </div>
     </Fragment>
@@ -144,36 +135,40 @@ const metadata = {
   </Content>
 
   <Steps
-    title="Our structured method"
+    title="A simple method to launch quickly"
     tagline="Client journey"
     items={[
       {
         title: 'Digital signature',
-        description: 'Choose your pack, sign electronically and receive client access to start the brief.',
+        description: 'Choose your package, sign online, and start the brief in a few minutes.',
         icon: 'tabler:edit',
       },
       {
         title: 'Guided onboarding',
-        description: 'Our assistant gathers key information and proposes a structure tailored to your industry.',
+        description: 'We collect your content, key information, and contact or booking needs.',
         icon: 'tabler:clipboard-list',
       },
       {
         title: 'Supervised production',
-        description: 'Pipelines generate the site, integrate your content and alert our team for review.',
+        description: 'We integrate, review, and prepare the site for a clean and consistent launch.',
         icon: 'tabler:robot',
       },
       {
         title: 'Approval & launch',
-        description: 'You approve the final version, then we schedule the go-live and quote any out-of-scope extension separately.',
+        description:
+          'You approve the final version, then we publish it and stay available if the business later needs more.',
         icon: 'tabler:rocket',
       },
     ]}
   >
     <Fragment slot="image">
-      <div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
+      <div
+        class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl"
+      >
         <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Timeline</p>
         <p class="mt-6 max-w-xs text-base text-blue-100/90">
-          Typical delivery: five business days after we receive your content. We adjust the schedule to your priorities.
+          Typical timeline: three to five business days after content is received. If you later need automation or
+          deeper development, that gets scoped separately.
         </p>
       </div>
     </Fragment>
@@ -183,32 +178,38 @@ const metadata = {
     isAfterContent
     items={[
       {
-        title: 'Multilingual content',
-        description: 'French by default, with optional English or German versions quoted separately to support growth.',
+        title: 'Local credibility',
+        description: 'A clear presence that reassures visitors, shows your services, and makes contact easier.',
       },
       {
-        title: 'Optimised performance',
-        description: 'Astro architecture, fast Swiss hosting and image optimisation for quick mobile loading.',
+        title: 'Contact & bookings',
+        description: 'WhatsApp, Calendly, or simple forms to turn visits into real enquiries.',
       },
       {
-        title: 'Essential integrations',
-        description: 'Contact form, booking flow or favourite tool connection via Zapier (from CHF 1,200).',
+        title: 'Maintenance & support',
+        description: 'Updates, backups, and guidance when you want a more calm and reliable post-launch setup.',
       },
       {
-        title: 'Clear scope',
-        description: "CHF 999 covers a standard showcase deployment on IOPartner's shared platform. Extra pages, workshops, and out-of-scope changes are billed separately.",
+        title: 'Room to grow',
+        description:
+          'If the business becomes more structured, we can later help with automation, consulting, or more advanced development.',
       },
     ]}
   >
-    <Fragment slot="content">An online presence reflecting your company’s precision.</Fragment>
+    <Fragment slot="content">
+      The website is often the first easy yes. What matters is that it is simple to launch today and able to support the
+      business tomorrow.
+    </Fragment>
 
     <Fragment slot="image">
-      <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl">
-        <h4 class="text-3xl font-semibold">Measured performance</h4>
+      <div
+        class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl"
+      >
+        <h4 class="text-3xl font-semibold">Simple first, scalable later</h4>
         <ul class="mt-6 space-y-3 text-left text-blue-100/90">
-          <li>✓ Mobile-first design</li>
-          <li>✓ Optimised loading times</li>
-          <li>✓ Launch hosting included</li>
+          <li>✓ Clear launch from CHF 999</li>
+          <li>✓ Contact, booking, and professional presence</li>
+          <li>✓ Extra guidance available if the need grows</li>
         </ul>
       </div>
     </Fragment>
@@ -220,39 +221,39 @@ const metadata = {
 
   <Features2
     id="included"
-    title="Everything you need"
-    subtitle="A turnkey solution for Romandie entrepreneurs"
-    tagline="Included in every pack"
+    title="What your project can include"
+    subtitle="Depending on your business, package, and priorities"
+    tagline="In practice"
     items={[
       {
-        title: 'Swiss hosting',
-        description: 'Servers based in Switzerland with SSL certificate and launch hosting included according to the selected pack.',
-        icon: 'tabler:server',
+        title: 'Professional website',
+        description: 'A clear and reassuring online presence to present your services and your business properly.',
+        icon: 'tabler:world',
       },
       {
-        title: 'Professional email',
-        description: 'Email accounts @yourdomain.ch configured with the care plan (CHF 79/month).',
-        icon: 'tabler:mail',
+        title: 'Contact flow',
+        description: 'Simple forms, visible contact details, and calls to action built to make enquiries easier.',
+        icon: 'tabler:git-branch',
       },
       {
-        title: 'Proximity SEO',
-        description: 'Structure, headings and meta descriptions oriented to the Léman Arc so you appear locally.',
-        icon: 'tabler:map-pin',
+        title: 'Online booking',
+        description: 'WhatsApp, Calendly, or integrated booking depending on the formula you choose.',
+        icon: 'tabler:cpu',
       },
       {
-        title: 'Planned support',
-        description: 'Email and video assistance with replies within one business day for every request.',
-        icon: 'tabler:message',
+        title: 'Maintenance',
+        description: 'Updates, backups, and follow-up when you want a more hands-off online presence.',
+        icon: 'tabler:ruler-measure',
       },
       {
-        title: 'Scoped changes',
-        description: 'Extra pages, workshops, advanced forms, or new features are quoted before production.',
-        icon: 'tabler:video',
+        title: 'Guidance',
+        description: 'A human framework to answer questions, adjust the plan, and keep the project simple.',
+        icon: 'tabler:receipt',
       },
       {
-        title: 'Scalable modules',
-        description: 'Additional pages, automations or advanced forms available on demand.',
-        icon: 'tabler:puzzle',
+        title: 'Future growth',
+        description: 'If the business needs more later, we can move toward automation or more custom development.',
+        icon: 'tabler:route',
       },
     ]}
   >
@@ -262,12 +263,12 @@ const metadata = {
   </Features2>
 
   <Stats
-    title="Clear benchmarks to decide"
+    title="Simple benchmarks to decide"
     stats={[
-      { title: 'Typical timeline', amount: '5 business days' },
-      { title: 'Showcase pack', amount: 'CHF 999' },
-      { title: 'Care & security', amount: 'CHF 79/mo' },
-      { title: 'Zapier automations', amount: 'from CHF 1,200' },
+      { title: 'Typical timeline', amount: '3–5 days' },
+      { title: 'Starting package', amount: 'CHF 999' },
+      { title: 'Care plan', amount: 'from CHF 79/mo' },
+      { title: 'Future growth', amount: 'on request' },
     ]}
   />
 
@@ -281,12 +282,11 @@ const metadata = {
       {
         title: 'What is the delivery timeline?',
         description:
-          'After receiving your content, we usually deliver the first version within five business days. Automation projects may take longer—we share the schedule in the proposal.',
+          'After receiving your content, we usually deliver the first version within five business days. If you later need automation or deeper development, we define a separate schedule for that work.',
       },
       {
         title: 'Is copywriting included?',
-        description:
-          'Yes, we write or adapt your French copy. English or German versions are quoted separately.',
+        description: 'Yes, we write or adapt your French copy. English or German versions are quoted separately.',
       },
       {
         title: 'What does the care plan include?',
@@ -296,12 +296,11 @@ const metadata = {
       {
         title: 'Do you provide integrations?',
         description:
-          'Yes. Simple integrations (forms, bookings) are included. API connections or advanced workflows are quoted on request.',
+          'Yes. Simple integrations such as forms, bookings, or contact tools are included depending on the package. For API connections, more advanced automation, or deeper technical work, we define a separate scope.',
       },
       {
         title: 'How does support work after launch?',
-        description:
-          'Support is handled by email or scheduled video, with responses within one business day.',
+        description: 'Support is handled by email or scheduled video, with responses within one business day.',
       },
     ]}
   />
@@ -310,9 +309,9 @@ const metadata = {
     actions={[
       {
         variant: 'primary',
-        text: 'Request a proposal',
-        href: '/en/contact#form',
-        icon: 'tabler:mail-forward',
+        text: 'Get started — CHF 999',
+        href: '/choose-template?plan=essential999',
+        icon: 'tabler:arrow-right',
       },
       {
         text: 'Explore pricing',
@@ -320,10 +319,10 @@ const metadata = {
       },
     ]}
   >
-    <Fragment slot="title">Ready to clarify your online presence?</Fragment>
+    <Fragment slot="title">Launch your online presence from CHF 999</Fragment>
 
     <Fragment slot="subtitle">
-      We analyse your needs and define a realistic plan across websites, automation, infrastructure, and support.
+      We help you launch a clear website quickly, then stay available if the business later needs more.
     </Fragment>
   </CallToAction>
 </Layout>
