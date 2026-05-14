@@ -67,7 +67,7 @@ export const buildHeaderData = (brand: NavigationBrand & { key?: BrandKey }, loc
                     'Sito web & presenza online'
                   ),
               href: isIoPartner
-                ? `${getPermalink('/pricing')}?tab=consulting#pricing-options`
+                ? getPermalink('/systems-operations')
                 : locale === 'fr'
                   ? `${getPermalink('/pricing')}?tab=consulting#pricing-options`
                   : getPermalink('/services#site-vitrine'),

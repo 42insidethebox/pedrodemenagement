@@ -1,0 +1,1477 @@
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Systems & operations — IOPartner.ch</title>
+    <meta
+      name="description"
+      content="Infrastructure, backend, automatisations, outils internes, monitoring, sauvegardes et continuité — cadrés avant build."
+    />
+  </head>
+
+  <body>
+    <main class="lesson-shell">
+      <section class="lesson-copy">
+        <p class="eyebrow">IOpartner · Systems & operations</p>
+        <h1>Quand votre site devient un vrai système de travail.</h1>
+        <p>
+          Infrastructure, backend, automatisations, outils internes, monitoring,
+          sauvegardes et continuité — cadrés avant build.
+        </p>
+
+        <div class="top-actions">
+          <a class="page-cta-primary" href="/contact?type=systems#form">Demander un cadrage systems</a>
+          <a class="page-cta-secondary" href="/pricing">Retour aux tarifs</a>
+        </div>
+
+        <div class="top-controls">
+          <button class="control is-active" data-theme="dark">Dark</button>
+          <button class="control" data-theme="light">Light</button>
+        </div>
+      </section>
+
+      <section class="scope-panel" data-theme="dark">
+        <div class="panel-label">
+          <strong>Systems scope explorer</strong>
+          <span>Exemples fréquents · fourchettes réalistes · cadrage avant build</span>
+        </div>
+
+        <svg class="panel-texture" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M8 23 C26 9 72 9 92 25" />
+          <path d="M8 80 C28 94 72 94 92 78" />
+          <path d="M18 90 C31 64 51 42 78 17" />
+          <path d="M8 52 C24 38 45 34 63 38" />
+        </svg>
+
+        <div class="scenario-rail" aria-label="Choisir un type de projet">
+          <button class="scenario-button is-active" data-scenario="infra">
+            <span>01</span>
+            <strong>Infrastructure propre</strong>
+            <small>VPS, Docker, DNS, SSL, backups, monitoring</small>
+          </button>
+
+          <button class="scenario-button" data-scenario="workflow">
+            <span>02</span>
+            <strong>Workflow métier</strong>
+            <small>Formulaire, CRM, emails, notifications</small>
+          </button>
+
+          <button class="scenario-button" data-scenario="tool">
+            <span>03</span>
+            <strong>Outil interne</strong>
+            <small>Dashboard, API, base de données, rôles</small>
+          </button>
+
+          <button class="scenario-button" data-scenario="migration">
+            <span>04</span>
+            <strong>Migration open-source</strong>
+            <small>Remplacer ou consolider des outils SaaS</small>
+          </button>
+
+          <button class="scenario-button" data-scenario="continuity">
+            <span>05</span>
+            <strong>Continuité technique</strong>
+            <small>Monitoring, backups, incidents, runbooks</small>
+          </button>
+        </div>
+
+        <div class="architecture-card">
+          <div class="architecture-head">
+            <div>
+              <p class="mini-eyebrow">Architecture indicative</p>
+              <h2 data-title>Infrastructure propre</h2>
+            </div>
+            <span data-range>Dès 2’900–9’900 CHF</span>
+          </div>
+
+          <div class="architecture-map">
+            <svg class="route-stage" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+              <g data-route-layer></g>
+            </svg>
+
+            <div class="node-stage" data-node-stage></div>
+          </div>
+        </div>
+
+        <aside class="scope-card">
+          <p class="mini-eyebrow">Ordre de grandeur</p>
+          <h3 data-side-title>Infrastructure propre</h3>
+          <p class="range" data-side-range>Dès 2’900–9’900 CHF</p>
+          <p data-description>
+            Pour repartir sur une base serveur claire: domaine, SSL, VPS,
+            Docker, déploiement, sauvegardes, monitoring et documentation.
+          </p>
+
+          <div class="factor-block">
+            <strong>Ce qui fait varier le budget</strong>
+            <ul data-factors></ul>
+          </div>
+
+          <a class="scope-cta" href="/contact?type=systems&scenario=infra#form" data-cta>
+            Discuter de l’infrastructure
+          </a>
+        </aside>
+
+        <section class="why-card">
+          <p class="mini-eyebrow">Pourquoi une fourchette ?</p>
+          <h3>On ne vend pas de complexité. On cadre ce qui mérite vraiment d’être construit.</h3>
+          <p>
+            Un projet systems dépend de l’existant, des accès, des données, des
+            outils à connecter, du niveau de risque et de la continuité attendue.
+            Le cadrage évite deux erreurs: payer trop pour un système inutile,
+            ou sous-estimer un sujet qui doit être fiable.
+          </p>
+        </section>
+
+        <div class="process-strip">
+          <article>
+            <span>01</span>
+            <strong>Cadrage</strong>
+            <small>Besoin, risques, accès</small>
+          </article>
+          <article>
+            <span>02</span>
+            <strong>Scope</strong>
+            <small>Périmètre et phases</small>
+          </article>
+          <article>
+            <span>03</span>
+            <strong>Build</strong>
+            <small>Livraison contrôlée</small>
+          </article>
+          <article>
+            <span>04</span>
+            <strong>Continuité</strong>
+            <small>Monitoring, support, évolutions</small>
+          </article>
+        </div>
+
+        <span class="corner-mark corner-tl"></span>
+        <span class="corner-mark corner-tr"></span>
+        <span class="corner-mark corner-bl"></span>
+        <span class="corner-mark corner-br"></span>
+      </section>
+    </main>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        color-scheme: dark;
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at 18% 10%, rgba(37, 99, 235, 0.24), transparent 30rem),
+          linear-gradient(180deg, #07111f, #020617);
+        color: #e2e8f0;
+        font-family:
+          Inter,
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .lesson-shell {
+        width: min(1220px, calc(100vw - 32px));
+        margin: 0 auto;
+        padding: 56px 0;
+      }
+
+      .lesson-copy {
+        max-width: 920px;
+        margin-bottom: 24px;
+      }
+
+      .eyebrow,
+      .mini-eyebrow {
+        margin: 0;
+        color: #60a5fa;
+        font-size: 12px;
+        font-weight: 850;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .lesson-copy h1 {
+        max-width: 980px;
+        margin: 10px 0 0;
+        color: #f8fafc;
+        font-size: clamp(38px, 6vw, 76px);
+        line-height: 0.92;
+        letter-spacing: -0.065em;
+      }
+
+      .lesson-copy p:not(.eyebrow) {
+        max-width: 760px;
+        margin: 18px 0 0;
+        color: #94a3b8;
+        font-size: 17px;
+        line-height: 1.65;
+      }
+
+      .top-actions,
+      .top-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .top-actions {
+        margin-top: 22px;
+      }
+
+      .top-controls {
+        margin-top: 14px;
+      }
+
+      .page-cta-primary,
+      .page-cta-secondary,
+      .control,
+      .scenario-button {
+        cursor: pointer;
+      }
+
+      .page-cta-primary,
+      .page-cta-secondary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        border-radius: 999px;
+        padding: 0 16px;
+        font-size: 14px;
+        font-weight: 850;
+        text-decoration: none;
+      }
+
+      .page-cta-primary {
+        background: #2563eb;
+        color: #fff;
+      }
+
+      .page-cta-secondary {
+        border: 1px solid rgba(125, 211, 252, 0.2);
+        background: rgba(15, 23, 42, 0.72);
+        color: #dbeafe;
+      }
+
+      .control {
+        border: 1px solid rgba(125, 211, 252, 0.18);
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.78);
+        color: #dbeafe;
+        padding: 8px 13px;
+        font-size: 13px;
+        font-weight: 750;
+        box-shadow: 0 16px 38px -30px rgba(2, 6, 23, 0.9);
+      }
+
+      .control.is-active {
+        background: #2563eb;
+        color: #fff;
+        border-color: #3b82f6;
+      }
+
+      .scope-panel {
+        --blue-rgb: 37, 99, 235;
+        --cyan-rgb: 125, 211, 252;
+
+        --panel: #061120;
+        --card: rgba(15, 23, 42, 0.84);
+        --card-strong: rgba(15, 23, 42, 0.94);
+        --border: rgba(125, 211, 252, 0.18);
+        --line: rgba(125, 211, 252, 0.46);
+        --line-soft: rgba(125, 211, 252, 0.13);
+        --text: #e2e8f0;
+        --title: #f8fafc;
+        --muted: #94a3b8;
+        --grid-opacity: 0.065;
+        --grid-size: 28px;
+
+        position: relative;
+        display: grid;
+        grid-template-columns: 280px minmax(0, 1fr) 1fr;
+        grid-template-rows: auto auto auto auto;
+        gap: 16px;
+        min-height: 820px;
+        overflow: hidden;
+        border: 1px solid rgba(125, 211, 252, 0.16);
+        border-radius: 28px;
+        padding: 92px 38px 34px;
+        background:
+          linear-gradient(90deg, rgba(var(--cyan-rgb), var(--grid-opacity)) 1px, transparent 1px),
+          linear-gradient(rgba(var(--cyan-rgb), var(--grid-opacity)) 1px, transparent 1px),
+          radial-gradient(circle at 70% 18%, rgba(37, 99, 235, 0.28), transparent 30%),
+          radial-gradient(circle at 18% 82%, rgba(14, 165, 233, 0.16), transparent 24%),
+          linear-gradient(145deg, #061120, #0b1728 58%, #08111e);
+        background-size:
+          var(--grid-size) var(--grid-size),
+          var(--grid-size) var(--grid-size),
+          auto,
+          auto,
+          auto;
+        box-shadow:
+          0 40px 120px -82px rgba(2, 6, 23, 0.92),
+          inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      }
+
+      .scope-panel[data-theme="light"] {
+        --panel: #f8fbff;
+        --card: rgba(255, 255, 255, 0.78);
+        --card-strong: rgba(255, 255, 255, 0.94);
+        --border: rgba(37, 99, 235, 0.16);
+        --line: rgba(37, 99, 235, 0.34);
+        --line-soft: rgba(37, 99, 235, 0.12);
+        --text: #0f172a;
+        --title: #0f172a;
+        --muted: #64748b;
+        --grid-opacity: 0.055;
+        --grid-size: 32px;
+
+        color: #0f172a;
+        border-color: rgba(148, 163, 184, 0.22);
+        background:
+          linear-gradient(90deg, rgba(var(--blue-rgb), var(--grid-opacity)) 1px, transparent 1px),
+          linear-gradient(rgba(var(--blue-rgb), var(--grid-opacity)) 1px, transparent 1px),
+          radial-gradient(circle at 70% 18%, rgba(37, 99, 235, 0.13), transparent 30%),
+          radial-gradient(circle at 18% 82%, rgba(37, 99, 235, 0.08), transparent 24%),
+          var(--panel);
+        background-size:
+          var(--grid-size) var(--grid-size),
+          var(--grid-size) var(--grid-size),
+          auto,
+          auto,
+          auto;
+        box-shadow:
+          0 40px 100px -72px rgba(15, 23, 42, 0.5),
+          inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      }
+
+      .scope-panel::before,
+      .scope-panel::after {
+        content: "";
+        position: absolute;
+        pointer-events: none;
+      }
+
+      .scope-panel::before {
+        z-index: 0;
+        inset: 34px;
+        border: 1px dashed var(--line-soft);
+        border-radius: 20px;
+      }
+
+      .scope-panel::after {
+        z-index: 8;
+        inset: 0;
+        background:
+          linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.055),
+            transparent 42%,
+            rgba(37, 99, 235, 0.08)
+          );
+        pointer-events: none;
+      }
+
+      .scope-panel[data-theme="light"]::after {
+        background:
+          linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.72),
+            transparent 45%,
+            rgba(37, 99, 235, 0.04)
+          );
+      }
+
+      .panel-label {
+        position: absolute;
+        z-index: 5;
+        top: 34px;
+        left: 38px;
+        display: grid;
+        gap: 5px;
+      }
+
+      .panel-label strong {
+        color: var(--title);
+        font-size: 13px;
+        font-weight: 850;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .panel-label span {
+        color: #93c5fd;
+        font-size: 12px;
+      }
+
+      .scope-panel[data-theme="light"] .panel-label span,
+      .scope-panel[data-theme="light"] .mini-eyebrow {
+        color: #2563eb;
+      }
+
+      .panel-texture {
+        position: absolute;
+        z-index: 1;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+
+      .panel-texture path {
+        fill: none;
+        stroke: var(--line-soft);
+        stroke-width: 0.55;
+        stroke-dasharray: 3 7;
+        vector-effect: non-scaling-stroke;
+        stroke-linecap: round;
+      }
+
+      .scenario-rail,
+      .architecture-card,
+      .scope-card,
+      .why-card,
+      .process-strip article {
+        position: relative;
+        z-index: 4;
+      }
+
+      .scenario-rail {
+        grid-column: 1;
+        grid-row: 1;
+        display: grid;
+        gap: 10px;
+        align-content: start;
+      }
+
+      .scenario-button {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 4px 10px;
+        align-items: start;
+        width: 100%;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        background: var(--card);
+        color: var(--text);
+        padding: 14px;
+        text-align: left;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 24px 58px -42px rgba(2, 6, 23, 0.92);
+        transition:
+          transform 180ms ease,
+          border-color 180ms ease,
+          background 180ms ease;
+      }
+
+      .scope-panel[data-theme="light"] .scenario-button {
+        box-shadow: 0 24px 58px -42px rgba(15, 23, 42, 0.52);
+      }
+
+      .scenario-button:hover,
+      .scenario-button.is-active {
+        transform: translateX(4px);
+        border-color: rgba(147, 197, 253, 0.42);
+        background: var(--card-strong);
+      }
+
+      .scope-panel[data-theme="light"] .scenario-button:hover,
+      .scope-panel[data-theme="light"] .scenario-button.is-active {
+        border-color: rgba(37, 99, 235, 0.42);
+      }
+
+      .scenario-button span {
+        grid-row: span 2;
+        display: grid;
+        width: 34px;
+        height: 34px;
+        place-items: center;
+        border: 1px solid rgba(125, 211, 252, 0.3);
+        border-radius: 11px;
+        color: #93c5fd;
+        font-size: 11px;
+        font-weight: 850;
+      }
+
+      .scope-panel[data-theme="light"] .scenario-button span {
+        border-color: rgba(37, 99, 235, 0.26);
+        color: #2563eb;
+      }
+
+      .scenario-button strong {
+        color: var(--title);
+        font-size: 13px;
+        line-height: 1.1;
+      }
+
+      .scenario-button small {
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.35;
+      }
+
+      .architecture-card,
+      .scope-card,
+      .why-card,
+      .process-strip article {
+        border: 1px solid var(--border);
+        background: var(--card);
+        color: var(--text);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 24px 58px -42px rgba(2, 6, 23, 0.92);
+      }
+
+      .scope-panel[data-theme="light"] .architecture-card,
+      .scope-panel[data-theme="light"] .scope-card,
+      .scope-panel[data-theme="light"] .why-card,
+      .scope-panel[data-theme="light"] .process-strip article {
+        box-shadow: 0 24px 58px -42px rgba(15, 23, 42, 0.52);
+      }
+
+      .architecture-card {
+        grid-column: 2 / 4;
+        grid-row: 1 / 3;
+        min-height: 650px;
+        overflow: hidden;
+        border-radius: 24px;
+      }
+
+      .architecture-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        align-items: start;
+        border-bottom: 1px solid var(--border);
+        padding: 18px 20px;
+      }
+
+      .architecture-head h2 {
+        margin: 6px 0 0;
+        color: var(--title);
+        font-size: 30px;
+        line-height: 1;
+        letter-spacing: -0.05em;
+      }
+
+      .architecture-head > span {
+        white-space: nowrap;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: rgba(37, 99, 235, 0.12);
+        color: #dbeafe;
+        padding: 8px 11px;
+        font-size: 12px;
+        font-weight: 850;
+      }
+
+      .scope-panel[data-theme="light"] .architecture-head > span {
+        color: #1e3a8a;
+        background: rgba(37, 99, 235, 0.08);
+      }
+
+      .architecture-map {
+        position: relative;
+        height: 560px;
+        overflow: hidden;
+      }
+
+      .route-stage {
+        position: absolute;
+        z-index: 1;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+
+      .generated-route {
+        fill: none;
+        stroke: var(--line);
+        stroke-width: 0.85;
+        vector-effect: non-scaling-stroke;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .generated-route.is-secondary {
+        stroke-dasharray: 4 5;
+        opacity: 0.62;
+      }
+
+      .route-dot {
+        fill: rgba(125, 211, 252, 0.84);
+        stroke: var(--panel);
+        stroke-width: 0.35;
+      }
+
+      .scope-panel[data-theme="light"] .route-dot {
+        fill: rgba(37, 99, 235, 0.7);
+      }
+
+      .system-node {
+        position: absolute;
+        z-index: 3;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 4px 9px;
+        align-items: center;
+        width: 142px;
+        min-height: 62px;
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        background: var(--card-strong);
+        color: var(--text);
+        padding: 10px;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 20px 48px -38px rgba(2, 6, 23, 0.9);
+      }
+
+      .scope-panel[data-theme="light"] .system-node {
+        box-shadow: 0 20px 48px -38px rgba(15, 23, 42, 0.5);
+      }
+
+      .system-node.is-core {
+        border-color: rgba(147, 197, 253, 0.42);
+        box-shadow:
+          0 30px 80px -54px rgba(37, 99, 235, 0.9),
+          0 20px 48px -38px rgba(2, 6, 23, 0.9);
+      }
+
+      .node-icon {
+        grid-row: span 2;
+        display: grid;
+        width: 31px;
+        height: 31px;
+        place-items: center;
+        border: 1px solid rgba(125, 211, 252, 0.3);
+        border-radius: 10px;
+        background: rgba(14, 165, 233, 0.08);
+        color: #93c5fd;
+      }
+
+      .scope-panel[data-theme="light"] .node-icon {
+        border-color: rgba(37, 99, 235, 0.28);
+        background: rgba(37, 99, 235, 0.07);
+        color: #2563eb;
+      }
+
+      .node-icon svg {
+        width: 16px;
+        height: 16px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.75;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .system-node strong {
+        color: var(--title);
+        font-size: 11.5px;
+        line-height: 1.1;
+      }
+
+      .system-node small {
+        color: var(--muted);
+        font-size: 9.5px;
+        line-height: 1.2;
+      }
+
+      .scope-card {
+        grid-column: 1;
+        grid-row: 2;
+        align-self: stretch;
+        border-radius: 24px;
+        padding: 22px;
+      }
+
+      .scope-card h3 {
+        margin: 10px 0 0;
+        color: var(--title);
+        font-size: 31px;
+        line-height: 1;
+        letter-spacing: -0.05em;
+      }
+
+      .scope-card .range {
+        display: inline-flex;
+        margin: 18px 0 0;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: rgba(37, 99, 235, 0.12);
+        color: #dbeafe;
+        padding: 8px 11px;
+        font-size: 13px;
+        font-weight: 850;
+      }
+
+      .scope-panel[data-theme="light"] .scope-card .range {
+        color: #1e3a8a;
+        background: rgba(37, 99, 235, 0.08);
+      }
+
+      .scope-card p:not(.mini-eyebrow):not(.range) {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .factor-block {
+        margin-top: 20px;
+        border-top: 1px solid var(--border);
+        padding-top: 16px;
+      }
+
+      .factor-block strong {
+        color: var(--title);
+        font-size: 13px;
+      }
+
+      .factor-block ul {
+        display: grid;
+        gap: 9px;
+        margin: 12px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .factor-block li {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 9px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.35;
+      }
+
+      .factor-block li::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        margin-top: 4px;
+        border-radius: 999px;
+        background: #3b82f6;
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+      }
+
+      .scope-cta {
+        display: inline-flex;
+        justify-content: center;
+        width: 100%;
+        margin-top: 22px;
+        border-radius: 999px;
+        background: #2563eb;
+        color: #fff;
+        padding: 12px 14px;
+        font-size: 13px;
+        font-weight: 850;
+        text-decoration: none;
+      }
+
+      .why-card {
+        grid-column: 2 / 4;
+        grid-row: 3;
+        border-radius: 22px;
+        padding: 22px;
+      }
+
+      .why-card h3 {
+        max-width: 820px;
+        margin: 10px 0 0;
+        color: var(--title);
+        font-size: 24px;
+        line-height: 1.05;
+        letter-spacing: -0.045em;
+      }
+
+      .why-card p {
+        max-width: 840px;
+        margin: 14px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.65;
+      }
+
+      .process-strip {
+        grid-column: 1 / 4;
+        grid-row: 4;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+      }
+
+      .process-strip article {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 3px 9px;
+        align-items: center;
+        border-radius: 16px;
+        padding: 13px;
+      }
+
+      .process-strip span {
+        grid-row: span 2;
+        display: grid;
+        width: 31px;
+        height: 31px;
+        place-items: center;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        color: #93c5fd;
+        font-size: 10px;
+        font-weight: 850;
+      }
+
+      .scope-panel[data-theme="light"] .process-strip span {
+        color: #2563eb;
+      }
+
+      .process-strip strong {
+        color: var(--title);
+        font-size: 12px;
+      }
+
+      .process-strip small {
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .corner-mark {
+        position: absolute;
+        z-index: 6;
+        width: 26px;
+        height: 26px;
+        opacity: 0.48;
+        pointer-events: none;
+      }
+
+      .corner-mark::before,
+      .corner-mark::after {
+        content: "";
+        position: absolute;
+        background: rgba(125, 211, 252, 0.58);
+      }
+
+      .scope-panel[data-theme="light"] .corner-mark::before,
+      .scope-panel[data-theme="light"] .corner-mark::after {
+        background: rgba(37, 99, 235, 0.45);
+      }
+
+      .corner-mark::before {
+        width: 100%;
+        height: 1px;
+      }
+
+      .corner-mark::after {
+        width: 1px;
+        height: 100%;
+      }
+
+      .corner-tl {
+        left: 22px;
+        top: 22px;
+      }
+
+      .corner-tl::before,
+      .corner-tl::after {
+        left: 0;
+        top: 0;
+      }
+
+      .corner-tr {
+        right: 22px;
+        top: 22px;
+      }
+
+      .corner-tr::before,
+      .corner-tr::after {
+        right: 0;
+        top: 0;
+      }
+
+      .corner-bl {
+        left: 22px;
+        bottom: 22px;
+      }
+
+      .corner-bl::before,
+      .corner-bl::after {
+        left: 0;
+        bottom: 0;
+      }
+
+      .corner-br {
+        right: 22px;
+        bottom: 22px;
+      }
+
+      .corner-br::before,
+      .corner-br::after {
+        right: 0;
+        bottom: 0;
+      }
+
+      @media (max-width: 1020px) {
+        .scope-panel {
+          grid-template-columns: 1fr;
+          padding: 92px 28px 28px;
+        }
+
+        .scenario-rail,
+        .architecture-card,
+        .scope-card,
+        .why-card,
+        .process-strip {
+          grid-column: auto;
+          grid-row: auto;
+        }
+
+        .scenario-rail {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .process-strip {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .architecture-card {
+          min-height: auto;
+        }
+
+        .architecture-map {
+          height: 520px;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .lesson-shell {
+          width: min(100vw - 22px, 1220px);
+          padding: 28px 0;
+        }
+
+        .lesson-copy h1 {
+          font-size: clamp(36px, 13vw, 56px);
+        }
+
+        .lesson-copy p:not(.eyebrow) {
+          font-size: 15px;
+        }
+
+        .scope-panel {
+          border-radius: 22px;
+          padding: 82px 18px 22px;
+          --grid-size: 24px;
+        }
+
+        .scope-panel::before {
+          inset: 22px;
+          border-radius: 16px;
+        }
+
+        .panel-label {
+          top: 22px;
+          left: 24px;
+          right: 24px;
+        }
+
+        .panel-label strong {
+          font-size: 10px;
+        }
+
+        .panel-label span {
+          font-size: 10px;
+        }
+
+        .scenario-rail,
+        .process-strip {
+          grid-template-columns: 1fr;
+        }
+
+        .architecture-head {
+          display: grid;
+        }
+
+        .architecture-head h2 {
+          font-size: 25px;
+        }
+
+        .architecture-head > span {
+          width: fit-content;
+        }
+
+        .architecture-map {
+          height: 560px;
+        }
+
+        .system-node {
+          width: 124px;
+          min-height: 54px;
+          padding: 8px;
+          border-radius: 13px;
+        }
+
+        .node-icon {
+          width: 28px;
+          height: 28px;
+        }
+
+        .system-node strong {
+          font-size: 10px;
+        }
+
+        .system-node small {
+          display: none;
+        }
+
+        .scope-card h3 {
+          font-size: 27px;
+        }
+
+        .why-card h3 {
+          font-size: 21px;
+        }
+
+        .corner-mark {
+          width: 18px;
+          height: 18px;
+        }
+      }
+    </style>
+
+    <script>
+      const panel = document.querySelector(".scope-panel");
+      const themeControls = document.querySelectorAll("[data-theme]");
+      const scenarioButtons = document.querySelectorAll("[data-scenario]");
+      const nodeStage = document.querySelector("[data-node-stage]");
+      const routeLayer = document.querySelector("[data-route-layer]");
+
+      const title = document.querySelector("[data-title]");
+      const range = document.querySelector("[data-range]");
+      const sideTitle = document.querySelector("[data-side-title]");
+      const sideRange = document.querySelector("[data-side-range]");
+      const description = document.querySelector("[data-description]");
+      const factors = document.querySelector("[data-factors]");
+      const cta = document.querySelector("[data-cta]");
+
+      const iconPaths = {
+        website: ["M4 5h16v14H4Z", "M4 9h16", "M7 7h.01M10 7h.01", "M8 13h8M8 16h5"],
+        dns: [
+          "M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0-18Z",
+          "M12 3c2.4 2.5 3.4 5.4 3.4 9S14.4 18.5 12 21",
+          "M12 3c-2.4 2.5-3.4 5.4-3.4 9s1 6.5 3.4 9",
+          "M3.6 9h16.8M3.6 15h16.8",
+        ],
+        ssl: ["M7 10V7a5 5 0 0 1 10 0v3", "M5 10h14v10H5Z", "M12 14v3"],
+        server: ["M5 4h14v5H5Z", "M5 15h14v5H5Z", "M8 7h.01M8 18h.01", "M11 7h5M11 18h5"],
+        docker: ["M4 13h16", "M7 10h3v3H7ZM11 10h3v3h-3ZM15 10h3v3h-3Z", "M8 7h3v3H8ZM12 7h3v3h-3Z"],
+        deploy: ["M12 3v11", "m7 8 5-5 5 5", "M5 21h14", "M7 17h10"],
+        database: [
+          "M12 5c4.4 0 8 1.3 8 3s-3.6 3-8 3s-8-1.3-8-3s3.6-3 8-3Z",
+          "M4 8v4c0 1.7 3.6 3 8 3s8-1.3 8-3V8",
+          "M4 12v4c0 1.7 3.6 3 8 3s8-1.3 8-3v-4",
+        ],
+        monitoring: ["M4 13h4l2-6l4 11l2-5h4"],
+        alert: ["M12 4 4 19h16Z", "M12 9v4", "M12 16h.01"],
+        doc: ["M6 4h12v16H6Z", "M9 8h6", "M9 12h6", "M9 16h4"],
+        form: ["M6 4h12v16H6Z", "M9 8h6M9 12h6M9 16h3"],
+        api: ["M8 8l-4 4l4 4", "M16 8l4 4l-4 4", "M14 5l-4 14"],
+        worker: [
+          "M6 8a2 2 0 1 0 0-4a2 2 0 0 0 0 4Z",
+          "M18 14a2 2 0 1 0 0-4a2 2 0 0 0 0 4Z",
+          "M6 20a2 2 0 1 0 0-4a2 2 0 0 0 0 4Z",
+          "M7.7 7l8.6 4M8 6h4a3 3 0 0 1 3 3v2M18 14v2a3 3 0 0 1-3 3h-4",
+        ],
+        notification: ["M5 12h3l3 7V5l-3 7H5Z", "M16 9a4 4 0 0 1 0 6"],
+        dashboard: ["M4 5h16v14H4Z", "M8 15v-3M12 15V9M16 15v-5", "M7 18h10"],
+        auth: ["M7 10V7a5 5 0 0 1 10 0v3", "M5 10h14v10H5Z", "M9 15h6"],
+        users: ["M12 12a4 4 0 1 0-4-4a4 4 0 0 0 4 4Z", "M5 20a7 7 0 0 1 14 0"],
+        migration: ["M5 7h11", "m13 4 3 3-3 3", "M19 17H8", "m11 20-3-3 3-3"],
+        stack: ["M6 7l6-3 6 3-6 3Z", "M6 12l6 3 6-3", "M6 17l6 3 6-3"],
+        training: ["M4 6h16v12H4Z", "M8 21h8", "M12 18v3", "M8 10h8M8 13h5"],
+      };
+
+      const scenarios = {
+        infra: {
+          title: "Infrastructure propre",
+          range: "Dès 2’900–9’900 CHF",
+          description:
+            "Pour repartir sur une base serveur claire: domaine, SSL, VPS, Docker, déploiement, sauvegardes, monitoring et documentation.",
+          cta: "Discuter de l’infrastructure",
+          href: "/contact?type=systems&scenario=infra#form",
+          factors: [
+            "nombre de services à héberger",
+            "niveau de sécurité attendu",
+            "besoin staging / production",
+            "backups et test de restauration",
+            "monitoring et alertes inclus",
+          ],
+          nodes: [
+            ["dns", "DNS", "Domaine", "dns", 14, 24],
+            ["ssl", "SSL", "Certificat", "ssl", 14, 48],
+            ["vps", "VPS", "Serveur", "server", 39, 34, true],
+            ["docker", "Docker", "Containers", "docker", 59, 34],
+            ["deploy", "Deploy", "Mise en ligne", "deploy", 79, 34],
+            ["backup", "Backup", "Sauvegardes", "database", 59, 66],
+            ["monitoring", "Monitoring", "Supervision", "monitoring", 79, 66],
+            ["runbook", "Runbook", "Procédure", "doc", 39, 74],
+          ],
+          routes: [
+            ["dns", "right", "vps", "left"],
+            ["ssl", "right", "vps", "left"],
+            ["vps", "right", "docker", "left"],
+            ["docker", "right", "deploy", "left"],
+            ["docker", "bottom", "backup", "top"],
+            ["backup", "right", "monitoring", "left"],
+            ["backup", "left", "runbook", "right"],
+            ["monitoring", "left", "runbook", "right", true],
+          ],
+        },
+
+        workflow: {
+          title: "Workflow métier",
+          range: "Dès 1’900–7’900 CHF",
+          description:
+            "Pour transformer une demande client en flux exploitable: formulaire, API, worker, CRM, notifications, emails et dashboard.",
+          cta: "Cadrer une automatisation",
+          href: "/contact?type=systems&scenario=workflow#form",
+          factors: [
+            "nombre d’étapes dans le workflow",
+            "logique conditionnelle",
+            "outils à connecter",
+            "gestion des erreurs",
+            "niveau de documentation attendu",
+          ],
+          nodes: [
+            ["form", "Formulaire", "Demande", "form", 14, 40],
+            ["api", "API", "Webhook", "api", 34, 40, true],
+            ["worker", "Worker", "Traitement", "worker", 54, 40],
+            ["crm", "CRM / Data", "Client", "database", 74, 40],
+            ["email", "Email", "Réponse", "notification", 54, 68],
+            ["notify", "Notification", "Interne", "alert", 74, 68],
+            ["dashboard", "Dashboard", "Suivi", "dashboard", 34, 68],
+          ],
+          routes: [
+            ["form", "right", "api", "left"],
+            ["api", "right", "worker", "left"],
+            ["worker", "right", "crm", "left"],
+            ["worker", "bottom", "email", "top"],
+            ["worker", "bottom", "dashboard", "top"],
+            ["crm", "bottom", "notify", "top"],
+            ["dashboard", "right", "notify", "left", true],
+          ],
+        },
+
+        tool: {
+          title: "Outil interne",
+          range: "Dès 7’900–25’000 CHF+",
+          description:
+            "Pour construire un outil métier: dashboard, base de données, API, authentification, rôles, exports, backups et monitoring.",
+          cta: "Cadrer un outil interne",
+          href: "/contact?type=systems&scenario=internal-tool#form",
+          factors: [
+            "authentification et rôles",
+            "volume et structure des données",
+            "exports et rapports",
+            "audit log ou permissions avancées",
+            "maintenance et évolutions",
+          ],
+          nodes: [
+            ["auth", "Auth", "Accès", "auth", 16, 38],
+            ["dashboard", "Dashboard", "Interface", "dashboard", 38, 38, true],
+            ["api", "API", "Logique", "api", 60, 38],
+            ["database", "Database", "Données", "database", 82, 38],
+            ["roles", "Roles", "Permissions", "users", 38, 68],
+            ["exports", "Exports", "Rapports", "doc", 60, 68],
+            ["backup", "Backup", "Sécurité", "database", 82, 68],
+            ["monitoring", "Monitoring", "Santé", "monitoring", 16, 68],
+          ],
+          routes: [
+            ["auth", "right", "dashboard", "left"],
+            ["dashboard", "right", "api", "left"],
+            ["api", "right", "database", "left"],
+            ["dashboard", "bottom", "roles", "top"],
+            ["api", "bottom", "exports", "top"],
+            ["database", "bottom", "backup", "top"],
+            ["monitoring", "right", "backup", "left", true],
+          ],
+        },
+
+        migration: {
+          title: "Migration open-source",
+          range: "Dès 4’900–20’000 CHF+",
+          description:
+            "Pour remplacer ou consolider des outils SaaS par une stack plus maîtrisable: cadrage, données, utilisateurs, backups, formation et support.",
+          cta: "Évaluer une migration",
+          href: "/contact?type=systems&scenario=open-source-migration#form",
+          factors: [
+            "outil remplacé et dépendances",
+            "volume de données à migrer",
+            "nombre d’utilisateurs",
+            "risque métier pendant la transition",
+            "formation et support après migration",
+          ],
+          nodes: [
+            ["saas", "SaaS actuel", "Existant", "migration", 14, 42],
+            ["scope", "Cadrage", "Plan", "doc", 34, 42, true],
+            ["stack", "Open-source", "Stack", "stack", 56, 42],
+            ["data", "Données", "Migration", "database", 78, 42],
+            ["users", "Users", "Accès", "users", 56, 68],
+            ["backup", "Backup", "Sécurité", "database", 78, 68],
+            ["training", "Training", "Équipe", "training", 34, 68],
+            ["monitoring", "Monitoring", "Continuité", "monitoring", 14, 68],
+          ],
+          routes: [
+            ["saas", "right", "scope", "left"],
+            ["scope", "right", "stack", "left"],
+            ["stack", "right", "data", "left"],
+            ["stack", "bottom", "users", "top"],
+            ["data", "bottom", "backup", "top"],
+            ["scope", "bottom", "training", "top"],
+            ["monitoring", "right", "training", "left", true],
+          ],
+        },
+
+        continuity: {
+          title: "Continuité technique",
+          range: "Dès 490–2’900 CHF / mois",
+          description:
+            "Pour éviter que les systèmes importants cassent en silence: monitoring, alertes, backups, restore tests, incidents, runbooks et support.",
+          cta: "Discuter continuité",
+          href: "/contact?type=systems&scenario=continuity#form",
+          factors: [
+            "nombre de systèmes à suivre",
+            "temps de réponse attendu",
+            "fréquence des contrôles",
+            "patching ou support inclus",
+            "criticité du système",
+          ],
+          nodes: [
+            ["app", "App / Site", "Système", "website", 16, 42],
+            ["monitoring", "Monitoring", "Checks", "monitoring", 38, 42, true],
+            ["alerts", "Alerts", "Signal", "alert", 60, 42],
+            ["incident", "Incident", "Traitement", "alert", 82, 42],
+            ["backup", "Backup", "Copies", "database", 38, 70],
+            ["restore", "Restore test", "Preuve", "deploy", 60, 70],
+            ["runbook", "Runbook", "Procédure", "doc", 82, 70],
+            ["support", "Support", "Évolution", "users", 16, 70],
+          ],
+          routes: [
+            ["app", "right", "monitoring", "left"],
+            ["monitoring", "right", "alerts", "left"],
+            ["alerts", "right", "incident", "left"],
+            ["monitoring", "bottom", "backup", "top"],
+            ["backup", "right", "restore", "left"],
+            ["restore", "right", "runbook", "left"],
+            ["support", "right", "backup", "left", true],
+          ],
+        },
+      };
+
+      const anchorMap = {
+        left: [0, 0.5],
+        right: [1, 0.5],
+        top: [0.5, 0],
+        bottom: [0.5, 1],
+        center: [0.5, 0.5],
+      };
+
+      function iconSvg(type) {
+        const paths = iconPaths[type] || iconPaths.doc;
+        return paths.map((d) => `<path d="${d}" />`).join("");
+      }
+
+      function getResponsiveNodePosition(x, y, index) {
+        const map = document.querySelector(".architecture-map");
+        const width = map?.getBoundingClientRect().width || window.innerWidth;
+
+        if (width < 560) {
+          return {
+            x: index % 2 === 0 ? 27 : 73,
+            y: 11 + Math.floor(index / 2) * 21,
+          };
+        }
+
+        return { x, y };
+      }
+
+      function renderScenario(id) {
+        const scenario = scenarios[id];
+
+        title.textContent = scenario.title;
+        range.textContent = scenario.range;
+        sideTitle.textContent = scenario.title;
+        sideRange.textContent = scenario.range;
+        description.textContent = scenario.description;
+        cta.textContent = scenario.cta;
+        cta.href = scenario.href;
+
+        factors.innerHTML = scenario.factors.map((factor) => `<li>${factor}</li>`).join("");
+
+        nodeStage.innerHTML = scenario.nodes
+          .map(([nodeId, label, detail, icon, x, y, core], index) => {
+            const position = getResponsiveNodePosition(x, y, index);
+
+            return `
+              <article
+                class="system-node ${core ? "is-core" : ""}"
+                data-node="${nodeId}"
+                style="left:${position.x}%; top:${position.y}%"
+              >
+                <span class="node-icon">
+                  <svg viewBox="0 0 24 24">${iconSvg(icon)}</svg>
+                </span>
+                <span>
+                  <strong>${label}</strong>
+                  <small>${detail}</small>
+                </span>
+              </article>
+            `;
+          })
+          .join("");
+
+        requestAnimationFrame(() => {
+          renderRoutes(scenario);
+          setTimeout(() => renderRoutes(scenario), 120);
+        });
+      }
+
+      function getNodeElement(id) {
+        return document.querySelector(`[data-node="${id}"]`);
+      }
+
+      function getAnchorPoint(element, anchor) {
+        const map = document.querySelector(".architecture-map");
+        const mapRect = map.getBoundingClientRect();
+        const nodeRect = element.getBoundingClientRect();
+        const [anchorX, anchorY] = anchorMap[anchor] ?? anchorMap.center;
+
+        const x = nodeRect.left - mapRect.left + nodeRect.width * anchorX;
+        const y = nodeRect.top - mapRect.top + nodeRect.height * anchorY;
+
+        return {
+          x: (x / mapRect.width) * 100,
+          y: (y / mapRect.height) * 100,
+        };
+      }
+
+      function directionFor(anchor) {
+        if (anchor === "left") return { x: -1, y: 0 };
+        if (anchor === "right") return { x: 1, y: 0 };
+        if (anchor === "top") return { x: 0, y: -1 };
+        if (anchor === "bottom") return { x: 0, y: 1 };
+        return { x: 0, y: 0 };
+      }
+
+      function clamp(value, min, max) {
+        return Math.min(Math.max(value, min), max);
+      }
+
+      function curvedPath(from, to, fromAnchor, toAnchor) {
+        const fromDirection = directionFor(fromAnchor);
+        const toDirection = directionFor(toAnchor);
+        const distance = Math.hypot(to.x - from.x, to.y - from.y);
+        const tension = clamp(distance * 0.42, 7, 20);
+
+        const c1 = {
+          x: from.x + fromDirection.x * tension,
+          y: from.y + fromDirection.y * tension,
+        };
+
+        const c2 = {
+          x: to.x + toDirection.x * tension,
+          y: to.y + toDirection.y * tension,
+        };
+
+        return `M ${from.x.toFixed(2)} ${from.y.toFixed(2)}
+                C ${c1.x.toFixed(2)} ${c1.y.toFixed(2)},
+                  ${c2.x.toFixed(2)} ${c2.y.toFixed(2)},
+                  ${to.x.toFixed(2)} ${to.y.toFixed(2)}`;
+      }
+
+      function svgElement(tag, attributes) {
+        const element = document.createElementNS("http://www.w3.org/2000/svg", tag);
+        Object.entries(attributes).forEach(([key, value]) => element.setAttribute(key, value));
+        return element;
+      }
+
+      function renderRoutes(scenario) {
+        routeLayer.innerHTML = "";
+
+        scenario.routes.forEach(([fromId, fromAnchor, toId, toAnchor, secondary]) => {
+          const fromElement = getNodeElement(fromId);
+          const toElement = getNodeElement(toId);
+
+          if (!fromElement || !toElement) return;
+
+          const from = getAnchorPoint(fromElement, fromAnchor);
+          const to = getAnchorPoint(toElement, toAnchor);
+
+          const path = svgElement("path", {
+            class: `generated-route ${secondary ? "is-secondary" : ""}`,
+            d: curvedPath(from, to, fromAnchor, toAnchor),
+          });
+
+          const fromDot = svgElement("circle", {
+            class: "route-dot",
+            cx: from.x.toFixed(2),
+            cy: from.y.toFixed(2),
+            r: "0.42",
+          });
+
+          const toDot = svgElement("circle", {
+            class: "route-dot",
+            cx: to.x.toFixed(2),
+            cy: to.y.toFixed(2),
+            r: "0.42",
+          });
+
+          routeLayer.append(path, fromDot, toDot);
+        });
+      }
+
+      themeControls.forEach((button) => {
+        button.addEventListener("click", () => {
+          panel.dataset.theme = button.dataset.theme;
+
+          themeControls.forEach((item) => item.classList.remove("is-active"));
+          button.classList.add("is-active");
+        });
+      });
+
+      scenarioButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          scenarioButtons.forEach((item) => item.classList.remove("is-active"));
+          button.classList.add("is-active");
+
+          renderScenario(button.dataset.scenario);
+        });
+      });
+
+      window.addEventListener("resize", () => {
+        const active = document.querySelector(".scenario-button.is-active");
+        renderScenario(active?.dataset.scenario || "infra");
+      });
+
+      renderScenario("infra");
+    </script>
+  </body>
+</html>
