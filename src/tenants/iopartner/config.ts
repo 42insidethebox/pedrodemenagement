@@ -1,8 +1,7 @@
 const fallbackPhoneDisplay = '+41 76 798 27 93';
 const fallbackPhoneIntl = '41767982793';
 const phoneDisplay = process.env.IOPARTNER_PHONE_DISPLAY || fallbackPhoneDisplay;
-const phoneIntl =
-  (process.env.IOPARTNER_PHONE_INTL || fallbackPhoneIntl).replace(/\D/g, '') || fallbackPhoneIntl;
+const phoneIntl = (process.env.IOPARTNER_PHONE_INTL || fallbackPhoneIntl).replace(/\D/g, '') || fallbackPhoneIntl;
 const email = process.env.IOPARTNER_EMAIL || 'support@iopartner.ch';
 const calendlyUrl = process.env.IOPARTNER_CALENDLY_URL || '';
 const operator = process.env.IOPARTNER_OPERATOR || 'TonSiteWeb Sàrl';
@@ -19,7 +18,7 @@ export const iopartnerLaunchOffers = [
 ] as const;
 
 export const iopartnerSystemsOffers = [
-  { key: 'diagnostic', label: 'Teams Diagnostic', duration: '15 min', price: '150 CHF' },
+  { key: 'diagnostic', label: 'Technical Diagnostic', duration: '15 min', price: '60 CHF' },
   { key: 'working', label: 'Working Session', duration: '60 min', price: '490 CHF' },
   { key: 'board', label: 'Advisory Board', duration: 'monthly', price: 'from 1200 CHF' },
 ] as const;
@@ -60,5 +59,4 @@ export type IoPartnerConfig = typeof iopartnerConfig;
 
 export const getIoPartnerWhatsAppUrl = (message = defaultWhatsAppMessage) => buildWhatsAppUrl(message);
 
-export const getIoPartnerBookingUrl = (message = defaultWhatsAppMessage) =>
-  calendlyUrl || buildWhatsAppUrl(message);
+export const getIoPartnerBookingUrl = (message = defaultWhatsAppMessage) => calendlyUrl || buildWhatsAppUrl(message);

@@ -11,11 +11,11 @@ export const POST: APIRoute = async ({ request }) => {
     assertRateLimit(request, { key: 'lead-offre', limit: 3, window: 3600 });
 
     const form = await request.formData();
-    const prenom       = String(form.get('prenom') || '').trim();
-    const telephone    = String(form.get('telephone') || '').trim();
-    const email        = String(form.get('email') || '').trim();
-    const secteur      = String(form.get('secteur') || '').trim();
-    const utm_source   = String(form.get('utm_source') || '').trim();
+    const prenom = String(form.get('prenom') || '').trim();
+    const telephone = String(form.get('telephone') || '').trim();
+    const email = String(form.get('email') || '').trim();
+    const secteur = String(form.get('secteur') || '').trim();
+    const utm_source = String(form.get('utm_source') || '').trim();
     const utm_campaign = String(form.get('utm_campaign') || '').trim();
 
     if (!prenom || !telephone) {
@@ -32,7 +32,7 @@ export const POST: APIRoute = async ({ request }) => {
         email: email || null,
         company: secteur,
         message: `TEL: ${telephone} | SECTEUR: ${secteur} | UTM: ${utm_source}/${utm_campaign}`,
-        source: 'fb-offre500',
+        source: 'standard-deployment-offer',
         tenant_id: 'iopartner',
       });
     }
@@ -43,7 +43,7 @@ export const POST: APIRoute = async ({ request }) => {
         email: email || ENV.SUPPORT_EMAIL || '',
         company: secteur,
         message: `📞 RAPPELER: ${telephone}\nSecteur: ${secteur}`,
-        source: `offre500 | ${utm_source}/${utm_campaign}`,
+        source: `standard-deployment-offer | ${utm_source}/${utm_campaign}`,
         locale: 'fr',
       });
     }

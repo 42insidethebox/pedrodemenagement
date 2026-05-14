@@ -1,548 +1,348 @@
 ---
+import IoBlueprintVisual from '~/components/iopartner/IoBlueprintVisual.astro';
 import Layout from '~/layouts/PageLayout.astro';
 
 export const prerender = false;
 
 const error = Astro.url.searchParams.get('error');
-
-// Sector-specific copy — driven by ?s= URL param
-const sectorParam = (Astro.url.searchParams.get('s') || '').toLowerCase();
-
-const SECTORS: Record<string, { headline: string; sub: string; bullets: string[][]; sector: string }> = {
-  coiffeur: {
-    headline: 'Site pour votre salon de coiffure',
-    sub: 'Vos clients réservent en ligne cette semaine. 999 CHF, livré en 3–5 jours.',
-    bullets: [
-      ['Galerie de réalisations', 'Montrez vos coupes et colorations'],
-      ['Prise de rendez-vous en ligne', 'Vos clients réservent 24h/24'],
-      ['Horaires et tarifs visibles', "Plus d'appels pour les infos de base"],
-      ['Adapté mobile', 'Parfait sur tous les écrans'],
-      ['Livré en 3–5 jours ouvrables', "On s'engage sur le délai"],
-    ],
-    sector: 'Beaute',
-  },
-  artisan: {
-    headline: 'Site pour artisan & entrepreneur',
-    sub: 'Devis en ligne, photos de chantiers, contact direct. 999 CHF, livré en 3–5 jours.',
-    bullets: [
-      ['Portfolio de réalisations', 'Photos de vos chantiers et travaux'],
-      ['Formulaire de devis en ligne', 'Vos clients demandent un prix 24h/24'],
-      ["Zone d'intervention", 'Montrez où vous travaillez'],
-      ['Adapté mobile', 'Parfait sur tous les écrans'],
-      ['Livré en 3–5 jours ouvrables', "On s'engage sur le délai"],
-    ],
-    sector: 'Artisan',
-  },
-  restaurant: {
-    headline: 'Site pour votre restaurant',
-    sub: 'Menu, horaires, réservations — tout en ligne cette semaine. 999 CHF, livré en 3–5 jours.',
-    bullets: [
-      ['Menu complet en ligne', 'PDF ou page dédiée, mis à jour facilement'],
-      ['Horaires et adresse', 'Google Maps intégré'],
-      ['Formulaire de réservation', 'Réservations directes sans commission'],
-      ['Adapté mobile', 'Parfait sur tous les écrans'],
-      ['Livré en 3–5 jours ouvrables', "On s'engage sur le délai"],
-    ],
-    sector: 'Restauration',
-  },
-  beaute: {
-    headline: 'Site pour votre salon de beauté',
-    sub: 'Prenez des RDV en ligne, montrez vos réalisations. 999 CHF, livré en 3–5 jours.',
-    bullets: [
-      ['Galerie avant/après', 'Montrez vos transformations'],
-      ['Prise de RDV en ligne', 'Vos clients réservent 24h/24'],
-      ['Tarifs et prestations', 'Tout est clair avant la visite'],
-      ['Adapté mobile', 'Parfait sur tous les écrans'],
-      ['Livré en 3–5 jours ouvrables', "On s'engage sur le délai"],
-    ],
-    sector: 'Beaute',
-  },
-  sante: {
-    headline: 'Site pour thérapeute & praticien',
-    sub: 'Page professionnelle, prise de RDV, honoraires — en ligne cette semaine. 999 CHF.',
-    bullets: [
-      ['Présentation de vos approches', 'Créez la confiance avant la consultation'],
-      ['Prise de RDV en ligne', 'Agenda visible, réservations directes'],
-      ['Honoraires et remboursements', 'Informations claires pour vos patients'],
-      ['Adapté mobile', 'Parfait sur tous les écrans'],
-      ['Livré en 3–5 jours ouvrables', "On s'engage sur le délai"],
-    ],
-    sector: 'Sante',
-  },
-};
-
-const sector = SECTORS[sectorParam] ?? null;
-const headline = sector?.headline ?? 'Votre site internet prêt en 3–5 jours';
-const subheadline =
-  sector?.sub ??
-  "Payez maintenant, on crée votre site cette semaine. Livraison en 3–5 jours ouvrables. Remboursé si vous n'aimez pas.";
-const bullets = sector?.bullets ?? [
-  ['Page vitrine professionnelle', 'Design moderne adapté à votre activité'],
-  ['Hébergement 3 mois inclus', 'Votre site en ligne, prêt à partager'],
-  ['Formulaire de contact intégré', 'Vos clients vous écrivent directement'],
-  ['Adapté mobile et tablette', 'Parfait sur tous les écrans'],
-  ['Livré en 24 heures', "On s'engage sur le délai"],
-];
-const prefilledSector = sector?.sector ?? '';
-
-const CHECKOUT_URL = '/api/checkout?plan=essential999&template=classic-clean&tenant=tonsiteweb';
+const checkoutUrl = '/api/checkout?plan=essential999&template=classic-clean&tenant=iopartner';
 ---
 
 <Layout
   metadata={{
-    title: `${headline} – 999 CHF – IOPartner`,
+    title: 'Déploiement standard — IOPartner',
     description:
-      'Site internet professionnel livré en 3–5 jours pour 999 CHF. Prix fixe, sans surprise. Idéal pour indépendants, artisans, commerçants en Suisse.',
+      'Déploiement standard IOPartner: site vitrine professionnel dès 999 CHF, cadré, facturé en Suisse et livré proprement.',
   }}
 >
-  <!-- Facebook Pixel — REPLACE XXXXXXXXXXXXXXXXXX with your real Pixel ID -->
-  <script is:inline>
-    !(function (f, b, e, v, n, t, s) {
-      if (f.fbq) return;
-      n = f.fbq = function () {
-        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
-      };
-      if (!f._fbq) f._fbq = n;
-      n.push = n;
-      n.loaded = !0;
-      n.version = '2.0';
-      n.queue = [];
-      t = b.createElement(e);
-      t.async = !0;
-      t.src = v;
-      s = b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t, s);
-    })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', 'XXXXXXXXXXXXXXXXXX');
-    fbq('track', 'PageView');
-  </script>
-  <noscript>
-    <img
-      height="1"
-      width="1"
-      style="display:none"
-      src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXXXXX&ev=PageView&noscript=1"
-      alt=""
-    />
-  </noscript>
-
-  <!-- UTM capture + scarcity + sticky CTA logic -->
-  <script is:inline>
-    document.addEventListener('DOMContentLoaded', function () {
-      // UTM fields
-      var params = new URLSearchParams(window.location.search);
-      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].forEach(function (key) {
-        var el = document.getElementById(key);
-        if (el && params.get(key)) el.value = params.get(key);
-      });
-
-      // Scarcity: deterministic per day-of-week
-      var slots = [4, 3, 5, 2, 3, 5, 4]; // Sun=0 … Sat=6
-      var todaySlots = slots[new Date().getDay()];
-      var scarEl = document.getElementById('scarcity-count');
-      if (scarEl)
-        scarEl.textContent =
-          'Plus que ' +
-          todaySlots +
-          ' créneau' +
-          (todaySlots > 1 ? 'x' : '') +
-          ' disponible' +
-          (todaySlots > 1 ? 's' : '') +
-          " aujourd'hui";
-
-      // Live order counter (async, no block)
-      fetch('/api/tonsiteweb/count')
-        .then(function (r) {
-          return r.ok ? r.json() : null;
-        })
-        .then(function (d) {
-          if (!d) return;
-          var el = document.getElementById('order-count');
-          if (el) el.textContent = 'Déjà ' + d.count + ' sites créés pour des indépendants suisses';
-        })
-        .catch(function () {});
-
-      // Sticky mobile CTA
-      var hero = document.getElementById('hero-cta');
-      var sticky = document.getElementById('sticky-bar');
-      if (hero && sticky) {
-        var io = new IntersectionObserver(
-          function (entries) {
-            sticky.classList.toggle('translate-y-full', entries[0].isIntersecting);
-            sticky.classList.toggle('opacity-0', entries[0].isIntersecting);
-          },
-          { threshold: 0.1 }
-        );
-        io.observe(hero);
-      }
-    });
-
-    // Countdown timer — runs immediately to avoid flash
-    (function tick() {
-      var now = new Date();
-      var target = new Date(now);
-      target.setHours(23, 0, 0, 0);
-      if (now >= target) target.setDate(target.getDate() + 1);
-      var diff = Math.max(0, target - now);
-      var h = Math.floor(diff / 3600000);
-      var m = Math.floor((diff % 3600000) / 60000);
-      var s = Math.floor((diff % 60000) / 1000);
-      var pad = function (n) {
-        return n < 10 ? '0' + n : '' + n;
-      };
-      var el = document.getElementById('countdown');
-      if (el) {
-        el.textContent = pad(h) + ':' + pad(m) + ':' + pad(s);
-        el.className =
-          diff < 3600000 ? 'font-mono font-bold text-red-300 animate-pulse' : 'font-mono font-bold text-yellow-200';
-      }
-      setTimeout(tick, 1000);
-    })();
-  </script>
-
-  <main class="bg-white text-gray-900">
-    <!-- HERO -->
-    <section class="bg-gradient-to-br from-blue-900 to-blue-700 text-white px-4 py-20 text-center">
-      <div class="max-w-2xl mx-auto">
-        <p class="text-blue-200 text-sm font-semibold uppercase tracking-widest mb-4">
-          Pour indépendants · Artisans · Commerçants · Suisse
+  <main class="io-offer">
+    <section class="io-shell io-hero">
+      <div>
+        <p class="io-kicker">Déploiement standard</p>
+        <h1>Un site vitrine professionnel, sans transformer un besoin simple en gros chantier.</h1>
+        <p>
+          Le format standard convient quand l’objectif est clair: présenter l’activité, rassurer, générer des contacts
+          et mettre en ligne rapidement une base maintenable.
         </p>
-        <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-4">
-          {headline}
-        </h1>
-        <p class="text-2xl font-bold text-yellow-300 mb-3">999 CHF · Prix fixe, livraison garantie</p>
-        <p class="text-blue-100 text-lg mb-6">{subheadline}</p>
-
-        <!-- Countdown -->
-        <div class="inline-flex items-center gap-2 bg-blue-800/60 rounded-full px-4 py-2 mb-6 text-sm">
-          <span class="text-blue-200">Livraison en 3–5 jours ouvrables · Commandez maintenant</span>
-          <span id="countdown" class="font-mono font-bold text-yellow-200">23:00:00</span>
+        <div class="io-actions">
+          <a class="io-btn io-btn-primary" href={checkoutUrl}>Démarrer le projet — 999 CHF</a>
+          <a class="io-btn io-btn-secondary" href="#form">Envoyer le contexte d’abord</a>
         </div>
+      </div>
+      <IoBlueprintVisual variant="standard" />
+    </section>
 
-        <!-- Primary CTA -->
-        <div>
-          <a
-            id="hero-cta"
-            href={CHECKOUT_URL}
-            class="inline-block bg-yellow-400 hover:bg-yellow-300 text-blue-900 font-bold text-xl px-10 py-5 rounded-2xl transition-colors shadow-lg mb-3"
-          >
-            Payer 999 CHF maintenant →
-          </a>
-        </div>
-
-        <!-- Scarcity badge -->
-        <div class="mt-2 mb-4">
-          <span
-            id="scarcity-count"
-            class="inline-block bg-orange-500/20 border border-orange-400/40 text-orange-200 text-sm font-medium px-3 py-1 rounded-full"
-          >
-            Créneaux limités aujourd'hui
-          </span>
-        </div>
-
-        <!-- Secondary: callback -->
-        <a href="#form" class="text-blue-200 text-sm underline"> Préférez être rappelé d'abord ? ↓ </a>
+    <section class="io-shell io-strip">
+      <div>
+        <strong>999 CHF</strong>
+        <span>Paiement unique</span>
+      </div>
+      <div>
+        <strong>3-5 jours</strong>
+        <span>Délai typique après contenus</span>
+      </div>
+      <div>
+        <strong>Facturé en Suisse</strong>
+        <span>Transparent, sans frais cachés</span>
       </div>
     </section>
 
-    <!-- SOCIAL PROOF BAR -->
-    <section class="bg-gray-50 border-y border-gray-200 px-4 py-6 text-center">
-      <p id="order-count" class="text-gray-500 text-sm font-medium mb-3">Déjà utilisé par des indépendants suisses</p>
-      <div class="flex flex-wrap justify-center gap-6 text-gray-700 font-semibold text-sm">
-        <span>Coiffure Tolo</span>
-        <span class="text-gray-300">·</span>
-        <span>Onglesgel</span>
-        <span class="text-gray-300">·</span>
-        <span>Maison Cortès</span>
-        <span class="text-gray-300">·</span>
-        <span>Pedro Déménagement</span>
-        <span class="text-gray-300">·</span>
-        <span>Atelier Mémoire</span>
-      </div>
-    </section>
-
-    <!-- CE QUI EST INCLUS -->
-    <section class="px-4 py-16 max-w-2xl mx-auto">
-      <h2 class="text-2xl font-bold text-center mb-10">Ce qui est inclus pour 999 CHF</h2>
-      <ul class="space-y-4">
-        {
-          bullets.map(([title, desc]) => (
-            <li class="flex items-start gap-4 p-4 bg-blue-50 rounded-xl">
-              <span class="flex-shrink-0 w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
-                ✓
-              </span>
-              <div>
-                <p class="font-semibold text-gray-900">{title}</p>
-                <p class="text-gray-500 text-sm">{desc}</p>
-              </div>
-            </li>
-          ))
-        }
-      </ul>
-    </section>
-
-    <!-- COMMENT CA MARCHE -->
-    <section class="bg-gray-50 px-4 py-16">
-      <div class="max-w-2xl mx-auto text-center">
-        <h2 class="text-2xl font-bold mb-12">Comment ça marche ?</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {
-            [
-              ['1', 'Vous payez en ligne', '30 secondes, paiement sécurisé par carte'],
-              ['2', 'On vous contacte', 'Notre équipe vous appelle pour quelques questions'],
-              ['3', 'Votre site est en ligne', "Livré en 3–5 jours ouvrables. On s'occupe de tout, de A à Z."],
-            ].map(([num, title, desc]) => (
-              <div class="text-center">
-                <div class="w-14 h-14 rounded-full bg-blue-600 text-white text-2xl font-extrabold flex items-center justify-center mx-auto mb-4">
-                  {num}
-                </div>
-                <p class="font-bold text-gray-900 mb-2">{title}</p>
-                <p class="text-gray-500 text-sm">{desc}</p>
-              </div>
-            ))
-          }
-        </div>
-      </div>
-    </section>
-
-    <!-- PRICE ANCHOR + DIRECT PAY -->
-    <section class="px-4 py-16 max-w-xl mx-auto text-center">
-      <!-- Price anchor -->
-      <p class="text-sm text-gray-500 mb-2">
-        Les agences web facturent souvent <span class="line-through font-semibold">2 000–8 000 CHF</span> pour un niveau
-        de travail comparable.
-      </p>
-      <p class="text-sm font-bold text-blue-600 mb-8">
-        Aujourd'hui chez nous : <span class="text-2xl">999 CHF</span> tout compris.
-      </p>
-
-      <div class="border-2 border-blue-600 rounded-2xl p-8">
-        <p class="text-4xl font-extrabold text-blue-600 mb-2">999 CHF</p>
-        <p class="text-gray-500 text-sm mb-1">Paiement unique · Hébergement 3 mois inclus</p>
-        <p class="text-gray-500 text-sm mb-8">Prix fixe · Paiement sécurisé · On s'occupe de tout</p>
-        <a
-          href={CHECKOUT_URL}
-          class="inline-block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xl px-8 py-5 rounded-2xl transition-colors shadow-md"
-        >
-          Payer 999 CHF maintenant →
-        </a>
-        <div class="flex justify-center gap-6 mt-6 text-xs text-gray-400">
-          <span>🔒 SSL sécurisé</span>
-          <span>🇨🇭 Stripe Switzerland</span>
-          <span>↩ Remboursement garanti</span>
-        </div>
-      </div>
-
-      <!-- Testimonial -->
-      <blockquote class="mt-8 bg-blue-50 border-l-4 border-blue-400 p-4 text-left rounded-r-xl">
-        <p class="text-gray-700 text-sm italic">
-          "Notre salon a reçu 4 nouveaux clients la première semaine grâce à notre site. Le formulaire était simple — on
-          a envoyé nos infos et le site était en ligne en 4 jours."
+    <section class="io-shell io-scope">
+      <article>
+        <p class="io-kicker">Inclus</p>
+        <h2>Une baseline propre pour démarrer.</h2>
+        <ul>
+          <li>Site vitrine 5 sections</li>
+          <li>Design responsive</li>
+          <li>Contenu fourni intégré</li>
+          <li>Formulaire ou contact simple</li>
+          <li>Déploiement sur infrastructure mutualisée IOPartner</li>
+        </ul>
+      </article>
+      <article class="io-dark-panel">
+        <p class="io-kicker">Quand le standard ne suffit pas</p>
+        <h2>On bascule en consulting ou systems & operations.</h2>
+        <p>
+          Codebase privée, backend, intégrations, automatisation ou infrastructure dédiée ne sont pas inclus dans le
+          standard. Ces sujets sont cadrés séparément pour éviter le faux sur mesure.
         </p>
-        <footer class="mt-2 text-xs text-gray-500 font-semibold">— Isabelle M., Salon de beauté, Lausanne</footer>
-      </blockquote>
+        <a class="io-btn io-btn-light" href="/contact#form">Cadrer le besoin</a>
+      </article>
     </section>
 
-    <!-- CALLBACK FORM (secondary) -->
-    <section id="form" class="px-4 py-16 max-w-xl mx-auto bg-gray-50 rounded-2xl">
-      <h2 class="text-xl font-bold text-center mb-2">Vous préférez être rappelé d'abord ?</h2>
-      <p class="text-gray-500 text-center text-sm mb-8">
-        Laissez votre numéro — on vous rappelle dans les 2 heures, gratuitement, sans engagement.
-      </p>
+    <section class="io-shell io-form-section" id="form">
+      <div>
+        <p class="io-kicker">Avant de démarrer</p>
+        <h2>Envoyez le contexte si vous hésitez.</h2>
+        <p>
+          Si le standard suffit, nous vous le dirons. Si le sujet mérite un cadrage technique, nous proposerons le bon
+          point d’entrée.
+        </p>
+      </div>
 
-      {
-        error && (
-          <div class="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-lg mb-6">
-            {error === 'missing'
-              ? 'Veuillez indiquer votre prénom et téléphone.'
-              : 'Une erreur est survenue. Veuillez réessayer.'}
-          </div>
-        )
-      }
-
-      <form method="POST" action="/api/tonsiteweb/lead-offre" class="space-y-5">
-        <div>
-          <label for="prenom" class="block text-sm font-semibold text-gray-700 mb-1">
-            Prénom <span class="text-red-500">*</span>
-          </label>
-          <input
-            id="prenom"
-            name="prenom"
-            type="text"
-            required
-            placeholder="Jean"
-            autocomplete="given-name"
-            class="w-full border border-gray-300 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
-          />
-        </div>
-
-        <div>
-          <label for="telephone" class="block text-sm font-semibold text-gray-700 mb-1">
-            Téléphone <span class="text-red-500">*</span>
-          </label>
-          <input
-            id="telephone"
-            name="telephone"
-            type="tel"
-            required
-            placeholder="+41 79 000 00 00"
-            autocomplete="tel"
-            class="w-full border border-gray-300 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
-          />
-        </div>
-
-        <div>
-          <label for="email" class="block text-sm font-semibold text-gray-700 mb-1">Email (optionnel)</label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            placeholder="jean@exemple.ch"
-            autocomplete="email"
-            class="w-full border border-gray-300 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
-          />
-        </div>
-
-        <div>
-          <label for="secteur" class="block text-sm font-semibold text-gray-700 mb-1">Secteur d'activité</label>
-          <select
-            id="secteur"
-            name="secteur"
-            class="w-full border border-gray-300 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg bg-white"
-          >
-            <option value="">-- Choisissez --</option>
-            <option value="Commerce" selected={prefilledSector === 'Commerce' || undefined}>Commerce / Boutique</option>
-            <option value="Artisan" selected={prefilledSector === 'Artisan' || undefined}>Artisan / Construction</option
-            >
-            <option value="Beaute" selected={prefilledSector === 'Beaute' || undefined}>Beauté / Bien-être</option>
-            <option value="Restauration" selected={prefilledSector === 'Restauration' || undefined}
-              >Restauration / Traiteur</option
-            >
-            <option value="Sante" selected={prefilledSector === 'Sante' || undefined}>Santé / Thérapeute</option>
-            <option value="Immobilier">Immobilier / Conciergerie</option>
-            <option value="Transport">Transport / Déménagement</option>
-            <option value="Autre">Autre</option>
-          </select>
-        </div>
-
-        <!-- Hidden fields -->
-        <input type="hidden" id="utm_source" name="utm_source" value="" />
-        <input type="hidden" id="utm_medium" name="utm_medium" value="" />
-        <input type="hidden" id="utm_campaign" name="utm_campaign" value="" />
-        <input type="hidden" id="utm_content" name="utm_content" value="" />
-
-        <button
-          type="submit"
-          class="w-full bg-gray-700 hover:bg-gray-800 text-white font-bold text-xl px-8 py-5 rounded-2xl transition-colors shadow-md"
-        >
-          Je veux être rappelé d'abord →
-        </button>
-        <p class="text-center text-sm text-gray-400">Aucun engagement. Rappel gratuit sous 2 heures.</p>
+      <form method="POST" action="/api/iopartner/lead-offre" class="io-form">
+        {error && <p class="io-error">Merci de vérifier les informations et de réessayer.</p>}
+        <input type="hidden" name="utm_source" value={Astro.url.searchParams.get('utm_source') || ''} />
+        <input type="hidden" name="utm_campaign" value={Astro.url.searchParams.get('utm_campaign') || ''} />
+        <label>
+          Prénom et nom
+          <input name="prenom" type="text" required />
+        </label>
+        <label>
+          Téléphone
+          <input name="telephone" type="tel" required />
+        </label>
+        <label>
+          Email
+          <input name="email" type="email" />
+        </label>
+        <label>
+          Activité / secteur
+          <input name="secteur" type="text" placeholder="Ex. fiduciaire, artisan, thérapeute..." />
+        </label>
+        <button type="submit" class="io-btn io-btn-primary">Envoyer le contexte</button>
       </form>
     </section>
-
-    <!-- TRUST BAR -->
-    <section class="bg-gray-50 border-t border-gray-200 px-4 py-8 mt-8">
-      <div class="max-w-xl mx-auto flex flex-wrap justify-center gap-8 text-sm text-gray-600 font-medium">
-        <div class="flex items-center gap-2"><span class="text-xl">🇨🇭</span><span>Service 100% suisse</span></div>
-        <div class="flex items-center gap-2"><span class="text-xl">🔒</span><span>Paiement sécurisé Stripe</span></div>
-        <div class="flex items-center gap-2"><span class="text-xl">✓</span><span>On s'occupe de tout</span></div>
-      </div>
-    </section>
-
-    <!-- FAQ -->
-    <section class="px-4 py-16 max-w-2xl mx-auto">
-      <h2 class="text-2xl font-bold text-center mb-10">Questions fréquentes</h2>
-      <div class="space-y-6">
-        {
-          [
-            [
-              'Que se passe-t-il après le paiement ?',
-              'Notre équipe vous contacte dans les 2 heures pour quelques questions sur votre activité. Votre site est en ligne en 3–5 jours ouvrables.',
-            ],
-            [
-              "Qu'est-ce qui est inclus pour 999 CHF ?",
-              'Une page vitrine professionnelle, hébergement 3 mois, formulaire de contact, design mobile responsive, et livraison en 3–5 jours.',
-            ],
-            [
-              'Et si je ne suis pas satisfait ?',
-              "Remboursement complet garanti, aucune question posée. C'est notre promesse.",
-            ],
-            [
-              'Dois-je créer un compte ?',
-              'Non. Le paiement se fait directement via Stripe. Aucun compte requis, aucune inscription.',
-            ],
-            [
-              'Combien de temps dure le processus ?',
-              'Vous payez en 30 secondes. On vous contacte dans les 2 heures. Votre site est en ligne en 3–5 jours ouvrables après réception de vos informations.',
-            ],
-          ].map(([q, a]) => (
-            <div class="border border-gray-200 rounded-xl p-6">
-              <p class="font-semibold text-gray-900 mb-2">{q}</p>
-              <p class="text-gray-500 text-sm">{a}</p>
-            </div>
-          ))
-        }
-      </div>
-    </section>
-
-    <!-- FINAL CTA -->
-    <section class="bg-blue-600 text-white px-4 py-16 text-center">
-      <h2 class="text-3xl font-bold mb-4">Prêt ? Votre site en 3–5 jours.</h2>
-      <p class="text-blue-100 mb-4">999 CHF · Livré en 3–5 jours ouvrables · Prix fixe, sans surprise</p>
-      <div class="inline-flex items-center gap-2 bg-blue-500/50 rounded-full px-4 py-1 mb-8 text-sm">
-        <span class="text-blue-200">Livraison garantie si commande avant</span>
-        <span id="countdown2" class="font-mono font-bold text-yellow-200">…</span>
-      </div>
-      <br />
-      <a
-        href={CHECKOUT_URL}
-        class="inline-block bg-yellow-400 hover:bg-yellow-300 text-blue-900 font-bold text-xl px-10 py-5 rounded-2xl transition-colors"
-      >
-        Payer 999 CHF maintenant →
-      </a>
-    </section>
-
-    <!-- MINIMAL FOOTER -->
-    <footer class="px-4 py-8 text-center text-xs text-gray-400">
-      <p>© {new Date().getFullYear()} IOPartner.ch · Lausanne, Suisse</p>
-      <p class="mt-1">
-        <a href="/tonsiteweb" class="hover:underline">Accueil</a>
-        {' · '}
-        <a href="/privacy" class="hover:underline">Confidentialité</a>
-        {' · '}
-        <a href="/terms" class="hover:underline">CGV</a>
-      </p>
-    </footer>
   </main>
 
-  <!-- STICKY MOBILE CTA (md+ hidden, shown after hero scrolls off) -->
-  <div
-    id="sticky-bar"
-    class="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white border-t border-gray-200 p-3 shadow-2xl transition-all duration-300 translate-y-full opacity-0"
-  >
-    <a
-      href={CHECKOUT_URL}
-      class="block w-full bg-yellow-400 hover:bg-yellow-300 text-blue-900 font-bold text-center text-lg py-4 rounded-xl transition-colors"
-    >
-      Payer 999 CHF maintenant →
-    </a>
-    <p class="text-center text-xs text-gray-400 mt-1">🔒 Paiement sécurisé · ↩ Remboursé si insatisfait</p>
-  </div>
+  <style>
+    .io-offer {
+      --io-ink: #0f172a;
+      --io-muted: #5f6b7c;
+      --io-line: rgba(148, 163, 184, 0.22);
+      --io-blue: #0b63f6;
+      background:
+        linear-gradient(90deg, rgba(37, 99, 235, 0.045) 1px, transparent 1px),
+        linear-gradient(rgba(37, 99, 235, 0.045) 1px, transparent 1px), #f8fbff;
+      background-size:
+        34px 34px,
+        34px 34px,
+        100% 100%;
+      color: var(--io-ink);
+    }
 
-  <!-- Second countdown mirror for footer section -->
-  <script is:inline>
-    (function syncCountdown2() {
-      var el1 = document.getElementById('countdown');
-      var el2 = document.getElementById('countdown2');
-      if (!el1 || !el2) {
-        setTimeout(syncCountdown2, 200);
-        return;
+    .io-shell {
+      width: min(100% - 2rem, 84rem);
+      margin-inline: auto;
+    }
+
+    .io-hero,
+    .io-scope,
+    .io-form-section {
+      display: grid;
+      grid-template-columns: minmax(0, 0.88fr) minmax(26rem, 1fr);
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .io-hero {
+      padding: 5rem 0;
+    }
+
+    h1,
+    h2 {
+      margin: 0;
+      font-weight: 850;
+      line-height: 1.05;
+    }
+
+    h1 {
+      max-width: 48rem;
+      font-size: 4rem;
+    }
+
+    h2 {
+      font-size: 2.7rem;
+    }
+
+    p {
+      color: var(--io-muted);
+      font-size: 1.1rem;
+      line-height: 1.72;
+    }
+
+    .io-kicker {
+      margin: 0 0 1rem;
+      color: var(--io-blue);
+      font-size: 0.78rem;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    .io-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      margin-top: 2rem;
+    }
+
+    .io-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 3rem;
+      border: 0;
+      border-radius: 999px;
+      padding: 0.78rem 1.35rem;
+      font-weight: 780;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .io-btn-primary {
+      background: var(--io-blue);
+      color: #fff;
+    }
+
+    .io-btn-secondary {
+      border: 1px solid rgba(15, 23, 42, 0.22);
+      color: var(--io-ink);
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .io-btn-light {
+      border: 1px solid rgba(226, 232, 240, 0.34);
+      color: #f8fafc;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .io-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      margin-bottom: 4.5rem;
+      overflow: hidden;
+      border: 1px solid var(--io-line);
+      border-radius: 1rem;
+      background: rgba(255, 255, 255, 0.78);
+    }
+
+    .io-strip div {
+      display: grid;
+      gap: 0.35rem;
+      padding: 1.4rem;
+    }
+
+    .io-strip div + div {
+      border-left: 1px solid var(--io-line);
+    }
+
+    .io-strip strong {
+      font-size: 1.2rem;
+    }
+
+    .io-strip span {
+      color: var(--io-muted);
+    }
+
+    .io-scope {
+      align-items: stretch;
+      padding-bottom: 5rem;
+    }
+
+    .io-scope article,
+    .io-form {
+      border: 1px solid var(--io-line);
+      border-radius: 1rem;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .io-scope ul {
+      display: grid;
+      gap: 0.85rem;
+      margin: 1.5rem 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .io-scope li {
+      color: #334155;
+      font-weight: 720;
+    }
+
+    .io-dark-panel {
+      background: #061120 !important;
+      color: #fff;
+    }
+
+    .io-dark-panel h2 {
+      color: #fff;
+    }
+
+    .io-dark-panel p {
+      color: #cbd5e1;
+    }
+
+    .io-form-section {
+      align-items: start;
+      padding-bottom: 6rem;
+    }
+
+    .io-form {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .io-form label {
+      display: grid;
+      gap: 0.45rem;
+      color: #334155;
+      font-weight: 720;
+    }
+
+    .io-form input {
+      width: 100%;
+      border: 1px solid rgba(148, 163, 184, 0.34);
+      border-radius: 0.75rem;
+      padding: 0.9rem 1rem;
+      color: var(--io-ink);
+      background: #fff;
+    }
+
+    .io-error {
+      margin: 0;
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      border-radius: 0.75rem;
+      padding: 0.85rem;
+      color: #991b1b;
+      background: #fef2f2;
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 1000px) {
+      .io-hero,
+      .io-scope,
+      .io-form-section {
+        grid-template-columns: 1fr;
       }
-      setInterval(function () {
-        el2.textContent = el1.textContent;
-        el2.className = el1.className;
-      }, 1000);
-    })();
-  </script>
+
+      .io-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .io-strip div + div {
+        border-left: 0;
+        border-top: 1px solid var(--io-line);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .io-shell {
+        width: min(100% - 1rem, 84rem);
+      }
+
+      h1 {
+        font-size: 2.55rem;
+      }
+
+      h2 {
+        font-size: 2rem;
+      }
+
+      .io-scope article,
+      .io-form {
+        padding: 1.2rem;
+      }
+    }
+  </style>
 </Layout>

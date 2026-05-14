@@ -4,12 +4,7 @@ export type PricingBilling = 'fixed' | 'add-on' | 'session' | 'hourly' | 'recurr
 
 export type PricingScope = 'standardized' | 'bounded' | 'variable' | 'reactive' | 'strategic';
 
-export type PricingCTAKey =
-  | 'checkout_999'
-  | 'checkout_1500'
-  | 'quote'
-  | 'diagnostic'
-  | 'custom_systems';
+export type PricingCTAKey = 'checkout_999' | 'checkout_1500' | 'quote' | 'diagnostic' | 'custom_systems';
 
 export interface PricingCategory {
   id: PricingCategoryId;
@@ -73,7 +68,7 @@ export const IOPARTNER_FR_PRICE_LABELS = {
   websiteSprint: '1 249 CHF',
   websiteGrowth: '1 500 CHF',
   websiteCustom: '2 000+ CHF',
-  diagnostic: '80 CHF / 15 min',
+  diagnostic: '60 CHF / 15 min',
   aiAudit: '290 CHF',
   aiAssistantFrom: 'dès 990 CHF',
   aiFaqBot: '690 CHF',
@@ -125,8 +120,7 @@ export const IOPARTNER_FR_PRICING_CATEGORIES: PricingCategory[] = [
       'Lancement standardisé, options publiques et additions bornées pour les websites marketing et vitrines.',
     priceBand: '999 CHF + options publiques',
     anchorId: 'websites',
-    note:
-      'Le Launch Site sert de base. Les add-ons et corrections bornées s’ajoutent selon le périmètre validé.',
+    note: 'Le Launch Site sert de base. Les add-ons et corrections bornées s’ajoutent selon le périmètre validé.',
     ctaKey: 'checkout_999',
   },
   {
@@ -136,8 +130,7 @@ export const IOPARTNER_FR_PRICING_CATEGORIES: PricingCategory[] = [
       'Audits, bots, assistants et ateliers IA avec prix fixes pour le borné et prix de départ pour les intégrations variables.',
     priceBand: '290 CHF à dès 990 CHF',
     anchorId: 'ai-automation',
-    note:
-      'Les lignes “dès” couvrent les cas où le flux dépend des outils, données, validations et intégrations déjà en place.',
+    note: 'Les lignes “dès” couvrent les cas où le flux dépend des outils, données, validations et intégrations déjà en place.',
     ctaKey: 'diagnostic',
   },
   {
@@ -147,8 +140,7 @@ export const IOPARTNER_FR_PRICING_CATEGORIES: PricingCategory[] = [
       'Audits, hardening, sauvegardes et déploiements Linux/open-source avec prix publics visibles avant contact.',
     priceBand: '290 CHF à dès 2 490 CHF',
     anchorId: 'open-infrastructure',
-    note:
-      'Les migrations, stacks multi-service et déploiements Proxmox restent variables car le vrai coût dépend de la complexité existante.',
+    note: 'Les migrations, stacks multi-service et déploiements Proxmox restent variables car le vrai coût dépend de la complexité existante.',
     ctaKey: 'diagnostic',
   },
   {
@@ -158,8 +150,7 @@ export const IOPARTNER_FR_PRICING_CATEGORIES: PricingCategory[] = [
       'Maintenance récurrente, support réactif, présence technique et advisory mensuel pour garder les opérations propres.',
     priceBand: '79 CHF / mois à dès 990 CHF / mois',
     anchorId: 'managed-support',
-    note:
-      'Le support récurrent se dimensionne sur la cadence, la criticité et le niveau d’implication attendu côté équipe.',
+    note: 'Le support récurrent se dimensionne sur la cadence, la criticité et le niveau d’implication attendu côté équipe.',
     ctaKey: 'quote',
   },
 ];
@@ -385,7 +376,11 @@ export const IOPARTNER_FR_PRICING_ITEMS: PricingItem[] = [
 
 export const IOPARTNER_FR_PRICING_CTA_MAP: Record<PricingCTAKey, PricingCta> = {
   checkout_999: { key: 'checkout_999', label: 'Choisir le Launch Site', href: '/choose-template?plan=essential999' },
-  checkout_1500: { key: 'checkout_1500', label: 'Choisir le pack croissance', href: '/choose-template?plan=essential1500' },
+  checkout_1500: {
+    key: 'checkout_1500',
+    label: 'Choisir le pack croissance',
+    href: '/choose-template?plan=essential1500',
+  },
   quote: { key: 'quote', label: 'Demander un devis', href: '/contact#form' },
   diagnostic: { key: 'diagnostic', label: 'Réserver le diagnostic', href: '/custom-systems#diagnostic' },
   custom_systems: { key: 'custom_systems', label: 'Voir la progression custom', href: '/custom-systems' },
@@ -395,9 +390,8 @@ export const IOPARTNER_FR_CUSTOM_SYSTEMS_TRACKS: CustomSystemsTrack[] = [
   {
     key: 'starter-1500',
     amountLabel: IOPARTNER_FR_PRICE_LABELS.websiteGrowth,
-    title: 'Site standard + WhatsApp + Calendly',
-    summary:
-      'Toujours sur le moteur IOPartner, quand le sujet reste standard mais demande plus de prises de contact.',
+    title: 'Déploiement standard + rendez-vous intégrés',
+    summary: 'Toujours sur le moteur IOPartner, quand le sujet reste standard mais demande plus de prises de contact.',
     href: '/choose-template?plan=essential1500',
   },
   {
@@ -418,7 +412,8 @@ export const IOPARTNER_FR_CUSTOM_SYSTEMS_TRACKS: CustomSystemsTrack[] = [
     key: 'backend-4500',
     amountLabel: IOPARTNER_FR_PRICE_LABELS.backendLight,
     title: 'Back-end léger',
-    summary: 'Le bon niveau pour une logique métier légère, de la collecte, de la synchronisation ou un portail simple.',
+    summary:
+      'Le bon niveau pour une logique métier légère, de la collecte, de la synchronisation ou un portail simple.',
     href: '/custom-systems?track=backend-4500#diagnostic',
   },
   {
@@ -437,7 +432,7 @@ export const IOPARTNER_FR_WEBSITE_FUNNEL = {
   customTierId: 'website-custom',
   diagnosticLabel: IOPARTNER_FR_PRICE_LABELS.diagnostic,
   standardPathLead:
-    'Trois repères website: 999 CHF pour lancer, 1 249 CHF pour optimiser ou migrer, 1 500 CHF pour un site croissance avec rendez-vous. Au-delà, on bascule sur la voie custom.',
+    'Trois repères website: 999 CHF pour lancer, 1 249 CHF pour optimiser ou migrer, 1 500 CHF pour un déploiement standard avec rendez-vous intégrés. Au-delà, on bascule sur la voie systems & operations.',
 } as const;
 
 export function getPricingCategory(categoryId: PricingCategoryId): PricingCategory | undefined {

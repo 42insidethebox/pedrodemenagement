@@ -14,14 +14,18 @@ const metadata = {
 
   <HeroText
     tagline="Contact"
-    title="Formulaire niveau FAANG"
-    subtitle="Un parcours guidé qui distingue les sites standards (999 / 1 500 CHF), les sujets custom 2 000–8 000+ CHF et les projets plus lourds, sans vous faire perdre de temps."
+    title="Envoyez le contexte."
+    subtitle="Le formulaire sert à router le besoin. Si un échange technique est utile, le cadrage payé commence ensuite à 60 CHF / 15 min."
   />
 
   <ContactUs
     id="form"
-    title="Brief express, sans jargon"
-    subtitle="4 mini-étapes, 2 minutes. Donnez le cadre, on vous oriente vers 999, 1 500 ou la bonne voie custom."
+    title="Contexte, besoin, suite utile"
+    subtitle="Décrivez la situation. Nous répondons par écrit avec la voie la plus rationnelle: déploiement standard, consulting payé, ou systems & operations."
+    action="/api/contact"
+    tenant="iopartner"
+    source="iopartner-contact-context"
+    button="Envoyer le contexte"
     inputs={[
       { type: 'section', label: 'Étape 1 — Votre activité' },
       {
@@ -37,12 +41,6 @@ const metadata = {
         label: 'Email professionnel',
         required: true,
         requiredMessage: 'Nous avons besoin de votre email pour répondre.',
-      },
-      {
-        type: 'tel',
-        name: 'phone',
-        label: 'Téléphone (WhatsApp ok)',
-        helper: 'Optionnel, mais utile pour valider rapidement.',
       },
       { type: 'text', name: 'company', label: 'Entreprise / marque', required: true },
       { type: 'text', name: 'website', label: 'Site actuel (optionnel)', placeholder: 'https://votresite.ch' },
@@ -78,13 +76,15 @@ const metadata = {
       {
         type: 'checkbox',
         name: 'goals',
-        label: 'Ce que le site doit faire',
+        label: 'Ce que le système ou la présence web doit produire',
         helper: 'Sélectionnez ce qui compte le plus, nous arbitrons le reste.',
         options: [
           { label: 'Être contacté facilement', value: 'contact' },
           { label: 'Prendre des réservations / rendez-vous', value: 'booking' },
           { label: 'Présenter mes services / portfolio', value: 'portfolio' },
           { label: 'Être visible sur Google (SEO)', value: 'seo' },
+          { label: 'Débloquer une décision technique', value: 'technical-decision' },
+          { label: 'Relier des outils ou automatiser un flux', value: 'workflow' },
           { label: 'Je ne sais pas encore, guidez-moi', value: 'unknown-goal' },
           { label: 'Autre', value: 'other-goal' },
         ],
@@ -101,14 +101,14 @@ const metadata = {
       {
         type: 'radio',
         name: 'budget',
-        label: 'Ordre de grandeur du projet',
+        label: 'Niveau probable',
         helper: 'Choisissez ce qui vous ressemble le plus, nous ajustons ensuite.',
         required: true,
         requiredMessage: 'Choisissez un ordre de grandeur.',
         options: [
-          { label: 'Site standard (999–1 500 CHF)', value: 'entry' },
-          { label: 'Custom léger (≈2 000–8 000 CHF)', value: 'advanced' },
-          { label: 'Projet structurant (10 000+ CHF)', value: 'custom' },
+          { label: 'Déploiement standard (dès 999 CHF)', value: 'entry' },
+          { label: 'Consulting technique (60 CHF / 15 min)', value: 'advanced' },
+          { label: 'Systems & operations (sur devis)', value: 'custom' },
           { label: 'Je ne sais pas encore', value: 'unknown' },
         ],
       },
@@ -117,7 +117,7 @@ const metadata = {
         name: 'delivery_track_entry',
         label: 'Voie projet',
         attributes: {
-          value: 'Standard (999 / 1 500) — lancement rapide sans build privée',
+          value: 'Déploiement standard — lancement cadré sans build privée',
           readOnly: true,
           disabled: true,
         },
@@ -129,7 +129,7 @@ const metadata = {
         name: 'delivery_track_avance',
         label: 'Voie projet',
         attributes: {
-          value: 'Custom léger (≈2 000–8 000 CHF) — codebase privée ou back-end léger',
+          value: 'Consulting technique — arbitrage rapide avant scope plus large',
           readOnly: true,
           disabled: true,
         },
@@ -141,7 +141,7 @@ const metadata = {
         name: 'delivery_track_custom',
         label: 'Voie projet',
         attributes: {
-          value: 'Architecture / portail / plateforme (10 000+ CHF) — cadrage puis scope',
+          value: 'Systems & operations — architecture, backend, infrastructure ou continuité',
           readOnly: true,
           disabled: true,
         },
@@ -171,27 +171,25 @@ const metadata = {
         label: 'Validation',
         required: true,
         requiredMessage: 'Merci de confirmer.',
-        options: [{ label: 'Ce formulaire sert à cadrer un projet réel et prioritaire.', value: 'confirmed' }],
+        options: [
+          {
+            label:
+              'Je comprends que ce formulaire sert à router le besoin. Une session de consulting technique est proposée séparément si nécessaire.',
+            value: 'confirmed',
+          },
+        ],
       },
 
       { type: 'section', label: 'Étape 4 — Contact et suite' },
       {
         type: 'radio',
-        name: 'contact_channel',
-        label: 'Contact privilégié',
-        options: [
-          { label: 'Email', value: 'email' },
-          { label: 'WhatsApp', value: 'whatsapp' },
-          { label: 'Téléphone', value: 'phone' },
-        ],
-      },
-      {
-        type: 'radio',
         name: 'next_step',
-        label: 'Vous préférez',
+        label: 'Suite souhaitée',
         options: [
-          { label: 'Démarrer directement (999 / 1 500)', value: 'start-now' },
-          { label: 'Un consulting payé 15 min / 60 CHF', value: 'call-15-paid' },
+          { label: 'Démarrer un déploiement standard', value: 'start-now' },
+          { label: 'Recevoir un lien pour le cadrage payé 15 min / 60 CHF', value: 'call-15-paid' },
+          { label: 'Cadrer un sujet systems & operations', value: 'scope-systems' },
+          { label: 'Être orienté vers le bon format', value: 'route-me' },
         ],
       },
     ]}
@@ -205,40 +203,59 @@ const metadata = {
       label:
         'En envoyant ce formulaire, vous acceptez que IOPartner.ch traite vos données pour répondre à votre demande, conformément à notre politique de confidentialité.',
     }}
-    description="Nos bureaux sont ouverts du lundi au vendredi, 9h-17h. Nous parlons français, anglais et allemand."
+    description="Réponse écrite sous un jour ouvré. Les appels et sessions de cadrage se font après validation du contexte."
   />
 
   <!-- Features2 Widget ************** -->
 
   <Features2
-    title="Contact direct"
-    subtitle="Choisissez le canal qui vous convient le mieux."
+    title="Canaux"
+    subtitle="Le contexte passe d’abord par écrit. Cela garde le cadrage clair et évite les appels gratuits qui remplacent une vraie décision technique."
     items={[
       {
-        title: 'Téléphone',
-        description: '+41 76 798 27 93',
-        icon: 'tabler:phone',
+        title: 'Formulaire',
+        description: 'Meilleur point d’entrée pour router une demande vers le bon format.',
+        icon: 'tabler:forms',
       },
       {
         title: 'Email',
-        description: 'support@iopartner.ch',
+        description: 'support@iopartner.ch — pour envoyer un contexte déjà structuré.',
         icon: 'tabler:mail',
+      },
+      {
+        title: 'Consulting technique',
+        description: '60 CHF / 15 min quand le sujet demande un échange de décision.',
+        icon: 'tabler:clock-dollar',
+      },
+      {
+        title: 'Disponibilité',
+        description: 'Réponse écrite du lundi au vendredi, généralement sous un jour ouvré.',
+        icon: 'tabler:calendar-time',
       },
       {
         title: 'Adresse',
         description: 'Avenue de la Gare 29, 1003 Lausanne',
         icon: 'tabler:map-pin',
       },
-      {
-        title: 'Disponibilité',
-        description: 'Du lundi au vendredi, 9h00 – 17h00',
-        icon: 'tabler:calendar-time',
-      },
-      {
-        title: 'Support client',
-        description: 'support@iopartner.ch — réponse sous un jour ouvré',
-        icon: 'tabler:help',
-      },
     ]}
   />
+
+  <section id="faq" class="mx-auto max-w-5xl px-4 pb-16">
+    <div class="rounded-2xl border border-slate-200 bg-white p-6 md:p-8">
+      <p class="text-sm font-bold uppercase text-blue-700">FAQ</p>
+      <h2 class="mt-2 text-3xl font-bold text-slate-950">Avant d’envoyer le contexte</h2>
+      <div class="mt-6 grid gap-4 md:grid-cols-2">
+        <div>
+          <h3 class="font-semibold text-slate-950">Faut-il déjà connaître le bon format ?</h3>
+          <p class="mt-2 text-slate-600">
+            Non. Le formulaire sert justement à choisir entre consulting, systems ou déploiement standard.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-slate-950">Est-ce que chaque demande devient un devis custom ?</h3>
+          <p class="mt-2 text-slate-600">Non. Si le standard suffit, nous le dirons clairement.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 </Layout>

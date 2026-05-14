@@ -1,0 +1,825 @@
+---
+type Variant = 'hero' | 'pricing' | 'systems' | 'standard' | 'decision';
+
+interface Props {
+  variant?: Variant;
+}
+
+const { variant = 'hero' } = Astro.props as Props;
+
+const heroNodes = [
+  { label: 'DNS', detail: 'Domaine & routage', className: 'node-dns', icon: 'dns' },
+  { label: 'CRM', detail: 'Données clients', className: 'node-crm', icon: 'crm' },
+  { label: 'VPS', detail: 'Hébergement', className: 'node-vps', icon: 'server' },
+  { label: 'Automations', detail: 'Workflows métier', className: 'node-automation', icon: 'automation' },
+  { label: 'Website', detail: 'Site & contenu', className: 'node-website', icon: 'website' },
+  { label: 'Monitoring', detail: 'Santé système', className: 'node-monitoring', icon: 'monitoring' },
+  { label: 'Backup', detail: 'Sauvegardes', className: 'node-backup', icon: 'backup' },
+];
+
+const pricingLayers = [
+  { label: '1. STANDARD', detail: 'Déploiement rapide', className: 'layer-standard' },
+  { label: '2. CONSULTING', detail: 'Arbitrage & cadrage', className: 'layer-consulting' },
+  { label: '3. SYSTEMS', detail: 'Architecture & opérations', className: 'layer-systems' },
+];
+
+const systemsBlocks = [
+  { label: 'Web', detail: 'Sites & contenus', className: 'system-web', icon: 'website' },
+  { label: 'API', detail: 'Routes métier', className: 'system-api', icon: 'api' },
+  { label: 'Workers', detail: 'Jobs & workflows', className: 'system-workers', icon: 'automation' },
+  { label: 'Data', detail: 'Sauvegardes', className: 'system-data', icon: 'backup' },
+  { label: 'Monitoring', detail: 'Alertes & santé', className: 'system-monitoring', icon: 'monitoring' },
+];
+
+const systemsRows = [
+  ['DNS + SSL', 'Routage propre'],
+  ['Deploy', 'Versionnement clair'],
+  ['Watch', 'Supervision active'],
+];
+---
+
+<div class={`io-blueprint io-blueprint-${variant}`} aria-hidden="true">
+  {
+    variant === 'hero' && (
+      <div class="io-hero-map">
+        <svg class="io-topology-routes" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path d="M50 48 C46 38 39 31 31 28" />
+          <path d="M50 48 C40 49 31 53 21 56" />
+          <path d="M50 48 C57 34 67 21 78 17" />
+          <path d="M50 48 C62 42 76 40 88 43" />
+          <path d="M50 48 C64 55 78 66 88 72" />
+          <path d="M50 48 C43 65 36 78 31 84" />
+          <path d="M50 48 C55 68 64 82 71 88" />
+        </svg>
+        <div class="io-core">API</div>
+        {heroNodes.map((node) => (
+          <div class={`io-node ${node.className}`}>
+            <span class="io-node-icon">
+              <svg viewBox="0 0 24 24">
+                {node.icon === 'dns' && (
+                  <path d="M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0-18Zm0 0c2.4 2.5 3.4 5.4 3.4 9S14.4 18.5 12 21M12 3c-2.4 2.5-3.4 5.4-3.4 9s1 6.5 3.4 9M3.6 9h16.8M3.6 15h16.8" />
+                )}
+                {node.icon === 'crm' && <path d="M12 12a4 4 0 1 0-4-4a4 4 0 0 0 4 4Zm-7 8a7 7 0 0 1 14 0" />}
+                {node.icon === 'server' && <path d="M5 4h14v5H5Zm0 11h14v5H5Zm3-8h.01M8 18h.01M11 7h5M11 18h5" />}
+                {node.icon === 'automation' && (
+                  <path d="M6 8a2 2 0 1 0 0-4a2 2 0 0 0 0 4Zm12 6a2 2 0 1 0 0-4a2 2 0 0 0 0 4ZM7.7 7l8.6 4M8 6h4a3 3 0 0 1 3 3v2M18 14v2a3 3 0 0 1-3 3h-4M6 20a2 2 0 1 0 0-4a2 2 0 0 0 0 4Z" />
+                )}
+                {node.icon === 'website' && <path d="M4 5h16v14H4Zm0 4h16M7 7h.01M10 7h.01M8 13h8M8 16h5" />}
+                {node.icon === 'monitoring' && <path d="M4 13h4l2-6l4 11l2-5h4" />}
+                {node.icon === 'backup' && (
+                  <path d="M12 5c4.4 0 8 1.3 8 3s-3.6 3-8 3s-8-1.3-8-3s3.6-3 8-3Zm-8 3v8c0 1.7 3.6 3 8 3s8-1.3 8-3V8M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3" />
+                )}
+              </svg>
+            </span>
+            <span>
+              <strong>{node.label}</strong>
+              <small>{node.detail}</small>
+            </span>
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  {
+    variant === 'pricing' && (
+      <div class="io-layer-map">
+        {pricingLayers.map((layer) => (
+          <div class={`io-layer-row ${layer.className}`}>
+            <div class="io-layer-copy">
+              <strong>{layer.label}</strong>
+              <small>{layer.detail}</small>
+            </div>
+            <span class="io-layer-dot" />
+            <div class="io-layer-sheet">
+              <span />
+              <span />
+              <span />
+            </div>
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  {
+    variant === 'systems' && (
+      <div class="io-systems-map">
+        <div class="io-systems-label">
+          <strong>Architecture opérationnelle</strong>
+          <span>Infra · backend · continuité</span>
+        </div>
+        <svg class="io-systems-routes" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path d="M20 34 H47" />
+          <path d="M53 34 H81" />
+          <path d="M50 39 V63" />
+          <path d="M50 63 H22" />
+          <path d="M50 63 H79" />
+        </svg>
+        <div class="io-systems-flow">
+          {systemsBlocks.map((block) => (
+            <div class={`system-block ${block.className}`}>
+              <span class="system-icon">
+                <svg viewBox="0 0 24 24">
+                  {block.icon === 'website' && <path d="M4 5h16v14H4Zm0 4h16M7 7h.01M10 7h.01M8 13h8M8 16h5" />}
+                  {block.icon === 'api' && <path d="M8 8l-4 4l4 4M16 8l4 4l-4 4M14 5l-4 14" />}
+                  {block.icon === 'automation' && (
+                    <path d="M6 8a2 2 0 1 0 0-4a2 2 0 0 0 0 4Zm12 6a2 2 0 1 0 0-4a2 2 0 0 0 0 4ZM7.7 7l8.6 4M8 6h4a3 3 0 0 1 3 3v2M6 20a2 2 0 1 0 0-4a2 2 0 0 0 0 4Z" />
+                  )}
+                  {block.icon === 'backup' && (
+                    <path d="M12 5c4.4 0 8 1.3 8 3s-3.6 3-8 3s-8-1.3-8-3s3.6-3 8-3Zm-8 3v8c0 1.7 3.6 3 8 3s8-1.3 8-3V8" />
+                  )}
+                  {block.icon === 'monitoring' && <path d="M4 13h4l2-6l4 11l2-5h4" />}
+                </svg>
+              </span>
+              <strong>{block.label}</strong>
+              <small>{block.detail}</small>
+            </div>
+          ))}
+        </div>
+        <div class="io-systems-rows">
+          {systemsRows.map(([label, detail]) => (
+            <div>
+              <span />
+              <strong>{label}</strong>
+              <small>{detail}</small>
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  {
+    variant === 'standard' && (
+      <div class="io-standard-preview">
+        <div class="site-frame frame-a">
+          <span />
+          <span />
+          <span />
+        </div>
+        <div class="site-frame frame-b">
+          <span />
+          <span />
+          <span />
+        </div>
+        <div class="site-frame frame-c">
+          <span />
+          <span />
+          <span />
+        </div>
+      </div>
+    )
+  }
+
+  {
+    variant === 'decision' && (
+      <div class="io-decision-map">
+        <svg class="io-decision-routes" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path d="M31 50 L67 28" />
+          <path d="M31 50 H67" />
+          <path d="M31 50 L67 72" />
+        </svg>
+        <div class="decision-root">Besoin</div>
+        <div class="decision-branch branch-a">Standard</div>
+        <div class="decision-branch branch-b">Consulting</div>
+        <div class="decision-branch branch-c">Systems</div>
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .io-blueprint {
+    position: relative;
+    min-height: 24rem;
+    overflow: hidden;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 1.25rem;
+    background:
+      linear-gradient(90deg, rgba(37, 99, 235, 0.055) 1px, transparent 1px),
+      linear-gradient(rgba(37, 99, 235, 0.055) 1px, transparent 1px), #f8fbff;
+    background-size: 32px 32px;
+    box-shadow: 0 28px 80px -60px rgba(15, 23, 42, 0.38);
+  }
+
+  .io-blueprint::before,
+  .io-blueprint::after {
+    content: '';
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .io-blueprint::before {
+    inset: 2rem;
+    border: 1px dashed rgba(37, 99, 235, 0.14);
+  }
+
+  .io-blueprint::after {
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), transparent 46%, rgba(37, 99, 235, 0.04));
+  }
+
+  .io-blueprint-systems {
+    min-height: 22rem;
+    border-color: rgba(125, 211, 252, 0.16);
+    background:
+      linear-gradient(90deg, rgba(125, 211, 252, 0.055) 1px, transparent 1px),
+      linear-gradient(rgba(125, 211, 252, 0.055) 1px, transparent 1px), #061120;
+    background-size: 28px 28px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  .io-hero-map,
+  .io-layer-map,
+  .io-systems-map,
+  .io-standard-preview,
+  .io-decision-map {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .io-core {
+    position: absolute;
+    left: 50%;
+    top: 48%;
+    display: grid;
+    width: 5.4rem;
+    height: 5.4rem;
+    place-items: center;
+    transform: translate(-50%, -50%);
+    border: 1px solid rgba(15, 23, 42, 0.18);
+    border-radius: 0.85rem;
+    background: linear-gradient(180deg, #ffffff, #f1f5f9);
+    box-shadow:
+      0 18px 42px -28px rgba(15, 23, 42, 0.55),
+      inset 0 1px 0 rgba(255, 255, 255, 0.92);
+    color: #0f172a;
+    font-weight: 800;
+  }
+
+  .io-topology-routes {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .io-topology-routes path,
+  .io-systems-routes path,
+  .io-decision-routes path {
+    fill: none;
+    stroke: rgba(37, 99, 235, 0.36);
+    stroke-width: 0.38;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .io-topology-routes path:nth-child(2n),
+  .io-systems-routes path:nth-child(2n) {
+    stroke-dasharray: 4 4;
+    stroke-opacity: 0.55;
+  }
+
+  .io-node {
+    position: absolute;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.62rem;
+    align-items: center;
+    min-width: 9.4rem;
+    padding: 0.62rem 0.72rem;
+    border: 1px solid rgba(37, 99, 235, 0.16);
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.78);
+    box-shadow: 0 18px 38px -34px rgba(15, 23, 42, 0.5);
+    color: #0f172a;
+  }
+
+  .io-node-icon {
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    border: 1px solid rgba(37, 99, 235, 0.26);
+    border-radius: 0.55rem;
+    background: rgba(37, 99, 235, 0.06);
+    color: #2563eb;
+  }
+
+  .io-node-icon svg,
+  .system-icon svg {
+    width: 1.16rem;
+    height: 1.16rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.7;
+  }
+
+  .io-node strong,
+  .io-layer-copy strong {
+    font-size: 0.76rem;
+    font-weight: 800;
+  }
+
+  .io-node small,
+  .io-layer-copy small {
+    color: #475569;
+    font-size: 0.68rem;
+  }
+
+  .node-dns {
+    left: 21%;
+    top: 21%;
+  }
+
+  .node-crm {
+    left: 7%;
+    top: 49%;
+  }
+
+  .node-vps {
+    right: 11%;
+    top: 9%;
+  }
+
+  .node-automation {
+    right: 4%;
+    top: 35%;
+  }
+
+  .node-website {
+    right: 5%;
+    bottom: 20%;
+  }
+
+  .node-monitoring {
+    left: 20%;
+    bottom: 8%;
+  }
+
+  .node-backup {
+    right: 20%;
+    bottom: 5%;
+  }
+
+  .io-layer-map {
+    padding: 4rem 2rem 2rem;
+  }
+
+  .io-layer-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 10rem 1rem minmax(8rem, 1fr);
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: -1.6rem;
+  }
+
+  .io-layer-copy {
+    display: grid;
+    gap: 0.25rem;
+    color: #0f172a;
+  }
+
+  .io-layer-dot {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 999px;
+    background: #2563eb;
+    box-shadow: 0 0 0 0.35rem rgba(37, 99, 235, 0.08);
+  }
+
+  .io-layer-sheet {
+    position: relative;
+    min-height: 5.8rem;
+    transform: skewY(-12deg);
+    border: 1px solid rgba(37, 99, 235, 0.16);
+    border-radius: 0.8rem;
+    background: rgba(255, 255, 255, 0.62);
+  }
+
+  .io-layer-sheet span {
+    position: absolute;
+    border: 1px solid rgba(15, 23, 42, 0.1);
+    border-radius: 0.35rem;
+  }
+
+  .io-layer-sheet span:nth-child(1) {
+    inset: 1rem auto auto 1.1rem;
+    width: 34%;
+    height: 1.25rem;
+  }
+
+  .io-layer-sheet span:nth-child(2) {
+    inset: 2.8rem 1.1rem auto auto;
+    width: 28%;
+    height: 1.3rem;
+  }
+
+  .io-layer-sheet span:nth-child(3) {
+    left: 42%;
+    bottom: 1rem;
+    width: 18%;
+    height: 1rem;
+  }
+
+  .io-systems-label {
+    position: absolute;
+    top: 1.25rem;
+    left: 1.35rem;
+    display: grid;
+    gap: 0.22rem;
+    color: #f8fafc;
+  }
+
+  .io-systems-label strong {
+    font-size: 0.84rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .io-systems-label span {
+    color: #93c5fd;
+    font-size: 0.72rem;
+  }
+
+  .io-systems-routes {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .io-systems-routes path {
+    stroke: rgba(125, 211, 252, 0.42);
+  }
+
+  .io-systems-flow {
+    position: absolute;
+    inset: 4.8rem 1.25rem 5rem;
+  }
+
+  .system-block {
+    position: absolute;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.52rem 0.62rem;
+    align-items: center;
+    width: 8.9rem;
+    padding: 0.72rem;
+    border: 1px solid rgba(125, 211, 252, 0.18);
+    border-radius: 0.82rem;
+    background: rgba(15, 23, 42, 0.82);
+    box-shadow: 0 20px 48px -36px rgba(2, 6, 23, 0.9);
+    color: #e2e8f0;
+  }
+
+  .system-icon {
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    border: 1px solid rgba(125, 211, 252, 0.3);
+    border-radius: 0.56rem;
+    color: #93c5fd;
+    background: rgba(14, 165, 233, 0.08);
+  }
+
+  .system-block strong,
+  .system-block small {
+    display: block;
+  }
+
+  .system-block strong {
+    font-size: 0.78rem;
+  }
+
+  .system-block small {
+    grid-column: 2;
+    color: #94a3b8;
+    font-size: 0.66rem;
+    line-height: 1.25;
+  }
+
+  .system-web {
+    left: 0;
+    top: 18%;
+  }
+
+  .system-api {
+    left: 50%;
+    top: 16%;
+    transform: translateX(-50%);
+  }
+
+  .system-workers {
+    right: 0;
+    top: 18%;
+  }
+
+  .system-data {
+    left: 12%;
+    bottom: 4%;
+  }
+
+  .system-monitoring {
+    right: 8%;
+    bottom: 4%;
+  }
+
+  .io-systems-rows {
+    position: absolute;
+    right: 1.25rem;
+    bottom: 1.15rem;
+    left: 1.25rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.65rem;
+  }
+
+  .io-systems-rows div {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.12rem 0.48rem;
+    align-items: center;
+    padding: 0.55rem 0.65rem;
+    border: 1px solid rgba(125, 211, 252, 0.13);
+    border-radius: 0.7rem;
+    background: rgba(15, 23, 42, 0.52);
+  }
+
+  .io-systems-rows span {
+    grid-row: span 2;
+    width: 0.46rem;
+    height: 0.46rem;
+    border-radius: 999px;
+    background: #3b82f6;
+    box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.12);
+  }
+
+  .io-systems-rows strong {
+    color: #e2e8f0;
+    font-size: 0.68rem;
+  }
+
+  .io-systems-rows small {
+    color: #94a3b8;
+    font-size: 0.6rem;
+  }
+
+  .io-standard-preview {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    align-items: center;
+    padding: 4rem 2rem;
+  }
+
+  .site-frame {
+    height: 11rem;
+    border: 1px solid rgba(37, 99, 235, 0.16);
+    border-radius: 0.8rem;
+    background: rgba(255, 255, 255, 0.72);
+    box-shadow: 0 22px 44px -34px rgba(15, 23, 42, 0.24);
+    padding: 1rem;
+  }
+
+  .frame-b {
+    transform: translateY(-1.2rem);
+  }
+
+  .frame-c {
+    transform: translateY(1rem);
+  }
+
+  .site-frame span {
+    display: block;
+    height: 0.65rem;
+    margin-bottom: 0.7rem;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.14);
+  }
+
+  .site-frame span:nth-child(1) {
+    width: 48%;
+    height: 1.2rem;
+    border-radius: 0.4rem;
+    background: rgba(37, 99, 235, 0.2);
+  }
+
+  .site-frame span:nth-child(2) {
+    width: 86%;
+  }
+
+  .site-frame span:nth-child(3) {
+    width: 64%;
+  }
+
+  .io-decision-map {
+    color: #0f172a;
+  }
+
+  .io-decision-routes {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .decision-root,
+  .decision-branch {
+    position: absolute;
+    display: grid;
+    min-width: 6.5rem;
+    min-height: 2.9rem;
+    place-items: center;
+    border: 1px solid rgba(37, 99, 235, 0.18);
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.8);
+    font-size: 0.8rem;
+    font-weight: 800;
+  }
+
+  .decision-root {
+    left: 11%;
+    top: 43%;
+  }
+
+  .decision-branch {
+    left: 67%;
+  }
+
+  .branch-a {
+    top: 22%;
+  }
+
+  .branch-b {
+    top: 43%;
+  }
+
+  .branch-c {
+    top: 64%;
+  }
+
+  @media (max-width: 767px) {
+    .io-blueprint {
+      min-height: 18rem;
+    }
+
+    .io-blueprint::before {
+      inset: 1rem;
+    }
+
+    .io-node {
+      min-width: 5.4rem;
+      gap: 0.42rem;
+      padding: 0.46rem 0.5rem;
+    }
+
+    .io-node-icon,
+    .system-icon {
+      width: 1.65rem;
+      height: 1.65rem;
+      border-radius: 0.45rem;
+    }
+
+    .io-node-icon svg,
+    .system-icon svg {
+      width: 0.95rem;
+      height: 0.95rem;
+    }
+
+    .io-node strong,
+    .io-layer-copy strong {
+      font-size: 0.64rem;
+    }
+
+    .io-node small,
+    .io-layer-copy small {
+      display: none;
+    }
+
+    .io-core {
+      width: 4.2rem;
+      height: 4.2rem;
+    }
+
+    .node-dns {
+      left: 12%;
+      top: 20%;
+    }
+
+    .node-crm {
+      left: 9%;
+      top: 55%;
+    }
+
+    .node-vps {
+      right: 9%;
+      top: 17%;
+    }
+
+    .node-automation {
+      right: 8%;
+      top: 47%;
+    }
+
+    .node-website {
+      right: 10%;
+      bottom: 13%;
+    }
+
+    .node-monitoring,
+    .node-backup {
+      display: none;
+    }
+
+    .io-systems-flow {
+      inset: 4.2rem 0.85rem 3rem;
+    }
+
+    .system-block {
+      width: 7rem;
+      padding: 0.55rem;
+    }
+
+    .system-block small {
+      display: none;
+    }
+
+    .system-web {
+      left: 0;
+      top: 18%;
+    }
+
+    .system-api {
+      top: 12%;
+    }
+
+    .system-workers {
+      right: 0;
+      top: 18%;
+    }
+
+    .system-data {
+      left: 8%;
+      bottom: 12%;
+    }
+
+    .system-monitoring {
+      right: 2%;
+      bottom: 12%;
+    }
+
+    .io-systems-rows {
+      display: none;
+    }
+
+    .io-layer-row {
+      grid-template-columns: 6.5rem 0.65rem minmax(7rem, 1fr);
+      gap: 0.55rem;
+      margin-bottom: -1rem;
+    }
+
+    .io-layer-map {
+      padding: 3rem 1rem 1rem;
+    }
+
+    .io-layer-sheet {
+      min-height: 4.5rem;
+    }
+
+    .io-standard-preview {
+      grid-template-columns: 1fr;
+      padding: 2rem 1.5rem;
+    }
+
+    .site-frame {
+      height: 5.4rem;
+      transform: none;
+    }
+
+    .decision-root {
+      left: 8%;
+      top: 43%;
+    }
+
+    .decision-branch {
+      left: 62%;
+      min-width: 5.7rem;
+      font-size: 0.7rem;
+    }
+
+    .branch-a {
+      top: 22%;
+    }
+
+    .branch-b {
+      top: 43%;
+    }
+
+    .branch-c {
+      top: 64%;
+    }
+  }
+</style>

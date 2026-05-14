@@ -1,221 +1,323 @@
 ---
-import CallToAction from '~/components/widgets/CallToAction.astro';
-import Content from '~/components/widgets/Content.astro';
-import Features2 from '~/components/widgets/Features2.astro';
-import Hero from '~/components/widgets/Hero.astro';
+import IoBlueprintVisual from '~/components/iopartner/IoBlueprintVisual.astro';
 import Layout from '~/layouts/PageLayout.astro';
 
 const metadata = {
   title: 'Services',
+  description:
+    'Services IOPartner: consulting technique, systems & operations, déploiement standard et continuité technique pour PME.',
 };
+
+const capabilities = [
+  {
+    title: 'Consulting technique',
+    body: 'Arbitrage, revue, déblocage et cadrage avant d’engager du temps de build.',
+    meta: '60 CHF / 15 min · 140 CHF / h',
+  },
+  {
+    title: 'Systems & operations',
+    body: 'Infrastructure, backend léger, automatisation, supervision, intégrations et continuité.',
+    meta: 'scope sur devis',
+  },
+  {
+    title: 'Déploiement standard',
+    body: 'Présence web cadrée quand une build privée serait inutilement lourde.',
+    meta: 'dès 999 CHF',
+  },
+  {
+    title: 'Continuité technique',
+    body: 'Support, incidents, DNS, monitoring, corrections et évolutions après livraison.',
+    meta: 'selon besoin',
+  },
+];
+
+const outcomes = [
+  'Décision technique plus nette',
+  'Périmètre de build défendable',
+  'Infrastructure plus propre',
+  'Workflows moins manuels',
+  'Présence web maintenable',
+  'Point de contact stable',
+];
 ---
 
 <Layout metadata={metadata}>
-  <!-- Hero Widget ******************* -->
-
-  <Hero
-    id="services"
-    tagline="Nos services"
-    title="Des sites vitrines clé-en-main, pensés pour les PME romandes"
-    subtitle="IOPartner.ch combine automatisation et expertise humaine pour livrer des sites haut de gamme."
-    actions={[{ variant: 'primary', text: 'Voir les packs', href: '/pricing' }]}
-  >
-    <Fragment slot="image">
-      <div
-        class="relative aspect-[5/3] overflow-hidden rounded-2xl bg-gradient-to-br from-blue-700 via-slate-900 to-slate-800 p-10 text-left text-white shadow-2xl"
-      >
-        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Services automatisés</p>
-        <h4 class="mt-4 text-4xl font-semibold">Design · Contenu · Maintenance</h4>
-        <p class="mt-6 max-w-xl text-lg text-blue-100/90">
-          Une plateforme propriétaire qui orchestre la production pendant que nos experts se concentrent sur la qualité
-          et la relation client.
+  <main class="io-services">
+    <section class="io-shell io-hero">
+      <div>
+        <p class="io-kicker">Services</p>
+        <h1>Conseil, systèmes et déploiement au bon niveau.</h1>
+        <p>
+          IOPartner ne pousse pas chaque besoin vers du custom. On clarifie d’abord, puis on livre la forme utile:
+          consulting, systems & operations, ou déploiement standard.
         </p>
+        <div class="io-actions">
+          <a class="io-btn io-btn-primary" href="/contact#form">Envoyer le contexte</a>
+          <a class="io-btn io-btn-secondary" href="/pricing">Voir les tarifs</a>
+        </div>
       </div>
-    </Fragment>
-  </Hero>
+      <IoBlueprintVisual variant="decision" />
+    </section>
 
-  <!-- Features2 Widget ************** -->
+    <section class="io-shell io-capabilities">
+      {
+        capabilities.map((item) => (
+          <article>
+            <span>{item.meta}</span>
+            <h2>{item.title}</h2>
+            <p>{item.body}</p>
+          </article>
+        ))
+      }
+    </section>
 
-  <Features2
-    title="Trois offres, une même exigence"
-    subtitle="Choisissez la formule qui correspond à votre rythme de croissance."
-    columns={3}
-    items={[
-      {
-        title: 'Essentiel',
-        description: 'Site vitrine de 5 sections, intégration de vos contenus et mise en ligne accompagnée.',
-        icon: 'tabler:layout',
-      },
-      {
-        title: 'Automatisation',
-        description: 'Formulaires, prises de rendez‑vous et intégrations API sur devis pour automatiser vos flux.',
-        icon: 'tabler:api',
-      },
-      {
-        title: 'Continuité technique',
-        description:
-          'Mises à jour techniques, sauvegardes, gestion d’emails pro et accompagnement continu selon le périmètre opérationnel.',
-        icon: 'tabler:shield-check',
-      },
-    ]}
-  />
+    <section class="io-systems-band">
+      <div class="io-shell io-systems-grid">
+        <div>
+          <p class="io-kicker">Systems & operations</p>
+          <h2>La couche avancée reste séparée du site standard.</h2>
+          <p>
+            Quand il faut toucher à l’architecture, au backend, aux workflows ou à la continuité technique, le sujet est
+            cadré comme un système, pas comme une option de site.
+          </p>
+          <div class="io-stack-line">Docker · VPS · DNS · SSL · monitoring · workflows · API · dashboards</div>
+        </div>
+        <IoBlueprintVisual variant="systems" />
+      </div>
+    </section>
 
-  <!-- Content Widget **************** -->
+    <section class="io-shell io-outcomes">
+      <div>
+        <p class="io-kicker">Sorties concrètes</p>
+        <h2>Moins de théorie. Plus d’artefacts utiles.</h2>
+      </div>
+      <ul>
+        {outcomes.map((item) => <li>{item}</li>)}
+      </ul>
+    </section>
 
-  <Content
-    id="content"
-    isReversed
-    items={[
-      {
-        title: 'Production automatisée',
-        description:
-          'Notre pipeline assemble votre site en s’appuyant sur des gabarits sectoriels que nous adaptons à votre identité.',
-        icon: 'tabler:cube',
-      },
-      {
-        title: 'Contrôle humain',
-        description:
-          'Designers, rédacteurs et experts SEO valident chaque livrable pour garantir cohérence et conformité.',
-        icon: 'tabler:shield-check',
-      },
-      {
-        title: 'Livraison planifiée',
-        description:
-          'Nous partageons un rétroplanning clair et adaptons la mise en ligne selon vos contraintes métier.',
-        icon: 'tabler:inbox',
-      },
-      {
-        title: 'Suivi essentiel',
-        description: 'Points de contrôle réguliers, assistance pour vos mises à jour et recommandations pragmatiques.',
-        icon: 'tabler:report-analytics',
-      },
-    ]}
-  >
-    <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Notre méthodologie hybride</h3>
-      Automatisation pour la vitesse, experts pour la qualité.
-    </Fragment>
-
-    <Fragment slot="image">
-      <div
-        class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl"
-      >
-        <h4 class="text-3xl font-semibold">Pipeline supervisé</h4>
-        <p class="mt-6 max-w-sm text-blue-100/90">
-          Chaque projet suit un contrôle humain complet&nbsp;: contenus, design, conformité RGPD et tests de navigation.
+    <section class="io-shell io-standard">
+      <div>
+        <p class="io-kicker">Déploiement standard</p>
+        <h2>Quand le standard suffit, il doit rester propre.</h2>
+        <p>
+          Le format 999 CHF est gardé comme une baseline de lancement: rapide, cadrée, maintenable, sans prétendre être
+          une infrastructure sur mesure.
         </p>
+        <a class="io-btn io-btn-primary" href="/choose-template?plan=essential999">Choisir une base</a>
       </div>
-    </Fragment>
-  </Content>
+      <IoBlueprintVisual variant="standard" />
+    </section>
+  </main>
 
-  <!-- Content Widget **************** -->
+  <style>
+    .io-services {
+      --io-ink: #0f172a;
+      --io-muted: #5f6b7c;
+      --io-line: rgba(148, 163, 184, 0.22);
+      --io-blue: #0b63f6;
+      background:
+        linear-gradient(90deg, rgba(37, 99, 235, 0.045) 1px, transparent 1px),
+        linear-gradient(rgba(37, 99, 235, 0.045) 1px, transparent 1px), #f8fbff;
+      background-size:
+        34px 34px,
+        34px 34px,
+        100% 100%;
+      color: var(--io-ink);
+    }
 
-  <Content
-    id="seo"
-    isAfterContent
-    items={[
-      {
-        title: 'Balises on‑page',
-        description: 'Titres et méta‑descriptions de base.',
-        icon: 'tabler:map-pin',
-      },
-      {
-        title: 'Contenus visuels',
-        description:
-          'Sélection de visuels libres de droits ou coordination avec vos prestataires locaux pour un rendu cohérent.',
-        icon: 'tabler:photo',
-      },
-      {
-        title: 'Campagnes d’acquisition',
-        description: 'Landing pages, formulaires et scénarios email automatisés sur devis selon vos objectifs.',
-        icon: 'tabler:send',
-      },
-      {
-        title: 'Processus simple',
-        description: 'Échanges par email et validations par étapes. Pas d’espace client à gérer.',
-        icon: 'tabler:layout-dashboard',
-      },
-    ]}
-  >
-    <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Des leviers pour durer</h3>
-      Nous activons les bons outils pour générer des résultats mesurables.
-    </Fragment>
+    .io-shell {
+      width: min(100% - 2rem, 84rem);
+      margin-inline: auto;
+    }
 
-    <Fragment slot="image">
-      <div
-        class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-left text-white shadow-xl"
-      >
-        <h4 class="text-3xl font-semibold">Acquisition maîtrisée</h4>
-        <p class="mt-6 max-w-sm text-blue-100/90">
-          Nous vous aidons à prioriser les leviers efficaces et à mesurer les résultats réellement utiles à votre
-          activité.
-        </p>
-      </div>
-    </Fragment>
-  </Content>
+    .io-hero,
+    .io-systems-grid,
+    .io-standard {
+      display: grid;
+      grid-template-columns: minmax(0, 0.88fr) minmax(26rem, 1fr);
+      gap: 3rem;
+      align-items: center;
+    }
 
-  <!-- Features2 Widget ************** -->
+    .io-hero,
+    .io-standard {
+      padding: 5rem 0;
+    }
 
-  <Features2
-    id="support"
-    title="Systems & operations"
-    subtitle="Continuité technique, supervision et accompagnement après livraison."
-    columns={3}
-    items={[
-      {
-        title: 'Continuité technique',
-        description: 'Un point de contact stable pour garder le contexte après mise en ligne ou entre deux chantiers.',
-        icon: 'tabler:headset',
-      },
-      {
-        title: 'Supervision',
-        description:
-          'Vérifications régulières, monitoring, alertes et suivi opérationnel selon les systèmes concernés.',
-        icon: 'tabler:antenna',
-      },
-      {
-        title: 'Infrastructure',
-        description: 'DNS, SSL, sauvegardes, restauration, emails, déploiement et base Linux plus propre.',
-        icon: 'tabler:tools',
-      },
-      {
-        title: 'Automatisation',
-        description:
-          'Workflows, intégrations et réduction des tâches manuelles quand le besoin dépasse le simple site.',
-        icon: 'tabler:shield-check',
-      },
-      {
-        title: 'Support opérationnel',
-        description:
-          'Tickets, incidents, petites corrections et coordination technique légère selon le niveau attendu.',
-        icon: 'tabler:mail',
-      },
-      {
-        title: 'Évolutions sur devis',
-        description:
-          'Le périmètre d’accompagnement dépend du niveau de continuité, de l’infrastructure et des objectifs.',
-        icon: 'tabler:arrows-left-right',
-      },
-    ]}
-  />
+    h1,
+    h2 {
+      margin: 0;
+      font-weight: 850;
+      line-height: 1.05;
+    }
 
-  <!-- CallToAction Widget *********** -->
+    h1 {
+      max-width: 43rem;
+      font-size: 4rem;
+    }
 
-  <CallToAction
-    actions={[
-      {
-        variant: 'primary',
-        text: 'Planifier une démo',
-        href: '/contact#form',
-        icon: 'tabler:device-desktop-analytics',
-      },
-    ]}
-  >
-    <Fragment slot="title"> Discutons de votre prochaine mise en ligne </Fragment>
+    h2 {
+      font-size: 2.4rem;
+    }
 
-    <Fragment slot="subtitle">
-      Partagez vos objectifs; nous préparons un plan de lancement pragmatique avec IOPartner.ch.
-    </Fragment>
-  </CallToAction>
+    p {
+      color: var(--io-muted);
+      font-size: 1.1rem;
+      line-height: 1.7;
+    }
+
+    .io-kicker {
+      margin: 0 0 1rem;
+      color: var(--io-blue);
+      font-size: 0.78rem;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    .io-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      margin-top: 2rem;
+    }
+
+    .io-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 3rem;
+      border-radius: 999px;
+      padding: 0.78rem 1.35rem;
+      font-weight: 780;
+      text-decoration: none;
+    }
+
+    .io-btn-primary {
+      background: var(--io-blue);
+      color: #fff;
+    }
+
+    .io-btn-secondary {
+      border: 1px solid rgba(15, 23, 42, 0.22);
+      color: var(--io-ink);
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .io-capabilities {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      padding-bottom: 5rem;
+    }
+
+    .io-capabilities article {
+      min-height: 17rem;
+      border: 1px solid var(--io-line);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .io-capabilities span {
+      color: var(--io-blue);
+      font-size: 0.82rem;
+      font-weight: 820;
+      text-transform: uppercase;
+    }
+
+    .io-capabilities h2 {
+      margin-top: 1.1rem;
+      font-size: 1.55rem;
+    }
+
+    .io-systems-band {
+      padding: 5rem 0;
+      background: #061120;
+      color: #f8fafc;
+    }
+
+    .io-systems-band h2 {
+      color: #fff;
+      font-size: 3rem;
+    }
+
+    .io-systems-band p {
+      color: #cbd5e1;
+      max-width: 38rem;
+    }
+
+    .io-stack-line {
+      margin-top: 1.5rem;
+      color: #93c5fd;
+      font-weight: 760;
+      line-height: 1.6;
+    }
+
+    .io-outcomes {
+      display: grid;
+      grid-template-columns: minmax(0, 0.8fr) minmax(24rem, 1fr);
+      gap: 3rem;
+      padding: 5rem 0 2rem;
+      align-items: start;
+    }
+
+    .io-outcomes h2 {
+      font-size: 3rem;
+    }
+
+    .io-outcomes ul {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.8rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .io-outcomes li {
+      border: 1px solid var(--io-line);
+      border-radius: 0.8rem;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.74);
+      font-weight: 730;
+    }
+
+    .io-standard {
+      padding-bottom: 6rem;
+    }
+
+    @media (max-width: 1100px) {
+      .io-hero,
+      .io-systems-grid,
+      .io-standard,
+      .io-outcomes {
+        grid-template-columns: 1fr;
+      }
+
+      .io-capabilities {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .io-shell {
+        width: min(100% - 1rem, 84rem);
+      }
+
+      h1 {
+        font-size: 2.65rem;
+      }
+
+      .io-systems-band h2,
+      .io-outcomes h2 {
+        font-size: 2.15rem;
+      }
+
+      .io-capabilities,
+      .io-outcomes ul {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </Layout>

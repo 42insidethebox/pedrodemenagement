@@ -1,1309 +1,638 @@
 ---
 export const prerender = false;
+
+import IoBlueprintVisual from '~/components/iopartner/IoBlueprintVisual.astro';
+import IoProcessMap from '~/components/iopartner/IoProcessMap.astro';
 import Layout from '~/layouts/PageLayout.astro';
 
-import Hero from '~/components/widgets/Hero.astro';
-import Features from '~/components/widgets/Features.astro';
-import Features2 from '~/components/widgets/Features2.astro';
-import Steps from '~/components/widgets/Steps.astro';
-import Content from '~/components/widgets/Content.astro';
-import FAQs from '~/components/widgets/FAQs.astro';
-import Stats from '~/components/widgets/Stats.astro';
-import CallToAction from '~/components/widgets/CallToAction.astro';
-
 const metadata = {
-  title: 'IOPartner.ch — Consulting technique, projets web et outils numériques sur mesure',
+  title: 'IOPartner.ch — Consulting technique, systems & operations pour PME',
+  description:
+    'Consulting technique, systèmes opérationnels et déploiement standard pour PME suisses. Le standard quand il suffit, le sur mesure quand il faut.',
   ignoreTitleTemplate: true,
 };
+
+const processSteps = [
+  { label: '01', title: 'Diagnostic', detail: 'Comprendre le besoin réel.' },
+  { label: '02', title: 'Périmètre', detail: 'Séparer standard et sur mesure.' },
+  { label: '03', title: 'Build', detail: 'Livrer sans chantier inutile.' },
+  { label: '04', title: 'Continuité', detail: 'Garder le système propre.' },
+];
+
+const faqs = [
+  {
+    title: 'Quand choisir le consulting technique ?',
+    body: 'Quand il faut trancher une décision, débloquer une implémentation, relire une architecture ou éviter de lancer le mauvais chantier.',
+  },
+  {
+    title: 'Quand passer en systems & operations ?',
+    body: 'Quand le sujet implique infrastructure, backend, intégrations, automatisation, monitoring ou continuité technique au-delà d’un simple site.',
+  },
+  {
+    title: 'Le déploiement standard dès 999 CHF existe toujours ?',
+    body: 'Oui. Il reste pertinent quand une présence web cadrée suffit. Il n’est pas vendu comme du sur mesure déguisé.',
+  },
+  {
+    title: 'Pouvez-vous rester après la mise en ligne ?',
+    body: 'Oui. Le suivi peut couvrir corrections, incidents, DNS, monitoring, petites évolutions ou second chantier selon le contexte.',
+  },
+];
 ---
 
 <Layout metadata={metadata}>
-  <!-- Hero Widget ******************* -->
-
-  <Hero
-    id="process"
-    class="tsw-home-hero"
-    tagline="Consulting technique · Systems & operations · Sites standardisés"
-    actions={[
-      {
-        variant: 'primary',
-        text: 'Parler de votre besoin',
-        href: '/contact#form',
-        icon: 'tabler:arrow-right',
-      },
-      { text: 'Voir les tarifs', href: '/pricing' },
-    ]}
-  >
-    <Fragment slot="title">Clarté technique, delivery propre et sites web quand le standard suffit.</Fragment>
-
-    <Fragment slot="subtitle">
-      Nous aidons les PME et indépendants à choisir le bon niveau d’intervention: cadrer vite, construire sur mesure, ou
-      lancer un site simple dès 999 CHF.
-    </Fragment>
-
-    <Fragment slot="bg">
-      <div class="tsw-home-hero-bg"></div>
-      <div class="tsw-home-hero-plate" aria-hidden="true"></div>
-      <div class="tsw-home-hero-axis" aria-hidden="true"></div>
-      <div class="tsw-home-hero-orbit" aria-hidden="true"></div>
-    </Fragment>
-
-    <Fragment slot="image">
-      <div class="tsw-home-hero-shell">
-        <div class="tsw-home-hero-visual">
-          <div class="tsw-home-hero-bar">
-            <span class="tsw-home-hero-chip">IOPartner.ch</span>
-            <span class="tsw-home-hero-meta">Consulting technique • Systems & operations • Sites standardisés</span>
-          </div>
-
-          <article class="tsw-home-hero-intro">
-            <p class="tsw-home-hero-kicker">Choisir le bon point d’entrée</p>
-            <h3>Trois portes claires selon le besoin réel.</h3>
-            <p>
-              Consulting pour clarifier ou débloquer, systems & operations pour construire plus sérieusement, site
-              standardisé quand une présence web simple suffit vraiment.
-            </p>
-          </article>
-
-          <div class="tsw-home-hero-entry-grid">
-            <a class="tsw-home-hero-entry" href="/contact#form">
-              <div class="tsw-home-hero-entry-head">
-                <span class="tsw-home-hero-entry-label">Consulting technique</span>
-                <strong>60 CHF / 15 min</strong>
-              </div>
-              <p>Arbitrer, débloquer, valider une direction.</p>
-              <span class="tsw-home-hero-entry-cta">Réserver un consulting</span>
-            </a>
-
-            <a class="tsw-home-hero-entry" href="/contact#form">
-              <div class="tsw-home-hero-entry-head">
-                <span class="tsw-home-hero-entry-label">Systems & operations</span>
-                <strong>Sur devis</strong>
-              </div>
-              <p>Codebase privée, backend, infra, automatisation, continuité.</p>
-              <span class="tsw-home-hero-entry-cta">Discuter du scope</span>
-            </a>
-
-            <a class="tsw-home-hero-entry" href="/pricing?tab=website#pricing-options">
-              <div class="tsw-home-hero-entry-head">
-                <span class="tsw-home-hero-entry-label">Site standardisé</span>
-                <strong>Dès 999 CHF</strong>
-              </div>
-              <p>Site vitrine simple, rapide et propre quand cela suffit.</p>
-              <span class="tsw-home-hero-entry-cta">Voir les packs site</span>
-            </a>
+  <main class="io-home">
+    <section class="io-hero" id="process">
+      <div class="io-shell io-hero-grid">
+        <div class="io-hero-copy">
+          <p class="io-kicker">Consulting technique · Systems & operations · Déploiement standard</p>
+          <h1>Clarté technique, delivery propre et sites web quand le standard suffit.</h1>
+          <p class="io-lead">
+            Nous aidons les PME et indépendants à choisir le bon niveau d’intervention: cadrer vite, construire sur
+            mesure, ou lancer une présence web propre dès 999 CHF.
+          </p>
+          <div class="io-actions">
+            <a class="io-btn io-btn-primary" href="/contact#form">Parler de votre besoin</a>
+            <a class="io-btn io-btn-secondary" href="/pricing">Voir les tarifs</a>
           </div>
         </div>
+        <IoBlueprintVisual variant="hero" />
       </div>
-    </Fragment>
-  </Hero>
+    </section>
 
-  <!-- Features Widget *************** -->
+    <section class="io-shell io-entry-band" id="entry-points">
+      <div class="io-entry-head">
+        <div>
+          <p class="io-kicker">Décider le bon niveau d’intervention</p>
+          <h2>Trois portes d’entrée claires selon le besoin réel.</h2>
+        </div>
+        <a href="/pricing" class="io-link">Comparer les formats</a>
+      </div>
 
-  <Features
-    id="features"
-    columns={3}
-    tagline='<span class="iop-entry-tagline">Ce que nous faisons</span>'
-    title="Trois points d’entrée, selon le besoin réel"
-    subtitle="Clarifier vite, construire proprement, ou lancer un site standard quand c’est suffisant."
-    classes={{
-      container:
-        '!max-w-6xl iop-entry-section overflow-hidden rounded-[2rem] border border-sky-100/10 shadow-[0_34px_90px_-56px_rgba(2,6,23,0.9)]',
-      headline: {
-        container: 'max-w-4xl',
-        title: 'text-white text-3xl md:text-5xl',
-        subtitle: 'text-base md:text-xl text-slate-300/84',
-      },
-      items: {
-        container: 'gap-5 lg:gap-6',
-        panel: 'iop-entry-card max-w-none !flex-col rounded-[1.7rem] p-6 md:p-7',
-        title: 'text-white text-2xl md:text-[1.55rem] leading-tight',
-        description: 'text-slate-200/88 text-[0.98rem] leading-7',
-        icon: 'iop-entry-icon !mr-0 mb-5',
-      },
-    }}
-    items={[
-      {
-        title: 'Consulting technique',
-        description:
-          '60 CHF / 15 min ou 140 CHF / h pour cadrer un sujet, arbitrer une décision, débloquer une implémentation ou éviter un mauvais chantier.',
-        icon: 'tabler:sparkles',
-        classes: {
-          panel: 'iop-entry-card--consulting',
-          icon: 'iop-entry-icon--consulting',
-        },
-      },
-      {
-        title: 'Systems & operations',
-        description:
-          'Codebase privée, backend, intégrations, automatisations, infrastructure et continuité technique quand le standard ne suffit plus.',
-        icon: 'tabler:server',
-        classes: {
-          panel: 'iop-entry-card--systems',
-          icon: 'iop-entry-icon--systems',
-        },
-      },
-      {
-        title: 'Site standardisé',
-        description:
-          'Une offre simple dès 999 CHF pour les cas où une présence en ligne propre et rapide est vraiment tout ce qu’il faut.',
-        icon: 'tabler:layout',
-        classes: {
-          panel: 'iop-entry-card--website',
-          icon: 'iop-entry-icon--website',
-        },
-      },
-    ]}
-  >
-    <Fragment slot="bg">
-      <div class="iop-entry-bg"></div>
-      <div class="iop-entry-bg-grid" aria-hidden="true"></div>
-      <div class="iop-entry-bg-axis" aria-hidden="true"></div>
-      <div class="iop-entry-bg-glow iop-entry-bg-glow--warm" aria-hidden="true"></div>
-      <div class="iop-entry-bg-glow iop-entry-bg-glow--cool" aria-hidden="true"></div>
-    </Fragment>
-  </Features>
+      <div class="io-entry-grid">
+        <a class="io-entry-item" href="/contact#form">
+          <span class="io-entry-icon io-entry-icon-decision"></span>
+          <h3>Consulting technique</h3>
+          <p>Arbitrer, cadrer, débloquer. Décisions rapides, impact direct.</p>
+          <strong>60 CHF / 15 min</strong>
+        </a>
+        <a class="io-entry-item" href="/pricing?tab=systems#systems-operations">
+          <span class="io-entry-icon io-entry-icon-systems"></span>
+          <h3>Systems & operations</h3>
+          <p>Infrastructure, automatisation, supervision et intégrations.</p>
+          <strong>Sur devis</strong>
+        </a>
+        <a class="io-entry-item" href="/pricing?tab=website#standard-deployment">
+          <span class="io-entry-icon io-entry-icon-standard"></span>
+          <h3>Déploiement standard</h3>
+          <p>Site vitrine professionnel livré vite, au juste prix dès 999 CHF.</p>
+          <strong>Dès 999 CHF</strong>
+        </a>
+      </div>
+    </section>
 
-  <!-- Content Widget **************** -->
+    <section class="io-shell io-philosophy">
+      <p>Le mauvais projet coûte plus cher que le bon arbitrage.</p>
+      <div>
+        <span>Parfois un site standard suffit.</span>
+        <span>Parfois il faut une infrastructure dédiée.</span>
+        <span>Le rôle du consulting est de distinguer les deux rapidement.</span>
+      </div>
+    </section>
 
-  <Content
-    isReversed
-    tagline="Méthode"
-    title="On commence par clarifier, puis on livre au bon niveau"
-    items={[
-      {
-        title: 'Diagnostic rapide',
-        description:
-          'On distingue vite si le sujet relève d’un échange de cadrage, d’un projet sur mesure, ou simplement d’un site standard à lancer.',
-      },
-      {
-        title: 'Périmètre net',
-        description:
-          'Vous savez ce qui est standard, ce qui demande une build privée, et ce qui peut être tranché en consulting court.',
-      },
-      {
-        title: 'Exécution suivie',
-        description:
-          'Une fois le bon format choisi, nous exécutons proprement et restons disponibles pour la suite si le besoin évolue.',
-      },
-    ]}
-  >
-    <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
-        Pas de survente, pas de détour inutile
-      </h3>
-      Le bon service n’est pas toujours le plus gros projet. Parfois il faut juste un site. Parfois il faut d’abord trancher
-      une décision technique.
-    </Fragment>
-
-    <Fragment slot="image">
-      <div
-        class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-slate-900 to-slate-800 p-10 text-left text-white shadow-xl"
-      >
-        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Parcours clair</p>
-        <h4 class="mt-4 text-3xl font-semibold">Diagnostic → Exécution → Suivi</h4>
-        <p class="mt-6 max-w-xs text-base text-blue-100/90">
-          On choisit d’abord le bon niveau d’intervention, puis on avance sans vous noyer dans la technique.
+    <section class="io-shell io-process-section">
+      <div class="io-section-head">
+        <p class="io-kicker">Méthode</p>
+        <h2>Un cadrage court avant l’exécution.</h2>
+        <p>
+          L’objectif n’est pas de grossir le projet. L’objectif est de choisir la forme utile, puis d’exécuter
+          proprement.
         </p>
       </div>
-    </Fragment>
+      <IoProcessMap steps={processSteps} />
+    </section>
 
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
-    </Fragment>
-  </Content>
-
-  <!-- Steps Widget ****************** -->
-
-  <Steps
-    title="Une méthode simple pour cadrer puis livrer"
-    tagline="Parcours"
-    items={[
-      {
-        title: 'Premier échange',
-        description:
-          'Vous décrivez le besoin, le blocage ou le projet, et nous identifions rapidement la bonne porte d’entrée.',
-        icon: 'tabler:edit',
-      },
-      {
-        title: 'Cadrage adapté',
-        description:
-          'Consulting court, projet sur mesure ou site standardisé: le format est clarifié avant d’engager du temps inutile.',
-        icon: 'tabler:clipboard-list',
-      },
-      {
-        title: 'Exécution supervisée',
-        description:
-          'Nous produisons, intégrons ou débloquons le sujet avec un périmètre clair et un point de contact unique.',
-        icon: 'tabler:robot',
-      },
-      {
-        title: 'Suivi ou extension',
-        description:
-          'Une fois la première étape livrée, nous pouvons rester en support, ouvrir un second chantier ou simplement clôturer proprement.',
-        icon: 'tabler:rocket',
-      },
-    ]}
-  >
-    <Fragment slot="image">
-      <div
-        class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl"
-      >
-        <p class="text-sm uppercase tracking-[0.35em] text-blue-200/80">Timeline</p>
-        <p class="mt-6 max-w-xs text-base text-blue-100/90">
-          Un site standard se lance vite. Un consulting court peut débloquer un sujet en une session. Un projet sur
-          mesure suit ensuite un cadrage séparé, sans confusion entre les niveaux.
-        </p>
+    <section class="io-systems-section" id="systems-operations">
+      <div class="io-shell io-systems-grid">
+        <div class="io-systems-copy">
+          <p class="io-kicker">Systems & operations</p>
+          <h2>Quand le site devient système.</h2>
+          <p>
+            Infrastructure, automatisation, backend léger, supervision et continuité technique pour les sujets qui
+            dépassent réellement le template.
+          </p>
+          <div class="io-stack-line">Docker · VPS · DNS · SSL · monitoring · workflows · API · dashboards</div>
+          <a class="io-btn io-btn-light" href="/pricing?tab=systems#systems-operations">Voir systems & operations</a>
+        </div>
+        <IoBlueprintVisual variant="systems" />
       </div>
-    </Fragment>
-  </Steps>
+    </section>
 
-  <!-- Content Widget **************** -->
+    <section class="io-shell io-proof-grid">
+      <article>
+        <p class="io-kicker">Consulting</p>
+        <h2>Ce qui repart avec vous.</h2>
+        <p>Une carte de décision, un périmètre plus net, ou une direction technique défendable.</p>
+        <IoBlueprintVisual variant="decision" />
+      </article>
+      <article id="standard-deployment">
+        <p class="io-kicker">Déploiement standard</p>
+        <h2>Quand une build privée n’est pas nécessaire.</h2>
+        <p>Un format de lancement cadré pour une présence web propre, rapide et maintenable.</p>
+        <IoBlueprintVisual variant="standard" />
+      </article>
+    </section>
 
-  <Content
-    isAfterContent
-    items={[
-      {
-        title: 'Cadrage & arbitrage',
-        description:
-          'Audit rapide, décisions techniques, priorisation et regard externe quand il faut trancher proprement.',
-      },
-      {
-        title: 'Intégration & automatisation',
-        description:
-          'Connexion d’outils, formulaires, rendez-vous, flux métier ou scripts ciblés quand le besoin sort du simple site.',
-      },
-      {
-        title: 'Site standardisé',
-        description:
-          'Une présence en ligne simple, crédible et rapide à déployer quand le sujet n’a pas besoin d’une build lourde.',
-      },
-      {
-        title: 'Support & continuité',
-        description:
-          'Maintenance, tickets, suivi ou second chantier si vous avez besoin de continuité après la première livraison.',
-      },
-    ]}
-  >
-    <Fragment slot="content">
-      Tous les sujets n’ont pas besoin du même niveau d’effort. L’important est de choisir la formule utile, pas de
-      pousser tout le monde vers la même offre.
-    </Fragment>
-
-    <Fragment slot="image">
-      <div
-        class="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-700 p-10 text-white shadow-xl"
-      >
-        <h4 class="text-3xl font-semibold">Le standard quand il suffit. Le sur mesure quand il faut.</h4>
-        <ul class="mt-6 space-y-3 text-left text-blue-100/90">
-          <li>✓ Consulting court pour arbitrer vite</li>
-          <li>✓ Projet plus large quand il faut construire</li>
-          <li>✓ Site standard dès 999 CHF quand le besoin est simple</li>
-        </ul>
+    <section class="io-shell io-pricing-strip">
+      <div>
+        <strong>60 CHF / 15 min</strong>
+        <span>Consulting ciblé</span>
       </div>
-    </Fragment>
+      <div>
+        <strong>140 CHF / h</strong>
+        <span>Support technique avancé</span>
+      </div>
+      <div>
+        <strong>999 CHF</strong>
+        <span>Déploiement standard</span>
+      </div>
+      <div>
+        <strong>Sur devis</strong>
+        <span>Systems & operations</span>
+      </div>
+    </section>
 
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
-    </Fragment>
-  </Content>
+    <section class="io-shell io-faq" id="faq">
+      <div class="io-section-head">
+        <p class="io-kicker">FAQ</p>
+        <h2>Questions fréquentes</h2>
+      </div>
+      <div class="io-faq-list">
+        {
+          faqs.map((faq) => (
+            <details>
+              <summary>{faq.title}</summary>
+              <p>{faq.body}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
 
-  <!-- Features2 Widget ************** -->
-
-  <Features2
-    id="included"
-    title="Formats d’intervention"
-    subtitle="Selon le niveau de complexité et ce qu’il est vraiment utile de construire"
-    tagline="Concrètement"
-    items={[
-      {
-        title: 'Consulting ciblé',
-        description: 'Une session courte pour cadrer, arbitrer, challenger une solution ou débloquer un chantier.',
-        icon: 'tabler:world',
-      },
-      {
-        title: 'Projet sur mesure',
-        description: 'Build privée, backend léger, intégration métier ou développement plus poussé quand nécessaire.',
-        icon: 'tabler:git-branch',
-      },
-      {
-        title: 'Site standardisé',
-        description:
-          'Une option rapide et propre pour les lancements simples, sans transformer un besoin basique en gros projet.',
-        icon: 'tabler:cpu',
-      },
-      {
-        title: 'Support continu',
-        description:
-          'Mises à jour, tickets, maintenance et suivi après livraison si vous voulez une continuité claire.',
-        icon: 'tabler:ruler-measure',
-      },
-      {
-        title: 'Automatisation utile',
-        description:
-          'Scripts, formulaires, rendez-vous, notifications ou connexions ciblées quand cela fait vraiment gagner du temps.',
-        icon: 'tabler:receipt',
-      },
-      {
-        title: 'Coordination technique',
-        description:
-          'Un interlocuteur pour garder le sujet lisible entre besoin métier, exécution et prochaines décisions.',
-        icon: 'tabler:route',
-      },
-    ]}
-  >
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
-    </Fragment>
-  </Features2>
-
-  <!-- Stats Widget ****************** -->
-
-  <Stats
-    title="Repères de départ"
-    stats={[
-      { title: 'Consulting express', amount: '60 CHF / 15 min' },
-      { title: 'Consulting', amount: '140 CHF / h' },
-      { title: 'Sur mesure', amount: 'scope sur devis' },
-      { title: 'Site standard', amount: '999 CHF' },
-    ]}
-  />
-
-  <!-- FAQs Widget ******************* -->
-
-  <FAQs
-    id="faq"
-    title="Questions fréquentes"
-    subtitle="Transparence totale sur notre façon de travailler."
-    tagline="FAQ"
-    classes={{ container: 'max-w-6xl' }}
-    items={[
-      {
-        title: 'Quand faut-il choisir le consulting plutôt qu’un pack site ?',
-        description:
-          'Quand le vrai besoin est de trancher une décision, débloquer un sujet technique, challenger une implémentation ou cadrer un chantier avant d’écrire plus de code.',
-      },
-      {
-        title: 'Prenez-vous aussi des projets plus techniques ?',
-        description:
-          'Oui. Intégrations, automatisations, scripts, Linux, backend léger, code privé, ou développement plus large si le sujet dépasse l’offre standardisée.',
-      },
-      {
-        title: 'Le site dès 999 CHF existe toujours ?',
-        description:
-          'Oui. Il reste pertinent quand vous avez surtout besoin d’une présence en ligne propre et rapide. Nous le traitons simplement comme une offre standard, pas comme l’unique identité du site.',
-      },
-      {
-        title: 'Comment cadrez-vous un projet sur mesure ?',
-        description:
-          'Nous clarifions d’abord le besoin, les contraintes, le périmètre utile et le niveau d’effort. Ensuite seulement nous proposons un chiffrage et une séquence de livraison.',
-      },
-      {
-        title: 'Pouvez-vous rester ensuite en support ?',
-        description:
-          'Oui. Nous pouvons rester disponibles en maintenance, tickets, visio planifiée ou accompagnement plus continu selon le sujet.',
-      },
-    ]}
-  />
-
-  <!-- CallToAction Widget *********** -->
-
-  <CallToAction
-    actions={[
-      {
-        variant: 'primary',
-        text: 'Parler de votre besoin',
-        href: '/contact#form',
-        icon: 'tabler:arrow-right',
-      },
-      {
-        text: 'Voir les tarifs',
-        href: '/pricing',
-      },
-    ]}
-  >
-    <Fragment slot="title">Commencez par le bon niveau d’intervention</Fragment>
-
-    <Fragment slot="subtitle">
-      Consulting technique, projet sur mesure ou site standard dès 999 CHF: nous vous aidons à choisir l’option utile au
-      lieu de pousser tout le monde vers la même offre.
-    </Fragment>
-  </CallToAction>
+    <section class="io-shell io-final-cta">
+      <h2>Commencer par le bon niveau d’intervention.</h2>
+      <p>
+        Envoyez le contexte. Nous vous indiquons si le bon mouvement est consulting, systems, ou déploiement standard.
+      </p>
+      <div class="io-actions">
+        <a class="io-btn io-btn-primary" href="/contact#form">Envoyer le contexte</a>
+        <a class="io-btn io-btn-secondary" href="/pricing">Voir les tarifs</a>
+      </div>
+    </section>
+  </main>
 
   <style>
-    .iop-entry-bg,
-    .iop-entry-bg-grid,
-    .iop-entry-bg-axis,
-    .iop-entry-bg-glow {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-    }
-
-    .iop-entry-bg {
+    .io-home {
+      --io-dark: #07111f;
+      --io-ink: #0f172a;
+      --io-muted: #5f6b7c;
+      --io-line: rgba(148, 163, 184, 0.22);
+      --io-blue: #0b63f6;
+      overflow: hidden;
       background:
-        radial-gradient(circle at 10% 14%, rgba(249, 115, 22, 0.54), transparent 24%),
-        radial-gradient(circle at 92% 16%, rgba(37, 99, 235, 0.38), transparent 26%),
-        radial-gradient(circle at 76% 82%, rgba(239, 68, 68, 0.34), transparent 18%),
-        linear-gradient(140deg, rgba(2, 6, 23, 0.98), rgba(10, 19, 38, 0.98) 38%, rgba(15, 23, 42, 0.96) 100%);
-    }
-
-    .iop-entry-bg-grid {
-      inset: 1.5rem max(1rem, 5vw);
-      border: 1px solid rgba(125, 211, 252, 0.1);
-      border-radius: 2rem;
-      background:
-        linear-gradient(90deg, #f97316 0%, #ef4444 100%),
-        linear-gradient(90deg, rgba(125, 211, 252, 0.05) 1px, transparent 1px),
-        linear-gradient(rgba(125, 211, 252, 0.05) 1px, transparent 1px),
-        linear-gradient(135deg, rgba(249, 115, 22, 0.14), transparent 32%, rgba(59, 130, 246, 0.08) 76%, transparent),
-        linear-gradient(180deg, rgba(15, 23, 42, 0.88), rgba(2, 6, 23, 0.78));
+        linear-gradient(90deg, rgba(37, 99, 235, 0.045) 1px, transparent 1px),
+        linear-gradient(rgba(37, 99, 235, 0.045) 1px, transparent 1px),
+        linear-gradient(180deg, #f8fbff 0%, #ffffff 38%, #f8fbff 100%);
       background-size:
-        9rem 2px,
-        24px 24px,
-        24px 24px,
-        100% 100%,
+        34px 34px,
+        34px 34px,
         100% 100%;
-      background-position:
-        1.4rem 1.15rem,
-        0 0,
-        0 0,
-        0 0,
-        0 0;
-      background-repeat: no-repeat, repeat, repeat, no-repeat, no-repeat;
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.06),
-        0 34px 80px -52px rgba(2, 6, 23, 0.82);
-      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.96), rgba(0, 0, 0, 0.4));
+      color: var(--io-ink);
     }
 
-    .iop-entry-bg-grid::before,
-    .iop-entry-bg-grid::after,
-    .iop-entry-bg-axis::before,
-    .iop-entry-bg-axis::after {
-      content: '';
-      position: absolute;
-      pointer-events: none;
+    .io-shell {
+      width: min(100% - 2rem, 82rem);
+      margin-inline: auto;
     }
 
-    .iop-entry-bg-grid::before {
-      inset: 1rem;
-      border: 1px dashed rgba(125, 211, 252, 0.12);
-      border-radius: 1.35rem;
+    .io-hero {
+      padding: 4.8rem 0 3.6rem;
     }
 
-    .iop-entry-bg-grid::after {
-      left: 50%;
-      top: 1rem;
-      bottom: 1rem;
-      width: 1px;
-      background: linear-gradient(180deg, rgba(59, 130, 246, 0.16), rgba(249, 115, 22, 0.1));
-      transform: translateX(-0.5px);
-      opacity: 0.8;
-    }
-
-    .iop-entry-bg-axis::before {
-      left: 8%;
-      right: 8%;
-      top: 9.8rem;
-      height: 1px;
-      background:
-        linear-gradient(90deg, transparent, rgba(125, 211, 252, 0.16) 10%, rgba(125, 211, 252, 0.16) 90%, transparent),
-        linear-gradient(
-          90deg,
-          transparent 0%,
-          transparent 18%,
-          rgba(59, 130, 246, 0.24) 18%,
-          rgba(59, 130, 246, 0.24) 18.5%,
-          transparent 18.5%,
-          transparent 49.4%,
-          rgba(249, 115, 22, 0.24) 49.4%,
-          rgba(249, 115, 22, 0.24) 50.6%,
-          transparent 50.6%,
-          transparent 81.5%,
-          rgba(239, 68, 68, 0.2) 81.5%,
-          rgba(239, 68, 68, 0.2) 82%,
-          transparent 82%
-        );
-      opacity: 0.72;
-    }
-
-    .iop-entry-bg-axis::after {
-      top: 3.8rem;
-      bottom: 3.8rem;
-      left: 50%;
-      width: 1px;
-      background:
-        linear-gradient(180deg, transparent, rgba(125, 211, 252, 0.14) 14%, rgba(125, 211, 252, 0.14) 86%, transparent),
-        linear-gradient(
-          180deg,
-          transparent 0%,
-          transparent 24%,
-          rgba(59, 130, 246, 0.18) 24%,
-          rgba(59, 130, 246, 0.18) 24.5%,
-          transparent 24.5%,
-          transparent 49.4%,
-          rgba(249, 115, 22, 0.2) 49.4%,
-          rgba(249, 115, 22, 0.2) 50.6%,
-          transparent 50.6%,
-          transparent 75.5%,
-          rgba(239, 68, 68, 0.16) 75.5%,
-          rgba(239, 68, 68, 0.16) 76%,
-          transparent 76%
-        );
-      transform: translateX(-0.5px);
-      opacity: 0.58;
-    }
-
-    .iop-entry-bg-glow {
-      filter: blur(24px);
-      opacity: 0.82;
-    }
-
-    .iop-entry-bg-glow--warm {
-      inset: 1.5rem auto auto 2%;
-      width: min(16rem, 26vw);
-      height: min(16rem, 26vw);
-      border-radius: 999px;
-      background:
-        radial-gradient(circle, rgba(251, 146, 60, 0.28) 0%, rgba(249, 115, 22, 0.18) 40%, transparent 72%),
-        radial-gradient(circle at 68% 68%, rgba(239, 68, 68, 0.14), transparent 56%);
-    }
-
-    .iop-entry-bg-glow--cool {
-      inset: auto 4% 0 auto;
-      width: min(18rem, 28vw);
-      height: min(18rem, 28vw);
-      border-radius: 999px;
-      background:
-        radial-gradient(circle, rgba(14, 165, 233, 0.16) 0%, rgba(37, 99, 235, 0.12) 38%, transparent 72%),
-        radial-gradient(circle at 35% 35%, rgba(125, 211, 252, 0.08), transparent 58%);
-    }
-
-    .iop-entry-section {
-      position: relative;
-    }
-
-    .iop-entry-section::before {
-      content: '';
-      position: absolute;
-      top: 1.35rem;
-      left: 1.5rem;
-      width: 9rem;
-      height: 0.3rem;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #f97316 0%, #ef4444 100%);
-      box-shadow:
-        0 0 0 1px rgba(249, 115, 22, 0.12),
-        0 0 28px rgba(239, 68, 68, 0.2);
-      z-index: 2;
-      pointer-events: none;
-    }
-
-    .iop-entry-tagline {
-      display: inline-flex;
+    .io-hero-grid,
+    .io-systems-grid,
+    .io-proof-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.86fr) minmax(26rem, 1.14fr);
+      gap: 3.6rem;
       align-items: center;
-      gap: 0.55rem;
-      color: #fdba74;
-      letter-spacing: 0.18em;
     }
 
-    .iop-entry-tagline::before {
-      content: '';
-      width: 0.8rem;
-      height: 0.8rem;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #f97316, #ef4444);
-      box-shadow: 0 0 0 0.3rem rgba(249, 115, 22, 0.12);
+    .io-hero-copy h1,
+    .io-entry-head h2,
+    .io-section-head h2,
+    .io-systems-copy h2,
+    .io-proof-grid h2,
+    .io-final-cta h2 {
+      margin: 0;
+      font-weight: 850;
+      line-height: 1.04;
     }
 
-    .iop-entry-card {
-      position: relative;
-      overflow: hidden;
-      --entry-border: rgba(148, 163, 184, 0.18);
-      --entry-grid: rgba(148, 163, 184, 0.08);
-      --entry-glow: rgba(59, 130, 246, 0.18);
-      --entry-highlight: rgba(255, 255, 255, 0.08);
-      --entry-bg-top: rgba(15, 23, 42, 0.94);
-      --entry-bg-bottom: rgba(15, 23, 42, 0.82);
-      --entry-rail: linear-gradient(90deg, rgba(148, 163, 184, 0.3), rgba(148, 163, 184, 0));
-      border: 1px solid var(--entry-border);
-      background:
-        var(--entry-rail) top / 100% 3px no-repeat,
-        linear-gradient(180deg, var(--entry-bg-top), var(--entry-bg-bottom)),
-        linear-gradient(135deg, rgba(255, 255, 255, 0.03), transparent 44%, rgba(255, 255, 255, 0.02) 72%, transparent);
-      box-shadow:
-        inset 0 1px 0 var(--entry-highlight),
-        0 24px 60px -42px rgba(15, 23, 42, 0.72);
-      transition:
-        transform 220ms ease,
-        box-shadow 220ms ease,
-        border-color 220ms ease;
+    .io-hero-copy h1 {
+      max-width: 42rem;
+      font-size: 4.05rem;
     }
 
-    .iop-entry-card::before,
-    .iop-entry-card::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
+    .io-kicker {
+      margin: 0 0 1rem;
+      color: var(--io-blue);
+      font-size: 0.78rem;
+      font-weight: 850;
+      text-transform: uppercase;
     }
 
-    .iop-entry-card::before {
-      background:
-        linear-gradient(90deg, var(--entry-grid) 1px, transparent 1px),
-        linear-gradient(var(--entry-grid) 1px, transparent 1px);
-      background-size:
-        18px 18px,
-        18px 18px;
-      opacity: 0.5;
+    .io-lead,
+    .io-section-head p,
+    .io-systems-copy p,
+    .io-proof-grid p,
+    .io-final-cta p {
+      color: var(--io-muted);
+      font-size: 1.12rem;
+      line-height: 1.72;
     }
 
-    .iop-entry-card::after {
-      inset: auto -10% -24% auto;
-      width: 9rem;
-      height: 9rem;
-      border-radius: 999px;
-      background: radial-gradient(circle, var(--entry-glow), transparent 72%);
-      filter: blur(8px);
-      opacity: 0.72;
-      transition:
-        transform 220ms ease,
-        opacity 220ms ease;
+    .io-lead {
+      max-width: 37rem;
+      margin: 1.35rem 0 0;
+      font-size: 1.15rem;
     }
 
-    .iop-entry-card:hover {
-      transform: translateY(-6px);
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.1),
-        0 28px 72px -42px rgba(15, 23, 42, 0.84);
-    }
-
-    .iop-entry-card:hover::after {
-      transform: scale(1.08);
-      opacity: 0.88;
-    }
-
-    .iop-entry-card--consulting {
-      --entry-border: rgba(125, 211, 252, 0.16);
-      --entry-grid: rgba(125, 211, 252, 0.08);
-      --entry-glow: rgba(59, 130, 246, 0.24);
-      --entry-bg-top: rgba(10, 25, 49, 0.96);
-      --entry-bg-bottom: rgba(6, 17, 35, 0.88);
-      --entry-rail: linear-gradient(90deg, #60a5fa 0%, #2563eb 100%);
-    }
-
-    .iop-entry-card--systems {
-      --entry-border: rgba(34, 211, 238, 0.14);
-      --entry-grid: rgba(34, 211, 238, 0.08);
-      --entry-glow: rgba(34, 211, 238, 0.2);
-      --entry-bg-top: rgba(8, 32, 54, 0.96);
-      --entry-bg-bottom: rgba(4, 14, 28, 0.88);
-      --entry-rail: linear-gradient(90deg, #22d3ee 0%, #0ea5e9 100%);
-    }
-
-    .iop-entry-card--website {
-      --entry-border: rgba(251, 146, 60, 0.2);
-      --entry-grid: rgba(251, 146, 60, 0.09);
-      --entry-glow: rgba(249, 115, 22, 0.26);
-      --entry-bg-top: rgba(120, 53, 15, 0.94);
-      --entry-bg-bottom: rgba(61, 23, 16, 0.9);
-      --entry-rail: linear-gradient(90deg, #f97316 0%, #ef4444 100%);
-    }
-
-    .iop-entry-icon {
-      position: relative;
-      z-index: 1;
-      width: 3.6rem;
-      height: 3.6rem;
-      padding: 0.85rem;
-      border-radius: 1rem;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.08),
-        0 14px 34px -24px rgba(15, 23, 42, 0.7);
-    }
-
-    .iop-entry-icon--consulting {
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.92), rgba(29, 78, 216, 0.84));
-    }
-
-    .iop-entry-icon--systems {
-      background: linear-gradient(135deg, rgba(14, 165, 233, 0.92), rgba(8, 145, 178, 0.84));
-    }
-
-    .iop-entry-icon--website {
-      background: linear-gradient(135deg, rgba(249, 115, 22, 0.96), rgba(239, 68, 68, 0.84));
-    }
-
-    @media (max-width: 767px) {
-      .iop-entry-bg-grid {
-        inset: 1rem 0.75rem;
-        background-position:
-          1rem 1rem,
-          0 0,
-          0 0,
-          0 0,
-          0 0;
-      }
-
-      .iop-entry-bg-axis::before {
-        top: 8.5rem;
-      }
-
-      .iop-entry-section::before {
-        left: 1rem;
-        width: 7.25rem;
-      }
-    }
-
-    .tsw-home-hero-bg {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 15% 0%, rgba(148, 163, 184, 0.12), transparent 28%),
-        radial-gradient(circle at 100% 10%, rgba(100, 116, 139, 0.08), transparent 24%),
-        linear-gradient(180deg, rgba(248, 250, 252, 0.92), rgba(255, 255, 255, 0));
-    }
-
-    .tsw-home-hero-plate,
-    .tsw-home-hero-axis,
-    .tsw-home-hero-orbit {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .tsw-home-hero-plate {
-      inset: 2.5rem max(1rem, 8vw) auto;
-      height: 15rem;
-      border: 1px solid rgba(100, 116, 139, 0.12);
-      border-radius: 1.7rem;
-      background:
-        linear-gradient(90deg, rgba(71, 85, 105, 0.04) 1px, transparent 1px),
-        linear-gradient(rgba(71, 85, 105, 0.04) 1px, transparent 1px),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.08));
-      background-size:
-        22px 22px,
-        22px 22px,
-        100% 100%;
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.74),
-        0 18px 54px -42px rgba(51, 65, 85, 0.22);
-      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.2));
-    }
-
-    .tsw-home-hero-plate::before,
-    .tsw-home-hero-plate::after {
-      content: '';
-      position: absolute;
-      pointer-events: none;
-    }
-
-    .tsw-home-hero-plate::before {
-      left: 1rem;
-      right: 1rem;
-      top: 1rem;
-      bottom: 1rem;
-      border: 1px dashed rgba(100, 116, 139, 0.15);
-      border-radius: 1rem;
-    }
-
-    .tsw-home-hero-plate::after {
-      left: 50%;
-      top: 0.9rem;
-      bottom: 0.9rem;
-      width: 1px;
-      background: linear-gradient(180deg, rgba(14, 165, 233, 0.1), rgba(71, 85, 105, 0.03));
-      transform: translateX(-0.5px);
-      opacity: 0.8;
-    }
-
-    .tsw-home-hero-axis::before,
-    .tsw-home-hero-axis::after {
-      content: '';
-      position: absolute;
-      pointer-events: none;
-    }
-
-    .tsw-home-hero-axis::before {
-      left: 10%;
-      right: 10%;
-      top: 8.5rem;
-      height: 1px;
-      background:
-        linear-gradient(90deg, transparent, rgba(100, 116, 139, 0.24) 12%, rgba(100, 116, 139, 0.24) 88%, transparent),
-        linear-gradient(
-          90deg,
-          transparent 0%,
-          transparent 15%,
-          rgba(100, 116, 139, 0.18) 15%,
-          rgba(100, 116, 139, 0.18) 15.4%,
-          transparent 15.4%,
-          transparent 49.3%,
-          rgba(14, 165, 233, 0.18) 49.3%,
-          rgba(14, 165, 233, 0.18) 50.7%,
-          transparent 50.7%,
-          transparent 84.6%,
-          rgba(100, 116, 139, 0.18) 84.6%,
-          rgba(100, 116, 139, 0.18) 85%,
-          transparent 85%
-        );
-      opacity: 0.62;
-    }
-
-    .tsw-home-hero-axis::after {
-      top: 4.6rem;
-      bottom: 4.2rem;
-      left: 50%;
-      width: 1px;
-      background:
-        linear-gradient(180deg, transparent, rgba(100, 116, 139, 0.18) 18%, rgba(100, 116, 139, 0.18) 82%, transparent),
-        linear-gradient(
-          180deg,
-          transparent 0%,
-          transparent 18%,
-          rgba(100, 116, 139, 0.15) 18%,
-          rgba(100, 116, 139, 0.15) 18.5%,
-          transparent 18.5%,
-          transparent 49.3%,
-          rgba(14, 165, 233, 0.16) 49.3%,
-          rgba(14, 165, 233, 0.16) 50.7%,
-          transparent 50.7%,
-          transparent 81.5%,
-          rgba(100, 116, 139, 0.15) 81.5%,
-          rgba(100, 116, 139, 0.15) 82%,
-          transparent 82%
-        );
-      transform: translateX(-0.5px);
-      opacity: 0.5;
-    }
-
-    .tsw-home-hero-orbit::before,
-    .tsw-home-hero-orbit::after {
-      content: '';
-      position: absolute;
-      border-radius: 999px;
-      pointer-events: none;
-    }
-
-    .tsw-home-hero-orbit::before {
-      right: max(1.5rem, 7vw);
-      top: 2.9rem;
-      width: 14rem;
-      height: 14rem;
-      border: 1px solid rgba(100, 116, 139, 0.12);
-      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
-      opacity: 0.72;
-    }
-
-    .tsw-home-hero-orbit::after {
-      left: max(1.5rem, 8vw);
-      top: 3.7rem;
-      width: 8.5rem;
-      height: 8.5rem;
-      border: 1px dashed rgba(100, 116, 139, 0.15);
-      opacity: 0.68;
-    }
-
-    .tsw-home-hero-shell {
-      position: relative;
-      overflow: hidden;
-      border: 1px solid rgba(100, 116, 139, 0.14);
-      border-radius: 1.9rem;
-      padding: 0.8rem;
-      background:
-        linear-gradient(90deg, rgba(71, 85, 105, 0.035) 1px, transparent 1px),
-        linear-gradient(rgba(71, 85, 105, 0.035) 1px, transparent 1px),
-        linear-gradient(180deg, rgba(241, 245, 249, 0.34), rgba(255, 255, 255, 0));
-      background-size:
-        24px 24px,
-        24px 24px,
-        100% 100%;
-      box-shadow: 0 30px 72px -56px rgba(51, 65, 85, 0.24);
-    }
-
-    .tsw-home-hero-shell::before,
-    .tsw-home-hero-shell::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-    }
-
-    .tsw-home-hero-shell::before {
-      background:
-        radial-gradient(circle at 0% 0%, rgba(148, 163, 184, 0.08), transparent 24%),
-        linear-gradient(130deg, transparent 0%, rgba(255, 255, 255, 0.12) 48%, transparent 100%);
-      opacity: 0.82;
-    }
-
-    .tsw-home-hero-shell::after {
-      inset: auto -8% -20% auto;
-      width: 15rem;
-      height: 15rem;
-      border-radius: 999px;
-      background: radial-gradient(circle, rgba(100, 116, 139, 0.08), transparent 70%);
-      filter: blur(12px);
-    }
-
-    :global(.dark) .tsw-home-hero-bg {
-      background:
-        radial-gradient(circle at 15% 0%, rgba(100, 116, 139, 0.16), transparent 28%),
-        radial-gradient(circle at 100% 10%, rgba(14, 165, 233, 0.1), transparent 24%),
-        linear-gradient(180deg, rgba(2, 6, 23, 0.9), rgba(15, 23, 42, 0));
-    }
-
-    :global(.dark) .tsw-home-hero-plate {
-      border-color: rgba(34, 211, 238, 0.08);
-      background:
-        linear-gradient(90deg, rgba(34, 211, 238, 0.035) 1px, transparent 1px),
-        linear-gradient(rgba(34, 211, 238, 0.035) 1px, transparent 1px),
-        linear-gradient(180deg, rgba(15, 23, 42, 0.34), rgba(2, 6, 23, 0.08));
-      background-size:
-        22px 22px,
-        22px 22px,
-        100% 100%;
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.03),
-        0 18px 54px -42px rgba(2, 6, 23, 0.72);
-    }
-
-    :global(.dark) .tsw-home-hero-plate::before {
-      border-color: rgba(34, 211, 238, 0.08);
-    }
-
-    :global(.dark) .tsw-home-hero-plate::after {
-      background: linear-gradient(180deg, rgba(34, 211, 238, 0.14), rgba(34, 211, 238, 0.02));
-    }
-
-    :global(.dark) .tsw-home-hero-axis::before {
-      background:
-        linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.16) 12%, rgba(34, 211, 238, 0.16) 88%, transparent),
-        linear-gradient(
-          90deg,
-          transparent 0%,
-          transparent 15%,
-          rgba(34, 211, 238, 0.14) 15%,
-          rgba(34, 211, 238, 0.14) 15.4%,
-          transparent 15.4%,
-          transparent 49.3%,
-          rgba(34, 211, 238, 0.2) 49.3%,
-          rgba(34, 211, 238, 0.2) 50.7%,
-          transparent 50.7%,
-          transparent 84.6%,
-          rgba(34, 211, 238, 0.14) 84.6%,
-          rgba(34, 211, 238, 0.14) 85%,
-          transparent 85%
-        );
-    }
-
-    :global(.dark) .tsw-home-hero-axis::after {
-      background:
-        linear-gradient(180deg, transparent, rgba(34, 211, 238, 0.14) 18%, rgba(34, 211, 238, 0.14) 82%, transparent),
-        linear-gradient(
-          180deg,
-          transparent 0%,
-          transparent 18%,
-          rgba(34, 211, 238, 0.12) 18%,
-          rgba(34, 211, 238, 0.12) 18.5%,
-          transparent 18.5%,
-          transparent 49.3%,
-          rgba(34, 211, 238, 0.18) 49.3%,
-          rgba(34, 211, 238, 0.18) 50.7%,
-          transparent 50.7%,
-          transparent 81.5%,
-          rgba(34, 211, 238, 0.12) 81.5%,
-          rgba(34, 211, 238, 0.12) 82%,
-          transparent 82%
-        );
-    }
-
-    :global(.dark) .tsw-home-hero-orbit::before,
-    :global(.dark) .tsw-home-hero-orbit::after {
-      border-color: rgba(34, 211, 238, 0.1);
-    }
-
-    .tsw-home-hero-visual {
-      position: relative;
-      overflow: hidden;
-      border: 1px solid rgba(103, 232, 249, 0.24);
-      border-radius: 1.6rem;
-      padding: 1rem;
-      background:
-        linear-gradient(140deg, rgba(7, 18, 36, 0.98), rgba(15, 23, 42, 0.98)),
-        linear-gradient(90deg, rgba(34, 211, 238, 0.08) 1px, transparent 1px),
-        linear-gradient(rgba(34, 211, 238, 0.08) 1px, transparent 1px);
-      background-size:
-        100% 100%,
-        22px 22px,
-        22px 22px;
-      box-shadow: 0 32px 90px -48px rgba(8, 145, 178, 0.72);
-    }
-
-    .tsw-home-hero-visual::before,
-    .tsw-home-hero-visual::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-    }
-
-    .tsw-home-hero-visual::before {
-      background:
-        radial-gradient(circle at 0% 0%, rgba(34, 211, 238, 0.28), transparent 26%),
-        linear-gradient(125deg, transparent 10%, rgba(255, 255, 255, 0.06) 48%, transparent 100%);
-    }
-
-    .tsw-home-hero-visual::after {
-      inset: auto -12% -22% auto;
-      width: 18rem;
-      height: 18rem;
-      border-radius: 999px;
-      background: radial-gradient(circle, rgba(14, 165, 233, 0.22), transparent 68%);
-      filter: blur(10px);
-    }
-
-    .tsw-home-hero-bar,
-    .tsw-home-hero-intro,
-    .tsw-home-hero-entry-grid {
-      position: relative;
-      z-index: 1;
-    }
-
-    .tsw-home-hero-bar {
+    .io-actions {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.8rem;
       flex-wrap: wrap;
-      margin-bottom: 1rem;
-      padding-bottom: 0.85rem;
-      border-bottom: 1px solid rgba(103, 232, 249, 0.16);
+      gap: 0.85rem;
+      margin-top: 2rem;
     }
 
-    .tsw-home-hero-chip {
+    .io-btn {
       display: inline-flex;
       align-items: center;
-      border: 1px solid rgba(103, 232, 249, 0.26);
+      justify-content: center;
+      min-height: 3.15rem;
       border-radius: 999px;
-      padding: 0.4rem 0.7rem;
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #67e8f9;
-      background: rgba(8, 47, 73, 0.44);
-    }
-
-    .tsw-home-hero-meta {
-      font-size: 0.76rem;
-      font-weight: 700;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: rgba(186, 230, 253, 0.72);
-    }
-
-    .tsw-home-hero-intro,
-    .tsw-home-hero-entry {
-      position: relative;
-      overflow: hidden;
-      border: 1px solid rgba(103, 232, 249, 0.18);
-      border-radius: 1.2rem;
-      padding: 1.1rem 1.15rem;
-      background: linear-gradient(180deg, rgba(8, 47, 73, 0.36), rgba(2, 6, 23, 0.52));
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    }
-
-    .tsw-home-hero-entry {
-      display: flex;
-      flex-direction: column;
-      gap: 0.1rem;
-      min-height: 100%;
+      padding: 0.82rem 1.4rem;
+      font-weight: 780;
       text-decoration: none;
       transition:
-        transform 220ms ease,
-        border-color 220ms ease,
-        box-shadow 220ms ease,
-        background 220ms ease;
+        transform 180ms ease,
+        border-color 180ms ease,
+        background-color 180ms ease;
     }
 
-    .tsw-home-hero-intro::before,
-    .tsw-home-hero-entry::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
+    .io-btn:hover,
+    .io-btn:focus-visible {
+      transform: translateY(-1px);
+    }
+
+    .io-btn-primary {
+      background: var(--io-blue);
+      color: #fff;
+      box-shadow: 0 16px 38px -24px rgba(11, 99, 246, 0.7);
+    }
+
+    .io-btn-secondary {
+      border: 1px solid rgba(15, 23, 42, 0.22);
+      color: var(--io-ink);
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .io-btn-light {
+      width: fit-content;
+      border: 1px solid rgba(226, 232, 240, 0.36);
+      color: #f8fafc;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .io-entry-band {
+      margin-top: 2rem;
+      padding: 2.05rem;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 1.35rem;
       background:
-        linear-gradient(90deg, rgba(34, 211, 238, 0.05) 1px, transparent 1px),
-        linear-gradient(rgba(34, 211, 238, 0.05) 1px, transparent 1px);
+        linear-gradient(90deg, rgba(125, 211, 252, 0.06) 1px, transparent 1px),
+        linear-gradient(rgba(125, 211, 252, 0.06) 1px, transparent 1px), linear-gradient(135deg, #061120, #0b1728);
       background-size:
-        18px 18px,
-        18px 18px;
-      opacity: 0.55;
+        30px 30px,
+        30px 30px,
+        100% 100%;
+      color: #fff;
     }
 
-    .tsw-home-hero-entry::after {
-      content: '';
-      position: absolute;
-      inset: auto -14% -26% auto;
-      width: 7rem;
-      height: 7rem;
-      border-radius: 999px;
-      background: radial-gradient(circle, rgba(34, 211, 238, 0.22), transparent 72%);
-      filter: blur(8px);
-      opacity: 0.34;
-      transition:
-        opacity 220ms ease,
-        transform 220ms ease;
-      pointer-events: none;
+    .io-entry-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 2rem;
+      align-items: start;
+      margin-bottom: 2.25rem;
     }
 
-    .tsw-home-hero-intro > *,
-    .tsw-home-hero-entry > * {
-      position: relative;
-      z-index: 1;
+    .io-entry-head h2 {
+      max-width: 33rem;
+      color: #fff;
+      font-size: 2.18rem;
     }
 
-    .tsw-home-hero-intro h3 {
+    .io-entry-band .io-kicker {
+      color: #93c5fd;
+    }
+
+    .io-link {
+      color: #bfdbfe;
+      text-decoration: none;
+      font-weight: 720;
+    }
+
+    .io-entry-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid rgba(226, 232, 240, 0.16);
+      border-radius: 1rem;
+      overflow: hidden;
+    }
+
+    .io-entry-item {
+      display: grid;
+      gap: 0.8rem;
+      min-height: 12.7rem;
+      padding: 1.65rem;
+      color: #f8fafc;
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .io-entry-item + .io-entry-item {
+      border-left: 1px solid rgba(226, 232, 240, 0.14);
+    }
+
+    .io-entry-item h3 {
       margin: 0;
-      font-size: clamp(1.8rem, 4.5vw, 2.8rem);
-      line-height: 1.02;
-      letter-spacing: -0.04em;
-      color: #f8fafc;
+      font-size: 1.28rem;
     }
 
-    .tsw-home-hero-intro p,
-    .tsw-home-hero-entry p,
-    .tsw-home-hero-entry-label {
+    .io-entry-item p {
+      margin: 0;
       color: rgba(226, 232, 240, 0.82);
-    }
-
-    .tsw-home-hero-intro p {
-      margin: 0.85rem 0 0;
-      font-size: 1rem;
-      line-height: 1.72;
-      max-width: 34rem;
-    }
-
-    .tsw-home-hero-kicker {
-      margin: 0 0 0.75rem;
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: #67e8f9;
-    }
-
-    .tsw-home-hero-entry-grid {
-      display: grid;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-
-    .tsw-home-hero-entry-head {
-      display: grid;
-      gap: 0.35rem;
-    }
-
-    .tsw-home-hero-entry-head strong {
-      font-size: 1rem;
-      line-height: 1.1;
-      letter-spacing: -0.02em;
-      color: #f8fafc;
-    }
-
-    .tsw-home-hero-entry-label {
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #7dd3fc;
-    }
-
-    .tsw-home-hero-entry p {
-      margin: 0.85rem 0 0;
       line-height: 1.6;
     }
 
-    .tsw-home-hero-entry-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      margin-top: auto;
-      padding-top: 1rem;
-      font-size: 0.8rem;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+    .io-entry-item strong {
+      align-self: end;
+      color: #93c5fd;
+    }
+
+    .io-entry-icon {
+      width: 3.2rem;
+      height: 3.2rem;
+      border: 1px solid rgba(147, 197, 253, 0.5);
+      border-radius: 0.75rem;
+      background:
+        linear-gradient(90deg, rgba(96, 165, 250, 0.55) 2px, transparent 2px),
+        linear-gradient(rgba(96, 165, 250, 0.55) 2px, transparent 2px);
+      background-size: 16px 16px;
+    }
+
+    .io-philosophy {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(20rem, 0.9fr);
+      gap: 3rem;
+      align-items: end;
+      padding: 5.8rem 0;
+    }
+
+    .io-philosophy > p {
+      margin: 0;
+      max-width: 43rem;
+      font-size: 3.45rem;
+      font-weight: 850;
+      line-height: 1.04;
+    }
+
+    .io-philosophy div {
+      display: grid;
+      gap: 1rem;
+      color: var(--io-muted);
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .io-process-section,
+    .io-faq {
+      padding: 1.4rem 0 5.4rem;
+    }
+
+    .io-section-head {
+      max-width: 40rem;
+      margin-bottom: 2.2rem;
+    }
+
+    .io-section-head h2,
+    .io-systems-copy h2,
+    .io-proof-grid h2,
+    .io-final-cta h2 {
+      font-size: 2.65rem;
+    }
+
+    .io-systems-section {
+      padding: 5.4rem 0;
+      background: #061120;
       color: #f8fafc;
     }
 
-    .tsw-home-hero-entry-cta::after {
-      content: '→';
-      transition: transform 220ms ease;
+    .io-systems-grid {
+      grid-template-columns: minmax(0, 0.78fr) minmax(24rem, 1fr);
     }
 
-    .tsw-home-hero-entry:hover,
-    .tsw-home-hero-entry:focus-visible {
-      transform: translateY(-6px) scale(1.01);
-      border-color: rgba(103, 232, 249, 0.34);
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.06),
-        0 22px 52px -34px rgba(8, 145, 178, 0.66);
-      background: linear-gradient(180deg, rgba(12, 74, 110, 0.42), rgba(2, 6, 23, 0.62));
+    .io-systems-copy h2 {
+      color: #f8fafc;
     }
 
-    .tsw-home-hero-entry:hover::after,
-    .tsw-home-hero-entry:focus-visible::after {
-      opacity: 0.62;
-      transform: scale(1.14);
+    .io-systems-copy p {
+      color: #cbd5e1;
+      max-width: 35rem;
     }
 
-    .tsw-home-hero-entry:hover .tsw-home-hero-entry-cta::after,
-    .tsw-home-hero-entry:focus-visible .tsw-home-hero-entry-cta::after {
-      transform: translateX(0.3rem);
+    .io-stack-line {
+      margin: 1.5rem 0 2rem;
+      color: #93c5fd;
+      font-weight: 760;
+      line-height: 1.6;
     }
 
-    .tsw-home-hero-entry:focus-visible {
-      outline: 2px solid rgba(125, 211, 252, 0.9);
-      outline-offset: 3px;
+    .io-proof-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.8rem;
+      padding: 5.4rem 0;
     }
 
-    @keyframes tsw-home-hero-card-in {
-      0% {
-        opacity: 0;
-        transform: translateY(18px) scale(0.985);
+    .io-proof-grid article {
+      display: grid;
+      gap: 1rem;
+      align-content: start;
+      border: 1px solid var(--io-line);
+      border-radius: 1.15rem;
+      padding: 1.35rem;
+      background: rgba(255, 255, 255, 0.74);
+    }
+
+    .io-proof-grid h2 {
+      font-size: 1.82rem;
+    }
+
+    .io-proof-grid p {
+      margin: 0;
+      min-height: 4rem;
+    }
+
+    .io-proof-grid :global(.io-blueprint) {
+      min-height: 15.5rem;
+    }
+
+    .io-pricing-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      margin-bottom: 5.4rem;
+      border: 1px solid var(--io-line);
+      border-radius: 1rem;
+      background: rgba(255, 255, 255, 0.8);
+      overflow: hidden;
+    }
+
+    .io-pricing-strip div {
+      display: grid;
+      gap: 0.35rem;
+      padding: 1.2rem;
+    }
+
+    .io-pricing-strip div + div {
+      border-left: 1px solid var(--io-line);
+    }
+
+    .io-pricing-strip strong {
+      font-size: 1.25rem;
+      color: var(--io-ink);
+    }
+
+    .io-pricing-strip span {
+      color: var(--io-muted);
+      font-size: 0.92rem;
+    }
+
+    .io-faq-list {
+      display: grid;
+      gap: 0.8rem;
+      max-width: 58rem;
+    }
+
+    .io-faq details {
+      border: 1px solid var(--io-line);
+      border-radius: 0.8rem;
+      background: rgba(255, 255, 255, 0.78);
+      padding: 1.1rem 1.25rem;
+    }
+
+    .io-faq summary {
+      cursor: pointer;
+      color: var(--io-ink);
+      font-weight: 780;
+    }
+
+    .io-faq details p {
+      margin: 0.85rem 0 0;
+      color: var(--io-muted);
+      line-height: 1.65;
+    }
+
+    .io-final-cta {
+      margin-bottom: 5.4rem;
+      padding: 2.5rem;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 1.25rem;
+      background: #fff;
+      text-align: center;
+    }
+
+    .io-final-cta p {
+      max-width: 42rem;
+      margin: 1rem auto 0;
+    }
+
+    .io-final-cta .io-actions {
+      justify-content: center;
+    }
+
+    @media (max-width: 1024px) {
+      .io-hero-grid,
+      .io-systems-grid,
+      .io-proof-grid,
+      .io-philosophy {
+        grid-template-columns: 1fr;
       }
 
-      100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
+      .io-hero-copy h1 {
+        font-size: 3.35rem;
+      }
+
+      .io-philosophy > p {
+        font-size: 3rem;
+      }
+
+      .io-entry-grid,
+      .io-pricing-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .io-entry-item + .io-entry-item,
+      .io-pricing-strip div + div {
+        border-left: 0;
+        border-top: 1px solid rgba(226, 232, 240, 0.14);
       }
     }
 
-    @media (prefers-reduced-motion: no-preference) {
-      .tsw-home-hero-entry {
-        animation: tsw-home-hero-card-in 680ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    @media (max-width: 640px) {
+      .io-shell {
+        width: min(100% - 1rem, 82rem);
       }
 
-      .tsw-home-hero-entry:nth-child(2) {
-        animation-delay: 90ms;
+      .io-hero {
+        padding-top: 3.2rem;
       }
 
-      .tsw-home-hero-entry:nth-child(3) {
-        animation-delay: 180ms;
-      }
-    }
-
-    @media (min-width: 768px) {
-      .tsw-home-hero-visual {
-        padding: 1.25rem;
+      .io-hero-copy h1 {
+        font-size: 2.35rem;
       }
 
-      .tsw-home-hero-entry-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+      .io-section-head h2,
+      .io-systems-copy h2,
+      .io-final-cta h2 {
+        font-size: 1.95rem;
+      }
+
+      .io-entry-band,
+      .io-final-cta {
+        padding: 1.2rem;
+      }
+
+      .io-entry-head {
+        display: grid;
+      }
+
+      .io-entry-head h2,
+      .io-philosophy > p {
+        font-size: 2.2rem;
+      }
+
+      .io-proof-grid article {
+        padding: 1rem;
       }
     }
   </style>

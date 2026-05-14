@@ -1,0 +1,121 @@
+---
+interface Step {
+  label: string;
+  title: string;
+  detail: string;
+}
+
+interface Props {
+  steps: Step[];
+}
+
+const { steps } = Astro.props as Props;
+---
+
+<div class="io-process-map">
+  {
+    steps.map((step, index) => (
+      <div class="io-process-step">
+        <span class="io-process-index">{step.label}</span>
+        <div>
+          <strong>{step.title}</strong>
+          <small>{step.detail}</small>
+        </div>
+        {index < steps.length - 1 && <span class="io-process-rail" />}
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .io-process-map {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    overflow: hidden;
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    border-radius: 1rem;
+    background:
+      linear-gradient(90deg, rgba(37, 99, 235, 0.045) 1px, transparent 1px),
+      linear-gradient(rgba(37, 99, 235, 0.045) 1px, transparent 1px), rgba(255, 255, 255, 0.72);
+    background-size: 28px 28px;
+    box-shadow: 0 24px 72px -62px rgba(15, 23, 42, 0.36);
+  }
+
+  .io-process-step {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.85rem;
+    align-items: center;
+    min-height: 6.6rem;
+    padding: 1.35rem;
+  }
+
+  .io-process-step + .io-process-step {
+    border-left: 1px solid rgba(148, 163, 184, 0.18);
+  }
+
+  .io-process-index {
+    display: grid;
+    width: 2.7rem;
+    height: 2.7rem;
+    place-items: center;
+    border: 1px solid rgba(37, 99, 235, 0.22);
+    border-radius: 0.65rem;
+    color: #2563eb;
+    font-weight: 800;
+  }
+
+  .io-process-step strong,
+  .io-process-step small {
+    display: block;
+  }
+
+  .io-process-step strong {
+    color: #0f172a;
+    font-size: 0.98rem;
+  }
+
+  .io-process-step small {
+    margin-top: 0.18rem;
+    color: #64748b;
+    font-size: 0.78rem;
+  }
+
+  .io-process-rail {
+    position: absolute;
+    top: 50%;
+    right: -1.25rem;
+    z-index: 2;
+    width: 2.5rem;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(37, 99, 235, 0.55), rgba(37, 99, 235, 0.08));
+  }
+
+  .io-process-rail::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -0.22rem;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 999px;
+    background: #2563eb;
+  }
+
+  @media (max-width: 900px) {
+    .io-process-map {
+      grid-template-columns: 1fr;
+    }
+
+    .io-process-step + .io-process-step {
+      border-left: 0;
+      border-top: 1px solid rgba(148, 163, 184, 0.18);
+    }
+
+    .io-process-rail {
+      display: none;
+    }
+  }
+</style>

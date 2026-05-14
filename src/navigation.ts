@@ -43,6 +43,7 @@ const tonT = <T>(locale: string, fr: T, en: T, de: T, it: T): T => {
 };
 
 export const buildHeaderData = (brand: NavigationBrand & { key?: BrandKey }, locale: string = 'fr'): Navigation => {
+  const isIoPartner = brand.key === 'iopartner';
   const isTonSiteLike = brand.key === 'tonsiteweb' || brand.key === 'iopartner';
   const navLinks = isTonSiteLike
     ? [
@@ -50,41 +51,68 @@ export const buildHeaderData = (brand: NavigationBrand & { key?: BrandKey }, loc
           text: tonT(locale, 'Solutions', 'Solutions', 'Lösungen', 'Soluzioni'),
           links: [
             {
-              text: tonT(
-                locale,
-                'Consulting technique',
-                'Website & online presence',
-                'Website & Online-Präsenz',
-                'Sito web & presenza online'
-              ),
-              href:
-                locale === 'fr'
+              text: isIoPartner
+                ? tonT(
+                    locale,
+                    'Consulting technique',
+                    'Technical consulting',
+                    'Technische Beratung',
+                    'Consulenza tecnica'
+                  )
+                : tonT(
+                    locale,
+                    'Consulting technique',
+                    'Website & online presence',
+                    'Website & Online-Präsenz',
+                    'Sito web & presenza online'
+                  ),
+              href: isIoPartner
+                ? `${getPermalink('/pricing')}?tab=consulting#pricing-options`
+                : locale === 'fr'
                   ? `${getPermalink('/pricing')}?tab=consulting#pricing-options`
                   : getPermalink('/services#site-vitrine'),
             },
             {
-              text: tonT(
-                locale,
-                'Systems & operations',
-                'Guidance & optimisation',
-                'Begleitung & Optimierung',
-                'Accompagnamento & ottimizzazione'
-              ),
-              href:
-                locale === 'fr'
+              text: isIoPartner
+                ? tonT(
+                    locale,
+                    'Systems & operations',
+                    'Systems & operations',
+                    'Systems & Operations',
+                    'Systems & operations'
+                  )
+                : tonT(
+                    locale,
+                    'Systems & operations',
+                    'Guidance & optimisation',
+                    'Begleitung & Optimierung',
+                    'Accompagnamento & ottimizzazione'
+                  ),
+              href: isIoPartner
+                ? `${getPermalink('/pricing')}?tab=systems#systems-operations`
+                : locale === 'fr'
                   ? `${getPermalink('/pricing')}?tab=systems#pricing-options`
                   : getPermalink('/services#accompagnement'),
             },
             {
-              text: tonT(
-                locale,
-                'Sites web standardisés',
-                'Support & maintenance',
-                'Support & Wartung',
-                'Support & manutenzione'
-              ),
-              href:
-                locale === 'fr'
+              text: isIoPartner
+                ? tonT(
+                    locale,
+                    'Déploiement standard',
+                    'Standard deployment',
+                    'Standard-Deployment',
+                    'Deployment standard'
+                  )
+                : tonT(
+                    locale,
+                    'Sites web standardisés',
+                    'Support & maintenance',
+                    'Support & Wartung',
+                    'Support & manutenzione'
+                  ),
+              href: isIoPartner
+                ? `${getPermalink('/pricing')}?tab=website#standard-deployment`
+                : locale === 'fr'
                   ? `${getPermalink('/pricing')}?tab=website#pricing-options`
                   : getPermalink('/services#support'),
             },
