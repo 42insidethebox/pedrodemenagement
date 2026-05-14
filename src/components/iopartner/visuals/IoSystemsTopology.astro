@@ -1,0 +1,549 @@
+<section class="io-systems-topology" aria-label="Architecture opérationnelle IOPartner">
+  <div class="panel-label">
+    <strong>Architecture opérationnelle</strong>
+    <span>Infra · backend · continuité</span>
+  </div>
+
+  <svg class="route-stage" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+    <path class="ghost-route" d="M8 23 C26 8 74 8 92 23"></path>
+    <path class="ghost-route" d="M10 78 C28 91 72 91 90 78"></path>
+    <path class="ghost-route" d="M18 88 C30 58 48 40 80 20"></path>
+    <path class="ghost-route" d="M12 48 C32 33 66 33 88 49"></path>
+
+    <path class="generated-route" d="M27 39 C34 39 36 34 41 34"></path>
+    <path class="generated-route" d="M59 34 C64 34 66 39 73 39"></path>
+    <path class="generated-route" d="M47 43 C44 50 40 58 35 64"></path>
+    <path class="generated-route" d="M53 43 C56 50 60 58 65 64"></path>
+    <path class="generated-route" d="M39 68 C47 71 56 71 64 68"></path>
+
+    <circle class="route-dot" cx="27" cy="39" r="0.45"></circle>
+    <circle class="route-dot" cx="41" cy="34" r="0.45"></circle>
+    <circle class="route-dot" cx="59" cy="34" r="0.45"></circle>
+    <circle class="route-dot" cx="73" cy="39" r="0.45"></circle>
+    <circle class="route-dot" cx="47" cy="43" r="0.45"></circle>
+    <circle class="route-dot" cx="35" cy="64" r="0.45"></circle>
+    <circle class="route-dot" cx="53" cy="43" r="0.45"></circle>
+    <circle class="route-dot" cx="65" cy="64" r="0.45"></circle>
+    <circle class="route-dot" cx="39" cy="68" r="0.45"></circle>
+    <circle class="route-dot" cx="64" cy="68" r="0.45"></circle>
+  </svg>
+
+  <div class="system-node node-web">
+    <span class="system-icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M4 5h16v14H4Z"></path>
+        <path d="M4 9h16"></path>
+        <path d="M7 7h.01M10 7h.01"></path>
+        <path d="M8 13h8M8 16h5"></path>
+      </svg>
+    </span>
+    <strong>Web</strong>
+    <small>Sites & contenus</small>
+  </div>
+
+  <div class="system-node node-api is-core">
+    <span class="system-icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M8 8l-4 4l4 4"></path>
+        <path d="M16 8l4 4l-4 4"></path>
+        <path d="M14 5l-4 14"></path>
+      </svg>
+    </span>
+    <strong>API</strong>
+    <small>Routes métier</small>
+  </div>
+
+  <div class="system-node node-workers">
+    <span class="system-icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M6 8a2 2 0 1 0 0-4a2 2 0 0 0 0 4Z"></path>
+        <path d="M18 14a2 2 0 1 0 0-4a2 2 0 0 0 0 4Z"></path>
+        <path d="M6 20a2 2 0 1 0 0-4a2 2 0 0 0 0 4Z"></path>
+        <path d="M7.7 7l8.6 4M8 6h4a3 3 0 0 1 3 3v2M18 14v2a3 3 0 0 1-3 3h-4"></path>
+      </svg>
+    </span>
+    <strong>Workers</strong>
+    <small>Jobs & workflows</small>
+  </div>
+
+  <div class="system-node node-data">
+    <span class="system-icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 5c4.4 0 8 1.3 8 3s-3.6 3-8 3s-8-1.3-8-3s3.6-3 8-3Z"></path>
+        <path d="M4 8v8c0 1.7 3.6 3 8 3s8-1.3 8-3V8"></path>
+        <path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"></path>
+      </svg>
+    </span>
+    <strong>Data</strong>
+    <small>Sauvegardes</small>
+  </div>
+
+  <div class="system-node node-monitoring">
+    <span class="system-icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M4 13h4l2-6l4 11l2-5h4"></path>
+      </svg>
+    </span>
+    <strong>Monitoring</strong>
+    <small>Alertes & santé</small>
+  </div>
+
+  <div class="ops-rows">
+    <div>
+      <span></span>
+      <strong>DNS + SSL</strong>
+      <small>Routage propre</small>
+    </div>
+
+    <div>
+      <span></span>
+      <strong>Deploy</strong>
+      <small>Versionnement clair</small>
+    </div>
+
+    <div>
+      <span></span>
+      <strong>Watch</strong>
+      <small>Supervision active</small>
+    </div>
+  </div>
+</section>
+
+<style>
+  .io-systems-topology {
+    --cyan-rgb: 125, 211, 252;
+    --panel: #061120;
+    --card: rgba(15, 23, 42, 0.84);
+    --line: rgba(125, 211, 252, 0.46);
+    --line-soft: rgba(125, 211, 252, 0.13);
+    --border: rgba(125, 211, 252, 0.18);
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+
+    position: relative;
+    width: 100%;
+    aspect-ratio: 5 / 3;
+    overflow: hidden;
+    border: 1px solid rgba(125, 211, 252, 0.16);
+    border-radius: 1.25rem;
+    background:
+      linear-gradient(90deg, rgba(var(--cyan-rgb), 0.055) 1px, transparent 1px),
+      linear-gradient(rgba(var(--cyan-rgb), 0.055) 1px, transparent 1px),
+      radial-gradient(circle at 68% 20%, rgba(37, 99, 235, 0.28), transparent 28%),
+      radial-gradient(circle at 24% 78%, rgba(14, 165, 233, 0.16), transparent 24%),
+      linear-gradient(145deg, #061120, #0b1728 58%, #08111e);
+    background-size:
+      28px 28px,
+      28px 28px,
+      auto,
+      auto,
+      auto;
+    box-shadow:
+      0 40px 120px -82px rgba(2, 6, 23, 0.92),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  .io-systems-topology::before,
+  .io-systems-topology::after {
+    content: '';
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .io-systems-topology::before {
+    z-index: 0;
+    inset: 2.1rem;
+    border: 1px dashed rgba(var(--cyan-rgb), 0.13);
+    border-radius: 1rem;
+  }
+
+  .io-systems-topology::after {
+    z-index: 6;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.055), transparent 42%, rgba(37, 99, 235, 0.08));
+    pointer-events: none;
+  }
+
+  .panel-label {
+    position: absolute;
+    z-index: 4;
+    top: 2.1rem;
+    left: 2.35rem;
+    display: grid;
+    gap: 0.32rem;
+  }
+
+  .panel-label strong {
+    color: #f8fafc;
+    font-size: 0.8rem;
+    font-weight: 850;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .panel-label span {
+    color: #93c5fd;
+    font-size: 0.75rem;
+  }
+
+  .route-stage {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .ghost-route,
+  .generated-route {
+    fill: none;
+    vector-effect: non-scaling-stroke;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .ghost-route {
+    stroke: var(--line-soft);
+    stroke-width: 0.55;
+    stroke-dasharray: 3 7;
+  }
+
+  .generated-route {
+    stroke: var(--line);
+    stroke-width: 0.85;
+  }
+
+  .route-dot {
+    fill: rgba(var(--cyan-rgb), 0.88);
+    stroke: var(--panel);
+    stroke-width: 0.35;
+  }
+
+  .system-node {
+    position: absolute;
+    z-index: 3;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.3rem 0.68rem;
+    align-items: center;
+    width: 11rem;
+    padding: 0.82rem;
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    background: var(--card);
+    color: var(--text);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 24px 58px -42px rgba(2, 6, 23, 0.92);
+  }
+
+  .system-node::before {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    border-radius: 0.94rem;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent 48%);
+    pointer-events: none;
+  }
+
+  .system-icon {
+    position: relative;
+    z-index: 1;
+    grid-row: span 2;
+    display: grid;
+    width: 2.38rem;
+    height: 2.38rem;
+    place-items: center;
+    border: 1px solid rgba(var(--cyan-rgb), 0.3);
+    border-radius: 0.75rem;
+    background: rgba(14, 165, 233, 0.08);
+    color: #93c5fd;
+  }
+
+  .system-icon svg {
+    width: 1.18rem;
+    height: 1.18rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.75;
+  }
+
+  .system-node strong,
+  .system-node small {
+    position: relative;
+    z-index: 1;
+    display: block;
+  }
+
+  .system-node strong {
+    color: #f8fafc;
+    font-size: 0.82rem;
+    line-height: 1.1;
+  }
+
+  .system-node small {
+    color: var(--muted);
+    font-size: 0.68rem;
+    line-height: 1.2;
+  }
+
+  .system-node.is-core {
+    width: 11.9rem;
+    border-color: rgba(147, 197, 253, 0.34);
+    background: rgba(15, 23, 42, 0.92);
+    box-shadow:
+      0 30px 90px -56px rgba(37, 99, 235, 0.95),
+      0 24px 58px -42px rgba(2, 6, 23, 0.92);
+  }
+
+  .system-node.is-core .system-icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.88rem;
+  }
+
+  .system-node.is-core .system-icon svg {
+    width: 1.38rem;
+    height: 1.38rem;
+  }
+
+  .system-node.is-core strong {
+    font-size: 0.94rem;
+  }
+
+  .node-web {
+    left: 11%;
+    top: 30%;
+  }
+
+  .node-api {
+    left: 50%;
+    top: 29%;
+    transform: translateX(-50%);
+  }
+
+  .node-workers {
+    right: 11%;
+    top: 30%;
+  }
+
+  .node-data {
+    left: 21%;
+    bottom: 28%;
+  }
+
+  .node-monitoring {
+    right: 21%;
+    bottom: 28%;
+  }
+
+  .ops-rows {
+    position: absolute;
+    z-index: 4;
+    right: 2.38rem;
+    bottom: 2.1rem;
+    left: 2.38rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.88rem;
+  }
+
+  .ops-rows div {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.12rem 0.56rem;
+    align-items: center;
+    padding: 0.75rem 0.88rem;
+    border: 1px solid rgba(var(--cyan-rgb), 0.13);
+    border-radius: 0.88rem;
+    background: rgba(15, 23, 42, 0.58);
+  }
+
+  .ops-rows span {
+    grid-row: span 2;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 999px;
+    background: #3b82f6;
+    box-shadow: 0 0 0 0.32rem rgba(59, 130, 246, 0.12);
+  }
+
+  .ops-rows strong {
+    color: #e2e8f0;
+    font-size: 0.75rem;
+  }
+
+  .ops-rows small {
+    color: #94a3b8;
+    font-size: 0.68rem;
+  }
+
+  @media (max-width: 760px) {
+    .io-systems-topology {
+      min-height: 36.9rem;
+      aspect-ratio: auto;
+      border-radius: 1rem;
+      background-size:
+        24px 24px,
+        24px 24px,
+        auto,
+        auto,
+        auto;
+    }
+
+    .io-systems-topology::before {
+      inset: 1.38rem;
+      border-radius: 1rem;
+    }
+
+    .panel-label {
+      top: 1.38rem;
+      right: 1.5rem;
+      left: 1.5rem;
+    }
+
+    .panel-label strong,
+    .panel-label span {
+      font-size: 0.64rem;
+      line-height: 1.35;
+    }
+
+    .system-node {
+      width: 6.75rem;
+      padding: 0.56rem;
+      gap: 0.25rem 0.44rem;
+      border-radius: 0.82rem;
+    }
+
+    .system-icon {
+      width: 1.82rem;
+      height: 1.82rem;
+      border-radius: 0.56rem;
+    }
+
+    .system-icon svg {
+      width: 0.94rem;
+      height: 0.94rem;
+    }
+
+    .system-node strong {
+      font-size: 0.66rem;
+    }
+
+    .system-node small {
+      display: none;
+    }
+
+    .system-node.is-core {
+      width: 7rem;
+      padding: 0.62rem;
+    }
+
+    .system-node.is-core .system-icon {
+      width: 1.94rem;
+      height: 1.94rem;
+      border-radius: 0.62rem;
+    }
+
+    .system-node.is-core .system-icon svg {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .node-web {
+      left: 5%;
+      top: 28%;
+    }
+
+    .node-api {
+      left: 50%;
+      top: 25%;
+      transform: translateX(-50%);
+    }
+
+    .node-workers {
+      right: 5%;
+      top: 28%;
+    }
+
+    .node-data {
+      left: 14%;
+      bottom: 34%;
+    }
+
+    .node-monitoring {
+      right: 14%;
+      bottom: 34%;
+    }
+
+    .ops-rows {
+      right: 1.12rem;
+      bottom: 1.38rem;
+      left: 1.12rem;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.44rem;
+    }
+
+    .ops-rows div {
+      min-width: 0;
+      grid-template-columns: 1fr;
+      justify-items: center;
+      gap: 0.32rem;
+      padding: 0.56rem 0.38rem;
+      text-align: center;
+      border-radius: 0.75rem;
+    }
+
+    .ops-rows span {
+      grid-row: auto;
+      width: 0.44rem;
+      height: 0.44rem;
+      box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.12);
+    }
+
+    .ops-rows strong {
+      max-width: 100%;
+      overflow-wrap: anywhere;
+      font-size: 0.62rem;
+      line-height: 1.1;
+    }
+
+    .ops-rows small {
+      display: block;
+      font-size: 0.54rem;
+      line-height: 1.15;
+    }
+  }
+
+  @media (max-width: 390px) {
+    .io-systems-topology {
+      min-height: 38.75rem;
+    }
+
+    .system-node {
+      width: 6.38rem;
+    }
+
+    .system-node.is-core {
+      width: 6.62rem;
+    }
+
+    .node-web {
+      left: 4%;
+    }
+
+    .node-workers {
+      right: 4%;
+    }
+
+    .node-data {
+      left: 10%;
+    }
+
+    .node-monitoring {
+      right: 10%;
+    }
+  }
+</style>

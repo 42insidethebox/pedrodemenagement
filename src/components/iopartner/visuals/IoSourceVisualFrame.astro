@@ -1,0 +1,28 @@
+---
+interface Props {
+  title: string;
+  html: string;
+  css: string;
+  js?: string;
+  minHeight?: string;
+}
+
+const { title, html, css, js = '', minHeight = '42rem' } = Astro.props as Props;
+const sourceDocument = html
+  .replace('<link rel="stylesheet" href="./style.css" />', `<style>${css}</style>`)
+  .replace('<script src="./script.js"></script>', js ? `<script>${js}</script>` : '');
+---
+
+<iframe class="io-source-visual-frame" title={title} srcdoc={sourceDocument}></iframe>
+
+<style define:vars={{ minHeight }}>
+  .io-source-visual-frame {
+    display: block;
+    width: 100%;
+    min-height: var(--minHeight);
+    overflow: hidden;
+    border: 0;
+    border-radius: 1.25rem;
+    background: #f8fbff;
+  }
+</style>

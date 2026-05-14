@@ -3,6 +3,8 @@ export const prerender = false;
 
 import IoBlueprintVisual from '~/components/iopartner/IoBlueprintVisual.astro';
 import IoProcessMap from '~/components/iopartner/IoProcessMap.astro';
+import Io01PremiumGridBlueprintArcs from '~/components/iopartner/visuals/Io01PremiumGridBlueprintArcs.astro';
+import Io02SvgLinesPathsCurves from '~/components/iopartner/visuals/Io02SvgLinesPathsCurves.astro';
 import Layout from '~/layouts/PageLayout.astro';
 
 const metadata = {
@@ -55,7 +57,7 @@ const faqs = [
             <a class="io-btn io-btn-secondary" href="/pricing">Voir les tarifs</a>
           </div>
         </div>
-        <IoBlueprintVisual variant="hero" />
+        <Io01PremiumGridBlueprintArcs />
       </div>
     </section>
 
@@ -123,7 +125,7 @@ const faqs = [
           <div class="io-stack-line">Docker · VPS · DNS · SSL · monitoring · workflows · API · dashboards</div>
           <a class="io-btn io-btn-light" href="/pricing?tab=systems#systems-operations">Voir systems & operations</a>
         </div>
-        <IoBlueprintVisual variant="systems" />
+        <Io02SvgLinesPathsCurves />
       </div>
     </section>
 
