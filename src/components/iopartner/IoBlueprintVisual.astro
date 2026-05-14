@@ -43,14 +43,19 @@ const systemsRows = [
     variant === 'hero' && (
       <div class="io-hero-map">
         <svg class="io-topology-routes" viewBox="0 0 100 100" preserveAspectRatio="none">
-          <path d="M50 48 C46 38 39 31 31 28" />
-          <path d="M50 48 C40 49 31 53 21 56" />
-          <path d="M50 48 C57 34 67 21 78 17" />
-          <path d="M50 48 C62 42 76 40 88 43" />
-          <path d="M50 48 C64 55 78 66 88 72" />
-          <path d="M50 48 C43 65 36 78 31 84" />
-          <path d="M50 48 C55 68 64 82 71 88" />
-        </svg>
+  <path d="M50 48 C48 38 41 30 31 26" />
+  <path d="M50 48 C40 48 30 52 21 55" />
+  <path d="M50 48 C56 34 66 21 78 16" />
+  <path d="M50 48 C61 43 75 41 88 43" />
+  <path d="M50 48 C62 56 77 66 88 72" />
+  <path d="M50 48 C44 63 37 75 31 83" />
+  <path d="M50 48 C54 65 63 79 71 86" />
+
+  <!-- faint architectural arcs -->
+  <path class="route-ghost" d="M18 22 C36 8 66 8 84 24" />
+  <path class="route-ghost" d="M15 78 C34 95 66 95 86 76" />
+  <path class="route-ghost" d="M8 50 C22 34 35 26 50 22" />
+</svg>
         <div class="io-core">API</div>
         {heroNodes.map((node) => (
           <div class={`io-node ${node.className}`}>
@@ -192,8 +197,8 @@ const systemsRows = [
 <style>
   .io-blueprint {
     position: relative;
-    min-height: 24rem;
-    overflow: hidden;
+  	aspect-ratio: 5 / 3;
+  	min-height: unset;    overflow: hidden;
     border: 1px solid rgba(148, 163, 184, 0.18);
     border-radius: 1.25rem;
     background:
@@ -664,6 +669,7 @@ const systemsRows = [
   @media (max-width: 767px) {
     .io-blueprint {
       min-height: 18rem;
+	  aspect-ratio: auto;
     }
 
     .io-blueprint::before {
@@ -676,6 +682,23 @@ const systemsRows = [
       padding: 0.46rem 0.5rem;
     }
 
+.io-node > span:last-child,
+.system-block > span + strong,
+.system-block > span + strong + small {
+  min-width: 0;
+}
+
+.io-node > span:last-child {
+  display: grid;
+  gap: 0.08rem;
+}
+
+	.io-node strong,
+	.io-node small,
+	.system-block strong,
+	.system-block small {
+	display: block;
+	}
     .io-node-icon,
     .system-icon {
       width: 1.65rem;
