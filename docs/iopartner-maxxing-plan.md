@@ -14,6 +14,48 @@ IOPartner currently has a strong French homepage positioning around:
 
 The main issue is not lack of content. It is too much visible explanation and too little visual proof.
 
+## 2026-05-16 Adjustment
+
+Direction update after the first funnel cleanup pass:
+
+- `Cadrage technique` should no longer be treated as a single paid entry point.
+- Public paid entry should offer:
+  - `15 min / 60 CHF`
+  - `1 h / 140 CHF`
+- The 15-minute format remains the low-friction paid arbitrage.
+- The 1-hour format exists for more serious SMEs that already have real stack, workflow, infra, or stakeholder complexity.
+- The old language around `choose-template` or `choose a base` remains too marketplace-like.
+- The web proof layer should instead behave like:
+  - `examples of projects delivered`
+  - `what 999 CHF can already look like`
+  - `what 1 500 CHF can already look like`
+
+This means the product logic is now:
+
+1. `Cadrage technique`
+   - `15 min / 60 CHF`
+   - `1 h / 140 CHF`
+   - then `140 CHF / h` if the work continues
+
+2. `Systèmes & opérations`
+   - scoped after context or paid cadrage
+
+3. `Présence web cadrée`
+   - proof-first examples of projects already deliverable at `999 CHF` and `1 500 CHF`
+   - not a template marketplace tone
+
+4. `Paliers techniques`
+   - `1 500 CHF` stays attached to the standard web funnel
+   - `2 000 CHF`, `2 200 CHF`, and `4 500 CHF` should behave like:
+     - `select tier`
+     - `short intake`
+     - `Stripe`
+   - `8 000+ CHF` should behave like:
+     - `select tier`
+     - `short intake`
+     - `paid 1 h cadrage`
+   - this is both a buyer path and an internal qualification shortcut
+
 The site currently reads like a complete operating model. The target should read like a confident technical consulting firm that only shows the essentials.
 
 ## Code Audited
@@ -682,19 +724,18 @@ These are better as CSS/SVG than generated raster:
 
 ## Copy Decisions Needed Before Coding
 
-### Price Decision
+### Cadrage Decision
 
-Choose one final diagnostic entry price:
+Use two public paid entry points:
 
-- Option A: `60 CHF / 15 min`
-- Option B: `80 CHF / 15 min`
-- Option C: `150 CHF / 15 min`
+- `60 CHF / 15 min`
+- `140 CHF / 1 h`
 
 Recommendation:
 
-- Use `60 CHF / 15 min` if the goal is low-friction paid entry.
-- Use `80 CHF / 15 min` if custom systems diagnostic should feel more serious than quick consulting.
-- Do not use `150 CHF / 15 min` unless the consulting-first positioning becomes more premium and less accessible.
+- Keep `15 min / 60 CHF` as the light arbitrage format.
+- Keep `1 h / 140 CHF` for more serious SMEs that need a real working session immediately.
+- Use `140 CHF / h` as the continuation rate when the work extends beyond the paid entry.
 
 ### Naming Decision
 
@@ -740,10 +781,10 @@ Recommendation:
 
 Needed before coding:
 
-- Final diagnostic price.
 - Final label for website offer.
 - Generated image assets or approval to create coded placeholders first.
 - Decision on whether `/offre` stays hidden or gets redesigned.
+- Whether booking should use one shared calendar or separate `15 min` and `1 h` booking links.
 
 ### Phase 1: Homepage Compression
 
@@ -816,6 +857,7 @@ Files:
 Actions:
 
 - Make choose-template feel like selecting a deployment baseline.
+- Reframe choose-template as proof of delivered examples, not template shopping.
 - Remove dice/emoji marketplace feel.
 - Check whether `/offre` should remain ad-only or be redesigned.
 - Fix any hardcoded `tonsiteweb` routes/sources if the page remains active.
@@ -928,7 +970,8 @@ Manual checks:
 - [ ] Remove low-aura implementation wording.
 - [ ] Align contact page tone.
 - [ ] Align services page tone.
-- [ ] Align custom systems page tone and price.
+- [x] Align custom systems page tone and price.
+- [x] Add quick-start custom tier funnel for `2 000 / 2 200 / 4 500 / 8 000+`.
 - [ ] Calm choose-template/onboarding UI.
 - [ ] Handle `/offre` conflict.
 - [ ] Sync EN/DE/IT pages.
@@ -1023,3 +1066,70 @@ Verification status:
 - `npm run check:eslint` was run and is blocked by existing repo-wide lint issues, including files under `.claude/worktrees`.
 - `npm run check:prettier` was run and is blocked by existing repo-wide formatting and parser issues outside this pass.
 - Targeted ESLint and Prettier checks pass for the IOPartner files changed in this implementation pass.
+
+## Systems & Operations Page Rebuild Plan
+
+Date: 2026-05-15
+Stage: planned, not implemented in this cleanup pass.
+
+Problem:
+
+- `/systems-operations` currently feels like an artifact demo/page graph instead of a public service page.
+- It uses a dark full-page treatment while the current IOPartner direction is mostly light, calm, Swiss blueprint style.
+- The page needs to explain what systems & operations actually covers, when it is useful, how it is scoped, and what a buyer receives.
+
+Target:
+
+- Rebuild `/systems-operations` as a light-mode public service page.
+- Keep one strong architecture visual, but make the page useful without depending on the visual.
+- Use the page as the premium technical layer for IOPartner, not a pricing table and not a generic agency service page.
+
+Recommended structure:
+
+1. Hero
+   - Title: `Systems & operations pour PME`
+   - Short copy: infrastructure, backend, automatisation, monitoring, continuité.
+   - CTA: `Demander un cadrage systems`
+   - Secondary CTA: `Voir les tarifs`
+   - Visual: native architecture diagram using the 02/09/12 icon language.
+
+2. When It Applies
+   - Cards for: infrastructure propre, workflow métier, outil interne, migration open-source, continuité technique.
+   - Each card gets a real node icon from `IoNodeIcon`.
+   - No dark dashboard aesthetic; use light cards with blue technical accents.
+
+3. Scope Explorer
+   - Keep the current useful scenario logic, but integrate it into the IOPartner layout and light-mode CSS.
+   - Show indicative ranges only as order-of-magnitude, not as productized packages.
+
+4. Deliverables
+   - Architecture map.
+   - Implementation plan.
+   - Server/DNS/SSL/deployment setup when relevant.
+   - Monitoring/backups/runbook when relevant.
+   - Handoff/passation.
+
+5. Process
+   - Use the shared `IoProcessMap` with icons:
+     - Diagnostic
+     - Périmètre
+     - Build
+     - Continuité
+
+6. Boundaries
+   - Explicitly say what is not included by default: enterprise SLA, 24/7 on-call, large custom software build without separate scope.
+   - This keeps trust and avoids over-selling.
+
+7. CTA
+   - Route to `/contact?type=systems#form`.
+   - Mention `60 CHF / 15 min` for initial technical cadrage.
+
+Implementation checklist:
+
+- [ ] Convert `/systems-operations` from standalone demo HTML into `PageLayout.astro`.
+- [ ] Switch from dark global page CSS to the current IOPartner light blueprint background.
+- [ ] Reuse `IoNodeIcon`, `IoProcessMap`, and the native systems topology visual.
+- [ ] Keep scenario interactivity only if it stays clean and accessible.
+- [ ] Remove demo controls like Dark/Light buttons from the public page.
+- [ ] Verify header/footer render normally on the page.
+- [ ] Verify mobile layout and build.

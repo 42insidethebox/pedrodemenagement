@@ -3,6 +3,7 @@ import { ENV } from '~/lib/env';
 import { getSupabaseAdmin } from '~/lib/supabase';
 import { sendEmailTemplate } from '~/lib/email';
 import { normalizePlanId, TONSITEWEB_DEFAULT_PLAN } from '~/lib/pricing.js';
+import { isAllowedTemplate } from '~/lib/templates.js';
 
 export const prerender = false;
 
@@ -10,24 +11,27 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     const form = await request.formData();
 
-    const plan          = normalizePlanId(String(form.get('plan') || TONSITEWEB_DEFAULT_PLAN).trim());
-    const businessName  = String(form.get('business_name') || '').trim();
-    const tagline       = String(form.get('tagline') || '').trim();
-    const sector        = String(form.get('sector') || '').trim();
-    const description   = String(form.get('description') || '').trim();
-    const address       = String(form.get('address') || '').trim();
-    const phone         = String(form.get('phone') || '').trim();
-    const siteEmail     = String(form.get('site_email') || '').trim();
-    const hours         = String(form.get('hours') || '').trim();
-    const colorPrimary  = String(form.get('color_primary_hex') || form.get('color_primary') || '').trim();
+    const plan = normalizePlanId(String(form.get('plan') || TONSITEWEB_DEFAULT_PLAN).trim());
+    const template = isAllowedTemplate(String(form.get('template') || '').trim())
+      ? String(form.get('template') || '').trim()
+      : 'surprise';
+    const businessName = String(form.get('business_name') || '').trim();
+    const tagline = String(form.get('tagline') || '').trim();
+    const sector = String(form.get('sector') || '').trim();
+    const description = String(form.get('description') || '').trim();
+    const address = String(form.get('address') || '').trim();
+    const phone = String(form.get('phone') || '').trim();
+    const siteEmail = String(form.get('site_email') || '').trim();
+    const hours = String(form.get('hours') || '').trim();
+    const colorPrimary = String(form.get('color_primary_hex') || form.get('color_primary') || '').trim();
     const colorSecondary = String(form.get('color_secondary_hex') || form.get('color_secondary') || '').trim();
-    const style         = String(form.get('style') || '').trim();
-    const instagram     = String(form.get('instagram') || '').trim();
-    const facebook      = String(form.get('facebook') || '').trim();
+    const style = String(form.get('style') || '').trim();
+    const instagram = String(form.get('instagram') || '').trim();
+    const facebook = String(form.get('facebook') || '').trim();
     const domainDesired = String(form.get('domain_desired') || '').trim();
-    const domainOwned   = form.get('domain_owned') === 'yes';
-    const references    = String(form.get('references') || '').trim();
-    const notes         = String(form.get('notes') || '').trim();
+    const domainOwned = form.get('domain_owned') === 'yes';
+    const references = String(form.get('references') || '').trim();
+    const notes = String(form.get('notes') || '').trim();
 
     if (!businessName || !description) {
       return new Response(null, {
@@ -86,35 +90,39 @@ export const POST: APIRoute = async ({ request }) => {
       }
 
       // Insert submission
-      const { data: insertedRow } = await sb.from('onboarding_submissions').insert({
-        tenant_id: 'iopartner',
-        business_name: businessName,
-        tagline: tagline || null,
-        sector: sector || null,
-        description,
-        services,
-        address: address || null,
-        phone: phone || null,
-        email: siteEmail || null,
-        hours: hours || null,
-        color_primary: colorPrimary || null,
-        color_secondary: colorSecondary || null,
-        style: style || null,
-        logo_url: logoUrl,
-        photo_urls: photoUrls.length > 0 ? photoUrls : null,
-        instagram: instagram || null,
-        facebook: facebook || null,
-        domain_desired: domainDesired || null,
-        domain_owned: domainOwned,
-        references: references || null,
-        notes: notes || null,
-      }).select('id').maybeSingle();
+      const { data: insertedRow } = await sb
+        .from('onboarding_submissions')
+        .insert({
+          tenant_id: 'iopartner',
+          business_name: businessName,
+          tagline: tagline || null,
+          sector: sector || null,
+          description,
+          services,
+          address: address || null,
+          phone: phone || null,
+          email: siteEmail || null,
+          hours: hours || null,
+          color_primary: colorPrimary || null,
+          color_secondary: colorSecondary || null,
+          style: style || null,
+          logo_url: logoUrl,
+          photo_urls: photoUrls.length > 0 ? photoUrls : null,
+          instagram: instagram || null,
+          facebook: facebook || null,
+          domain_desired: domainDesired || null,
+          domain_owned: domainOwned,
+          references: references || null,
+          notes: notes || null,
+        })
+        .select('id')
+        .maybeSingle();
       submissionId = insertedRow?.id ?? null;
     }
 
     // Send admin notification email
     if (ENV.RESEND_API_KEY && ENV.SUPPORT_EMAIL) {
-      const servicesList = services.map(s => `• ${s.name}${s.price ? ` (${s.price})` : ''}: ${s.desc}`).join('\n');
+      const servicesList = services.map((s) => `• ${s.name}${s.price ? ` (${s.price})` : ''}: ${s.desc}`).join('\n');
       const html = `
         <h2>Nouvelle fiche onboarding — ${businessName}</h2>
         <table style="border-collapse:collapse;width:100%;font-size:14px;">
@@ -139,9 +147,14 @@ export const POST: APIRoute = async ({ request }) => {
             ['Notes', notes],
             ['Logo', logoUrl || '—'],
             ['Submission ID', submissionId],
-          ].map(([k, v]) => `<tr><td style="padding:4px 10px;font-weight:600;border:1px solid #e5e7eb;width:180px;">${k}</td><td style="padding:4px 10px;border:1px solid #e5e7eb;">${v || '—'}</td></tr>`).join('')}
+          ]
+            .map(
+              ([k, v]) =>
+                `<tr><td style="padding:4px 10px;font-weight:600;border:1px solid #e5e7eb;width:180px;">${k}</td><td style="padding:4px 10px;border:1px solid #e5e7eb;">${v || '—'}</td></tr>`
+            )
+            .join('')}
         </table>
-        ${photoUrls.length > 0 ? `<p style="margin-top:12px;"><strong>Photos :</strong><br>${photoUrls.map(u => `<a href="${u}">${u}</a>`).join('<br>')}</p>` : ''}
+        ${photoUrls.length > 0 ? `<p style="margin-top:12px;"><strong>Photos :</strong><br>${photoUrls.map((u) => `<a href="${u}">${u}</a>`).join('<br>')}</p>` : ''}
       `;
       await sendEmailTemplate({
         template: 'default',
@@ -154,7 +167,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     const params = new URLSearchParams({
       plan,
-      template: 'surprise',
+      template,
       name: businessName,
       phone,
       locale: String(form.get('locale') || 'fr'),

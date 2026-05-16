@@ -47,6 +47,10 @@ const CHECKOUT_CONFIGS: Record<string, TenantCheckoutConfig> = {
     mode: 'plan',
     allowedPlans: ALLOWED_PLANS,
   },
+  iopartner: {
+    mode: 'plan',
+    allowedPlans: ALLOWED_PLANS,
+  },
   ateliermemoire: {
     mode: 'dynamic',
     currency: 'chf',
@@ -69,11 +73,14 @@ const CHECKOUT_CONFIGS: Record<string, TenantCheckoutConfig> = {
 const TENANT_ALIASES: Record<string, string> = {
   'atelier-memoire': 'ateliermemoire',
   ateliermemoire: 'ateliermemoire',
-  'tonsiteweb': 'tonsiteweb',
+  tonsiteweb: 'tonsiteweb',
+  iopartner: 'iopartner',
 };
 
 export function normalizeCheckoutTenantSlug(raw: string | null | undefined) {
-  const key = String(raw || '').trim().toLowerCase();
+  const key = String(raw || '')
+    .trim()
+    .toLowerCase();
   if (!key) return '';
   return TENANT_ALIASES[key] || key.replace(/[^a-z0-9-]/g, '');
 }

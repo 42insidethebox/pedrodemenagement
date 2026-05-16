@@ -1,60 +1,155 @@
 ---
 import IoBlueprintVisual from '~/components/iopartner/IoBlueprintVisual.astro';
 import Io02SvgLinesPathsCurves from '~/components/iopartner/visuals/Io02SvgLinesPathsCurves.astro';
+import { detectRequestLocale } from '~/lib/locale';
 import Layout from '~/layouts/PageLayout.astro';
 
-const metadata = {
-  title: 'Services',
-  description:
-    'Services IOPartner: consulting technique, systems & operations, déploiement standard et continuité technique pour PME.',
-};
+const locale = detectRequestLocale(Astro.request, Astro.url);
+const localePrefix = ['en', 'de', 'it'].includes(locale) ? `/${locale}` : '';
 
-const capabilities = [
-  {
-    title: 'Consulting technique',
-    body: 'Arbitrage, revue, déblocage et cadrage avant d’engager du temps de build.',
-    meta: '60 CHF / 15 min · 140 CHF / h',
+const COPY = {
+  fr: {
+    metadata: {
+      title: 'Services',
+      description:
+        'Services IOPartner: cadrage technique, systèmes & opérations, présence web cadrée et continuité technique pour PME.',
+    },
+    kicker: 'Services',
+    heroTitle: 'Conseil, systèmes et déploiement au bon niveau.',
+    heroBody:
+      'IOPartner ne pousse pas chaque besoin vers du custom. On clarifie d’abord, puis on livre la forme utile: cadrage, systèmes & opérations, ou présence web cadrée.',
+    primary: 'Envoyer le contexte',
+    secondary: 'Voir les tarifs',
+    capabilities: [
+      { title: 'Cadrage technique', body: 'Arbitrage, revue, déblocage et cadrage avant d’engager du temps de build.', meta: '60 CHF / 15 min · 140 CHF / h' },
+      { title: 'Systèmes & opérations', body: 'Infrastructure, backend léger, automatisation, supervision, intégrations et continuité.', meta: 'scope sur devis' },
+      { title: 'Présence web cadrée', body: 'Présence web cadrée quand une build privée serait inutilement lourde.', meta: 'dès 999 CHF' },
+      { title: 'Continuité technique', body: 'Support, incidents, DNS, monitoring, corrections et évolutions après livraison.', meta: 'selon besoin' },
+    ],
+    systemsKicker: 'Systèmes & opérations',
+    systemsTitle: 'La couche avancée reste séparée du site standard.',
+    systemsBody:
+      'Quand il faut toucher à l’architecture, au backend, aux workflows ou à la continuité technique, le sujet est cadré comme un système, pas comme une option de site.',
+    outcomesKicker: 'Sorties concrètes',
+    outcomesTitle: 'Moins de théorie. Plus d’artefacts utiles.',
+    outcomes: ['Décision technique plus nette', 'Périmètre de build défendable', 'Infrastructure plus propre', 'Workflows moins manuels', 'Présence web maintenable', 'Point de contact stable'],
+    standardKicker: 'Présence web cadrée',
+    standardTitle: 'Quand le standard suffit, il doit rester propre.',
+    standardBody:
+      'Le format 999 CHF est gardé comme une baseline de lancement: rapide, cadrée, maintenable, sans prétendre être une infrastructure sur mesure.',
+    standardCta: 'Voir des projets livrés',
   },
-  {
-    title: 'Systems & operations',
-    body: 'Infrastructure, backend léger, automatisation, supervision, intégrations et continuité.',
-    meta: 'scope sur devis',
+  en: {
+    metadata: {
+      title: 'Services',
+      description:
+        'IOPartner services: technical scoping, systems & operations, scoped web presence, and technical continuity for SMEs.',
+    },
+    kicker: 'Services',
+    heroTitle: 'Consulting, systems, and delivery at the right level.',
+    heroBody:
+      'IOPartner does not push every need into custom work. We clarify first, then deliver the useful form: scoping, systems & operations, or scoped web presence.',
+    primary: 'Send the context',
+    secondary: 'See pricing',
+    capabilities: [
+      { title: 'Technical scoping', body: 'Arbitration, review, unblock, and scoping before committing build time.', meta: 'CHF 60 / 15 min · CHF 140 / h' },
+      { title: 'Systems & operations', body: 'Infrastructure, light backend, automation, supervision, integrations, and continuity.', meta: 'quoted scope' },
+      { title: 'Scoped web presence', body: 'Scoped web presence when a private build would be unnecessarily heavy.', meta: 'from CHF 999' },
+      { title: 'Technical continuity', body: 'Support, incidents, DNS, monitoring, fixes, and evolutions after delivery.', meta: 'as needed' },
+    ],
+    systemsKicker: 'Systems & operations',
+    systemsTitle: 'The advanced layer stays separate from the standard site.',
+    systemsBody:
+      'When the topic touches architecture, backend, workflows, or technical continuity, it is scoped like a system, not sold as a website add-on.',
+    outcomesKicker: 'Concrete outputs',
+    outcomesTitle: 'Less theory. More useful artifacts.',
+    outcomes: ['A clearer technical decision', 'A defensible build scope', 'Cleaner infrastructure', 'Less manual workflows', 'Maintainable web presence', 'A stable technical point of contact'],
+    standardKicker: 'Scoped web presence',
+    standardTitle: 'When standard is enough, it should stay clean.',
+    standardBody:
+      'The CHF 999 format remains a launch baseline: fast, scoped, maintainable, without pretending to be custom infrastructure.',
+    standardCta: 'See delivered projects',
   },
-  {
-    title: 'Déploiement standard',
-    body: 'Présence web cadrée quand une build privée serait inutilement lourde.',
-    meta: 'dès 999 CHF',
+  de: {
+    metadata: {
+      title: 'Services',
+      description:
+        'IOPartner Services: technisches Scoping, Systeme & Betrieb, klar abgegrenzte Web-Präsenz und technische Kontinuität für KMU.',
+    },
+    kicker: 'Services',
+    heroTitle: 'Beratung, Systeme und Delivery auf dem richtigen Niveau.',
+    heroBody:
+      'IOPartner drängt nicht jeden Bedarf in Custom-Arbeit. Wir klären zuerst und liefern dann die nützliche Form: Scoping, Systeme & Betrieb oder klar abgegrenzte Web-Präsenz.',
+    primary: 'Kontext senden',
+    secondary: 'Preise ansehen',
+    capabilities: [
+      { title: 'Technisches Scoping', body: 'Abwägung, Review, Entblockung und Scoping, bevor Build-Zeit gebunden wird.', meta: 'CHF 60 / 15 Min. · CHF 140 / h' },
+      { title: 'Systeme & Betrieb', body: 'Infrastruktur, leichtes Backend, Automatisierung, Überwachung, Integrationen und Kontinuität.', meta: 'Scope auf Anfrage' },
+      { title: 'Klar abgegrenzte Web-Präsenz', body: 'Klar abgegrenzte Web-Präsenz, wenn ein privater Build unnötig schwer wäre.', meta: 'ab CHF 999' },
+      { title: 'Technische Kontinuität', body: 'Support, Incidents, DNS, Monitoring, Korrekturen und Weiterentwicklungen nach der Lieferung.', meta: 'nach Bedarf' },
+    ],
+    systemsKicker: 'Systeme & Betrieb',
+    systemsTitle: 'Die fortgeschrittene Ebene bleibt getrennt von der Standard-Website.',
+    systemsBody:
+      'Wenn Architektur, Backend, Workflows oder technische Kontinuität berührt werden, wird das Thema als System gescopt, nicht als Website-Option verkauft.',
+    outcomesKicker: 'Konkrete Ergebnisse',
+    outcomesTitle: 'Weniger Theorie. Mehr nützliche Artefakte.',
+    outcomes: ['Klarere technische Entscheidung', 'Vertretbarer Build-Scope', 'Sauberere Infrastruktur', 'Weniger manuelle Workflows', 'Wartbare Web-Präsenz', 'Stabiler technischer Ansprechpartner'],
+    standardKicker: 'Klar abgegrenzte Web-Präsenz',
+    standardTitle: 'Wenn Standard reicht, sollte er sauber bleiben.',
+    standardBody:
+      'Das CHF-999-Format bleibt eine Launch-Basis: schnell, abgegrenzt, wartbar, ohne vorzugeben, Custom-Infrastruktur zu sein.',
+    standardCta: 'Gelieferte Projekte ansehen',
   },
-  {
-    title: 'Continuité technique',
-    body: 'Support, incidents, DNS, monitoring, corrections et évolutions après livraison.',
-    meta: 'selon besoin',
+  it: {
+    metadata: {
+      title: 'Servizi',
+      description:
+        'Servizi IOPartner: inquadramento tecnico, sistemi & operazioni, presenza web strutturata e continuità tecnica per PMI.',
+    },
+    kicker: 'Servizi',
+    heroTitle: 'Consulenza, sistemi e delivery al giusto livello.',
+    heroBody:
+      'IOPartner non spinge ogni bisogno verso il custom. Prima chiarisce, poi consegna la forma utile: inquadramento, sistemi & operazioni o presenza web strutturata.',
+    primary: 'Inviare il contesto',
+    secondary: 'Vedere i prezzi',
+    capabilities: [
+      { title: 'Inquadramento tecnico', body: 'Arbitraggio, review, sblocco e definizione prima di impegnare tempo di build.', meta: 'CHF 60 / 15 min · CHF 140 / h' },
+      { title: 'Sistemi & operazioni', body: 'Infrastruttura, backend leggero, automazione, supervisione, integrazioni e continuità.', meta: 'scope su preventivo' },
+      { title: 'Presenza web strutturata', body: 'Presenza web strutturata quando una build privata sarebbe inutilmente pesante.', meta: 'da CHF 999' },
+      { title: 'Continuità tecnica', body: 'Supporto, incidenti, DNS, monitoring, correzioni ed evoluzioni dopo la consegna.', meta: 'secondo necessità' },
+    ],
+    systemsKicker: 'Sistemi & operazioni',
+    systemsTitle: 'Il livello avanzato resta separato dal sito standard.',
+    systemsBody:
+      'Quando si toccano architettura, backend, workflow o continuità tecnica, il tema viene definito come sistema, non venduto come opzione del sito.',
+    outcomesKicker: 'Output concreti',
+    outcomesTitle: 'Meno teoria. Più artefatti utili.',
+    outcomes: ['Decisione tecnica più chiara', 'Perimetro di build difendibile', 'Infrastruttura più pulita', 'Meno workflow manuali', 'Presenza web mantenibile', 'Punto di contatto tecnico stabile'],
+    standardKicker: 'Presenza web strutturata',
+    standardTitle: 'Quando lo standard basta, deve restare pulito.',
+    standardBody:
+      'Il formato da CHF 999 resta una baseline di lancio: rapido, definito, mantenibile, senza fingere di essere infrastruttura custom.',
+    standardCta: 'Vedere i progetti consegnati',
   },
-];
+} as const;
 
-const outcomes = [
-  'Décision technique plus nette',
-  'Périmètre de build défendable',
-  'Infrastructure plus propre',
-  'Workflows moins manuels',
-  'Présence web maintenable',
-  'Point de contact stable',
-];
+const copy = COPY[locale as keyof typeof COPY] ?? COPY.fr;
+const metadata = copy.metadata;
+const capabilities = copy.capabilities;
+const outcomes = copy.outcomes;
 ---
 
 <Layout metadata={metadata}>
   <main class="io-services">
     <section class="io-shell io-hero">
       <div>
-        <p class="io-kicker">Services</p>
-        <h1>Conseil, systèmes et déploiement au bon niveau.</h1>
-        <p>
-          IOPartner ne pousse pas chaque besoin vers du custom. On clarifie d’abord, puis on livre la forme utile:
-          consulting, systems & operations, ou déploiement standard.
-        </p>
+        <p class="io-kicker">{copy.kicker}</p>
+        <h1>{copy.heroTitle}</h1>
+        <p>{copy.heroBody}</p>
         <div class="io-actions">
-          <a class="io-btn io-btn-primary" href="/contact#form">Envoyer le contexte</a>
-          <a class="io-btn io-btn-secondary" href="/pricing">Voir les tarifs</a>
+          <a class="io-btn io-btn-primary" href={`${localePrefix}/contact#form`}>{copy.primary}</a>
+          <a class="io-btn io-btn-secondary" href={`${localePrefix}/pricing`}>{copy.secondary}</a>
         </div>
       </div>
       <IoBlueprintVisual variant="decision" />
@@ -75,12 +170,9 @@ const outcomes = [
     <section class="io-systems-band">
       <div class="io-shell io-systems-grid">
         <div>
-          <p class="io-kicker">Systems & operations</p>
-          <h2>La couche avancée reste séparée du site standard.</h2>
-          <p>
-            Quand il faut toucher à l’architecture, au backend, aux workflows ou à la continuité technique, le sujet est
-            cadré comme un système, pas comme une option de site.
-          </p>
+          <p class="io-kicker">{copy.systemsKicker}</p>
+          <h2>{copy.systemsTitle}</h2>
+          <p>{copy.systemsBody}</p>
           <div class="io-stack-line">Docker · VPS · DNS · SSL · monitoring · workflows · API · dashboards</div>
         </div>
         <Io02SvgLinesPathsCurves />
@@ -89,8 +181,8 @@ const outcomes = [
 
     <section class="io-shell io-outcomes">
       <div>
-        <p class="io-kicker">Sorties concrètes</p>
-        <h2>Moins de théorie. Plus d’artefacts utiles.</h2>
+        <p class="io-kicker">{copy.outcomesKicker}</p>
+        <h2>{copy.outcomesTitle}</h2>
       </div>
       <ul>
         {outcomes.map((item) => <li>{item}</li>)}
@@ -99,13 +191,10 @@ const outcomes = [
 
     <section class="io-shell io-standard">
       <div>
-        <p class="io-kicker">Déploiement standard</p>
-        <h2>Quand le standard suffit, il doit rester propre.</h2>
-        <p>
-          Le format 999 CHF est gardé comme une baseline de lancement: rapide, cadrée, maintenable, sans prétendre être
-          une infrastructure sur mesure.
-        </p>
-        <a class="io-btn io-btn-primary" href="/choose-template?plan=essential999">Choisir une base</a>
+        <p class="io-kicker">{copy.standardKicker}</p>
+        <h2>{copy.standardTitle}</h2>
+        <p>{copy.standardBody}</p>
+        <a class="io-btn io-btn-primary" href={`${localePrefix}/presence-web-cadree#modeles`}>{copy.standardCta}</a>
       </div>
       <IoBlueprintVisual variant="standard" />
     </section>

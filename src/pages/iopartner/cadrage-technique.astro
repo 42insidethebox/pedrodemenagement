@@ -1,0 +1,595 @@
+---
+import IoBlueprintVisual from '~/components/iopartner/IoBlueprintVisual.astro';
+import IoNodeIcon from '~/components/iopartner/IoNodeIcon.astro';
+import IoProcessMap from '~/components/iopartner/IoProcessMap.astro';
+import type { IoIconName } from '~/components/iopartner/ioNodeIconTypes';
+import { detectRequestLocale } from '~/lib/locale';
+import Layout from '~/layouts/PageLayout.astro';
+
+const locale = detectRequestLocale(Astro.request, Astro.url);
+
+const COPY = {
+  fr: {
+    metadata: {
+      title: 'Cadrage technique — IOPartner',
+      description:
+        'Cadrage technique pour PME: clarifier une décision, débloquer un chantier ou éviter un mauvais projet avant de construire.',
+    },
+    kicker: 'Cadrage technique',
+    heroTitle: 'Décider avant de construire.',
+    heroLead:
+      'Une session courte pour clarifier une décision, débloquer un sujet ou éviter de transformer un besoin simple en mauvais chantier.',
+    note: '15 min pour arbitrer vite · 1 h pour un sujet plus sérieux · puis 140 CHF / h si le travail continue.',
+    useKicker: 'Quand l’utiliser',
+    useTitle: 'Quand le problème n’est pas encore le build.',
+    situations: [
+      'Vous hésitez entre site simple, build privé ou système plus lourd.',
+      'Un projet est bloqué par une décision technique.',
+      'Un prestataire propose du custom, mais le besoin réel n’est pas clair.',
+      'Votre stack fonctionne, mais personne ne sait vraiment jusqu’où elle tient.',
+    ],
+    buyKicker: 'Ce que vous achetez',
+    buyTitle: 'De la clarté technique, pas une promesse de gros projet.',
+    deliverables: [
+      'une décision technique défendable',
+      'un périmètre plus net',
+      'une liste de risques concrets',
+      'une prochaine étape simple',
+    ],
+    shortKicker: 'Session courte',
+    shortTitle: '15 minutes pour trancher.',
+    shortBody: 'Utile pour arbitrer un choix, débloquer un sujet ou confirmer qu’il ne faut pas surconstruire.',
+    longKicker: 'Session étendue',
+    longTitle: '1 heure pour un vrai cadrage.',
+    longBody: 'Utile pour une PME déjà engagée dans plusieurs outils, contraintes, parties prenantes ou décisions liées.',
+    formatKicker: 'Format',
+    formatTitle: 'Une séquence courte, utile même si rien n’est construit ensuite.',
+    discernLead: 'Parfois la meilleure décision technique est de ne pas construire.',
+    discernBody:
+      'Si un site cadré suffit, on le dit. Si le sujet mérite une infrastructure dédiée, on le cadre avant de vendre une exécution.',
+    finalTitle: 'Clarifier votre prochain mouvement.',
+    finalBody: 'Envoyez le contexte ou réservez une session courte. L’objectif est de décider proprement.',
+    pay15: 'Payer 15 min',
+    pay60: 'Payer 1 heure',
+    steps: [
+      { label: '01', title: 'Contexte', detail: 'Ce qui existe, ce qui bloque.', icon: 'diagnostic' },
+      { label: '02', title: 'Arbitrage', detail: 'Standard, custom ou pause.', icon: 'scope' },
+      { label: '03', title: 'Direction', detail: 'Ce qu’il faut faire ensuite.', icon: 'consulting' },
+      { label: '04', title: 'Suite', detail: 'Build, systems ou rien.', icon: 'check' },
+    ] as Array<{ label: string; title: string; detail: string; icon: IoIconName }>,
+  },
+  en: {
+    metadata: {
+      title: 'Technical scoping — IOPartner',
+      description:
+        'Technical scoping for SMEs: clarify a decision, unblock a project, or avoid the wrong build before starting.',
+    },
+    kicker: 'Technical scoping',
+    heroTitle: 'Decide before you build.',
+    heroLead:
+      'A short paid session to clarify a decision, unblock an issue, or avoid turning a simple need into the wrong project.',
+    note: '15 min for a fast arbitration · 1 h for a more serious topic · then CHF 140 / h if the work continues.',
+    useKicker: 'When to use it',
+    useTitle: 'When the problem is not the build yet.',
+    situations: [
+      'You are hesitating between a simple site, a private build, or a heavier system.',
+      'A project is blocked by a technical decision.',
+      'A provider is proposing custom work, but the real need is still unclear.',
+      'Your stack works, but nobody really knows how far it can go.',
+    ],
+    buyKicker: 'What you buy',
+    buyTitle: 'Technical clarity, not a promise of a large project.',
+    deliverables: [
+      'a defensible technical decision',
+      'a clearer scope',
+      'a list of concrete risks',
+      'a simple next move',
+    ],
+    shortKicker: 'Short session',
+    shortTitle: '15 minutes to decide.',
+    shortBody: 'Useful for arbitrating a choice, unblocking a topic, or confirming that overbuilding would be a mistake.',
+    longKicker: 'Extended session',
+    longTitle: '1 hour for real scoping.',
+    longBody: 'Useful for SMEs already dealing with several tools, constraints, stakeholders, or linked decisions.',
+    formatKicker: 'Format',
+    formatTitle: 'A short sequence that stays useful even if nothing gets built afterwards.',
+    discernLead: 'Sometimes the best technical decision is not to build.',
+    discernBody:
+      'If a scoped website is enough, we say so. If the topic deserves dedicated infrastructure, we scope it before selling execution.',
+    finalTitle: 'Clarify your next move.',
+    finalBody: 'Send the context or book a short session. The goal is to decide cleanly.',
+    pay15: 'Pay for 15 min',
+    pay60: 'Pay for 1 hour',
+    steps: [
+      { label: '01', title: 'Context', detail: 'What exists, what blocks.', icon: 'diagnostic' },
+      { label: '02', title: 'Arbitration', detail: 'Standard, custom, or pause.', icon: 'scope' },
+      { label: '03', title: 'Direction', detail: 'What should happen next.', icon: 'consulting' },
+      { label: '04', title: 'Next step', detail: 'Build, systems, or nothing.', icon: 'check' },
+    ] as Array<{ label: string; title: string; detail: string; icon: IoIconName }>,
+  },
+  de: {
+    metadata: {
+      title: 'Technisches Scoping — IOPartner',
+      description:
+        'Technisches Scoping für KMU: eine Entscheidung klären, ein Projekt entblocken oder den falschen Build vorab vermeiden.',
+    },
+    kicker: 'Technisches Scoping',
+    heroTitle: 'Erst entscheiden, dann bauen.',
+    heroLead:
+      'Eine kurze bezahlte Session, um eine Entscheidung zu klären, ein Thema zu entblocken oder aus einem einfachen Bedarf kein falsches Projekt zu machen.',
+    note: '15 Min. für schnelle Klärung · 1 h für ein ernsthafteres Thema · danach CHF 140 / h, wenn die Arbeit weitergeht.',
+    useKicker: 'Wann es sinnvoll ist',
+    useTitle: 'Wenn das Problem noch nicht der Build ist.',
+    situations: [
+      'Sie schwanken zwischen einfacher Website, privatem Build oder schwererem System.',
+      'Ein Projekt steckt an einer technischen Entscheidung fest.',
+      'Ein Anbieter schlägt Custom vor, aber der echte Bedarf ist noch unklar.',
+      'Ihr Stack funktioniert, aber niemand weiss wirklich, wie weit er trägt.',
+    ],
+    buyKicker: 'Was Sie kaufen',
+    buyTitle: 'Technische Klarheit, nicht das Versprechen eines grossen Projekts.',
+    deliverables: [
+      'eine vertretbare technische Entscheidung',
+      'einen klareren Scope',
+      'eine Liste konkreter Risiken',
+      'einen einfachen nächsten Schritt',
+    ],
+    shortKicker: 'Kurze Session',
+    shortTitle: '15 Minuten zum Entscheiden.',
+    shortBody: 'Nützlich, um eine Wahl zu treffen, ein Thema zu entblocken oder zu bestätigen, dass Überbau ein Fehler wäre.',
+    longKicker: 'Erweiterte Session',
+    longTitle: '1 Stunde für echtes Scoping.',
+    longBody: 'Nützlich für KMU, die bereits mit mehreren Tools, Einschränkungen, Beteiligten oder gekoppelten Entscheidungen arbeiten.',
+    formatKicker: 'Format',
+    formatTitle: 'Eine kurze Abfolge, die auch dann nützlich bleibt, wenn danach nichts gebaut wird.',
+    discernLead: 'Manchmal ist die beste technische Entscheidung, nicht zu bauen.',
+    discernBody:
+      'Wenn eine klar abgegrenzte Website reicht, sagen wir das. Wenn das Thema eine dedizierte Infrastruktur verdient, scopen wir es vor der Umsetzung.',
+    finalTitle: 'Ihren nächsten Schritt klären.',
+    finalBody: 'Senden Sie den Kontext oder buchen Sie eine kurze Session. Das Ziel ist eine saubere Entscheidung.',
+    pay15: '15 Min. bezahlen',
+    pay60: '1 Stunde bezahlen',
+    steps: [
+      { label: '01', title: 'Kontext', detail: 'Was existiert, was blockiert.', icon: 'diagnostic' },
+      { label: '02', title: 'Abwägung', detail: 'Standard, Custom oder Pause.', icon: 'scope' },
+      { label: '03', title: 'Richtung', detail: 'Was als Nächstes passieren soll.', icon: 'consulting' },
+      { label: '04', title: 'Weiteres', detail: 'Build, Systems oder nichts.', icon: 'check' },
+    ] as Array<{ label: string; title: string; detail: string; icon: IoIconName }>,
+  },
+  it: {
+    metadata: {
+      title: 'Inquadramento tecnico — IOPartner',
+      description:
+        'Inquadramento tecnico per PMI: chiarire una decisione, sbloccare un progetto o evitare la build sbagliata prima di partire.',
+    },
+    kicker: 'Inquadramento tecnico',
+    heroTitle: 'Decidere prima di costruire.',
+    heroLead:
+      'Una sessione breve a pagamento per chiarire una decisione, sbloccare un tema o evitare di trasformare un bisogno semplice in un progetto sbagliato.',
+    note: '15 min per arbitrare rapidamente · 1 h per un tema più serio · poi CHF 140 / h se il lavoro continua.',
+    useKicker: 'Quando usarlo',
+    useTitle: 'Quando il problema non è ancora la build.',
+    situations: [
+      'State esitando tra un sito semplice, una build privata o un sistema più pesante.',
+      'Un progetto è bloccato da una decisione tecnica.',
+      'Un fornitore propone custom, ma il bisogno reale non è ancora chiaro.',
+      'La vostra stack funziona, ma nessuno sa davvero fino a dove regge.',
+    ],
+    buyKicker: 'Cosa acquistate',
+    buyTitle: 'Chiarezza tecnica, non la promessa di un grande progetto.',
+    deliverables: [
+      'una decisione tecnica difendibile',
+      'un perimetro più chiaro',
+      'un elenco di rischi concreti',
+      'una prossima mossa semplice',
+    ],
+    shortKicker: 'Sessione breve',
+    shortTitle: '15 minuti per decidere.',
+    shortBody: 'Utile per arbitrare una scelta, sbloccare un tema o confermare che sovracostruire sarebbe un errore.',
+    longKicker: 'Sessione estesa',
+    longTitle: '1 ora per un vero inquadramento.',
+    longBody: 'Utile per PMI già coinvolte con più strumenti, vincoli, stakeholder o decisioni collegate.',
+    formatKicker: 'Formato',
+    formatTitle: 'Una sequenza breve che resta utile anche se poi non si costruisce nulla.',
+    discernLead: 'A volte la migliore decisione tecnica è non costruire.',
+    discernBody:
+      'Se basta un sito ben inquadrato, lo diciamo. Se il tema richiede un’infrastruttura dedicata, la definiamo prima di vendere l’esecuzione.',
+    finalTitle: 'Chiarire la vostra prossima mossa.',
+    finalBody: 'Inviate il contesto o prenotate una sessione breve. L’obiettivo è decidere bene.',
+    pay15: 'Paga 15 min',
+    pay60: 'Paga 1 ora',
+    steps: [
+      { label: '01', title: 'Contesto', detail: 'Cosa esiste, cosa blocca.', icon: 'diagnostic' },
+      { label: '02', title: 'Arbitraggio', detail: 'Standard, custom o pausa.', icon: 'scope' },
+      { label: '03', title: 'Direzione', detail: 'Cosa fare dopo.', icon: 'consulting' },
+      { label: '04', title: 'Seguito', detail: 'Build, sistemi o nulla.', icon: 'check' },
+    ] as Array<{ label: string; title: string; detail: string; icon: IoIconName }>,
+  },
+} as const;
+
+const copy = COPY[locale as keyof typeof COPY] ?? COPY.fr;
+const metadata = copy.metadata;
+---
+
+<Layout metadata={metadata}>
+  <main class="io-service">
+    <section class="io-hero">
+      <div class="io-shell io-hero-grid">
+        <div>
+          <p class="io-kicker">{copy.kicker}</p>
+          <h1>{copy.heroTitle}</h1>
+          <p class="io-lead">{copy.heroLead}</p>
+          <div class="io-actions">
+            <a class="io-btn io-btn-primary" href="/api/payment/redirect?tenant=iopartner&plan=diagnostic60">
+              15 min — 60 CHF
+            </a>
+            <a class="io-btn io-btn-secondary" href="/api/payment/redirect?tenant=iopartner&plan=session140">
+              1 h — 140 CHF
+            </a>
+          </div>
+          <p class="io-price-note">{copy.note}</p>
+        </div>
+        <IoBlueprintVisual variant="decision" />
+      </div>
+    </section>
+
+    <section class="io-shell io-recognition">
+      <div class="io-section-head">
+        <p class="io-kicker">{copy.useKicker}</p>
+        <h2>{copy.useTitle}</h2>
+      </div>
+      <div class="io-card-grid">
+        {
+          copy.situations.map((item) => (
+            <article>
+              <span>
+                <IoNodeIcon name="scope" />
+              </span>
+              <p>{item}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="io-shell io-split">
+      <div>
+        <p class="io-kicker">{copy.buyKicker}</p>
+        <h2>{copy.buyTitle}</h2>
+      </div>
+      <ul>
+        {copy.deliverables.map((item) => <li>{item}</li>)}
+      </ul>
+    </section>
+
+    <section class="io-shell io-session-grid">
+      <article>
+        <p class="io-kicker">{copy.shortKicker}</p>
+        <h2>{copy.shortTitle}</h2>
+        <p>{copy.shortBody}</p>
+        <strong>60 CHF</strong>
+        <a class="io-btn io-btn-primary" href="/api/payment/redirect?tenant=iopartner&plan=diagnostic60">
+          {copy.pay15}
+        </a>
+      </article>
+      <article>
+        <p class="io-kicker">{copy.longKicker}</p>
+        <h2>{copy.longTitle}</h2>
+        <p>{copy.longBody}</p>
+        <strong>140 CHF</strong>
+        <a class="io-btn io-btn-secondary" href="/api/payment/redirect?tenant=iopartner&plan=session140">
+          {copy.pay60}
+        </a>
+      </article>
+    </section>
+
+    <section class="io-shell io-process">
+      <div class="io-section-head">
+        <p class="io-kicker">{copy.formatKicker}</p>
+        <h2>{copy.formatTitle}</h2>
+      </div>
+      <IoProcessMap steps={copy.steps} />
+    </section>
+
+    <section class="io-shell io-discernment">
+      <p>{copy.discernLead}</p>
+      <span>{copy.discernBody}</span>
+    </section>
+
+    <section class="io-shell io-final-cta">
+      <h2>{copy.finalTitle}</h2>
+      <p>{copy.finalBody}</p>
+      <div class="io-actions">
+        <a class="io-btn io-btn-primary" href="/api/payment/redirect?tenant=iopartner&plan=diagnostic60">
+          {copy.pay15}
+        </a>
+        <a class="io-btn io-btn-secondary" href="/api/payment/redirect?tenant=iopartner&plan=session140">
+          {copy.pay60}
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <style>
+    .io-service {
+      --io-ink: #0f172a;
+      --io-muted: #5f6b7c;
+      --io-blue: #0b63f6;
+      --io-line: rgba(148, 163, 184, 0.22);
+      overflow: hidden;
+      background:
+        linear-gradient(90deg, rgba(37, 99, 235, 0.045) 1px, transparent 1px),
+        linear-gradient(rgba(37, 99, 235, 0.045) 1px, transparent 1px), #f8fbff;
+      background-size:
+        34px 34px,
+        34px 34px,
+        auto;
+      color: var(--io-ink);
+    }
+
+    .io-shell {
+      width: min(100% - 2rem, 80rem);
+      margin-inline: auto;
+    }
+
+    .io-hero {
+      padding: 4.8rem 0 4rem;
+    }
+
+    .io-hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.82fr) minmax(24rem, 1fr);
+      gap: 3.5rem;
+      align-items: center;
+    }
+
+    h1,
+    h2 {
+      margin: 0;
+      font-weight: 850;
+      line-height: 1.04;
+    }
+
+    h1 {
+      max-width: 40rem;
+      font-size: 4rem;
+    }
+
+    h2 {
+      font-size: 2.55rem;
+    }
+
+    .io-kicker {
+      margin: 0 0 1rem;
+      color: var(--io-blue);
+      font-size: 0.78rem;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    .io-lead,
+    .io-section-head p,
+    .io-final-cta p {
+      color: var(--io-muted);
+      font-size: 1.12rem;
+      line-height: 1.72;
+    }
+
+    .io-lead {
+      max-width: 36rem;
+      margin: 1.25rem 0 0;
+    }
+
+    .io-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      margin-top: 1.9rem;
+    }
+
+    .io-btn {
+      display: inline-flex;
+      min-height: 3rem;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 0.78rem 1.35rem;
+      font-weight: 780;
+      text-decoration: none;
+    }
+
+    .io-btn-primary {
+      background: var(--io-blue);
+      color: #fff;
+    }
+
+    .io-btn-secondary {
+      border: 1px solid rgba(15, 23, 42, 0.22);
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--io-ink);
+    }
+
+    .io-price-note {
+      margin: 1rem 0 0;
+      color: #334155;
+      font-size: 0.95rem;
+      font-weight: 720;
+    }
+
+    .io-recognition,
+    .io-process {
+      padding-bottom: 5rem;
+    }
+
+    .io-session-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+      padding-bottom: 5rem;
+    }
+
+    .io-session-grid article {
+      display: grid;
+      gap: 1rem;
+      align-content: start;
+      border: 1px solid var(--io-line);
+      border-radius: 1rem;
+      padding: 1.6rem;
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .io-session-grid article p {
+      margin: 0;
+      color: var(--io-muted);
+      line-height: 1.65;
+    }
+
+    .io-session-grid strong {
+      font-size: 1.55rem;
+      font-weight: 840;
+      color: var(--io-ink);
+    }
+
+    .io-section-head {
+      max-width: 42rem;
+      margin-bottom: 2rem;
+    }
+
+    .io-card-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .io-card-grid article {
+      display: grid;
+      gap: 1rem;
+      align-content: start;
+      min-height: 12rem;
+      border: 1px solid var(--io-line);
+      border-radius: 1rem;
+      padding: 1.25rem;
+      background: rgba(255, 255, 255, 0.78);
+    }
+
+    .io-card-grid span {
+      display: grid;
+      width: 2.7rem;
+      height: 2.7rem;
+      place-items: center;
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      border-radius: 0.72rem;
+      color: var(--io-blue);
+      background: rgba(37, 99, 235, 0.05);
+    }
+
+    .io-card-grid p {
+      margin: 0;
+      color: #334155;
+      line-height: 1.55;
+    }
+
+    .io-split {
+      display: grid;
+      grid-template-columns: minmax(0, 0.88fr) minmax(22rem, 1fr);
+      gap: 3rem;
+      align-items: start;
+      padding: 4.6rem 0;
+      border-top: 1px solid var(--io-line);
+    }
+
+    .io-split ul {
+      display: grid;
+      gap: 0.8rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .io-split li {
+      border-bottom: 1px solid var(--io-line);
+      padding: 0 0 0.85rem;
+      color: #334155;
+      font-weight: 720;
+    }
+
+    .io-discernment {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.8fr);
+      gap: 3rem;
+      align-items: end;
+      padding: 4.8rem 0;
+      border-top: 1px solid var(--io-line);
+    }
+
+    .io-discernment p {
+      margin: 0;
+      font-size: 3rem;
+      font-weight: 850;
+      line-height: 1.05;
+    }
+
+    .io-discernment span {
+      color: var(--io-muted);
+      font-size: 1.08rem;
+      line-height: 1.7;
+    }
+
+    .io-final-cta {
+      margin-bottom: 5rem;
+      border: 1px solid var(--io-line);
+      border-radius: 1.25rem;
+      padding: 2.5rem;
+      background: #fff;
+      text-align: center;
+    }
+
+    .io-final-cta p {
+      max-width: 42rem;
+      margin: 1rem auto 0;
+    }
+
+    .io-final-cta .io-actions {
+      justify-content: center;
+    }
+
+    @media (max-width: 1024px) {
+      .io-hero-grid,
+      .io-split,
+      .io-discernment {
+        grid-template-columns: 1fr;
+      }
+
+      .io-card-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .io-session-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 3rem;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .io-shell {
+        width: min(100% - 1rem, 80rem);
+      }
+
+      .io-card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 2.35rem;
+      }
+
+      h2,
+      .io-discernment p {
+        font-size: 1.95rem;
+      }
+    }
+  </style>
+</Layout>

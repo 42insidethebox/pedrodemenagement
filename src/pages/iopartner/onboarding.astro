@@ -1,6 +1,7 @@
 ---
 import Layout from '~/layouts/Layout.astro';
 import { normalizePlanId, TONSITEWEB_DEFAULT_PLAN } from '~/lib/pricing.js';
+import { isAllowedTemplate } from '~/lib/templates.js';
 
 export const prerender = false;
 
@@ -18,6 +19,9 @@ function resolveLocale(): Locale {
 
 const locale = resolveLocale();
 const plan = normalizePlanId(Astro.url.searchParams.get('plan') || TONSITEWEB_DEFAULT_PLAN);
+const selectedTemplate = isAllowedTemplate(Astro.url.searchParams.get('template'))
+  ? Astro.url.searchParams.get('template') || 'surprise'
+  : 'surprise';
 const error = Astro.url.searchParams.get('error') || '';
 
 const PLAN_PRICE_LABELS = {
@@ -371,6 +375,7 @@ const submitLabel = `${t.submitPrefix} — ${planPrice[locale]} →`;
 
       <form method="POST" action="/api/iopartner/onboarding" enctype="multipart/form-data" class="space-y-8">
         <input type="hidden" name="plan" value={plan} />
+        <input type="hidden" name="template" value={selectedTemplate} />
         <input type="hidden" name="locale" value={locale} />
 
         <!-- Customer contact -->
@@ -747,6 +752,7 @@ const submitLabel = `${t.submitPrefix} — ${planPrice[locale]} →`;
     _sbKey: import.meta.env.SUPABASE_ANON_KEY,
     _plan: plan,
     _locale: locale,
+    _template: selectedTemplate,
   }}
 >
   (function () {
@@ -754,6 +760,7 @@ const submitLabel = `${t.submitPrefix} — ${planPrice[locale]} →`;
     const SB_KEY = _sbKey;
     const PLAN = _plan;
     const LOCALE = _locale;
+    const TEMPLATE = _template;
 
     const form = document.querySelector('form');
     const btn = document.getElementById('onboarding-submit');
@@ -871,7 +878,7 @@ const submitLabel = `${t.submitPrefix} — ${planPrice[locale]} →`;
         const customerEmail = str('customer_email');
         const params = new URLSearchParams({
           plan: PLAN,
-          template: 'surprise',
+          template: TEMPLATE,
           name: customerName || businessName,
           email: customerEmail,
           phone: str('phone'),

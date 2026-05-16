@@ -233,6 +233,24 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
     return Response.redirect(target.toString(), 308);
   }
 
+  // Redirect browser-visible locale prefixes on IOPartner host back to clean URLs.
+  // Persist the chosen locale in aw_lang so the clean URL still renders the translated page.
+  if (isIoPartnerHost) {
+    const localePrefixMatch = url.pathname.match(/^\/(en|de|it)(\/.*)?$/);
+    if (localePrefixMatch) {
+      const lang = localePrefixMatch[1];
+      const stripped = localePrefixMatch[2] || '/';
+      const target = new URL(`${stripped}${url.search}`, url);
+      return new Response(null, {
+        status: 308,
+        headers: {
+          Location: target.toString(),
+          'Set-Cookie': `aw_lang=${lang}; Path=/; Max-Age=31536000; SameSite=Lax`,
+        },
+      });
+    }
+  }
+
   // Internally rewrite clean URLs to /iopartner/* so Astro serves the right pages.
   if (isIoPartnerHost && !shouldSkip) {
     url.pathname = `/iopartner${url.pathname === '/' ? '' : url.pathname}`;
@@ -286,6 +304,37 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
       const cookieLang = rawCookie.split(';').map((c) => c.trim()).find((c) => c.startsWith('aw_lang='))?.split('=')[1]?.toLowerCase();
       if (cookieLang && ['en', 'de', 'it'].includes(cookieLang)) {
         url.pathname = `/tonsiteweb/${cookieLang}${afterBase === '/' ? '' : afterBase}`;
+      }
+    }
+  }
+
+  // Inject iopartner locale prefix from cookie so clean URLs serve translated pages.
+  // e.g. /pricing + cookie aw_lang=de -> renders /iopartner/de/pricing while URL stays clean.
+  const IOPARTNER_LOCALE_VARIANT_PATHS = [
+    '/',
+    '/pricing',
+    '/about',
+    '/contact',
+    '/services',
+    '/choose-template',
+    '/custom-systems',
+    '/custom-tier',
+    '/thank-you',
+    '/privacy',
+    '/terms',
+    '/cadrage-technique',
+    '/offre',
+  ];
+  const isIopartnerPath = url.pathname === '/iopartner' || url.pathname.startsWith('/iopartner/');
+  if (!shouldSkip && isIopartnerPath) {
+    const afterBase = url.pathname.slice('/iopartner'.length) || '/';
+    const alreadyLocale = /^\/(en|de|it|fr)(\/|$)/.test(afterBase);
+    const hasLocaleVariant = IOPARTNER_LOCALE_VARIANT_PATHS.some((p) => afterBase === p || afterBase.startsWith(p + '/'));
+    if (!alreadyLocale && hasLocaleVariant) {
+      const rawCookie = context.request.headers.get('cookie') || '';
+      const cookieLang = rawCookie.split(';').map((c) => c.trim()).find((c) => c.startsWith('aw_lang='))?.split('=')[1]?.toLowerCase();
+      if (cookieLang && ['en', 'de', 'it'].includes(cookieLang)) {
+        url.pathname = `/iopartner/${cookieLang}${afterBase === '/' ? '' : afterBase}`;
       }
     }
   }

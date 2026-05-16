@@ -1,0 +1,222 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import { detectRequestLocale } from '~/lib/locale';
+import { IOPARTNER_CUSTOM_TIER_FLOW, type IoPartnerCustomTierKey } from '~/data/iopartnerCustomTierFlow';
+
+export const prerender = false;
+
+const locale = detectRequestLocale(Astro.request, Astro.url);
+const localePrefix = ['en', 'de', 'it'].includes(locale) ? `/${locale}` : '';
+const track = (Astro.url.searchParams.get('track') || 'private-2000').trim() as IoPartnerCustomTierKey;
+const error = Astro.url.searchParams.get('error') || '';
+const tier = IOPARTNER_CUSTOM_TIER_FLOW[track] || IOPARTNER_CUSTOM_TIER_FLOW['private-2000'];
+
+const COPY = {
+  fr: {
+    title: 'Démarrer un palier technique — IOPartner',
+    eyebrow: 'Démarrage rapide',
+    heading: 'Confirmer le palier choisi avant paiement.',
+    lead: 'Décrivez rapidement l’entreprise et le contexte. Pour les paliers à prix fixe, vous passez ensuite directement au paiement Stripe.',
+    variableLead:
+      'Ce palier commence à 8 000+ CHF. La première étape payée reste une session de 1 heure pour cadrer correctement le sujet avant engagement plus lourd.',
+    company: 'Entreprise',
+    name: 'Nom complet',
+    email: 'Email',
+    phone: 'Téléphone',
+    notes: 'Contexte',
+    notesPlaceholder: 'Décrivez le besoin, le système existant, les délais et le point de friction principal.',
+    payNow: 'Continuer vers Stripe',
+    paySession: 'Payer la session 1 h',
+    back: 'Revenir aux paliers techniques',
+    error: 'Merci de compléter nom, email et téléphone.',
+    noteFixed: 'Paiement direct du palier sélectionné.',
+    noteVariable: 'Le prix final reste scoped après la session si le sujet dépasse le point de départ.',
+    bullets: [
+      'Sujet pré-sélectionné pour l’équipe',
+      'Contexte capturé avant paiement',
+      'Stripe ensuite, sans aller-retour inutile',
+    ],
+  },
+  en: {
+    title: 'Start a technical tier — IOPartner',
+    eyebrow: 'Quick start',
+    heading: 'Confirm the selected tier before payment.',
+    lead: 'Describe the company and the context briefly. For fixed-price tiers, you go straight to Stripe after this step.',
+    variableLead:
+      'This tier starts at CHF 8,000+. The first paid step stays a 1-hour session so the scope is framed correctly before a heavier commitment.',
+    company: 'Company',
+    name: 'Full name',
+    email: 'Email',
+    phone: 'Phone',
+    notes: 'Context',
+    notesPlaceholder: 'Describe the need, the existing system, timing, and the main source of friction.',
+    payNow: 'Continue to Stripe',
+    paySession: 'Pay for the 1h session',
+    back: 'Back to technical tiers',
+    error: 'Please complete name, email, and phone.',
+    noteFixed: 'Direct payment for the selected tier.',
+    noteVariable: 'Final pricing is scoped after the session if the subject goes beyond the starting point.',
+    bullets: [
+      'Pre-qualified topic for the team',
+      'Context captured before payment',
+      'Stripe next, without unnecessary back-and-forth',
+    ],
+  },
+  de: {
+    title: 'Technische Stufe starten — IOPartner',
+    eyebrow: 'Schnellstart',
+    heading: 'Gewählte Stufe vor der Zahlung bestätigen.',
+    lead: 'Beschreiben Sie Unternehmen und Kontext kurz. Bei Festpreis-Stufen gehen Sie danach direkt zu Stripe.',
+    variableLead:
+      'Diese Stufe beginnt bei CHF 8’000+. Der erste bezahlte Schritt bleibt eine 1-Stunden-Session, damit das Thema vor einem grösseren Engagement sauber geklärt ist.',
+    company: 'Unternehmen',
+    name: 'Vollständiger Name',
+    email: 'E-Mail',
+    phone: 'Telefon',
+    notes: 'Kontext',
+    notesPlaceholder: 'Beschreiben Sie Bedarf, bestehendes System, Timing und den wichtigsten Reibungspunkt.',
+    payNow: 'Weiter zu Stripe',
+    paySession: '1h-Session bezahlen',
+    back: 'Zurück zu den technischen Stufen',
+    error: 'Bitte Name, E-Mail und Telefon ausfüllen.',
+    noteFixed: 'Direktzahlung für die gewählte Stufe.',
+    noteVariable: 'Der Endpreis wird nach der Session festgelegt, falls das Thema über den Einstieg hinausgeht.',
+    bullets: [
+      'Vorselektiertes Thema für das Team',
+      'Kontext vor der Zahlung erfasst',
+      'Danach Stripe, ohne unnötige Schleifen',
+    ],
+  },
+  it: {
+    title: 'Avvia un livello tecnico — IOPartner',
+    eyebrow: 'Avvio rapido',
+    heading: 'Conferma il livello scelto prima del pagamento.',
+    lead: 'Descrivi rapidamente l’azienda e il contesto. Per i livelli a prezzo fisso, dopo questo passaggio vai direttamente su Stripe.',
+    variableLead:
+      'Questo livello parte da CHF 8’000+. Il primo passaggio a pagamento resta una sessione di 1 ora per inquadrare bene il tema prima di un impegno più pesante.',
+    company: 'Azienda',
+    name: 'Nome completo',
+    email: 'Email',
+    phone: 'Telefono',
+    notes: 'Contesto',
+    notesPlaceholder: 'Descrivi il bisogno, il sistema esistente, i tempi e il principale punto di attrito.',
+    payNow: 'Continua verso Stripe',
+    paySession: 'Paga la sessione da 1 h',
+    back: 'Torna ai livelli tecnici',
+    error: 'Completa nome, email e telefono.',
+    noteFixed: 'Pagamento diretto del livello selezionato.',
+    noteVariable: 'Il prezzo finale viene definito dopo la sessione se il tema supera il punto di partenza.',
+    bullets: [
+      'Tema prequalificato per il team',
+      'Contesto raccolto prima del pagamento',
+      'Poi Stripe, senza passaggi inutili',
+    ],
+  },
+} as const;
+
+const copy = COPY[locale as keyof typeof COPY] ?? COPY.fr;
+const title = tier.title[locale as keyof typeof tier.title] || tier.title.fr;
+const summary = tier.summary[locale as keyof typeof tier.summary] || tier.summary.fr;
+const priceLabel = tier.priceLabel[locale as keyof typeof tier.priceLabel] || tier.priceLabel.fr;
+---
+
+<Layout metadata={{ title: copy.title }} brandKey="iopartner">
+  <main class="min-h-screen bg-[linear-gradient(180deg,#f8fbff_0%,#fff_50%,#f8fbff_100%)] px-4 py-12">
+    <div class="mx-auto max-w-4xl space-y-8">
+      <section class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
+        <p class="text-xs font-bold uppercase tracking-[0.28em] text-blue-700">{copy.eyebrow}</p>
+        <div class="mt-4 grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+          <div>
+            <h1 class="text-4xl font-black tracking-tight text-slate-950">{title}</h1>
+            <p class="mt-4 text-lg font-semibold text-blue-700">{priceLabel}</p>
+            <p class="mt-4 text-slate-600 leading-7">{summary}</p>
+            <p class="mt-5 text-sm text-slate-500">{tier.amountChf ? copy.lead : copy.variableLead}</p>
+          </div>
+          <div class="rounded-[1.5rem] border border-slate-200 bg-slate-50 p-6">
+            <p class="text-sm font-semibold text-slate-900">{tier.amountChf ? copy.noteFixed : copy.noteVariable}</p>
+            <ul class="mt-4 space-y-2 text-sm text-slate-600">
+              {copy.bullets.map((item) => <li>• {item}</li>)}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
+        <form method="post" action="/api/iopartner/custom-tier" class="space-y-5">
+          <input type="hidden" name="track" value={tier.key} />
+          <input type="hidden" name="locale" value={locale} />
+
+          {
+            error && (
+              <p class="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+                {copy.error}
+              </p>
+            )
+          }
+
+          <div class="grid gap-4 md:grid-cols-2">
+            <label class="grid gap-2 text-sm font-semibold text-slate-800">
+              {copy.company}
+              <input
+                type="text"
+                name="company"
+                class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900"
+              />
+            </label>
+            <label class="grid gap-2 text-sm font-semibold text-slate-800">
+              {copy.name}
+              <input
+                type="text"
+                name="name"
+                required
+                class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900"
+              />
+            </label>
+            <label class="grid gap-2 text-sm font-semibold text-slate-800">
+              {copy.email}
+              <input
+                type="email"
+                name="email"
+                required
+                class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900"
+              />
+            </label>
+            <label class="grid gap-2 text-sm font-semibold text-slate-800">
+              {copy.phone}
+              <input
+                type="tel"
+                name="phone"
+                required
+                class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900"
+              />
+            </label>
+          </div>
+
+          <label class="grid gap-2 text-sm font-semibold text-slate-800">
+            {copy.notes}
+            <textarea
+              name="notes"
+              rows={5}
+              placeholder={copy.notesPlaceholder}
+              class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900"></textarea>
+          </label>
+
+          <div class="flex flex-wrap gap-3">
+            <button
+              type="submit"
+              class="inline-flex rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+            >
+              {tier.amountChf ? copy.payNow : copy.paySession}
+            </button>
+            <a
+              href={`${localePrefix}/custom-systems`}
+              class="inline-flex rounded-xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50"
+            >
+              {copy.back}
+            </a>
+          </div>
+        </form>
+      </section>
+    </div>
+  </main>
+</Layout>

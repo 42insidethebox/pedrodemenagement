@@ -15,13 +15,13 @@ const metadata = {
   <HeroText
     tagline="Contact"
     title="Envoyez le contexte."
-    subtitle="Le formulaire sert à router le besoin. Si un échange technique est utile, le cadrage payé commence ensuite à 60 CHF / 15 min."
+    subtitle="Le formulaire sert à router le besoin. Si un échange technique est utile, le cadrage payé commence ensuite à 60 CHF / 15 min ou 140 CHF / h."
   />
 
   <ContactUs
     id="form"
     title="Contexte, besoin, suite utile"
-    subtitle="Décrivez la situation. Nous répondons par écrit avec la voie la plus rationnelle: déploiement standard, consulting payé, ou systems & operations."
+    subtitle="Décrivez la situation. Nous répondons par écrit avec la voie la plus rationnelle: présence web cadrée, cadrage payé, ou systèmes & opérations."
     action="/api/contact"
     tenant="iopartner"
     source="iopartner-contact-context"
@@ -106,9 +106,9 @@ const metadata = {
         required: true,
         requiredMessage: 'Choisissez un ordre de grandeur.',
         options: [
-          { label: 'Déploiement standard (dès 999 CHF)', value: 'entry' },
-          { label: 'Consulting technique (60 CHF / 15 min)', value: 'advanced' },
-          { label: 'Systems & operations (sur devis)', value: 'custom' },
+          { label: 'Présence web cadrée (dès 999 CHF)', value: 'entry' },
+          { label: 'Cadrage technique (60 CHF / 15 min ou 140 CHF / h)', value: 'advanced' },
+          { label: 'Systèmes & opérations (sur devis)', value: 'custom' },
           { label: 'Je ne sais pas encore', value: 'unknown' },
         ],
       },
@@ -117,7 +117,7 @@ const metadata = {
         name: 'delivery_track_entry',
         label: 'Voie projet',
         attributes: {
-          value: 'Déploiement standard — lancement cadré sans build privée',
+          value: 'Présence web cadrée — lancement cadré sans build privée',
           readOnly: true,
           disabled: true,
         },
@@ -129,7 +129,7 @@ const metadata = {
         name: 'delivery_track_avance',
         label: 'Voie projet',
         attributes: {
-          value: 'Consulting technique — arbitrage rapide avant scope plus large',
+          value: 'Cadrage technique — arbitrage rapide avant scope plus large',
           readOnly: true,
           disabled: true,
         },
@@ -141,7 +141,7 @@ const metadata = {
         name: 'delivery_track_custom',
         label: 'Voie projet',
         attributes: {
-          value: 'Systems & operations — architecture, backend, infrastructure ou continuité',
+          value: 'Systèmes & opérations — architecture, backend, infrastructure ou continuité',
           readOnly: true,
           disabled: true,
         },
@@ -174,7 +174,7 @@ const metadata = {
         options: [
           {
             label:
-              'Je comprends que ce formulaire sert à router le besoin. Une session de consulting technique est proposée séparément si nécessaire.',
+              'Je comprends que ce formulaire sert à router le besoin. Une session de cadrage technique payée est proposée séparément si nécessaire.',
             value: 'confirmed',
           },
         ],
@@ -186,9 +186,9 @@ const metadata = {
         name: 'next_step',
         label: 'Suite souhaitée',
         options: [
-          { label: 'Démarrer un déploiement standard', value: 'start-now' },
-          { label: 'Recevoir un lien pour le cadrage payé 15 min / 60 CHF', value: 'call-15-paid' },
-          { label: 'Cadrer un sujet systems & operations', value: 'scope-systems' },
+          { label: 'Démarrer une présence web cadrée', value: 'start-now' },
+          { label: 'Recevoir un lien pour le cadrage payé', value: 'call-15-paid' },
+          { label: 'Cadrer un sujet systèmes & opérations', value: 'scope-systems' },
           { label: 'Être orienté vers le bon format', value: 'route-me' },
         ],
       },
@@ -223,8 +223,8 @@ const metadata = {
         icon: 'tabler:mail',
       },
       {
-        title: 'Consulting technique',
-        description: '60 CHF / 15 min quand le sujet demande un échange de décision.',
+        title: 'Cadrage technique',
+        description: '60 CHF / 15 min ou 140 CHF / h quand le sujet demande un vrai échange de décision.',
         icon: 'tabler:clock-dollar',
       },
       {
@@ -248,7 +248,7 @@ const metadata = {
         <div>
           <h3 class="font-semibold text-slate-950">Faut-il déjà connaître le bon format ?</h3>
           <p class="mt-2 text-slate-600">
-            Non. Le formulaire sert justement à choisir entre consulting, systems ou déploiement standard.
+            Non. Le formulaire sert justement à choisir entre cadrage, systèmes ou présence web cadrée.
           </p>
         </div>
         <div>

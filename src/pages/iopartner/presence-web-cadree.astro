@@ -1,0 +1,523 @@
+---
+import IoBlueprintVisual from '~/components/iopartner/IoBlueprintVisual.astro';
+import IoNodeIcon from '~/components/iopartner/IoNodeIcon.astro';
+import IoProcessMap from '~/components/iopartner/IoProcessMap.astro';
+import type { IoIconName } from '~/components/iopartner/ioNodeIconTypes';
+import Layout from '~/layouts/PageLayout.astro';
+import pedroLogo from '~/assets/lausannedemenagement/logo.png';
+import maisonPreview from '~/assets/maisoncortes_images/lausanne-ring-02.png';
+import onglesPreview from '~/assets/onglesgel_images/01.png';
+import toloPreview from '~/assets/tolocoiffure_images/template_preview.jpg';
+
+const metadata = {
+  title: 'Présence web cadrée — IOPartner',
+  description:
+    'Présence web cadrée pour PME: site vitrine dès 999 CHF, avec seuil clair vers site administrable ou build privé quand le besoin évolue.',
+};
+
+const toAssetSrc = (asset: string | { src: string }) => (typeof asset === 'string' ? asset : asset.src);
+
+const offers = [
+  {
+    price: '999 CHF',
+    title: 'Pack Essentiel',
+    body: 'Présence web professionnelle, périmètre court, architecture légère et maintenance simple.',
+    href: '/choose-template?plan=essential999',
+    cta: 'Voir les projets 999 CHF',
+  },
+  {
+    price: '1 500 CHF',
+    title: 'Pack Public',
+    body: 'Même logique cadrée avec plus de marge fonctionnelle, tant que le site ne devient pas un outil éditorial lourd.',
+    href: '/choose-template?plan=essential1500',
+    cta: 'Voir les projets 1 500 CHF',
+  },
+  {
+    price: '2 200 CHF+',
+    title: 'Build privé',
+    body: 'Déploiement dédié et base privée quand le besoin devient spécifique ou doit sortir du standard.',
+    href: '/custom-systems?track=private-2200#diagnostic',
+    cta: 'Cadrer le privé',
+  },
+];
+
+const thresholds = [
+  {
+    title: 'Présence web cadrée',
+    body: 'Pour une présence claire et stable, sans logique éditoriale lourde.',
+  },
+  {
+    title: 'Site administrable & évolutif',
+    body: 'Quand il faut éditer du contenu régulièrement, gérer des actualités ou faire évoluer certaines sections.',
+  },
+  {
+    title: 'Build privé / systèmes',
+    body: 'Quand il faut une structure dédiée, un handoff plus poussé, des workflows, des rôles ou une logique métier.',
+  },
+];
+
+const models = [
+  {
+    id: 'pedro',
+    title: 'Services locaux',
+    body: 'Structure claire, preuves, services, contact direct.',
+    img: toAssetSrc(pedroLogo as string | { src: string }),
+    href: '/onboarding?plan=essential999&template=lausanne-demenagement',
+    imageClass: 'object-contain p-8 bg-gradient-to-br from-slate-50 to-blue-100',
+  },
+  {
+    id: 'tolo-coiffure',
+    title: 'Beauté & rendez-vous',
+    body: 'Présentation visuelle, prestations, réservation.',
+    img: toAssetSrc(toloPreview as string | { src: string }),
+    href: '/onboarding?plan=essential999&template=tolo-coiffure',
+    imageClass: 'object-cover object-top',
+  },
+  {
+    id: 'maison-cortes',
+    title: 'Premium sobre',
+    body: 'Typographie, espaces, offre plus éditoriale.',
+    img: toAssetSrc(maisonPreview as string | { src: string }),
+    href: '/onboarding?plan=essential999&template=maison-cortes',
+    imageClass: 'object-cover object-top',
+  },
+  {
+    id: 'onglesgel',
+    title: 'Portfolio visuel',
+    body: 'Galerie, prestations et parcours de contact simple.',
+    img: toAssetSrc(onglesPreview as string | { src: string }),
+    href: '/onboarding?plan=essential999&template=onglesgel',
+    imageClass: 'object-cover object-top',
+  },
+];
+
+const steps: Array<{ label: string; title: string; detail: string; icon: IoIconName }> = [
+  { label: '01', title: 'Niveau', detail: '999, 1 500 ou privé.', icon: 'scope' },
+  { label: '02', title: 'Exemples', detail: 'Voir des projets comparables.', icon: 'standard' },
+  { label: '03', title: 'Contenu', detail: 'Textes, images, pages.', icon: 'content' },
+  { label: '04', title: 'Mise en ligne', detail: 'Validation et handoff.', icon: 'deploy' },
+];
+---
+
+<Layout metadata={metadata}>
+  <main class="io-presence">
+    <section class="io-hero">
+      <div class="io-shell io-hero-grid">
+        <div>
+          <p class="io-kicker">Présence web cadrée</p>
+          <h1>Un site propre quand une présence web claire suffit.</h1>
+          <p class="io-lead">
+            Pensé pour les structures qui veulent une présence professionnelle, maintenable et cadrée, sans transformer
+            trop tôt le site en plateforme éditoriale ou en chantier logiciel.
+          </p>
+          <div class="io-actions">
+            <a class="io-btn io-btn-primary" href="#offres">Voir les niveaux</a>
+            <a class="io-btn io-btn-secondary" href="#modeles">Voir les projets livrés</a>
+          </div>
+        </div>
+        <IoBlueprintVisual variant="standard" />
+      </div>
+    </section>
+
+    <section class="io-shell io-offers" id="offres">
+      <div class="io-section-head">
+        <p class="io-kicker">Trois niveaux web</p>
+        <h2>Le standard reste utile. L’autonomie augmente seulement quand elle est réellement nécessaire.</h2>
+      </div>
+      <div class="io-offer-grid">
+        {
+          offers.map((offer) => (
+            <article>
+              <strong class="io-price">{offer.price}</strong>
+              <h3>{offer.title}</h3>
+              <p>{offer.body}</p>
+              <a class="io-link" href={offer.href}>
+                {offer.cta}
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="io-shell io-thresholds">
+      <div class="io-section-head">
+        <p class="io-kicker">Seuils d’évolution</p>
+        <h2>Le point important est le niveau d’autonomie demandé.</h2>
+        <p>
+          Un site éditable n’implique pas automatiquement un gros CMS. Le bon niveau dépend surtout de la fréquence des
+          changements, de la surface éditoriale et du support attendu.
+        </p>
+      </div>
+      <div class="io-threshold-grid">
+        {
+          thresholds.map((threshold) => (
+            <article>
+              <h3>{threshold.title}</h3>
+              <p>{threshold.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="io-models" id="modeles">
+      <div class="io-shell">
+        <div class="io-section-head">
+          <p class="io-kicker">Projets livrés</p>
+          <h2>Voir ce qui peut être livré dans les formats 999 CHF et 1 500 CHF.</h2>
+          <p>
+            Ces exemples montrent le niveau de finition, le rythme et le type de structure que le standard permet déjà.
+          </p>
+        </div>
+        <div class="io-model-grid">
+          {
+            models.map((model) => (
+              <article>
+                <div class="io-model-preview">
+                  <img src={model.img} alt="" loading="lazy" class={model.imageClass} />
+                </div>
+                <div>
+                  <h3>{model.title}</h3>
+                  <p>{model.body}</p>
+                  <a href={model.href}>Choisir cette base</a>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="io-shell io-codebase">
+      <div>
+        <p class="io-kicker">Public ou privé</p>
+        <h2>Le choix important n’est pas seulement visuel.</h2>
+      </div>
+      <div class="io-codebase-grid">
+        <article>
+          <span><IoNodeIcon name="standard" /></span>
+          <h3>Base publique</h3>
+          <p>Adaptée aux sites vitrines cadrés, livrés vite, avec séparation logique et maintenance légère.</p>
+        </article>
+        <article>
+          <span><IoNodeIcon name="build" /></span>
+          <h3>Codebase privée</h3>
+          <p>Utile quand il faut une structure dédiée, un handoff plus poussé ou une évolution spécifique.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="io-shell io-process">
+      <div class="io-section-head">
+        <p class="io-kicker">Workflow</p>
+        <h2>Les exemples servent à cadrer le bon format, pas à vendre un template.</h2>
+      </div>
+      <IoProcessMap steps={steps} />
+    </section>
+
+    <section class="io-shell io-final-cta">
+      <h2>Lancer une présence web sans surconstruire.</h2>
+      <p>Commencez par un niveau clair. Si le besoin dépasse la présence web cadrée, on passe vers l’administrable ou le cadrage technique.</p>
+      <div class="io-actions">
+        <a class="io-btn io-btn-primary" href="/choose-template?plan=essential999">Voir les projets dès 999 CHF</a>
+        <a class="io-btn io-btn-secondary" href="/cadrage-technique">Cadrer avant de lancer</a>
+      </div>
+    </section>
+  </main>
+
+  <style>
+    .io-presence {
+      --io-ink: #0f172a;
+      --io-muted: #5f6b7c;
+      --io-blue: #0b63f6;
+      --io-line: rgba(148, 163, 184, 0.22);
+      overflow: hidden;
+      background:
+        linear-gradient(90deg, rgba(37, 99, 235, 0.045) 1px, transparent 1px),
+        linear-gradient(rgba(37, 99, 235, 0.045) 1px, transparent 1px), #f8fbff;
+      background-size:
+        34px 34px,
+        34px 34px,
+        auto;
+      color: var(--io-ink);
+    }
+
+    .io-shell {
+      width: min(100% - 2rem, 80rem);
+      margin-inline: auto;
+    }
+
+    .io-hero {
+      padding: 4.8rem 0 4rem;
+    }
+
+    .io-hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(24rem, 1fr);
+      gap: 3.5rem;
+      align-items: center;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      font-weight: 850;
+      line-height: 1.04;
+    }
+
+    h1 {
+      max-width: 42rem;
+      font-size: 3.65rem;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+    }
+
+    .io-kicker {
+      margin: 0 0 1rem;
+      color: var(--io-blue);
+      font-size: 0.78rem;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    .io-lead,
+    .io-section-head p,
+    .io-final-cta p {
+      color: var(--io-muted);
+      font-size: 1.12rem;
+      line-height: 1.72;
+    }
+
+    .io-lead {
+      max-width: 37rem;
+      margin: 1.25rem 0 0;
+    }
+
+    .io-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      margin-top: 1.9rem;
+    }
+
+    .io-btn {
+      display: inline-flex;
+      min-height: 3rem;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 0.78rem 1.35rem;
+      font-weight: 780;
+      text-decoration: none;
+    }
+
+    .io-btn-primary {
+      background: var(--io-blue);
+      color: #fff;
+    }
+
+    .io-btn-secondary {
+      border: 1px solid rgba(15, 23, 42, 0.22);
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--io-ink);
+    }
+
+    .io-section-head {
+      max-width: 44rem;
+      margin-bottom: 2rem;
+    }
+
+    .io-offers,
+    .io-thresholds,
+    .io-codebase,
+    .io-process {
+      padding-bottom: 5rem;
+    }
+
+    .io-offer-grid,
+    .io-model-grid,
+    .io-codebase-grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .io-offer-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .io-threshold-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .io-threshold-grid article {
+      border: 1px solid var(--io-line);
+      border-radius: 1rem;
+      padding: 1.35rem;
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .io-threshold-grid h3 {
+      margin: 0 0 0.7rem;
+      font-size: 1.3rem;
+      line-height: 1.12;
+    }
+
+    .io-threshold-grid p {
+      margin: 0;
+      color: var(--io-muted);
+      line-height: 1.62;
+    }
+
+    .io-offer-grid article,
+    .io-codebase article {
+      display: grid;
+      gap: 0.9rem;
+      align-content: start;
+      border: 1px solid var(--io-line);
+      border-radius: 1rem;
+      padding: 1.35rem;
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .io-price {
+      color: var(--io-blue);
+      font-size: 1.8rem;
+      line-height: 1;
+    }
+
+    .io-offer-grid p,
+    .io-codebase p,
+    .io-model-grid p {
+      margin: 0;
+      color: var(--io-muted);
+      line-height: 1.62;
+    }
+
+    .io-link,
+    .io-model-grid a {
+      color: var(--io-blue);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .io-models {
+      margin-bottom: 5rem;
+      padding: 5rem 0;
+      background: #fff;
+    }
+
+    .io-model-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .io-model-grid article {
+      overflow: hidden;
+      border: 1px solid var(--io-line);
+      border-radius: 1rem;
+      background: #fff;
+    }
+
+    .io-model-preview {
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      border-bottom: 1px solid var(--io-line);
+      background: #f1f5f9;
+    }
+
+    .io-model-preview img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .io-model-grid article > div:last-child {
+      display: grid;
+      gap: 0.7rem;
+      padding: 1rem;
+    }
+
+    .io-codebase {
+      display: grid;
+      grid-template-columns: minmax(0, 0.75fr) minmax(24rem, 1fr);
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .io-codebase-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .io-codebase span {
+      display: grid;
+      width: 2.7rem;
+      height: 2.7rem;
+      place-items: center;
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      border-radius: 0.72rem;
+      color: var(--io-blue);
+      background: rgba(37, 99, 235, 0.05);
+    }
+
+    .io-final-cta {
+      margin-bottom: 5rem;
+      border: 1px solid var(--io-line);
+      border-radius: 1.25rem;
+      padding: 2.5rem;
+      background: #fff;
+      text-align: center;
+    }
+
+    .io-final-cta p {
+      max-width: 44rem;
+      margin: 1rem auto 0;
+    }
+
+    .io-final-cta .io-actions {
+      justify-content: center;
+    }
+
+    @media (max-width: 1024px) {
+      .io-hero-grid,
+      .io-codebase {
+        grid-template-columns: 1fr;
+      }
+
+      .io-threshold-grid,
+      .io-offer-grid,
+      .io-model-grid,
+      .io-codebase-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      h1 {
+        font-size: 3rem;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .io-shell {
+        width: min(100% - 1rem, 80rem);
+      }
+
+      .io-offer-grid,
+      .io-threshold-grid,
+      .io-model-grid,
+      .io-codebase-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 2.3rem;
+      }
+
+      h2 {
+        font-size: 1.9rem;
+      }
+    }
+  </style>
+</Layout>

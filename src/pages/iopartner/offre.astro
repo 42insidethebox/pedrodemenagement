@@ -1,106 +1,280 @@
 ---
 import IoBlueprintVisual from '~/components/iopartner/IoBlueprintVisual.astro';
+import { detectRequestLocale } from '~/lib/locale';
 import Layout from '~/layouts/PageLayout.astro';
 
 export const prerender = false;
 
 const error = Astro.url.searchParams.get('error');
-const checkoutUrl = '/api/checkout?plan=essential999&template=classic-clean&tenant=iopartner';
+const locale = detectRequestLocale(Astro.request, Astro.url);
+const localePrefix = ['en', 'de', 'it'].includes(locale) ? `/${locale}` : '';
+const checkoutUrl = `${localePrefix}/api/checkout?plan=essential999&template=classic-clean&tenant=iopartner`;
+
+const COPY = {
+  fr: {
+    metadata: {
+      title: 'Présence web cadrée — IOPartner',
+      description:
+        'Présence web cadrée IOPartner: site vitrine professionnel dès 999 CHF, avec périmètre défini et seuil clair vers administrable ou déploiement dédié.',
+    },
+    kicker: 'Présence web cadrée',
+    heroTitle: 'Un site vitrine professionnel, sans transformer un besoin simple en gros chantier.',
+    heroBody:
+      'Le format standard convient quand l’objectif est clair: présenter l’activité, rassurer, générer des contacts et mettre en ligne rapidement une base maintenable, sans complexité éditoriale lourde.',
+    start: 'Démarrer le projet — 999 CHF',
+    contextFirst: 'Envoyer le contexte d’abord',
+    strip: [
+      ['999 CHF', 'Paiement unique'],
+      ['3-5 jours', 'Délai typique après contenus'],
+      ['Facturé en Suisse', 'Transparent, sans frais cachés'],
+    ],
+    includedKicker: 'Inclus',
+    includedTitle: 'Une baseline propre pour démarrer.',
+    includes: [
+      'Site vitrine 5 sections',
+      'Design responsive',
+      'Contenu fourni intégré',
+      'Formulaire ou contact simple',
+      'Déploiement sur infrastructure mutualisée IOPartner',
+    ],
+    infraNote:
+      'Infrastructure légère mutualisée avec séparation logique. Restitution des contenus et médias possible. Migration ou déploiement dédié sur cadrage.',
+    notEnoughKicker: 'Quand le standard ne suffit pas',
+    notEnoughTitle: 'On bascule vers l’administrable, le cadrage ou le dédié.',
+    notEnoughBody:
+      'Besoin d’éditer fréquemment vos contenus, de gérer des actualités, d’avoir une base privée, des intégrations, de l’automatisation ou une infrastructure dédiée ? Ces sujets sont cadrés séparément pour éviter le faux sur mesure.',
+    scopeNeed: 'Cadrer le besoin',
+    beforeKicker: 'Avant de démarrer',
+    beforeTitle: 'Envoyez le contexte si vous hésitez.',
+    beforeBody:
+      'Si le standard suffit, nous vous le dirons. Si le sujet mérite un cadrage technique, nous proposerons le bon point d’entrée.',
+    form: {
+      error: 'Merci de vérifier les informations et de réessayer.',
+      name: 'Prénom et nom',
+      phone: 'Téléphone',
+      email: 'Email',
+      sector: 'Activité / secteur',
+      sectorPh: 'Ex. fiduciaire, artisan, thérapeute...',
+      submit: 'Envoyer le contexte',
+    },
+  },
+  en: {
+    metadata: {
+      title: 'Scoped web presence — IOPartner',
+      description:
+        'IOPartner scoped web presence: professional showcase site from CHF 999, with clear boundaries and a threshold toward editable or dedicated deployment.',
+    },
+    kicker: 'Scoped web presence',
+    heroTitle: 'A professional showcase site, without turning a simple need into a large project.',
+    heroBody:
+      'This standard format fits when the objective is clear: present the business, reassure prospects, generate contacts, and launch a maintainable base quickly, without heavy editorial complexity.',
+    start: 'Start the project — CHF 999',
+    contextFirst: 'Send the context first',
+    strip: [
+      ['CHF 999', 'One-time payment'],
+      ['3-5 days', 'Typical lead time after content'],
+      ['Billed in Switzerland', 'Transparent, with no hidden fees'],
+    ],
+    includedKicker: 'Included',
+    includedTitle: 'A clean baseline to get started.',
+    includes: [
+      '5-section showcase site',
+      'Responsive design',
+      'Client-provided content integrated',
+      'Simple form or contact setup',
+      'Deployment on IOPartner shared infrastructure',
+    ],
+    infraNote:
+      'Light shared infrastructure with logical separation. Content and media can be handed back. Migration or dedicated deployment is scoped separately.',
+    notEnoughKicker: 'When the standard is not enough',
+    notEnoughTitle: 'Then the path becomes editable, scoped, or dedicated.',
+    notEnoughBody:
+      'Need to edit content frequently, publish updates, have a private base, integrations, automation, or dedicated infrastructure? Those topics are scoped separately to avoid fake custom work.',
+    scopeNeed: 'Scope the need',
+    beforeKicker: 'Before starting',
+    beforeTitle: 'Send the context if you are unsure.',
+    beforeBody:
+      'If the standard path is enough, we will say so. If the topic deserves technical scoping, we will propose the right entry point.',
+    form: {
+      error: 'Please check the information and try again.',
+      name: 'Full name',
+      phone: 'Phone',
+      email: 'Email',
+      sector: 'Business / sector',
+      sectorPh: 'Example: accounting firm, trades, therapist...',
+      submit: 'Send the context',
+    },
+  },
+  de: {
+    metadata: {
+      title: 'Klar abgegrenzte Web-Präsenz — IOPartner',
+      description:
+        'IOPartner Web-Präsenz: professionelle Showcase-Website ab CHF 999, mit klarem Umfang und einer Schwelle zu editierbarer oder dedizierter Bereitstellung.',
+    },
+    kicker: 'Klar abgegrenzte Web-Präsenz',
+    heroTitle: 'Eine professionelle Showcase-Website, ohne aus einem einfachen Bedarf ein Grossprojekt zu machen.',
+    heroBody:
+      'Dieses Standardformat passt, wenn das Ziel klar ist: das Unternehmen präsentieren, Vertrauen schaffen, Kontakte generieren und schnell eine wartbare Basis online bringen, ohne schwere redaktionelle Komplexität.',
+    start: 'Projekt starten — CHF 999',
+    contextFirst: 'Zuerst den Kontext senden',
+    strip: [
+      ['CHF 999', 'Einmalige Zahlung'],
+      ['3-5 Tage', 'Typischer Zeitraum nach Inhalt'],
+      ['In der Schweiz fakturiert', 'Transparent, ohne versteckte Kosten'],
+    ],
+    includedKicker: 'Inklusive',
+    includedTitle: 'Eine saubere Basis für den Start.',
+    includes: [
+      'Showcase-Website mit 5 Sektionen',
+      'Responsives Design',
+      'Gelieferte Inhalte integriert',
+      'Einfaches Formular oder Kontaktweg',
+      'Deployment auf gemeinsamer IOPartner-Infrastruktur',
+    ],
+    infraNote:
+      'Leichte gemeinsame Infrastruktur mit logischer Trennung. Inhalte und Medien können zurückgegeben werden. Migration oder dediziertes Deployment wird separat gescopt.',
+    notEnoughKicker: 'Wenn der Standard nicht reicht',
+    notEnoughTitle: 'Dann geht es in Richtung editierbar, Scoping oder dediziert.',
+    notEnoughBody:
+      'Müssen Inhalte häufig geändert werden, News gepflegt werden, eine private Basis, Integrationen, Automatisierung oder dedizierte Infrastruktur entstehen? Diese Themen werden separat gescopt, um falsches Custom zu vermeiden.',
+    scopeNeed: 'Bedarf scopen',
+    beforeKicker: 'Vor dem Start',
+    beforeTitle: 'Senden Sie den Kontext, wenn Sie unsicher sind.',
+    beforeBody:
+      'Wenn der Standardweg reicht, sagen wir das. Wenn das Thema technisches Scoping verdient, schlagen wir den richtigen Einstieg vor.',
+    form: {
+      error: 'Bitte prüfen Sie die Angaben und versuchen Sie es erneut.',
+      name: 'Vor- und Nachname',
+      phone: 'Telefon',
+      email: 'E-Mail',
+      sector: 'Tätigkeit / Branche',
+      sectorPh: 'Z. B. Treuhand, Handwerk, Therapeut...',
+      submit: 'Kontext senden',
+    },
+  },
+  it: {
+    metadata: {
+      title: 'Presenza web strutturata — IOPartner',
+      description:
+        'Presenza web IOPartner: sito vetrina professionale da CHF 999, con perimetro chiaro e soglia verso soluzione editabile o deployment dedicato.',
+    },
+    kicker: 'Presenza web strutturata',
+    heroTitle: 'Un sito vetrina professionale, senza trasformare un bisogno semplice in un grande progetto.',
+    heroBody:
+      'Questo formato standard funziona quando l’obiettivo è chiaro: presentare l’attività, rassicurare, generare contatti e mettere online rapidamente una base mantenibile, senza complessità editoriale pesante.',
+    start: 'Avvia il progetto — CHF 999',
+    contextFirst: 'Invia prima il contesto',
+    strip: [
+      ['CHF 999', 'Pagamento unico'],
+      ['3-5 giorni', 'Tempo tipico dopo i contenuti'],
+      ['Fatturato in Svizzera', 'Trasparente, senza costi nascosti'],
+    ],
+    includedKicker: 'Incluso',
+    includedTitle: 'Una baseline pulita per partire.',
+    includes: [
+      'Sito vetrina in 5 sezioni',
+      'Design responsive',
+      'Contenuti forniti dal cliente integrati',
+      'Modulo semplice o contatto base',
+      'Deploy su infrastruttura condivisa IOPartner',
+    ],
+    infraNote:
+      'Infrastruttura leggera condivisa con separazione logica. Contenuti e media possono essere restituiti. Migrazione o deployment dedicato vengono scoped separatamente.',
+    notEnoughKicker: 'Quando lo standard non basta',
+    notEnoughTitle: 'A quel punto si passa a editabile, scoping o dedicato.',
+    notEnoughBody:
+      'Avete bisogno di modificare spesso i contenuti, gestire novità, avere una base privata, integrazioni, automazione o infrastruttura dedicata? Questi temi vengono definiti a parte per evitare custom finto.',
+    scopeNeed: 'Definire il bisogno',
+    beforeKicker: 'Prima di iniziare',
+    beforeTitle: 'Invia il contesto se hai dubbi.',
+    beforeBody:
+      'Se basta il percorso standard, lo diremo. Se il tema merita un inquadramento tecnico, proporremo il punto d’ingresso giusto.',
+    form: {
+      error: 'Verifica i dati e riprova.',
+      name: 'Nome e cognome',
+      phone: 'Telefono',
+      email: 'Email',
+      sector: 'Attività / settore',
+      sectorPh: 'Es. fiduciaria, artigiano, terapista...',
+      submit: 'Invia il contesto',
+    },
+  },
+} as const;
+
+const copy = COPY[locale as keyof typeof COPY] ?? COPY.fr;
 ---
 
 <Layout
-  metadata={{
-    title: 'Déploiement standard — IOPartner',
-    description:
-      'Déploiement standard IOPartner: site vitrine professionnel dès 999 CHF, cadré, facturé en Suisse et livré proprement.',
-  }}
+  metadata={copy.metadata}
 >
   <main class="io-offer">
     <section class="io-shell io-hero">
       <div>
-        <p class="io-kicker">Déploiement standard</p>
-        <h1>Un site vitrine professionnel, sans transformer un besoin simple en gros chantier.</h1>
-        <p>
-          Le format standard convient quand l’objectif est clair: présenter l’activité, rassurer, générer des contacts
-          et mettre en ligne rapidement une base maintenable.
-        </p>
+        <p class="io-kicker">{copy.kicker}</p>
+        <h1>{copy.heroTitle}</h1>
+        <p>{copy.heroBody}</p>
         <div class="io-actions">
-          <a class="io-btn io-btn-primary" href={checkoutUrl}>Démarrer le projet — 999 CHF</a>
-          <a class="io-btn io-btn-secondary" href="#form">Envoyer le contexte d’abord</a>
+          <a class="io-btn io-btn-primary" href={checkoutUrl}>{copy.start}</a>
+          <a class="io-btn io-btn-secondary" href="#form">{copy.contextFirst}</a>
         </div>
       </div>
       <IoBlueprintVisual variant="standard" />
     </section>
 
     <section class="io-shell io-strip">
-      <div>
-        <strong>999 CHF</strong>
-        <span>Paiement unique</span>
-      </div>
-      <div>
-        <strong>3-5 jours</strong>
-        <span>Délai typique après contenus</span>
-      </div>
-      <div>
-        <strong>Facturé en Suisse</strong>
-        <span>Transparent, sans frais cachés</span>
-      </div>
+      {copy.strip.map(([strong, text]) => (
+        <div>
+          <strong>{strong}</strong>
+          <span>{text}</span>
+        </div>
+      ))}
     </section>
 
     <section class="io-shell io-scope">
       <article>
-        <p class="io-kicker">Inclus</p>
-        <h2>Une baseline propre pour démarrer.</h2>
+        <p class="io-kicker">{copy.includedKicker}</p>
+        <h2>{copy.includedTitle}</h2>
         <ul>
-          <li>Site vitrine 5 sections</li>
-          <li>Design responsive</li>
-          <li>Contenu fourni intégré</li>
-          <li>Formulaire ou contact simple</li>
-          <li>Déploiement sur infrastructure mutualisée IOPartner</li>
+          {copy.includes.map((item) => <li>{item}</li>)}
         </ul>
+        <p>{copy.infraNote}</p>
       </article>
       <article class="io-dark-panel">
-        <p class="io-kicker">Quand le standard ne suffit pas</p>
-        <h2>On bascule en consulting ou systems & operations.</h2>
-        <p>
-          Codebase privée, backend, intégrations, automatisation ou infrastructure dédiée ne sont pas inclus dans le
-          standard. Ces sujets sont cadrés séparément pour éviter le faux sur mesure.
-        </p>
-        <a class="io-btn io-btn-light" href="/contact#form">Cadrer le besoin</a>
+        <p class="io-kicker">{copy.notEnoughKicker}</p>
+        <h2>{copy.notEnoughTitle}</h2>
+        <p>{copy.notEnoughBody}</p>
+        <a class="io-btn io-btn-light" href={`${localePrefix}/contact#form`}>{copy.scopeNeed}</a>
       </article>
     </section>
 
     <section class="io-shell io-form-section" id="form">
       <div>
-        <p class="io-kicker">Avant de démarrer</p>
-        <h2>Envoyez le contexte si vous hésitez.</h2>
-        <p>
-          Si le standard suffit, nous vous le dirons. Si le sujet mérite un cadrage technique, nous proposerons le bon
-          point d’entrée.
-        </p>
+        <p class="io-kicker">{copy.beforeKicker}</p>
+        <h2>{copy.beforeTitle}</h2>
+        <p>{copy.beforeBody}</p>
       </div>
 
       <form method="POST" action="/api/iopartner/lead-offre" class="io-form">
-        {error && <p class="io-error">Merci de vérifier les informations et de réessayer.</p>}
+        {error && <p class="io-error">{copy.form.error}</p>}
         <input type="hidden" name="utm_source" value={Astro.url.searchParams.get('utm_source') || ''} />
         <input type="hidden" name="utm_campaign" value={Astro.url.searchParams.get('utm_campaign') || ''} />
         <label>
-          Prénom et nom
+          {copy.form.name}
           <input name="prenom" type="text" required />
         </label>
         <label>
-          Téléphone
+          {copy.form.phone}
           <input name="telephone" type="tel" required />
         </label>
         <label>
-          Email
+          {copy.form.email}
           <input name="email" type="email" />
         </label>
         <label>
-          Activité / secteur
-          <input name="secteur" type="text" placeholder="Ex. fiduciaire, artisan, thérapeute..." />
+          {copy.form.sector}
+          <input name="secteur" type="text" placeholder={copy.form.sectorPh} />
         </label>
-        <button type="submit" class="io-btn io-btn-primary">Envoyer le contexte</button>
+        <button type="submit" class="io-btn io-btn-primary">{copy.form.submit}</button>
       </form>
     </section>
   </main>

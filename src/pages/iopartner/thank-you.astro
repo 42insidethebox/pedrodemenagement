@@ -1,11 +1,15 @@
 ---
 import Layout from '~/layouts/Layout.astro';
 import { detectRequestLocale } from '~/lib/locale';
+import { iopartnerConfig } from '~/tenants/iopartner/config';
 
 const locale = detectRequestLocale(Astro.request, Astro.url);
 const localePrefix = ['en', 'de', 'it'].includes(locale) ? `/${locale}` : '';
 const sessionId = Astro.url.searchParams.get('session_id') || '';
 const hasSession = Boolean(sessionId);
+const diagnosticBookingUrl15 = iopartnerConfig.diagnosticBookingUrl;
+const diagnosticBookingUrl60 = iopartnerConfig.workingSessionBookingUrl;
+const hasCalendlyBooking = iopartnerConfig.bookingChannel === 'calendly';
 
 const COPY = {
   fr: {
@@ -43,6 +47,15 @@ const COPY = {
       'Le diagnostic qualifie la bonne couche: 2 000, 2 200, 4 500, 8 000+ ou architecture plus profonde.',
       'Si le bon mouvement reste 999 ou 1 500, nous vous le dirons clairement.',
     ],
+    diagnosticTitle: 'Votre session de cadrage est payée',
+    diagnosticLead:
+      'La première étape est validée. Réservez maintenant le bon créneau selon le format choisi si le calendrier est ouvert, sinon nous reprenons contact rapidement avec la suite.',
+    diagnosticBullets: [
+      '15 minutes ou 1 heure selon le format payé.',
+      'Le but est de sortir avec une prochaine étape défendable.',
+      'Si le bon mouvement reste standard, nous vous le dirons clairement.',
+    ],
+    diagnosticCta: hasCalendlyBooking ? 'Choisir un créneau' : 'Écrire sur WhatsApp',
     customTitle: 'Besoin d’aller plus loin ?',
     customDesc: 'Si le diagnostic ouvre une vraie surface de travail, la suite se scope proprement après cette première lecture.',
     customBtn: 'Voir les systèmes custom',
@@ -85,6 +98,15 @@ const COPY = {
       'The diagnostic qualifies the right layer: 2,000, 2,200, 4,500, 8,000+, or a deeper architecture subject.',
       'If the right move is still 999 or 1,500, we will tell you clearly.',
     ],
+    diagnosticTitle: 'Your scoping session is paid',
+    diagnosticLead:
+      'The first step is confirmed. Book the right slot now based on the format you purchased if the calendar is open, otherwise we will follow up quickly with the next step.',
+    diagnosticBullets: [
+      '15 minutes or 1 hour depending on the paid format.',
+      'The goal is to leave with a defensible next move.',
+      'If the right move is still standard, we will tell you clearly.',
+    ],
+    diagnosticCta: hasCalendlyBooking ? 'Choose a slot' : 'Message on WhatsApp',
     customTitle: 'Need to go further?',
     customDesc: 'If the diagnostic opens a real implementation surface, the next step gets scoped properly after this first pass.',
     customBtn: 'See custom systems',
@@ -127,6 +149,15 @@ const COPY = {
       'Die Diagnose qualifiziert die richtige Ebene: 2’000, 2’200, 4’500, 8’000+ oder tiefere Architektur.',
       'Wenn der richtige Weg weiterhin 999 oder 1’500 ist, sagen wir das klar.',
     ],
+    diagnosticTitle: 'Ihre Scoping-Session ist bezahlt',
+    diagnosticLead:
+      'Der erste Schritt ist bestätigt. Buchen Sie jetzt den passenden Slot je nach gewähltem Format, falls der Kalender offen ist, sonst melden wir uns schnell mit dem nächsten Schritt.',
+    diagnosticBullets: [
+      '15 Minuten oder 1 Stunde je nach bezahltem Format.',
+      'Das Ziel ist ein verteidigbarer nächster Schritt.',
+      'Wenn der richtige Weg weiterhin Standard ist, sagen wir das klar.',
+    ],
+    diagnosticCta: hasCalendlyBooking ? 'Slot wählen' : 'Auf WhatsApp schreiben',
     customTitle: 'Brauchen Sie mehr Tiefe?',
     customDesc: 'Wenn die Diagnose eine echte Umsetzungsfläche öffnet, wird der nächste Schritt nach dieser ersten Lesart sauber gescopt.',
     customBtn: 'Custom systems ansehen',
@@ -169,6 +200,15 @@ const COPY = {
       'La diagnosi qualifica il livello giusto: 2’000, 2’200, 4’500, 8’000+ o architettura più profonda.',
       'Se la mossa giusta resta 999 o 1’500, te lo diremo chiaramente.',
     ],
+    diagnosticTitle: 'La vostra sessione di inquadramento è pagata',
+    diagnosticLead:
+      'Il primo passo è confermato. Prenotate ora lo slot giusto in base al formato scelto se il calendario è aperto, altrimenti vi ricontatteremo rapidamente con il passo successivo.',
+    diagnosticBullets: [
+      '15 minuti o 1 ora in base al formato pagato.',
+      'L’obiettivo è uscire con una prossima mossa difendibile.',
+      'Se la mossa giusta resta standard, ve lo diremo chiaramente.',
+    ],
+    diagnosticCta: hasCalendlyBooking ? 'Scegli uno slot' : 'Scrivi su WhatsApp',
     customTitle: 'Serve andare oltre?',
     customDesc: 'Se la diagnosi apre una vera superficie di implementazione, il passo successivo viene scoped bene dopo questa prima lettura.',
     customBtn: 'Vedi custom systems',
@@ -229,6 +269,25 @@ const waUrl = `https://wa.me/41767982793?text=${waMessageBase}`;
         </ul>
       </div>
 
+      <div id="diagnostic-panel" class="hidden rounded-3xl border border-amber-100 bg-amber-50 p-6 md:p-8 shadow-sm">
+        <h2 class="text-2xl font-bold text-amber-950">{copy.diagnosticTitle}</h2>
+        <p class="mt-3 text-amber-900/80">{copy.diagnosticLead}</p>
+        <ul class="mt-5 space-y-2 text-sm text-amber-900/75">
+          {copy.diagnosticBullets.map((item) => <li>• {item}</li>)}
+        </ul>
+        <div class="mt-6">
+          <a
+            href={diagnosticBookingUrl15}
+            id="diagnostic-cta"
+            target="_blank"
+            rel="noreferrer"
+            class="inline-flex items-center rounded-xl bg-amber-500 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-amber-600"
+          >
+            {copy.diagnosticCta}
+          </a>
+        </div>
+      </div>
+
       <div class="mt-8 rounded-3xl border border-slate-200 bg-white p-6 text-center shadow-sm">
         <p class="text-sm text-slate-500 mb-4">{copy.whatsappLabel}</p>
         <a
@@ -259,7 +318,7 @@ const waUrl = `https://wa.me/41767982793?text=${waMessageBase}`;
   </section>
 
   {hasSession ? (
-    <script is:inline define:vars={{ copy }}>
+    <script is:inline define:vars={{ copy, diagnosticBookingUrl15, diagnosticBookingUrl60 }}>
       const params = new URLSearchParams(location.search);
       const id = params.get('session_id');
       if (id) {
@@ -274,6 +333,7 @@ const waUrl = `https://wa.me/41767982793?text=${waMessageBase}`;
                   : null;
             const currency = (data.currency || 'CHF').toUpperCase();
             const formatter = new Intl.NumberFormat(copy.currencyLocale, { style: 'currency', currency });
+            const plan = data.plan || data.metadata?.plan || '';
 
             document.getElementById('email').textContent = data.customer_email || data.metadata?.email || '—';
             document.getElementById('amount').textContent = typeof amountMinor === 'number' ? formatter.format((amountMinor || 0) / 100) : '—';
@@ -294,10 +354,26 @@ const waUrl = `https://wa.me/41767982793?text=${waMessageBase}`;
                 teams.href = data.booking.teams_url;
                 teams.textContent = data.booking.teams_url;
               }
+            } else if (plan === 'diagnostic60') {
+              document.getElementById('desc').textContent = copy.descOrder;
+              document.getElementById('order-panel').classList.add('hidden');
+              document.getElementById('diagnostic-panel').classList.remove('hidden');
+              document.getElementById('template').textContent = data.template || data.metadata?.template || '—';
+              document.getElementById('plan').textContent = plan || '—';
+              const diagnosticCta = document.getElementById('diagnostic-cta');
+              if (diagnosticCta) diagnosticCta.href = diagnosticBookingUrl15;
+            } else if (plan === 'session140') {
+              document.getElementById('desc').textContent = copy.descOrder;
+              document.getElementById('order-panel').classList.add('hidden');
+              document.getElementById('diagnostic-panel').classList.remove('hidden');
+              document.getElementById('template').textContent = data.template || data.metadata?.template || '—';
+              document.getElementById('plan').textContent = plan || '—';
+              const diagnosticCta = document.getElementById('diagnostic-cta');
+              if (diagnosticCta) diagnosticCta.href = diagnosticBookingUrl60;
             } else {
               document.getElementById('desc').textContent = copy.descOrder;
               document.getElementById('template').textContent = data.template || data.metadata?.template || '—';
-              document.getElementById('plan').textContent = data.plan || data.metadata?.plan || '—';
+              document.getElementById('plan').textContent = plan || '—';
             }
           })
           .catch(() => {

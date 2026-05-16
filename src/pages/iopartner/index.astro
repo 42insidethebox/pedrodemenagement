@@ -2,43 +2,268 @@
 export const prerender = false;
 
 import IoBlueprintVisual from '~/components/iopartner/IoBlueprintVisual.astro';
+import IoNodeIcon from '~/components/iopartner/IoNodeIcon.astro';
 import IoProcessMap from '~/components/iopartner/IoProcessMap.astro';
 import Io01PremiumGridBlueprintArcs from '~/components/iopartner/visuals/Io01PremiumGridBlueprintArcs.astro';
 import Io02SvgLinesPathsCurves from '~/components/iopartner/visuals/Io02SvgLinesPathsCurves.astro';
+import type { IoIconName } from '~/components/iopartner/ioNodeIconTypes';
+import { detectRequestLocale } from '~/lib/locale';
 import Layout from '~/layouts/PageLayout.astro';
 
-const metadata = {
-  title: 'IOPartner.ch — Consulting technique, systems & operations pour PME',
-  description:
-    'Consulting technique, systèmes opérationnels et déploiement standard pour PME suisses. Le standard quand il suffit, le sur mesure quand il faut.',
-  ignoreTitleTemplate: true,
-};
+const locale = detectRequestLocale(Astro.request, Astro.url);
+const localePrefix = ['en', 'de', 'it'].includes(locale) ? `/${locale}` : '';
 
-const processSteps = [
-  { label: '01', title: 'Diagnostic', detail: 'Comprendre le besoin réel.' },
-  { label: '02', title: 'Périmètre', detail: 'Séparer standard et sur mesure.' },
-  { label: '03', title: 'Build', detail: 'Livrer sans chantier inutile.' },
-  { label: '04', title: 'Continuité', detail: 'Garder le système propre.' },
-];
+const COPY = {
+  fr: {
+    metadata: {
+      title: 'IOPartner.ch — Cadrage technique, systèmes & opérations pour PME',
+      description:
+        'Cadrage technique, systèmes opérationnels et présence web cadrée pour PME suisses. Le standard quand il suffit, le sur mesure quand il faut.',
+      ignoreTitleTemplate: true,
+    },
+    heroKicker: 'Cadrage technique · Systèmes & opérations · Présence web cadrée',
+    heroTitle: 'Clarté technique, delivery propre et sites web quand le standard suffit.',
+    heroLead:
+      'Nous aidons les PME et indépendants à choisir le bon niveau d’intervention: cadrer vite, construire sur mesure, ou lancer une présence web propre dès 999 CHF.',
+    talk: 'Parler de votre besoin',
+    pricing: 'Voir les tarifs',
+    entryKicker: 'Décider le bon niveau d’intervention',
+    entryTitle: 'Trois portes d’entrée claires selon le besoin réel.',
+    compare: 'Comparer les formats',
+    entries: [
+      { href: `${localePrefix}/cadrage-technique`, icon: 'consulting', title: 'Cadrage technique', body: 'Arbitrer, cadrer, débloquer. Décisions rapides, impact direct.', price: '60 CHF / 15 min' },
+      { href: `${localePrefix}/systems-operations`, icon: 'systems', title: 'Systèmes & opérations', body: 'Infrastructure, automatisation, supervision et intégrations.', price: 'Sur devis' },
+      { href: `${localePrefix}/presence-web-cadree`, icon: 'standard', title: 'Présence web cadrée', body: 'Site vitrine professionnel livré vite, avec seuil clair vers administrable si le besoin évolue.', price: 'Dès 999 CHF' },
+    ] as Array<{ href: string; icon: IoIconName; title: string; body: string; price: string }>,
+    philosophyLead: 'Le mauvais projet coûte plus cher que le bon arbitrage.',
+    philosophy: ['Parfois un site standard suffit.', 'Parfois il faut une infrastructure dédiée.', 'Le rôle du cadrage est de distinguer les deux rapidement.'],
+    methodKicker: 'Méthode',
+    methodTitle: 'Un cadrage court avant l’exécution.',
+    methodBody: 'L’objectif n’est pas de grossir le projet. L’objectif est de choisir la forme utile, puis d’exécuter proprement.',
+    systemsKicker: 'Systèmes & opérations',
+    systemsTitle: 'Quand le site devient système.',
+    systemsBody: 'Infrastructure, automatisation, backend léger, supervision et continuité technique pour les sujets qui dépassent réellement le template.',
+    systemsCta: 'Voir systèmes & opérations',
+    proof1Kicker: 'Consulting',
+    proof1Title: 'Ce qui repart avec vous.',
+    proof1Body: 'Une carte de décision, un périmètre plus net, ou une direction technique défendable.',
+    proof2Kicker: 'Présence web cadrée',
+    proof2Title: 'Quand une build privée n’est pas nécessaire.',
+    proof2Body: 'Un format de lancement cadré pour une présence web propre, rapide et maintenable.',
+    strip: [
+      ['60 CHF / 15 min', 'Consulting ciblé'],
+      ['140 CHF / h', 'Support technique avancé'],
+      ['999 CHF', 'Présence web cadrée'],
+      ['Sur devis', 'Systèmes & opérations'],
+    ],
+    faqKicker: 'FAQ',
+    faqTitle: 'Questions fréquentes',
+    faqs: [
+      { title: 'Quand choisir le cadrage technique ?', body: 'Quand il faut trancher une décision, débloquer une implémentation, relire une architecture ou éviter de lancer le mauvais chantier.' },
+      { title: 'Quand passer en systèmes & opérations ?', body: 'Quand le sujet implique infrastructure, backend, intégrations, automatisation, monitoring ou continuité technique au-delà d’un simple site.' },
+      { title: 'La présence web cadrée dès 999 CHF existe toujours ?', body: 'Oui. Il reste pertinent quand une présence web claire et stable suffit. Si l’autonomie éditoriale ou la complexité augmentent, on ouvre un niveau administrable ou systèmes.' },
+      { title: 'Pouvez-vous rester après la mise en ligne ?', body: 'Oui. Le suivi peut couvrir corrections, incidents, DNS, monitoring, petites évolutions ou second chantier selon le contexte.' },
+    ],
+    finalTitle: 'Commencer par le bon niveau d’intervention.',
+    finalBody: 'Envoyez le contexte. Nous vous indiquons si le bon mouvement est cadrage, systèmes, ou présence web cadrée.',
+    finalPrimary: 'Envoyer le contexte',
+    finalSecondary: 'Voir les tarifs',
+    steps: [
+      { label: '01', title: 'Diagnostic', detail: 'Comprendre le besoin réel.', icon: 'diagnostic' },
+      { label: '02', title: 'Périmètre', detail: 'Séparer standard et sur mesure.', icon: 'scope' },
+      { label: '03', title: 'Build', detail: 'Livrer sans chantier inutile.', icon: 'build' },
+      { label: '04', title: 'Continuité', detail: 'Garder le système propre.', icon: 'continuity' },
+    ] as Array<{ label: string; title: string; detail: string; icon: IoIconName }>,
+  },
+  en: {
+    metadata: {
+      title: 'IOPartner.ch — Technical scoping, systems & operations for SMEs',
+      description:
+        'Technical scoping, operational systems, and scoped web presence for Swiss SMEs. Standard when it is enough, custom when it is necessary.',
+      ignoreTitleTemplate: true,
+    },
+    heroKicker: 'Technical scoping · Systems & operations · Scoped web presence',
+    heroTitle: 'Technical clarity, clean delivery, and websites when standard is enough.',
+    heroLead:
+      'We help SMEs and independents choose the right level of intervention: scope quickly, build custom when needed, or launch a clean web presence from CHF 999.',
+    talk: 'Discuss your needs',
+    pricing: 'See pricing',
+    entryKicker: 'Choose the right level of intervention',
+    entryTitle: 'Three clear entry points based on the real need.',
+    compare: 'Compare the formats',
+    entries: [
+      { href: `${localePrefix}/cadrage-technique`, icon: 'consulting', title: 'Technical scoping', body: 'Arbitrate, scope, unblock. Fast decisions, direct impact.', price: 'CHF 60 / 15 min' },
+      { href: `${localePrefix}/systems-operations`, icon: 'systems', title: 'Systems & operations', body: 'Infrastructure, automation, supervision, and integrations.', price: 'Quoted' },
+      { href: `${localePrefix}/presence-web-cadree`, icon: 'standard', title: 'Scoped web presence', body: 'Professional showcase site delivered quickly, with a clear threshold toward editable or dedicated paths.', price: 'From CHF 999' },
+    ] as Array<{ href: string; icon: IoIconName; title: string; body: string; price: string }>,
+    philosophyLead: 'The wrong project costs more than the right arbitration.',
+    philosophy: ['Sometimes a standard site is enough.', 'Sometimes dedicated infrastructure is required.', 'Scoping exists to distinguish the two quickly.'],
+    methodKicker: 'Method',
+    methodTitle: 'Short scoping before execution.',
+    methodBody: 'The goal is not to inflate the project. The goal is to choose the useful shape, then execute it cleanly.',
+    systemsKicker: 'Systems & operations',
+    systemsTitle: 'When the site becomes a system.',
+    systemsBody: 'Infrastructure, automation, light backend, supervision, and technical continuity for topics that truly go beyond the template.',
+    systemsCta: 'See systems & operations',
+    proof1Kicker: 'Consulting',
+    proof1Title: 'What leaves with you.',
+    proof1Body: 'A decision map, a clearer scope, or a defensible technical direction.',
+    proof2Kicker: 'Scoped web presence',
+    proof2Title: 'When a private build is not necessary.',
+    proof2Body: 'A scoped launch format for a clean, fast, and maintainable web presence.',
+    strip: [
+      ['CHF 60 / 15 min', 'Focused consulting'],
+      ['CHF 140 / h', 'Advanced technical support'],
+      ['CHF 999', 'Scoped web presence'],
+      ['Quoted', 'Systems & operations'],
+    ],
+    faqKicker: 'FAQ',
+    faqTitle: 'Frequently asked questions',
+    faqs: [
+      { title: 'When should I choose technical scoping?', body: 'When you need to make a decision, unblock an implementation, review an architecture, or avoid launching the wrong project.' },
+      { title: 'When should I move into systems & operations?', body: 'When the topic involves infrastructure, backend, integrations, automation, monitoring, or technical continuity beyond a simple site.' },
+      { title: 'Does scoped web presence from CHF 999 still exist?', body: 'Yes. It remains relevant when a clear and stable web presence is enough. If editorial autonomy or complexity increase, we open an editable or systems layer.' },
+      { title: 'Can you stay involved after launch?', body: 'Yes. Follow-up can include fixes, incidents, DNS, monitoring, small evolutions, or a second project depending on the context.' },
+    ],
+    finalTitle: 'Start with the right level of intervention.',
+    finalBody: 'Send the context. We will tell you whether the right move is scoping, systems, or scoped web presence.',
+    finalPrimary: 'Send the context',
+    finalSecondary: 'See pricing',
+    steps: [
+      { label: '01', title: 'Diagnosis', detail: 'Understand the real need.', icon: 'diagnostic' },
+      { label: '02', title: 'Scope', detail: 'Separate standard from custom.', icon: 'scope' },
+      { label: '03', title: 'Build', detail: 'Deliver without useless overhead.', icon: 'build' },
+      { label: '04', title: 'Continuity', detail: 'Keep the system clean.', icon: 'continuity' },
+    ] as Array<{ label: string; title: string; detail: string; icon: IoIconName }>,
+  },
+  de: {
+    metadata: {
+      title: 'IOPartner.ch — Technisches Scoping, Systeme & Betrieb für KMU',
+      description:
+        'Technisches Scoping, operative Systeme und klar abgegrenzte Web-Präsenz für Schweizer KMU. Standard, wenn er reicht, Custom, wenn er nötig ist.',
+      ignoreTitleTemplate: true,
+    },
+    heroKicker: 'Technisches Scoping · Systeme & Betrieb · Klar abgegrenzte Web-Präsenz',
+    heroTitle: 'Technische Klarheit, saubere Lieferung und Websites, wenn Standard genügt.',
+    heroLead:
+      'Wir helfen KMU und Selbständigen, das richtige Interventionsniveau zu wählen: schnell scopen, bei Bedarf custom bauen oder eine saubere Web-Präsenz ab CHF 999 starten.',
+    talk: 'Bedarf besprechen',
+    pricing: 'Preise ansehen',
+    entryKicker: 'Das richtige Interventionsniveau wählen',
+    entryTitle: 'Drei klare Einstiegspunkte je nach echtem Bedarf.',
+    compare: 'Formate vergleichen',
+    entries: [
+      { href: `${localePrefix}/cadrage-technique`, icon: 'consulting', title: 'Technisches Scoping', body: 'Abwägen, scopen, entblocken. Schnelle Entscheidungen mit direkter Wirkung.', price: 'CHF 60 / 15 Min.' },
+      { href: `${localePrefix}/systems-operations`, icon: 'systems', title: 'Systeme & Betrieb', body: 'Infrastruktur, Automatisierung, Überwachung und Integrationen.', price: 'Auf Anfrage' },
+      { href: `${localePrefix}/presence-web-cadree`, icon: 'standard', title: 'Klar abgegrenzte Web-Präsenz', body: 'Professionelle Showcase-Website, schnell geliefert, mit klarer Schwelle zu editierbaren oder dedizierten Wegen.', price: 'Ab CHF 999' },
+    ] as Array<{ href: string; icon: IoIconName; title: string; body: string; price: string }>,
+    philosophyLead: 'Das falsche Projekt kostet mehr als die richtige Abwägung.',
+    philosophy: ['Manchmal reicht eine Standard-Website.', 'Manchmal braucht es dedizierte Infrastruktur.', 'Scoping dient dazu, beides schnell zu unterscheiden.'],
+    methodKicker: 'Methode',
+    methodTitle: 'Kurzes Scoping vor der Ausführung.',
+    methodBody: 'Das Ziel ist nicht, das Projekt aufzublähen. Das Ziel ist, die nützliche Form zu wählen und sie dann sauber umzusetzen.',
+    systemsKicker: 'Systeme & Betrieb',
+    systemsTitle: 'Wenn die Website zum System wird.',
+    systemsBody: 'Infrastruktur, Automatisierung, leichtes Backend, Überwachung und technische Kontinuität für Themen, die die Vorlage wirklich überschreiten.',
+    systemsCta: 'Systeme & Betrieb ansehen',
+    proof1Kicker: 'Consulting',
+    proof1Title: 'Was Sie mitnehmen.',
+    proof1Body: 'Eine Entscheidungslandkarte, ein klarerer Scope oder eine vertretbare technische Richtung.',
+    proof2Kicker: 'Klar abgegrenzte Web-Präsenz',
+    proof2Title: 'Wenn ein privater Build nicht nötig ist.',
+    proof2Body: 'Ein abgegrenztes Launch-Format für eine saubere, schnelle und wartbare Web-Präsenz.',
+    strip: [
+      ['CHF 60 / 15 Min.', 'Fokussiertes Consulting'],
+      ['CHF 140 / h', 'Erweiterter technischer Support'],
+      ['CHF 999', 'Klar abgegrenzte Web-Präsenz'],
+      ['Auf Anfrage', 'Systeme & Betrieb'],
+    ],
+    faqKicker: 'FAQ',
+    faqTitle: 'Häufige Fragen',
+    faqs: [
+      { title: 'Wann sollte ich technisches Scoping wählen?', body: 'Wenn Sie eine Entscheidung treffen, eine Umsetzung entblocken, eine Architektur prüfen oder den falschen Start vermeiden müssen.' },
+      { title: 'Wann sollte ich in Systeme & Betrieb wechseln?', body: 'Wenn das Thema Infrastruktur, Backend, Integrationen, Automatisierung, Monitoring oder technische Kontinuität über eine einfache Website hinaus betrifft.' },
+      { title: 'Gibt es die klar abgegrenzte Web-Präsenz ab CHF 999 noch?', body: 'Ja. Sie bleibt sinnvoll, wenn eine klare und stabile Web-Präsenz genügt. Wenn redaktionelle Autonomie oder Komplexität wachsen, öffnen wir eine editierbare oder System-Ebene.' },
+      { title: 'Bleiben Sie nach dem Go-live involviert?', body: 'Ja. Das Follow-up kann Korrekturen, Incidents, DNS, Monitoring, kleine Weiterentwicklungen oder ein zweites Projekt umfassen.' },
+    ],
+    finalTitle: 'Mit dem richtigen Interventionsniveau starten.',
+    finalBody: 'Senden Sie den Kontext. Wir sagen Ihnen, ob der richtige Schritt Scoping, Systeme oder klar abgegrenzte Web-Präsenz ist.',
+    finalPrimary: 'Kontext senden',
+    finalSecondary: 'Preise ansehen',
+    steps: [
+      { label: '01', title: 'Diagnose', detail: 'Den echten Bedarf verstehen.', icon: 'diagnostic' },
+      { label: '02', title: 'Scope', detail: 'Standard von Custom trennen.', icon: 'scope' },
+      { label: '03', title: 'Build', detail: 'Ohne unnötigen Overhead liefern.', icon: 'build' },
+      { label: '04', title: 'Kontinuität', detail: 'Das System sauber halten.', icon: 'continuity' },
+    ] as Array<{ label: string; title: string; detail: string; icon: IoIconName }>,
+  },
+  it: {
+    metadata: {
+      title: 'IOPartner.ch — Inquadramento tecnico, sistemi & operazioni per PMI',
+      description:
+        'Inquadramento tecnico, sistemi operativi e presenza web strutturata per PMI svizzere. Standard quando basta, custom quando serve davvero.',
+      ignoreTitleTemplate: true,
+    },
+    heroKicker: 'Inquadramento tecnico · Sistemi & operazioni · Presenza web strutturata',
+    heroTitle: 'Chiarezza tecnica, delivery pulito e siti web quando lo standard basta.',
+    heroLead:
+      'Aiutiamo PMI e indipendenti a scegliere il giusto livello di intervento: definire rapidamente, costruire custom quando serve, oppure lanciare una presenza web pulita da CHF 999.',
+    talk: 'Parlare del bisogno',
+    pricing: 'Vedere i prezzi',
+    entryKicker: 'Scegliere il giusto livello di intervento',
+    entryTitle: 'Tre punti di ingresso chiari in base al bisogno reale.',
+    compare: 'Confrontare i formati',
+    entries: [
+      { href: `${localePrefix}/cadrage-technique`, icon: 'consulting', title: 'Inquadramento tecnico', body: 'Arbitrare, definire, sbloccare. Decisioni rapide, impatto diretto.', price: 'CHF 60 / 15 min' },
+      { href: `${localePrefix}/systems-operations`, icon: 'systems', title: 'Sistemi & operazioni', body: 'Infrastruttura, automazione, supervisione e integrazioni.', price: 'Su preventivo' },
+      { href: `${localePrefix}/presence-web-cadree`, icon: 'standard', title: 'Presenza web strutturata', body: 'Sito vetrina professionale consegnato rapidamente, con una soglia chiara verso percorsi editabili o dedicati.', price: 'Da CHF 999' },
+    ] as Array<{ href: string; icon: IoIconName; title: string; body: string; price: string }>,
+    philosophyLead: 'Il progetto sbagliato costa più della giusta arbitraggio.',
+    philosophy: ['A volte basta un sito standard.', 'A volte serve un’infrastruttura dedicata.', 'L’inquadramento serve a distinguere rapidamente le due cose.'],
+    methodKicker: 'Metodo',
+    methodTitle: 'Un inquadramento breve prima dell’esecuzione.',
+    methodBody: 'L’obiettivo non è gonfiare il progetto. L’obiettivo è scegliere la forma utile e poi realizzarla in modo pulito.',
+    systemsKicker: 'Sistemi & operazioni',
+    systemsTitle: 'Quando il sito diventa sistema.',
+    systemsBody: 'Infrastruttura, automazione, backend leggero, supervisione e continuità tecnica per temi che superano davvero il template.',
+    systemsCta: 'Vedere sistemi & operazioni',
+    proof1Kicker: 'Consulting',
+    proof1Title: 'Cosa vi portate via.',
+    proof1Body: 'Una mappa decisionale, un perimetro più chiaro o una direzione tecnica difendibile.',
+    proof2Kicker: 'Presenza web strutturata',
+    proof2Title: 'Quando una build privata non è necessaria.',
+    proof2Body: 'Un formato di lancio strutturato per una presenza web pulita, rapida e mantenibile.',
+    strip: [
+      ['CHF 60 / 15 min', 'Consulenza mirata'],
+      ['CHF 140 / h', 'Supporto tecnico avanzato'],
+      ['CHF 999', 'Presenza web strutturata'],
+      ['Su preventivo', 'Sistemi & operazioni'],
+    ],
+    faqKicker: 'FAQ',
+    faqTitle: 'Domande frequenti',
+    faqs: [
+      { title: 'Quando scegliere l’inquadramento tecnico?', body: 'Quando bisogna prendere una decisione, sbloccare un’implementazione, rivedere un’architettura o evitare di lanciare il progetto sbagliato.' },
+      { title: 'Quando passare a sistemi & operazioni?', body: 'Quando il tema coinvolge infrastruttura, backend, integrazioni, automazione, monitoring o continuità tecnica oltre un semplice sito.' },
+      { title: 'Esiste ancora la presenza web strutturata da CHF 999?', body: 'Sì. Resta pertinente quando basta una presenza web chiara e stabile. Se autonomia editoriale o complessità aumentano, apriamo un livello editabile o sistemi.' },
+      { title: 'Potete restare coinvolti dopo il go-live?', body: 'Sì. Il follow-up può coprire correzioni, incidenti, DNS, monitoring, piccole evoluzioni o un secondo progetto a seconda del contesto.' },
+    ],
+    finalTitle: 'Partire dal giusto livello di intervento.',
+    finalBody: 'Inviate il contesto. Vi diremo se la mossa giusta è inquadramento, sistemi o presenza web strutturata.',
+    finalPrimary: 'Inviare il contesto',
+    finalSecondary: 'Vedere i prezzi',
+    steps: [
+      { label: '01', title: 'Diagnosi', detail: 'Capire il bisogno reale.', icon: 'diagnostic' },
+      { label: '02', title: 'Perimetro', detail: 'Separare standard e custom.', icon: 'scope' },
+      { label: '03', title: 'Build', detail: 'Consegnare senza sovrastrutture inutili.', icon: 'build' },
+      { label: '04', title: 'Continuità', detail: 'Mantenere pulito il sistema.', icon: 'continuity' },
+    ] as Array<{ label: string; title: string; detail: string; icon: IoIconName }>,
+  },
+} as const;
 
-const faqs = [
-  {
-    title: 'Quand choisir le consulting technique ?',
-    body: 'Quand il faut trancher une décision, débloquer une implémentation, relire une architecture ou éviter de lancer le mauvais chantier.',
-  },
-  {
-    title: 'Quand passer en systems & operations ?',
-    body: 'Quand le sujet implique infrastructure, backend, intégrations, automatisation, monitoring ou continuité technique au-delà d’un simple site.',
-  },
-  {
-    title: 'Le déploiement standard dès 999 CHF existe toujours ?',
-    body: 'Oui. Il reste pertinent quand une présence web cadrée suffit. Il n’est pas vendu comme du sur mesure déguisé.',
-  },
-  {
-    title: 'Pouvez-vous rester après la mise en ligne ?',
-    body: 'Oui. Le suivi peut couvrir corrections, incidents, DNS, monitoring, petites évolutions ou second chantier selon le contexte.',
-  },
-];
+const copy = COPY[locale as keyof typeof COPY] ?? COPY.fr;
+const metadata = copy.metadata;
+const processSteps = copy.steps;
+const faqs = copy.faqs;
 ---
 
 <Layout metadata={metadata}>
@@ -46,15 +271,12 @@ const faqs = [
     <section class="io-hero" id="process">
       <div class="io-shell io-hero-grid">
         <div class="io-hero-copy">
-          <p class="io-kicker">Consulting technique · Systems & operations · Déploiement standard</p>
-          <h1>Clarté technique, delivery propre et sites web quand le standard suffit.</h1>
-          <p class="io-lead">
-            Nous aidons les PME et indépendants à choisir le bon niveau d’intervention: cadrer vite, construire sur
-            mesure, ou lancer une présence web propre dès 999 CHF.
-          </p>
+          <p class="io-kicker">{copy.heroKicker}</p>
+          <h1>{copy.heroTitle}</h1>
+          <p class="io-lead">{copy.heroLead}</p>
           <div class="io-actions">
-            <a class="io-btn io-btn-primary" href="/contact#form">Parler de votre besoin</a>
-            <a class="io-btn io-btn-secondary" href="/pricing">Voir les tarifs</a>
+            <a class="io-btn io-btn-primary" href={`${localePrefix}/contact#form`}>{copy.talk}</a>
+            <a class="io-btn io-btn-secondary" href={`${localePrefix}/pricing`}>{copy.pricing}</a>
           </div>
         </div>
         <Io01PremiumGridBlueprintArcs />
@@ -64,51 +286,36 @@ const faqs = [
     <section class="io-shell io-entry-band" id="entry-points">
       <div class="io-entry-head">
         <div>
-          <p class="io-kicker">Décider le bon niveau d’intervention</p>
-          <h2>Trois portes d’entrée claires selon le besoin réel.</h2>
+          <p class="io-kicker">{copy.entryKicker}</p>
+          <h2>{copy.entryTitle}</h2>
         </div>
-        <a href="/pricing" class="io-link">Comparer les formats</a>
+        <a href={`${localePrefix}/pricing`} class="io-link">{copy.compare}</a>
       </div>
 
       <div class="io-entry-grid">
-        <a class="io-entry-item" href="/contact#form">
-          <span class="io-entry-icon io-entry-icon-decision"></span>
-          <h3>Consulting technique</h3>
-          <p>Arbitrer, cadrer, débloquer. Décisions rapides, impact direct.</p>
-          <strong>60 CHF / 15 min</strong>
-        </a>
-        <a class="io-entry-item" href="/pricing?tab=systems#systems-operations">
-          <span class="io-entry-icon io-entry-icon-systems"></span>
-          <h3>Systems & operations</h3>
-          <p>Infrastructure, automatisation, supervision et intégrations.</p>
-          <strong>Sur devis</strong>
-        </a>
-        <a class="io-entry-item" href="/pricing?tab=website#standard-deployment">
-          <span class="io-entry-icon io-entry-icon-standard"></span>
-          <h3>Déploiement standard</h3>
-          <p>Site vitrine professionnel livré vite, au juste prix dès 999 CHF.</p>
-          <strong>Dès 999 CHF</strong>
-        </a>
+        {copy.entries.map((entry) => (
+          <a class="io-entry-item" href={entry.href}>
+            <span class="io-entry-icon"><IoNodeIcon name={entry.icon} /></span>
+            <h3>{entry.title}</h3>
+            <p>{entry.body}</p>
+            <strong>{entry.price}</strong>
+          </a>
+        ))}
       </div>
     </section>
 
     <section class="io-shell io-philosophy">
-      <p>Le mauvais projet coûte plus cher que le bon arbitrage.</p>
+      <p>{copy.philosophyLead}</p>
       <div>
-        <span>Parfois un site standard suffit.</span>
-        <span>Parfois il faut une infrastructure dédiée.</span>
-        <span>Le rôle du consulting est de distinguer les deux rapidement.</span>
+        {copy.philosophy.map((item) => <span>{item}</span>)}
       </div>
     </section>
 
     <section class="io-shell io-process-section">
       <div class="io-section-head">
-        <p class="io-kicker">Méthode</p>
-        <h2>Un cadrage court avant l’exécution.</h2>
-        <p>
-          L’objectif n’est pas de grossir le projet. L’objectif est de choisir la forme utile, puis d’exécuter
-          proprement.
-        </p>
+        <p class="io-kicker">{copy.methodKicker}</p>
+        <h2>{copy.methodTitle}</h2>
+        <p>{copy.methodBody}</p>
       </div>
       <IoProcessMap steps={processSteps} />
     </section>
@@ -116,14 +323,11 @@ const faqs = [
     <section class="io-systems-section" id="systems-operations">
       <div class="io-shell io-systems-grid">
         <div class="io-systems-copy">
-          <p class="io-kicker">Systems & operations</p>
-          <h2>Quand le site devient système.</h2>
-          <p>
-            Infrastructure, automatisation, backend léger, supervision et continuité technique pour les sujets qui
-            dépassent réellement le template.
-          </p>
+          <p class="io-kicker">{copy.systemsKicker}</p>
+          <h2>{copy.systemsTitle}</h2>
+          <p>{copy.systemsBody}</p>
           <div class="io-stack-line">Docker · VPS · DNS · SSL · monitoring · workflows · API · dashboards</div>
-          <a class="io-btn io-btn-light" href="/pricing?tab=systems#systems-operations">Voir systems & operations</a>
+          <a class="io-btn io-btn-light" href={`${localePrefix}/systems-operations`}>{copy.systemsCta}</a>
         </div>
         <Io02SvgLinesPathsCurves />
       </div>
@@ -131,42 +335,32 @@ const faqs = [
 
     <section class="io-shell io-proof-grid">
       <article>
-        <p class="io-kicker">Consulting</p>
-        <h2>Ce qui repart avec vous.</h2>
-        <p>Une carte de décision, un périmètre plus net, ou une direction technique défendable.</p>
+        <p class="io-kicker">{copy.proof1Kicker}</p>
+        <h2>{copy.proof1Title}</h2>
+        <p>{copy.proof1Body}</p>
         <IoBlueprintVisual variant="decision" />
       </article>
       <article id="standard-deployment">
-        <p class="io-kicker">Déploiement standard</p>
-        <h2>Quand une build privée n’est pas nécessaire.</h2>
-        <p>Un format de lancement cadré pour une présence web propre, rapide et maintenable.</p>
+        <p class="io-kicker">{copy.proof2Kicker}</p>
+        <h2>{copy.proof2Title}</h2>
+        <p>{copy.proof2Body}</p>
         <IoBlueprintVisual variant="standard" />
       </article>
     </section>
 
     <section class="io-shell io-pricing-strip">
-      <div>
-        <strong>60 CHF / 15 min</strong>
-        <span>Consulting ciblé</span>
-      </div>
-      <div>
-        <strong>140 CHF / h</strong>
-        <span>Support technique avancé</span>
-      </div>
-      <div>
-        <strong>999 CHF</strong>
-        <span>Déploiement standard</span>
-      </div>
-      <div>
-        <strong>Sur devis</strong>
-        <span>Systems & operations</span>
-      </div>
+      {copy.strip.map(([strong, text]) => (
+        <div>
+          <strong>{strong}</strong>
+          <span>{text}</span>
+        </div>
+      ))}
     </section>
 
     <section class="io-shell io-faq" id="faq">
       <div class="io-section-head">
-        <p class="io-kicker">FAQ</p>
-        <h2>Questions fréquentes</h2>
+        <p class="io-kicker">{copy.faqKicker}</p>
+        <h2>{copy.faqTitle}</h2>
       </div>
       <div class="io-faq-list">
         {
@@ -181,13 +375,11 @@ const faqs = [
     </section>
 
     <section class="io-shell io-final-cta">
-      <h2>Commencer par le bon niveau d’intervention.</h2>
-      <p>
-        Envoyez le contexte. Nous vous indiquons si le bon mouvement est consulting, systems, ou déploiement standard.
-      </p>
+      <h2>{copy.finalTitle}</h2>
+      <p>{copy.finalBody}</p>
       <div class="io-actions">
-        <a class="io-btn io-btn-primary" href="/contact#form">Envoyer le contexte</a>
-        <a class="io-btn io-btn-secondary" href="/pricing">Voir les tarifs</a>
+        <a class="io-btn io-btn-primary" href={`${localePrefix}/contact#form`}>{copy.finalPrimary}</a>
+        <a class="io-btn io-btn-secondary" href={`${localePrefix}/pricing`}>{copy.finalSecondary}</a>
       </div>
     </section>
   </main>
@@ -393,14 +585,19 @@ const faqs = [
     }
 
     .io-entry-icon {
+      display: grid;
       width: 3.2rem;
       height: 3.2rem;
+      place-items: center;
       border: 1px solid rgba(147, 197, 253, 0.5);
       border-radius: 0.75rem;
-      background:
-        linear-gradient(90deg, rgba(96, 165, 250, 0.55) 2px, transparent 2px),
-        linear-gradient(rgba(96, 165, 250, 0.55) 2px, transparent 2px);
-      background-size: 16px 16px;
+      background: rgba(37, 99, 235, 0.1);
+      color: #93c5fd;
+    }
+
+    .io-entry-icon :global(.io-node-icon-svg) {
+      width: 1.55rem;
+      height: 1.55rem;
     }
 
     .io-philosophy {

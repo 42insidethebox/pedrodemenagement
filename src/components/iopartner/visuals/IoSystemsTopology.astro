@@ -1,7 +1,64 @@
-<section class="io-systems-topology" aria-label="Architecture opérationnelle IOPartner">
+---
+import { detectRequestLocale } from '~/lib/locale';
+
+const locale = detectRequestLocale(Astro.request, Astro.url);
+const COPY = {
+  fr: {
+    aria: 'Architecture opérationnelle IOPartner',
+    label: ['Architecture opérationnelle', 'Infra · backend · continuité'],
+    nodes: {
+      web: ['Web', 'Sites & contenus'],
+      api: ['API', 'Routes métier'],
+      workers: ['Workers', 'Jobs & workflows'],
+      data: ['Data', 'Sauvegardes'],
+      monitoring: ['Monitoring', 'Alertes & santé'],
+    },
+    rows: [['DNS + SSL', 'Routage propre'], ['Deploy', 'Versionnement clair'], ['Watch', 'Supervision active']],
+  },
+  en: {
+    aria: 'IOPartner operational architecture',
+    label: ['Operational architecture', 'Infra · backend · continuity'],
+    nodes: {
+      web: ['Web', 'Sites & content'],
+      api: ['API', 'Business routes'],
+      workers: ['Workers', 'Jobs & workflows'],
+      data: ['Data', 'Backups'],
+      monitoring: ['Monitoring', 'Alerts & health'],
+    },
+    rows: [['DNS + SSL', 'Clean routing'], ['Deploy', 'Clear versioning'], ['Watch', 'Active supervision']],
+  },
+  de: {
+    aria: 'IOPartner Betriebsarchitektur',
+    label: ['Betriebsarchitektur', 'Infra · Backend · Kontinuität'],
+    nodes: {
+      web: ['Web', 'Sites & Inhalte'],
+      api: ['API', 'Business-Routen'],
+      workers: ['Workers', 'Jobs & Workflows'],
+      data: ['Data', 'Backups'],
+      monitoring: ['Monitoring', 'Alarme & Zustand'],
+    },
+    rows: [['DNS + SSL', 'Sauberes Routing'], ['Deploy', 'Klares Versioning'], ['Watch', 'Aktive Überwachung']],
+  },
+  it: {
+    aria: 'Architettura operativa IOPartner',
+    label: ['Architettura operativa', 'Infra · backend · continuità'],
+    nodes: {
+      web: ['Web', 'Siti & contenuti'],
+      api: ['API', 'Rotte di business'],
+      workers: ['Workers', 'Job & workflow'],
+      data: ['Data', 'Backup'],
+      monitoring: ['Monitoring', 'Alert & salute'],
+    },
+    rows: [['DNS + SSL', 'Routing pulito'], ['Deploy', 'Versioning chiaro'], ['Watch', 'Supervisione attiva']],
+  },
+} as const;
+const copy = COPY[locale as keyof typeof COPY] ?? COPY.fr;
+---
+
+<section class="io-systems-topology" aria-label={copy.aria}>
   <div class="panel-label">
-    <strong>Architecture opérationnelle</strong>
-    <span>Infra · backend · continuité</span>
+    <strong>{copy.label[0]}</strong>
+    <span>{copy.label[1]}</span>
   </div>
 
   <svg class="route-stage" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
@@ -37,8 +94,8 @@
         <path d="M8 13h8M8 16h5"></path>
       </svg>
     </span>
-    <strong>Web</strong>
-    <small>Sites & contenus</small>
+    <strong>{copy.nodes.web[0]}</strong>
+    <small>{copy.nodes.web[1]}</small>
   </div>
 
   <div class="system-node node-api is-core">
@@ -49,8 +106,8 @@
         <path d="M14 5l-4 14"></path>
       </svg>
     </span>
-    <strong>API</strong>
-    <small>Routes métier</small>
+    <strong>{copy.nodes.api[0]}</strong>
+    <small>{copy.nodes.api[1]}</small>
   </div>
 
   <div class="system-node node-workers">
@@ -62,8 +119,8 @@
         <path d="M7.7 7l8.6 4M8 6h4a3 3 0 0 1 3 3v2M18 14v2a3 3 0 0 1-3 3h-4"></path>
       </svg>
     </span>
-    <strong>Workers</strong>
-    <small>Jobs & workflows</small>
+    <strong>{copy.nodes.workers[0]}</strong>
+    <small>{copy.nodes.workers[1]}</small>
   </div>
 
   <div class="system-node node-data">
@@ -74,8 +131,8 @@
         <path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"></path>
       </svg>
     </span>
-    <strong>Data</strong>
-    <small>Sauvegardes</small>
+    <strong>{copy.nodes.data[0]}</strong>
+    <small>{copy.nodes.data[1]}</small>
   </div>
 
   <div class="system-node node-monitoring">
@@ -84,27 +141,27 @@
         <path d="M4 13h4l2-6l4 11l2-5h4"></path>
       </svg>
     </span>
-    <strong>Monitoring</strong>
-    <small>Alertes & santé</small>
+    <strong>{copy.nodes.monitoring[0]}</strong>
+    <small>{copy.nodes.monitoring[1]}</small>
   </div>
 
   <div class="ops-rows">
     <div>
       <span></span>
-      <strong>DNS + SSL</strong>
-      <small>Routage propre</small>
+      <strong>{copy.rows[0][0]}</strong>
+      <small>{copy.rows[0][1]}</small>
     </div>
 
     <div>
       <span></span>
-      <strong>Deploy</strong>
-      <small>Versionnement clair</small>
+      <strong>{copy.rows[1][0]}</strong>
+      <small>{copy.rows[1][1]}</small>
     </div>
 
     <div>
       <span></span>
-      <strong>Watch</strong>
-      <small>Supervision active</small>
+      <strong>{copy.rows[2][0]}</strong>
+      <small>{copy.rows[2][1]}</small>
     </div>
   </div>
 </section>

@@ -16,31 +16,32 @@ const localePrefix = ['en', 'de', 'it'].includes(locale) ? `/${locale}` : '';
 
 const T = {
   fr: {
-    title: 'Choisir une base de déploiement — IOPartner.ch',
-    heading: 'Choisir une base de déploiement',
-    sub: 'Sélectionnez une direction visuelle. Nous adaptons la base au contenu, au secteur et au niveau de complexité.',
+    title: 'Exemples de projets livrés — IOPartner.ch',
+    heading: 'Exemples de projets livrés',
+    sub: 'Ces réalisations montrent ce qui peut être livré dans les formats 999 CHF et 1 500 CHF. Le point important est le niveau de rendu, pas la vente d’un template.',
     planLabel: 'Plan',
-    select: 'Choisir ce style',
+    select: 'Partir de cet exemple',
     preview: 'Voir le site →',
-    surprise: 'Recommandation IOPartner',
-    surpriseDesc: 'Laissez-nous choisir la base la plus rationnelle selon votre secteur et vos contenus.',
-    surpriseBtn: 'Continuer avec recommandation →',
-    baseTemplate: 'Modèle de base',
-    variation: 'variation',
+    surprise: 'Laissez-nous choisir',
+    surpriseDesc:
+      'Si vous voulez aller vite, nous choisissons l’exemple et le format les plus rationnels selon votre secteur, vos contenus et votre niveau de contrainte.',
+    surpriseBtn: 'Continuer sans choisir →',
+    baseTemplate: 'Format de référence',
+    variation: 'variante',
     liveExamples: 'Exemples réels',
     promoBadge: 'Pack Essentiel',
     promoTitle: 'IOPartner dès 999 CHF',
     promoDesc: 'Prix fixe pour un site vitrine professionnel. Livraison en 3–5 jours ouvrables selon vos contenus.',
     promoBtn: 'Commander maintenant →',
-    mergedTitle: 'Rester sur la voie standard',
+    mergedTitle: 'Comparer les formats standards',
     mergedLead: 'Deux voies nettes: 999 ou 1 500 CHF si le sujet reste standard. Sinon, passez par la route custom.',
-    starterTitle: 'Voie standard',
+    starterTitle: 'Formats standards',
     starterItems: [
       '999 CHF: site vitrine 5 sections sur infrastructure mutualisée.',
       '1 500 CHF: déploiement standard + rendez-vous intégrés + passation courte.',
     ],
-    starterCtaPrimary: 'Choisir 999 CHF',
-    starterCtaSecondary: 'Choisir 1 500 CHF',
+    starterCtaPrimary: 'Voir les projets à 999 CHF',
+    starterCtaSecondary: 'Voir les projets à 1 500 CHF',
     customTitle: 'Quand le standard ne suffit plus',
     customLead: 'Codebase séparée, transmission, back-end léger, headless shop ou architecture plus lourde.',
     customItems: [
@@ -175,6 +176,7 @@ const templates = [
   {
     id: 'lausanne-demenagement',
     name: 'Pedro Déménagement',
+    deliveredTier: '999 CHF',
     sector:
       {
         fr: 'Services & déménagement',
@@ -206,6 +208,7 @@ const templates = [
   {
     id: 'tolo-coiffure',
     name: 'Tolo Coiffure',
+    deliveredTier: '1 500 CHF',
     sector:
       { fr: 'Beauté & coiffure', en: 'Beauty & hair salon', de: 'Beauty & Friseur', it: 'Bellezza & parrucchiere' }[
         locale
@@ -227,6 +230,7 @@ const templates = [
   {
     id: 'maison-cortes',
     name: 'Maison Cortès',
+    deliveredTier: '1 500 CHF',
     sector:
       { fr: 'Hôtellerie & luxe', en: 'Hospitality & luxury', de: 'Hotellerie & Luxus', it: 'Ospitalità & lusso' }[
         locale
@@ -248,6 +252,7 @@ const templates = [
   {
     id: 'onglesgel',
     name: 'Ongles Gel',
+    deliveredTier: '999 CHF',
     sector:
       { fr: 'Beauté & ongles', en: 'Beauty & nails', de: 'Beauty & Nägel', it: 'Bellezza & unghie' }[locale] ??
       'Beauty',
@@ -299,7 +304,7 @@ const templates = [
         <h2 class="font-bold text-xl mb-1">{t.surprise}</h2>
         <p class="text-slate-500 text-sm mb-5 max-w-md mx-auto">{t.surpriseDesc}</p>
         <a
-          href={`/api/payment/redirect?plan=${encodeURIComponent(plan)}&template=surprise`}
+          href={`/onboarding?plan=${encodeURIComponent(plan)}&template=surprise`}
           class="inline-block bg-slate-950 text-white font-semibold text-sm px-6 py-3 rounded-xl hover:bg-slate-800 transition-colors"
         >
           {t.surpriseBtn}
@@ -346,9 +351,14 @@ const templates = [
                 <div class="mb-3">
                   <div class="flex items-start justify-between gap-2 mb-1">
                     <h3 class="font-bold text-gray-900">{tpl.name}</h3>
-                    <span class="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full whitespace-nowrap shrink-0">
-                      {tpl.sector}
-                    </span>
+                    <div class="flex flex-wrap justify-end gap-1.5">
+                      <span class="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full whitespace-nowrap shrink-0">
+                        {tpl.sector}
+                      </span>
+                      <span class="text-xs text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full whitespace-nowrap shrink-0">
+                        {tpl.deliveredTier}
+                      </span>
+                    </div>
                   </div>
                   <p class="text-gray-500 text-sm leading-relaxed">{tpl.desc}</p>
                 </div>
@@ -383,7 +393,7 @@ const templates = [
                     {t.preview}
                   </a>
                   <a
-                    href={`/api/payment/redirect?plan=${encodeURIComponent(plan)}&template=${encodeURIComponent(tpl.id)}`}
+                    href={`/onboarding?plan=${encodeURIComponent(plan)}&template=${encodeURIComponent(tpl.id)}`}
                     class="flex-1 text-center bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors"
                   >
                     {t.select} →

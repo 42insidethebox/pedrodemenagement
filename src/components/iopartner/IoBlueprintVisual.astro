@@ -1,41 +1,148 @@
 ---
+import { detectRequestLocale } from '~/lib/locale';
+
 type Variant = 'hero' | 'pricing' | 'systems' | 'standard' | 'decision';
 
 interface Props {
   variant?: Variant;
+  locale?: string;
 }
 
-const { variant = 'hero' } = Astro.props as Props;
+const { variant = 'hero', locale: localeProp } = Astro.props as Props;
+const locale = localeProp || detectRequestLocale(Astro.request, Astro.url);
 
-const heroNodes = [
-  { label: 'DNS', detail: 'Domaine & routage', className: 'node-dns', icon: 'dns' },
-  { label: 'CRM', detail: 'Données clients', className: 'node-crm', icon: 'crm' },
-  { label: 'VPS', detail: 'Hébergement', className: 'node-vps', icon: 'server' },
-  { label: 'Automations', detail: 'Workflows métier', className: 'node-automation', icon: 'automation' },
-  { label: 'Website', detail: 'Site & contenu', className: 'node-website', icon: 'website' },
-  { label: 'Monitoring', detail: 'Santé système', className: 'node-monitoring', icon: 'monitoring' },
-  { label: 'Backup', detail: 'Sauvegardes', className: 'node-backup', icon: 'backup' },
-];
+const COPY = {
+  fr: {
+    heroNodes: [
+      { label: 'DNS', detail: 'Domaine & routage', className: 'node-dns', icon: 'dns' },
+      { label: 'CRM', detail: 'Données clients', className: 'node-crm', icon: 'crm' },
+      { label: 'VPS', detail: 'Hébergement', className: 'node-vps', icon: 'server' },
+      { label: 'Automations', detail: 'Workflows métier', className: 'node-automation', icon: 'automation' },
+      { label: 'Website', detail: 'Site & contenu', className: 'node-website', icon: 'website' },
+      { label: 'Monitoring', detail: 'Santé système', className: 'node-monitoring', icon: 'monitoring' },
+      { label: 'Backup', detail: 'Sauvegardes', className: 'node-backup', icon: 'backup' },
+    ],
+    pricingLayers: [
+      { label: '1. STANDARD', detail: 'Déploiement rapide', className: 'layer-standard' },
+      { label: '2. CONSULTING', detail: 'Arbitrage & cadrage', className: 'layer-consulting' },
+      { label: '3. SYSTEMS', detail: 'Architecture & opérations', className: 'layer-systems' },
+    ],
+    systemsLabel: ['Architecture opérationnelle', 'Infra · backend · continuité'],
+    systemsBlocks: [
+      { label: 'Web', detail: 'Sites & contenus', className: 'system-web', icon: 'website' },
+      { label: 'API', detail: 'Routes métier', className: 'system-api', icon: 'api' },
+      { label: 'Workers', detail: 'Jobs & workflows', className: 'system-workers', icon: 'automation' },
+      { label: 'Data', detail: 'Sauvegardes', className: 'system-data', icon: 'backup' },
+      { label: 'Monitoring', detail: 'Alertes & santé', className: 'system-monitoring', icon: 'monitoring' },
+    ],
+    systemsRows: [
+      ['DNS + SSL', 'Routage propre'],
+      ['Deploy', 'Versionnement clair'],
+      ['Watch', 'Supervision active'],
+    ],
+    decision: ['Besoin', 'Standard', 'Consulting', 'Systems'],
+  },
+  en: {
+    heroNodes: [
+      { label: 'DNS', detail: 'Domain & routing', className: 'node-dns', icon: 'dns' },
+      { label: 'CRM', detail: 'Client data', className: 'node-crm', icon: 'crm' },
+      { label: 'VPS', detail: 'Hosting', className: 'node-vps', icon: 'server' },
+      { label: 'Automations', detail: 'Business workflows', className: 'node-automation', icon: 'automation' },
+      { label: 'Website', detail: 'Site & content', className: 'node-website', icon: 'website' },
+      { label: 'Monitoring', detail: 'System health', className: 'node-monitoring', icon: 'monitoring' },
+      { label: 'Backup', detail: 'Backups', className: 'node-backup', icon: 'backup' },
+    ],
+    pricingLayers: [
+      { label: '1. STANDARD', detail: 'Fast deployment', className: 'layer-standard' },
+      { label: '2. CONSULTING', detail: 'Arbitration & scoping', className: 'layer-consulting' },
+      { label: '3. SYSTEMS', detail: 'Architecture & operations', className: 'layer-systems' },
+    ],
+    systemsLabel: ['Operational architecture', 'Infra · backend · continuity'],
+    systemsBlocks: [
+      { label: 'Web', detail: 'Sites & content', className: 'system-web', icon: 'website' },
+      { label: 'API', detail: 'Business routes', className: 'system-api', icon: 'api' },
+      { label: 'Workers', detail: 'Jobs & workflows', className: 'system-workers', icon: 'automation' },
+      { label: 'Data', detail: 'Backups', className: 'system-data', icon: 'backup' },
+      { label: 'Monitoring', detail: 'Alerts & health', className: 'system-monitoring', icon: 'monitoring' },
+    ],
+    systemsRows: [
+      ['DNS + SSL', 'Clean routing'],
+      ['Deploy', 'Clear versioning'],
+      ['Watch', 'Active supervision'],
+    ],
+    decision: ['Need', 'Standard', 'Consulting', 'Systems'],
+  },
+  de: {
+    heroNodes: [
+      { label: 'DNS', detail: 'Domain & Routing', className: 'node-dns', icon: 'dns' },
+      { label: 'CRM', detail: 'Kundendaten', className: 'node-crm', icon: 'crm' },
+      { label: 'VPS', detail: 'Hosting', className: 'node-vps', icon: 'server' },
+      { label: 'Automations', detail: 'Geschäfts-Workflows', className: 'node-automation', icon: 'automation' },
+      { label: 'Website', detail: 'Site & Inhalte', className: 'node-website', icon: 'website' },
+      { label: 'Monitoring', detail: 'Systemzustand', className: 'node-monitoring', icon: 'monitoring' },
+      { label: 'Backup', detail: 'Backups', className: 'node-backup', icon: 'backup' },
+    ],
+    pricingLayers: [
+      { label: '1. STANDARD', detail: 'Schnelles Deployment', className: 'layer-standard' },
+      { label: '2. CONSULTING', detail: 'Abwägung & Scoping', className: 'layer-consulting' },
+      { label: '3. SYSTEMS', detail: 'Architektur & Betrieb', className: 'layer-systems' },
+    ],
+    systemsLabel: ['Betriebsarchitektur', 'Infra · Backend · Kontinuität'],
+    systemsBlocks: [
+      { label: 'Web', detail: 'Sites & Inhalte', className: 'system-web', icon: 'website' },
+      { label: 'API', detail: 'Business-Routen', className: 'system-api', icon: 'api' },
+      { label: 'Workers', detail: 'Jobs & Workflows', className: 'system-workers', icon: 'automation' },
+      { label: 'Data', detail: 'Backups', className: 'system-data', icon: 'backup' },
+      { label: 'Monitoring', detail: 'Alarme & Zustand', className: 'system-monitoring', icon: 'monitoring' },
+    ],
+    systemsRows: [
+      ['DNS + SSL', 'Sauberes Routing'],
+      ['Deploy', 'Klares Versioning'],
+      ['Watch', 'Aktive Überwachung'],
+    ],
+    decision: ['Bedarf', 'Standard', 'Consulting', 'Systems'],
+  },
+  it: {
+    heroNodes: [
+      { label: 'DNS', detail: 'Dominio & routing', className: 'node-dns', icon: 'dns' },
+      { label: 'CRM', detail: 'Dati clienti', className: 'node-crm', icon: 'crm' },
+      { label: 'VPS', detail: 'Hosting', className: 'node-vps', icon: 'server' },
+      { label: 'Automations', detail: 'Workflow di business', className: 'node-automation', icon: 'automation' },
+      { label: 'Website', detail: 'Sito & contenuti', className: 'node-website', icon: 'website' },
+      { label: 'Monitoring', detail: 'Salute del sistema', className: 'node-monitoring', icon: 'monitoring' },
+      { label: 'Backup', detail: 'Backup', className: 'node-backup', icon: 'backup' },
+    ],
+    pricingLayers: [
+      { label: '1. STANDARD', detail: 'Deploy rapido', className: 'layer-standard' },
+      { label: '2. CONSULTING', detail: 'Arbitraggio & scoping', className: 'layer-consulting' },
+      { label: '3. SYSTEMS', detail: 'Architettura & operazioni', className: 'layer-systems' },
+    ],
+    systemsLabel: ['Architettura operativa', 'Infra · backend · continuità'],
+    systemsBlocks: [
+      { label: 'Web', detail: 'Siti & contenuti', className: 'system-web', icon: 'website' },
+      { label: 'API', detail: 'Rotte di business', className: 'system-api', icon: 'api' },
+      { label: 'Workers', detail: 'Job & workflow', className: 'system-workers', icon: 'automation' },
+      { label: 'Data', detail: 'Backup', className: 'system-data', icon: 'backup' },
+      { label: 'Monitoring', detail: 'Alert & salute', className: 'system-monitoring', icon: 'monitoring' },
+    ],
+    systemsRows: [
+      ['DNS + SSL', 'Routing pulito'],
+      ['Deploy', 'Versioning chiaro'],
+      ['Watch', 'Supervisione attiva'],
+    ],
+    decision: ['Bisogno', 'Standard', 'Consulting', 'Systems'],
+  },
+} as const;
 
-const pricingLayers = [
-  { label: '1. STANDARD', detail: 'Déploiement rapide', className: 'layer-standard' },
-  { label: '2. CONSULTING', detail: 'Arbitrage & cadrage', className: 'layer-consulting' },
-  { label: '3. SYSTEMS', detail: 'Architecture & opérations', className: 'layer-systems' },
-];
+const copy = COPY[locale as keyof typeof COPY] ?? COPY.fr;
 
-const systemsBlocks = [
-  { label: 'Web', detail: 'Sites & contenus', className: 'system-web', icon: 'website' },
-  { label: 'API', detail: 'Routes métier', className: 'system-api', icon: 'api' },
-  { label: 'Workers', detail: 'Jobs & workflows', className: 'system-workers', icon: 'automation' },
-  { label: 'Data', detail: 'Sauvegardes', className: 'system-data', icon: 'backup' },
-  { label: 'Monitoring', detail: 'Alertes & santé', className: 'system-monitoring', icon: 'monitoring' },
-];
+const heroNodes = copy.heroNodes;
 
-const systemsRows = [
-  ['DNS + SSL', 'Routage propre'],
-  ['Deploy', 'Versionnement clair'],
-  ['Watch', 'Supervision active'],
-];
+const pricingLayers = copy.pricingLayers;
+
+const systemsBlocks = copy.systemsBlocks;
+
+const systemsRows = copy.systemsRows;
 ---
 
 <div class={`io-blueprint io-blueprint-${variant}`} aria-hidden="true">
@@ -43,19 +150,19 @@ const systemsRows = [
     variant === 'hero' && (
       <div class="io-hero-map">
         <svg class="io-topology-routes" viewBox="0 0 100 100" preserveAspectRatio="none">
-  <path d="M50 48 C48 38 41 30 31 26" />
-  <path d="M50 48 C40 48 30 52 21 55" />
-  <path d="M50 48 C56 34 66 21 78 16" />
-  <path d="M50 48 C61 43 75 41 88 43" />
-  <path d="M50 48 C62 56 77 66 88 72" />
-  <path d="M50 48 C44 63 37 75 31 83" />
-  <path d="M50 48 C54 65 63 79 71 86" />
+          <path d="M50 48 C48 38 41 30 31 26" />
+          <path d="M50 48 C40 48 30 52 21 55" />
+          <path d="M50 48 C56 34 66 21 78 16" />
+          <path d="M50 48 C61 43 75 41 88 43" />
+          <path d="M50 48 C62 56 77 66 88 72" />
+          <path d="M50 48 C44 63 37 75 31 83" />
+          <path d="M50 48 C54 65 63 79 71 86" />
 
-  <!-- faint architectural arcs -->
-  <path class="route-ghost" d="M18 22 C36 8 66 8 84 24" />
-  <path class="route-ghost" d="M15 78 C34 95 66 95 86 76" />
-  <path class="route-ghost" d="M8 50 C22 34 35 26 50 22" />
-</svg>
+          {/* faint architectural arcs */}
+          <path class="route-ghost" d="M18 22 C36 8 66 8 84 24" />
+          <path class="route-ghost" d="M15 78 C34 95 66 95 86 76" />
+          <path class="route-ghost" d="M8 50 C22 34 35 26 50 22" />
+        </svg>
         <div class="io-core">API</div>
         {heroNodes.map((node) => (
           <div class={`io-node ${node.className}`}>
@@ -111,8 +218,8 @@ const systemsRows = [
     variant === 'systems' && (
       <div class="io-systems-map">
         <div class="io-systems-label">
-          <strong>Architecture opérationnelle</strong>
-          <span>Infra · backend · continuité</span>
+          <strong>{copy.systemsLabel[0]}</strong>
+          <span>{copy.systemsLabel[1]}</span>
         </div>
         <svg class="io-systems-routes" viewBox="0 0 100 100" preserveAspectRatio="none">
           <path d="M20 34 H47" />
@@ -181,14 +288,18 @@ const systemsRows = [
     variant === 'decision' && (
       <div class="io-decision-map">
         <svg class="io-decision-routes" viewBox="0 0 100 100" preserveAspectRatio="none">
-          <path d="M31 50 L67 28" />
-          <path d="M31 50 H67" />
-          <path d="M31 50 L67 72" />
+          <path d="M31 52 C44 52 52 32 65 32" />
+          <path d="M31 52 H65" />
+          <path d="M31 52 C44 52 52 72 65 72" />
+          <circle cx="31" cy="52" r="0.7" />
+          <circle cx="65" cy="32" r="0.7" />
+          <circle cx="65" cy="52" r="0.7" />
+          <circle cx="65" cy="72" r="0.7" />
         </svg>
-        <div class="decision-root">Besoin</div>
-        <div class="decision-branch branch-a">Standard</div>
-        <div class="decision-branch branch-b">Consulting</div>
-        <div class="decision-branch branch-c">Systems</div>
+        <div class="decision-root">{copy.decision[0]}</div>
+        <div class="decision-branch branch-a">{copy.decision[1]}</div>
+        <div class="decision-branch branch-b">{copy.decision[2]}</div>
+        <div class="decision-branch branch-c">{copy.decision[3]}</div>
       </div>
     )
   }
@@ -197,8 +308,9 @@ const systemsRows = [
 <style>
   .io-blueprint {
     position: relative;
-  	aspect-ratio: 5 / 3;
-  	min-height: unset;    overflow: hidden;
+    aspect-ratio: 5 / 3;
+    min-height: unset;
+    overflow: hidden;
     border: 1px solid rgba(148, 163, 184, 0.18);
     border-radius: 1.25rem;
     background:
@@ -276,6 +388,13 @@ const systemsRows = [
     fill: none;
     stroke: rgba(37, 99, 235, 0.36);
     stroke-width: 0.38;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .io-decision-routes circle {
+    fill: #2563eb;
+    stroke: #f8fbff;
+    stroke-width: 0.35;
     vector-effect: non-scaling-stroke;
   }
 
@@ -647,7 +766,7 @@ const systemsRows = [
 
   .decision-root {
     left: 11%;
-    top: 43%;
+    top: 44%;
   }
 
   .decision-branch {
@@ -655,7 +774,7 @@ const systemsRows = [
   }
 
   .branch-a {
-    top: 22%;
+    top: 23%;
   }
 
   .branch-b {
@@ -669,7 +788,7 @@ const systemsRows = [
   @media (max-width: 767px) {
     .io-blueprint {
       min-height: 18rem;
-	  aspect-ratio: auto;
+      aspect-ratio: auto;
     }
 
     .io-blueprint::before {
@@ -682,23 +801,23 @@ const systemsRows = [
       padding: 0.46rem 0.5rem;
     }
 
-.io-node > span:last-child,
-.system-block > span + strong,
-.system-block > span + strong + small {
-  min-width: 0;
-}
+    .io-node > span:last-child,
+    .system-block > span + strong,
+    .system-block > span + strong + small {
+      min-width: 0;
+    }
 
-.io-node > span:last-child {
-  display: grid;
-  gap: 0.08rem;
-}
+    .io-node > span:last-child {
+      display: grid;
+      gap: 0.08rem;
+    }
 
-	.io-node strong,
-	.io-node small,
-	.system-block strong,
-	.system-block small {
-	display: block;
-	}
+    .io-node strong,
+    .io-node small,
+    .system-block strong,
+    .system-block small {
+      display: block;
+    }
     .io-node-icon,
     .system-icon {
       width: 1.65rem;

@@ -375,14 +375,18 @@ export const IOPARTNER_FR_PRICING_ITEMS: PricingItem[] = [
 ];
 
 export const IOPARTNER_FR_PRICING_CTA_MAP: Record<PricingCTAKey, PricingCta> = {
-  checkout_999: { key: 'checkout_999', label: 'Choisir le Launch Site', href: '/choose-template?plan=essential999' },
+  checkout_999: {
+    key: 'checkout_999',
+    label: 'Voir les projets à 999 CHF',
+    href: '/choose-template?plan=essential999',
+  },
   checkout_1500: {
     key: 'checkout_1500',
-    label: 'Choisir le pack croissance',
+    label: 'Voir les projets à 1 500 CHF',
     href: '/choose-template?plan=essential1500',
   },
   quote: { key: 'quote', label: 'Demander un devis', href: '/contact#form' },
-  diagnostic: { key: 'diagnostic', label: 'Réserver le diagnostic', href: '/custom-systems#diagnostic' },
+  diagnostic: { key: 'diagnostic', label: 'Voir les formats de cadrage', href: '/cadrage-technique' },
   custom_systems: { key: 'custom_systems', label: 'Voir la progression custom', href: '/custom-systems' },
 };
 

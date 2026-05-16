@@ -340,6 +340,10 @@ async function handleCustomCheckout(ctx: CheckoutContext): Promise<Response> {
   const amountChf = Number(url.searchParams.get('amount') || 0);
   const description = String(url.searchParams.get('description') || 'Site web sur mesure').trim().slice(0, 200);
   const email = String(url.searchParams.get('email') || '').trim() || undefined;
+  const name = String(url.searchParams.get('name') || '').trim();
+  const phone = String(url.searchParams.get('phone') || '').trim();
+  const company = String(url.searchParams.get('company') || '').trim();
+  const locale = String(url.searchParams.get('locale') || '').trim();
   const template = String(url.searchParams.get('template') || 'classic-clean').trim();
   const tenant = resolveTenant(ctx);
 
@@ -367,6 +371,11 @@ async function handleCustomCheckout(ctx: CheckoutContext): Promise<Response> {
       template,
       amount_chf: String(amountChf),
       description,
+      name,
+      email: email || '',
+      phone,
+      company,
+      locale,
       tenant_id: tenant.slug,
     }),
   });

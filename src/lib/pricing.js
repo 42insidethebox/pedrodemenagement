@@ -7,6 +7,8 @@ export const ALLOWED_PLANS = [
   'essential999',
   'essential1249',
   'essential1500',
+  'diagnostic60',
+  'session140',
   'custom',
 ];
 
@@ -18,7 +20,9 @@ const LEGACY_PLAN_ALIASES = {
 };
 
 export function normalizePlanId(plan) {
-  const p = String(plan || '').trim().toLowerCase();
+  const p = String(plan || '')
+    .trim()
+    .toLowerCase();
   return LEGACY_PLAN_ALIASES[p] || p;
 }
 
@@ -39,6 +43,8 @@ export function determineStripePriceId(plan, env) {
     essential999: E.PRICE_ESSENTIAL_999,
     essential1249: E.PRICE_ESSENTIAL_1249,
     essential1500: E.PRICE_ESSENTIAL_1500,
+    diagnostic60: E.PRICE_DIAGNOSTIC_60,
+    session140: E.PRICE_SESSION_140,
   };
   return map[p] || null;
 }

@@ -4,12 +4,16 @@ const phoneDisplay = process.env.IOPARTNER_PHONE_DISPLAY || fallbackPhoneDisplay
 const phoneIntl = (process.env.IOPARTNER_PHONE_INTL || fallbackPhoneIntl).replace(/\D/g, '') || fallbackPhoneIntl;
 const email = process.env.IOPARTNER_EMAIL || 'support@iopartner.ch';
 const calendlyUrl = process.env.IOPARTNER_CALENDLY_URL || '';
+const calendlyDiagnosticUrl = process.env.IOPARTNER_CALENDLY_URL_15 || calendlyUrl;
+const calendlySessionUrl = process.env.IOPARTNER_CALENDLY_URL_60 || calendlyUrl;
 const operator = process.env.IOPARTNER_OPERATOR || 'TonSiteWeb Sàrl';
 const defaultWhatsAppMessage = 'Bonjour, je souhaite reserver un diagnostic IO Partner.';
+const defaultWorkingSessionMessage = 'Bonjour, je souhaite reserver une session de cadrage IO Partner de 1 heure.';
 
 const buildWhatsAppUrl = (message: string) => `https://wa.me/${phoneIntl}?text=${encodeURIComponent(message)}`;
 
 const whatsappUrl = buildWhatsAppUrl(defaultWhatsAppMessage);
+const workingSessionWhatsAppUrl = buildWhatsAppUrl(defaultWorkingSessionMessage);
 
 export const iopartnerLaunchOffers = [
   { key: 'launch', label: 'Launch Site', duration: '3-5 days', price: '999 CHF' },
@@ -19,7 +23,7 @@ export const iopartnerLaunchOffers = [
 
 export const iopartnerSystemsOffers = [
   { key: 'diagnostic', label: 'Technical Diagnostic', duration: '15 min', price: '60 CHF' },
-  { key: 'working', label: 'Working Session', duration: '60 min', price: '490 CHF' },
+  { key: 'working', label: 'Working Session', duration: '60 min', price: '140 CHF' },
   { key: 'board', label: 'Advisory Board', duration: 'monthly', price: 'from 1200 CHF' },
 ] as const;
 
@@ -41,9 +45,11 @@ export const iopartnerConfig = {
   whatsappUrl,
   email,
   calendlyUrl,
-  bookingUrl: calendlyUrl || whatsappUrl,
-  bookingChannel: calendlyUrl ? 'calendly' : ('whatsapp' as const),
-  bookingLabel: calendlyUrl ? 'Book Teams call' : 'Write on WhatsApp',
+  diagnosticBookingUrl: calendlyDiagnosticUrl || whatsappUrl,
+  workingSessionBookingUrl: calendlySessionUrl || workingSessionWhatsAppUrl,
+  bookingUrl: calendlyDiagnosticUrl || whatsappUrl,
+  bookingChannel: calendlyDiagnosticUrl ? 'calendly' : ('whatsapp' as const),
+  bookingLabel: calendlyDiagnosticUrl ? 'Book Teams call' : 'Write on WhatsApp',
   operator,
   location: 'Lausanne, Switzerland',
   launchOffers: iopartnerLaunchOffers,
@@ -59,4 +65,10 @@ export type IoPartnerConfig = typeof iopartnerConfig;
 
 export const getIoPartnerWhatsAppUrl = (message = defaultWhatsAppMessage) => buildWhatsAppUrl(message);
 
-export const getIoPartnerBookingUrl = (message = defaultWhatsAppMessage) => calendlyUrl || buildWhatsAppUrl(message);
+export const getIoPartnerBookingUrl = (
+  message = defaultWhatsAppMessage,
+  kind: 'diagnostic60' | 'session140' = 'diagnostic60'
+) => {
+  if (kind === 'session140') return calendlySessionUrl || buildWhatsAppUrl(defaultWorkingSessionMessage);
+  return calendlyDiagnosticUrl || buildWhatsAppUrl(message);
+};

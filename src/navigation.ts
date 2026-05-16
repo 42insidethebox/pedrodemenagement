@@ -52,13 +52,7 @@ export const buildHeaderData = (brand: NavigationBrand & { key?: BrandKey }, loc
           links: [
             {
               text: isIoPartner
-                ? tonT(
-                    locale,
-                    'Consulting technique',
-                    'Technical consulting',
-                    'Technische Beratung',
-                    'Consulenza tecnica'
-                  )
+                ? tonT(locale, 'Cadrage technique', 'Technical consulting', 'Technische Beratung', 'Consulenza tecnica')
                 : tonT(
                     locale,
                     'Consulting technique',
@@ -67,7 +61,7 @@ export const buildHeaderData = (brand: NavigationBrand & { key?: BrandKey }, loc
                     'Sito web & presenza online'
                   ),
               href: isIoPartner
-                ? getPermalink('/systems-operations')
+                ? getPermalink('/cadrage-technique')
                 : locale === 'fr'
                   ? `${getPermalink('/pricing')}?tab=consulting#pricing-options`
                   : getPermalink('/services#site-vitrine'),
@@ -76,7 +70,7 @@ export const buildHeaderData = (brand: NavigationBrand & { key?: BrandKey }, loc
               text: isIoPartner
                 ? tonT(
                     locale,
-                    'Systems & operations',
+                    'Systèmes & opérations',
                     'Systems & operations',
                     'Systems & Operations',
                     'Systems & operations'
@@ -89,7 +83,7 @@ export const buildHeaderData = (brand: NavigationBrand & { key?: BrandKey }, loc
                     'Accompagnamento & ottimizzazione'
                   ),
               href: isIoPartner
-                ? `${getPermalink('/pricing')}?tab=systems#systems-operations`
+                ? getPermalink('/systems-operations')
                 : locale === 'fr'
                   ? `${getPermalink('/pricing')}?tab=systems#pricing-options`
                   : getPermalink('/services#accompagnement'),
@@ -98,7 +92,7 @@ export const buildHeaderData = (brand: NavigationBrand & { key?: BrandKey }, loc
               text: isIoPartner
                 ? tonT(
                     locale,
-                    'Déploiement standard',
+                    'Présence web cadrée',
                     'Standard deployment',
                     'Standard-Deployment',
                     'Deployment standard'
@@ -111,7 +105,7 @@ export const buildHeaderData = (brand: NavigationBrand & { key?: BrandKey }, loc
                     'Support & manutenzione'
                   ),
               href: isIoPartner
-                ? `${getPermalink('/pricing')}?tab=website#standard-deployment`
+                ? getPermalink('/presence-web-cadree')
                 : locale === 'fr'
                   ? `${getPermalink('/pricing')}?tab=website#pricing-options`
                   : getPermalink('/services#support'),
@@ -119,7 +113,10 @@ export const buildHeaderData = (brand: NavigationBrand & { key?: BrandKey }, loc
           ],
         },
         { text: tonT(locale, 'Tarifs', 'Pricing', 'Preise', 'Prezzi'), href: getPermalink('/pricing') },
-        { text: tonT(locale, 'Modèles', 'Templates', 'Vorlagen', 'Modelli'), href: getPermalink('/choose-template') },
+        {
+          text: tonT(locale, 'Modèles', 'Templates', 'Vorlagen', 'Modelli'),
+          href: isIoPartner ? getPermalink('/presence-web-cadree#modeles') : getPermalink('/choose-template'),
+        },
         { text: 'FAQ', href: getPermalink('/contact#faq') },
         { text: tonT(locale, 'Contact', 'Contact', 'Kontakt', 'Contatto'), href: getPermalink('/contact') },
       ]
@@ -204,6 +201,7 @@ export const buildHeaderData = (brand: NavigationBrand & { key?: BrandKey }, loc
 };
 
 export const buildFooterData = (brand: NavigationBrand, locale: string = 'fr'): FooterNavigation => {
+  const isIoPartner = brand.key === 'iopartner';
   const isTonSiteLike = brand.key === 'tonsiteweb' || brand.key === 'iopartner';
   const vertical = isTonSiteLike
     ? tonT(
@@ -237,7 +235,10 @@ export const buildFooterData = (brand: NavigationBrand, locale: string = 'fr'): 
     ? [
         { text: tonT(locale, 'Services', 'Services', 'Services', 'Servizi'), href: getPermalink('/services') },
         { text: tonT(locale, 'Tarifs', 'Pricing', 'Preise', 'Prezzi'), href: getPermalink('/pricing') },
-        { text: tonT(locale, 'Modèles', 'Templates', 'Vorlagen', 'Modelli'), href: getPermalink('/choose-template') },
+        {
+          text: tonT(locale, 'Modèles', 'Templates', 'Vorlagen', 'Modelli'),
+          href: isIoPartner ? getPermalink('/presence-web-cadree#modeles') : getPermalink('/choose-template'),
+        },
         {
           text: tonT(locale, 'Notre approche', 'Our approach', 'Unsere Vorgehensweise', 'Il nostro approccio'),
           href: getPermalink('/#process'),
@@ -305,7 +306,10 @@ export const buildFooterData = (brand: NavigationBrand, locale: string = 'fr'): 
         { text: tonT(locale, 'Accueil', 'Home', 'Home', 'Home'), href: getPermalink('/') },
         { text: tonT(locale, 'Services', 'Services', 'Services', 'Servizi'), href: getPermalink('/services') },
         { text: tonT(locale, 'Tarifs', 'Pricing', 'Preise', 'Prezzi'), href: getPermalink('/pricing') },
-        { text: tonT(locale, 'Modèles', 'Templates', 'Vorlagen', 'Modelli'), href: getPermalink('/choose-template') },
+        {
+          text: tonT(locale, 'Modèles', 'Templates', 'Vorlagen', 'Modelli'),
+          href: isIoPartner ? getPermalink('/presence-web-cadree#modeles') : getPermalink('/choose-template'),
+        },
       ]
     : brand.key === 'laclemanexperience'
       ? [
@@ -392,41 +396,68 @@ export const buildFooterData = (brand: NavigationBrand, locale: string = 'fr'): 
             title: tonT(locale, 'Notre approche', 'Our approach', 'Unsere Vorgehensweise', 'Il nostro approccio'),
             links: [
               {
-                text: tonT(
-                  locale,
-                  'Consulting technique',
-                  'Website & online presence',
-                  'Website & Online-Präsenz',
-                  'Sito web & presenza online'
-                ),
-                href:
-                  locale === 'fr'
+                text: isIoPartner
+                  ? tonT(
+                      locale,
+                      'Cadrage technique',
+                      'Technical consulting',
+                      'Technische Beratung',
+                      'Consulenza tecnica'
+                    )
+                  : tonT(
+                      locale,
+                      'Consulting technique',
+                      'Website & online presence',
+                      'Website & Online-Präsenz',
+                      'Sito web & presenza online'
+                    ),
+                href: isIoPartner
+                  ? getPermalink('/cadrage-technique')
+                  : locale === 'fr'
                     ? `${getPermalink('/pricing')}?tab=consulting#pricing-options`
                     : getPermalink('/services#site-vitrine'),
               },
               {
-                text: tonT(
-                  locale,
-                  'Systems & operations',
-                  'Content & structure',
-                  'Inhalte & Struktur',
-                  'Contenuti & struttura'
-                ),
-                href:
-                  locale === 'fr'
+                text: isIoPartner
+                  ? tonT(
+                      locale,
+                      'Systèmes & opérations',
+                      'Systems & operations',
+                      'Systems & Operations',
+                      'Systems & operations'
+                    )
+                  : tonT(
+                      locale,
+                      'Systems & operations',
+                      'Content & structure',
+                      'Inhalte & Struktur',
+                      'Contenuti & struttura'
+                    ),
+                href: isIoPartner
+                  ? getPermalink('/systems-operations')
+                  : locale === 'fr'
                     ? `${getPermalink('/pricing')}?tab=systems#pricing-options`
                     : getPermalink('/services#multilingue'),
               },
               {
-                text: tonT(
-                  locale,
-                  'Sites web standardisés',
-                  'Guidance & optimisation',
-                  'Begleitung & Optimierung',
-                  'Accompagnamento & ottimizzazione'
-                ),
-                href:
-                  locale === 'fr'
+                text: isIoPartner
+                  ? tonT(
+                      locale,
+                      'Présence web cadrée',
+                      'Standard deployment',
+                      'Standard-Deployment',
+                      'Deployment standard'
+                    )
+                  : tonT(
+                      locale,
+                      'Sites web standardisés',
+                      'Guidance & optimisation',
+                      'Begleitung & Optimierung',
+                      'Accompagnamento & ottimizzazione'
+                    ),
+                href: isIoPartner
+                  ? getPermalink('/presence-web-cadree')
+                  : locale === 'fr'
                     ? `${getPermalink('/pricing')}?tab=website#pricing-options`
                     : getPermalink('/services#accompagnement'),
               },
@@ -438,7 +469,7 @@ export const buildFooterData = (brand: NavigationBrand, locale: string = 'fr'): 
               { text: tonT(locale, 'Tarifs', 'Pricing', 'Preise', 'Prezzi'), href: getPermalink('/pricing') },
               {
                 text: tonT(locale, 'Modèles', 'Templates', 'Vorlagen', 'Modelli'),
-                href: getPermalink('/choose-template'),
+                href: isIoPartner ? getPermalink('/presence-web-cadree#modeles') : getPermalink('/choose-template'),
               },
               { text: tonT(locale, 'FAQ', 'FAQ', 'FAQ', 'FAQ'), href: getPermalink('/contact#faq') },
             ],

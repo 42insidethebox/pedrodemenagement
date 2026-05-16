@@ -1,8 +1,12 @@
 ---
+import IoNodeIcon from '~/components/iopartner/IoNodeIcon.astro';
+import type { IoIconName } from '~/components/iopartner/ioNodeIconTypes';
+
 interface Step {
   label: string;
   title: string;
   detail: string;
+  icon?: IoIconName;
 }
 
 interface Props {
@@ -16,8 +20,11 @@ const { steps } = Astro.props as Props;
   {
     steps.map((step, index) => (
       <div class="io-process-step">
-        <span class="io-process-index">{step.label}</span>
+        <span class="io-process-index">
+          <IoNodeIcon name={step.icon ?? 'scope'} />
+        </span>
         <div>
+          <span class="io-process-number">{step.label}</span>
           <strong>{step.title}</strong>
           <small>{step.detail}</small>
         </div>
@@ -64,7 +71,16 @@ const { steps } = Astro.props as Props;
     border: 1px solid rgba(37, 99, 235, 0.22);
     border-radius: 0.65rem;
     color: #2563eb;
-    font-weight: 800;
+    background: rgba(37, 99, 235, 0.04);
+  }
+
+  .io-process-number {
+    display: block;
+    margin-bottom: 0.2rem;
+    color: #2563eb;
+    font-size: 0.72rem;
+    font-weight: 850;
+    line-height: 1;
   }
 
   .io-process-step strong,

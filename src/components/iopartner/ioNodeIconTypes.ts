@@ -1,0 +1,16 @@
+export type IoIconName =
+  | 'api'
+  | 'automation'
+  | 'build'
+  | 'check'
+  | 'clock'
+  | 'communication'
+  | 'consulting'
+  | 'content'
+  | 'continuity'
+  | 'deploy'
+  | 'diagnostic'
+  | 'handoff'
+  | 'scope'
+  | 'standard'
+  | 'systems';
