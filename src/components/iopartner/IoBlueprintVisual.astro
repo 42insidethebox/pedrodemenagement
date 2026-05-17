@@ -145,7 +145,7 @@ const systemsBlocks = copy.systemsBlocks;
 const systemsRows = copy.systemsRows;
 ---
 
-<div class={`io-blueprint io-blueprint-${variant}`} aria-hidden="true">
+<div class={`io-blueprint io-blueprint-${variant}`} data-blueprint-motion={variant === 'standard' ? 'standard' : undefined} aria-hidden="true">
   {
     variant === 'hero' && (
       <div class="io-hero-map">
@@ -305,8 +305,50 @@ const systemsRows = copy.systemsRows;
   }
 </div>
 
+<script is:inline>
+  (() => {
+    const visuals = Array.from(document.querySelectorAll('[data-blueprint-motion="standard"]'));
+    if (!visuals.length) return;
+
+    const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+    const update = () => {
+      const viewportCenter = window.innerHeight / 2;
+
+      for (const visual of visuals) {
+        const rect = visual.getBoundingClientRect();
+        const elementCenter = rect.top + rect.height / 2;
+        const normalized = clamp((viewportCenter - elementCenter) / Math.max(window.innerHeight * 0.7, 1), -1, 1);
+        const shift = normalized * 22;
+        const tilt = normalized * 3.5;
+
+        visual.style.setProperty('--io-scroll-shift', `${shift.toFixed(2)}px`);
+        visual.style.setProperty('--io-scroll-tilt', `${tilt.toFixed(2)}deg`);
+        visual.classList.toggle('is-in-view', rect.bottom > 0 && rect.top < window.innerHeight);
+      }
+    };
+
+    let ticking = false;
+
+    const requestUpdate = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(() => {
+        update();
+        ticking = false;
+      });
+    };
+
+    update();
+    window.addEventListener('scroll', requestUpdate, { passive: true });
+    window.addEventListener('resize', requestUpdate);
+  })();
+</script>
+
 <style>
   .io-blueprint {
+    --io-scroll-shift: 0px;
+    --io-scroll-tilt: 0deg;
     position: relative;
     aspect-ratio: 5 / 3;
     min-height: unset;
@@ -698,6 +740,8 @@ const systemsRows = copy.systemsRows;
     gap: 1rem;
     align-items: center;
     padding: 4rem 2rem;
+    transform: translateY(calc(var(--io-scroll-shift) * 0.18));
+    transition: transform 180ms linear;
   }
 
   .site-frame {
@@ -707,14 +751,31 @@ const systemsRows = copy.systemsRows;
     background: rgba(255, 255, 255, 0.72);
     box-shadow: 0 22px 44px -34px rgba(15, 23, 42, 0.24);
     padding: 1rem;
+    transition:
+      transform 180ms linear,
+      box-shadow 220ms ease,
+      border-color 220ms ease;
   }
 
   .frame-b {
-    transform: translateY(-1.2rem);
+    transform: translateY(calc(-1.2rem + var(--io-scroll-shift) * -0.2)) rotate(calc(var(--io-scroll-tilt) * -0.2));
   }
 
   .frame-c {
-    transform: translateY(1rem);
+    transform: translateY(calc(1rem + var(--io-scroll-shift) * 0.28)) rotate(calc(var(--io-scroll-tilt) * 0.32));
+  }
+
+  .frame-a {
+    transform: translateY(calc(var(--io-scroll-shift) * 0.12)) rotate(calc(var(--io-scroll-tilt) * 0.12));
+  }
+
+  .io-blueprint-standard.is-in-view .site-frame {
+    box-shadow: 0 28px 54px -36px rgba(15, 23, 42, 0.28);
+  }
+
+  .io-blueprint-standard.is-in-view .frame-b,
+  .io-blueprint-standard.is-in-view .frame-c {
+    border-color: rgba(37, 99, 235, 0.24);
   }
 
   .site-frame span {
@@ -934,6 +995,7 @@ const systemsRows = copy.systemsRows;
     .io-standard-preview {
       grid-template-columns: 1fr;
       padding: 2rem 1.5rem;
+      transform: none;
     }
 
     .site-frame {

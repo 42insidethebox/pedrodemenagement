@@ -4,7 +4,7 @@ export const prerender = false;
 import IoBlueprintVisual from '~/components/iopartner/IoBlueprintVisual.astro';
 import IoNodeIcon from '~/components/iopartner/IoNodeIcon.astro';
 import IoProcessMap from '~/components/iopartner/IoProcessMap.astro';
-import Io01PremiumGridBlueprintArcs from '~/components/iopartner/visuals/Io01PremiumGridBlueprintArcs.astro';
+import Io04DecisionEntryMap from '~/components/iopartner/visuals/Io04DecisionEntryMap.astro';
 import Io02SvgLinesPathsCurves from '~/components/iopartner/visuals/Io02SvgLinesPathsCurves.astro';
 import type { IoIconName } from '~/components/iopartner/ioNodeIconTypes';
 import { detectRequestLocale } from '~/lib/locale';
@@ -279,7 +279,7 @@ const faqs = copy.faqs;
             <a class="io-btn io-btn-secondary" href={`${localePrefix}/pricing`}>{copy.pricing}</a>
           </div>
         </div>
-        <Io01PremiumGridBlueprintArcs />
+        <Io04DecisionEntryMap />
       </div>
     </section>
 

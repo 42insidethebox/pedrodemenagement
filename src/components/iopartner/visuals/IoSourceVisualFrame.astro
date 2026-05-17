@@ -8,17 +8,69 @@ interface Props {
 }
 
 const { title, html, css, js = '', minHeight = '42rem' } = Astro.props as Props;
+const frameId = `io-source-frame-${title
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-|-$/g, '')}`;
 const sourceDocument = html
   .replace('<link rel="stylesheet" href="./style.css" />', `<style>${css}</style>`)
   .replace('<script src="./script.js"></script>', js ? `<script>${js}</script>` : '');
 ---
 
-<iframe class="io-source-visual-frame" title={title} srcdoc={sourceDocument}></iframe>
+<iframe id={frameId} class="io-source-visual-frame" title={title} srcdoc={sourceDocument} scrolling="no"></iframe>
+
+<script is:inline define:vars={{ frameId }}>
+  (() => {
+    const iframe = document.getElementById(frameId);
+    if (!(iframe instanceof HTMLIFrameElement)) return;
+
+    const syncHeight = () => {
+      const doc = iframe.contentDocument;
+      if (!doc) return;
+
+      const height = Math.max(
+        doc.documentElement?.scrollHeight ?? 0,
+        doc.body?.scrollHeight ?? 0,
+        doc.documentElement?.offsetHeight ?? 0,
+        doc.body?.offsetHeight ?? 0
+      );
+
+      if (height > 0) {
+        iframe.style.height = `${height}px`;
+      }
+    };
+
+    const bindObservers = () => {
+      const doc = iframe.contentDocument;
+      const win = iframe.contentWindow;
+      if (!doc || !win) return;
+
+      syncHeight();
+
+      if ('ResizeObserver' in win) {
+        const observer = new win.ResizeObserver(() => syncHeight());
+        if (doc.body) observer.observe(doc.body);
+        if (doc.documentElement) observer.observe(doc.documentElement);
+      }
+
+      win.addEventListener('resize', syncHeight);
+      win.requestAnimationFrame(syncHeight);
+      win.setTimeout(syncHeight, 120);
+    };
+
+    iframe.addEventListener('load', bindObservers);
+
+    if (iframe.contentDocument?.readyState === 'complete') {
+      bindObservers();
+    }
+  })();
+</script>
 
 <style define:vars={{ minHeight }}>
   .io-source-visual-frame {
     display: block;
     width: 100%;
+    height: var(--minHeight);
     min-height: var(--minHeight);
     overflow: hidden;
     border: 0;
