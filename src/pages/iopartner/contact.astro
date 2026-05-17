@@ -7,6 +7,248 @@ import Features2 from '~/components/widgets/Features2.astro';
 const metadata = {
   title: 'Contact',
 };
+
+const faqSections = [
+  {
+    title: 'Général',
+    items: [
+      {
+        question: 'Que fait exactement IOpartner ?',
+        answer:
+          'IOpartner aide les PME et structures techniques à cadrer, structurer et déployer des systèmes adaptés à leur niveau réel de complexité.',
+        bullets: [
+          'cadrage technique',
+          'déploiement opérationnel',
+          'outil ou workflow sur mesure',
+          'systèmes & opérations',
+          'ou présence web cadrée lorsque le besoin reste simple',
+        ],
+        after:
+          'Selon les cas, cela peut inclure des dashboards, de l’automatisation, du monitoring, du RBAC, des workflows, des outils internes, du VPS / Docker / DNS, des portails, de la continuité technique ou une présence web professionnelle.',
+      },
+      {
+        question: 'Travaillez-vous uniquement sur des sites web ?',
+        answer: 'Non.',
+        bullets: [
+          'dashboards',
+          'workflows',
+          'monitoring',
+          'RBAC et gestion d’accès',
+          'automatisation',
+          'portails internes',
+          'onboarding',
+          'documentation opérationnelle',
+          'infrastructure et continuité',
+        ],
+      },
+      {
+        question: 'Travaillez-vous uniquement avec Linux ou l’open source ?',
+        answer:
+          'Non. IOpartner privilégie des solutions maintenables et cohérentes opérationnellement. Dans beaucoup de cas, cela implique une infrastructure Linux ou open source côté backend, mais les environnements clients restent souvent hybrides : Windows, macOS, outils cloud existants, etc.',
+      },
+      {
+        question: 'Êtes-vous une agence web classique ?',
+        answer:
+          'Non. Les sites web représentent simplement une des portes d’entrée possibles. Le positionnement est davantage orienté vers le cadrage technique, les déploiements structurés, les systèmes & opérations, les workflows, l’automatisation et les architectures maintenables.',
+        after:
+          'Selon le contexte, un projet peut rester très léger ou évoluer vers des besoins plus opérationnels et structurés.',
+      },
+    ],
+  },
+  {
+    title: 'Présence web cadrée',
+    lead: 'Cette couche correspond surtout aux besoins simples et cadrés. Les projets plus opérationnels ou plus évolutifs passent ensuite vers des niveaux de déploiement et de structuration plus avancés.',
+    items: [
+      {
+        question: 'Que signifie “présence web cadrée” ?',
+        answer:
+          'Une présence web cadrée est pensée pour être livrée rapidement, rester maintenable, éviter la surcomplexité et fonctionner avec un périmètre clair.',
+        after:
+          'Ce type de projet convient surtout aux structures souhaitant une présence professionnelle sans logique éditoriale lourde.',
+      },
+      {
+        question: 'Que comprend l’offre dès 999 CHF ?',
+        bullets: [
+          'structure du site',
+          'design',
+          'responsive',
+          'intégration des contenus fournis',
+          'formulaire de contact',
+          'mise en ligne',
+          'déploiement cadré',
+        ],
+        after: 'Le périmètre exact dépend du projet validé.',
+      },
+      {
+        question: 'Pourquoi les prix commencent-ils à 999 CHF ?',
+        answer:
+          'Parce que certains besoins restent simples lorsqu’ils sont correctement cadrés. L’objectif n’est pas de surconstruire une architecture lourde quand une présence claire et maintenable suffit.',
+      },
+      {
+        question: 'Puis-je modifier mon site moi-même ?',
+        answer:
+          'Cela dépend du niveau d’autonomie souhaité. Le niveau “présence web cadrée” privilégie une architecture légère et contrôlée.',
+        bullets: ['sections administrables', 'actualités', 'offres du mois', 'blog', 'contenus dynamiques'],
+        after: 'Pour ces besoins, un niveau de déploiement plus autonome peut être proposé.',
+      },
+      {
+        question: 'Utilisez-vous WordPress ?',
+        answer:
+          'Oui, lorsque cela est cohérent avec le besoin. WordPress n’est pas utilisé par défaut. Certaines structures ont besoin d’une autonomie éditoriale importante ; d’autres préfèrent une architecture plus légère et plus simple à maintenir.',
+        after: 'Le choix dépend du niveau réel d’évolution attendu.',
+      },
+      {
+        question: 'Pourquoi un site administrable coûte-t-il plus cher ?',
+        bullets: [
+          'plus de maintenance',
+          'plus de surface technique',
+          'plus de support',
+          'plus d’autonomie',
+          'plus de risques de régression',
+          'une architecture plus complexe',
+        ],
+        after: 'Le prix reflète surtout ce niveau d’autonomie et de maintenance.',
+      },
+      {
+        question: 'Les modifications sont-elles incluses après livraison ?',
+        answer:
+          'Les ajustements mineurs raisonnables peuvent être traités ponctuellement selon le contexte. Les demandes impliquant une évolution structurelle ou fonctionnelle importante font généralement l’objet d’un nouveau cadrage ou d’une extension du scope.',
+      },
+      {
+        question: 'Puis-je changer de prestataire plus tard ?',
+        answer:
+          'Oui. Les architectures légères mutualisées sont pensées pour conserver une séparation logique et une exportabilité raisonnable des contenus et médias.',
+        after: 'L’objectif n’est pas de créer une dépendance artificielle.',
+      },
+    ],
+  },
+  {
+    title: 'Cadrage technique',
+    items: [
+      {
+        question: 'Pourquoi proposer du cadrage technique à 60 CHF / 15 min ?',
+        answer: 'Parce que certains sujets nécessitent surtout une décision claire, rapide et structurée.',
+        bullets: ['des mauvais choix', 'du build inutile', 'des coûts cachés', 'une architecture disproportionnée'],
+        after: 'Le cadrage permet souvent d’éviter ces dérives.',
+      },
+      {
+        question: 'Quand faut-il choisir 15 min ou 1 heure ?',
+        answer: '15 minutes conviennent surtout pour :',
+        bullets: ['arbitrer rapidement', 'débloquer un choix', 'valider une direction', 'clarifier un besoin'],
+        after:
+          '1 heure convient mieux lorsqu’il faut cadrer un projet, comparer plusieurs options, analyser une stack ou structurer un déploiement.',
+      },
+      {
+        question: 'Le cadrage débouche-t-il forcément sur un projet ?',
+        answer:
+          'Non. Le cadrage peut simplement aider à prendre une décision propre, même si le build est réalisé ailleurs ensuite.',
+      },
+    ],
+  },
+  {
+    title: 'Systèmes & opérations',
+    items: [
+      {
+        question: 'Que signifie “systèmes & opérations” ?',
+        answer: 'Cette couche concerne les besoins qui dépassent un simple site vitrine.',
+        bullets: [
+          'dashboards',
+          'portails',
+          'workflows',
+          'monitoring',
+          'automatisation',
+          'RBAC',
+          'onboarding',
+          'documentation',
+          'API',
+          'infrastructure',
+          'continuité technique',
+        ],
+      },
+      {
+        question: 'Travaillez-vous sur des projets Linux, Docker ou VPS ?',
+        answer: 'Oui. Selon les projets, IOpartner peut intervenir sur :',
+        bullets: [
+          'VPS',
+          'Docker',
+          'DNS',
+          'SSL',
+          'monitoring',
+          'reverse proxy',
+          'sauvegardes',
+          'automatisation',
+          'workflows',
+          'continuité opérationnelle',
+        ],
+      },
+      {
+        question: 'Faites-vous du DevOps ou de l’infrastructure ?',
+        answer:
+          'Dans certains cas oui, surtout pour des PME ou structures ayant besoin d’une couche opérationnelle plus structurée. Le niveau d’intervention dépend du cadrage.',
+      },
+      {
+        question: 'Proposez-vous des dashboards ou outils internes ?',
+        answer: 'Oui. Cela peut inclure :',
+        bullets: [
+          'dashboards métier',
+          'workflows',
+          'portails internes',
+          'outils de suivi',
+          'automatisations',
+          'interfaces administrables',
+          'systèmes hybrides',
+        ],
+      },
+      {
+        question: 'Proposez-vous des systèmes multi-tenant ?',
+        answer:
+          'Oui, dans certains cas. Certaines architectures mutualisées permettent d’accélérer les déploiements tout en conservant une séparation logique des clients et une exportabilité raisonnable.',
+      },
+      {
+        question: 'Comment gérez-vous la sécurité et les accès ?',
+        answer: 'Selon le projet :',
+        bullets: [
+          'séparation des accès',
+          'RBAC',
+          'MFA',
+          'monitoring',
+          'sauvegardes',
+          'documentation',
+          'continuité',
+          'architecture maintenable',
+        ],
+      },
+    ],
+  },
+  {
+    title: 'Processus',
+    items: [
+      {
+        question: 'Comment démarre un projet ?',
+        ordered: ['contexte', 'cadrage', 'validation du périmètre', 'déploiement', 'mise en ligne', 'suivi éventuel'],
+      },
+      {
+        question: 'Travaillez-vous uniquement en Suisse romande ?',
+        answer: 'Principalement, mais certains projets peuvent être réalisés à distance selon le contexte.',
+      },
+      {
+        question: 'Les prix incluent-ils la TVA ?',
+        answer:
+          'Cela dépend du statut TVA applicable au moment du projet. Le cadrage et les devis précisent toujours les conditions applicables.',
+      },
+      {
+        question: 'Faites-vous de la maintenance ?',
+        answer:
+          'Oui, selon les projets. Certaines architectures nécessitent très peu de maintenance ; d’autres impliquent un suivi plus actif.',
+      },
+      {
+        question: 'Peut-on commencer petit puis évoluer ?',
+        answer:
+          'Oui. La logique de l’offre est justement pensée pour permettre une progression cohérente : présence web → autonomie éditoriale → systèmes & opérations.',
+      },
+    ],
+  },
+];
 ---
 
 <Layout metadata={metadata}>
@@ -243,18 +485,48 @@ const metadata = {
   <section id="faq" class="mx-auto max-w-5xl px-4 pb-16">
     <div class="rounded-2xl border border-slate-200 bg-white p-6 md:p-8">
       <p class="text-sm font-bold uppercase text-blue-700">FAQ</p>
-      <h2 class="mt-2 text-3xl font-bold text-slate-950">Avant d’envoyer le contexte</h2>
-      <div class="mt-6 grid gap-4 md:grid-cols-2">
-        <div>
-          <h3 class="font-semibold text-slate-950">Faut-il déjà connaître le bon format ?</h3>
-          <p class="mt-2 text-slate-600">
-            Non. Le formulaire sert justement à choisir entre cadrage, systèmes ou présence web cadrée.
-          </p>
-        </div>
-        <div>
-          <h3 class="font-semibold text-slate-950">Est-ce que chaque demande devient un devis custom ?</h3>
-          <p class="mt-2 text-slate-600">Non. Si le standard suffit, nous le dirons clairement.</p>
-        </div>
+      <h2 class="mt-2 text-3xl font-bold text-slate-950">FAQ — IOPartner</h2>
+      <p class="mt-3 max-w-3xl text-slate-600">
+        IOPartner structure des besoins techniques selon leur niveau réel de complexité. L’objectif n’est pas de pousser
+        systématiquement vers du sur-mesure ou de l’infrastructure lourde, mais d’orienter chaque besoin vers le bon
+        niveau de déploiement, d’autonomie et de complexité.
+      </p>
+      <div class="mt-8 space-y-8">
+        {
+          faqSections.map((section) => (
+            <section class="border-t border-slate-200 pt-6 first:border-t-0 first:pt-0">
+              <h3 class="text-xl font-bold text-slate-950">{section.title}</h3>
+              {section.lead && <p class="mt-2 text-sm leading-7 text-slate-600">{section.lead}</p>}
+              <div class="mt-4 space-y-3">
+                {section.items.map((item) => (
+                  <details class="rounded-xl border border-slate-200 bg-slate-50/60 px-5 py-4">
+                    <summary class="cursor-pointer list-none pr-8 font-semibold text-slate-950 marker:content-none">
+                      {item.question}
+                    </summary>
+                    <div class="mt-3 space-y-3 text-slate-600">
+                      {item.answer && <p>{item.answer}</p>}
+                      {item.bullets && (
+                        <ul class="list-disc space-y-1 pl-5">
+                          {item.bullets.map((bullet) => (
+                            <li>{bullet}</li>
+                          ))}
+                        </ul>
+                      )}
+                      {item.ordered && (
+                        <ol class="list-decimal space-y-1 pl-5">
+                          {item.ordered.map((step) => (
+                            <li>{step}</li>
+                          ))}
+                        </ol>
+                      )}
+                      {item.after && <p>{item.after}</p>}
+                    </div>
+                  </details>
+                ))}
+              </div>
+            </section>
+          ))
+        }
       </div>
     </div>
   </section>

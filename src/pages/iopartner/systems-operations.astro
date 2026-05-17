@@ -22,49 +22,74 @@ const COPY = {
       'Pour les PME dont les outils, accès, workflows ou infrastructures fonctionnent encore, mais deviennent trop dépendants des habitudes, des raccourcis et des explications orales.',
     discuss: 'Discuter de votre setup',
     seeSituations: 'Voir les situations',
-    pipeline: ['chaos', 'visibilité', 'structure', 'stabilité', 'continuité'],
     recKicker: 'Diagnostic opérationnel',
     recTitle: 'Le problème est rarement un manque d’outils.',
-    recBody: 'Le plus souvent, le système s’est construit par couches successives, sans structure commune ni visibilité claire.',
-    symptoms: [
-      'Les systèmes ont grandi sans structure claire.',
-      'Trop d’outils se parlent mal ou pas du tout.',
-      'Personne ne sait exactement où vivent les accès, les données ou les procédures.',
-      'L’onboarding dépend encore d’explications orales.',
-      'Une seule personne connaît les raccourcis critiques.',
-      'La stack fonctionne, mais personne ne lui fait vraiment confiance.',
+    recBody:
+      'Le plus souvent, le système s’est construit par couches successives, sans structure commune ni visibilité claire.',
+    diagnostics: [
+      {
+        title: 'Outils empilés',
+        points: ['Les systèmes ont grandi sans structure claire.', 'Trop d’outils se parlent mal ou pas du tout.'],
+      },
+      {
+        title: 'Accès flous',
+        points: [
+          'Personne ne sait exactement où vivent les accès, les données ou les procédures.',
+          'L’onboarding dépend encore d’explications orales.',
+        ],
+      },
+      {
+        title: 'Dépendance fragile',
+        points: [
+          'Une seule personne connaît les raccourcis critiques.',
+          'La stack fonctionne, mais personne ne lui fait vraiment confiance.',
+        ],
+      },
     ],
     beforeAfterKicker: 'Transformation opérationnelle',
     beforeAfterTitle: 'Le changement doit être visible.',
     before: 'Avant',
     after: 'Après',
-    beforeItems: ['mots de passe partagés', 'SaaS fragmentés', 'systèmes non documentés', 'processus manuels aléatoires'],
+    beforeItems: [
+      'mots de passe partagés',
+      'SaaS fragmentés',
+      'systèmes non documentés',
+      'processus manuels aléatoires',
+    ],
     afterItems: ['accès centralisés', 'workflows documentés', 'infrastructure visible', 'systèmes maintenables'],
     domainsKicker: 'Domaines concrets',
     domainsTitle: 'Le travail technique est traduit en stabilité opérationnelle.',
     domains: [
-      { title: 'Structure opérationnelle', body: 'Permissions, onboarding, documentation, accès et standards de travail.', icon: 'scope' },
-      { title: 'Infrastructure', body: 'Déploiements, monitoring, sauvegardes, continuité de service et clarté réseau.', icon: 'systems' },
-      { title: 'Systèmes internes', body: 'Workflows, bases de connaissance, automatisations, intégrations et cartographie métier.', icon: 'automation' },
-      { title: 'Simplification', body: 'Réduire la complexité inutile, consolider les outils et retirer les frictions.', icon: 'check' },
+      {
+        title: 'Structure opérationnelle',
+        body: 'Permissions, onboarding, documentation, accès et standards de travail.',
+        icon: 'scope',
+      },
+      {
+        title: 'Infrastructure',
+        body: 'Déploiements, monitoring, sauvegardes, continuité de service et clarté réseau.',
+        icon: 'systems',
+      },
+      {
+        title: 'Systèmes internes',
+        body: 'Workflows, bases de connaissance, automatisations, intégrations et cartographie métier.',
+        icon: 'automation',
+      },
+      {
+        title: 'Simplification',
+        body: 'Réduire la complexité inutile, consolider les outils et retirer les frictions.',
+        icon: 'check',
+      },
     ] as Array<{ title: string; body: string; icon: IoIconName }>,
     discernLead: 'Parfois une stack plus simple est la meilleure solution.',
-    discernBody: 'Le but n’est pas d’ajouter une couche technique. Le but est de rendre le système compréhensible, fiable et exploitable par l’équipe.',
-    entryKicker: 'Points d’entrée',
-    entryTitle: 'Choisir le sujet opérationnel à clarifier.',
-    scenarios: [
-      { title: 'Clarifier l’existant', body: 'Cartographier outils, accès, données, responsabilités et zones de risque.', href: `${localePrefix}/contact?type=systems&scenario=audit#form` },
-      { title: 'Stabiliser l’infrastructure', body: 'Rendre les déploiements, DNS, SSL, sauvegardes et monitoring plus lisibles.', href: `${localePrefix}/contact?type=systems&scenario=infra#form` },
-      { title: 'Organiser un workflow', body: 'Relier formulaires, CRM, notifications, documents et tâches sans empiler du SaaS.', href: `${localePrefix}/contact?type=systems&scenario=workflow#form` },
-      { title: 'Créer un outil interne', body: 'Dashboard, API légère, rôles, données structurées ou interface métier.', href: `${localePrefix}/contact?type=systems&scenario=tool#form` },
-      { title: 'Installer une continuité', body: 'Runbooks, suivi, monitoring, incidents, petites évolutions et passation.', href: `${localePrefix}/contact?type=systems&scenario=continuity#form` },
-    ],
-    askScope: 'Demander un cadrage',
-    workflowKicker: 'Workflow',
-    workflowTitle: 'Une progression vers un système plus lisible, pas un tunnel de vente.',
-    intakeKicker: 'Intake systems',
-    intakeTitle: 'Décrire le sujet avant de parler solution.',
-    intakeBody: 'Le but est de comprendre le setup réel, les points de friction et le niveau de continuité attendu.',
+    discernBody:
+      'Le but n’est pas d’ajouter une couche technique. Le but est de rendre le système compréhensible, fiable et exploitable par l’équipe.',
+    workflowKicker: 'Approche',
+    workflowTitle: 'Commencer par clarifier, puis structurer.',
+    intakeKicker: 'Décrire le contexte',
+    intakeTitle: 'Expliquer le setup réel, pas remplir un tunnel.',
+    intakeBody:
+      'Décrivez ce qui existe déjà, ce qui casse ou ce qui repose trop sur une seule personne. La première étape est un cadrage clair.',
     steps: [
       { label: '01', title: 'Reconnaître', detail: 'Ce qui crée le chaos.', icon: 'diagnostic' },
       { label: '02', title: 'Cartographier', detail: 'Outils, accès, flux, risques.', icon: 'scope' },
@@ -84,17 +109,28 @@ const COPY = {
       'For SMEs whose tools, access, workflows, or infrastructure still work, but have become too dependent on habits, shortcuts, and oral explanations.',
     discuss: 'Discuss your setup',
     seeSituations: 'See the situations',
-    pipeline: ['chaos', 'visibility', 'structure', 'stability', 'continuity'],
     recKicker: 'Operational diagnosis',
     recTitle: 'The problem is rarely a lack of tools.',
     recBody: 'Most of the time, the system grew in layers, without a shared structure or clear visibility.',
-    symptoms: [
-      'The systems grew without a clear structure.',
-      'Too many tools talk badly to each other, or not at all.',
-      'Nobody knows exactly where the access, data, or procedures live.',
-      'Onboarding still depends on oral explanations.',
-      'One person still knows all the critical shortcuts.',
-      'The stack works, but nobody really trusts it.',
+    diagnostics: [
+      {
+        title: 'Stacked tools',
+        points: [
+          'The systems grew without a clear structure.',
+          'Too many tools talk badly to each other, or not at all.',
+        ],
+      },
+      {
+        title: 'Blurred access',
+        points: [
+          'Nobody knows exactly where the access, data, or procedures live.',
+          'Onboarding still depends on oral explanations.',
+        ],
+      },
+      {
+        title: 'Fragile dependency',
+        points: ['One person still knows all the critical shortcuts.', 'The stack works, but nobody really trusts it.'],
+      },
     ],
     beforeAfterKicker: 'Operational transformation',
     beforeAfterTitle: 'The change should be visible.',
@@ -105,28 +141,36 @@ const COPY = {
     domainsKicker: 'Concrete domains',
     domainsTitle: 'Technical work translated into operational stability.',
     domains: [
-      { title: 'Operational structure', body: 'Permissions, onboarding, documentation, access, and work standards.', icon: 'scope' },
-      { title: 'Infrastructure', body: 'Deployments, monitoring, backups, service continuity, and network clarity.', icon: 'systems' },
-      { title: 'Internal systems', body: 'Workflows, knowledge bases, automation, integrations, and process mapping.', icon: 'automation' },
-      { title: 'Simplification', body: 'Reduce unnecessary complexity, consolidate tools, and remove friction.', icon: 'check' },
+      {
+        title: 'Operational structure',
+        body: 'Permissions, onboarding, documentation, access, and work standards.',
+        icon: 'scope',
+      },
+      {
+        title: 'Infrastructure',
+        body: 'Deployments, monitoring, backups, service continuity, and network clarity.',
+        icon: 'systems',
+      },
+      {
+        title: 'Internal systems',
+        body: 'Workflows, knowledge bases, automation, integrations, and process mapping.',
+        icon: 'automation',
+      },
+      {
+        title: 'Simplification',
+        body: 'Reduce unnecessary complexity, consolidate tools, and remove friction.',
+        icon: 'check',
+      },
     ] as Array<{ title: string; body: string; icon: IoIconName }>,
     discernLead: 'Sometimes a simpler stack is the best solution.',
-    discernBody: 'The goal is not to add another technical layer. The goal is to make the system understandable, reliable, and usable by the team.',
-    entryKicker: 'Entry points',
-    entryTitle: 'Choose the operational topic to clarify.',
-    scenarios: [
-      { title: 'Clarify the current state', body: 'Map tools, access, data, responsibilities, and risk areas.', href: `${localePrefix}/contact?type=systems&scenario=audit#form` },
-      { title: 'Stabilize infrastructure', body: 'Make deployments, DNS, SSL, backups, and monitoring easier to understand.', href: `${localePrefix}/contact?type=systems&scenario=infra#form` },
-      { title: 'Organize a workflow', body: 'Connect forms, CRM, notifications, documents, and tasks without stacking more SaaS.', href: `${localePrefix}/contact?type=systems&scenario=workflow#form` },
-      { title: 'Create an internal tool', body: 'Dashboard, light API, roles, structured data, or an internal interface.', href: `${localePrefix}/contact?type=systems&scenario=tool#form` },
-      { title: 'Install continuity', body: 'Runbooks, monitoring, incidents, small evolutions, and handoff.', href: `${localePrefix}/contact?type=systems&scenario=continuity#form` },
-    ],
-    askScope: 'Request scoping',
-    workflowKicker: 'Workflow',
-    workflowTitle: 'A progression toward a clearer system, not a sales funnel.',
-    intakeKicker: 'Systems intake',
-    intakeTitle: 'Describe the topic before talking about the solution.',
-    intakeBody: 'The goal is to understand the real setup, the friction points, and the expected level of continuity.',
+    discernBody:
+      'The goal is not to add another technical layer. The goal is to make the system understandable, reliable, and usable by the team.',
+    workflowKicker: 'Approach',
+    workflowTitle: 'Clarify first, then structure.',
+    intakeKicker: 'Describe the context',
+    intakeTitle: 'Explain the real setup, not a funnel.',
+    intakeBody:
+      'Describe what already exists, what breaks, or what depends too much on one person. The first step is clear scoping.',
     steps: [
       { label: '01', title: 'Recognize', detail: 'What creates the chaos.', icon: 'diagnostic' },
       { label: '02', title: 'Map', detail: 'Tools, access, flows, risks.', icon: 'scope' },
@@ -157,43 +201,26 @@ const metadata = copy.metadata;
       </div>
     </section>
 
-    <section class="io-shell io-pipeline" aria-label="Progression de confiance">
-      <span>{copy.pipeline[0]}</span>
-      <strong>{copy.pipeline[1]}</strong>
-      <strong>{copy.pipeline[2]}</strong>
-      <strong>{copy.pipeline[3]}</strong>
-      <span>{copy.pipeline[4]}</span>
-    </section>
-
     <section class="io-shell io-recognition" id="situations">
       <div class="io-section-head">
         <p class="io-kicker">{copy.recKicker}</p>
         <h2>{copy.recTitle}</h2>
         <p>{copy.recBody}</p>
       </div>
-      <div class="io-symptom-grid">
-        {copy.symptoms.map((symptom) => <article>{symptom}</article>)}
-      </div>
-    </section>
-
-    <section class="io-shell io-before-after">
-      <div>
-        <p class="io-kicker">{copy.beforeAfterKicker}</p>
-        <h2>{copy.beforeAfterTitle}</h2>
-      </div>
-      <div class="io-ba-grid">
-        <article>
-          <h3>{copy.before}</h3>
-          <ul>
-            {copy.beforeItems.map((item) => <li>{item}</li>)}
-          </ul>
-        </article>
-        <article>
-          <h3>{copy.after}</h3>
-          <ul>
-            {copy.afterItems.map((item) => <li>{item}</li>)}
-          </ul>
-        </article>
+      <div class="io-diagnostic-grid">
+        {
+          copy.diagnostics.map((group) => (
+            <article>
+              <span class="io-diagnostic-mark" />
+              <h3>{group.title}</h3>
+              <ul>
+                {group.points.map((point) => (
+                  <li>{point}</li>
+                ))}
+              </ul>
+            </article>
+          ))
+        }
       </div>
     </section>
 
@@ -221,24 +248,8 @@ const metadata = copy.metadata;
 
     <section class="io-shell io-discernment">
       <p>{copy.discernLead}</p>
-      <span>{copy.discernBody}</span>
-    </section>
-
-    <section class="io-shell io-scenarios">
-      <div class="io-section-head">
-        <p class="io-kicker">{copy.entryKicker}</p>
-        <h2>{copy.entryTitle}</h2>
-      </div>
-      <div class="io-scenario-grid">
-        {
-          copy.scenarios.map((scenario) => (
-            <article>
-              <h3>{scenario.title}</h3>
-              <p>{scenario.body}</p>
-              <a href={scenario.href}>{copy.askScope}</a>
-            </article>
-          ))
-        }
+      <div>
+        <span>{copy.discernBody}</span>
       </div>
     </section>
 
@@ -362,7 +373,7 @@ const metadata = copy.metadata;
     }
 
     .io-hero {
-      padding: 4.8rem 0 3.2rem;
+      padding: 4.8rem 0 3.6rem;
     }
 
     .io-hero-grid {
@@ -439,40 +450,7 @@ const metadata = copy.metadata;
       color: var(--io-ink);
     }
 
-    .io-pipeline {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 0;
-      margin-bottom: 5rem;
-      overflow: hidden;
-      border: 1px solid var(--io-line);
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.82);
-    }
-
-    .io-pipeline span,
-    .io-pipeline strong {
-      padding: 0.85rem 1rem;
-      text-align: center;
-      font-size: 0.82rem;
-      line-height: 1.2;
-    }
-
-    .io-pipeline strong {
-      color: var(--io-blue);
-    }
-
-    .io-pipeline span {
-      color: var(--io-muted);
-      font-weight: 720;
-    }
-
-    .io-pipeline * + * {
-      border-left: 1px solid var(--io-line);
-    }
-
     .io-recognition,
-    .io-scenarios,
     .io-process {
       padding-bottom: 5rem;
     }
@@ -482,57 +460,53 @@ const metadata = copy.metadata;
       margin-bottom: 2rem;
     }
 
-    .io-symptom-grid {
+    .io-diagnostic-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1rem;
     }
 
-    .io-symptom-grid article {
-      min-height: 9.4rem;
+    .io-diagnostic-grid article {
+      display: grid;
+      gap: 0.9rem;
+      min-height: 12rem;
+      align-content: start;
       border: 1px solid var(--io-line);
       border-radius: 1rem;
       padding: 1.25rem;
       background: rgba(255, 255, 255, 0.78);
+    }
+
+    .io-diagnostic-mark {
+      width: 2rem;
+      height: 0.18rem;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.24);
+    }
+
+    .io-diagnostic-grid h3 {
+      font-size: 1.05rem;
+    }
+
+    .io-diagnostic-grid ul {
+      display: grid;
+      gap: 0.8rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .io-diagnostic-grid li {
+      margin: 0;
       color: #334155;
       font-weight: 720;
       line-height: 1.55;
     }
 
-    .io-before-after {
-      display: grid;
-      grid-template-columns: minmax(0, 0.75fr) minmax(24rem, 1fr);
-      gap: 3rem;
-      align-items: start;
-      padding: 4.8rem 0;
-      border-top: 1px solid var(--io-line);
-    }
-
-    .io-ba-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
-    }
-
-    .io-ba-grid article {
-      border: 1px solid var(--io-line);
-      border-radius: 1rem;
-      padding: 1.35rem;
-      background: #fff;
-    }
-
-    .io-ba-grid ul {
-      display: grid;
-      gap: 0.7rem;
-      margin: 1rem 0 0;
-      padding: 0;
-      list-style: none;
-      color: var(--io-muted);
-    }
-
     .io-domains {
       padding: 5rem 0;
-      background: #fff;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(248, 251, 255, 0.96));
+      border-block: 1px solid rgba(148, 163, 184, 0.18);
     }
 
     .io-domain-grid {
@@ -562,8 +536,7 @@ const metadata = copy.metadata;
       background: rgba(37, 99, 235, 0.05);
     }
 
-    .io-domain-grid p,
-    .io-scenario-grid p {
+    .io-domain-grid p {
       margin: 0;
       color: var(--io-muted);
       line-height: 1.62;
@@ -573,45 +546,32 @@ const metadata = copy.metadata;
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.8fr);
       gap: 3rem;
-      align-items: end;
+      align-items: start;
       padding: 5rem 0;
+      border-top: 1px solid var(--io-line);
     }
 
     .io-discernment p {
       margin: 0;
-      font-size: 3rem;
+      font-size: 2.7rem;
       font-weight: 850;
       line-height: 1.05;
+    }
+
+    .io-discernment div {
+      display: grid;
+      gap: 0.9rem;
+      align-content: start;
+      border: 1px solid var(--io-line);
+      border-radius: 1rem;
+      padding: 1.35rem;
+      background: rgba(255, 255, 255, 0.8);
     }
 
     .io-discernment span {
       color: var(--io-muted);
       font-size: 1.08rem;
       line-height: 1.7;
-    }
-
-    .io-scenario-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 1rem;
-    }
-
-    .io-scenario-grid article {
-      display: grid;
-      gap: 0.75rem;
-      align-content: start;
-      border: 1px solid var(--io-line);
-      border-radius: 1rem;
-      padding: 1.15rem;
-      background: rgba(255, 255, 255, 0.78);
-    }
-
-    .io-scenario-grid a {
-      margin-top: 0.35rem;
-      color: var(--io-blue);
-      font-size: 0.92rem;
-      font-weight: 820;
-      text-decoration: none;
     }
 
     .io-intake {
@@ -667,7 +627,7 @@ const metadata = copy.metadata;
       border: 1px solid var(--io-line);
       border-radius: 1.25rem;
       padding: 2.5rem;
-      background: #fff;
+      background: rgba(255, 255, 255, 0.92);
       text-align: center;
     }
 
@@ -682,29 +642,17 @@ const metadata = copy.metadata;
 
     @media (max-width: 1100px) {
       .io-hero-grid,
-      .io-before-after,
       .io-discernment {
         grid-template-columns: 1fr;
       }
 
-      .io-symptom-grid,
-      .io-domain-grid,
-      .io-scenario-grid {
+      .io-diagnostic-grid,
+      .io-domain-grid {
         grid-template-columns: repeat(2, 1fr);
       }
 
       .io-intake-grid {
         grid-template-columns: 1fr;
-      }
-
-      .io-pipeline {
-        border-radius: 1rem;
-        grid-template-columns: 1fr;
-      }
-
-      .io-pipeline * + * {
-        border-left: 0;
-        border-top: 1px solid var(--io-line);
       }
 
       h1 {
@@ -717,10 +665,8 @@ const metadata = copy.metadata;
         width: min(100% - 1rem, 82rem);
       }
 
-      .io-symptom-grid,
+      .io-diagnostic-grid,
       .io-domain-grid,
-      .io-scenario-grid,
-      .io-ba-grid,
       .io-intake-grid {
         grid-template-columns: 1fr;
       }

@@ -145,7 +145,11 @@ const systemsBlocks = copy.systemsBlocks;
 const systemsRows = copy.systemsRows;
 ---
 
-<div class={`io-blueprint io-blueprint-${variant}`} data-blueprint-motion={variant === 'standard' ? 'standard' : undefined} aria-hidden="true">
+<div
+  class={`io-blueprint io-blueprint-${variant}`}
+  data-blueprint-motion={variant === 'standard' ? 'standard' : undefined}
+  aria-hidden="true"
+>
   {
     variant === 'hero' && (
       <div class="io-hero-map">
