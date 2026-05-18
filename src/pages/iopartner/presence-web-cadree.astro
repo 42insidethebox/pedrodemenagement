@@ -3,116 +3,434 @@ import IoBlueprintVisual from '~/components/iopartner/IoBlueprintVisual.astro';
 import IoNodeIcon from '~/components/iopartner/IoNodeIcon.astro';
 import IoProcessMap from '~/components/iopartner/IoProcessMap.astro';
 import type { IoIconName } from '~/components/iopartner/ioNodeIconTypes';
+import { detectRequestLocale } from '~/lib/locale';
 import Layout from '~/layouts/PageLayout.astro';
 import pedroLogo from '~/assets/lausannedemenagement/logo.png';
 import maisonPreview from '~/assets/maisoncortes_images/lausanne-ring-02.png';
 import onglesPreview from '~/assets/onglesgel_images/01.png';
 import toloPreview from '~/assets/tolocoiffure_images/template_preview.jpg';
 
-const metadata = {
-  title: 'Présence web cadrée — IOPartner',
-  description:
-    'Présence web cadrée pour PME: site vitrine dès 999 CHF, avec seuil clair vers site administrable ou build privé quand le besoin évolue.',
-};
+const locale = detectRequestLocale(Astro.request, Astro.url);
 
 const toAssetSrc = (asset: string | { src: string }) => (typeof asset === 'string' ? asset : asset.src);
 
-const offers = [
-  {
-    price: '999 CHF',
-    title: 'Pack Essentiel',
-    body: 'Présence web professionnelle, périmètre court, architecture légère et maintenance simple.',
-    href: '/choose-template?plan=essential999',
-    cta: 'Voir les projets 999 CHF',
+const COPY = {
+  fr: {
+    metadata: {
+      title: 'Présence web cadrée — IOPartner',
+      description:
+        'Présence web cadrée pour PME: site vitrine dès 999 CHF, avec seuil clair vers site administrable ou build privé quand le besoin évolue.',
+    },
+    hero: {
+      kicker: 'Présence web cadrée',
+      title: 'Un site propre quand une présence web claire suffit.',
+      lead: 'Pensé pour les structures qui veulent une présence professionnelle, maintenable et cadrée, sans transformer trop tôt le site en plateforme éditoriale ou en chantier logiciel.',
+      primary: 'Voir les niveaux',
+      secondary: 'Voir les projets livrés',
+    },
+    offersHead: {
+      kicker: 'Trois niveaux web',
+      title: 'Le standard reste utile. L’autonomie augmente seulement quand elle est réellement nécessaire.',
+    },
+    offers: [
+      {
+        price: '999 CHF',
+        title: 'Pack Essentiel',
+        body: 'Présence web professionnelle, périmètre court, architecture légère et maintenance simple.',
+        href: '/choose-template?plan=essential999',
+        cta: 'Voir les projets 999 CHF',
+      },
+      {
+        price: '1 500 CHF',
+        title: 'Pack Public',
+        body: 'Même logique cadrée avec plus de marge fonctionnelle, tant que le site ne devient pas un outil éditorial lourd.',
+        href: '/choose-template?plan=essential1500',
+        cta: 'Voir les projets 1 500 CHF',
+      },
+      {
+        price: '2 200 CHF+',
+        title: 'Build privé',
+        body: 'Déploiement dédié et base privée quand le besoin devient spécifique ou doit sortir du standard.',
+        href: '/custom-systems?track=private-2200#diagnostic',
+        cta: 'Cadrer le privé',
+      },
+    ],
+    thresholdsHead: {
+      kicker: 'Seuils d’évolution',
+      title: 'Le point important est le niveau d’autonomie demandé.',
+      body: 'Un site éditable n’implique pas automatiquement un gros CMS. Le bon niveau dépend surtout de la fréquence des changements, de la surface éditoriale et du support attendu.',
+    },
+    thresholds: [
+      { title: 'Présence web cadrée', body: 'Pour une présence claire et stable, sans logique éditoriale lourde.' },
+      {
+        title: 'Site administrable & évolutif',
+        body: 'Quand il faut éditer du contenu régulièrement, gérer des actualités ou faire évoluer certaines sections.',
+      },
+      {
+        title: 'Build privé / systèmes',
+        body: 'Quand il faut une structure dédiée, un handoff plus poussé, des workflows, des rôles ou une logique métier.',
+      },
+    ],
+    modelsHead: {
+      kicker: 'Projets livrés',
+      title: 'Voir ce qui peut être livré dans les formats 999 CHF et 1 500 CHF.',
+      body: 'Ces exemples montrent le niveau de finition, le rythme et le type de structure que le standard permet déjà.',
+    },
+    models: [
+      ['Services locaux', 'Structure claire, preuves, services, contact direct.', 'Choisir cette base'],
+      ['Beauté & rendez-vous', 'Présentation visuelle, prestations, réservation.', 'Choisir cette base'],
+      ['Premium sobre', 'Typographie, espaces, offre plus éditoriale.', 'Choisir cette base'],
+      ['Portfolio visuel', 'Galerie, prestations et parcours de contact simple.', 'Choisir cette base'],
+    ],
+    codebase: {
+      kicker: 'Public ou privé',
+      title: 'Le choix important n’est pas seulement visuel.',
+      publicTitle: 'Base publique',
+      publicBody: 'Adaptée aux sites vitrines cadrés, livrés vite, avec séparation logique et maintenance légère.',
+      privateTitle: 'Codebase privée',
+      privateBody: 'Utile quand il faut une structure dédiée, un handoff plus poussé ou une évolution spécifique.',
+    },
+    processHead: {
+      kicker: 'Workflow',
+      title: 'Les exemples servent à cadrer le bon format, pas à vendre un template.',
+    },
+    steps: [
+      { label: '01', title: 'Niveau', detail: '999, 1 500 ou privé.', icon: 'scope' },
+      { label: '02', title: 'Exemples', detail: 'Voir des projets comparables.', icon: 'standard' },
+      { label: '03', title: 'Contenu', detail: 'Textes, images, pages.', icon: 'content' },
+      { label: '04', title: 'Mise en ligne', detail: 'Validation et handoff.', icon: 'deploy' },
+    ] satisfies Array<{ label: string; title: string; detail: string; icon: IoIconName }>,
+    finalCta: {
+      title: 'Lancer une présence web sans surconstruire.',
+      body: 'Commencez par un niveau clair. Si le besoin dépasse la présence web cadrée, on passe vers l’administrable ou le cadrage technique.',
+      primary: 'Voir les projets dès 999 CHF',
+      secondary: 'Cadrer avant de lancer',
+    },
   },
-  {
-    price: '1 500 CHF',
-    title: 'Pack Public',
-    body: 'Même logique cadrée avec plus de marge fonctionnelle, tant que le site ne devient pas un outil éditorial lourd.',
-    href: '/choose-template?plan=essential1500',
-    cta: 'Voir les projets 1 500 CHF',
+  en: {
+    metadata: {
+      title: 'Scoped Web Presence — IOPartner',
+      description:
+        'Scoped web presence for SMEs: brochure site from CHF 999, with a clear threshold toward editable site or private build when the need evolves.',
+    },
+    hero: {
+      kicker: 'Scoped web presence',
+      title: 'A clean site when a clear web presence is enough.',
+      lead: 'Built for organizations that want a professional, maintainable, scoped presence without turning the site too early into an editorial platform or software project.',
+      primary: 'View levels',
+      secondary: 'View delivered projects',
+    },
+    offersHead: {
+      kicker: 'Three web levels',
+      title: 'Standard stays useful. Autonomy increases only when it is actually needed.',
+    },
+    offers: [
+      {
+        price: 'CHF 999',
+        title: 'Essential Pack',
+        body: 'Professional web presence, short perimeter, light architecture, and simple maintenance.',
+        href: '/choose-template?plan=essential999',
+        cta: 'View CHF 999 projects',
+      },
+      {
+        price: 'CHF 1,500',
+        title: 'Public Pack',
+        body: 'Same scoped logic with more functional room, as long as the site does not become a heavy editorial tool.',
+        href: '/choose-template?plan=essential1500',
+        cta: 'View CHF 1,500 projects',
+      },
+      {
+        price: 'CHF 2,200+',
+        title: 'Private build',
+        body: 'Dedicated deployment and private base when the need becomes specific or must leave the standard path.',
+        href: '/custom-systems?track=private-2200#diagnostic',
+        cta: 'Scope private',
+      },
+    ],
+    thresholdsHead: {
+      kicker: 'Evolution thresholds',
+      title: 'The important point is the level of autonomy required.',
+      body: 'An editable site does not automatically mean a heavy CMS. The right level depends mostly on change frequency, editorial surface, and expected support.',
+    },
+    thresholds: [
+      { title: 'Scoped web presence', body: 'For a clear and stable presence without heavy editorial logic.' },
+      {
+        title: 'Editable & evolving site',
+        body: 'When content must be edited regularly, news managed, or sections evolved.',
+      },
+      {
+        title: 'Private build / systems',
+        body: 'When the project needs a dedicated structure, deeper handoff, workflows, roles, or business logic.',
+      },
+    ],
+    modelsHead: {
+      kicker: 'Delivered projects',
+      title: 'See what can be delivered in the CHF 999 and CHF 1,500 formats.',
+      body: 'These examples show the finish level, pace, and type of structure the standard already allows.',
+    },
+    models: [
+      ['Local services', 'Clear structure, proof, services, direct contact.', 'Choose this base'],
+      ['Beauty & appointments', 'Visual presentation, services, booking.', 'Choose this base'],
+      ['Quiet premium', 'Typography, space, more editorial offer.', 'Choose this base'],
+      ['Visual portfolio', 'Gallery, services, and simple contact path.', 'Choose this base'],
+    ],
+    codebase: {
+      kicker: 'Public or private',
+      title: 'The important choice is not only visual.',
+      publicTitle: 'Public base',
+      publicBody: 'Suited to scoped brochure sites, delivered quickly, with logical separation and light maintenance.',
+      privateTitle: 'Private codebase',
+      privateBody: 'Useful when a dedicated structure, deeper handoff, or specific evolution is needed.',
+    },
+    processHead: { kicker: 'Workflow', title: 'Examples frame the right format. They do not sell a template.' },
+    steps: [
+      { label: '01', title: 'Level', detail: '999, 1,500 or private.', icon: 'scope' },
+      { label: '02', title: 'Examples', detail: 'View comparable projects.', icon: 'standard' },
+      { label: '03', title: 'Content', detail: 'Texts, images, pages.', icon: 'content' },
+      { label: '04', title: 'Go-live', detail: 'Validation and handoff.', icon: 'deploy' },
+    ] satisfies Array<{ label: string; title: string; detail: string; icon: IoIconName }>,
+    finalCta: {
+      title: 'Launch a web presence without overbuilding.',
+      body: 'Start with a clear level. If the need exceeds scoped web presence, we move toward editable or technical scoping.',
+      primary: 'View projects from CHF 999',
+      secondary: 'Scope before launch',
+    },
   },
-  {
-    price: '2 200 CHF+',
-    title: 'Build privé',
-    body: 'Déploiement dédié et base privée quand le besoin devient spécifique ou doit sortir du standard.',
-    href: '/custom-systems?track=private-2200#diagnostic',
-    cta: 'Cadrer le privé',
+  de: {
+    metadata: {
+      title: 'Klare Web-Präsenz — IOPartner',
+      description:
+        'Klare Web-Präsenz für KMU: Website ab CHF 999, mit klarer Schwelle zu editierbarer Website oder privatem Build.',
+    },
+    hero: {
+      kicker: 'Klare Web-Präsenz',
+      title: 'Eine saubere Website, wenn eine klare Präsenz genügt.',
+      lead: 'Für Organisationen, die eine professionelle, wartbare und abgegrenzte Präsenz wollen, ohne die Website zu früh in eine Redaktionsplattform oder ein Softwareprojekt zu verwandeln.',
+      primary: 'Ebenen ansehen',
+      secondary: 'Gelieferte Projekte ansehen',
+    },
+    offersHead: {
+      kicker: 'Drei Web-Ebenen',
+      title: 'Standard bleibt nützlich. Autonomie steigt nur, wenn sie wirklich nötig ist.',
+    },
+    offers: [
+      {
+        price: 'CHF 999',
+        title: 'Essential Pack',
+        body: 'Professionelle Web-Präsenz, kurzer Umfang, leichte Architektur und einfache Wartung.',
+        href: '/choose-template?plan=essential999',
+        cta: 'CHF 999 Projekte ansehen',
+      },
+      {
+        price: 'CHF 1’500',
+        title: 'Public Pack',
+        body: 'Gleiche abgegrenzte Logik mit mehr funktionaler Marge, solange die Website kein schweres Redaktionstool wird.',
+        href: '/choose-template?plan=essential1500',
+        cta: 'CHF 1’500 Projekte ansehen',
+      },
+      {
+        price: 'CHF 2’200+',
+        title: 'Privater Build',
+        body: 'Dediziertes Deployment und private Basis, wenn der Bedarf spezifisch wird oder den Standard verlassen muss.',
+        href: '/custom-systems?track=private-2200#diagnostic',
+        cta: 'Privat scopen',
+      },
+    ],
+    thresholdsHead: {
+      kicker: 'Evolutionsschwellen',
+      title: 'Wichtig ist der benötigte Autonomiegrad.',
+      body: 'Eine editierbare Website bedeutet nicht automatisch ein grosses CMS. Die passende Ebene hängt vor allem von Änderungsfrequenz, redaktioneller Fläche und erwartetem Support ab.',
+    },
+    thresholds: [
+      { title: 'Klare Web-Präsenz', body: 'Für eine klare, stabile Präsenz ohne schwere redaktionelle Logik.' },
+      {
+        title: 'Editierbare & evolutive Website',
+        body: 'Wenn Inhalte regelmässig bearbeitet, News gepflegt oder Sektionen weiterentwickelt werden müssen.',
+      },
+      {
+        title: 'Privater Build / Systeme',
+        body: 'Wenn eine dedizierte Struktur, tiefere Übergabe, Workflows, Rollen oder Businesslogik nötig sind.',
+      },
+    ],
+    modelsHead: {
+      kicker: 'Gelieferte Projekte',
+      title: 'Sehen, was in den Formaten CHF 999 und CHF 1’500 geliefert werden kann.',
+      body: 'Diese Beispiele zeigen Qualitätsniveau, Tempo und Struktur, die der Standard bereits ermöglicht.',
+    },
+    models: [
+      ['Lokale Dienstleistungen', 'Klare Struktur, Belege, Services, direkter Kontakt.', 'Diese Basis wählen'],
+      ['Beauty & Termine', 'Visuelle Präsentation, Leistungen, Buchung.', 'Diese Basis wählen'],
+      ['Ruhig premium', 'Typografie, Raum, redaktionelleres Angebot.', 'Diese Basis wählen'],
+      ['Visuelles Portfolio', 'Galerie, Leistungen und einfacher Kontaktweg.', 'Diese Basis wählen'],
+    ],
+    codebase: {
+      kicker: 'Öffentlich oder privat',
+      title: 'Die wichtige Wahl ist nicht nur visuell.',
+      publicTitle: 'Öffentliche Basis',
+      publicBody:
+        'Geeignet für klar abgegrenzte Websites, schnell geliefert, mit logischer Trennung und leichter Wartung.',
+      privateTitle: 'Private Codebase',
+      privateBody: 'Sinnvoll, wenn eine dedizierte Struktur, tiefere Übergabe oder spezifische Entwicklung nötig ist.',
+    },
+    processHead: { kicker: 'Workflow', title: 'Beispiele rahmen das passende Format. Sie verkaufen kein Template.' },
+    steps: [
+      { label: '01', title: 'Ebene', detail: '999, 1’500 oder privat.', icon: 'scope' },
+      { label: '02', title: 'Beispiele', detail: 'Vergleichbare Projekte ansehen.', icon: 'standard' },
+      { label: '03', title: 'Inhalt', detail: 'Texte, Bilder, Seiten.', icon: 'content' },
+      { label: '04', title: 'Go-live', detail: 'Validierung und Übergabe.', icon: 'deploy' },
+    ] satisfies Array<{ label: string; title: string; detail: string; icon: IoIconName }>,
+    finalCta: {
+      title: 'Eine Web-Präsenz starten, ohne zu überbauen.',
+      body: 'Beginnen Sie mit einer klaren Ebene. Wenn der Bedarf die klare Web-Präsenz übersteigt, wechseln wir zu editierbar oder technischem Scoping.',
+      primary: 'Projekte ab CHF 999 ansehen',
+      secondary: 'Vor dem Launch scopen',
+    },
   },
-];
+  it: {
+    metadata: {
+      title: 'Presenza web strutturata — IOPartner',
+      description:
+        'Presenza web strutturata per PMI: sito vetrina da CHF 999, con soglia chiara verso sito modificabile o build privato.',
+    },
+    hero: {
+      kicker: 'Presenza web strutturata',
+      title: 'Un sito pulito quando basta una presenza web chiara.',
+      lead: 'Pensato per strutture che vogliono una presenza professionale, mantenibile e inquadrata, senza trasformare troppo presto il sito in piattaforma editoriale o cantiere software.',
+      primary: 'Vedere i livelli',
+      secondary: 'Vedere progetti consegnati',
+    },
+    offersHead: {
+      kicker: 'Tre livelli web',
+      title: 'Lo standard resta utile. L’autonomia aumenta solo quando è davvero necessaria.',
+    },
+    offers: [
+      {
+        price: 'CHF 999',
+        title: 'Pack Essential',
+        body: 'Presenza web professionale, perimetro breve, architettura leggera e manutenzione semplice.',
+        href: '/choose-template?plan=essential999',
+        cta: 'Vedere progetti CHF 999',
+      },
+      {
+        price: 'CHF 1’500',
+        title: 'Pack Public',
+        body: 'Stessa logica inquadrata con più margine funzionale, finché il sito non diventa uno strumento editoriale pesante.',
+        href: '/choose-template?plan=essential1500',
+        cta: 'Vedere progetti CHF 1’500',
+      },
+      {
+        price: 'CHF 2’200+',
+        title: 'Build privato',
+        body: 'Deployment dedicato e base privata quando il bisogno diventa specifico o deve uscire dallo standard.',
+        href: '/custom-systems?track=private-2200#diagnostic',
+        cta: 'Inquadrare il privato',
+      },
+    ],
+    thresholdsHead: {
+      kicker: 'Soglie di evoluzione',
+      title: 'Il punto importante è il livello di autonomia richiesto.',
+      body: 'Un sito modificabile non implica automaticamente un CMS pesante. Il livello giusto dipende soprattutto da frequenza di modifica, superficie editoriale e supporto atteso.',
+    },
+    thresholds: [
+      {
+        title: 'Presenza web strutturata',
+        body: 'Per una presenza chiara e stabile, senza logica editoriale pesante.',
+      },
+      {
+        title: 'Sito modificabile & evolutivo',
+        body: 'Quando bisogna modificare contenuti regolarmente, gestire notizie o far evolvere sezioni.',
+      },
+      {
+        title: 'Build privato / sistemi',
+        body: 'Quando serve una struttura dedicata, un passaggio più profondo, workflow, ruoli o logica métier.',
+      },
+    ],
+    modelsHead: {
+      kicker: 'Progetti consegnati',
+      title: 'Vedere cosa può essere consegnato nei formati CHF 999 e CHF 1’500.',
+      body: 'Questi esempi mostrano il livello di finitura, il ritmo e il tipo di struttura che lo standard consente già.',
+    },
+    models: [
+      ['Servizi locali', 'Struttura chiara, prove, servizi, contatto diretto.', 'Scegliere questa base'],
+      ['Beauty & appuntamenti', 'Presentazione visiva, prestazioni, prenotazione.', 'Scegliere questa base'],
+      ['Premium sobrio', 'Tipografia, spazi, offerta più editoriale.', 'Scegliere questa base'],
+      ['Portfolio visivo', 'Galleria, prestazioni e percorso di contatto semplice.', 'Scegliere questa base'],
+    ],
+    codebase: {
+      kicker: 'Pubblico o privato',
+      title: 'La scelta importante non è solo visiva.',
+      publicTitle: 'Base pubblica',
+      publicBody:
+        'Adatta a siti vetrina inquadrati, consegnati rapidamente, con separazione logica e manutenzione leggera.',
+      privateTitle: 'Codebase privato',
+      privateBody: 'Utile quando serve una struttura dedicata, un passaggio più profondo o un’evoluzione specifica.',
+    },
+    processHead: {
+      kicker: 'Workflow',
+      title: 'Gli esempi servono a inquadrare il formato giusto, non a vendere un template.',
+    },
+    steps: [
+      { label: '01', title: 'Livello', detail: '999, 1’500 o privato.', icon: 'scope' },
+      { label: '02', title: 'Esempi', detail: 'Vedere progetti comparabili.', icon: 'standard' },
+      { label: '03', title: 'Contenuto', detail: 'Testi, immagini, pagine.', icon: 'content' },
+      { label: '04', title: 'Messa online', detail: 'Validazione e passaggio.', icon: 'deploy' },
+    ] satisfies Array<{ label: string; title: string; detail: string; icon: IoIconName }>,
+    finalCta: {
+      title: 'Lanciare una presenza web senza sovracostruire.',
+      body: 'Inizia da un livello chiaro. Se il bisogno supera la presenza web strutturata, si passa verso modificabile o inquadramento tecnico.',
+      primary: 'Vedere progetti da CHF 999',
+      secondary: 'Inquadrare prima di lanciare',
+    },
+  },
+} as const;
 
-const thresholds = [
-  {
-    title: 'Présence web cadrée',
-    body: 'Pour une présence claire et stable, sans logique éditoriale lourde.',
-  },
-  {
-    title: 'Site administrable & évolutif',
-    body: 'Quand il faut éditer du contenu régulièrement, gérer des actualités ou faire évoluer certaines sections.',
-  },
-  {
-    title: 'Build privé / systèmes',
-    body: 'Quand il faut une structure dédiée, un handoff plus poussé, des workflows, des rôles ou une logique métier.',
-  },
-];
+const copy = COPY[locale as keyof typeof COPY] ?? COPY.fr;
+const steps = copy.steps as any;
 
-const models = [
+const modelAssets = [
   {
     id: 'pedro',
-    title: 'Services locaux',
-    body: 'Structure claire, preuves, services, contact direct.',
     img: toAssetSrc(pedroLogo as string | { src: string }),
     href: '/onboarding?plan=essential999&template=lausanne-demenagement',
     imageClass: 'object-contain p-8 bg-gradient-to-br from-slate-50 to-blue-100',
   },
   {
     id: 'tolo-coiffure',
-    title: 'Beauté & rendez-vous',
-    body: 'Présentation visuelle, prestations, réservation.',
     img: toAssetSrc(toloPreview as string | { src: string }),
     href: '/onboarding?plan=essential999&template=tolo-coiffure',
     imageClass: 'object-cover object-top',
   },
   {
     id: 'maison-cortes',
-    title: 'Premium sobre',
-    body: 'Typographie, espaces, offre plus éditoriale.',
     img: toAssetSrc(maisonPreview as string | { src: string }),
     href: '/onboarding?plan=essential999&template=maison-cortes',
     imageClass: 'object-cover object-top',
   },
   {
     id: 'onglesgel',
-    title: 'Portfolio visuel',
-    body: 'Galerie, prestations et parcours de contact simple.',
     img: toAssetSrc(onglesPreview as string | { src: string }),
     href: '/onboarding?plan=essential999&template=onglesgel',
     imageClass: 'object-cover object-top',
   },
 ];
 
-const steps: Array<{ label: string; title: string; detail: string; icon: IoIconName }> = [
-  { label: '01', title: 'Niveau', detail: '999, 1 500 ou privé.', icon: 'scope' },
-  { label: '02', title: 'Exemples', detail: 'Voir des projets comparables.', icon: 'standard' },
-  { label: '03', title: 'Contenu', detail: 'Textes, images, pages.', icon: 'content' },
-  { label: '04', title: 'Mise en ligne', detail: 'Validation et handoff.', icon: 'deploy' },
-];
+const models = modelAssets.map((asset, index) => {
+  const [title, body, cta] = copy.models[index];
+  return { ...asset, title, body, cta };
+});
 ---
 
-<Layout metadata={metadata}>
+<Layout metadata={copy.metadata}>
   <main class="io-presence">
     <section class="io-hero">
       <div class="io-shell io-hero-grid">
         <div>
-          <p class="io-kicker">Présence web cadrée</p>
-          <h1>Un site propre quand une présence web claire suffit.</h1>
-          <p class="io-lead">
-            Pensé pour les structures qui veulent une présence professionnelle, maintenable et cadrée, sans transformer
-            trop tôt le site en plateforme éditoriale ou en chantier logiciel.
-          </p>
+          <p class="io-kicker">{copy.hero.kicker}</p>
+          <h1>{copy.hero.title}</h1>
+          <p class="io-lead">{copy.hero.lead}</p>
           <div class="io-actions">
-            <a class="io-btn io-btn-primary" href="#offres">Voir les niveaux</a>
-            <a class="io-btn io-btn-secondary" href="#modeles">Voir les projets livrés</a>
+            <a class="io-btn io-btn-primary" href="#offres">{copy.hero.primary}</a>
+            <a class="io-btn io-btn-secondary" href="#modeles">{copy.hero.secondary}</a>
           </div>
         </div>
         <IoBlueprintVisual variant="standard" />
@@ -121,12 +439,12 @@ const steps: Array<{ label: string; title: string; detail: string; icon: IoIconN
 
     <section class="io-shell io-offers" id="offres">
       <div class="io-section-head">
-        <p class="io-kicker">Trois niveaux web</p>
-        <h2>Le standard reste utile. L’autonomie augmente seulement quand elle est réellement nécessaire.</h2>
+        <p class="io-kicker">{copy.offersHead.kicker}</p>
+        <h2>{copy.offersHead.title}</h2>
       </div>
       <div class="io-offer-grid">
         {
-          offers.map((offer) => (
+          copy.offers.map((offer: any) => (
             <article>
               <strong class="io-price">{offer.price}</strong>
               <h3>{offer.title}</h3>
@@ -142,16 +460,13 @@ const steps: Array<{ label: string; title: string; detail: string; icon: IoIconN
 
     <section class="io-shell io-thresholds">
       <div class="io-section-head">
-        <p class="io-kicker">Seuils d’évolution</p>
-        <h2>Le point important est le niveau d’autonomie demandé.</h2>
-        <p>
-          Un site éditable n’implique pas automatiquement un gros CMS. Le bon niveau dépend surtout de la fréquence des
-          changements, de la surface éditoriale et du support attendu.
-        </p>
+        <p class="io-kicker">{copy.thresholdsHead.kicker}</p>
+        <h2>{copy.thresholdsHead.title}</h2>
+        <p>{copy.thresholdsHead.body}</p>
       </div>
       <div class="io-threshold-grid">
         {
-          thresholds.map((threshold) => (
+          copy.thresholds.map((threshold: any) => (
             <article>
               <h3>{threshold.title}</h3>
               <p>{threshold.body}</p>
@@ -164,11 +479,9 @@ const steps: Array<{ label: string; title: string; detail: string; icon: IoIconN
     <section class="io-models" id="modeles">
       <div class="io-shell">
         <div class="io-section-head">
-          <p class="io-kicker">Projets livrés</p>
-          <h2>Voir ce qui peut être livré dans les formats 999 CHF et 1 500 CHF.</h2>
-          <p>
-            Ces exemples montrent le niveau de finition, le rythme et le type de structure que le standard permet déjà.
-          </p>
+          <p class="io-kicker">{copy.modelsHead.kicker}</p>
+          <h2>{copy.modelsHead.title}</h2>
+          <p>{copy.modelsHead.body}</p>
         </div>
         <div class="io-model-grid">
           {
@@ -180,7 +493,7 @@ const steps: Array<{ label: string; title: string; detail: string; icon: IoIconN
                 <div>
                   <h3>{model.title}</h3>
                   <p>{model.body}</p>
-                  <a href={model.href}>Choisir cette base</a>
+                  <a href={model.href}>{model.cta}</a>
                 </div>
               </article>
             ))
@@ -191,37 +504,37 @@ const steps: Array<{ label: string; title: string; detail: string; icon: IoIconN
 
     <section class="io-shell io-codebase">
       <div>
-        <p class="io-kicker">Public ou privé</p>
-        <h2>Le choix important n’est pas seulement visuel.</h2>
+        <p class="io-kicker">{copy.codebase.kicker}</p>
+        <h2>{copy.codebase.title}</h2>
       </div>
       <div class="io-codebase-grid">
         <article>
           <span><IoNodeIcon name="standard" /></span>
-          <h3>Base publique</h3>
-          <p>Adaptée aux sites vitrines cadrés, livrés vite, avec séparation logique et maintenance légère.</p>
+          <h3>{copy.codebase.publicTitle}</h3>
+          <p>{copy.codebase.publicBody}</p>
         </article>
         <article>
           <span><IoNodeIcon name="build" /></span>
-          <h3>Codebase privée</h3>
-          <p>Utile quand il faut une structure dédiée, un handoff plus poussé ou une évolution spécifique.</p>
+          <h3>{copy.codebase.privateTitle}</h3>
+          <p>{copy.codebase.privateBody}</p>
         </article>
       </div>
     </section>
 
     <section class="io-shell io-process">
       <div class="io-section-head">
-        <p class="io-kicker">Workflow</p>
-        <h2>Les exemples servent à cadrer le bon format, pas à vendre un template.</h2>
+        <p class="io-kicker">{copy.processHead.kicker}</p>
+        <h2>{copy.processHead.title}</h2>
       </div>
       <IoProcessMap steps={steps} />
     </section>
 
     <section class="io-shell io-final-cta">
-      <h2>Lancer une présence web sans surconstruire.</h2>
-      <p>Commencez par un niveau clair. Si le besoin dépasse la présence web cadrée, on passe vers l’administrable ou le cadrage technique.</p>
+      <h2>{copy.finalCta.title}</h2>
+      <p>{copy.finalCta.body}</p>
       <div class="io-actions">
-        <a class="io-btn io-btn-primary" href="/choose-template?plan=essential999">Voir les projets dès 999 CHF</a>
-        <a class="io-btn io-btn-secondary" href="/cadrage-technique">Cadrer avant de lancer</a>
+        <a class="io-btn io-btn-primary" href="/choose-template?plan=essential999">{copy.finalCta.primary}</a>
+        <a class="io-btn io-btn-secondary" href="/cadrage-technique">{copy.finalCta.secondary}</a>
       </div>
     </section>
   </main>

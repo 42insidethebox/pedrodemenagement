@@ -28,15 +28,13 @@ export interface Props {
 
 const { metadata = {}, brandKey, styleVars = {}, lang } = Astro.props as Props;
 const tenantFromLocals = Astro.locals?.tenant as { brandKey?: BrandKey; slug?: BrandKey } | undefined;
-const resolvedBrandKey = (
-  brandKey ||
+const resolvedBrandKey = (brandKey ||
   tenantFromLocals?.brandKey ||
   tenantFromLocals?.slug ||
-  getBrandFromHost(Astro.request?.headers.get('host'))
-) as BrandKey;
+  getBrandFromHost(Astro.request?.headers.get('host'))) as BrandKey;
 const { textDirection } = I18N;
 const path = Astro.url?.pathname || '/';
-const match = path.match(/^\/(fr|en|de|it)(?=\/|$)/);
+const match = path.match(/^\/(?:(?:iopartner|tonsiteweb)\/)?(fr|en|de|it)(?=\/|$)/);
 const language = lang || (match && match[1]) || 'fr';
 const siteName = BRANDS[resolvedBrandKey]?.name;
 ---

@@ -4,7 +4,7 @@ import { BRANDS } from './lib/brands.config';
 import type { BrandKey } from './lib/brand';
 
 type Navigation = {
-  links: { text: string; href: string }[];
+  links: { text: string; href?: string; links?: { text: string; href: string }[] }[];
   actions: { text: string; href: string }[];
   brandName?: string;
   brandKey?: BrandKey;
@@ -15,9 +15,12 @@ type FooterNavigation = {
   secondaryLinks: { text: string; href: string }[];
   socialLinks: { ariaLabel: string; icon: string; href: string }[];
   footNote: string;
+  brandName?: string;
 };
 
-type NavigationBrand = Pick<BrandProfile, 'name' | 'email' | 'phone' | 'legalOperator'> & { key?: BrandKey };
+type NavigationBrand = Pick<BrandProfile, 'name' | 'shortName' | 'email' | 'phone' | 'legalOperator'> & {
+  key?: BrandKey;
+};
 
 const lceT = <T>(locale: string, fr: T, en: T, de: T, it: T, ar?: T, zh?: T): T => {
   if (locale === 'en') return en;
@@ -52,7 +55,7 @@ export const buildHeaderData = (brand: NavigationBrand & { key?: BrandKey }, loc
           links: [
             {
               text: isIoPartner
-                ? tonT(locale, 'Cadrage technique', 'Technical consulting', 'Technische Beratung', 'Consulenza tecnica')
+                ? tonT(locale, 'Cadrage technique', 'Technical scoping', 'Technisches Scoping', 'Inquadramento tecnico')
                 : tonT(
                     locale,
                     'Consulting technique',
@@ -93,9 +96,9 @@ export const buildHeaderData = (brand: NavigationBrand & { key?: BrandKey }, loc
                 ? tonT(
                     locale,
                     'Présence web cadrée',
-                    'Standard deployment',
-                    'Standard-Deployment',
-                    'Deployment standard'
+                    'Scoped web presence',
+                    'Klare Web-Präsenz',
+                    'Presenza web strutturata'
                   )
                 : tonT(
                     locale,
@@ -117,7 +120,7 @@ export const buildHeaderData = (brand: NavigationBrand & { key?: BrandKey }, loc
           text: tonT(locale, 'Modèles', 'Templates', 'Vorlagen', 'Modelli'),
           href: isIoPartner ? getPermalink('/presence-web-cadree#modeles') : getPermalink('/choose-template'),
         },
-        { text: 'FAQ', href: getPermalink('/contact#faq') },
+        { text: 'FAQ', href: getPermalink('/faq') },
         { text: tonT(locale, 'Contact', 'Contact', 'Kontakt', 'Contatto'), href: getPermalink('/contact') },
       ]
     : brand.key === 'laclemanexperience'
@@ -351,7 +354,7 @@ export const buildFooterData = (brand: NavigationBrand, locale: string = 'fr'): 
           href: getPermalink('/contact#form'),
         },
         ...(brand.email ? [{ text: brand.email, href: `mailto:${brand.email}` }] : []),
-        ...(brand.phone ? [{ text: brand.phone, href: `tel:${brand.phone.replace(/\s+/g, '')}` }] : []),
+        ...(!isIoPartner && brand.phone ? [{ text: brand.phone, href: `tel:${brand.phone.replace(/\s+/g, '')}` }] : []),
       ]
     : brand.key === 'laclemanexperience'
       ? [
@@ -400,9 +403,9 @@ export const buildFooterData = (brand: NavigationBrand, locale: string = 'fr'): 
                   ? tonT(
                       locale,
                       'Cadrage technique',
-                      'Technical consulting',
-                      'Technische Beratung',
-                      'Consulenza tecnica'
+                      'Technical scoping',
+                      'Technisches Scoping',
+                      'Inquadramento tecnico'
                     )
                   : tonT(
                       locale,
@@ -444,9 +447,9 @@ export const buildFooterData = (brand: NavigationBrand, locale: string = 'fr'): 
                   ? tonT(
                       locale,
                       'Présence web cadrée',
-                      'Standard deployment',
-                      'Standard-Deployment',
-                      'Deployment standard'
+                      'Scoped web presence',
+                      'Klare Web-Präsenz',
+                      'Presenza web strutturata'
                     )
                   : tonT(
                       locale,
@@ -471,7 +474,7 @@ export const buildFooterData = (brand: NavigationBrand, locale: string = 'fr'): 
                 text: tonT(locale, 'Modèles', 'Templates', 'Vorlagen', 'Modelli'),
                 href: isIoPartner ? getPermalink('/presence-web-cadree#modeles') : getPermalink('/choose-template'),
               },
-              { text: tonT(locale, 'FAQ', 'FAQ', 'FAQ', 'FAQ'), href: getPermalink('/contact#faq') },
+              { text: tonT(locale, 'FAQ', 'FAQ', 'FAQ', 'FAQ'), href: getPermalink('/faq') },
             ],
           },
           {

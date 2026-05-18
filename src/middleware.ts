@@ -58,7 +58,11 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   }
 
   const url = new URL(context.request.url);
-  const hostCandidates = [context.request.headers.get('x-forwarded-host'), context.request.headers.get('host'), url.host]
+  const hostCandidates = [
+    context.request.headers.get('x-forwarded-host'),
+    context.request.headers.get('host'),
+    url.host,
+  ]
     .flatMap((value) => (value || '').split(','))
     .map((value) => value.trim().toLowerCase().split(':')[0])
     .filter(Boolean);
@@ -103,9 +107,7 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
     const country = countryFromRequest(context.request);
     const bypassToken = context.request.headers.get('x-geo-bypass-token');
     const bypassEnabled =
-      !!process.env.SWISS_IP_BYPASS_TOKEN &&
-      !!bypassToken &&
-      bypassToken === process.env.SWISS_IP_BYPASS_TOKEN;
+      !!process.env.SWISS_IP_BYPASS_TOKEN && !!bypassToken && bypassToken === process.env.SWISS_IP_BYPASS_TOKEN;
 
     if (!bypassEnabled && country !== 'CH') {
       return forbiddenSwissOnlyResponse();
@@ -266,7 +268,13 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
 
   // Internally rewrite clean URLs to /tonsiteweb/* so Astro serves the right pages.
   // Skip tenant demo paths that live outside /tonsiteweb/*.
-  const TENANT_DEMO_PREFIXES = ['/maison-cortes', '/restaurant-demo', '/artisan-demo', '/therapie-demo', '/fiduciaire-demo'];
+  const TENANT_DEMO_PREFIXES = [
+    '/maison-cortes',
+    '/restaurant-demo',
+    '/artisan-demo',
+    '/therapie-demo',
+    '/fiduciaire-demo',
+  ];
   const isTenantDemoPath = TENANT_DEMO_PREFIXES.some((p) => url.pathname.startsWith(p));
   if (isTonsitewebHost && !shouldSkip && !isTenantDemoPath) {
     headers.set('x-tonsiteweb-rewrite', '1');
@@ -276,11 +284,7 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   if (!shouldSkip && basePath) {
     const hasPrefix = url.pathname.startsWith(basePath);
     const shouldStripPrefix = hasPrefix && resolved.preserveBasePath !== true;
-    const shouldAddPrefix =
-      basePath &&
-      !hasPrefix &&
-      resolved.source === 'host' &&
-      resolved.skipHostRewrite !== true;
+    const shouldAddPrefix = basePath && !hasPrefix && resolved.source === 'host' && resolved.skipHostRewrite !== true;
 
     if (shouldStripPrefix) {
       url.pathname = url.pathname.slice(basePath.length) || '/';
@@ -293,7 +297,18 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   // Inject tonsiteweb locale prefix from cookie so clean URLs serve translated pages.
   // e.g. /tonsiteweb/pricing + cookie aw_lang=de  →  renders /tonsiteweb/de/pricing (URL stays clean).
   // Only applies to pages that actually have locale-specific variants in en/de/it subdirectories.
-  const LOCALE_VARIANT_PATHS = ['/', '/pricing', '/about', '/contact', '/services', '/choose-template', '/custom-systems', '/thank-you', '/privacy', '/terms'];
+  const LOCALE_VARIANT_PATHS = [
+    '/',
+    '/pricing',
+    '/about',
+    '/contact',
+    '/services',
+    '/choose-template',
+    '/custom-systems',
+    '/thank-you',
+    '/privacy',
+    '/terms',
+  ];
   const isTonsitewebPath = url.pathname === '/tonsiteweb' || url.pathname.startsWith('/tonsiteweb/');
   if (!shouldSkip && isTonsitewebPath) {
     const afterBase = url.pathname.slice('/tonsiteweb'.length) || '/'; // e.g. /pricing or /
@@ -301,7 +316,12 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
     const hasLocaleVariant = LOCALE_VARIANT_PATHS.some((p) => afterBase === p || afterBase.startsWith(p + '/'));
     if (!alreadyLocale && hasLocaleVariant) {
       const rawCookie = context.request.headers.get('cookie') || '';
-      const cookieLang = rawCookie.split(';').map((c) => c.trim()).find((c) => c.startsWith('aw_lang='))?.split('=')[1]?.toLowerCase();
+      const cookieLang = rawCookie
+        .split(';')
+        .map((c) => c.trim())
+        .find((c) => c.startsWith('aw_lang='))
+        ?.split('=')[1]
+        ?.toLowerCase();
       if (cookieLang && ['en', 'de', 'it'].includes(cookieLang)) {
         url.pathname = `/tonsiteweb/${cookieLang}${afterBase === '/' ? '' : afterBase}`;
       }
@@ -316,12 +336,15 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
     '/about',
     '/contact',
     '/services',
+    '/systems-operations',
+    '/presence-web-cadree',
     '/choose-template',
     '/custom-systems',
     '/custom-tier',
     '/thank-you',
     '/privacy',
     '/terms',
+    '/faq',
     '/cadrage-technique',
     '/offre',
   ];
@@ -329,10 +352,17 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   if (!shouldSkip && isIopartnerPath) {
     const afterBase = url.pathname.slice('/iopartner'.length) || '/';
     const alreadyLocale = /^\/(en|de|it|fr)(\/|$)/.test(afterBase);
-    const hasLocaleVariant = IOPARTNER_LOCALE_VARIANT_PATHS.some((p) => afterBase === p || afterBase.startsWith(p + '/'));
+    const hasLocaleVariant = IOPARTNER_LOCALE_VARIANT_PATHS.some(
+      (p) => afterBase === p || afterBase.startsWith(p + '/')
+    );
     if (!alreadyLocale && hasLocaleVariant) {
       const rawCookie = context.request.headers.get('cookie') || '';
-      const cookieLang = rawCookie.split(';').map((c) => c.trim()).find((c) => c.startsWith('aw_lang='))?.split('=')[1]?.toLowerCase();
+      const cookieLang = rawCookie
+        .split(';')
+        .map((c) => c.trim())
+        .find((c) => c.startsWith('aw_lang='))
+        ?.split('=')[1]
+        ?.toLowerCase();
       if (cookieLang && ['en', 'de', 'it'].includes(cookieLang)) {
         url.pathname = `/iopartner/${cookieLang}${afterBase === '/' ? '' : afterBase}`;
       }

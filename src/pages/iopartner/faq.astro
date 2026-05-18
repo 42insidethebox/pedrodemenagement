@@ -1,0 +1,1210 @@
+---
+import { detectRequestLocale } from '~/lib/locale';
+import Layout from '~/layouts/PageLayout.astro';
+
+const locale = detectRequestLocale(Astro.request, Astro.url);
+
+const COPY = {
+  fr: {
+    metadata: {
+      title: 'FAQ — IOPartner',
+      description:
+        'Questions fréquentes IOPartner: cadrage technique, présence web cadrée, systèmes & opérations, processus et maintenance.',
+    },
+    kicker: 'FAQ',
+    title: 'FAQ — IOPartner',
+    lead: 'IOPartner structure les besoins techniques selon leur niveau réel de complexité. L’objectif n’est pas de pousser systématiquement vers du sur-mesure ou de l’infrastructure lourde, mais d’orienter chaque besoin vers le bon niveau de déploiement, d’autonomie et de complexité.',
+    sections: [
+      {
+        title: 'Général',
+        items: [
+          {
+            question: 'Que fait exactement IOPartner ?',
+            paragraphs: [
+              'IOPartner aide les PME et structures techniques à cadrer, structurer et déployer des systèmes adaptés à leur niveau réel de complexité.',
+              'Selon les cas, cela peut inclure des dashboards, de l’automatisation, du monitoring, du RBAC, des workflows, des outils internes, du VPS / Docker / DNS, des portails, de la continuité technique ou une présence web professionnelle.',
+            ],
+            bullets: [
+              'cadrage technique',
+              'déploiement opérationnel',
+              'outil ou workflow sur mesure',
+              'systèmes & opérations',
+              'présence web cadrée lorsque le besoin reste simple',
+            ],
+          },
+          {
+            question: 'Travaillez-vous uniquement sur des sites web ?',
+            paragraphs: ['Non. Les sites web représentent une partie des demandes.'],
+            bullets: [
+              'dashboards',
+              'workflows',
+              'monitoring',
+              'RBAC et gestion d’accès',
+              'automatisation',
+              'portails internes',
+              'onboarding',
+              'documentation opérationnelle',
+              'infrastructure et continuité',
+            ],
+          },
+          {
+            question: 'Travaillez-vous uniquement avec Linux ou l’open source ?',
+            paragraphs: [
+              'Non. IOPartner privilégie des solutions maintenables et cohérentes opérationnellement.',
+              'Dans beaucoup de cas, cela implique une infrastructure Linux ou open source côté backend, mais les environnements clients restent souvent hybrides: Windows, macOS, outils cloud existants, etc.',
+            ],
+          },
+          {
+            question: 'Êtes-vous une agence web classique ?',
+            paragraphs: [
+              'Non. Les sites web représentent simplement une des portes d’entrée possibles.',
+              'Le positionnement est davantage orienté vers le cadrage technique, les déploiements structurés, les systèmes & opérations, les workflows, l’automatisation et les architectures maintenables.',
+              'Selon le contexte, un projet peut rester très léger ou évoluer vers des besoins plus opérationnels et structurés.',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Présence web cadrée',
+        lead: 'Cette couche correspond surtout aux besoins simples et cadrés. Les projets plus opérationnels ou plus évolutifs passent ensuite vers des niveaux de déploiement et de structuration plus avancés.',
+        items: [
+          {
+            question: 'Que signifie “présence web cadrée” ?',
+            paragraphs: [
+              'Une présence web cadrée est pensée pour être livrée rapidement, rester maintenable, éviter la surcomplexité et fonctionner avec un périmètre clair.',
+              'Ce type de projet convient surtout aux structures souhaitant une présence professionnelle sans logique éditoriale lourde.',
+            ],
+          },
+          {
+            question: 'Que comprend l’offre dès 999 CHF ?',
+            bullets: [
+              'structure du site',
+              'design',
+              'responsive',
+              'intégration des contenus fournis',
+              'formulaire de contact',
+              'mise en ligne',
+              'déploiement cadré',
+            ],
+            paragraphs: ['Le périmètre exact dépend du projet validé.'],
+          },
+          {
+            question: 'Pourquoi les prix commencent-ils à 999 CHF ?',
+            paragraphs: [
+              'Parce que certains besoins restent simples lorsqu’ils sont correctement cadrés. L’objectif n’est pas de surconstruire une architecture lourde quand une présence claire et maintenable suffit.',
+            ],
+          },
+          {
+            question: 'Puis-je modifier mon site moi-même ?',
+            paragraphs: [
+              'Cela dépend du niveau d’autonomie souhaité. Le niveau “présence web cadrée” privilégie une architecture légère et contrôlée.',
+              'Pour des besoins plus évolutifs, un niveau de déploiement plus autonome peut être proposé.',
+            ],
+            bullets: ['sections administrables', 'actualités', 'offres du mois', 'blog', 'contenus dynamiques'],
+          },
+          {
+            question: 'Utilisez-vous WordPress ?',
+            paragraphs: [
+              'Oui, lorsque cela est cohérent avec le besoin. WordPress n’est pas utilisé par défaut.',
+              'Certaines structures ont besoin d’une autonomie éditoriale importante; d’autres préfèrent une architecture plus légère et plus simple à maintenir. Le choix dépend du niveau réel d’évolution attendu.',
+            ],
+          },
+          {
+            question: 'Pourquoi un site administrable coûte-t-il plus cher ?',
+            bullets: [
+              'plus de maintenance',
+              'plus de surface technique',
+              'plus de support',
+              'plus d’autonomie',
+              'plus de risques de régression',
+              'une architecture plus complexe',
+            ],
+            paragraphs: ['Le prix reflète surtout ce niveau d’autonomie et de maintenance.'],
+          },
+          {
+            question: 'Les modifications sont-elles incluses après livraison ?',
+            paragraphs: [
+              'Les ajustements mineurs raisonnables peuvent être traités ponctuellement selon le contexte. Les demandes impliquant une évolution structurelle ou fonctionnelle importante font généralement l’objet d’un nouveau cadrage ou d’une extension du scope.',
+            ],
+          },
+          {
+            question: 'Puis-je changer de prestataire plus tard ?',
+            paragraphs: [
+              'Oui. Les architectures légères mutualisées sont pensées pour conserver une séparation logique et une exportabilité raisonnable des contenus et médias.',
+              'L’objectif n’est pas de créer une dépendance artificielle.',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Cadrage technique',
+        items: [
+          {
+            question: 'Pourquoi proposer du cadrage technique à 60 CHF / 15 min ?',
+            paragraphs: ['Parce que certains sujets nécessitent surtout une décision claire, rapide et structurée.'],
+            bullets: ['mauvais choix', 'build inutile', 'coûts cachés', 'architecture disproportionnée'],
+          },
+          {
+            question: 'Quand faut-il choisir 15 min ou 1 heure ?',
+            paragraphs: [
+              '15 minutes conviennent surtout pour arbitrer rapidement, débloquer un choix, valider une direction ou clarifier un besoin.',
+              '1 heure convient mieux lorsqu’il faut cadrer un projet, comparer plusieurs options, analyser une stack ou structurer un déploiement.',
+            ],
+          },
+          {
+            question: 'Le cadrage débouche-t-il forcément sur un projet ?',
+            paragraphs: [
+              'Non. Le cadrage peut simplement aider à prendre une décision propre, même si le build est réalisé ailleurs ensuite.',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Systèmes & opérations',
+        items: [
+          {
+            question: 'Que signifie “systèmes & opérations” ?',
+            paragraphs: ['Cette couche concerne les besoins qui dépassent un simple site vitrine.'],
+            bullets: [
+              'dashboards',
+              'portails',
+              'workflows',
+              'monitoring',
+              'automatisation',
+              'RBAC',
+              'onboarding',
+              'documentation',
+              'API',
+              'infrastructure',
+              'continuité technique',
+            ],
+          },
+          {
+            question: 'Travaillez-vous sur des projets Linux, Docker ou VPS ?',
+            paragraphs: ['Oui. Selon les projets, IOPartner peut intervenir sur ces sujets.'],
+            bullets: [
+              'VPS',
+              'Docker',
+              'DNS',
+              'SSL',
+              'monitoring',
+              'reverse proxy',
+              'sauvegardes',
+              'automatisation',
+              'workflows',
+              'continuité opérationnelle',
+            ],
+          },
+          {
+            question: 'Faites-vous du DevOps ou de l’infrastructure ?',
+            paragraphs: [
+              'Dans certains cas oui, surtout pour des PME ou structures ayant besoin d’une couche opérationnelle plus structurée. Le niveau d’intervention dépend du cadrage.',
+            ],
+          },
+          {
+            question: 'Proposez-vous des dashboards ou outils internes ?',
+            paragraphs: [
+              'Oui. Cela peut inclure dashboards métier, workflows, portails internes, outils de suivi, automatisations, interfaces administrables ou systèmes hybrides.',
+            ],
+          },
+          {
+            question: 'Proposez-vous des systèmes multi-tenant ?',
+            paragraphs: [
+              'Oui, dans certains cas. Certaines architectures mutualisées permettent d’accélérer les déploiements tout en conservant une séparation logique des clients et une exportabilité raisonnable.',
+            ],
+          },
+          {
+            question: 'Comment gérez-vous la sécurité et les accès ?',
+            paragraphs: [
+              'Selon le projet, cela peut inclure séparation des accès, RBAC, MFA, monitoring, sauvegardes, documentation, continuité et architecture maintenable.',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Processus',
+        items: [
+          {
+            question: 'Comment démarre un projet ?',
+            ordered: [
+              'contexte',
+              'cadrage',
+              'validation du périmètre',
+              'déploiement',
+              'mise en ligne',
+              'suivi éventuel',
+            ],
+          },
+          {
+            question: 'Travaillez-vous uniquement en Suisse romande ?',
+            paragraphs: ['Principalement, mais certains projets peuvent être réalisés à distance selon le contexte.'],
+          },
+          {
+            question: 'Les prix incluent-ils la TVA ?',
+            paragraphs: [
+              'Cela dépend du statut TVA applicable au moment du projet. Le cadrage et les devis précisent toujours les conditions applicables.',
+            ],
+          },
+          {
+            question: 'Faites-vous de la maintenance ?',
+            paragraphs: [
+              'Oui, selon les projets. Certaines architectures nécessitent très peu de maintenance; d’autres impliquent un suivi plus actif.',
+            ],
+          },
+          {
+            question: 'Peut-on commencer petit puis évoluer ?',
+            paragraphs: [
+              'Oui. La logique de l’offre est pensée pour permettre une progression cohérente: présence web, autonomie éditoriale, puis systèmes & opérations.',
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  en: {
+    metadata: {
+      title: 'FAQ — IOPartner',
+      description:
+        'IOPartner FAQ: technical scoping, scoped web presence, systems & operations, process, and maintenance.',
+    },
+    kicker: 'FAQ',
+    title: 'FAQ — IOPartner',
+    lead: 'IOPartner structures technical needs by their real level of complexity. The point is not to push every request toward custom work or heavy infrastructure, but to route each need to the right level of deployment, autonomy, and complexity.',
+    sections: [
+      {
+        title: 'General',
+        items: [
+          {
+            question: 'What exactly does IOPartner do?',
+            paragraphs: [
+              'IOPartner helps SMEs and technical teams scope, structure, and deploy systems that match their real level of complexity.',
+              'Depending on the case, this can include dashboards, automation, monitoring, RBAC, workflows, internal tools, VPS / Docker / DNS, portals, technical continuity, or a professional web presence.',
+            ],
+            bullets: [
+              'technical scoping',
+              'operational deployment',
+              'custom tool or workflow',
+              'systems & operations',
+              'scoped web presence when the need is simple',
+            ],
+          },
+          {
+            question: 'Do you only work on websites?',
+            paragraphs: ['No. Websites are only one part of the requests.'],
+            bullets: [
+              'dashboards',
+              'workflows',
+              'monitoring',
+              'RBAC and access management',
+              'automation',
+              'internal portals',
+              'onboarding',
+              'operational documentation',
+              'infrastructure and continuity',
+            ],
+          },
+          {
+            question: 'Do you only work with Linux or open source?',
+            paragraphs: [
+              'No. IOPartner prioritizes maintainable and operationally coherent solutions.',
+              'In many cases this means Linux or open-source infrastructure on the backend, but client environments are often hybrid: Windows, macOS, existing cloud tools, and so on.',
+            ],
+          },
+          {
+            question: 'Are you a classic web agency?',
+            paragraphs: [
+              'No. Websites are simply one possible entry point.',
+              'The positioning is more focused on technical scoping, structured deployments, systems & operations, workflows, automation, and maintainable architectures.',
+              'Depending on the context, a project can stay very light or move toward more operational and structured needs.',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Scoped Web Presence',
+        lead: 'This layer is mainly for simple, well-scoped needs. More operational or evolving projects usually move toward more advanced deployment and structure.',
+        items: [
+          {
+            question: 'What does “scoped web presence” mean?',
+            paragraphs: [
+              'A scoped web presence is designed to ship quickly, stay maintainable, avoid unnecessary complexity, and work within a clear perimeter.',
+              'It is best suited to organizations that need a professional presence without heavy editorial logic.',
+            ],
+          },
+          {
+            question: 'What is included from CHF 999?',
+            bullets: [
+              'site structure',
+              'design',
+              'responsive layout',
+              'integration of provided content',
+              'contact form',
+              'go-live',
+              'scoped deployment',
+            ],
+            paragraphs: ['The exact scope depends on the validated project.'],
+          },
+          {
+            question: 'Why do prices start at CHF 999?',
+            paragraphs: [
+              'Because some needs remain simple when they are scoped correctly. The goal is not to overbuild a heavy architecture when a clear and maintainable presence is enough.',
+            ],
+          },
+          {
+            question: 'Can I edit the site myself?',
+            paragraphs: [
+              'It depends on the level of autonomy required. The scoped web presence favors a lightweight and controlled architecture.',
+              'For more evolving needs, a more autonomous deployment level can be proposed.',
+            ],
+            bullets: ['editable sections', 'news', 'monthly offers', 'blog', 'dynamic content'],
+          },
+          {
+            question: 'Do you use WordPress?',
+            paragraphs: [
+              'Yes, when it is coherent with the need. WordPress is not used by default.',
+              'Some organizations need significant editorial autonomy; others prefer a lighter and easier-to-maintain architecture. The choice depends on the real expected evolution.',
+            ],
+          },
+          {
+            question: 'Why does an editable site cost more?',
+            bullets: [
+              'more maintenance',
+              'more technical surface',
+              'more support',
+              'more autonomy',
+              'more regression risk',
+              'a more complex architecture',
+            ],
+            paragraphs: ['The price mainly reflects that level of autonomy and maintenance.'],
+          },
+          {
+            question: 'Are changes included after delivery?',
+            paragraphs: [
+              'Reasonable minor adjustments can be handled occasionally depending on context. Requests that change the structure or functionality usually require a new scope or extension.',
+            ],
+          },
+          {
+            question: 'Can I switch provider later?',
+            paragraphs: [
+              'Yes. Lightweight shared architectures are designed to keep logical separation and reasonable exportability for content and media.',
+              'The goal is not to create artificial lock-in.',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Technical Scoping',
+        items: [
+          {
+            question: 'Why offer technical scoping at CHF 60 / 15 min?',
+            paragraphs: ['Because some topics mostly need a clear, quick, structured decision.'],
+            bullets: ['bad choices', 'unnecessary build', 'hidden costs', 'disproportionate architecture'],
+          },
+          {
+            question: 'When should I choose 15 minutes or 1 hour?',
+            paragraphs: [
+              '15 minutes is best for a quick arbitration, unblocking a choice, validating a direction, or clarifying a need.',
+              '1 hour is better when a project has to be scoped, several options compared, a stack analyzed, or a deployment structured.',
+            ],
+          },
+          {
+            question: 'Does scoping always lead to a project?',
+            paragraphs: [
+              'No. Scoping can simply help you make a clean decision, even if the build is done elsewhere afterwards.',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Systems & Operations',
+        items: [
+          {
+            question: 'What does “systems & operations” mean?',
+            paragraphs: ['This layer covers needs that go beyond a simple brochure site.'],
+            bullets: [
+              'dashboards',
+              'portals',
+              'workflows',
+              'monitoring',
+              'automation',
+              'RBAC',
+              'onboarding',
+              'documentation',
+              'API',
+              'infrastructure',
+              'technical continuity',
+            ],
+          },
+          {
+            question: 'Do you work on Linux, Docker, or VPS projects?',
+            paragraphs: ['Yes. Depending on the project, IOPartner can work on these areas.'],
+            bullets: [
+              'VPS',
+              'Docker',
+              'DNS',
+              'SSL',
+              'monitoring',
+              'reverse proxy',
+              'backups',
+              'automation',
+              'workflows',
+              'operational continuity',
+            ],
+          },
+          {
+            question: 'Do you provide DevOps or infrastructure work?',
+            paragraphs: [
+              'In some cases, yes, especially for SMEs that need a more structured operational layer. The level of intervention depends on the scoping.',
+            ],
+          },
+          {
+            question: 'Do you build dashboards or internal tools?',
+            paragraphs: [
+              'Yes. This can include business dashboards, workflows, internal portals, tracking tools, automations, admin interfaces, or hybrid systems.',
+            ],
+          },
+          {
+            question: 'Do you build multi-tenant systems?',
+            paragraphs: [
+              'Yes, in some cases. Shared architectures can accelerate deployment while preserving logical client separation and reasonable exportability.',
+            ],
+          },
+          {
+            question: 'How do you handle security and access?',
+            paragraphs: [
+              'Depending on the project, this can include access separation, RBAC, MFA, monitoring, backups, documentation, continuity, and maintainable architecture.',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Process',
+        items: [
+          {
+            question: 'How does a project start?',
+            ordered: ['context', 'scoping', 'scope validation', 'deployment', 'go-live', 'possible follow-up'],
+          },
+          {
+            question: 'Do you only work in French-speaking Switzerland?',
+            paragraphs: ['Mainly, but some projects can be handled remotely depending on the context.'],
+          },
+          {
+            question: 'Do prices include VAT?',
+            paragraphs: [
+              'It depends on the VAT status applicable at the time of the project. Scoping and quotes always specify the applicable conditions.',
+            ],
+          },
+          {
+            question: 'Do you provide maintenance?',
+            paragraphs: [
+              'Yes, depending on the project. Some architectures need very little maintenance; others require more active follow-up.',
+            ],
+          },
+          {
+            question: 'Can we start small and evolve later?',
+            paragraphs: [
+              'Yes. The offer is designed for a coherent progression: web presence, editorial autonomy, then systems & operations.',
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  de: {
+    metadata: {
+      title: 'FAQ — IOPartner',
+      description: 'IOPartner FAQ: technisches Scoping, klare Web-Präsenz, Systeme & Betrieb, Prozess und Wartung.',
+    },
+    kicker: 'FAQ',
+    title: 'FAQ — IOPartner',
+    lead: 'IOPartner strukturiert technische Bedürfnisse nach ihrer realen Komplexität. Ziel ist nicht, jede Anfrage in Custom-Arbeit oder schwere Infrastruktur zu drücken, sondern den passenden Grad an Deployment, Autonomie und Komplexität zu wählen.',
+    sections: [
+      {
+        title: 'Allgemein',
+        items: [
+          {
+            question: 'Was macht IOPartner genau?',
+            paragraphs: [
+              'IOPartner hilft KMU und technischen Teams, Systeme passend zur realen Komplexität zu scopen, zu strukturieren und zu deployen.',
+              'Je nach Fall umfasst das Dashboards, Automatisierung, Monitoring, RBAC, Workflows, interne Tools, VPS / Docker / DNS, Portale, technische Kontinuität oder eine professionelle Web-Präsenz.',
+            ],
+            bullets: [
+              'technisches Scoping',
+              'operatives Deployment',
+              'Custom-Tool oder Workflow',
+              'Systeme & Betrieb',
+              'klare Web-Präsenz, wenn der Bedarf einfach bleibt',
+            ],
+          },
+          {
+            question: 'Arbeiten Sie nur an Websites?',
+            paragraphs: ['Nein. Websites sind nur ein Teil der Anfragen.'],
+            bullets: [
+              'Dashboards',
+              'Workflows',
+              'Monitoring',
+              'RBAC und Zugriffsverwaltung',
+              'Automatisierung',
+              'interne Portale',
+              'Onboarding',
+              'operative Dokumentation',
+              'Infrastruktur und Kontinuität',
+            ],
+          },
+          {
+            question: 'Arbeiten Sie nur mit Linux oder Open Source?',
+            paragraphs: [
+              'Nein. IOPartner priorisiert wartbare und operativ stimmige Lösungen.',
+              'Oft bedeutet das Linux oder Open Source im Backend, aber Kundenumgebungen sind häufig hybrid: Windows, macOS, bestehende Cloud-Tools und weitere Systeme.',
+            ],
+          },
+          {
+            question: 'Sind Sie eine klassische Webagentur?',
+            paragraphs: [
+              'Nein. Websites sind nur ein möglicher Einstieg.',
+              'Die Arbeit ist stärker auf technisches Scoping, strukturierte Deployments, Systeme & Betrieb, Workflows, Automatisierung und wartbare Architekturen ausgerichtet.',
+              'Je nach Kontext kann ein Projekt leicht bleiben oder in operativere und strukturiertere Themen übergehen.',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Klare Web-Präsenz',
+        lead: 'Diese Ebene passt vor allem für einfache und klar abgegrenzte Bedürfnisse. Operativere oder stärker evolutive Projekte wechseln meist in höhere Deployment- und Strukturierungsstufen.',
+        items: [
+          {
+            question: 'Was bedeutet “klare Web-Präsenz”?',
+            paragraphs: [
+              'Eine klare Web-Präsenz soll schnell geliefert werden, wartbar bleiben, unnötige Komplexität vermeiden und mit einem klaren Umfang funktionieren.',
+              'Sie passt vor allem zu Organisationen, die eine professionelle Präsenz ohne schwere Redaktionslogik brauchen.',
+            ],
+          },
+          {
+            question: 'Was ist ab CHF 999 enthalten?',
+            bullets: [
+              'Sitestruktur',
+              'Design',
+              'responsive Umsetzung',
+              'Integration gelieferter Inhalte',
+              'Kontaktformular',
+              'Go-live',
+              'abgegrenztes Deployment',
+            ],
+            paragraphs: ['Der genaue Umfang hängt vom validierten Projekt ab.'],
+          },
+          {
+            question: 'Warum beginnen die Preise bei CHF 999?',
+            paragraphs: [
+              'Weil manche Bedürfnisse einfach bleiben, wenn sie sauber abgegrenzt werden. Ziel ist nicht, eine schwere Architektur zu bauen, wenn eine klare und wartbare Präsenz reicht.',
+            ],
+          },
+          {
+            question: 'Kann ich die Website selbst bearbeiten?',
+            paragraphs: [
+              'Das hängt vom gewünschten Autonomiegrad ab. Die klare Web-Präsenz setzt auf eine leichte und kontrollierte Architektur.',
+              'Für stärker evolutive Bedürfnisse kann ein autonomeres Deployment vorgeschlagen werden.',
+            ],
+            bullets: ['editierbare Sektionen', 'News', 'Monatsangebote', 'Blog', 'dynamische Inhalte'],
+          },
+          {
+            question: 'Nutzen Sie WordPress?',
+            paragraphs: [
+              'Ja, wenn es zum Bedarf passt. WordPress wird nicht standardmässig eingesetzt.',
+              'Manche Organisationen brauchen viel redaktionelle Autonomie; andere bevorzugen eine leichtere und einfacher wartbare Architektur. Die Wahl hängt von der real erwarteten Entwicklung ab.',
+            ],
+          },
+          {
+            question: 'Warum kostet eine editierbare Website mehr?',
+            bullets: [
+              'mehr Wartung',
+              'grössere technische Fläche',
+              'mehr Support',
+              'mehr Autonomie',
+              'höheres Regressionsrisiko',
+              'komplexere Architektur',
+            ],
+            paragraphs: ['Der Preis bildet vor allem diesen Autonomie- und Wartungsgrad ab.'],
+          },
+          {
+            question: 'Sind Änderungen nach Lieferung enthalten?',
+            paragraphs: [
+              'Vernünftige kleine Anpassungen können je nach Kontext punktuell behandelt werden. Strukturelle oder funktionale Änderungen benötigen meist ein neues Scoping oder eine Erweiterung des Umfangs.',
+            ],
+          },
+          {
+            question: 'Kann ich später den Anbieter wechseln?',
+            paragraphs: [
+              'Ja. Leichte gemeinsame Architekturen sind so gedacht, dass logische Trennung und vernünftige Exportierbarkeit von Inhalten und Medien erhalten bleiben.',
+              'Ziel ist keine künstliche Abhängigkeit.',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Technisches Scoping',
+        items: [
+          {
+            question: 'Warum technisches Scoping für CHF 60 / 15 Min.?',
+            paragraphs: ['Weil manche Themen vor allem eine klare, schnelle und strukturierte Entscheidung brauchen.'],
+            bullets: [
+              'falsche Entscheidungen',
+              'unnötiger Build',
+              'versteckte Kosten',
+              'unverhältnismässige Architektur',
+            ],
+          },
+          {
+            question: 'Wann wählt man 15 Minuten oder 1 Stunde?',
+            paragraphs: [
+              '15 Minuten passen für schnelle Abwägung, das Lösen einer Blockade, die Validierung einer Richtung oder die Klärung eines Bedarfs.',
+              '1 Stunde passt besser, wenn ein Projekt gescoped, mehrere Optionen verglichen, eine Stack analysiert oder ein Deployment strukturiert werden muss.',
+            ],
+          },
+          {
+            question: 'Führt Scoping zwingend zu einem Projekt?',
+            paragraphs: [
+              'Nein. Scoping kann einfach helfen, eine saubere Entscheidung zu treffen, auch wenn der Build danach anderswo umgesetzt wird.',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Systeme & Betrieb',
+        items: [
+          {
+            question: 'Was bedeutet “Systeme & Betrieb”?',
+            paragraphs: ['Diese Ebene betrifft Bedürfnisse, die über eine einfache Website hinausgehen.'],
+            bullets: [
+              'Dashboards',
+              'Portale',
+              'Workflows',
+              'Monitoring',
+              'Automatisierung',
+              'RBAC',
+              'Onboarding',
+              'Dokumentation',
+              'API',
+              'Infrastruktur',
+              'technische Kontinuität',
+            ],
+          },
+          {
+            question: 'Arbeiten Sie an Linux-, Docker- oder VPS-Projekten?',
+            paragraphs: ['Ja. Je nach Projekt kann IOPartner in diesen Bereichen eingreifen.'],
+            bullets: [
+              'VPS',
+              'Docker',
+              'DNS',
+              'SSL',
+              'Monitoring',
+              'Reverse Proxy',
+              'Backups',
+              'Automatisierung',
+              'Workflows',
+              'operative Kontinuität',
+            ],
+          },
+          {
+            question: 'Machen Sie DevOps oder Infrastruktur?',
+            paragraphs: [
+              'In bestimmten Fällen ja, besonders für KMU, die eine strukturiertere operative Ebene brauchen. Der Eingriffsgrad hängt vom Scoping ab.',
+            ],
+          },
+          {
+            question: 'Bieten Sie Dashboards oder interne Tools an?',
+            paragraphs: [
+              'Ja. Das kann Business-Dashboards, Workflows, interne Portale, Tracking-Tools, Automatisierungen, Admin-Interfaces oder hybride Systeme umfassen.',
+            ],
+          },
+          {
+            question: 'Bieten Sie Multi-Tenant-Systeme an?',
+            paragraphs: [
+              'Ja, in bestimmten Fällen. Gemeinsame Architekturen können Deployments beschleunigen und trotzdem logische Kundentrennung und vernünftige Exportierbarkeit erhalten.',
+            ],
+          },
+          {
+            question: 'Wie gehen Sie mit Sicherheit und Zugriffen um?',
+            paragraphs: [
+              'Je nach Projekt umfasst das Zugriffstrennung, RBAC, MFA, Monitoring, Backups, Dokumentation, Kontinuität und wartbare Architektur.',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Prozess',
+        items: [
+          {
+            question: 'Wie startet ein Projekt?',
+            ordered: ['Kontext', 'Scoping', 'Validierung des Umfangs', 'Deployment', 'Go-live', 'mögliche Begleitung'],
+          },
+          {
+            question: 'Arbeiten Sie nur in der Romandie?',
+            paragraphs: ['Hauptsächlich, aber manche Projekte können je nach Kontext remote umgesetzt werden.'],
+          },
+          {
+            question: 'Enthalten die Preise die MwSt.?',
+            paragraphs: [
+              'Das hängt vom zum Projektzeitpunkt geltenden MwSt.-Status ab. Scoping und Offerten nennen immer die anwendbaren Bedingungen.',
+            ],
+          },
+          {
+            question: 'Machen Sie Wartung?',
+            paragraphs: [
+              'Ja, je nach Projekt. Manche Architekturen benötigen sehr wenig Wartung; andere brauchen aktivere Begleitung.',
+            ],
+          },
+          {
+            question: 'Kann man klein beginnen und später ausbauen?',
+            paragraphs: [
+              'Ja. Das Angebot ist auf eine kohärente Entwicklung ausgelegt: Web-Präsenz, redaktionelle Autonomie, dann Systeme & Betrieb.',
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  it: {
+    metadata: {
+      title: 'FAQ — IOPartner',
+      description:
+        'FAQ IOPartner: inquadramento tecnico, presenza web strutturata, sistemi & operazioni, processo e manutenzione.',
+    },
+    kicker: 'FAQ',
+    title: 'FAQ — IOPartner',
+    lead: 'IOPartner struttura i bisogni tecnici secondo il loro livello reale di complessità. L’obiettivo non è spingere ogni richiesta verso custom o infrastruttura pesante, ma orientare ogni bisogno verso il giusto livello di deployment, autonomia e complessità.',
+    sections: [
+      {
+        title: 'Generale',
+        items: [
+          {
+            question: 'Cosa fa esattamente IOPartner?',
+            paragraphs: [
+              'IOPartner aiuta PMI e team tecnici a inquadrare, strutturare e deployare sistemi adatti al loro livello reale di complessità.',
+              'A seconda del caso, questo può includere dashboard, automazione, monitoring, RBAC, workflow, strumenti interni, VPS / Docker / DNS, portali, continuità tecnica o una presenza web professionale.',
+            ],
+            bullets: [
+              'inquadramento tecnico',
+              'deployment operativo',
+              'strumento o workflow custom',
+              'sistemi & operazioni',
+              'presenza web strutturata quando il bisogno resta semplice',
+            ],
+          },
+          {
+            question: 'Lavorate solo su siti web?',
+            paragraphs: ['No. I siti web sono solo una parte delle richieste.'],
+            bullets: [
+              'dashboard',
+              'workflow',
+              'monitoring',
+              'RBAC e gestione accessi',
+              'automazione',
+              'portali interni',
+              'onboarding',
+              'documentazione operativa',
+              'infrastruttura e continuità',
+            ],
+          },
+          {
+            question: 'Lavorate solo con Linux o open source?',
+            paragraphs: [
+              'No. IOPartner privilegia soluzioni mantenibili e coerenti dal punto di vista operativo.',
+              'In molti casi questo implica Linux o open source lato backend, ma gli ambienti cliente sono spesso ibridi: Windows, macOS, strumenti cloud esistenti, ecc.',
+            ],
+          },
+          {
+            question: 'Siete una classica agenzia web?',
+            paragraphs: [
+              'No. I siti web sono semplicemente una possibile porta d’ingresso.',
+              'Il posizionamento è più orientato a inquadramento tecnico, deployment strutturati, sistemi & operazioni, workflow, automazione e architetture mantenibili.',
+              'A seconda del contesto, un progetto può restare leggero o evolvere verso bisogni più operativi e strutturati.',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Presenza web strutturata',
+        lead: 'Questo livello riguarda soprattutto bisogni semplici e ben delimitati. I progetti più operativi o evolutivi passano di solito verso livelli più avanzati di deployment e struttura.',
+        items: [
+          {
+            question: 'Cosa significa “presenza web strutturata”?',
+            paragraphs: [
+              'Una presenza web strutturata è pensata per essere consegnata rapidamente, restare mantenibile, evitare sovracomplessità e funzionare con un perimetro chiaro.',
+              'È adatta soprattutto a strutture che vogliono una presenza professionale senza logica editoriale pesante.',
+            ],
+          },
+          {
+            question: 'Cosa include l’offerta da CHF 999?',
+            bullets: [
+              'struttura del sito',
+              'design',
+              'responsive',
+              'integrazione dei contenuti forniti',
+              'form di contatto',
+              'messa online',
+              'deployment strutturato',
+            ],
+            paragraphs: ['Il perimetro esatto dipende dal progetto validato.'],
+          },
+          {
+            question: 'Perché i prezzi partono da CHF 999?',
+            paragraphs: [
+              'Perché alcuni bisogni restano semplici quando sono inquadrati correttamente. L’obiettivo non è costruire un’architettura pesante quando basta una presenza chiara e mantenibile.',
+            ],
+          },
+          {
+            question: 'Posso modificare il sito da solo?',
+            paragraphs: [
+              'Dipende dal livello di autonomia desiderato. La presenza web strutturata privilegia un’architettura leggera e controllata.',
+              'Per bisogni più evolutivi può essere proposto un livello di deployment più autonomo.',
+            ],
+            bullets: ['sezioni modificabili', 'notizie', 'offerte del mese', 'blog', 'contenuti dinamici'],
+          },
+          {
+            question: 'Usate WordPress?',
+            paragraphs: [
+              'Sì, quando è coerente con il bisogno. WordPress non viene usato di default.',
+              'Alcune strutture hanno bisogno di molta autonomia editoriale; altre preferiscono un’architettura più leggera e semplice da mantenere. La scelta dipende dall’evoluzione realmente prevista.',
+            ],
+          },
+          {
+            question: 'Perché un sito modificabile costa di più?',
+            bullets: [
+              'più manutenzione',
+              'più superficie tecnica',
+              'più supporto',
+              'più autonomia',
+              'più rischio di regressione',
+              'architettura più complessa',
+            ],
+            paragraphs: ['Il prezzo riflette soprattutto quel livello di autonomia e manutenzione.'],
+          },
+          {
+            question: 'Le modifiche sono incluse dopo la consegna?',
+            paragraphs: [
+              'Piccoli aggiustamenti ragionevoli possono essere gestiti puntualmente secondo il contesto. Le richieste strutturali o funzionali importanti richiedono di solito un nuovo inquadramento o un’estensione del perimetro.',
+            ],
+          },
+          {
+            question: 'Posso cambiare fornitore più tardi?',
+            paragraphs: [
+              'Sì. Le architetture leggere condivise sono pensate per mantenere separazione logica ed esportabilità ragionevole di contenuti e media.',
+              'L’obiettivo non è creare una dipendenza artificiale.',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Inquadramento tecnico',
+        items: [
+          {
+            question: 'Perché proporre inquadramento tecnico a CHF 60 / 15 min?',
+            paragraphs: ['Perché alcuni temi richiedono soprattutto una decisione chiara, rapida e strutturata.'],
+            bullets: ['scelte sbagliate', 'build inutile', 'costi nascosti', 'architettura sproporzionata'],
+          },
+          {
+            question: 'Quando scegliere 15 minuti o 1 ora?',
+            paragraphs: [
+              '15 minuti sono adatti per arbitrare rapidamente, sbloccare una scelta, validare una direzione o chiarire un bisogno.',
+              '1 ora è più adatta quando bisogna inquadrare un progetto, confrontare più opzioni, analizzare uno stack o strutturare un deployment.',
+            ],
+          },
+          {
+            question: 'L’inquadramento porta sempre a un progetto?',
+            paragraphs: [
+              'No. Può semplicemente aiutare a prendere una decisione pulita, anche se il build viene realizzato altrove.',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Sistemi & operazioni',
+        items: [
+          {
+            question: 'Cosa significa “sistemi & operazioni”?',
+            paragraphs: ['Questo livello riguarda bisogni che vanno oltre un semplice sito vetrina.'],
+            bullets: [
+              'dashboard',
+              'portali',
+              'workflow',
+              'monitoring',
+              'automazione',
+              'RBAC',
+              'onboarding',
+              'documentazione',
+              'API',
+              'infrastruttura',
+              'continuità tecnica',
+            ],
+          },
+          {
+            question: 'Lavorate su progetti Linux, Docker o VPS?',
+            paragraphs: ['Sì. A seconda del progetto, IOPartner può intervenire su questi temi.'],
+            bullets: [
+              'VPS',
+              'Docker',
+              'DNS',
+              'SSL',
+              'monitoring',
+              'reverse proxy',
+              'backup',
+              'automazione',
+              'workflow',
+              'continuità operativa',
+            ],
+          },
+          {
+            question: 'Fate DevOps o infrastruttura?',
+            paragraphs: [
+              'In alcuni casi sì, soprattutto per PMI che hanno bisogno di uno strato operativo più strutturato. Il livello di intervento dipende dall’inquadramento.',
+            ],
+          },
+          {
+            question: 'Proponete dashboard o strumenti interni?',
+            paragraphs: [
+              'Sì. Può includere dashboard métier, workflow, portali interni, strumenti di tracciamento, automazioni, interfacce amministrabili o sistemi ibridi.',
+            ],
+          },
+          {
+            question: 'Proponete sistemi multi-tenant?',
+            paragraphs: [
+              'Sì, in alcuni casi. Architetture condivise possono accelerare i deployment mantenendo separazione logica dei clienti ed esportabilità ragionevole.',
+            ],
+          },
+          {
+            question: 'Come gestite sicurezza e accessi?',
+            paragraphs: [
+              'A seconda del progetto, questo può includere separazione degli accessi, RBAC, MFA, monitoring, backup, documentazione, continuità e architettura mantenibile.',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Processo',
+        items: [
+          {
+            question: 'Come inizia un progetto?',
+            ordered: [
+              'contesto',
+              'inquadramento',
+              'validazione del perimetro',
+              'deployment',
+              'messa online',
+              'eventuale seguito',
+            ],
+          },
+          {
+            question: 'Lavorate solo nella Svizzera romanda?',
+            paragraphs: [
+              'Principalmente, ma alcuni progetti possono essere realizzati a distanza secondo il contesto.',
+            ],
+          },
+          {
+            question: 'I prezzi includono l’IVA?',
+            paragraphs: [
+              'Dipende dallo statuto IVA applicabile al momento del progetto. Inquadramento e preventivi precisano sempre le condizioni applicabili.',
+            ],
+          },
+          {
+            question: 'Fate manutenzione?',
+            paragraphs: [
+              'Sì, secondo i progetti. Alcune architetture richiedono pochissima manutenzione; altre implicano un seguito più attivo.',
+            ],
+          },
+          {
+            question: 'Si può iniziare piccolo e poi evolvere?',
+            paragraphs: [
+              'Sì. L’offerta è pensata per una progressione coerente: presenza web, autonomia editoriale, poi sistemi & operazioni.',
+            ],
+          },
+        ],
+      },
+    ],
+  },
+} as const;
+
+const copy = COPY[locale as keyof typeof COPY] ?? COPY.fr;
+---
+
+<Layout metadata={copy.metadata}>
+  <main class="io-faq-page">
+    <section class="io-faq-hero">
+      <div class="io-shell">
+        <p class="io-kicker">{copy.kicker}</p>
+        <h1>{copy.title}</h1>
+        <p>{copy.lead}</p>
+      </div>
+    </section>
+
+    <section class="io-shell io-faq-sections">
+      {
+        copy.sections.map((section: any) => (
+          <section class="io-faq-section">
+            <div class="io-faq-section-head">
+              <h2>{section.title}</h2>
+              {section.lead && <p>{section.lead}</p>}
+            </div>
+            <div class="io-faq-list">
+              {section.items.map((item: any) => (
+                <details>
+                  <summary>{item.question}</summary>
+                  <div class="io-faq-answer">
+                    {item.paragraphs?.map((paragraph: string) => (
+                      <p>{paragraph}</p>
+                    ))}
+                    {item.bullets && (
+                      <ul>
+                        {item.bullets.map((bullet: string) => (
+                          <li>{bullet}</li>
+                        ))}
+                      </ul>
+                    )}
+                    {item.ordered && (
+                      <ol>
+                        {item.ordered.map((step: string) => (
+                          <li>{step}</li>
+                        ))}
+                      </ol>
+                    )}
+                  </div>
+                </details>
+              ))}
+            </div>
+          </section>
+        ))
+      }
+    </section>
+  </main>
+
+  <style>
+    .io-faq-page {
+      --io-ink: #0f172a;
+      --io-muted: #5f6b7c;
+      --io-blue: #0b63f6;
+      --io-line: rgba(148, 163, 184, 0.22);
+      background:
+        linear-gradient(90deg, rgba(37, 99, 235, 0.045) 1px, transparent 1px),
+        linear-gradient(rgba(37, 99, 235, 0.045) 1px, transparent 1px), #f8fbff;
+      background-size:
+        34px 34px,
+        34px 34px,
+        auto;
+      color: var(--io-ink);
+    }
+
+    .io-shell {
+      width: min(100% - 2rem, 72rem);
+      margin-inline: auto;
+    }
+
+    .io-faq-hero {
+      padding: 4.8rem 0 3rem;
+    }
+
+    .io-faq-hero h1,
+    .io-faq-section h2 {
+      margin: 0;
+      font-weight: 850;
+      line-height: 1.04;
+    }
+
+    .io-faq-hero h1 {
+      font-size: clamp(2.4rem, 6vw, 4.8rem);
+    }
+
+    .io-faq-hero p {
+      max-width: 50rem;
+      margin: 1.25rem 0 0;
+      color: var(--io-muted);
+      font-size: 1.16rem;
+      line-height: 1.72;
+    }
+
+    .io-kicker {
+      margin: 0 0 1rem;
+      color: var(--io-blue);
+      font-size: 0.78rem;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    .io-faq-sections {
+      display: grid;
+      gap: 2.3rem;
+      padding-bottom: 5.5rem;
+    }
+
+    .io-faq-section {
+      display: grid;
+      grid-template-columns: minmax(12rem, 0.38fr) minmax(0, 1fr);
+      gap: 2rem;
+      align-items: start;
+      border-top: 1px solid var(--io-line);
+      padding-top: 2.3rem;
+    }
+
+    .io-faq-section:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .io-faq-section h2 {
+      font-size: 1.65rem;
+    }
+
+    .io-faq-section-head p {
+      margin: 0.9rem 0 0;
+      color: var(--io-muted);
+      line-height: 1.65;
+    }
+
+    .io-faq-list {
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    .io-faq-list details {
+      border: 1px solid var(--io-line);
+      border-radius: 0.9rem;
+      background: rgba(255, 255, 255, 0.82);
+      padding: 1.15rem 1.25rem;
+    }
+
+    .io-faq-list summary {
+      cursor: pointer;
+      color: var(--io-ink);
+      font-weight: 820;
+      line-height: 1.35;
+    }
+
+    .io-faq-answer {
+      display: grid;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      color: var(--io-muted);
+      line-height: 1.7;
+    }
+
+    .io-faq-answer p,
+    .io-faq-answer ul,
+    .io-faq-answer ol {
+      margin: 0;
+    }
+
+    .io-faq-answer ul,
+    .io-faq-answer ol {
+      padding-left: 1.25rem;
+    }
+
+    @media (max-width: 780px) {
+      .io-shell {
+        width: min(100% - 1rem, 72rem);
+      }
+
+      .io-faq-section {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
+  </style>
+</Layout>

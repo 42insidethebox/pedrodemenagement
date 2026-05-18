@@ -3,129 +3,635 @@ import IoNodeIcon from '~/components/iopartner/IoNodeIcon.astro';
 import IoProcessMap from '~/components/iopartner/IoProcessMap.astro';
 import Io02SvgLinesPathsCurves from '~/components/iopartner/visuals/Io02SvgLinesPathsCurves.astro';
 import IoPricingLayersVisual from '~/components/iopartner/visuals/IoPricingLayersVisual.astro';
+import { detectRequestLocale } from '~/lib/locale';
 import Layout from '~/layouts/PageLayout.astro';
 
-const metadata = {
-  title: 'Tarifs',
-  description:
-    'Tarifs IOPartner: cadrage technique, présence web cadrée, site administrable et systèmes & opérations, facturés en Suisse.',
-};
+const locale = detectRequestLocale(Astro.request, Astro.url);
 
-const processSteps = [
-  { label: '01', title: 'Cadrage', detail: 'Besoins & objectifs', icon: 'scope' },
-  { label: '02', title: 'Déploiement', detail: 'Build & intégration', icon: 'build' },
-  { label: '03', title: 'Mise en ligne', detail: 'Tests & validation', icon: 'deploy' },
-  { label: '04', title: 'Suivi', detail: 'Support & évolutions', icon: 'continuity' },
-];
+const COPY = {
+  fr: {
+    metadata: {
+      title: 'Tarifs',
+      description:
+        'Tarifs IOPartner: cadrage technique, présence web cadrée, site administrable et systèmes & opérations, facturés en Suisse.',
+    },
+    hero: {
+      kicker: 'Tarifs',
+      title: 'Des offres transparentes, facturées en Suisse.',
+      lead: 'Cadrage technique pour décider, présence web pour les sujets simples, puis un site administrable ou une logique système quand le besoin monte réellement.',
+    },
+    standard: {
+      label: 'Présence web cadrée',
+      kicker: 'Web presence workflow',
+      title: 'Pack Essentiel — dès 999 CHF',
+      body: 'Prix fixe pour un site vitrine professionnel. Livraison typique en 3-5 jours ouvrables selon vos contenus.',
+      note: 'Conçu pour les structures souhaitant une présence professionnelle sans maintenance éditoriale lourde.',
+      facts: ['3-5 jours', 'Contenu fourni', 'Prix fixe'],
+      cta: 'Commander maintenant',
+      small: '999 CHF — paiement unique',
+    },
+    matrixHead: {
+      kicker: 'Trois niveaux',
+      title: 'Le standard quand il suffit. Le sur mesure quand il faut.',
+    },
+    matrix: [
+      {
+        id: 'consulting',
+        kicker: 'Cadrage technique',
+        title: 'Décider vite',
+        price: '60 CHF / 15 min ou 140 CHF / h',
+        detail: 'Deux entrées payées selon la gravité du sujet.',
+        items: ['15 min: arbitrage rapide', '1 h: cadrage plus sérieux', 'Revue technique', 'Cadrage avant build'],
+        href: '/cadrage-technique',
+        cta: 'Voir les formats',
+      },
+      {
+        id: 'systems-operations',
+        kicker: 'Systèmes & opérations',
+        title: 'Construire proprement',
+        price: 'Sur devis',
+        detail: 'Architecture, backend, infrastructure, automatisation et continuité.',
+        items: ['VPS / Docker / DNS', 'API & dashboards', 'Monitoring', 'Workflows métier'],
+        href: '/systems-operations',
+        cta: 'Voir le workflow',
+        dark: true,
+      },
+      {
+        id: 'standard-deployment',
+        kicker: 'Présence web cadrée',
+        title: 'Lancer sans surconstruire',
+        price: 'Dès 999 CHF',
+        detail: 'Site vitrine professionnel, cadré, livré rapidement avec un périmètre défini.',
+        items: ['999 à 1 500 CHF', 'Architecture légère', 'Livraison cadrée', 'Évolutions ponctuelles'],
+        href: '/presence-web-cadree#offres',
+        cta: 'Voir les niveaux',
+      },
+    ],
+    autonomyHead: {
+      kicker: 'Niveaux d’évolution',
+      title: 'Le prix change surtout avec le niveau d’évolution attendu.',
+      body: 'Nous ne tarifons pas une technologie. Nous cadrons un besoin stable, éditable ou opérationnel.',
+    },
+    autonomyLevels: [
+      {
+        key: 'presence',
+        kicker: 'Niveau 1',
+        stage: 'Stable',
+        title: 'Présence web cadrée',
+        price: '999 à 1 500 CHF',
+        body: 'Conçu pour les structures souhaitant une présence professionnelle sans maintenance éditoriale lourde.',
+        items: ['Pages essentielles', 'Contenus intégrés', 'Contact simple', 'Maintenance légère'],
+      },
+      {
+        key: 'editorial',
+        kicker: 'Niveau 2',
+        stage: 'Éditable',
+        title: 'Site administrable & évolutif',
+        price: 'Dès 2 200 CHF',
+        body: 'Pour les structures qui souhaitent modifier certains contenus, publier des actualités ou faire vivre leur site plus régulièrement.',
+        items: [
+          'Interface d’administration',
+          'Sections éditables',
+          'Blog ou actualités',
+          'Environnement dédié selon besoin',
+        ],
+      },
+      {
+        key: 'systems',
+        kicker: 'Niveau 3',
+        stage: 'Opérationnel',
+        title: 'Systèmes & opérations',
+        price: 'Sur cadrage',
+        body: 'Pour les besoins qui dépassent le site vitrine: workflows, dashboards, automatisation, rôles et outils internes.',
+        items: ['Portails et dashboards', 'RBAC et rôles', 'Automatisation', 'Continuité technique'],
+      },
+    ],
+    extensions: {
+      kicker: 'Extensions opérationnelles',
+      title: 'Ajoutez seulement ce qui sert.',
+      items: [
+        ['communication', 'Communication & rendez-vous intégrés', '+250 CHF'],
+        ['automation', 'Automatisations simples & formulaires', 'à cadrer'],
+        ['handoff', 'Passation courte', 'incluse selon scope'],
+      ],
+    },
+    advanced: {
+      kicker: 'Seuil d’évolution',
+      title: 'Quand le site devient administrable, puis système.',
+      body: 'WordPress, headless CMS ou dashboard d’administration deviennent utiles quand l’autonomie éditoriale augmente. Quand le besoin dépasse cela, on passe en architecture, backend, automatisation et continuité.',
+      items: [
+        ['consulting', 'Cadrage technique', 'Arbitrage, cadrage, direction technique'],
+        ['build', 'Build systems', 'Développement, API, outils internes'],
+        ['systems', 'Infrastructure & operations', 'Environnements, monitoring, sécurité'],
+        ['continuity', 'Continuité technique', 'Support, incidents, évolutions'],
+      ],
+      cta: 'Voir systèmes & opérations',
+    },
+    systemsBand: {
+      kicker: 'Systèmes & opérations',
+      title: 'Une couche avancée, cadrée avant build.',
+      body: 'Portails, API, automatisations, Linux, Docker, DNS, SSL, monitoring et continuité ne se vendent pas comme un pack. Le scope vient après cadrage.',
+      stack: 'Docker · VPS · DNS · SSL · monitoring · workflows · API · dashboards',
+    },
+    processHead: { kicker: 'Parcours', title: 'Une séquence courte, lisible.' },
+    processSteps: [
+      { label: '01', title: 'Cadrage', detail: 'Besoins & objectifs', icon: 'scope' },
+      { label: '02', title: 'Déploiement', detail: 'Build & intégration', icon: 'build' },
+      { label: '03', title: 'Mise en ligne', detail: 'Tests & validation', icon: 'deploy' },
+      { label: '04', title: 'Suivi', detail: 'Support & évolutions', icon: 'continuity' },
+    ],
+    faqHead: { kicker: 'FAQ', title: 'Questions sur les tarifs' },
+    faqs: [
+      {
+        title: 'Les prix incluent-ils la TVA ?',
+        body: 'Oui, les montants publics sont affichés TTC et facturés en Suisse.',
+      },
+      {
+        title: 'Pourquoi commencer par 60 CHF / 15 min ?',
+        body: 'Parce qu’il faut une entrée légère. Si le sujet mérite plus de profondeur dès le départ, le format 1 heure à 140 CHF existe aussi.',
+      },
+      {
+        title: 'La présence web cadrée peut-elle évoluer ?',
+        body: 'Oui. On peut rester sur des évolutions ponctuelles, passer vers un site administrable, ou basculer en systèmes & opérations si le besoin change réellement.',
+      },
+      {
+        title: 'Quand faut-il un devis ?',
+        body: 'Dès que le sujet implique autonomie éditoriale plus large, codebase privée, backend, infrastructure, automatisation ou continuité technique.',
+      },
+    ],
+    finalCta: {
+      title: 'Choisir le bon niveau avant de payer trop de custom.',
+      body: 'Envoyez le contexte. Nous vous orientons vers cadrage, systèmes & opérations, ou présence web cadrée.',
+      primary: 'Envoyer le contexte',
+      secondary: 'Voir des projets livrés',
+    },
+  },
+  en: {
+    metadata: {
+      title: 'Pricing',
+      description:
+        'IOPartner pricing: technical scoping, scoped web presence, editable site, and systems & operations, billed in Switzerland.',
+    },
+    hero: {
+      kicker: 'Pricing',
+      title: 'Transparent offers, billed in Switzerland.',
+      lead: 'Technical scoping to decide, web presence for simple needs, then an editable site or systems logic when the need actually grows.',
+    },
+    standard: {
+      label: 'Scoped web presence',
+      kicker: 'Web presence workflow',
+      title: 'Essential Pack — from CHF 999',
+      body: 'Fixed price for a professional brochure site. Typical delivery in 3-5 business days depending on your content.',
+      note: 'Designed for organizations that want a professional presence without heavy editorial maintenance.',
+      facts: ['3-5 days', 'Provided content', 'Fixed price'],
+      cta: 'Order now',
+      small: 'CHF 999 — one-time payment',
+    },
+    matrixHead: { kicker: 'Three levels', title: 'Standard when it is enough. Custom when it is needed.' },
+    matrix: [
+      {
+        id: 'consulting',
+        kicker: 'Technical scoping',
+        title: 'Decide quickly',
+        price: 'CHF 60 / 15 min or CHF 140 / h',
+        detail: 'Two paid entry points depending on the seriousness of the topic.',
+        items: ['15 min: quick arbitration', '1 h: deeper scoping', 'Technical review', 'Scoping before build'],
+        href: '/cadrage-technique',
+        cta: 'View formats',
+      },
+      {
+        id: 'systems-operations',
+        kicker: 'Systems & operations',
+        title: 'Build cleanly',
+        price: 'Quoted',
+        detail: 'Architecture, backend, infrastructure, automation, and continuity.',
+        items: ['VPS / Docker / DNS', 'API & dashboards', 'Monitoring', 'Business workflows'],
+        href: '/systems-operations',
+        cta: 'View workflow',
+        dark: true,
+      },
+      {
+        id: 'standard-deployment',
+        kicker: 'Scoped web presence',
+        title: 'Launch without overbuilding',
+        price: 'From CHF 999',
+        detail: 'Professional brochure site, scoped and delivered quickly with a defined perimeter.',
+        items: ['CHF 999 to 1,500', 'Light architecture', 'Scoped delivery', 'Occasional evolutions'],
+        href: '/presence-web-cadree#offres',
+        cta: 'View levels',
+      },
+    ],
+    autonomyHead: {
+      kicker: 'Evolution levels',
+      title: 'Price mostly changes with the expected level of evolution.',
+      body: 'We do not price a technology. We scope a stable, editable, or operational need.',
+    },
+    autonomyLevels: [
+      {
+        key: 'presence',
+        kicker: 'Level 1',
+        stage: 'Stable',
+        title: 'Scoped web presence',
+        price: 'CHF 999 to 1,500',
+        body: 'Built for organizations that need a professional presence without heavy editorial maintenance.',
+        items: ['Essential pages', 'Integrated content', 'Simple contact', 'Light maintenance'],
+      },
+      {
+        key: 'editorial',
+        kicker: 'Level 2',
+        stage: 'Editable',
+        title: 'Editable & evolving site',
+        price: 'From CHF 2,200',
+        body: 'For organizations that want to edit content, publish updates, or make the site live more regularly.',
+        items: ['Admin interface', 'Editable sections', 'Blog or news', 'Dedicated environment when needed'],
+      },
+      {
+        key: 'systems',
+        kicker: 'Level 3',
+        stage: 'Operational',
+        title: 'Systems & operations',
+        price: 'After scoping',
+        body: 'For needs beyond a brochure site: workflows, dashboards, automation, roles, and internal tools.',
+        items: ['Portals and dashboards', 'RBAC and roles', 'Automation', 'Technical continuity'],
+      },
+    ],
+    extensions: {
+      kicker: 'Operational extensions',
+      title: 'Add only what is useful.',
+      items: [
+        ['communication', 'Integrated communication & appointments', '+CHF 250'],
+        ['automation', 'Simple automations & forms', 'to scope'],
+        ['handoff', 'Short handoff', 'included depending on scope'],
+      ],
+    },
+    advanced: {
+      kicker: 'Evolution threshold',
+      title: 'When the site becomes editable, then a system.',
+      body: 'WordPress, a headless CMS, or an admin dashboard become useful when editorial autonomy increases. Beyond that, the work moves into architecture, backend, automation, and continuity.',
+      items: [
+        ['consulting', 'Technical scoping', 'Arbitration, scoping, technical direction'],
+        ['build', 'Build systems', 'Development, API, internal tools'],
+        ['systems', 'Infrastructure & operations', 'Environments, monitoring, security'],
+        ['continuity', 'Technical continuity', 'Support, incidents, evolutions'],
+      ],
+      cta: 'View systems & operations',
+    },
+    systemsBand: {
+      kicker: 'Systems & operations',
+      title: 'An advanced layer, scoped before build.',
+      body: 'Portals, API, automations, Linux, Docker, DNS, SSL, monitoring, and continuity are not sold as a package. Scope comes after scoping.',
+      stack: 'Docker · VPS · DNS · SSL · monitoring · workflows · API · dashboards',
+    },
+    processHead: { kicker: 'Path', title: 'A short, readable sequence.' },
+    processSteps: [
+      { label: '01', title: 'Scoping', detail: 'Needs & objectives', icon: 'scope' },
+      { label: '02', title: 'Deployment', detail: 'Build & integration', icon: 'build' },
+      { label: '03', title: 'Go-live', detail: 'Tests & validation', icon: 'deploy' },
+      { label: '04', title: 'Follow-up', detail: 'Support & evolutions', icon: 'continuity' },
+    ],
+    faqHead: { kicker: 'FAQ', title: 'Pricing questions' },
+    faqs: [
+      {
+        title: 'Do prices include VAT?',
+        body: 'Yes, public prices are displayed VAT included and billed in Switzerland.',
+      },
+      {
+        title: 'Why start at CHF 60 / 15 min?',
+        body: 'Because there needs to be a light entry point. If the subject deserves more depth from the start, the CHF 140 one-hour format also exists.',
+      },
+      {
+        title: 'Can scoped web presence evolve?',
+        body: 'Yes. It can stay as occasional evolutions, move to an editable site, or shift into systems & operations if the need actually changes.',
+      },
+      {
+        title: 'When is a quote needed?',
+        body: 'When the subject involves broader editorial autonomy, private codebase, backend, infrastructure, automation, or technical continuity.',
+      },
+    ],
+    finalCta: {
+      title: 'Choose the right level before paying too much custom.',
+      body: 'Send the context. We route you toward scoping, systems & operations, or scoped web presence.',
+      primary: 'Send the context',
+      secondary: 'View delivered projects',
+    },
+  },
+  de: {
+    metadata: {
+      title: 'Preise',
+      description:
+        'IOPartner Preise: technisches Scoping, klare Web-Präsenz, editierbare Website und Systeme & Betrieb, in der Schweiz fakturiert.',
+    },
+    hero: {
+      kicker: 'Preise',
+      title: 'Transparente Angebote, in der Schweiz fakturiert.',
+      lead: 'Technisches Scoping für Entscheidungen, Web-Präsenz für einfache Themen, danach eine editierbare Site oder Systemlogik, wenn der Bedarf wirklich wächst.',
+    },
+    standard: {
+      label: 'Klare Web-Präsenz',
+      kicker: 'Web-Präsenz Workflow',
+      title: 'Essential Pack — ab CHF 999',
+      body: 'Fixpreis für eine professionelle Website. Typische Lieferung in 3-5 Arbeitstagen je nach Inhalt.',
+      note: 'Für Organisationen, die eine professionelle Präsenz ohne schwere redaktionelle Wartung wünschen.',
+      facts: ['3-5 Tage', 'Gelieferter Inhalt', 'Fixpreis'],
+      cta: 'Jetzt bestellen',
+      small: 'CHF 999 — einmalige Zahlung',
+    },
+    matrixHead: { kicker: 'Drei Ebenen', title: 'Standard, wenn er reicht. Custom, wenn es nötig ist.' },
+    matrix: [
+      {
+        id: 'consulting',
+        kicker: 'Technisches Scoping',
+        title: 'Schnell entscheiden',
+        price: 'CHF 60 / 15 Min. oder CHF 140 / h',
+        detail: 'Zwei bezahlte Einstiege je nach Ernsthaftigkeit des Themas.',
+        items: ['15 Min.: schnelle Abwägung', '1 h: tieferes Scoping', 'Technischer Review', 'Scoping vor Build'],
+        href: '/cadrage-technique',
+        cta: 'Formate ansehen',
+      },
+      {
+        id: 'systems-operations',
+        kicker: 'Systeme & Betrieb',
+        title: 'Sauber bauen',
+        price: 'Auf Offerte',
+        detail: 'Architektur, Backend, Infrastruktur, Automatisierung und Kontinuität.',
+        items: ['VPS / Docker / DNS', 'API & Dashboards', 'Monitoring', 'Business-Workflows'],
+        href: '/systems-operations',
+        cta: 'Workflow ansehen',
+        dark: true,
+      },
+      {
+        id: 'standard-deployment',
+        kicker: 'Klare Web-Präsenz',
+        title: 'Starten ohne Überbau',
+        price: 'Ab CHF 999',
+        detail: 'Professionelle Website, klar abgegrenzt und schnell geliefert.',
+        items: ['CHF 999 bis 1’500', 'Leichte Architektur', 'Abgegrenzte Lieferung', 'Punktuelle Entwicklungen'],
+        href: '/presence-web-cadree#offres',
+        cta: 'Ebenen ansehen',
+      },
+    ],
+    autonomyHead: {
+      kicker: 'Evolutionsstufen',
+      title: 'Der Preis ändert sich vor allem mit dem erwarteten Evolutionsgrad.',
+      body: 'Wir bepreisen keine Technologie. Wir scopen einen stabilen, editierbaren oder operativen Bedarf.',
+    },
+    autonomyLevels: [
+      {
+        key: 'presence',
+        kicker: 'Stufe 1',
+        stage: 'Stabil',
+        title: 'Klare Web-Präsenz',
+        price: 'CHF 999 bis 1’500',
+        body: 'Für Organisationen, die eine professionelle Präsenz ohne schwere redaktionelle Wartung brauchen.',
+        items: ['Essenzielle Seiten', 'Inhalte integriert', 'Einfacher Kontakt', 'Leichte Wartung'],
+      },
+      {
+        key: 'editorial',
+        kicker: 'Stufe 2',
+        stage: 'Editierbar',
+        title: 'Editierbare & evolutive Website',
+        price: 'Ab CHF 2’200',
+        body: 'Für Organisationen, die Inhalte ändern, News publizieren oder die Website regelmässiger pflegen wollen.',
+        items: ['Admin-Interface', 'Editierbare Sektionen', 'Blog oder News', 'Dedizierte Umgebung bei Bedarf'],
+      },
+      {
+        key: 'systems',
+        kicker: 'Stufe 3',
+        stage: 'Operativ',
+        title: 'Systeme & Betrieb',
+        price: 'Nach Scoping',
+        body: 'Für Bedürfnisse über die Website hinaus: Workflows, Dashboards, Automatisierung, Rollen und interne Tools.',
+        items: ['Portale und Dashboards', 'RBAC und Rollen', 'Automatisierung', 'Technische Kontinuität'],
+      },
+    ],
+    extensions: {
+      kicker: 'Operative Erweiterungen',
+      title: 'Nur hinzufügen, was dient.',
+      items: [
+        ['communication', 'Kommunikation & Termine integriert', '+CHF 250'],
+        ['automation', 'Einfache Automatisierungen & Formulare', 'zu scopen'],
+        ['handoff', 'Kurze Übergabe', 'je nach Scope enthalten'],
+      ],
+    },
+    advanced: {
+      kicker: 'Evolutionsschwelle',
+      title: 'Wenn die Website editierbar und dann zum System wird.',
+      body: 'WordPress, Headless CMS oder Admin-Dashboard werden sinnvoll, wenn die redaktionelle Autonomie steigt. Danach geht es um Architektur, Backend, Automatisierung und Kontinuität.',
+      items: [
+        ['consulting', 'Technisches Scoping', 'Abwägung, Scoping, technische Richtung'],
+        ['build', 'Systeme bauen', 'Entwicklung, API, interne Tools'],
+        ['systems', 'Infrastruktur & Betrieb', 'Umgebungen, Monitoring, Sicherheit'],
+        ['continuity', 'Technische Kontinuität', 'Support, Incidents, Entwicklungen'],
+      ],
+      cta: 'Systeme & Betrieb ansehen',
+    },
+    systemsBand: {
+      kicker: 'Systeme & Betrieb',
+      title: 'Eine fortgeschrittene Ebene, vor dem Build gescoped.',
+      body: 'Portale, API, Automatisierungen, Linux, Docker, DNS, SSL, Monitoring und Kontinuität werden nicht als Pack verkauft. Der Scope entsteht nach dem Scoping.',
+      stack: 'Docker · VPS · DNS · SSL · Monitoring · Workflows · API · Dashboards',
+    },
+    processHead: { kicker: 'Ablauf', title: 'Eine kurze, lesbare Sequenz.' },
+    processSteps: [
+      { label: '01', title: 'Scoping', detail: 'Bedarf & Ziele', icon: 'scope' },
+      { label: '02', title: 'Deployment', detail: 'Build & Integration', icon: 'build' },
+      { label: '03', title: 'Go-live', detail: 'Tests & Validierung', icon: 'deploy' },
+      { label: '04', title: 'Begleitung', detail: 'Support & Entwicklungen', icon: 'continuity' },
+    ],
+    faqHead: { kicker: 'FAQ', title: 'Fragen zu Preisen' },
+    faqs: [
+      {
+        title: 'Enthalten die Preise die MwSt.?',
+        body: 'Ja, öffentliche Beträge sind inkl. MwSt. angezeigt und werden in der Schweiz fakturiert.',
+      },
+      {
+        title: 'Warum mit CHF 60 / 15 Min. starten?',
+        body: 'Weil es einen leichten Einstieg braucht. Wenn das Thema von Anfang an mehr Tiefe benötigt, gibt es das 1-Stunden-Format für CHF 140.',
+      },
+      {
+        title: 'Kann sich die klare Web-Präsenz weiterentwickeln?',
+        body: 'Ja. Sie kann bei punktuellen Entwicklungen bleiben, zur editierbaren Website werden oder in Systeme & Betrieb wechseln, wenn der Bedarf wirklich wächst.',
+      },
+      {
+        title: 'Wann braucht es eine Offerte?',
+        body: 'Sobald es um breitere redaktionelle Autonomie, private Codebase, Backend, Infrastruktur, Automatisierung oder technische Kontinuität geht.',
+      },
+    ],
+    finalCta: {
+      title: 'Das richtige Niveau wählen, bevor zu viel Custom bezahlt wird.',
+      body: 'Senden Sie den Kontext. Wir führen Sie zu Scoping, Systeme & Betrieb oder klarer Web-Präsenz.',
+      primary: 'Kontext senden',
+      secondary: 'Gelieferte Projekte ansehen',
+    },
+  },
+  it: {
+    metadata: {
+      title: 'Prezzi',
+      description:
+        'Prezzi IOPartner: inquadramento tecnico, presenza web strutturata, sito modificabile e sistemi & operazioni, fatturati in Svizzera.',
+    },
+    hero: {
+      kicker: 'Prezzi',
+      title: 'Offerte trasparenti, fatturate in Svizzera.',
+      lead: 'Inquadramento tecnico per decidere, presenza web per bisogni semplici, poi sito modificabile o logica di sistema quando il bisogno cresce davvero.',
+    },
+    standard: {
+      label: 'Presenza web strutturata',
+      kicker: 'Workflow presenza web',
+      title: 'Pack Essential — da CHF 999',
+      body: 'Prezzo fisso per un sito vetrina professionale. Consegna tipica in 3-5 giorni lavorativi secondo i contenuti.',
+      note: 'Pensato per strutture che vogliono una presenza professionale senza manutenzione editoriale pesante.',
+      facts: ['3-5 giorni', 'Contenuto fornito', 'Prezzo fisso'],
+      cta: 'Ordina ora',
+      small: 'CHF 999 — pagamento unico',
+    },
+    matrixHead: { kicker: 'Tre livelli', title: 'Standard quando basta. Custom quando serve.' },
+    matrix: [
+      {
+        id: 'consulting',
+        kicker: 'Inquadramento tecnico',
+        title: 'Decidere rapidamente',
+        price: 'CHF 60 / 15 min o CHF 140 / h',
+        detail: 'Due ingressi a pagamento secondo la gravità del tema.',
+        items: [
+          '15 min: arbitraggio rapido',
+          '1 h: inquadramento più serio',
+          'Revisione tecnica',
+          'Inquadramento prima del build',
+        ],
+        href: '/cadrage-technique',
+        cta: 'Vedere i formati',
+      },
+      {
+        id: 'systems-operations',
+        kicker: 'Sistemi & operazioni',
+        title: 'Costruire pulito',
+        price: 'Su preventivo',
+        detail: 'Architettura, backend, infrastruttura, automazione e continuità.',
+        items: ['VPS / Docker / DNS', 'API & dashboard', 'Monitoring', 'Workflow métier'],
+        href: '/systems-operations',
+        cta: 'Vedere il workflow',
+        dark: true,
+      },
+      {
+        id: 'standard-deployment',
+        kicker: 'Presenza web strutturata',
+        title: 'Lanciare senza sovracostruire',
+        price: 'Da CHF 999',
+        detail: 'Sito vetrina professionale, inquadrato e consegnato rapidamente con un perimetro definito.',
+        items: ['CHF 999 a 1’500', 'Architettura leggera', 'Consegna inquadrata', 'Evoluzioni puntuali'],
+        href: '/presence-web-cadree#offres',
+        cta: 'Vedere i livelli',
+      },
+    ],
+    autonomyHead: {
+      kicker: 'Livelli di evoluzione',
+      title: 'Il prezzo cambia soprattutto con il livello di evoluzione atteso.',
+      body: 'Non quotiamo una tecnologia. Inquadriamo un bisogno stabile, modificabile o operativo.',
+    },
+    autonomyLevels: [
+      {
+        key: 'presence',
+        kicker: 'Livello 1',
+        stage: 'Stabile',
+        title: 'Presenza web strutturata',
+        price: 'CHF 999 a 1’500',
+        body: 'Per strutture che desiderano una presenza professionale senza manutenzione editoriale pesante.',
+        items: ['Pagine essenziali', 'Contenuti integrati', 'Contatto semplice', 'Manutenzione leggera'],
+      },
+      {
+        key: 'editorial',
+        kicker: 'Livello 2',
+        stage: 'Modificabile',
+        title: 'Sito modificabile & evolutivo',
+        price: 'Da CHF 2’200',
+        body: 'Per strutture che vogliono modificare contenuti, pubblicare notizie o far vivere il sito più regolarmente.',
+        items: ['Interfaccia admin', 'Sezioni modificabili', 'Blog o news', 'Ambiente dedicato secondo bisogno'],
+      },
+      {
+        key: 'systems',
+        kicker: 'Livello 3',
+        stage: 'Operativo',
+        title: 'Sistemi & operazioni',
+        price: 'Dopo inquadramento',
+        body: 'Per bisogni oltre il sito vetrina: workflow, dashboard, automazione, ruoli e strumenti interni.',
+        items: ['Portali e dashboard', 'RBAC e ruoli', 'Automazione', 'Continuità tecnica'],
+      },
+    ],
+    extensions: {
+      kicker: 'Estensioni operative',
+      title: 'Aggiungere solo ciò che serve.',
+      items: [
+        ['communication', 'Comunicazione & appuntamenti integrati', '+CHF 250'],
+        ['automation', 'Automazioni semplici & moduli', 'da inquadrare'],
+        ['handoff', 'Passaggio breve', 'incluso secondo scope'],
+      ],
+    },
+    advanced: {
+      kicker: 'Soglia di evoluzione',
+      title: 'Quando il sito diventa modificabile, poi sistema.',
+      body: 'WordPress, headless CMS o dashboard admin diventano utili quando l’autonomia editoriale aumenta. Quando il bisogno supera questo livello, si passa ad architettura, backend, automazione e continuità.',
+      items: [
+        ['consulting', 'Inquadramento tecnico', 'Arbitraggio, inquadramento, direzione tecnica'],
+        ['build', 'Build systems', 'Sviluppo, API, strumenti interni'],
+        ['systems', 'Infrastruttura & operazioni', 'Ambienti, monitoring, sicurezza'],
+        ['continuity', 'Continuità tecnica', 'Supporto, incidenti, evoluzioni'],
+      ],
+      cta: 'Vedere sistemi & operazioni',
+    },
+    systemsBand: {
+      kicker: 'Sistemi & operazioni',
+      title: 'Uno strato avanzato, inquadrato prima del build.',
+      body: 'Portali, API, automazioni, Linux, Docker, DNS, SSL, monitoring e continuità non si vendono come un pack. Lo scope arriva dopo l’inquadramento.',
+      stack: 'Docker · VPS · DNS · SSL · monitoring · workflow · API · dashboard',
+    },
+    processHead: { kicker: 'Percorso', title: 'Una sequenza breve e leggibile.' },
+    processSteps: [
+      { label: '01', title: 'Inquadramento', detail: 'Bisogni & obiettivi', icon: 'scope' },
+      { label: '02', title: 'Deployment', detail: 'Build & integrazione', icon: 'build' },
+      { label: '03', title: 'Messa online', detail: 'Test & validazione', icon: 'deploy' },
+      { label: '04', title: 'Seguito', detail: 'Supporto & evoluzioni', icon: 'continuity' },
+    ],
+    faqHead: { kicker: 'FAQ', title: 'Domande sui prezzi' },
+    faqs: [
+      {
+        title: 'I prezzi includono l’IVA?',
+        body: 'Sì, gli importi pubblici sono indicati IVA inclusa e fatturati in Svizzera.',
+      },
+      {
+        title: 'Perché iniziare da CHF 60 / 15 min?',
+        body: 'Perché serve un ingresso leggero. Se il tema merita più profondità dall’inizio, esiste anche il formato 1 ora a CHF 140.',
+      },
+      {
+        title: 'La presenza web strutturata può evolvere?',
+        body: 'Sì. Può restare su evoluzioni puntuali, passare a un sito modificabile o spostarsi verso sistemi & operazioni se il bisogno cambia davvero.',
+      },
+      {
+        title: 'Quando serve un preventivo?',
+        body: 'Quando il tema implica autonomia editoriale più ampia, codebase privato, backend, infrastruttura, automazione o continuità tecnica.',
+      },
+    ],
+    finalCta: {
+      title: 'Scegliere il livello giusto prima di pagare troppo custom.',
+      body: 'Invia il contesto. Ti orientiamo verso inquadramento, sistemi & operazioni o presenza web strutturata.',
+      primary: 'Invia il contesto',
+      secondary: 'Vedere progetti consegnati',
+    },
+  },
+} as const;
 
-const matrix: Array<{
-  id: string;
-  kicker: string;
-  title: string;
-  price: string;
-  detail: string;
-  items: string[];
-  href: string;
-  cta: string;
-  dark?: boolean;
-}> = [
-  {
-    id: 'consulting',
-    kicker: 'Cadrage technique',
-    title: 'Décider vite',
-    price: '60 CHF / 15 min ou 140 CHF / h',
-    detail: 'Deux entrées payées selon la gravité du sujet.',
-    items: ['15 min: arbitrage rapide', '1 h: cadrage plus sérieux', 'Revue technique', 'Cadrage avant build'],
-    href: '/cadrage-technique',
-    cta: 'Voir les formats',
-  },
-  {
-    id: 'systems-operations',
-    kicker: 'Systèmes & opérations',
-    title: 'Construire proprement',
-    price: 'Sur devis',
-    detail: 'Architecture, backend, infrastructure, automatisation et continuité.',
-    items: ['VPS / Docker / DNS', 'API & dashboards', 'Monitoring', 'Workflows métier'],
-    href: '/systems-operations',
-    cta: 'Voir le workflow',
-    dark: true,
-  },
-  {
-    id: 'standard-deployment',
-    kicker: 'Présence web cadrée',
-    title: 'Lancer sans surconstruire',
-    price: 'Dès 999 CHF',
-    detail: 'Site vitrine professionnel, cadré, livré rapidement avec un périmètre défini.',
-    items: ['999 à 1 500 CHF', 'Architecture légère', 'Livraison cadrée', 'Évolutions ponctuelles'],
-    href: '/presence-web-cadree#offres',
-    cta: 'Voir les niveaux',
-  },
-];
-
-const autonomyLevels = [
-  {
-    key: 'presence',
-    kicker: 'Niveau 1',
-    stage: 'Stable',
-    title: 'Présence web cadrée',
-    price: '999 à 1 500 CHF',
-    body:
-      'Conçu pour les structures souhaitant une présence professionnelle sans maintenance éditoriale lourde.',
-    items: ['Pages essentielles', 'Contenus intégrés', 'Contact simple', 'Maintenance légère'],
-  },
-  {
-    key: 'editorial',
-    kicker: 'Niveau 2',
-    stage: 'Éditable',
-    title: 'Site administrable & évolutif',
-    price: 'Dès 2 200 CHF',
-    body:
-      'Pour les structures qui souhaitent modifier certains contenus, publier des actualités ou faire vivre leur site plus régulièrement.',
-    items: ['Interface d’administration', 'Sections éditables', 'Blog ou actualités', 'Environnement dédié selon besoin'],
-  },
-  {
-    key: 'systems',
-    kicker: 'Niveau 3',
-    stage: 'Opérationnel',
-    title: 'Systèmes & opérations',
-    price: 'Sur cadrage',
-    body:
-      'Pour les besoins qui dépassent le site vitrine: workflows, dashboards, automatisation, rôles et outils internes.',
-    items: ['Portails et dashboards', 'RBAC et rôles', 'Automatisation', 'Continuité technique'],
-  },
-];
-
-const faqs = [
-  {
-    title: 'Les prix incluent-ils la TVA ?',
-    body: 'Oui, les montants publics sont affichés TTC et facturés en Suisse.',
-  },
-  {
-    title: 'Pourquoi commencer par 60 CHF / 15 min ?',
-    body: 'Parce qu’il faut une entrée légère. Si le sujet mérite plus de profondeur dès le départ, le format 1 heure à 140 CHF existe aussi.',
-  },
-  {
-    title: 'La présence web cadrée peut-elle évoluer ?',
-    body: 'Oui. On peut rester sur des évolutions ponctuelles, passer vers un site administrable, ou basculer en systèmes & opérations si le besoin change réellement.',
-  },
-  {
-    title: 'Quand faut-il un devis ?',
-    body: 'Dès que le sujet implique autonomie éditoriale plus large, codebase privée, backend, infrastructure, automatisation ou continuité technique.',
-  },
-];
+const copy = COPY[locale as keyof typeof COPY] ?? COPY.fr;
+const processSteps = copy.processSteps as any;
 ---
 
-<Layout metadata={metadata}>
+<Layout metadata={copy.metadata}>
   <main class="io-pricing">
     <section class="io-pricing-hero">
       <div class="io-shell io-pricing-hero-grid">
         <div>
-          <p class="io-kicker">Tarifs</p>
-          <h1>Des offres transparentes, facturées en Suisse.</h1>
-          <p class="io-lead">
-            Cadrage technique pour décider, présence web pour les sujets simples, puis un site administrable ou une
-            logique système quand le besoin monte réellement.
-          </p>
+          <p class="io-kicker">{copy.hero.kicker}</p>
+          <h1>{copy.hero.title}</h1>
+          <p class="io-lead">{copy.hero.lead}</p>
         </div>
         <IoPricingLayersVisual />
       </div>
@@ -134,45 +640,41 @@ const faqs = [
     <section class="io-shell io-standard-strip" id="standard-deployment">
       <div class="io-standard-icon">
         <span><IoNodeIcon name="standard" /></span>
-        <strong>Présence web cadrée</strong>
+        <strong>{copy.standard.label}</strong>
       </div>
       <div class="io-standard-copy">
-        <p class="io-kicker">Web presence workflow</p>
-        <h2>Pack Essentiel — dès 999 CHF</h2>
-        <p>
-          Prix fixe pour un site vitrine professionnel. Livraison typique en 3-5 jours ouvrables selon vos contenus.
-        </p>
-        <p class="io-standard-note">
-          Conçu pour les structures souhaitant une présence professionnelle sans maintenance éditoriale lourde.
-        </p>
+        <p class="io-kicker">{copy.standard.kicker}</p>
+        <h2>{copy.standard.title}</h2>
+        <p>{copy.standard.body}</p>
+        <p class="io-standard-note">{copy.standard.note}</p>
         <div class="io-standard-facts">
-          <span><IoNodeIcon name="clock" />3-5 jours</span>
-          <span><IoNodeIcon name="content" />Contenu fourni</span>
-          <span><IoNodeIcon name="check" />Prix fixe</span>
+          <span><IoNodeIcon name="clock" />{copy.standard.facts[0]}</span>
+          <span><IoNodeIcon name="content" />{copy.standard.facts[1]}</span>
+          <span><IoNodeIcon name="check" />{copy.standard.facts[2]}</span>
         </div>
       </div>
       <div class="io-standard-action">
-        <a class="io-btn io-btn-dark" href="/onboarding?plan=essential999">Commander maintenant</a>
-        <small>999 CHF — paiement unique</small>
+        <a class="io-btn io-btn-dark" href="/onboarding?plan=essential999">{copy.standard.cta}</a>
+        <small>{copy.standard.small}</small>
       </div>
     </section>
 
     <section class="io-shell io-price-matrix" id="pricing-options">
       <div class="io-section-head">
-        <p class="io-kicker">Trois niveaux</p>
-        <h2>Le standard quand il suffit. Le sur mesure quand il faut.</h2>
+        <p class="io-kicker">{copy.matrixHead.kicker}</p>
+        <h2>{copy.matrixHead.title}</h2>
       </div>
 
       <div class="io-matrix-grid">
         {
-          matrix.map((offer) => (
+          copy.matrix.map((offer: any) => (
             <article class:list={['io-matrix-card', offer.dark && 'io-matrix-card-dark']} id={offer.id}>
               <p class="io-kicker">{offer.kicker}</p>
               <h3>{offer.title}</h3>
               <strong class="io-price">{offer.price}</strong>
               <p>{offer.detail}</p>
               <ul>
-                {offer.items.map((item) => (
+                {offer.items.map((item: string) => (
                   <li>{item}</li>
                 ))}
               </ul>
@@ -187,16 +689,14 @@ const faqs = [
 
     <section class="io-shell io-autonomy-ladder">
       <div class="io-section-head">
-        <p class="io-kicker">Niveaux d’évolution</p>
-        <h2>Le prix change surtout avec le niveau d’évolution attendu.</h2>
-        <p>
-          Nous ne tarifons pas une technologie. Nous cadrons un besoin stable, éditable ou opérationnel.
-        </p>
+        <p class="io-kicker">{copy.autonomyHead.kicker}</p>
+        <h2>{copy.autonomyHead.title}</h2>
+        <p>{copy.autonomyHead.body}</p>
       </div>
 
       <div class="io-autonomy-grid">
         {
-          autonomyLevels.map((level) => (
+          copy.autonomyLevels.map((level: any) => (
             <article class={`io-autonomy-card io-autonomy-card-${level.key}`}>
               <p class="io-kicker">{level.kicker}</p>
               <span class="io-autonomy-stage">{level.stage}</span>
@@ -204,7 +704,7 @@ const faqs = [
               <strong class="io-price">{level.price}</strong>
               <p>{level.body}</p>
               <ul>
-                {level.items.map((item) => (
+                {level.items.map((item: string) => (
                   <li>{item}</li>
                 ))}
               </ul>
@@ -216,63 +716,50 @@ const faqs = [
 
     <section class="io-shell io-extensions">
       <article>
-        <p class="io-kicker">Extensions opérationnelles</p>
-        <h2>Ajoutez seulement ce qui sert.</h2>
+        <p class="io-kicker">{copy.extensions.kicker}</p>
+        <h2>{copy.extensions.title}</h2>
         <div class="io-extension-list">
-          <div>
-            <strong><IoNodeIcon name="communication" />Communication & rendez-vous intégrés</strong>
-            <span>+250 CHF</span>
-          </div>
-          <div>
-            <strong><IoNodeIcon name="automation" />Automatisations simples & formulaires</strong>
-            <span>à cadrer</span>
-          </div>
-          <div>
-            <strong><IoNodeIcon name="handoff" />Passation courte</strong>
-            <span>incluse selon scope</span>
-          </div>
+          {
+            copy.extensions.items.map(([icon, title, price]) => (
+              <div>
+                <strong>
+                  <IoNodeIcon name={icon} />
+                  {title}
+                </strong>
+                <span>{price}</span>
+              </div>
+            ))
+          }
         </div>
       </article>
       <article class="io-advanced-panel">
-        <p class="io-kicker">Seuil d’évolution</p>
-        <h2>Quand le site devient administrable, puis système.</h2>
-        <p>
-          WordPress, headless CMS ou dashboard d’administration deviennent utiles quand l’autonomie éditoriale augmente.
-          Quand le besoin dépasse cela, on passe en architecture, backend, automatisation et continuité.
-        </p>
+        <p class="io-kicker">{copy.advanced.kicker}</p>
+        <h2>{copy.advanced.title}</h2>
+        <p>{copy.advanced.body}</p>
         <ul>
-          <li>
-            <IoNodeIcon name="consulting" /><strong>Cadrage technique</strong><span
-              >Arbitrage, cadrage, direction technique</span
-            >
-          </li>
-          <li>
-            <IoNodeIcon name="build" />
-            <strong>Build systems</strong><span>Développement, API, outils internes</span>
-          </li>
-          <li>
-            <IoNodeIcon name="systems" />
-            <strong>Infrastructure & operations</strong><span>Environnements, monitoring, sécurité</span>
-          </li>
-          <li>
-            <IoNodeIcon name="continuity" />
-            <strong>Continuité technique</strong><span>Support, incidents, évolutions</span>
-          </li>
+          {
+            copy.advanced.items.map(([icon, title, detail]) => (
+              <li>
+                <IoNodeIcon name={icon} />
+                <>
+                  <strong>{title}</strong>
+                  <span>{detail}</span>
+                </>
+              </li>
+            ))
+          }
         </ul>
-        <a class="io-btn io-btn-light" href="/systems-operations">Voir systèmes & opérations</a>
+        <a class="io-btn io-btn-light" href="/systems-operations">{copy.advanced.cta}</a>
       </article>
     </section>
 
     <section class="io-systems-band">
       <div class="io-shell io-systems-grid">
         <div>
-          <p class="io-kicker">Systèmes & opérations</p>
-          <h2>Une couche avancée, cadrée avant build.</h2>
-          <p>
-            Portails, API, automatisations, Linux, Docker, DNS, SSL, monitoring et continuité ne se vendent pas comme
-            un pack. Le scope vient après cadrage.
-          </p>
-          <div class="io-stack-line">Docker · VPS · DNS · SSL · monitoring · workflows · API · dashboards</div>
+          <p class="io-kicker">{copy.systemsBand.kicker}</p>
+          <h2>{copy.systemsBand.title}</h2>
+          <p>{copy.systemsBand.body}</p>
+          <div class="io-stack-line">{copy.systemsBand.stack}</div>
         </div>
         <Io02SvgLinesPathsCurves />
       </div>
@@ -280,20 +767,20 @@ const faqs = [
 
     <section class="io-shell io-process">
       <div class="io-section-head">
-        <p class="io-kicker">Parcours</p>
-        <h2>Une séquence courte, lisible.</h2>
+        <p class="io-kicker">{copy.processHead.kicker}</p>
+        <h2>{copy.processHead.title}</h2>
       </div>
       <IoProcessMap steps={processSteps} />
     </section>
 
     <section class="io-shell io-faq">
       <div class="io-section-head">
-        <p class="io-kicker">FAQ</p>
-        <h2>Questions sur les tarifs</h2>
+        <p class="io-kicker">{copy.faqHead.kicker}</p>
+        <h2>{copy.faqHead.title}</h2>
       </div>
       <div class="io-faq-list">
         {
-          faqs.map((faq) => (
+          copy.faqs.map((faq: any) => (
             <details>
               <summary>{faq.title}</summary>
               <p>{faq.body}</p>
@@ -304,11 +791,11 @@ const faqs = [
     </section>
 
     <section class="io-shell io-final-cta">
-      <h2>Choisir le bon niveau avant de payer trop de custom.</h2>
-      <p>Envoyez le contexte. Nous vous orientons vers cadrage, systèmes & opérations, ou présence web cadrée.</p>
+      <h2>{copy.finalCta.title}</h2>
+      <p>{copy.finalCta.body}</p>
       <div class="io-actions">
-        <a class="io-btn io-btn-primary" href="/contact#form">Envoyer le contexte</a>
-        <a class="io-btn io-btn-secondary" href="/presence-web-cadree#modeles">Voir des projets livrés</a>
+        <a class="io-btn io-btn-primary" href="/contact#form">{copy.finalCta.primary}</a>
+        <a class="io-btn io-btn-secondary" href="/presence-web-cadree#modeles">{copy.finalCta.secondary}</a>
       </div>
     </section>
   </main>
@@ -607,8 +1094,7 @@ const faqs = [
     }
 
     .io-autonomy-card-presence {
-      background:
-        linear-gradient(180deg, rgba(219, 234, 254, 0.58), rgba(255, 255, 255, 0.9));
+      background: linear-gradient(180deg, rgba(219, 234, 254, 0.58), rgba(255, 255, 255, 0.9));
       border-color: rgba(96, 165, 250, 0.26);
     }
 
@@ -622,8 +1108,7 @@ const faqs = [
     }
 
     .io-autonomy-card-editorial {
-      background:
-        linear-gradient(180deg, rgba(224, 242, 254, 0.7), rgba(248, 250, 252, 0.94));
+      background: linear-gradient(180deg, rgba(224, 242, 254, 0.7), rgba(248, 250, 252, 0.94));
       border-color: rgba(14, 165, 233, 0.28);
       transform: translateY(-0.45rem);
     }
@@ -638,8 +1123,7 @@ const faqs = [
     }
 
     .io-autonomy-card-systems {
-      background:
-        linear-gradient(180deg, rgba(6, 17, 32, 0.98), rgba(15, 23, 42, 0.98));
+      background: linear-gradient(180deg, rgba(6, 17, 32, 0.98), rgba(15, 23, 42, 0.98));
       border-color: rgba(125, 211, 252, 0.2);
       color: #f8fafc;
       transform: translateY(-0.9rem);

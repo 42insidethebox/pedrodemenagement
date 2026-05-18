@@ -13,7 +13,7 @@ IOPartner.ch conçoit, déploie et maintient des sites vitrines pour des entrepr
 
 ## 2. Commande et processus
 
-1. Vous complétez le formulaire de brief ou répondez à notre diagnostic téléphonique.
+1. Vous complétez le formulaire de brief ou participez à un échange de cadrage initial.
 2. Nous validons ensemble le périmètre (structure, contenus fournis, options d'automatisation).
 3. Vous recevez une confirmation de commande détaillant prix, délais estimés et livrables.
 4. Le projet démarre après réception du paiement initial et des éléments nécessaires (textes, visuels, accès techniques).
@@ -66,4 +66,4 @@ Les présentes Conditions sont régies par le droit suisse. Tout litige sera sou
 
 ## 13. Contact
 
-Pour toute question, contactez-nous à **support@iopartner.ch** ou au **+41 21 555 24 24** (du lundi au vendredi, 9h–18h).
+Pour toute question, contactez-nous à **support@iopartner.ch**.

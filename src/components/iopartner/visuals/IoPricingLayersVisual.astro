@@ -1,41 +1,163 @@
 ---
 import IoNodeIcon from '~/components/iopartner/IoNodeIcon.astro';
+import { detectRequestLocale } from '~/lib/locale';
 
-const layers = [
-  {
-    key: 'standard',
-    number: '01',
-    title: 'Présence',
-    detail: 'Site cadré',
-    meta: 'dès 999 CHF',
-    icon: 'standard',
-    href: '/presence-web-cadree',
+const locale = detectRequestLocale(Astro.request, Astro.url);
+
+const COPY = {
+  fr: {
+    aria: 'Niveaux d’offre IOPartner',
+    label: 'Offres structurées',
+    line: 'Présence · Cadrage · Systèmes',
+    axis: ['simple', 'niveau de scope', 'avancé'],
+    layerMeta: { systems: 'scope cadré', other: 'prix lisible' },
+    layers: [
+      {
+        key: 'standard',
+        number: '01',
+        title: 'Présence',
+        detail: 'Site cadré',
+        meta: 'dès 999 CHF',
+        icon: 'standard',
+        href: '/presence-web-cadree',
+      },
+      {
+        key: 'consulting',
+        number: '02',
+        title: 'Cadrage',
+        detail: 'Décision technique',
+        meta: '60 CHF / 15 min',
+        icon: 'consulting',
+        href: '/cadrage-technique',
+      },
+      {
+        key: 'systems',
+        number: '03',
+        title: 'Systèmes',
+        detail: 'Architecture & opérations',
+        meta: 'sur devis',
+        icon: 'systems',
+        href: '/systems-operations',
+      },
+    ],
   },
-  {
-    key: 'consulting',
-    number: '02',
-    title: 'Cadrage',
-    detail: 'Décision technique',
-    meta: '60 CHF / 15 min',
-    icon: 'consulting',
-    href: '/cadrage-technique',
+  en: {
+    aria: 'IOPartner offer levels',
+    label: 'Structured offers',
+    line: 'Presence · Scoping · Systems',
+    axis: ['simple', 'scope level', 'advanced'],
+    layerMeta: { systems: 'scoped scope', other: 'clear price' },
+    layers: [
+      {
+        key: 'standard',
+        number: '01',
+        title: 'Presence',
+        detail: 'Scoped site',
+        meta: 'from CHF 999',
+        icon: 'standard',
+        href: '/presence-web-cadree',
+      },
+      {
+        key: 'consulting',
+        number: '02',
+        title: 'Scoping',
+        detail: 'Technical decision',
+        meta: 'CHF 60 / 15 min',
+        icon: 'consulting',
+        href: '/cadrage-technique',
+      },
+      {
+        key: 'systems',
+        number: '03',
+        title: 'Systems',
+        detail: 'Architecture & operations',
+        meta: 'quoted',
+        icon: 'systems',
+        href: '/systems-operations',
+      },
+    ],
   },
-  {
-    key: 'systems',
-    number: '03',
-    title: 'Systèmes',
-    detail: 'Architecture & opérations',
-    meta: 'sur devis',
-    icon: 'systems',
-    href: '/systems-operations',
+  de: {
+    aria: 'IOPartner Angebotsebenen',
+    label: 'Strukturierte Angebote',
+    line: 'Präsenz · Scoping · Systeme',
+    axis: ['einfach', 'Scope-Ebene', 'fortgeschritten'],
+    layerMeta: { systems: 'gescopter Scope', other: 'klarer Preis' },
+    layers: [
+      {
+        key: 'standard',
+        number: '01',
+        title: 'Präsenz',
+        detail: 'Abgegrenzte Site',
+        meta: 'ab CHF 999',
+        icon: 'standard',
+        href: '/presence-web-cadree',
+      },
+      {
+        key: 'consulting',
+        number: '02',
+        title: 'Scoping',
+        detail: 'Technische Entscheidung',
+        meta: 'CHF 60 / 15 Min.',
+        icon: 'consulting',
+        href: '/cadrage-technique',
+      },
+      {
+        key: 'systems',
+        number: '03',
+        title: 'Systeme',
+        detail: 'Architektur & Betrieb',
+        meta: 'auf Offerte',
+        icon: 'systems',
+        href: '/systems-operations',
+      },
+    ],
   },
-] as const;
+  it: {
+    aria: 'Livelli offerta IOPartner',
+    label: 'Offerte strutturate',
+    line: 'Presenza · Inquadramento · Sistemi',
+    axis: ['semplice', 'livello di scope', 'avanzato'],
+    layerMeta: { systems: 'scope inquadrato', other: 'prezzo chiaro' },
+    layers: [
+      {
+        key: 'standard',
+        number: '01',
+        title: 'Presenza',
+        detail: 'Sito inquadrato',
+        meta: 'da CHF 999',
+        icon: 'standard',
+        href: '/presence-web-cadree',
+      },
+      {
+        key: 'consulting',
+        number: '02',
+        title: 'Inquadramento',
+        detail: 'Decisione tecnica',
+        meta: 'CHF 60 / 15 min',
+        icon: 'consulting',
+        href: '/cadrage-technique',
+      },
+      {
+        key: 'systems',
+        number: '03',
+        title: 'Sistemi',
+        detail: 'Architettura & operazioni',
+        meta: 'su preventivo',
+        icon: 'systems',
+        href: '/systems-operations',
+      },
+    ],
+  },
+} as const;
+
+const copy = COPY[locale as keyof typeof COPY] ?? COPY.fr;
 ---
 
-<section class="io-pricing-layers" aria-label="Niveaux d’offre IOPartner">
+<section class="io-pricing-layers" aria-label={copy.aria}>
   <div class="io-pricing-label">
-    <strong>Offres structurées</strong>
-    <span>Présence · Cadrage · Systèmes</span>
+    <strong>{copy.label}</strong>
+    <span>{copy.line}</span>
   </div>
 
   <svg class="io-layer-routes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
@@ -55,14 +177,14 @@ const layers = [
   </svg>
 
   <div class="scope-axis">
-    <span>simple</span>
-    <strong>niveau de scope</strong>
-    <span>avancé</span>
+    <span>{copy.axis[0]}</span>
+    <strong>{copy.axis[1]}</strong>
+    <span>{copy.axis[2]}</span>
   </div>
 
   <div class="layer-stack">
     {
-      layers.map((layer) => (
+      copy.layers.map((layer: any) => (
         <a class={`offer-layer layer-${layer.key}`} href={layer.href}>
           <div class="layer-copy">
             <span>{layer.number}</span>
@@ -81,7 +203,7 @@ const layers = [
           </div>
           <div class="layer-meta">
             <strong>{layer.meta}</strong>
-            <small>{layer.key === 'systems' ? 'scope cadré' : 'prix lisible'}</small>
+            <small>{layer.key === 'systems' ? copy.layerMeta.systems : copy.layerMeta.other}</small>
           </div>
         </a>
       ))

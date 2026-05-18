@@ -13,7 +13,7 @@ IOPartner.ch progetta, realizza e mantiene siti vetrina. Confermando un ordine t
 
 ## 2. Processo d'ordine
 
-1. Compilate il nostro questionario o partecipate a una chiamata di scoperta.
+1. Compilate il nostro questionario o partecipate a un primo scambio di inquadramento.
 2. Allineiamo insieme il perimetro (struttura, contenuti forniti, opzioni di automazione) e vi inviamo un riepilogo scritto.
 3. Ricevete una conferma d'ordine con dettagli su consegne, prezzi e tempistiche indicative.
 4. L'avvio del progetto avviene dopo la ricezione dell'acconto, dei materiali necessari e degli accessi tecnici.
@@ -66,4 +66,4 @@ Le Condizioni sono regolate dal diritto svizzero. Eventuali controversie saranno
 
 ## 13. Contatti
 
-Per informazioni scrivete a **support@iopartner.ch** o chiamate **+41 21 555 24 24** (lunedì-venerdì, 9:00–18:00).
+Per informazioni scrivete a **support@iopartner.ch**.

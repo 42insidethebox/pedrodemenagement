@@ -13,7 +13,7 @@ IOPartner.ch designs, deploys, and maintains brochure websites. By confirming an
 
 ## 2. Order process
 
-1. You complete our briefing form or join a discovery call.
+1. You complete our briefing form or join an initial scoping exchange.
 2. We align on the scope (structure, content delivered, automation options) and share a written summary.
 3. You receive an order confirmation detailing deliverables, pricing, and indicative timelines.
 4. Production starts once the initial payment, required assets, and technical access have been provided.
@@ -66,4 +66,4 @@ These Terms are governed by Swiss law. Any dispute shall be submitted to the com
 
 ## 13. Contact
 
-Questions? Reach us at **support@iopartner.ch** or call **+41 21 555 24 24** (Monday to Friday, 9am–6pm CET).
+Questions? Reach us at **support@iopartner.ch**.

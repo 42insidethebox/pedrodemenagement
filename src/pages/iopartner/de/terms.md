@@ -13,7 +13,7 @@ IOPartner.ch entwirft, implementiert und betreut Websites. Mit der Bestätigung 
 
 ## 2. Bestellablauf
 
-1. Sie füllen unser Briefing-Formular aus oder führen ein Erstgespräch.
+1. Sie füllen unser Briefing-Formular aus oder nehmen an einem ersten Scoping-Austausch teil.
 2. Wir definieren gemeinsam den Projektumfang (Struktur, bereitgestellte Inhalte, Automatisierungen) und senden eine schriftliche Zusammenfassung.
 3. Sie erhalten eine Auftragsbestätigung mit Leistungsumfang, Preisen und voraussichtlichen Terminen.
 4. Die Produktion startet, sobald Anzahlung, benötigte Inhalte und Zugangsdaten bei uns eingetroffen sind.
@@ -66,4 +66,4 @@ Diese AGB unterstehen schweizerischem Recht. Gerichtsstand ist Lausanne (Kanton 
 
 ## 13. Kontakt
 
-Fragen? Schreiben Sie an **support@iopartner.ch** oder rufen Sie uns unter **+41 21 555 24 24** (Montag bis Freitag, 9–18 Uhr) an.
+Fragen? Schreiben Sie an **support@iopartner.ch**.

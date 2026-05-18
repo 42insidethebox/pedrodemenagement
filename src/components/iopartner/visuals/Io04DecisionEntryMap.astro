@@ -3,6 +3,86 @@ import IoSourceVisualFrame from './IoSourceVisualFrame.astro';
 import html from '~/assets/iopartner/svgs/04_decision_entry_map/index.html?raw';
 import css from '~/assets/iopartner/svgs/04_decision_entry_map/style.css?raw';
 import js from '~/assets/iopartner/svgs/04_decision_entry_map/script.js?raw';
+import { detectRequestLocale } from '~/lib/locale';
+
+const locale = detectRequestLocale(Astro.request, Astro.url);
+
+const REPLACEMENTS = {
+  en: {
+    '<html lang="fr">': '<html lang="en">',
+    'Décider le bon niveau d’intervention': 'Choose the right intervention level',
+    'Présence web · Consulting · Systems': 'Web presence · Scoping · Systems',
+    Besoin: 'Need',
+    'Quel niveau d’intervention ?': 'Which intervention level?',
+    Cadrage: 'Scoping',
+    'Scope · risque · complexité': 'Scope · risk · complexity',
+    'Présence web cadrée': 'Scoped web presence',
+    'Site vitrine clair, rapide, cadré': 'Clear, fast, scoped brochure site',
+    'dès 999 CHF': 'from CHF 999',
+    'Consulting technique': 'Technical scoping',
+    'Arbitrer, cadrer, débloquer': 'Arbitrate, scope, unblock',
+    'Systems & operations': 'Systems & operations',
+    'Architecture, infra, automatisation': 'Architecture, infra, automation',
+    'sur devis': 'quoted',
+    'Présence web': 'Web presence',
+    'quand le besoin est simple': 'when the need is simple',
+    Consulting: 'Scoping',
+    'quand il faut décider': 'when a decision is needed',
+    Systems: 'Systems',
+    'quand le site devient système': 'when the site becomes a system',
+  },
+  de: {
+    '<html lang="fr">': '<html lang="de">',
+    'Décider le bon niveau d’intervention': 'Die richtige Eingriffsebene wählen',
+    'Présence web · Consulting · Systems': 'Web-Präsenz · Scoping · Systeme',
+    Besoin: 'Bedarf',
+    'Quel niveau d’intervention ?': 'Welche Eingriffsebene?',
+    Cadrage: 'Scoping',
+    'Scope · risque · complexité': 'Scope · Risiko · Komplexität',
+    'Présence web cadrée': 'Klare Web-Präsenz',
+    'Site vitrine clair, rapide, cadré': 'Klare, schnelle, abgegrenzte Website',
+    'dès 999 CHF': 'ab CHF 999',
+    'Consulting technique': 'Technisches Scoping',
+    'Arbitrer, cadrer, débloquer': 'Abwägen, scopen, lösen',
+    'Systems & operations': 'Systeme & Betrieb',
+    'Architecture, infra, automatisation': 'Architektur, Infra, Automatisierung',
+    'sur devis': 'auf Offerte',
+    'Présence web': 'Web-Präsenz',
+    'quand le besoin est simple': 'wenn der Bedarf einfach ist',
+    Consulting: 'Scoping',
+    'quand il faut décider': 'wenn entschieden werden muss',
+    Systems: 'Systeme',
+    'quand le site devient système': 'wenn die Site zum System wird',
+  },
+  it: {
+    '<html lang="fr">': '<html lang="it">',
+    'Décider le bon niveau d’intervention': 'Scegliere il giusto livello d’intervento',
+    'Présence web · Consulting · Systems': 'Presenza web · Inquadramento · Sistemi',
+    Besoin: 'Bisogno',
+    'Quel niveau d’intervention ?': 'Quale livello d’intervento?',
+    Cadrage: 'Inquadramento',
+    'Scope · risque · complexité': 'Scope · rischio · complessità',
+    'Présence web cadrée': 'Presenza web strutturata',
+    'Site vitrine clair, rapide, cadré': 'Sito vetrina chiaro, rapido, inquadrato',
+    'dès 999 CHF': 'da CHF 999',
+    'Consulting technique': 'Inquadramento tecnico',
+    'Arbitrer, cadrer, débloquer': 'Arbitrare, inquadrare, sbloccare',
+    'Systems & operations': 'Sistemi & operazioni',
+    'Architecture, infra, automatisation': 'Architettura, infra, automazione',
+    'sur devis': 'su preventivo',
+    'Présence web': 'Presenza web',
+    'quand le besoin est simple': 'quando il bisogno è semplice',
+    Consulting: 'Inquadramento',
+    'quand il faut décider': 'quando bisogna decidere',
+    Systems: 'Sistemi',
+    'quand le site devient système': 'quando il sito diventa sistema',
+  },
+} as const;
+
+const localizedHtml = Object.entries(REPLACEMENTS[locale as keyof typeof REPLACEMENTS] ?? {}).reduce(
+  (document, [from, to]) => document.replaceAll(from, to),
+  html
+);
 ---
 
-<IoSourceVisualFrame title="04 Decision entry map" {html} {css} {js} minHeight="35rem" />
+<IoSourceVisualFrame title="04 Decision entry map" html={localizedHtml} {css} {js} minHeight="35rem" />

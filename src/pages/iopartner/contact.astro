@@ -1,533 +1,887 @@
 ---
-import Layout from '~/layouts/PageLayout.astro';
-import HeroText from '~/components/widgets/HeroText.astro';
 import ContactUs from '~/components/widgets/Contact.astro';
 import Features2 from '~/components/widgets/Features2.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import { detectRequestLocale } from '~/lib/locale';
+import Layout from '~/layouts/PageLayout.astro';
 
-const metadata = {
-  title: 'Contact',
-};
+const locale = detectRequestLocale(Astro.request, Astro.url);
 
-const faqSections = [
-  {
-    title: 'Général',
-    items: [
-      {
-        question: 'Que fait exactement IOpartner ?',
-        answer:
-          'IOpartner aide les PME et structures techniques à cadrer, structurer et déployer des systèmes adaptés à leur niveau réel de complexité.',
-        bullets: [
-          'cadrage technique',
-          'déploiement opérationnel',
-          'outil ou workflow sur mesure',
-          'systèmes & opérations',
-          'ou présence web cadrée lorsque le besoin reste simple',
-        ],
-        after:
-          'Selon les cas, cela peut inclure des dashboards, de l’automatisation, du monitoring, du RBAC, des workflows, des outils internes, du VPS / Docker / DNS, des portails, de la continuité technique ou une présence web professionnelle.',
+const COPY = {
+  fr: {
+    metadata: { title: 'Contact' },
+    hero: {
+      tagline: 'Contact',
+      title: 'Envoyez le contexte.',
+      subtitle:
+        'Le formulaire sert à router le besoin. Si un échange technique est utile, le cadrage payé commence ensuite à 60 CHF / 15 min ou 140 CHF / h.',
+    },
+    form: {
+      title: 'Contexte, besoin, suite utile',
+      subtitle:
+        'Décrivez la situation. Nous répondons par écrit avec la voie la plus rationnelle: présence web cadrée, cadrage payé, ou systèmes & opérations.',
+      button: 'Envoyer le contexte',
+      description:
+        'Réponse écrite sous un jour ouvré. Les appels et sessions de cadrage se font après validation du contexte.',
+      disclaimer:
+        'En envoyant ce formulaire, vous acceptez que IOPartner.ch traite vos données pour répondre à votre demande, conformément à notre politique de confidentialité.',
+      textarea: {
+        label: 'Notes ou exigences spécifiques (optionnel)',
+        placeholder:
+          'Ajoutez un détail clé: contraintes légales, CRM à connecter, volumes précis... (400 caractères max).',
+        rows: 4,
       },
-      {
-        question: 'Travaillez-vous uniquement sur des sites web ?',
-        answer: 'Non.',
-        bullets: [
-          'dashboards',
-          'workflows',
-          'monitoring',
-          'RBAC et gestion d’accès',
-          'automatisation',
-          'portails internes',
-          'onboarding',
-          'documentation opérationnelle',
-          'infrastructure et continuité',
-        ],
-      },
-      {
-        question: 'Travaillez-vous uniquement avec Linux ou l’open source ?',
-        answer:
-          'Non. IOpartner privilégie des solutions maintenables et cohérentes opérationnellement. Dans beaucoup de cas, cela implique une infrastructure Linux ou open source côté backend, mais les environnements clients restent souvent hybrides : Windows, macOS, outils cloud existants, etc.',
-      },
-      {
-        question: 'Êtes-vous une agence web classique ?',
-        answer:
-          'Non. Les sites web représentent simplement une des portes d’entrée possibles. Le positionnement est davantage orienté vers le cadrage technique, les déploiements structurés, les systèmes & opérations, les workflows, l’automatisation et les architectures maintenables.',
-        after:
-          'Selon le contexte, un projet peut rester très léger ou évoluer vers des besoins plus opérationnels et structurés.',
-      },
-    ],
+      inputs: [
+        { type: 'section', label: 'Étape 1 — Votre activité' },
+        {
+          type: 'text',
+          name: 'name',
+          label: 'Nom et prénom',
+          required: true,
+          requiredMessage: 'Merci d’indiquer votre nom.',
+        },
+        {
+          type: 'email',
+          name: 'email',
+          label: 'Email professionnel',
+          required: true,
+          requiredMessage: 'Nous avons besoin de votre email pour répondre.',
+        },
+        { type: 'text', name: 'company', label: 'Entreprise / marque', required: true },
+        { type: 'text', name: 'website', label: 'Site actuel (optionnel)', placeholder: 'https://votresite.ch' },
+        {
+          type: 'select',
+          name: 'industry',
+          label: 'Secteur',
+          required: true,
+          options: [
+            { label: 'Déménagement / services locaux', value: 'local-services' },
+            { label: 'Restauration / hospitality', value: 'hospitality' },
+            { label: 'Retail / e-commerce', value: 'retail' },
+            { label: 'Services professionnels (avocat, fiduciaire, gérance)', value: 'professional' },
+            { label: 'Immobilier', value: 'real-estate' },
+            { label: 'Événementiel / expérience', value: 'experience' },
+            { label: 'Autre', value: 'other' },
+          ],
+        },
+        {
+          type: 'checkbox',
+          name: 'languages',
+          label: 'Langues du site',
+          helper: 'Choisissez 1 à 3 langues ou laissez vide si vous hésitez.',
+          options: [
+            { label: 'Français', value: 'fr' },
+            { label: 'Anglais', value: 'en' },
+            { label: 'Allemand', value: 'de' },
+            { label: 'Italien', value: 'it' },
+          ],
+        },
+        { type: 'section', label: 'Étape 2 — Ce que vous voulez obtenir' },
+        {
+          type: 'checkbox',
+          name: 'goals',
+          label: 'Ce que le système ou la présence web doit produire',
+          helper: 'Sélectionnez ce qui compte le plus, nous arbitrons le reste.',
+          options: [
+            { label: 'Être contacté facilement', value: 'contact' },
+            { label: 'Prendre des réservations / rendez-vous', value: 'booking' },
+            { label: 'Présenter mes services / portfolio', value: 'portfolio' },
+            { label: 'Être visible sur Google (SEO)', value: 'seo' },
+            { label: 'Débloquer une décision technique', value: 'technical-decision' },
+            { label: 'Relier des outils ou automatiser un flux', value: 'workflow' },
+            { label: 'Je ne sais pas encore, guidez-moi', value: 'unknown-goal' },
+            { label: 'Autre', value: 'other-goal' },
+          ],
+        },
+        {
+          type: 'text',
+          name: 'goal_detail',
+          label: 'Précisez votre objectif',
+          placeholder: 'Ex. tunnel de réservation + paiement acompte',
+          conditional: { source: 'goals[]', showOn: ['other-goal'] },
+        },
+        { type: 'section', label: 'Étape 3 — Cadre rapide' },
+        {
+          type: 'radio',
+          name: 'budget',
+          label: 'Niveau probable',
+          helper: 'Choisissez ce qui vous ressemble le plus, nous ajustons ensuite.',
+          required: true,
+          requiredMessage: 'Choisissez un ordre de grandeur.',
+          options: [
+            { label: 'Présence web cadrée (dès 999 CHF)', value: 'entry' },
+            { label: 'Cadrage technique (60 CHF / 15 min ou 140 CHF / h)', value: 'advanced' },
+            { label: 'Systèmes & opérations (sur devis)', value: 'custom' },
+            { label: 'Je ne sais pas encore', value: 'unknown' },
+          ],
+        },
+        {
+          type: 'text',
+          name: 'delivery_track_entry',
+          label: 'Voie projet',
+          attributes: {
+            value: 'Présence web cadrée — lancement cadré sans build privée',
+            readOnly: true,
+            disabled: true,
+          },
+          className: 'bg-slate-50 dark:bg-slate-800/70 rounded-xl px-3 py-2',
+          conditional: { source: 'budget', showOn: ['entry'] },
+        },
+        {
+          type: 'text',
+          name: 'delivery_track_avance',
+          label: 'Voie projet',
+          attributes: {
+            value: 'Cadrage technique — arbitrage rapide avant scope plus large',
+            readOnly: true,
+            disabled: true,
+          },
+          className: 'bg-slate-50 dark:bg-slate-800/70 rounded-xl px-3 py-2',
+          conditional: { source: 'budget', showOn: ['advanced'] },
+        },
+        {
+          type: 'text',
+          name: 'delivery_track_custom',
+          label: 'Voie projet',
+          attributes: {
+            value: 'Systèmes & opérations — architecture, backend, infrastructure ou continuité',
+            readOnly: true,
+            disabled: true,
+          },
+          className: 'bg-amber-50 dark:bg-slate-800/70 rounded-xl px-3 py-2 text-amber-900',
+          conditional: { source: 'budget', showOn: ['custom'] },
+        },
+        {
+          type: 'radio',
+          name: 'timeline',
+          label: 'Délai souhaité',
+          options: [
+            { label: 'ASAP (≤10 jours ouvrés)', value: 'asap' },
+            { label: '2–4 semaines', value: '2-4w' },
+            { label: '1–2 mois', value: '1-2m' },
+            { label: 'Flexible', value: 'flexible' },
+          ],
+        },
+        {
+          type: 'text',
+          name: 'template_preference',
+          label: 'Template préféré (optionnel)',
+          placeholder: 'Ex. LCE, Maestro, Classic',
+        },
+        {
+          type: 'checkbox',
+          name: 'commitment',
+          label: 'Validation',
+          required: true,
+          requiredMessage: 'Merci de confirmer.',
+          options: [
+            {
+              label:
+                'Je comprends que ce formulaire sert à router le besoin. Une session de cadrage technique payée est proposée séparément si nécessaire.',
+              value: 'confirmed',
+            },
+          ],
+        },
+        { type: 'section', label: 'Étape 4 — Contact et suite' },
+        {
+          type: 'radio',
+          name: 'next_step',
+          label: 'Suite souhaitée',
+          options: [
+            { label: 'Démarrer une présence web cadrée', value: 'start-now' },
+            { label: 'Recevoir un lien pour le cadrage payé', value: 'call-15-paid' },
+            { label: 'Cadrer un sujet systèmes & opérations', value: 'scope-systems' },
+            { label: 'Être orienté vers le bon format', value: 'route-me' },
+          ],
+        },
+      ],
+    },
+    channels: {
+      title: 'Canaux',
+      subtitle:
+        'Le contexte passe d’abord par écrit. Cela garde le cadrage clair et évite les appels gratuits qui remplacent une vraie décision technique.',
+      items: [
+        {
+          title: 'Formulaire',
+          description: 'Meilleur point d’entrée pour router une demande vers le bon format.',
+          icon: 'tabler:forms',
+        },
+        {
+          title: 'Email',
+          description: 'support@iopartner.ch — pour envoyer un contexte déjà structuré.',
+          icon: 'tabler:mail',
+        },
+        {
+          title: 'Cadrage technique',
+          description: '60 CHF / 15 min ou 140 CHF / h quand le sujet demande un vrai échange de décision.',
+          icon: 'tabler:clock-dollar',
+        },
+        {
+          title: 'Disponibilité',
+          description: 'Réponse écrite du lundi au vendredi, généralement sous un jour ouvré.',
+          icon: 'tabler:calendar-time',
+        },
+      ],
+    },
   },
-  {
-    title: 'Présence web cadrée',
-    lead: 'Cette couche correspond surtout aux besoins simples et cadrés. Les projets plus opérationnels ou plus évolutifs passent ensuite vers des niveaux de déploiement et de structuration plus avancés.',
-    items: [
-      {
-        question: 'Que signifie “présence web cadrée” ?',
-        answer:
-          'Une présence web cadrée est pensée pour être livrée rapidement, rester maintenable, éviter la surcomplexité et fonctionner avec un périmètre clair.',
-        after:
-          'Ce type de projet convient surtout aux structures souhaitant une présence professionnelle sans logique éditoriale lourde.',
+  en: {
+    metadata: { title: 'Contact' },
+    hero: {
+      tagline: 'Contact',
+      title: 'Send the context.',
+      subtitle:
+        'The form routes the need. If a technical exchange is useful, paid scoping starts afterwards at CHF 60 / 15 min or CHF 140 / h.',
+    },
+    form: {
+      title: 'Context, need, next useful step',
+      subtitle:
+        'Describe the situation. We reply in writing with the most rational path: scoped web presence, paid scoping, or systems & operations.',
+      button: 'Send the context',
+      description:
+        'Written reply within one business day. Calls and scoping sessions happen after the context has been validated.',
+      disclaimer:
+        'By submitting this form, you agree that IOPartner.ch processes your data to answer your request, in line with our privacy policy.',
+      textarea: {
+        label: 'Notes or specific requirements (optional)',
+        placeholder: 'Add one key detail: legal constraints, CRM to connect, exact volumes... (400 characters max).',
+        rows: 4,
       },
-      {
-        question: 'Que comprend l’offre dès 999 CHF ?',
-        bullets: [
-          'structure du site',
-          'design',
-          'responsive',
-          'intégration des contenus fournis',
-          'formulaire de contact',
-          'mise en ligne',
-          'déploiement cadré',
-        ],
-        after: 'Le périmètre exact dépend du projet validé.',
-      },
-      {
-        question: 'Pourquoi les prix commencent-ils à 999 CHF ?',
-        answer:
-          'Parce que certains besoins restent simples lorsqu’ils sont correctement cadrés. L’objectif n’est pas de surconstruire une architecture lourde quand une présence claire et maintenable suffit.',
-      },
-      {
-        question: 'Puis-je modifier mon site moi-même ?',
-        answer:
-          'Cela dépend du niveau d’autonomie souhaité. Le niveau “présence web cadrée” privilégie une architecture légère et contrôlée.',
-        bullets: ['sections administrables', 'actualités', 'offres du mois', 'blog', 'contenus dynamiques'],
-        after: 'Pour ces besoins, un niveau de déploiement plus autonome peut être proposé.',
-      },
-      {
-        question: 'Utilisez-vous WordPress ?',
-        answer:
-          'Oui, lorsque cela est cohérent avec le besoin. WordPress n’est pas utilisé par défaut. Certaines structures ont besoin d’une autonomie éditoriale importante ; d’autres préfèrent une architecture plus légère et plus simple à maintenir.',
-        after: 'Le choix dépend du niveau réel d’évolution attendu.',
-      },
-      {
-        question: 'Pourquoi un site administrable coûte-t-il plus cher ?',
-        bullets: [
-          'plus de maintenance',
-          'plus de surface technique',
-          'plus de support',
-          'plus d’autonomie',
-          'plus de risques de régression',
-          'une architecture plus complexe',
-        ],
-        after: 'Le prix reflète surtout ce niveau d’autonomie et de maintenance.',
-      },
-      {
-        question: 'Les modifications sont-elles incluses après livraison ?',
-        answer:
-          'Les ajustements mineurs raisonnables peuvent être traités ponctuellement selon le contexte. Les demandes impliquant une évolution structurelle ou fonctionnelle importante font généralement l’objet d’un nouveau cadrage ou d’une extension du scope.',
-      },
-      {
-        question: 'Puis-je changer de prestataire plus tard ?',
-        answer:
-          'Oui. Les architectures légères mutualisées sont pensées pour conserver une séparation logique et une exportabilité raisonnable des contenus et médias.',
-        after: 'L’objectif n’est pas de créer une dépendance artificielle.',
-      },
-    ],
+      inputs: [
+        { type: 'section', label: 'Step 1 — Your activity' },
+        { type: 'text', name: 'name', label: 'Full name', required: true, requiredMessage: 'Please enter your name.' },
+        {
+          type: 'email',
+          name: 'email',
+          label: 'Business email',
+          required: true,
+          requiredMessage: 'We need your email to reply.',
+        },
+        { type: 'text', name: 'company', label: 'Company / brand', required: true },
+        { type: 'text', name: 'website', label: 'Current website (optional)', placeholder: 'https://yoursite.ch' },
+        {
+          type: 'select',
+          name: 'industry',
+          label: 'Sector',
+          required: true,
+          options: [
+            { label: 'Moving / local services', value: 'local-services' },
+            { label: 'Restaurant / hospitality', value: 'hospitality' },
+            { label: 'Retail / e-commerce', value: 'retail' },
+            { label: 'Professional services', value: 'professional' },
+            { label: 'Real estate', value: 'real-estate' },
+            { label: 'Events / experience', value: 'experience' },
+            { label: 'Other', value: 'other' },
+          ],
+        },
+        {
+          type: 'checkbox',
+          name: 'languages',
+          label: 'Site languages',
+          helper: 'Choose 1 to 3 languages or leave empty if unsure.',
+          options: [
+            { label: 'French', value: 'fr' },
+            { label: 'English', value: 'en' },
+            { label: 'German', value: 'de' },
+            { label: 'Italian', value: 'it' },
+          ],
+        },
+        { type: 'section', label: 'Step 2 — What you want to achieve' },
+        {
+          type: 'checkbox',
+          name: 'goals',
+          label: 'What the system or web presence should produce',
+          helper: 'Select what matters most. We arbitrate the rest.',
+          options: [
+            { label: 'Be contacted easily', value: 'contact' },
+            { label: 'Take bookings / appointments', value: 'booking' },
+            { label: 'Present services / portfolio', value: 'portfolio' },
+            { label: 'Be visible on Google (SEO)', value: 'seo' },
+            { label: 'Unblock a technical decision', value: 'technical-decision' },
+            { label: 'Connect tools or automate a flow', value: 'workflow' },
+            { label: 'I am not sure yet, guide me', value: 'unknown-goal' },
+            { label: 'Other', value: 'other-goal' },
+          ],
+        },
+        {
+          type: 'text',
+          name: 'goal_detail',
+          label: 'Clarify your objective',
+          placeholder: 'E.g. booking funnel + deposit payment',
+          conditional: { source: 'goals[]', showOn: ['other-goal'] },
+        },
+        { type: 'section', label: 'Step 3 — Quick frame' },
+        {
+          type: 'radio',
+          name: 'budget',
+          label: 'Likely level',
+          helper: 'Choose the closest option. We adjust afterwards.',
+          required: true,
+          requiredMessage: 'Choose an order of magnitude.',
+          options: [
+            { label: 'Scoped web presence (from CHF 999)', value: 'entry' },
+            { label: 'Technical scoping (CHF 60 / 15 min or CHF 140 / h)', value: 'advanced' },
+            { label: 'Systems & operations (quoted)', value: 'custom' },
+            { label: 'I am not sure yet', value: 'unknown' },
+          ],
+        },
+        {
+          type: 'text',
+          name: 'delivery_track_entry',
+          label: 'Project path',
+          attributes: {
+            value: 'Scoped web presence — framed launch without private build',
+            readOnly: true,
+            disabled: true,
+          },
+          className: 'bg-slate-50 dark:bg-slate-800/70 rounded-xl px-3 py-2',
+          conditional: { source: 'budget', showOn: ['entry'] },
+        },
+        {
+          type: 'text',
+          name: 'delivery_track_avance',
+          label: 'Project path',
+          attributes: {
+            value: 'Technical scoping — quick arbitration before wider scope',
+            readOnly: true,
+            disabled: true,
+          },
+          className: 'bg-slate-50 dark:bg-slate-800/70 rounded-xl px-3 py-2',
+          conditional: { source: 'budget', showOn: ['advanced'] },
+        },
+        {
+          type: 'text',
+          name: 'delivery_track_custom',
+          label: 'Project path',
+          attributes: {
+            value: 'Systems & operations — architecture, backend, infrastructure or continuity',
+            readOnly: true,
+            disabled: true,
+          },
+          className: 'bg-amber-50 dark:bg-slate-800/70 rounded-xl px-3 py-2 text-amber-900',
+          conditional: { source: 'budget', showOn: ['custom'] },
+        },
+        {
+          type: 'radio',
+          name: 'timeline',
+          label: 'Desired timing',
+          options: [
+            { label: 'ASAP (≤10 business days)', value: 'asap' },
+            { label: '2–4 weeks', value: '2-4w' },
+            { label: '1–2 months', value: '1-2m' },
+            { label: 'Flexible', value: 'flexible' },
+          ],
+        },
+        {
+          type: 'text',
+          name: 'template_preference',
+          label: 'Preferred template (optional)',
+          placeholder: 'E.g. LCE, Maestro, Classic',
+        },
+        {
+          type: 'checkbox',
+          name: 'commitment',
+          label: 'Confirmation',
+          required: true,
+          requiredMessage: 'Please confirm.',
+          options: [
+            {
+              label:
+                'I understand that this form routes the need. A paid technical scoping session is proposed separately if necessary.',
+              value: 'confirmed',
+            },
+          ],
+        },
+        { type: 'section', label: 'Step 4 — Contact and next step' },
+        {
+          type: 'radio',
+          name: 'next_step',
+          label: 'Desired next step',
+          options: [
+            { label: 'Start a scoped web presence', value: 'start-now' },
+            { label: 'Receive a paid scoping link', value: 'call-15-paid' },
+            { label: 'Scope a systems & operations topic', value: 'scope-systems' },
+            { label: 'Be routed to the right format', value: 'route-me' },
+          ],
+        },
+      ],
+    },
+    channels: {
+      title: 'Channels',
+      subtitle:
+        'Context comes first in writing. It keeps the scope clear and avoids unpaid calls replacing a real technical decision.',
+      items: [
+        {
+          title: 'Form',
+          description: 'Best entry point to route a request to the right format.',
+          icon: 'tabler:forms',
+        },
+        {
+          title: 'Email',
+          description: 'support@iopartner.ch — for sending already structured context.',
+          icon: 'tabler:mail',
+        },
+        {
+          title: 'Technical scoping',
+          description: 'CHF 60 / 15 min or CHF 140 / h when the topic needs a real decision exchange.',
+          icon: 'tabler:clock-dollar',
+        },
+        {
+          title: 'Availability',
+          description: 'Written replies Monday to Friday, usually within one business day.',
+          icon: 'tabler:calendar-time',
+        },
+      ],
+    },
   },
-  {
-    title: 'Cadrage technique',
-    items: [
-      {
-        question: 'Pourquoi proposer du cadrage technique à 60 CHF / 15 min ?',
-        answer: 'Parce que certains sujets nécessitent surtout une décision claire, rapide et structurée.',
-        bullets: ['des mauvais choix', 'du build inutile', 'des coûts cachés', 'une architecture disproportionnée'],
-        after: 'Le cadrage permet souvent d’éviter ces dérives.',
+  de: {
+    metadata: { title: 'Kontakt' },
+    hero: {
+      tagline: 'Kontakt',
+      title: 'Senden Sie den Kontext.',
+      subtitle:
+        'Das Formular ordnet den Bedarf ein. Wenn ein technischer Austausch sinnvoll ist, beginnt das bezahlte Scoping danach bei CHF 60 / 15 Min. oder CHF 140 / h.',
+    },
+    form: {
+      title: 'Kontext, Bedarf, nächster sinnvoller Schritt',
+      subtitle:
+        'Beschreiben Sie die Situation. Wir antworten schriftlich mit dem rationalsten Weg: klare Web-Präsenz, bezahltes Scoping oder Systeme & Betrieb.',
+      button: 'Kontext senden',
+      description:
+        'Schriftliche Antwort innerhalb eines Arbeitstages. Gespräche und Scoping-Sessions erfolgen nach Validierung des Kontexts.',
+      disclaimer:
+        'Mit dem Absenden stimmen Sie zu, dass IOPartner.ch Ihre Daten verarbeitet, um Ihre Anfrage gemäss Datenschutzerklärung zu beantworten.',
+      textarea: {
+        label: 'Notizen oder besondere Anforderungen (optional)',
+        placeholder:
+          'Nennen Sie ein wichtiges Detail: rechtliche Vorgaben, CRM-Anbindung, genaue Volumen... (max. 400 Zeichen).',
+        rows: 4,
       },
-      {
-        question: 'Quand faut-il choisir 15 min ou 1 heure ?',
-        answer: '15 minutes conviennent surtout pour :',
-        bullets: ['arbitrer rapidement', 'débloquer un choix', 'valider une direction', 'clarifier un besoin'],
-        after:
-          '1 heure convient mieux lorsqu’il faut cadrer un projet, comparer plusieurs options, analyser une stack ou structurer un déploiement.',
-      },
-      {
-        question: 'Le cadrage débouche-t-il forcément sur un projet ?',
-        answer:
-          'Non. Le cadrage peut simplement aider à prendre une décision propre, même si le build est réalisé ailleurs ensuite.',
-      },
-    ],
+      inputs: [
+        { type: 'section', label: 'Schritt 1 — Ihre Tätigkeit' },
+        {
+          type: 'text',
+          name: 'name',
+          label: 'Vor- und Nachname',
+          required: true,
+          requiredMessage: 'Bitte geben Sie Ihren Namen an.',
+        },
+        {
+          type: 'email',
+          name: 'email',
+          label: 'Geschäftliche E-Mail',
+          required: true,
+          requiredMessage: 'Wir benötigen Ihre E-Mail für die Antwort.',
+        },
+        { type: 'text', name: 'company', label: 'Unternehmen / Marke', required: true },
+        { type: 'text', name: 'website', label: 'Aktuelle Website (optional)', placeholder: 'https://ihreseite.ch' },
+        {
+          type: 'select',
+          name: 'industry',
+          label: 'Branche',
+          required: true,
+          options: [
+            { label: 'Umzug / lokale Dienstleistungen', value: 'local-services' },
+            { label: 'Gastronomie / Hospitality', value: 'hospitality' },
+            { label: 'Retail / E-Commerce', value: 'retail' },
+            { label: 'Professionelle Dienstleistungen', value: 'professional' },
+            { label: 'Immobilien', value: 'real-estate' },
+            { label: 'Event / Erlebnis', value: 'experience' },
+            { label: 'Andere', value: 'other' },
+          ],
+        },
+        {
+          type: 'checkbox',
+          name: 'languages',
+          label: 'Sprachen der Website',
+          helper: 'Wählen Sie 1 bis 3 Sprachen oder lassen Sie das Feld leer, wenn Sie unsicher sind.',
+          options: [
+            { label: 'Französisch', value: 'fr' },
+            { label: 'Englisch', value: 'en' },
+            { label: 'Deutsch', value: 'de' },
+            { label: 'Italienisch', value: 'it' },
+          ],
+        },
+        { type: 'section', label: 'Schritt 2 — Was Sie erreichen wollen' },
+        {
+          type: 'checkbox',
+          name: 'goals',
+          label: 'Was das System oder die Web-Präsenz leisten soll',
+          helper: 'Wählen Sie, was am wichtigsten ist. Wir klären den Rest.',
+          options: [
+            { label: 'Einfach kontaktiert werden', value: 'contact' },
+            { label: 'Buchungen / Termine annehmen', value: 'booking' },
+            { label: 'Services / Portfolio präsentieren', value: 'portfolio' },
+            { label: 'Auf Google sichtbar sein (SEO)', value: 'seo' },
+            { label: 'Eine technische Entscheidung lösen', value: 'technical-decision' },
+            { label: 'Tools verbinden oder einen Flow automatisieren', value: 'workflow' },
+            { label: 'Ich weiss es noch nicht, bitte einordnen', value: 'unknown-goal' },
+            { label: 'Andere', value: 'other-goal' },
+          ],
+        },
+        {
+          type: 'text',
+          name: 'goal_detail',
+          label: 'Ziel präzisieren',
+          placeholder: 'Z.B. Buchungsfunnel + Anzahlung',
+          conditional: { source: 'goals[]', showOn: ['other-goal'] },
+        },
+        { type: 'section', label: 'Schritt 3 — Schneller Rahmen' },
+        {
+          type: 'radio',
+          name: 'budget',
+          label: 'Wahrscheinliche Ebene',
+          helper: 'Wählen Sie, was am ehesten passt. Wir justieren danach.',
+          required: true,
+          requiredMessage: 'Wählen Sie eine Grössenordnung.',
+          options: [
+            { label: 'Klare Web-Präsenz (ab CHF 999)', value: 'entry' },
+            { label: 'Technisches Scoping (CHF 60 / 15 Min. oder CHF 140 / h)', value: 'advanced' },
+            { label: 'Systeme & Betrieb (auf Offerte)', value: 'custom' },
+            { label: 'Ich weiss es noch nicht', value: 'unknown' },
+          ],
+        },
+        {
+          type: 'text',
+          name: 'delivery_track_entry',
+          label: 'Projektweg',
+          attributes: {
+            value: 'Klare Web-Präsenz — abgegrenzter Launch ohne privaten Build',
+            readOnly: true,
+            disabled: true,
+          },
+          className: 'bg-slate-50 dark:bg-slate-800/70 rounded-xl px-3 py-2',
+          conditional: { source: 'budget', showOn: ['entry'] },
+        },
+        {
+          type: 'text',
+          name: 'delivery_track_avance',
+          label: 'Projektweg',
+          attributes: {
+            value: 'Technisches Scoping — schnelle Abwägung vor breiterem Scope',
+            readOnly: true,
+            disabled: true,
+          },
+          className: 'bg-slate-50 dark:bg-slate-800/70 rounded-xl px-3 py-2',
+          conditional: { source: 'budget', showOn: ['advanced'] },
+        },
+        {
+          type: 'text',
+          name: 'delivery_track_custom',
+          label: 'Projektweg',
+          attributes: {
+            value: 'Systeme & Betrieb — Architektur, Backend, Infrastruktur oder Kontinuität',
+            readOnly: true,
+            disabled: true,
+          },
+          className: 'bg-amber-50 dark:bg-slate-800/70 rounded-xl px-3 py-2 text-amber-900',
+          conditional: { source: 'budget', showOn: ['custom'] },
+        },
+        {
+          type: 'radio',
+          name: 'timeline',
+          label: 'Gewünschter Zeitraum',
+          options: [
+            { label: 'ASAP (≤10 Arbeitstage)', value: 'asap' },
+            { label: '2–4 Wochen', value: '2-4w' },
+            { label: '1–2 Monate', value: '1-2m' },
+            { label: 'Flexibel', value: 'flexible' },
+          ],
+        },
+        {
+          type: 'text',
+          name: 'template_preference',
+          label: 'Bevorzugtes Template (optional)',
+          placeholder: 'Z.B. LCE, Maestro, Classic',
+        },
+        {
+          type: 'checkbox',
+          name: 'commitment',
+          label: 'Bestätigung',
+          required: true,
+          requiredMessage: 'Bitte bestätigen.',
+          options: [
+            {
+              label:
+                'Ich verstehe, dass dieses Formular den Bedarf einordnet. Eine bezahlte technische Scoping-Session wird separat vorgeschlagen, falls nötig.',
+              value: 'confirmed',
+            },
+          ],
+        },
+        { type: 'section', label: 'Schritt 4 — Kontakt und nächste Etappe' },
+        {
+          type: 'radio',
+          name: 'next_step',
+          label: 'Gewünschter nächster Schritt',
+          options: [
+            { label: 'Klare Web-Präsenz starten', value: 'start-now' },
+            { label: 'Link für bezahltes Scoping erhalten', value: 'call-15-paid' },
+            { label: 'Ein Systeme-&-Betrieb-Thema scopen', value: 'scope-systems' },
+            { label: 'Zum richtigen Format geführt werden', value: 'route-me' },
+          ],
+        },
+      ],
+    },
+    channels: {
+      title: 'Kanäle',
+      subtitle:
+        'Der Kontext kommt zuerst schriftlich. Das hält den Rahmen klar und verhindert kostenlose Gespräche anstelle einer echten technischen Entscheidung.',
+      items: [
+        {
+          title: 'Formular',
+          description: 'Bester Einstieg, um eine Anfrage dem richtigen Format zuzuordnen.',
+          icon: 'tabler:forms',
+        },
+        {
+          title: 'E-Mail',
+          description: 'support@iopartner.ch — für bereits strukturierten Kontext.',
+          icon: 'tabler:mail',
+        },
+        {
+          title: 'Technisches Scoping',
+          description: 'CHF 60 / 15 Min. oder CHF 140 / h, wenn das Thema einen echten Entscheidungsaustausch braucht.',
+          icon: 'tabler:clock-dollar',
+        },
+        {
+          title: 'Verfügbarkeit',
+          description: 'Schriftliche Antwort Montag bis Freitag, meist innerhalb eines Arbeitstages.',
+          icon: 'tabler:calendar-time',
+        },
+      ],
+    },
   },
-  {
-    title: 'Systèmes & opérations',
-    items: [
-      {
-        question: 'Que signifie “systèmes & opérations” ?',
-        answer: 'Cette couche concerne les besoins qui dépassent un simple site vitrine.',
-        bullets: [
-          'dashboards',
-          'portails',
-          'workflows',
-          'monitoring',
-          'automatisation',
-          'RBAC',
-          'onboarding',
-          'documentation',
-          'API',
-          'infrastructure',
-          'continuité technique',
-        ],
+  it: {
+    metadata: { title: 'Contatto' },
+    hero: {
+      tagline: 'Contatto',
+      title: 'Invia il contesto.',
+      subtitle:
+        'Il modulo serve a orientare il bisogno. Se uno scambio tecnico è utile, l’inquadramento a pagamento parte poi da CHF 60 / 15 min o CHF 140 / h.',
+    },
+    form: {
+      title: 'Contesto, bisogno, passo utile',
+      subtitle:
+        'Descrivi la situazione. Rispondiamo per iscritto con la via più razionale: presenza web strutturata, inquadramento a pagamento o sistemi & operazioni.',
+      button: 'Invia il contesto',
+      description:
+        'Risposta scritta entro un giorno lavorativo. Chiamate e sessioni di inquadramento avvengono dopo la validazione del contesto.',
+      disclaimer:
+        'Inviando questo modulo accetti che IOPartner.ch tratti i tuoi dati per rispondere alla richiesta, secondo la nostra informativa privacy.',
+      textarea: {
+        label: 'Note o requisiti specifici (opzionale)',
+        placeholder:
+          'Aggiungi un dettaglio chiave: vincoli legali, CRM da collegare, volumi precisi... (max 400 caratteri).',
+        rows: 4,
       },
-      {
-        question: 'Travaillez-vous sur des projets Linux, Docker ou VPS ?',
-        answer: 'Oui. Selon les projets, IOpartner peut intervenir sur :',
-        bullets: [
-          'VPS',
-          'Docker',
-          'DNS',
-          'SSL',
-          'monitoring',
-          'reverse proxy',
-          'sauvegardes',
-          'automatisation',
-          'workflows',
-          'continuité opérationnelle',
-        ],
-      },
-      {
-        question: 'Faites-vous du DevOps ou de l’infrastructure ?',
-        answer:
-          'Dans certains cas oui, surtout pour des PME ou structures ayant besoin d’une couche opérationnelle plus structurée. Le niveau d’intervention dépend du cadrage.',
-      },
-      {
-        question: 'Proposez-vous des dashboards ou outils internes ?',
-        answer: 'Oui. Cela peut inclure :',
-        bullets: [
-          'dashboards métier',
-          'workflows',
-          'portails internes',
-          'outils de suivi',
-          'automatisations',
-          'interfaces administrables',
-          'systèmes hybrides',
-        ],
-      },
-      {
-        question: 'Proposez-vous des systèmes multi-tenant ?',
-        answer:
-          'Oui, dans certains cas. Certaines architectures mutualisées permettent d’accélérer les déploiements tout en conservant une séparation logique des clients et une exportabilité raisonnable.',
-      },
-      {
-        question: 'Comment gérez-vous la sécurité et les accès ?',
-        answer: 'Selon le projet :',
-        bullets: [
-          'séparation des accès',
-          'RBAC',
-          'MFA',
-          'monitoring',
-          'sauvegardes',
-          'documentation',
-          'continuité',
-          'architecture maintenable',
-        ],
-      },
-    ],
+      inputs: [
+        { type: 'section', label: 'Step 1 — La tua attività' },
+        { type: 'text', name: 'name', label: 'Nome e cognome', required: true, requiredMessage: 'Indica il tuo nome.' },
+        {
+          type: 'email',
+          name: 'email',
+          label: 'Email professionale',
+          required: true,
+          requiredMessage: 'Abbiamo bisogno della tua email per rispondere.',
+        },
+        { type: 'text', name: 'company', label: 'Azienda / brand', required: true },
+        { type: 'text', name: 'website', label: 'Sito attuale (opzionale)', placeholder: 'https://iltuosito.ch' },
+        {
+          type: 'select',
+          name: 'industry',
+          label: 'Settore',
+          required: true,
+          options: [
+            { label: 'Traslochi / servizi locali', value: 'local-services' },
+            { label: 'Ristorazione / hospitality', value: 'hospitality' },
+            { label: 'Retail / e-commerce', value: 'retail' },
+            { label: 'Servizi professionali', value: 'professional' },
+            { label: 'Immobiliare', value: 'real-estate' },
+            { label: 'Eventi / esperienze', value: 'experience' },
+            { label: 'Altro', value: 'other' },
+          ],
+        },
+        {
+          type: 'checkbox',
+          name: 'languages',
+          label: 'Lingue del sito',
+          helper: 'Scegli da 1 a 3 lingue o lascia vuoto se hai dubbi.',
+          options: [
+            { label: 'Francese', value: 'fr' },
+            { label: 'Inglese', value: 'en' },
+            { label: 'Tedesco', value: 'de' },
+            { label: 'Italiano', value: 'it' },
+          ],
+        },
+        { type: 'section', label: 'Step 2 — Cosa vuoi ottenere' },
+        {
+          type: 'checkbox',
+          name: 'goals',
+          label: 'Cosa deve produrre il sistema o la presenza web',
+          helper: 'Seleziona ciò che conta di più. Arbitriamo il resto.',
+          options: [
+            { label: 'Essere contattato facilmente', value: 'contact' },
+            { label: 'Ricevere prenotazioni / appuntamenti', value: 'booking' },
+            { label: 'Presentare servizi / portfolio', value: 'portfolio' },
+            { label: 'Essere visibile su Google (SEO)', value: 'seo' },
+            { label: 'Sbloccare una decisione tecnica', value: 'technical-decision' },
+            { label: 'Collegare strumenti o automatizzare un flusso', value: 'workflow' },
+            { label: 'Non lo so ancora, guidatemi', value: 'unknown-goal' },
+            { label: 'Altro', value: 'other-goal' },
+          ],
+        },
+        {
+          type: 'text',
+          name: 'goal_detail',
+          label: 'Precisa l’obiettivo',
+          placeholder: 'Es. funnel di prenotazione + acconto',
+          conditional: { source: 'goals[]', showOn: ['other-goal'] },
+        },
+        { type: 'section', label: 'Step 3 — Quadro rapido' },
+        {
+          type: 'radio',
+          name: 'budget',
+          label: 'Livello probabile',
+          helper: 'Scegli l’opzione più vicina. Poi la regoliamo.',
+          required: true,
+          requiredMessage: 'Scegli un ordine di grandezza.',
+          options: [
+            { label: 'Presenza web strutturata (da CHF 999)', value: 'entry' },
+            { label: 'Inquadramento tecnico (CHF 60 / 15 min o CHF 140 / h)', value: 'advanced' },
+            { label: 'Sistemi & operazioni (su preventivo)', value: 'custom' },
+            { label: 'Non lo so ancora', value: 'unknown' },
+          ],
+        },
+        {
+          type: 'text',
+          name: 'delivery_track_entry',
+          label: 'Percorso progetto',
+          attributes: {
+            value: 'Presenza web strutturata — lancio inquadrato senza build privato',
+            readOnly: true,
+            disabled: true,
+          },
+          className: 'bg-slate-50 dark:bg-slate-800/70 rounded-xl px-3 py-2',
+          conditional: { source: 'budget', showOn: ['entry'] },
+        },
+        {
+          type: 'text',
+          name: 'delivery_track_avance',
+          label: 'Percorso progetto',
+          attributes: {
+            value: 'Inquadramento tecnico — arbitraggio rapido prima di uno scope più ampio',
+            readOnly: true,
+            disabled: true,
+          },
+          className: 'bg-slate-50 dark:bg-slate-800/70 rounded-xl px-3 py-2',
+          conditional: { source: 'budget', showOn: ['advanced'] },
+        },
+        {
+          type: 'text',
+          name: 'delivery_track_custom',
+          label: 'Percorso progetto',
+          attributes: {
+            value: 'Sistemi & operazioni — architettura, backend, infrastruttura o continuità',
+            readOnly: true,
+            disabled: true,
+          },
+          className: 'bg-amber-50 dark:bg-slate-800/70 rounded-xl px-3 py-2 text-amber-900',
+          conditional: { source: 'budget', showOn: ['custom'] },
+        },
+        {
+          type: 'radio',
+          name: 'timeline',
+          label: 'Tempistica desiderata',
+          options: [
+            { label: 'ASAP (≤10 giorni lavorativi)', value: 'asap' },
+            { label: '2–4 settimane', value: '2-4w' },
+            { label: '1–2 mesi', value: '1-2m' },
+            { label: 'Flessibile', value: 'flexible' },
+          ],
+        },
+        {
+          type: 'text',
+          name: 'template_preference',
+          label: 'Template preferito (opzionale)',
+          placeholder: 'Es. LCE, Maestro, Classic',
+        },
+        {
+          type: 'checkbox',
+          name: 'commitment',
+          label: 'Conferma',
+          required: true,
+          requiredMessage: 'Conferma per favore.',
+          options: [
+            {
+              label:
+                'Capisco che questo modulo serve a orientare il bisogno. Una sessione di inquadramento tecnico a pagamento viene proposta separatamente se necessario.',
+              value: 'confirmed',
+            },
+          ],
+        },
+        { type: 'section', label: 'Step 4 — Contatto e seguito' },
+        {
+          type: 'radio',
+          name: 'next_step',
+          label: 'Passo desiderato',
+          options: [
+            { label: 'Avviare una presenza web strutturata', value: 'start-now' },
+            { label: 'Ricevere un link per l’inquadramento a pagamento', value: 'call-15-paid' },
+            { label: 'Inquadrare un tema sistemi & operazioni', value: 'scope-systems' },
+            { label: 'Essere orientato verso il formato giusto', value: 'route-me' },
+          ],
+        },
+      ],
+    },
+    channels: {
+      title: 'Canali',
+      subtitle:
+        'Il contesto passa prima per iscritto. Mantiene chiaro l’inquadramento ed evita chiamate gratuite al posto di una vera decisione tecnica.',
+      items: [
+        {
+          title: 'Modulo',
+          description: 'Miglior punto d’ingresso per orientare una richiesta verso il formato giusto.',
+          icon: 'tabler:forms',
+        },
+        {
+          title: 'Email',
+          description: 'support@iopartner.ch — per inviare un contesto già strutturato.',
+          icon: 'tabler:mail',
+        },
+        {
+          title: 'Inquadramento tecnico',
+          description: 'CHF 60 / 15 min o CHF 140 / h quando il tema richiede un vero scambio decisionale.',
+          icon: 'tabler:clock-dollar',
+        },
+        {
+          title: 'Disponibilità',
+          description: 'Risposta scritta dal lunedì al venerdì, di solito entro un giorno lavorativo.',
+          icon: 'tabler:calendar-time',
+        },
+      ],
+    },
   },
-  {
-    title: 'Processus',
-    items: [
-      {
-        question: 'Comment démarre un projet ?',
-        ordered: ['contexte', 'cadrage', 'validation du périmètre', 'déploiement', 'mise en ligne', 'suivi éventuel'],
-      },
-      {
-        question: 'Travaillez-vous uniquement en Suisse romande ?',
-        answer: 'Principalement, mais certains projets peuvent être réalisés à distance selon le contexte.',
-      },
-      {
-        question: 'Les prix incluent-ils la TVA ?',
-        answer:
-          'Cela dépend du statut TVA applicable au moment du projet. Le cadrage et les devis précisent toujours les conditions applicables.',
-      },
-      {
-        question: 'Faites-vous de la maintenance ?',
-        answer:
-          'Oui, selon les projets. Certaines architectures nécessitent très peu de maintenance ; d’autres impliquent un suivi plus actif.',
-      },
-      {
-        question: 'Peut-on commencer petit puis évoluer ?',
-        answer:
-          'Oui. La logique de l’offre est justement pensée pour permettre une progression cohérente : présence web → autonomie éditoriale → systèmes & opérations.',
-      },
-    ],
-  },
-];
+} as const;
+
+const copy = COPY[locale as keyof typeof COPY] ?? COPY.fr;
+const formInputs = copy.form.inputs as any;
+const channelItems = copy.channels.items as any;
 ---
 
-<Layout metadata={metadata}>
-  <!-- HeroText Widget ******************* -->
-
-  <HeroText
-    tagline="Contact"
-    title="Envoyez le contexte."
-    subtitle="Le formulaire sert à router le besoin. Si un échange technique est utile, le cadrage payé commence ensuite à 60 CHF / 15 min ou 140 CHF / h."
-  />
+<Layout metadata={copy.metadata}>
+  <HeroText tagline={copy.hero.tagline} title={copy.hero.title} subtitle={copy.hero.subtitle} />
 
   <ContactUs
     id="form"
-    title="Contexte, besoin, suite utile"
-    subtitle="Décrivez la situation. Nous répondons par écrit avec la voie la plus rationnelle: présence web cadrée, cadrage payé, ou systèmes & opérations."
+    title={copy.form.title}
+    subtitle={copy.form.subtitle}
     action="/api/contact"
     tenant="iopartner"
     source="iopartner-contact-context"
-    button="Envoyer le contexte"
-    inputs={[
-      { type: 'section', label: 'Étape 1 — Votre activité' },
-      {
-        type: 'text',
-        name: 'name',
-        label: 'Nom et prénom',
-        required: true,
-        requiredMessage: 'Merci d’indiquer votre nom.',
-      },
-      {
-        type: 'email',
-        name: 'email',
-        label: 'Email professionnel',
-        required: true,
-        requiredMessage: 'Nous avons besoin de votre email pour répondre.',
-      },
-      { type: 'text', name: 'company', label: 'Entreprise / marque', required: true },
-      { type: 'text', name: 'website', label: 'Site actuel (optionnel)', placeholder: 'https://votresite.ch' },
-      {
-        type: 'select',
-        name: 'industry',
-        label: 'Secteur',
-        required: true,
-        options: [
-          { label: 'Déménagement / services locaux', value: 'local-services' },
-          { label: 'Restauration / hospitality', value: 'hospitality' },
-          { label: 'Retail / e-commerce', value: 'retail' },
-          { label: 'Services professionnels (avocat, fiduciaire, gérance)', value: 'professional' },
-          { label: 'Immobilier', value: 'real-estate' },
-          { label: 'Événementiel / expérience', value: 'experience' },
-          { label: 'Autre', value: 'other' },
-        ],
-      },
-      {
-        type: 'checkbox',
-        name: 'languages',
-        label: 'Langues du site',
-        helper: 'Choisissez 1 à 3 langues ou laissez vide si vous hésitez.',
-        options: [
-          { label: 'Français', value: 'fr' },
-          { label: 'Anglais', value: 'en' },
-          { label: 'Allemand', value: 'de' },
-          { label: 'Italien', value: 'it' },
-        ],
-      },
-
-      { type: 'section', label: 'Étape 2 — Ce que vous voulez obtenir' },
-      {
-        type: 'checkbox',
-        name: 'goals',
-        label: 'Ce que le système ou la présence web doit produire',
-        helper: 'Sélectionnez ce qui compte le plus, nous arbitrons le reste.',
-        options: [
-          { label: 'Être contacté facilement', value: 'contact' },
-          { label: 'Prendre des réservations / rendez-vous', value: 'booking' },
-          { label: 'Présenter mes services / portfolio', value: 'portfolio' },
-          { label: 'Être visible sur Google (SEO)', value: 'seo' },
-          { label: 'Débloquer une décision technique', value: 'technical-decision' },
-          { label: 'Relier des outils ou automatiser un flux', value: 'workflow' },
-          { label: 'Je ne sais pas encore, guidez-moi', value: 'unknown-goal' },
-          { label: 'Autre', value: 'other-goal' },
-        ],
-      },
-      {
-        type: 'text',
-        name: 'goal_detail',
-        label: 'Précisez votre objectif',
-        placeholder: 'Ex. tunnel de réservation + paiement acompte',
-        conditional: { source: 'goals[]', showOn: ['other-goal'] },
-      },
-
-      { type: 'section', label: 'Étape 3 — Cadre rapide' },
-      {
-        type: 'radio',
-        name: 'budget',
-        label: 'Niveau probable',
-        helper: 'Choisissez ce qui vous ressemble le plus, nous ajustons ensuite.',
-        required: true,
-        requiredMessage: 'Choisissez un ordre de grandeur.',
-        options: [
-          { label: 'Présence web cadrée (dès 999 CHF)', value: 'entry' },
-          { label: 'Cadrage technique (60 CHF / 15 min ou 140 CHF / h)', value: 'advanced' },
-          { label: 'Systèmes & opérations (sur devis)', value: 'custom' },
-          { label: 'Je ne sais pas encore', value: 'unknown' },
-        ],
-      },
-      {
-        type: 'text',
-        name: 'delivery_track_entry',
-        label: 'Voie projet',
-        attributes: {
-          value: 'Présence web cadrée — lancement cadré sans build privée',
-          readOnly: true,
-          disabled: true,
-        },
-        className: 'bg-slate-50 dark:bg-slate-800/70 rounded-xl px-3 py-2',
-        conditional: { source: 'budget', showOn: ['entry'] },
-      },
-      {
-        type: 'text',
-        name: 'delivery_track_avance',
-        label: 'Voie projet',
-        attributes: {
-          value: 'Cadrage technique — arbitrage rapide avant scope plus large',
-          readOnly: true,
-          disabled: true,
-        },
-        className: 'bg-slate-50 dark:bg-slate-800/70 rounded-xl px-3 py-2',
-        conditional: { source: 'budget', showOn: ['advanced'] },
-      },
-      {
-        type: 'text',
-        name: 'delivery_track_custom',
-        label: 'Voie projet',
-        attributes: {
-          value: 'Systèmes & opérations — architecture, backend, infrastructure ou continuité',
-          readOnly: true,
-          disabled: true,
-        },
-        className: 'bg-amber-50 dark:bg-slate-800/70 rounded-xl px-3 py-2 text-amber-900',
-        conditional: { source: 'budget', showOn: ['custom'] },
-      },
-      {
-        type: 'radio',
-        name: 'timeline',
-        label: 'Délai souhaité',
-        options: [
-          { label: 'ASAP (≤10 jours ouvrés)', value: 'asap' },
-          { label: '2–4 semaines', value: '2-4w' },
-          { label: '1–2 mois', value: '1-2m' },
-          { label: 'Flexible', value: 'flexible' },
-        ],
-      },
-      {
-        type: 'text',
-        name: 'template_preference',
-        label: 'Template préféré (optionnel)',
-        placeholder: 'Ex. LCE, Maestro, Classic',
-      },
-      {
-        type: 'checkbox',
-        name: 'commitment',
-        label: 'Validation',
-        required: true,
-        requiredMessage: 'Merci de confirmer.',
-        options: [
-          {
-            label:
-              'Je comprends que ce formulaire sert à router le besoin. Une session de cadrage technique payée est proposée séparément si nécessaire.',
-            value: 'confirmed',
-          },
-        ],
-      },
-
-      { type: 'section', label: 'Étape 4 — Contact et suite' },
-      {
-        type: 'radio',
-        name: 'next_step',
-        label: 'Suite souhaitée',
-        options: [
-          { label: 'Démarrer une présence web cadrée', value: 'start-now' },
-          { label: 'Recevoir un lien pour le cadrage payé', value: 'call-15-paid' },
-          { label: 'Cadrer un sujet systèmes & opérations', value: 'scope-systems' },
-          { label: 'Être orienté vers le bon format', value: 'route-me' },
-        ],
-      },
-    ]}
-    textarea={{
-      label: 'Notes ou exigences spécifiques (optionnel)',
-      placeholder:
-        'Ajoutez un détail clé : contraintes légales, CRM à connecter, volumes précis… (400 caractères max).',
-      rows: 4,
-    }}
-    disclaimer={{
-      label:
-        'En envoyant ce formulaire, vous acceptez que IOPartner.ch traite vos données pour répondre à votre demande, conformément à notre politique de confidentialité.',
-    }}
-    description="Réponse écrite sous un jour ouvré. Les appels et sessions de cadrage se font après validation du contexte."
+    button={copy.form.button}
+    inputs={formInputs}
+    textarea={copy.form.textarea}
+    disclaimer={{ label: copy.form.disclaimer }}
+    description={copy.form.description}
   />
 
-  <!-- Features2 Widget ************** -->
-
-  <Features2
-    title="Canaux"
-    subtitle="Le contexte passe d’abord par écrit. Cela garde le cadrage clair et évite les appels gratuits qui remplacent une vraie décision technique."
-    items={[
-      {
-        title: 'Formulaire',
-        description: 'Meilleur point d’entrée pour router une demande vers le bon format.',
-        icon: 'tabler:forms',
-      },
-      {
-        title: 'Email',
-        description: 'support@iopartner.ch — pour envoyer un contexte déjà structuré.',
-        icon: 'tabler:mail',
-      },
-      {
-        title: 'Cadrage technique',
-        description: '60 CHF / 15 min ou 140 CHF / h quand le sujet demande un vrai échange de décision.',
-        icon: 'tabler:clock-dollar',
-      },
-      {
-        title: 'Disponibilité',
-        description: 'Réponse écrite du lundi au vendredi, généralement sous un jour ouvré.',
-        icon: 'tabler:calendar-time',
-      },
-      {
-        title: 'Adresse',
-        description: 'Avenue de la Gare 29, 1003 Lausanne',
-        icon: 'tabler:map-pin',
-      },
-    ]}
-  />
-
-  <section id="faq" class="mx-auto max-w-5xl px-4 pb-16">
-    <div class="rounded-2xl border border-slate-200 bg-white p-6 md:p-8">
-      <p class="text-sm font-bold uppercase text-blue-700">FAQ</p>
-      <h2 class="mt-2 text-3xl font-bold text-slate-950">FAQ — IOPartner</h2>
-      <p class="mt-3 max-w-3xl text-slate-600">
-        IOPartner structure des besoins techniques selon leur niveau réel de complexité. L’objectif n’est pas de pousser
-        systématiquement vers du sur-mesure ou de l’infrastructure lourde, mais d’orienter chaque besoin vers le bon
-        niveau de déploiement, d’autonomie et de complexité.
-      </p>
-      <div class="mt-8 space-y-8">
-        {
-          faqSections.map((section) => (
-            <section class="border-t border-slate-200 pt-6 first:border-t-0 first:pt-0">
-              <h3 class="text-xl font-bold text-slate-950">{section.title}</h3>
-              {section.lead && <p class="mt-2 text-sm leading-7 text-slate-600">{section.lead}</p>}
-              <div class="mt-4 space-y-3">
-                {section.items.map((item) => (
-                  <details class="rounded-xl border border-slate-200 bg-slate-50/60 px-5 py-4">
-                    <summary class="cursor-pointer list-none pr-8 font-semibold text-slate-950 marker:content-none">
-                      {item.question}
-                    </summary>
-                    <div class="mt-3 space-y-3 text-slate-600">
-                      {item.answer && <p>{item.answer}</p>}
-                      {item.bullets && (
-                        <ul class="list-disc space-y-1 pl-5">
-                          {item.bullets.map((bullet) => (
-                            <li>{bullet}</li>
-                          ))}
-                        </ul>
-                      )}
-                      {item.ordered && (
-                        <ol class="list-decimal space-y-1 pl-5">
-                          {item.ordered.map((step) => (
-                            <li>{step}</li>
-                          ))}
-                        </ol>
-                      )}
-                      {item.after && <p>{item.after}</p>}
-                    </div>
-                  </details>
-                ))}
-              </div>
-            </section>
-          ))
-        }
-      </div>
-    </div>
-  </section>
+  <Features2 title={copy.channels.title} subtitle={copy.channels.subtitle} items={channelItems} />
 </Layout>
