@@ -23,11 +23,11 @@ const COPY = {
     useKicker: 'Quand l’utiliser',
     useTitle: 'Quand le problème n’est pas encore le build.',
     situations: [
-      'Vous hésitez entre site simple, build privé ou système plus lourd.',
-      'Un projet est bloqué par une décision technique.',
-      'Un prestataire propose du custom, mais le besoin réel n’est pas clair.',
-      'Votre stack fonctionne, mais personne ne sait vraiment jusqu’où elle tient.',
-    ],
+      { text: 'Vous hésitez entre site simple, build privé ou système plus lourd.', icon: 'standard' },
+      { text: 'Un projet est bloqué par une décision technique.', icon: 'diagnostic' },
+      { text: 'Un prestataire propose du custom, mais le besoin réel n’est pas clair.', icon: 'consulting' },
+      { text: 'Votre stack fonctionne, mais personne ne sait vraiment jusqu’où elle tient.', icon: 'systems' },
+    ] as Array<{ text: string; icon: IoIconName }>,
     buyKicker: 'Ce que vous achetez',
     buyTitle: 'De la clarté technique, pas une promesse de gros projet.',
     deliverables: [
@@ -72,11 +72,11 @@ const COPY = {
     useKicker: 'When to use it',
     useTitle: 'When the problem is not the build yet.',
     situations: [
-      'You are hesitating between a simple site, a private build, or a heavier system.',
-      'A project is blocked by a technical decision.',
-      'A provider is proposing custom work, but the real need is still unclear.',
-      'Your stack works, but nobody really knows how far it can go.',
-    ],
+      { text: 'You are hesitating between a simple site, a private build, or a heavier system.', icon: 'standard' },
+      { text: 'A project is blocked by a technical decision.', icon: 'diagnostic' },
+      { text: 'A provider is proposing custom work, but the real need is still unclear.', icon: 'consulting' },
+      { text: 'Your stack works, but nobody really knows how far it can go.', icon: 'systems' },
+    ] as Array<{ text: string; icon: IoIconName }>,
     buyKicker: 'What you buy',
     buyTitle: 'Technical clarity, not a promise of a large project.',
     deliverables: [
@@ -121,11 +121,11 @@ const COPY = {
     useKicker: 'Wann es sinnvoll ist',
     useTitle: 'Wenn das Problem noch nicht der Build ist.',
     situations: [
-      'Sie schwanken zwischen einfacher Website, privatem Build oder schwererem System.',
-      'Ein Projekt steckt an einer technischen Entscheidung fest.',
-      'Ein Anbieter schlägt Custom vor, aber der echte Bedarf ist noch unklar.',
-      'Ihr Stack funktioniert, aber niemand weiss wirklich, wie weit er trägt.',
-    ],
+      { text: 'Sie schwanken zwischen einfacher Website, privatem Build oder schwererem System.', icon: 'standard' },
+      { text: 'Ein Projekt steckt an einer technischen Entscheidung fest.', icon: 'diagnostic' },
+      { text: 'Ein Anbieter schlägt Custom vor, aber der echte Bedarf ist noch unklar.', icon: 'consulting' },
+      { text: 'Ihr Stack funktioniert, aber niemand weiss wirklich, wie weit er trägt.', icon: 'systems' },
+    ] as Array<{ text: string; icon: IoIconName }>,
     buyKicker: 'Was Sie kaufen',
     buyTitle: 'Technische Klarheit, nicht das Versprechen eines grossen Projekts.',
     deliverables: [
@@ -170,11 +170,11 @@ const COPY = {
     useKicker: 'Quando usarlo',
     useTitle: 'Quando il problema non è ancora la build.',
     situations: [
-      'State esitando tra un sito semplice, una build privata o un sistema più pesante.',
-      'Un progetto è bloccato da una decisione tecnica.',
-      'Un fornitore propone custom, ma il bisogno reale non è ancora chiaro.',
-      'La vostra stack funziona, ma nessuno sa davvero fino a dove regge.',
-    ],
+      { text: 'State esitando tra un sito semplice, una build privata o un sistema più pesante.', icon: 'standard' },
+      { text: 'Un progetto è bloccato da una decisione tecnica.', icon: 'diagnostic' },
+      { text: 'Un fornitore propone custom, ma il bisogno reale non è ancora chiaro.', icon: 'consulting' },
+      { text: 'La vostra stack funziona, ma nessuno sa davvero fino a dove regge.', icon: 'systems' },
+    ] as Array<{ text: string; icon: IoIconName }>,
     buyKicker: 'Cosa acquistate',
     buyTitle: 'Chiarezza tecnica, non la promessa di un grande progetto.',
     deliverables: [
@@ -243,9 +243,9 @@ const metadata = copy.metadata;
           copy.situations.map((item) => (
             <article>
               <span>
-                <IoNodeIcon name="scope" />
+                <IoNodeIcon name={item.icon} />
               </span>
-              <p>{item}</p>
+              <p>{item.text}</p>
             </article>
           ))
         }

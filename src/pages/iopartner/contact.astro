@@ -1,887 +1,1802 @@
 ---
-import ContactUs from '~/components/widgets/Contact.astro';
-import Features2 from '~/components/widgets/Features2.astro';
-import HeroText from '~/components/widgets/HeroText.astro';
-import { detectRequestLocale } from '~/lib/locale';
 import Layout from '~/layouts/PageLayout.astro';
+import { detectRequestLocale } from '~/lib/locale';
 
 const locale = detectRequestLocale(Astro.request, Astro.url);
+const t = (fr: string, en: string, de: string, it: string) =>
+  (locale === 'en' ? en : locale === 'de' ? de : locale === 'it' ? it : fr);
 
-const COPY = {
-  fr: {
-    metadata: { title: 'Contact' },
-    hero: {
-      tagline: 'Contact',
-      title: 'Envoyez le contexte.',
-      subtitle:
-        'Le formulaire sert à router le besoin. Si un échange technique est utile, le cadrage payé commence ensuite à 60 CHF / 15 min ou 140 CHF / h.',
-    },
-    form: {
-      title: 'Contexte, besoin, suite utile',
-      subtitle:
-        'Décrivez la situation. Nous répondons par écrit avec la voie la plus rationnelle: présence web cadrée, cadrage payé, ou systèmes & opérations.',
-      button: 'Envoyer le contexte',
-      description:
-        'Réponse écrite sous un jour ouvré. Les appels et sessions de cadrage se font après validation du contexte.',
-      disclaimer:
-        'En envoyant ce formulaire, vous acceptez que IOPartner.ch traite vos données pour répondre à votre demande, conformément à notre politique de confidentialité.',
-      textarea: {
-        label: 'Notes ou exigences spécifiques (optionnel)',
-        placeholder:
-          'Ajoutez un détail clé: contraintes légales, CRM à connecter, volumes précis... (400 caractères max).',
-        rows: 4,
-      },
-      inputs: [
-        { type: 'section', label: 'Étape 1 — Votre activité' },
-        {
-          type: 'text',
-          name: 'name',
-          label: 'Nom et prénom',
-          required: true,
-          requiredMessage: 'Merci d’indiquer votre nom.',
-        },
-        {
-          type: 'email',
-          name: 'email',
-          label: 'Email professionnel',
-          required: true,
-          requiredMessage: 'Nous avons besoin de votre email pour répondre.',
-        },
-        { type: 'text', name: 'company', label: 'Entreprise / marque', required: true },
-        { type: 'text', name: 'website', label: 'Site actuel (optionnel)', placeholder: 'https://votresite.ch' },
-        {
-          type: 'select',
-          name: 'industry',
-          label: 'Secteur',
-          required: true,
-          options: [
-            { label: 'Déménagement / services locaux', value: 'local-services' },
-            { label: 'Restauration / hospitality', value: 'hospitality' },
-            { label: 'Retail / e-commerce', value: 'retail' },
-            { label: 'Services professionnels (avocat, fiduciaire, gérance)', value: 'professional' },
-            { label: 'Immobilier', value: 'real-estate' },
-            { label: 'Événementiel / expérience', value: 'experience' },
-            { label: 'Autre', value: 'other' },
-          ],
-        },
-        {
-          type: 'checkbox',
-          name: 'languages',
-          label: 'Langues du site',
-          helper: 'Choisissez 1 à 3 langues ou laissez vide si vous hésitez.',
-          options: [
-            { label: 'Français', value: 'fr' },
-            { label: 'Anglais', value: 'en' },
-            { label: 'Allemand', value: 'de' },
-            { label: 'Italien', value: 'it' },
-          ],
-        },
-        { type: 'section', label: 'Étape 2 — Ce que vous voulez obtenir' },
-        {
-          type: 'checkbox',
-          name: 'goals',
-          label: 'Ce que le système ou la présence web doit produire',
-          helper: 'Sélectionnez ce qui compte le plus, nous arbitrons le reste.',
-          options: [
-            { label: 'Être contacté facilement', value: 'contact' },
-            { label: 'Prendre des réservations / rendez-vous', value: 'booking' },
-            { label: 'Présenter mes services / portfolio', value: 'portfolio' },
-            { label: 'Être visible sur Google (SEO)', value: 'seo' },
-            { label: 'Débloquer une décision technique', value: 'technical-decision' },
-            { label: 'Relier des outils ou automatiser un flux', value: 'workflow' },
-            { label: 'Je ne sais pas encore, guidez-moi', value: 'unknown-goal' },
-            { label: 'Autre', value: 'other-goal' },
-          ],
-        },
-        {
-          type: 'text',
-          name: 'goal_detail',
-          label: 'Précisez votre objectif',
-          placeholder: 'Ex. tunnel de réservation + paiement acompte',
-          conditional: { source: 'goals[]', showOn: ['other-goal'] },
-        },
-        { type: 'section', label: 'Étape 3 — Cadre rapide' },
-        {
-          type: 'radio',
-          name: 'budget',
-          label: 'Niveau probable',
-          helper: 'Choisissez ce qui vous ressemble le plus, nous ajustons ensuite.',
-          required: true,
-          requiredMessage: 'Choisissez un ordre de grandeur.',
-          options: [
-            { label: 'Présence web cadrée (dès 999 CHF)', value: 'entry' },
-            { label: 'Cadrage technique (60 CHF / 15 min ou 140 CHF / h)', value: 'advanced' },
-            { label: 'Systèmes & opérations (sur devis)', value: 'custom' },
-            { label: 'Je ne sais pas encore', value: 'unknown' },
-          ],
-        },
-        {
-          type: 'text',
-          name: 'delivery_track_entry',
-          label: 'Voie projet',
-          attributes: {
-            value: 'Présence web cadrée — lancement cadré sans build privée',
-            readOnly: true,
-            disabled: true,
-          },
-          className: 'bg-slate-50 dark:bg-slate-800/70 rounded-xl px-3 py-2',
-          conditional: { source: 'budget', showOn: ['entry'] },
-        },
-        {
-          type: 'text',
-          name: 'delivery_track_avance',
-          label: 'Voie projet',
-          attributes: {
-            value: 'Cadrage technique — arbitrage rapide avant scope plus large',
-            readOnly: true,
-            disabled: true,
-          },
-          className: 'bg-slate-50 dark:bg-slate-800/70 rounded-xl px-3 py-2',
-          conditional: { source: 'budget', showOn: ['advanced'] },
-        },
-        {
-          type: 'text',
-          name: 'delivery_track_custom',
-          label: 'Voie projet',
-          attributes: {
-            value: 'Systèmes & opérations — architecture, backend, infrastructure ou continuité',
-            readOnly: true,
-            disabled: true,
-          },
-          className: 'bg-amber-50 dark:bg-slate-800/70 rounded-xl px-3 py-2 text-amber-900',
-          conditional: { source: 'budget', showOn: ['custom'] },
-        },
-        {
-          type: 'radio',
-          name: 'timeline',
-          label: 'Délai souhaité',
-          options: [
-            { label: 'ASAP (≤10 jours ouvrés)', value: 'asap' },
-            { label: '2–4 semaines', value: '2-4w' },
-            { label: '1–2 mois', value: '1-2m' },
-            { label: 'Flexible', value: 'flexible' },
-          ],
-        },
-        {
-          type: 'text',
-          name: 'template_preference',
-          label: 'Template préféré (optionnel)',
-          placeholder: 'Ex. LCE, Maestro, Classic',
-        },
-        {
-          type: 'checkbox',
-          name: 'commitment',
-          label: 'Validation',
-          required: true,
-          requiredMessage: 'Merci de confirmer.',
-          options: [
-            {
-              label:
-                'Je comprends que ce formulaire sert à router le besoin. Une session de cadrage technique payée est proposée séparément si nécessaire.',
-              value: 'confirmed',
-            },
-          ],
-        },
-        { type: 'section', label: 'Étape 4 — Contact et suite' },
-        {
-          type: 'radio',
-          name: 'next_step',
-          label: 'Suite souhaitée',
-          options: [
-            { label: 'Démarrer une présence web cadrée', value: 'start-now' },
-            { label: 'Recevoir un lien pour le cadrage payé', value: 'call-15-paid' },
-            { label: 'Cadrer un sujet systèmes & opérations', value: 'scope-systems' },
-            { label: 'Être orienté vers le bon format', value: 'route-me' },
-          ],
-        },
-      ],
-    },
-    channels: {
-      title: 'Canaux',
-      subtitle:
-        'Le contexte passe d’abord par écrit. Cela garde le cadrage clair et évite les appels gratuits qui remplacent une vraie décision technique.',
-      items: [
-        {
-          title: 'Formulaire',
-          description: 'Meilleur point d’entrée pour router une demande vers le bon format.',
-          icon: 'tabler:forms',
-        },
-        {
-          title: 'Email',
-          description: 'support@iopartner.ch — pour envoyer un contexte déjà structuré.',
-          icon: 'tabler:mail',
-        },
-        {
-          title: 'Cadrage technique',
-          description: '60 CHF / 15 min ou 140 CHF / h quand le sujet demande un vrai échange de décision.',
-          icon: 'tabler:clock-dollar',
-        },
-        {
-          title: 'Disponibilité',
-          description: 'Réponse écrite du lundi au vendredi, généralement sous un jour ouvré.',
-          icon: 'tabler:calendar-time',
-        },
-      ],
-    },
-  },
-  en: {
-    metadata: { title: 'Contact' },
-    hero: {
-      tagline: 'Contact',
-      title: 'Send the context.',
-      subtitle:
-        'The form routes the need. If a technical exchange is useful, paid scoping starts afterwards at CHF 60 / 15 min or CHF 140 / h.',
-    },
-    form: {
-      title: 'Context, need, next useful step',
-      subtitle:
-        'Describe the situation. We reply in writing with the most rational path: scoped web presence, paid scoping, or systems & operations.',
-      button: 'Send the context',
-      description:
-        'Written reply within one business day. Calls and scoping sessions happen after the context has been validated.',
-      disclaimer:
-        'By submitting this form, you agree that IOPartner.ch processes your data to answer your request, in line with our privacy policy.',
-      textarea: {
-        label: 'Notes or specific requirements (optional)',
-        placeholder: 'Add one key detail: legal constraints, CRM to connect, exact volumes... (400 characters max).',
-        rows: 4,
-      },
-      inputs: [
-        { type: 'section', label: 'Step 1 — Your activity' },
-        { type: 'text', name: 'name', label: 'Full name', required: true, requiredMessage: 'Please enter your name.' },
-        {
-          type: 'email',
-          name: 'email',
-          label: 'Business email',
-          required: true,
-          requiredMessage: 'We need your email to reply.',
-        },
-        { type: 'text', name: 'company', label: 'Company / brand', required: true },
-        { type: 'text', name: 'website', label: 'Current website (optional)', placeholder: 'https://yoursite.ch' },
-        {
-          type: 'select',
-          name: 'industry',
-          label: 'Sector',
-          required: true,
-          options: [
-            { label: 'Moving / local services', value: 'local-services' },
-            { label: 'Restaurant / hospitality', value: 'hospitality' },
-            { label: 'Retail / e-commerce', value: 'retail' },
-            { label: 'Professional services', value: 'professional' },
-            { label: 'Real estate', value: 'real-estate' },
-            { label: 'Events / experience', value: 'experience' },
-            { label: 'Other', value: 'other' },
-          ],
-        },
-        {
-          type: 'checkbox',
-          name: 'languages',
-          label: 'Site languages',
-          helper: 'Choose 1 to 3 languages or leave empty if unsure.',
-          options: [
-            { label: 'French', value: 'fr' },
-            { label: 'English', value: 'en' },
-            { label: 'German', value: 'de' },
-            { label: 'Italian', value: 'it' },
-          ],
-        },
-        { type: 'section', label: 'Step 2 — What you want to achieve' },
-        {
-          type: 'checkbox',
-          name: 'goals',
-          label: 'What the system or web presence should produce',
-          helper: 'Select what matters most. We arbitrate the rest.',
-          options: [
-            { label: 'Be contacted easily', value: 'contact' },
-            { label: 'Take bookings / appointments', value: 'booking' },
-            { label: 'Present services / portfolio', value: 'portfolio' },
-            { label: 'Be visible on Google (SEO)', value: 'seo' },
-            { label: 'Unblock a technical decision', value: 'technical-decision' },
-            { label: 'Connect tools or automate a flow', value: 'workflow' },
-            { label: 'I am not sure yet, guide me', value: 'unknown-goal' },
-            { label: 'Other', value: 'other-goal' },
-          ],
-        },
-        {
-          type: 'text',
-          name: 'goal_detail',
-          label: 'Clarify your objective',
-          placeholder: 'E.g. booking funnel + deposit payment',
-          conditional: { source: 'goals[]', showOn: ['other-goal'] },
-        },
-        { type: 'section', label: 'Step 3 — Quick frame' },
-        {
-          type: 'radio',
-          name: 'budget',
-          label: 'Likely level',
-          helper: 'Choose the closest option. We adjust afterwards.',
-          required: true,
-          requiredMessage: 'Choose an order of magnitude.',
-          options: [
-            { label: 'Scoped web presence (from CHF 999)', value: 'entry' },
-            { label: 'Technical scoping (CHF 60 / 15 min or CHF 140 / h)', value: 'advanced' },
-            { label: 'Systems & operations (quoted)', value: 'custom' },
-            { label: 'I am not sure yet', value: 'unknown' },
-          ],
-        },
-        {
-          type: 'text',
-          name: 'delivery_track_entry',
-          label: 'Project path',
-          attributes: {
-            value: 'Scoped web presence — framed launch without private build',
-            readOnly: true,
-            disabled: true,
-          },
-          className: 'bg-slate-50 dark:bg-slate-800/70 rounded-xl px-3 py-2',
-          conditional: { source: 'budget', showOn: ['entry'] },
-        },
-        {
-          type: 'text',
-          name: 'delivery_track_avance',
-          label: 'Project path',
-          attributes: {
-            value: 'Technical scoping — quick arbitration before wider scope',
-            readOnly: true,
-            disabled: true,
-          },
-          className: 'bg-slate-50 dark:bg-slate-800/70 rounded-xl px-3 py-2',
-          conditional: { source: 'budget', showOn: ['advanced'] },
-        },
-        {
-          type: 'text',
-          name: 'delivery_track_custom',
-          label: 'Project path',
-          attributes: {
-            value: 'Systems & operations — architecture, backend, infrastructure or continuity',
-            readOnly: true,
-            disabled: true,
-          },
-          className: 'bg-amber-50 dark:bg-slate-800/70 rounded-xl px-3 py-2 text-amber-900',
-          conditional: { source: 'budget', showOn: ['custom'] },
-        },
-        {
-          type: 'radio',
-          name: 'timeline',
-          label: 'Desired timing',
-          options: [
-            { label: 'ASAP (≤10 business days)', value: 'asap' },
-            { label: '2–4 weeks', value: '2-4w' },
-            { label: '1–2 months', value: '1-2m' },
-            { label: 'Flexible', value: 'flexible' },
-          ],
-        },
-        {
-          type: 'text',
-          name: 'template_preference',
-          label: 'Preferred template (optional)',
-          placeholder: 'E.g. LCE, Maestro, Classic',
-        },
-        {
-          type: 'checkbox',
-          name: 'commitment',
-          label: 'Confirmation',
-          required: true,
-          requiredMessage: 'Please confirm.',
-          options: [
-            {
-              label:
-                'I understand that this form routes the need. A paid technical scoping session is proposed separately if necessary.',
-              value: 'confirmed',
-            },
-          ],
-        },
-        { type: 'section', label: 'Step 4 — Contact and next step' },
-        {
-          type: 'radio',
-          name: 'next_step',
-          label: 'Desired next step',
-          options: [
-            { label: 'Start a scoped web presence', value: 'start-now' },
-            { label: 'Receive a paid scoping link', value: 'call-15-paid' },
-            { label: 'Scope a systems & operations topic', value: 'scope-systems' },
-            { label: 'Be routed to the right format', value: 'route-me' },
-          ],
-        },
-      ],
-    },
-    channels: {
-      title: 'Channels',
-      subtitle:
-        'Context comes first in writing. It keeps the scope clear and avoids unpaid calls replacing a real technical decision.',
-      items: [
-        {
-          title: 'Form',
-          description: 'Best entry point to route a request to the right format.',
-          icon: 'tabler:forms',
-        },
-        {
-          title: 'Email',
-          description: 'support@iopartner.ch — for sending already structured context.',
-          icon: 'tabler:mail',
-        },
-        {
-          title: 'Technical scoping',
-          description: 'CHF 60 / 15 min or CHF 140 / h when the topic needs a real decision exchange.',
-          icon: 'tabler:clock-dollar',
-        },
-        {
-          title: 'Availability',
-          description: 'Written replies Monday to Friday, usually within one business day.',
-          icon: 'tabler:calendar-time',
-        },
-      ],
-    },
-  },
-  de: {
-    metadata: { title: 'Kontakt' },
-    hero: {
-      tagline: 'Kontakt',
-      title: 'Senden Sie den Kontext.',
-      subtitle:
-        'Das Formular ordnet den Bedarf ein. Wenn ein technischer Austausch sinnvoll ist, beginnt das bezahlte Scoping danach bei CHF 60 / 15 Min. oder CHF 140 / h.',
-    },
-    form: {
-      title: 'Kontext, Bedarf, nächster sinnvoller Schritt',
-      subtitle:
-        'Beschreiben Sie die Situation. Wir antworten schriftlich mit dem rationalsten Weg: klare Web-Präsenz, bezahltes Scoping oder Systeme & Betrieb.',
-      button: 'Kontext senden',
-      description:
-        'Schriftliche Antwort innerhalb eines Arbeitstages. Gespräche und Scoping-Sessions erfolgen nach Validierung des Kontexts.',
-      disclaimer:
-        'Mit dem Absenden stimmen Sie zu, dass IOPartner.ch Ihre Daten verarbeitet, um Ihre Anfrage gemäss Datenschutzerklärung zu beantworten.',
-      textarea: {
-        label: 'Notizen oder besondere Anforderungen (optional)',
-        placeholder:
-          'Nennen Sie ein wichtiges Detail: rechtliche Vorgaben, CRM-Anbindung, genaue Volumen... (max. 400 Zeichen).',
-        rows: 4,
-      },
-      inputs: [
-        { type: 'section', label: 'Schritt 1 — Ihre Tätigkeit' },
-        {
-          type: 'text',
-          name: 'name',
-          label: 'Vor- und Nachname',
-          required: true,
-          requiredMessage: 'Bitte geben Sie Ihren Namen an.',
-        },
-        {
-          type: 'email',
-          name: 'email',
-          label: 'Geschäftliche E-Mail',
-          required: true,
-          requiredMessage: 'Wir benötigen Ihre E-Mail für die Antwort.',
-        },
-        { type: 'text', name: 'company', label: 'Unternehmen / Marke', required: true },
-        { type: 'text', name: 'website', label: 'Aktuelle Website (optional)', placeholder: 'https://ihreseite.ch' },
-        {
-          type: 'select',
-          name: 'industry',
-          label: 'Branche',
-          required: true,
-          options: [
-            { label: 'Umzug / lokale Dienstleistungen', value: 'local-services' },
-            { label: 'Gastronomie / Hospitality', value: 'hospitality' },
-            { label: 'Retail / E-Commerce', value: 'retail' },
-            { label: 'Professionelle Dienstleistungen', value: 'professional' },
-            { label: 'Immobilien', value: 'real-estate' },
-            { label: 'Event / Erlebnis', value: 'experience' },
-            { label: 'Andere', value: 'other' },
-          ],
-        },
-        {
-          type: 'checkbox',
-          name: 'languages',
-          label: 'Sprachen der Website',
-          helper: 'Wählen Sie 1 bis 3 Sprachen oder lassen Sie das Feld leer, wenn Sie unsicher sind.',
-          options: [
-            { label: 'Französisch', value: 'fr' },
-            { label: 'Englisch', value: 'en' },
-            { label: 'Deutsch', value: 'de' },
-            { label: 'Italienisch', value: 'it' },
-          ],
-        },
-        { type: 'section', label: 'Schritt 2 — Was Sie erreichen wollen' },
-        {
-          type: 'checkbox',
-          name: 'goals',
-          label: 'Was das System oder die Web-Präsenz leisten soll',
-          helper: 'Wählen Sie, was am wichtigsten ist. Wir klären den Rest.',
-          options: [
-            { label: 'Einfach kontaktiert werden', value: 'contact' },
-            { label: 'Buchungen / Termine annehmen', value: 'booking' },
-            { label: 'Services / Portfolio präsentieren', value: 'portfolio' },
-            { label: 'Auf Google sichtbar sein (SEO)', value: 'seo' },
-            { label: 'Eine technische Entscheidung lösen', value: 'technical-decision' },
-            { label: 'Tools verbinden oder einen Flow automatisieren', value: 'workflow' },
-            { label: 'Ich weiss es noch nicht, bitte einordnen', value: 'unknown-goal' },
-            { label: 'Andere', value: 'other-goal' },
-          ],
-        },
-        {
-          type: 'text',
-          name: 'goal_detail',
-          label: 'Ziel präzisieren',
-          placeholder: 'Z.B. Buchungsfunnel + Anzahlung',
-          conditional: { source: 'goals[]', showOn: ['other-goal'] },
-        },
-        { type: 'section', label: 'Schritt 3 — Schneller Rahmen' },
-        {
-          type: 'radio',
-          name: 'budget',
-          label: 'Wahrscheinliche Ebene',
-          helper: 'Wählen Sie, was am ehesten passt. Wir justieren danach.',
-          required: true,
-          requiredMessage: 'Wählen Sie eine Grössenordnung.',
-          options: [
-            { label: 'Klare Web-Präsenz (ab CHF 999)', value: 'entry' },
-            { label: 'Technisches Scoping (CHF 60 / 15 Min. oder CHF 140 / h)', value: 'advanced' },
-            { label: 'Systeme & Betrieb (auf Offerte)', value: 'custom' },
-            { label: 'Ich weiss es noch nicht', value: 'unknown' },
-          ],
-        },
-        {
-          type: 'text',
-          name: 'delivery_track_entry',
-          label: 'Projektweg',
-          attributes: {
-            value: 'Klare Web-Präsenz — abgegrenzter Launch ohne privaten Build',
-            readOnly: true,
-            disabled: true,
-          },
-          className: 'bg-slate-50 dark:bg-slate-800/70 rounded-xl px-3 py-2',
-          conditional: { source: 'budget', showOn: ['entry'] },
-        },
-        {
-          type: 'text',
-          name: 'delivery_track_avance',
-          label: 'Projektweg',
-          attributes: {
-            value: 'Technisches Scoping — schnelle Abwägung vor breiterem Scope',
-            readOnly: true,
-            disabled: true,
-          },
-          className: 'bg-slate-50 dark:bg-slate-800/70 rounded-xl px-3 py-2',
-          conditional: { source: 'budget', showOn: ['advanced'] },
-        },
-        {
-          type: 'text',
-          name: 'delivery_track_custom',
-          label: 'Projektweg',
-          attributes: {
-            value: 'Systeme & Betrieb — Architektur, Backend, Infrastruktur oder Kontinuität',
-            readOnly: true,
-            disabled: true,
-          },
-          className: 'bg-amber-50 dark:bg-slate-800/70 rounded-xl px-3 py-2 text-amber-900',
-          conditional: { source: 'budget', showOn: ['custom'] },
-        },
-        {
-          type: 'radio',
-          name: 'timeline',
-          label: 'Gewünschter Zeitraum',
-          options: [
-            { label: 'ASAP (≤10 Arbeitstage)', value: 'asap' },
-            { label: '2–4 Wochen', value: '2-4w' },
-            { label: '1–2 Monate', value: '1-2m' },
-            { label: 'Flexibel', value: 'flexible' },
-          ],
-        },
-        {
-          type: 'text',
-          name: 'template_preference',
-          label: 'Bevorzugtes Template (optional)',
-          placeholder: 'Z.B. LCE, Maestro, Classic',
-        },
-        {
-          type: 'checkbox',
-          name: 'commitment',
-          label: 'Bestätigung',
-          required: true,
-          requiredMessage: 'Bitte bestätigen.',
-          options: [
-            {
-              label:
-                'Ich verstehe, dass dieses Formular den Bedarf einordnet. Eine bezahlte technische Scoping-Session wird separat vorgeschlagen, falls nötig.',
-              value: 'confirmed',
-            },
-          ],
-        },
-        { type: 'section', label: 'Schritt 4 — Kontakt und nächste Etappe' },
-        {
-          type: 'radio',
-          name: 'next_step',
-          label: 'Gewünschter nächster Schritt',
-          options: [
-            { label: 'Klare Web-Präsenz starten', value: 'start-now' },
-            { label: 'Link für bezahltes Scoping erhalten', value: 'call-15-paid' },
-            { label: 'Ein Systeme-&-Betrieb-Thema scopen', value: 'scope-systems' },
-            { label: 'Zum richtigen Format geführt werden', value: 'route-me' },
-          ],
-        },
-      ],
-    },
-    channels: {
-      title: 'Kanäle',
-      subtitle:
-        'Der Kontext kommt zuerst schriftlich. Das hält den Rahmen klar und verhindert kostenlose Gespräche anstelle einer echten technischen Entscheidung.',
-      items: [
-        {
-          title: 'Formular',
-          description: 'Bester Einstieg, um eine Anfrage dem richtigen Format zuzuordnen.',
-          icon: 'tabler:forms',
-        },
-        {
-          title: 'E-Mail',
-          description: 'support@iopartner.ch — für bereits strukturierten Kontext.',
-          icon: 'tabler:mail',
-        },
-        {
-          title: 'Technisches Scoping',
-          description: 'CHF 60 / 15 Min. oder CHF 140 / h, wenn das Thema einen echten Entscheidungsaustausch braucht.',
-          icon: 'tabler:clock-dollar',
-        },
-        {
-          title: 'Verfügbarkeit',
-          description: 'Schriftliche Antwort Montag bis Freitag, meist innerhalb eines Arbeitstages.',
-          icon: 'tabler:calendar-time',
-        },
-      ],
-    },
-  },
-  it: {
-    metadata: { title: 'Contatto' },
-    hero: {
-      tagline: 'Contatto',
-      title: 'Invia il contesto.',
-      subtitle:
-        'Il modulo serve a orientare il bisogno. Se uno scambio tecnico è utile, l’inquadramento a pagamento parte poi da CHF 60 / 15 min o CHF 140 / h.',
-    },
-    form: {
-      title: 'Contesto, bisogno, passo utile',
-      subtitle:
-        'Descrivi la situazione. Rispondiamo per iscritto con la via più razionale: presenza web strutturata, inquadramento a pagamento o sistemi & operazioni.',
-      button: 'Invia il contesto',
-      description:
-        'Risposta scritta entro un giorno lavorativo. Chiamate e sessioni di inquadramento avvengono dopo la validazione del contesto.',
-      disclaimer:
-        'Inviando questo modulo accetti che IOPartner.ch tratti i tuoi dati per rispondere alla richiesta, secondo la nostra informativa privacy.',
-      textarea: {
-        label: 'Note o requisiti specifici (opzionale)',
-        placeholder:
-          'Aggiungi un dettaglio chiave: vincoli legali, CRM da collegare, volumi precisi... (max 400 caratteri).',
-        rows: 4,
-      },
-      inputs: [
-        { type: 'section', label: 'Step 1 — La tua attività' },
-        { type: 'text', name: 'name', label: 'Nome e cognome', required: true, requiredMessage: 'Indica il tuo nome.' },
-        {
-          type: 'email',
-          name: 'email',
-          label: 'Email professionale',
-          required: true,
-          requiredMessage: 'Abbiamo bisogno della tua email per rispondere.',
-        },
-        { type: 'text', name: 'company', label: 'Azienda / brand', required: true },
-        { type: 'text', name: 'website', label: 'Sito attuale (opzionale)', placeholder: 'https://iltuosito.ch' },
-        {
-          type: 'select',
-          name: 'industry',
-          label: 'Settore',
-          required: true,
-          options: [
-            { label: 'Traslochi / servizi locali', value: 'local-services' },
-            { label: 'Ristorazione / hospitality', value: 'hospitality' },
-            { label: 'Retail / e-commerce', value: 'retail' },
-            { label: 'Servizi professionali', value: 'professional' },
-            { label: 'Immobiliare', value: 'real-estate' },
-            { label: 'Eventi / esperienze', value: 'experience' },
-            { label: 'Altro', value: 'other' },
-          ],
-        },
-        {
-          type: 'checkbox',
-          name: 'languages',
-          label: 'Lingue del sito',
-          helper: 'Scegli da 1 a 3 lingue o lascia vuoto se hai dubbi.',
-          options: [
-            { label: 'Francese', value: 'fr' },
-            { label: 'Inglese', value: 'en' },
-            { label: 'Tedesco', value: 'de' },
-            { label: 'Italiano', value: 'it' },
-          ],
-        },
-        { type: 'section', label: 'Step 2 — Cosa vuoi ottenere' },
-        {
-          type: 'checkbox',
-          name: 'goals',
-          label: 'Cosa deve produrre il sistema o la presenza web',
-          helper: 'Seleziona ciò che conta di più. Arbitriamo il resto.',
-          options: [
-            { label: 'Essere contattato facilmente', value: 'contact' },
-            { label: 'Ricevere prenotazioni / appuntamenti', value: 'booking' },
-            { label: 'Presentare servizi / portfolio', value: 'portfolio' },
-            { label: 'Essere visibile su Google (SEO)', value: 'seo' },
-            { label: 'Sbloccare una decisione tecnica', value: 'technical-decision' },
-            { label: 'Collegare strumenti o automatizzare un flusso', value: 'workflow' },
-            { label: 'Non lo so ancora, guidatemi', value: 'unknown-goal' },
-            { label: 'Altro', value: 'other-goal' },
-          ],
-        },
-        {
-          type: 'text',
-          name: 'goal_detail',
-          label: 'Precisa l’obiettivo',
-          placeholder: 'Es. funnel di prenotazione + acconto',
-          conditional: { source: 'goals[]', showOn: ['other-goal'] },
-        },
-        { type: 'section', label: 'Step 3 — Quadro rapido' },
-        {
-          type: 'radio',
-          name: 'budget',
-          label: 'Livello probabile',
-          helper: 'Scegli l’opzione più vicina. Poi la regoliamo.',
-          required: true,
-          requiredMessage: 'Scegli un ordine di grandezza.',
-          options: [
-            { label: 'Presenza web strutturata (da CHF 999)', value: 'entry' },
-            { label: 'Inquadramento tecnico (CHF 60 / 15 min o CHF 140 / h)', value: 'advanced' },
-            { label: 'Sistemi & operazioni (su preventivo)', value: 'custom' },
-            { label: 'Non lo so ancora', value: 'unknown' },
-          ],
-        },
-        {
-          type: 'text',
-          name: 'delivery_track_entry',
-          label: 'Percorso progetto',
-          attributes: {
-            value: 'Presenza web strutturata — lancio inquadrato senza build privato',
-            readOnly: true,
-            disabled: true,
-          },
-          className: 'bg-slate-50 dark:bg-slate-800/70 rounded-xl px-3 py-2',
-          conditional: { source: 'budget', showOn: ['entry'] },
-        },
-        {
-          type: 'text',
-          name: 'delivery_track_avance',
-          label: 'Percorso progetto',
-          attributes: {
-            value: 'Inquadramento tecnico — arbitraggio rapido prima di uno scope più ampio',
-            readOnly: true,
-            disabled: true,
-          },
-          className: 'bg-slate-50 dark:bg-slate-800/70 rounded-xl px-3 py-2',
-          conditional: { source: 'budget', showOn: ['advanced'] },
-        },
-        {
-          type: 'text',
-          name: 'delivery_track_custom',
-          label: 'Percorso progetto',
-          attributes: {
-            value: 'Sistemi & operazioni — architettura, backend, infrastruttura o continuità',
-            readOnly: true,
-            disabled: true,
-          },
-          className: 'bg-amber-50 dark:bg-slate-800/70 rounded-xl px-3 py-2 text-amber-900',
-          conditional: { source: 'budget', showOn: ['custom'] },
-        },
-        {
-          type: 'radio',
-          name: 'timeline',
-          label: 'Tempistica desiderata',
-          options: [
-            { label: 'ASAP (≤10 giorni lavorativi)', value: 'asap' },
-            { label: '2–4 settimane', value: '2-4w' },
-            { label: '1–2 mesi', value: '1-2m' },
-            { label: 'Flessibile', value: 'flexible' },
-          ],
-        },
-        {
-          type: 'text',
-          name: 'template_preference',
-          label: 'Template preferito (opzionale)',
-          placeholder: 'Es. LCE, Maestro, Classic',
-        },
-        {
-          type: 'checkbox',
-          name: 'commitment',
-          label: 'Conferma',
-          required: true,
-          requiredMessage: 'Conferma per favore.',
-          options: [
-            {
-              label:
-                'Capisco che questo modulo serve a orientare il bisogno. Una sessione di inquadramento tecnico a pagamento viene proposta separatamente se necessario.',
-              value: 'confirmed',
-            },
-          ],
-        },
-        { type: 'section', label: 'Step 4 — Contatto e seguito' },
-        {
-          type: 'radio',
-          name: 'next_step',
-          label: 'Passo desiderato',
-          options: [
-            { label: 'Avviare una presenza web strutturata', value: 'start-now' },
-            { label: 'Ricevere un link per l’inquadramento a pagamento', value: 'call-15-paid' },
-            { label: 'Inquadrare un tema sistemi & operazioni', value: 'scope-systems' },
-            { label: 'Essere orientato verso il formato giusto', value: 'route-me' },
-          ],
-        },
-      ],
-    },
-    channels: {
-      title: 'Canali',
-      subtitle:
-        'Il contesto passa prima per iscritto. Mantiene chiaro l’inquadramento ed evita chiamate gratuite al posto di una vera decisione tecnica.',
-      items: [
-        {
-          title: 'Modulo',
-          description: 'Miglior punto d’ingresso per orientare una richiesta verso il formato giusto.',
-          icon: 'tabler:forms',
-        },
-        {
-          title: 'Email',
-          description: 'support@iopartner.ch — per inviare un contesto già strutturato.',
-          icon: 'tabler:mail',
-        },
-        {
-          title: 'Inquadramento tecnico',
-          description: 'CHF 60 / 15 min o CHF 140 / h quando il tema richiede un vero scambio decisionale.',
-          icon: 'tabler:clock-dollar',
-        },
-        {
-          title: 'Disponibilità',
-          description: 'Risposta scritta dal lunedì al venerdì, di solito entro un giorno lavorativo.',
-          icon: 'tabler:calendar-time',
-        },
-      ],
-    },
-  },
-} as const;
-
-const copy = COPY[locale as keyof typeof COPY] ?? COPY.fr;
-const formInputs = copy.form.inputs as any;
-const channelItems = copy.channels.items as any;
+const emailSubject = t('Contexte IOPartner', 'IOPartner context', 'IOPartner Kontext', 'Contesto IOPartner');
+const heroMapLabels = [
+  t('Site', 'Website', 'Website', 'Sito'),
+  t('Accès', 'Access', 'Zugänge', 'Accessi'),
+  t('Infra', 'Infra', 'Infra', 'Infra'),
+  t('Docs', 'Docs', 'Docs', 'Docs'),
+  t('Workflows', 'Workflows', 'Workflows', 'Workflow'),
+  t('Backups', 'Backups', 'Backups', 'Backup'),
+  t('Décision', 'Decision', 'Entscheidung', 'Decisione'),
+];
+const miniMapLabels = {
+  orientation: [
+    t('Question', 'Question', 'Frage', 'Domanda'),
+    t('Options', 'Options', 'Optionen', 'Opzioni'),
+    t('Risque', 'Risk', 'Risiko', 'Rischio'),
+    t('Décision', 'Decision', 'Entscheidung', 'Decisione'),
+  ],
+  scoping: [
+    t('Actuel', 'Now', 'Jetzt', 'Attuale'),
+    t('Outils', 'Tools', 'Tools', 'Strumenti'),
+    t('Équipe', 'People', 'Team', 'Persone'),
+    t('Risques', 'Risks', 'Risiken', 'Rischi'),
+    t('Scope', 'Scope', 'Scope', 'Scope'),
+    t('Plan', 'Plan', 'Plan', 'Piano'),
+  ],
+  context: [
+    t('Web', 'Web', 'Web', 'Web'),
+    t('Ops', 'Ops', 'Ops', 'Ops'),
+    t('Route', 'Route', 'Route', 'Route'),
+    t('15 min', '15 min', '15 Min', '15 min'),
+    t('1 h', '1 h', '1 h', '1 h'),
+  ],
+};
 ---
 
-<Layout metadata={copy.metadata}>
-  <HeroText tagline={copy.hero.tagline} title={copy.hero.title} subtitle={copy.hero.subtitle} />
+<Layout
+  metadata={{
+    title: t('Contact — IOPartner', 'Contact — IOPartner', 'Kontakt — IOPartner', 'Contatto — IOPartner'),
+    description: t(
+      'Choisissez le bon point d entrée pour le cadrage technique, la clarté opérationnelle ou un projet web/système cadré.',
+      'Choose the right entry point for technical scoping, operational clarity, or a structured web/system project.',
+      'Wählen Sie den richtigen Einstieg für technisches Scoping, operative Klarheit oder ein sauber gerahmtes Web-/Systemprojekt.',
+      'Scegliete il giusto punto di ingresso per l inquadramento tecnico, la chiarezza operativa o un progetto web/sistema ben definito.'
+    ),
+  }}
+>
+<style>
+/* ═══════════════════════════════════════════════
+   IOPARTNER CONTACT — LIGHT MODE REDESIGN
+   Calm Swiss operational trust + subtle topology
+═══════════════════════════════════════════════ */
 
-  <ContactUs
-    id="form"
-    title={copy.form.title}
-    subtitle={copy.form.subtitle}
-    action="/api/contact"
-    tenant="iopartner"
-    source="iopartner-contact-context"
-    button={copy.form.button}
-    inputs={formInputs}
-    textarea={copy.form.textarea}
-    disclaimer={{ label: copy.form.disclaimer }}
-    description={copy.form.description}
-  />
+:root {
+  --paper: #f7f9fc;
+  --paper-2: #ffffff;
+  --paper-3: #eef3fb;
+  --ink: #07111f;
+  --ink-2: rgba(7,17,31,.72);
+  --ink-3: rgba(7,17,31,.52);
+  --ink-4: rgba(7,17,31,.34);
+  --blue: #1a56ff;
+  --blue-2: #0d3fd1;
+  --blue-soft: rgba(26,86,255,.08);
+  --blue-soft-2: rgba(26,86,255,.13);
+  --blue-line: rgba(26,86,255,.22);
+  --green: #16a34a;
+  --amber: #c87900;
+  --border: rgba(7,17,31,.09);
+  --border-strong: rgba(7,17,31,.16);
+  --shadow: 0 24px 70px rgba(16,30,54,.10);
+  --shadow-soft: 0 14px 40px rgba(16,30,54,.08);
+  --radius: 24px;
+  --radius-sm: 14px;
+  --sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --max: 1180px;
+}
 
-  <Features2 title={copy.channels.title} subtitle={copy.channels.subtitle} items={channelItems} />
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:global(html) { scroll-behavior: smooth; background: var(--paper) !important; color: var(--ink); }
+:global(body),
+:global(body.brand-iopartner) {
+  font-family: var(--sans);
+  background:
+    radial-gradient(circle at 10% 0%, rgba(26,86,255,.10), transparent 34%),
+    linear-gradient(180deg, #ffffff 0%, var(--paper) 42%, #f3f7fd 100%) !important;
+  background-color: var(--paper) !important;
+  color: var(--ink) !important;
+  font-size: 15px;
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+button, input, textarea, select { font: inherit; }
+::selection { background: var(--blue); color: white; }
+
+/* ═══════════════════════════════════════════════
+   BACKGROUND SYSTEM
+═══════════════════════════════════════════════ */
+.bg-system {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: .82;
+}
+.bg-system::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(26,86,255,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26,86,255,.045) 1px, transparent 1px);
+  background-size: 36px 36px;
+  mask-image: linear-gradient(180deg, black 0%, transparent 72%);
+}
+.bg-system::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 85% 12%, rgba(26,86,255,.10), transparent 26%),
+    radial-gradient(circle at 15% 76%, rgba(26,86,255,.06), transparent 32%);
+}
+#topology-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ═══════════════════════════════════════════════
+   UTILITIES
+═══════════════════════════════════════════════ */
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 28px; }
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--blue);
+  font-weight: 600;
+}
+.kicker::before {
+  content: '';
+  width: 26px;
+  height: 1px;
+  background: var(--blue);
+}
+.h2 {
+  margin-top: 16px;
+  font-size: clamp(32px, 4vw, 54px);
+  line-height: 1.02;
+  letter-spacing: -.045em;
+  font-weight: 800;
+}
+.lead {
+  color: var(--ink-2);
+  font-size: 17px;
+  line-height: 1.75;
+  max-width: 690px;
+}
+.mono {
+  font-family: var(--mono);
+  letter-spacing: .04em;
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.72);
+  border-radius: 999px;
+  padding: 8px 13px;
+  font-size: 12px;
+  color: var(--ink-3);
+  backdrop-filter: blur(10px);
+}
+.pill-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--green);
+  box-shadow: 0 0 0 4px rgba(22,163,74,.10);
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .7s ease, transform .7s cubic-bezier(.2,1,.2,1);
+}
+.reveal.in { opacity: 1; transform: none; }
+
+/* ═══════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════ */
+.nav-shell {
+  position: sticky;
+  top: 0;
+  z-index: 80;
+  border-bottom: 1px solid rgba(7,17,31,.07);
+  background: rgba(255,255,255,.78);
+  backdrop-filter: blur(18px);
+}
+.nav {
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: .04em;
+  font-weight: 600;
+}
+.logo-mark {
+  width: 30px;
+  height: 30px;
+  display: block;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+.nav-links a {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  transition: color .18s ease;
+}
+.nav-links a:hover { color: var(--blue); }
+.nav-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--ink);
+  color: white;
+  padding: 10px 17px;
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  transition: transform .18s ease, background .18s ease;
+}
+.nav-cta:hover { transform: translateY(-1px); background: var(--blue); }
+.mobile-menu { display: none; }
+
+/* ═══════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════ */
+.hero {
+  position: relative;
+  padding: 88px 0 62px;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(420px, .95fr);
+  gap: 58px;
+  align-items: center;
+}
+.hero-copy { position: relative; z-index: 2; }
+.hero-status {
+  margin-bottom: 26px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.hero h1 {
+  font-size: clamp(46px, 6.7vw, 84px);
+  line-height: .94;
+  letter-spacing: -.065em;
+  font-weight: 860;
+  max-width: 780px;
+}
+.hero h1 span { color: var(--blue); }
+.hero .lead {
+  margin-top: 28px;
+  max-width: 620px;
+}
+.hero-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 34px;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 14px 22px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
+  cursor: pointer;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn-primary {
+  background: var(--blue);
+  color: white;
+  box-shadow: 0 16px 38px rgba(26,86,255,.20);
+}
+.btn-primary:hover { background: var(--blue-2); box-shadow: 0 18px 44px rgba(26,86,255,.25); }
+.btn-secondary {
+  background: rgba(255,255,255,.76);
+  border-color: var(--border);
+  color: var(--ink);
+}
+.btn-secondary:hover { border-color: var(--blue-line); background: white; }
+.hero-note {
+  margin-top: 18px;
+  color: var(--ink-3);
+  font-size: 13px;
+  max-width: 520px;
+}
+
+/* ═══════════════════════════════════════════════
+   HERO VISUAL — calm operating map
+═══════════════════════════════════════════════ */
+.visual-card {
+  position: relative;
+  min-height: 760px;
+  border-radius: 34px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.92), rgba(247,249,252,.84)),
+    radial-gradient(circle at 70% 8%, rgba(26,86,255,.13), transparent 38%);
+  border: 1px solid rgba(7,17,31,.08);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.visual-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(26,86,255,.16) 1px, transparent 1px);
+  background-size: 22px 22px;
+  opacity: .45;
+  mask-image: radial-gradient(circle at 50% 46%, black 0%, transparent 72%);
+}
+.visual-topbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,.62);
+  backdrop-filter: blur(10px);
+  z-index: 2;
+}
+.visual-topbar span {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+.status-lights { display: flex; gap: 7px; }
+.status-lights i {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--blue-line);
+}
+.visual-map {
+  position: absolute;
+  inset: 72px 24px 228px;
+  width: calc(100% - 48px);
+  height: calc(100% - 300px);
+}
+.visual-panel {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 24px;
+  background: rgba(255,255,255,.78);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 18px;
+  backdrop-filter: blur(14px);
+  z-index: 3;
+  box-shadow: var(--shadow-soft);
+}
+.visual-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+.visual-panel-title {
+  font-size: 16px;
+  font-weight: 750;
+  letter-spacing: -.02em;
+}
+.visual-panel-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+.visual-rows {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.visual-row {
+  min-height: 82px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: rgba(247,249,252,.82);
+  padding: 13px;
+}
+.visual-row b {
+  display: block;
+  font-size: 13px;
+  letter-spacing: -.01em;
+}
+.visual-row span {
+  display: block;
+  margin-top: 7px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--ink-3);
+}
+
+/* ═══════════════════════════════════════════════
+   TRUST STRIP
+═══════════════════════════════════════════════ */
+.trust-strip {
+  padding: 24px 0 70px;
+}
+.trust-box {
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.72);
+  border-radius: 28px;
+  padding: 18px;
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(14px);
+}
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+.trust-item {
+  padding: 18px 18px;
+  border-right: 1px solid var(--border);
+}
+.trust-item:last-child { border-right: none; }
+.trust-item .num {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .14em;
+  color: var(--blue);
+  margin-bottom: 7px;
+}
+.trust-item b {
+  display: block;
+  font-size: 15px;
+  letter-spacing: -.015em;
+}
+.trust-item p {
+  color: var(--ink-3);
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+/* ═══════════════════════════════════════════════
+   SECTIONS
+═══════════════════════════════════════════════ */
+.section { padding: 72px 0; }
+.section-head {
+  display: grid;
+  grid-template-columns: .78fr 1fr;
+  gap: 46px;
+  align-items: end;
+  margin-bottom: 34px;
+}
+.section-head .lead { margin-bottom: 4px; }
+
+/* ═══════════════════════════════════════════════
+   TYPICAL SITUATIONS
+═══════════════════════════════════════════════ */
+.situation-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.situation-card {
+  position: relative;
+  background: rgba(255,255,255,.74);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 24px;
+  min-height: 210px;
+  box-shadow: 0 10px 28px rgba(16,30,54,.045);
+  overflow: hidden;
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.situation-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--blue-line);
+  box-shadow: var(--shadow-soft);
+}
+.situation-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 24px;
+  right: 24px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--blue), transparent);
+  opacity: .46;
+}
+.situation-card .icon {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: var(--blue-soft);
+  color: var(--blue);
+  margin-bottom: 18px;
+}
+.situation-card h3 {
+  font-size: 18px;
+  letter-spacing: -.025em;
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+.situation-card p {
+  color: var(--ink-2);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+/* ═══════════════════════════════════════════════
+   ROUTING / CONTACT CARDS
+═══════════════════════════════════════════════ */
+.routing-area {
+  padding: 86px 0;
+  position: relative;
+}
+.routing-shell {
+  background: rgba(255,255,255,.78);
+  border: 1px solid var(--border);
+  border-radius: 34px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.routing-intro {
+  padding: 34px;
+  display: grid;
+  grid-template-columns: .86fr 1fr;
+  gap: 34px;
+  border-bottom: 1px solid var(--border);
+  background:
+    radial-gradient(circle at 95% 0%, rgba(26,86,255,.10), transparent 34%),
+    rgba(255,255,255,.64);
+}
+.routing-intro h2 {
+  font-size: clamp(30px, 3.4vw, 48px);
+  line-height: 1.04;
+  letter-spacing: -.045em;
+  font-weight: 820;
+}
+.routing-intro p {
+  color: var(--ink-2);
+  font-size: 16px;
+  max-width: 620px;
+}
+.path-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+}
+.path-card {
+  position: relative;
+  min-height: 360px;
+  background: rgba(255,255,255,.95);
+  padding: 30px;
+  cursor: pointer;
+  transition: background .18s ease, box-shadow .18s ease;
+  overflow: hidden;
+}
+.path-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--blue-soft), transparent 48%);
+  opacity: 0;
+  transition: opacity .22s ease;
+}
+.path-card:hover::after,
+.path-card.active::after { opacity: 1; }
+.path-card.active {
+  background: #f8fbff;
+  box-shadow: inset 0 0 0 2px var(--blue);
+  z-index: 2;
+}
+.path-content { position: relative; z-index: 2; }
+.path-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--blue);
+  font-weight: 600;
+}
+.path-title {
+  margin-top: 20px;
+  font-size: 24px;
+  line-height: 1.08;
+  letter-spacing: -.035em;
+  font-weight: 800;
+}
+.path-price {
+  margin-top: 20px;
+  font-size: 42px;
+  line-height: 1;
+  letter-spacing: -.05em;
+  font-weight: 850;
+  color: var(--ink);
+}
+.path-price span {
+  display: block;
+  margin-top: 8px;
+  color: var(--ink-3);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .06em;
+  font-weight: 500;
+}
+.path-copy {
+  margin-top: 20px;
+  color: var(--ink-2);
+  font-size: 14px;
+  max-width: 330px;
+}
+.path-best {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.path-best span {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.68);
+  color: var(--ink-3);
+  border-radius: 999px;
+  padding: 6px 9px;
+  font-size: 11px;
+}
+.path-icon {
+  position: absolute;
+  right: 24px;
+  bottom: 20px;
+  width: 96px;
+  height: 96px;
+  opacity: .14;
+  color: var(--blue);
+}
+
+/* ═══════════════════════════════════════════════
+   FORM PANEL
+═══════════════════════════════════════════════ */
+.form-panel {
+  display: none;
+  border-top: 1px solid var(--border);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,251,255,.94));
+}
+.form-panel.open { display: block; }
+.form-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 42px;
+  padding: 38px 34px 34px;
+}
+.form-head {
+  margin-bottom: 28px;
+}
+.selected-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 11px;
+  border-radius: 999px;
+  background: var(--blue-soft);
+  border: 1px solid var(--blue-line);
+  color: var(--blue);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.selected-badge::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--blue);
+}
+.form-title {
+  margin-top: 18px;
+  font-size: 30px;
+  letter-spacing: -.035em;
+  line-height: 1.1;
+  font-weight: 820;
+}
+.form-subtitle {
+  margin-top: 10px;
+  color: var(--ink-2);
+  max-width: 620px;
+}
+.field-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.field { margin-bottom: 16px; }
+.field label {
+  display: block;
+  margin-bottom: 7px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  font-weight: 600;
+}
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  background: white;
+  padding: 13px 14px;
+  outline: none;
+  color: var(--ink);
+  transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.field textarea { min-height: 116px; resize: vertical; }
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 4px rgba(26,86,255,.10);
+}
+.field input::placeholder,
+.field textarea::placeholder { color: rgba(7,17,31,.30); }
+.hint {
+  margin-top: 6px;
+  color: var(--ink-4);
+  font-size: 12px;
+}
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.tag {
+  border: 1px solid var(--border);
+  background: white;
+  border-radius: 999px;
+  padding: 8px 11px;
+  color: var(--ink-3);
+  font-size: 12px;
+  cursor: pointer;
+  transition: border-color .18s ease, background .18s ease, color .18s ease;
+  user-select: none;
+}
+.tag:hover { border-color: var(--blue-line); color: var(--ink); }
+.tag.on {
+  background: var(--blue-soft);
+  border-color: var(--blue-line);
+  color: var(--blue);
+}
+.outcome-box {
+  margin-top: 24px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: rgba(255,255,255,.78);
+  padding: 18px;
+}
+.outcome-box h4 {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 10px;
+}
+.outcome-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px 14px;
+  list-style: none;
+}
+.outcome-list li {
+  position: relative;
+  padding-left: 18px;
+  color: var(--ink-2);
+  font-size: 13px;
+}
+.outcome-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: .65em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+}
+.submit-row {
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.micro-link {
+  border: none;
+  background: transparent;
+  color: var(--ink-4);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(7,17,31,.18);
+  padding: 0 0 3px;
+}
+.micro-link:hover { color: var(--blue); border-color: var(--blue); }
+.side-card {
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: rgba(255,255,255,.78);
+  padding: 20px;
+  min-height: 420px;
+  position: relative;
+  overflow: hidden;
+}
+.side-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(26,86,255,.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26,86,255,.055) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(circle at 50% 38%, black 0%, transparent 72%);
+}
+.side-card > * { position: relative; z-index: 2; }
+.side-title {
+  font-size: 17px;
+  font-weight: 780;
+  letter-spacing: -.02em;
+  margin-bottom: 12px;
+}
+.side-copy {
+  color: var(--ink-3);
+  font-size: 13px;
+}
+.process-list {
+  list-style: none;
+  margin-top: 22px;
+  display: grid;
+  gap: 12px;
+}
+.process-list li {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+.process-list i {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  background: var(--blue-soft);
+  border: 1px solid var(--blue-line);
+  display: grid;
+  place-items: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--blue);
+  font-style: normal;
+}
+.process-list b {
+  display: block;
+  font-size: 13px;
+  line-height: 1.35;
+}
+.process-list span {
+  display: block;
+  color: var(--ink-4);
+  font-size: 12px;
+  line-height: 1.45;
+  margin-top: 2px;
+}
+.mini-map {
+  margin-top: 26px;
+  width: 100%;
+  height: 160px;
+}
+
+/* ═══════════════════════════════════════════════
+   HOW IT WORKS
+═══════════════════════════════════════════════ */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+.step-card {
+  background: rgba(255,255,255,.75);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 22px;
+  min-height: 188px;
+}
+.step-num {
+  display: inline-flex;
+  width: 34px;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: var(--ink);
+  color: white;
+  font-family: var(--mono);
+  font-size: 11px;
+  margin-bottom: 18px;
+}
+.step-card h3 {
+  font-size: 17px;
+  letter-spacing: -.02em;
+  line-height: 1.2;
+  margin-bottom: 9px;
+}
+.step-card p {
+  color: var(--ink-2);
+  font-size: 13px;
+}
+
+/* ═══════════════════════════════════════════════
+   PRINCIPLES / FIT
+═══════════════════════════════════════════════ */
+.fit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.fit-card {
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.76);
+  border-radius: 26px;
+  padding: 28px;
+}
+.fit-card h3 {
+  font-size: 23px;
+  letter-spacing: -.035em;
+  margin-bottom: 18px;
+}
+.fit-list {
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+.fit-list li {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 10px;
+  color: var(--ink-2);
+  font-size: 14px;
+}
+.fit-list .mark {
+  color: var(--green);
+  font-weight: 800;
+}
+.fit-card.not .mark { color: #b42318; }
+
+/* ═══════════════════════════════════════════════
+   FAQ
+═══════════════════════════════════════════════ */
+.faq-grid {
+  display: grid;
+  grid-template-columns: .72fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+.faq-list {
+  display: grid;
+  gap: 10px;
+}
+.faq-item {
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.78);
+  border-radius: 18px;
+  overflow: hidden;
+}
+.faq-q {
+  width: 100%;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: none;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+  font-weight: 700;
+  letter-spacing: -.015em;
+}
+.faq-q span {
+  color: var(--blue);
+  font-family: var(--mono);
+  font-size: 16px;
+}
+.faq-a {
+  display: none;
+  padding: 0 20px 18px;
+  color: var(--ink-2);
+  font-size: 14px;
+}
+.faq-item.open .faq-a { display: block; }
+
+/* ═══════════════════════════════════════════════
+   FINAL CTA
+═══════════════════════════════════════════════ */
+.final-cta {
+  padding: 82px 0 96px;
+}
+.cta-box {
+  position: relative;
+  overflow: hidden;
+  border-radius: 36px;
+  border: 1px solid var(--border);
+  background:
+    linear-gradient(135deg, rgba(7,17,31,.98), rgba(16,34,64,.96)),
+    radial-gradient(circle at 90% 0%, rgba(26,86,255,.40), transparent 40%);
+  color: white;
+  padding: 46px;
+  box-shadow: var(--shadow);
+}
+.cta-box::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+  background-size: 32px 32px;
+  opacity: .55;
+}
+.cta-content {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 34px;
+  align-items: end;
+}
+.cta-box h2 {
+  font-size: clamp(34px, 4.4vw, 58px);
+  line-height: 1;
+  letter-spacing: -.055em;
+}
+.cta-box p {
+  margin-top: 16px;
+  color: rgba(255,255,255,.72);
+  max-width: 640px;
+  font-size: 16px;
+}
+.cta-actions { display: flex; flex-direction: column; gap: 12px; }
+.cta-actions .btn-secondary {
+  background: rgba(255,255,255,.10);
+  color: white;
+  border-color: rgba(255,255,255,.16);
+}
+
+/* ═══════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════ */
+.footer {
+  border-top: 1px solid var(--border);
+  background: rgba(255,255,255,.54);
+  padding: 28px 0;
+}
+.footer-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: center;
+}
+.footer-brand {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: .06em;
+  color: var(--ink-3);
+}
+.footer-meta {
+  text-align: right;
+  color: var(--ink-4);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
+@media (max-width: 1060px) {
+  .hero-grid,
+  .section-head,
+  .routing-intro,
+  .faq-grid,
+  .cta-content { grid-template-columns: 1fr; }
+  .visual-card { min-height: 720px; }
+  .path-grid { grid-template-columns: 1fr; }
+  .path-card { min-height: auto; }
+  .form-inner { grid-template-columns: 1fr; }
+  .side-card { min-height: auto; }
+  .trust-grid,
+  .steps { grid-template-columns: repeat(2, 1fr); }
+  .trust-item:nth-child(2) { border-right: none; }
+  .trust-item:nth-child(3),
+  .trust-item:nth-child(4) { border-top: 1px solid var(--border); }
+  .situation-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 760px) {
+  .wrap { padding: 0 18px; }
+  .hero { padding: 56px 0 42px; }
+  .nav-links { display: none; }
+  .mobile-menu { display: inline-flex; }
+  .visual-card { min-height: 900px; border-radius: 26px; }
+  .visual-map {
+    inset: 72px 18px 330px;
+    width: calc(100% - 36px);
+    height: calc(100% - 402px);
+  }
+  .visual-rows { grid-template-columns: 1fr; }
+  .visual-row { min-height: auto; }
+  .section { padding: 52px 0; }
+  .routing-area { padding: 54px 0; }
+  .routing-shell { border-radius: 26px; }
+  .routing-intro, .form-inner { padding: 24px; }
+  .field-grid, .outcome-list, .fit-grid, .situation-grid, .trust-grid, .steps { grid-template-columns: 1fr; }
+  .trust-item { border-right: none; border-top: 1px solid var(--border); }
+  .trust-item:first-child { border-top: none; }
+  .path-card { padding: 24px; }
+  .path-price { font-size: 36px; }
+  .hero-actions { align-items: stretch; }
+  .btn { width: 100%; }
+  .footer-row { flex-direction: column; align-items: flex-start; }
+  .footer-meta { text-align: left; }
+  .cta-box { padding: 30px; border-radius: 28px; }
+}
+</style>
+<div class="bg-system" aria-hidden="true">
+  <svg id="topology-bg" viewBox="0 0 1440 1100" preserveAspectRatio="none"></svg>
+</div>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <div class="hero-status reveal">
+          <span class="pill"><i class="pill-dot"></i>{t(' Cadrage payé · prochaine étape claire', ' Paid scoping · clear next step', ' Bezahltes Scoping · klarer nächster Schritt', ' Inquadramento a pagamento · prossimo passo chiaro')}</span>
+          <span class="pill mono">{t('Lausanne · Suisse', 'Lausanne · Switzerland', 'Lausanne · Schweiz', 'Losanna · Svizzera')}</span>
+        </div>
+        <h1 class="reveal">{t('Vos systèmes tiennent encore. ', 'Your systems still work. ', 'Ihre Systeme funktionieren noch. ', 'I vostri sistemi reggono ancora. ')}<span>{t('La clarté', 'Clarity', 'Klarheit', 'La chiarezza')}</span>{t(' a souvent disparu.', ' is what usually disappeared.', ' ist oft das, was fehlt.', ' è spesso ciò che è sparito.')}</h1>
+        <p class="lead reveal">
+          {t(
+            'Outils, accès, sites, workflows et infrastructure se construisent souvent par couches. IOPartner aide à transformer ce désordre opérationnel en structure lisible, en décision cadrée ou en chemin de mise en oeuvre concret.',
+            'Tools, access, websites, workflows and infrastructure often grow by layers. IOPartner helps you turn that operational mess into a readable structure, a scoped decision, or a concrete implementation path.',
+            'Tools, Zugänge, Websites, Workflows und Infrastruktur wachsen oft schichtweise. IOPartner hilft dabei, dieses operative Durcheinander in eine lesbare Struktur, eine saubere Entscheidung oder einen konkreten Umsetzungspfad zu verwandeln.',
+            'Strumenti, accessi, siti, workflow e infrastruttura crescono spesso a strati. IOPartner aiuta a trasformare quel disordine operativo in una struttura leggibile, una decisione inquadrata o un percorso di implementazione concreto.'
+          )}
+        </p>
+        <div class="hero-actions reveal">
+          <a class="btn btn-primary" href="#routing" data-open-path="orientation">{t('Commencer à 60 CHF →', 'Start with CHF 60 →', 'Mit CHF 60 starten →', 'Iniziare con CHF 60 →')}</a>
+          <a class="btn btn-secondary" href="#situations">{t('Voir les situations typiques', 'See typical situations', 'Typische Situationen sehen', 'Vedere le situazioni tipiche')}</a>
+        </div>
+        <p class="hero-note reveal">
+          {t(
+            'Pas de discovery call vague. Le point d entrée payé sert à produire une décision utile, un scope ou une direction avant de construire quoi que ce soit.',
+            'No vague discovery call. The paid entry point exists to produce a useful decision, scope, or direction before anything gets built.',
+            'Kein vager Discovery-Call. Der bezahlte Einstieg dient dazu, vor jedem Build eine brauchbare Entscheidung, einen Scope oder eine Richtung zu erzeugen.',
+            'Nessuna discovery call vaga. Il punto di ingresso a pagamento serve a produrre una decisione utile, uno scope o una direzione prima di costruire qualsiasi cosa.'
+          )}
+        </p>
+      </div>
+
+      <aside class="visual-card reveal" aria-label={t('Illustration de carte opérationnelle', 'Operational map illustration', 'Illustration einer operativen Karte', 'Illustrazione della mappa operativa')}>
+        <div class="visual-topbar">
+          <span>{t('Carte opérationnelle', 'Operational map', 'Operative Karte', 'Mappa operativa')}</span>
+          <div class="status-lights"><i></i><i></i><i></i></div>
+        </div>
+        <svg class="visual-map" id="hero-map" viewBox="0 0 520 520" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+        <div class="visual-panel">
+          <div class="visual-panel-head">
+            <div class="visual-panel-title">{t('Des outils dispersés à un système lisible', 'From scattered tools to a readable system', 'Von verstreuten Tools zu einem lesbaren System', 'Da strumenti dispersi a un sistema leggibile')}</div>
+            <div class="visual-panel-meta">{t('Scope d abord', 'Scope first', 'Zuerst Scope', 'Prima lo scope')}</div>
+          </div>
+          <div class="visual-rows">
+            <div class="visual-row"><b>{t('Ce qui existe', 'What exists', 'Was existiert', 'Cosa esiste')}</b><span>{t('Outils, routes, accès, prestataires, hébergement, documents.', 'Tools, routes, access, vendors, hosting, documents.', 'Tools, Routen, Zugänge, Anbieter, Hosting, Dokumente.', 'Strumenti, percorsi, accessi, fornitori, hosting, documenti.')}</span></div>
+            <div class="visual-row"><b>{t('Ce qui compte', 'What matters', 'Was zählt', 'Cosa conta')}</b><span>{t('Risques, dépendances, ownership, continuité.', 'Risks, dependencies, ownership, continuity.', 'Risiken, Abhängigkeiten, Ownership, Kontinuität.', 'Rischi, dipendenze, ownership, continuità.')}</span></div>
+            <div class="visual-row"><b>{t('Ce qui suit', 'What happens next', 'Wie es weitergeht', 'Cosa succede dopo')}</b><span>{t('Décision, scope, roadmap, chemin de mise en oeuvre.', 'Decision, scope, roadmap, implementation path.', 'Entscheidung, Scope, Roadmap, Umsetzungspfad.', 'Decisione, scope, roadmap, percorso di implementazione.')}</span></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="trust-strip">
+    <div class="wrap">
+      <div class="trust-box reveal">
+        <div class="trust-grid">
+          <div class="trust-item"><span class="num">01</span><b>{t('Décision avant build', 'Decision before build', 'Entscheidung vor dem Build', 'Decisione prima della build')}</b><p>{t('Clarifier la direction avant de dépenser en implémentation.', 'Clarify direction before spending on implementation.', 'Die Richtung klären, bevor in die Umsetzung investiert wird.', 'Chiarire la direzione prima di spendere in implementazione.')}</p></div>
+          <div class="trust-item"><span class="num">02</span><b>{t('Des systèmes, pas du théâtre', 'Systems, not theatre', 'Systeme, nicht Theater', 'Sistemi, non teatro')}</b><p>{t('Se concentrer sur l ownership, les flux, les accès, les risques et la continuité.', 'Focus on ownership, flows, access, risks and continuity.', 'Fokus auf Ownership, Abläufe, Zugänge, Risiken und Kontinuität.', 'Concentrarsi su ownership, flussi, accessi, rischi e continuità.')}</p></div>
+          <div class="trust-item"><span class="num">03</span><b>{t('Fit PME suisse', 'Swiss SME fit', 'Fit für Schweizer KMU', 'Adatto alle PMI svizzere')}</b><p>{t('Un scope pratique pour les petites équipes et les vraies contraintes.', 'Practical scope for small teams and real constraints.', 'Praktischer Scope für kleine Teams und reale Einschränkungen.', 'Scope pratico per piccoli team e vincoli reali.')}</p></div>
+          <div class="trust-item"><span class="num">04</span><b>{t('Entrée payée et focalisée', 'Paid, focused entry', 'Bezahlter, fokussierter Einstieg', 'Ingresso a pagamento e focalizzato')}</b><p>{t('Les sessions courtes produisent des sorties utiles, pas du brouillard commercial.', 'Short sessions produce usable outputs, not sales fog.', 'Kurze Sessions liefern brauchbare Resultate statt Verkaufssmog.', 'Le sessioni brevi producono output utili, non nebbia commerciale.')}</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="situations">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="kicker reveal">{t('Situations typiques', 'Typical situations', 'Typische Situationen', 'Situazioni tipiche')}</span>
+          <h2 class="h2 reveal">{t('Le problème doit être reconnaissable vite.', 'You should recognize the problem quickly.', 'Das Problem sollte schnell erkennbar sein.', 'Il problema dovrebbe essere riconoscibile subito.')}</h2>
+        </div>
+        <p class="lead reveal">{t('La page ne doit pas obliger le visiteur à décoder un service abstrait. Il doit reconnaître sa propre situation opérationnelle et comprendre pourquoi une session cadrée peut faire gagner du temps.', 'The page must not make visitors decode an abstract service. They should see their own operational situation and understand why a scoped session can save time.', 'Die Seite darf Besucher nicht zwingen, einen abstrakten Service zu entschlüsseln. Sie sollen ihre eigene operative Situation erkennen und verstehen, warum eine gerahmte Session Zeit sparen kann.', 'La pagina non deve costringere i visitatori a decodificare un servizio astratto. Devono riconoscere la loro situazione operativa e capire perché una sessione ben inquadrata può far risparmiare tempo.')}</p>
+      </div>
+      <div class="situation-grid">
+        <article class="situation-card reveal">
+          <div class="icon">⌁</div>
+          <h3>{t('La stack a grandi organiquement', 'The stack grew organically', 'Der Stack ist organisch gewachsen', 'La stack è cresciuta in modo organico')}</h3>
+          <p>{t('Tout fonctionne encore, mais personne n a une carte claire des dépendances, de l hébergement, des accès, des sauvegardes ou de l ownership.', 'Everything still works, but nobody has a clear map of dependencies, hosting, access, backups or ownership.', 'Alles funktioniert noch, aber niemand hat eine klare Karte der Abhängigkeiten, des Hostings, der Zugänge, Backups oder der Ownership.', 'Funziona ancora tutto, ma nessuno ha una mappa chiara di dipendenze, hosting, accessi, backup o ownership.')}</p>
+        </article>
+        <article class="situation-card reveal">
+          <div class="icon">↯</div>
+          <h3>{t('Un prestataire a livré quelque chose de flou', 'A vendor delivered something unclear', 'Ein Anbieter hat etwas Unklares geliefert', 'Un fornitore ha consegnato qualcosa di poco chiaro')}</h3>
+          <p>{t('Vous avez besoin d un second regard avant de continuer, payer plus, migrer ou accepter de la dette technique.', 'You need a second opinion before continuing, paying more, migrating, or accepting technical debt.', 'Sie brauchen eine zweite Einschätzung, bevor Sie weitermachen, mehr bezahlen, migrieren oder technische Schulden akzeptieren.', 'Serve una seconda lettura prima di continuare, pagare di più, migrare o accettare debito tecnico.')}</p>
+        </article>
+        <article class="situation-card reveal">
+          <div class="icon">⧉</div>
+          <h3>{t('Les outils ne forment pas un système', 'Tools do not form a system', 'Die Tools bilden kein System', 'Gli strumenti non formano un sistema')}</h3>
+          <p>{t('CRM, site, documents, facturation, accès et processus internes existent séparément au lieu de former une seule opération.', 'CRM, website, documents, invoicing, access and internal processes exist separately instead of as one operation.', 'CRM, Website, Dokumente, Rechnungsstellung, Zugänge und interne Prozesse existieren getrennt statt als eine Operation.', 'CRM, sito, documenti, fatturazione, accessi e processi interni esistono separatamente invece di formare un unica operazione.')}</p>
+        </article>
+        <article class="situation-card reveal">
+          <div class="icon">◇</div>
+          <h3>{t('Une migration est envisagée', 'A migration is being considered', 'Eine Migration wird erwogen', 'Si sta valutando una migrazione')}</h3>
+          <p>{t('Avant de déplacer hébergement, CMS, email, workflows ou infrastructure, les risques et l ordre des opérations doivent être structurés.', 'Before moving hosting, CMS, email, workflows or infrastructure, the risks and order of operations need structure.', 'Bevor Hosting, CMS, E-Mail, Workflows oder Infrastruktur verschoben werden, brauchen Risiken und Reihenfolge Struktur.', 'Prima di spostare hosting, CMS, email, workflow o infrastruttura, rischi e ordine delle operazioni vanno strutturati.')}</p>
+        </article>
+        <article class="situation-card reveal">
+          <div class="icon">☷</div>
+          <h3>{t('La connaissance interne reste orale', 'Internal knowledge lives orally', 'Internes Wissen bleibt mündlich', 'La conoscenza interna resta orale')}</h3>
+          <p>{t('Les gens savent comment les choses fonctionnent, mais l activité dépend d habitudes, de raccourcis et d explications qui ne sont pas écrits.', 'People know how things work, but the business depends on habits, shortcuts and explanations that are not written down.', 'Die Leute wissen, wie Dinge funktionieren, aber das Geschäft hängt von Gewohnheiten, Abkürzungen und Erklärungen ab, die nirgends dokumentiert sind.', 'Le persone sanno come funzionano le cose, ma l attività dipende da abitudini, scorciatoie e spiegazioni non scritte.')}</p>
+        </article>
+        <article class="situation-card reveal">
+          <div class="icon">◎</div>
+          <h3>{t('Vous avez besoin d une présence web cadrée', 'You need a web presence with boundaries', 'Sie brauchen eine klar begrenzte Web-Präsenz', 'Avete bisogno di una presenza web con confini chiari')}</h3>
+          <p>{t('Pas un projet agence sans fin. Un site cadré, une structure claire, un contenu maintenable et un chemin de lancement réaliste.', 'Not an endless agency project. A scoped site, clear structure, maintainable content and realistic launch path.', 'Kein endloses Agenturprojekt. Sondern eine abgegrenzte Site, klare Struktur, pflegbare Inhalte und ein realistischer Launch-Pfad.', 'Non un progetto agenzia senza fine. Un sito ben definito, struttura chiara, contenuto mantenibile e percorso di lancio realistico.')}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="routing-area" id="routing">
+    <div class="wrap">
+      <div class="routing-shell reveal">
+        <div class="routing-intro">
+          <div>
+            <span class="kicker">{t('Points d entrée', 'Entry points', 'Einstiegspunkte', 'Punti di ingresso')}</span>
+            <h2>{t('Choisissez le format selon le niveau d incertitude.', 'Pick the format that matches the uncertainty.', 'Wählen Sie das Format passend zur Unsicherheit.', 'Scegliete il formato in base al livello di incertezza.')}</h2>
+          </div>
+          <p>{t('Des sessions focalisées produisent de meilleures décisions. Choisissez une orientation technique courte, une session de cadrage plus profonde, ou envoyez le contexte quand la bonne route n est pas encore évidente.', 'Focused sessions create better decisions. Choose a short technical orientation, a deeper scoping session, or send context when the right route is not obvious yet.', 'Fokussierte Sessions führen zu besseren Entscheidungen. Wählen Sie eine kurze technische Orientierung, eine tiefere Scoping-Session oder senden Sie den Kontext, wenn der richtige Weg noch nicht klar ist.', 'Sessioni focalizzate producono decisioni migliori. Scegliete un orientamento tecnico breve, una sessione di scope più profonda o inviate il contesto quando il percorso giusto non è ancora evidente.')}</p>
+        </div>
+
+        <div class="path-grid" role="tablist" aria-label={t('Sélecteur de parcours contact', 'Contact path selector', 'Kontaktpfad-Auswahl', 'Selettore del percorso di contatto')}>
+          <article class="path-card active" id="card-orientation" data-open-path="orientation" role="tab" tabindex="0">
+            <div class="path-content">
+              <div class="path-label">{t('Orientation rapide', 'Fast orientation', 'Schnelle Orientierung', 'Orientamento rapido')}</div>
+              <h3 class="path-title">{t('15 minutes de direction technique', '15-minute technical direction', '15 Minuten technische Richtung', '15 minuti di direzione tecnica')}</h3>
+              <div class="path-price">CHF 60<span>{t('paiement unique · payé d avance', 'one-time · paid upfront', 'einmalig · im Voraus bezahlt', 'una tantum · pagato in anticipo')}</span></div>
+              <p class="path-copy">{t('Pour une décision concrète, un risk check, un choix de stack ou un go/no-go avant de dépenser plus de temps ou d argent.', 'For one concrete decision, risk check, stack choice, or go/no-go before you spend more time or money.', 'Für eine konkrete Entscheidung, einen Risiko-Check, eine Stack-Wahl oder ein Go/No-go, bevor Sie mehr Zeit oder Geld investieren.', 'Per una decisione concreta, un risk check, una scelta di stack o un go/no-go prima di spendere altro tempo o denaro.')}</p>
+              <div class="path-best"><span>{t('Choix de stack', 'Stack choice', 'Stack-Wahl', 'Scelta della stack')}</span><span>Go / no-go</span><span>{t('Second avis', 'Second opinion', 'Zweitmeinung', 'Secondo parere')}</span></div>
+            </div>
+            <svg class="path-icon" viewBox="0 0 100 100"><circle cx="50" cy="50" r="36" fill="none" stroke="currentColor" stroke-width="3"/><path d="M50 24v28l20 10" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>
+          </article>
+
+          <article class="path-card" id="card-scoping" data-open-path="scoping" role="tab" tabindex="0">
+            <div class="path-content">
+              <div class="path-label">{t('Cadrage plus profond', 'Deeper scoping', 'Tieferes Scoping', 'Scope più profondo')}</div>
+              <h3 class="path-title">{t('1 heure de cadrage opérationnel', '1-hour operational scoping', '1 Stunde operatives Scoping', '1 ora di scope operativo')}</h3>
+              <div class="path-price">CHF 140<span>{t('paiement unique · puis horaire si utile', 'one-time · continued hourly if useful', 'einmalig · danach stundenweise falls sinnvoll', 'una tantum · poi orario se utile')}</span></div>
+              <p class="path-copy">{t('Pour comparer des options, structurer un déploiement, relire un setup ou transformer l ambiguïté en plan pratique.', 'For comparing options, structuring a deployment, reviewing a setup, or turning ambiguity into a practical plan.', 'Um Optionen zu vergleichen, ein Deployment zu strukturieren, ein Setup zu prüfen oder Unklarheit in einen praktischen Plan zu verwandeln.', 'Per confrontare opzioni, strutturare un deployment, rivedere un setup o trasformare l ambiguità in un piano pratico.')}</p>
+              <div class="path-best"><span>{t('Infrastructure', 'Infrastructure', 'Infrastruktur', 'Infrastruttura')}</span><span>{t('Roadmap', 'Roadmap', 'Roadmap', 'Roadmap')}</span><span>{t('Migration', 'Migration', 'Migration', 'Migrazione')}</span></div>
+            </div>
+            <svg class="path-icon" viewBox="0 0 100 100"><rect x="18" y="64" width="64" height="14" rx="5" fill="none" stroke="currentColor" stroke-width="3"/><rect x="26" y="43" width="48" height="14" rx="5" fill="none" stroke="currentColor" stroke-width="3"/><rect x="34" y="22" width="32" height="14" rx="5" fill="none" stroke="currentColor" stroke-width="3"/></svg>
+          </article>
+
+          <article class="path-card" id="card-context" data-open-path="context" role="tab" tabindex="0">
+            <div class="path-content">
+              <div class="path-label">{t('Pas encore sûr', 'Not sure yet', 'Noch nicht sicher', 'Non ancora sicuro')}</div>
+              <h3 class="path-title">{t('Envoyer le contexte opérationnel', 'Send operational context', 'Operativen Kontext senden', 'Inviare il contesto operativo')}</h3>
+              <div class="path-price">{t('Route', 'Route', 'Route', 'Route')}<span>{t('on vous oriente vers le bon format payé', 'we point to the right paid format', 'wir leiten Sie zum richtigen bezahlten Format', 'vi indirizziamo verso il giusto formato a pagamento')}</span></div>
+              <p class="path-copy">{t('Pour une présence web, systems & operations, de l outillage interne ou une situation floue qui doit d abord être routée.', 'For web presence, systems & operations, internal tooling, or unclear situations that need routing first.', 'Für Web-Präsenz, Systems & Operations, interne Tools oder unklare Situationen, die zuerst geroutet werden müssen.', 'Per presenza web, systems & operations, tooling interno o situazioni poco chiare che vanno prima instradate.')}</p>
+              <div class="path-best"><span>Web</span><span>Systems</span><span>{t('Scope inconnu', 'Unknown scope', 'Unklarer Scope', 'Scope sconosciuto')}</span></div>
+            </div>
+            <svg class="path-icon" viewBox="0 0 100 100"><circle cx="26" cy="28" r="10" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="72" cy="34" r="10" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="52" cy="72" r="10" fill="none" stroke="currentColor" stroke-width="3"/><path d="M35 31l28 3M67 43L56 63M46 65L32 37" fill="none" stroke="currentColor" stroke-width="3"/></svg>
+          </article>
+        </div>
+
+        <section class="form-panel open" id="panel-orientation">
+          <div class="form-inner">
+            <div>
+              <div class="form-head">
+                <div class="selected-badge">{t('CHF 60 · 15 min · direction technique', 'CHF 60 · 15 min · technical direction', 'CHF 60 · 15 Min · technische Richtung', 'CHF 60 · 15 min · direzione tecnica')}</div>
+                <h3 class="form-title">{t('Quelle décision doit être prise ?', 'What needs a decision?', 'Welche Entscheidung muss getroffen werden?', 'Quale decisione va presa?')}</h3>
+                <p class="form-subtitle">{t('Une question claire fonctionne le mieux. S il y a plusieurs décisions liées, utilisez la session de cadrage de 1 heure.', 'One clear question works best. If there are several linked decisions, use the 1-hour scoping session.', 'Eine klare Frage funktioniert am besten. Wenn mehrere Entscheidungen zusammenhängen, nutzen Sie die 1-stündige Scoping-Session.', 'Una domanda chiara funziona meglio. Se ci sono più decisioni collegate, usate la sessione di scope da 1 ora.')}</p>
+              </div>
+              <div class="field-grid">
+                <div class="field"><label>{t('Nom', 'Name', 'Name', 'Nome')}</label><input type="text" placeholder="Anna Müller" /></div>
+                <div class="field"><label>Email</label><input type="email" placeholder="anna@company.ch" /></div>
+              </div>
+              <div class="field">
+                <label>{t('Décision à prendre', 'Decision needed', 'Benötigte Entscheidung', 'Decisione necessaria')}</label>
+                <textarea placeholder={t('Exemple : choisir entre WordPress et une stack custom ; décider si une proposition agence est raisonnable ; ou valider une direction infrastructure.', 'Example: We need to choose between WordPress and a custom stack; or decide whether an agency proposal is reasonable; or validate an infrastructure direction.', 'Beispiel: Wir müssen zwischen WordPress und einem Custom-Stack wählen; entscheiden, ob ein Agenturvorschlag sinnvoll ist; oder eine Infrastruktur-Richtung validieren.', 'Esempio: dobbiamo scegliere tra WordPress e una stack custom; decidere se una proposta agenzia è ragionevole; oppure validare una direzione infrastrutturale.')}></textarea>
+                <p class="hint">{t('Bon input : contexte, options, contraintes, et ce qui se passe si la décision est mauvaise.', 'Good input: context, options, constraints, what happens if the decision is wrong.', 'Gute Eingabe: Kontext, Optionen, Einschränkungen und was passiert, wenn die Entscheidung falsch ist.', 'Buon input: contesto, opzioni, vincoli e cosa succede se la decisione è sbagliata.')}</p>
+              </div>
+              <div class="field">
+                <label>{t('Zone du sujet', 'Topic area', 'Themenbereich', 'Area del tema')}</label>
+                <div class="tag-row" id="tags-orientation">
+                  <span class="tag" data-toggle-tag>{t('Choix de stack', 'Stack choice', 'Stack-Wahl', 'Scelta stack')}</span>
+                  <span class="tag" data-toggle-tag>{t('Architecture', 'Architecture', 'Architektur', 'Architettura')}</span>
+                  <span class="tag" data-toggle-tag>Go / no-go</span>
+                  <span class="tag" data-toggle-tag>{t('Revue prestataire', 'Vendor review', 'Anbieter-Review', 'Revisione fornitore')}</span>
+                  <span class="tag" data-toggle-tag>{t('Estimation de coût', 'Cost estimate', 'Kostenschätzung', 'Stima dei costi')}</span>
+                  <span class="tag" data-toggle-tag>{t('Décision infra', 'Infra decision', 'Infra-Entscheidung', 'Decisione infra')}</span>
+                </div>
+              </div>
+              <div class="outcome-box">
+                <h4>{t('Ce avec quoi vous repartez', 'What leaves with you', 'Was Sie mitnehmen', 'Cosa vi portate via')}</h4>
+                <ul class="outcome-list">
+                  <li>{t('Une direction technique plus claire', 'A clearer technical direction', 'Eine klarere technische Richtung', 'Una direzione tecnica più chiara')}</li>
+                  <li>{t('Des risques et tradeoffs connus', 'Known risks and tradeoffs', 'Bekannte Risiken und Tradeoffs', 'Rischi e tradeoff conosciuti')}</li>
+                  <li>{t('Une prochaine étape pratique', 'A practical next move', 'Ein praktischer nächster Schritt', 'Una prossima mossa pratica')}</li>
+                  <li>{t('S il faut plus de cadrage ou non', 'Whether more scoping is needed', 'Ob mehr Scoping nötig ist', 'Se serve altro scope oppure no')}</li>
+                </ul>
+              </div>
+              <div class="submit-row">
+                <a class="btn btn-primary" href="/api/payment/redirect?tenant=iopartner&plan=diagnostic60">{t('Payer CHF 60 et réserver →', 'Pay CHF 60 & book →', 'CHF 60 zahlen und buchen →', 'Paga CHF 60 e prenota →')}</a>
+                <button class="micro-link" type="button" data-open-path="scoping">{t('Plusieurs décisions ? Choisir 1 h', 'Several decisions? Choose 1h', 'Mehrere Entscheidungen? 1 h wählen', 'Più decisioni? Scegli 1 h')}</button>
+              </div>
+            </div>
+            <aside class="side-card">
+              <h4 class="side-title">{t('Pourquoi c est payé', 'Why this is paid', 'Warum das bezahlt ist', 'Perché è a pagamento')}</h4>
+              <p class="side-copy">{t('Une réponse utile demande du contexte, du jugement et une recommandation défendable. Le format court payé garde la session focalisée et évite le brouillard des appels gratuits.', 'A useful answer requires context, judgment and a defensible recommendation. The short paid format keeps the session focused and avoids generic free-call fog.', 'Eine brauchbare Antwort braucht Kontext, Urteilskraft und eine vertretbare Empfehlung. Das kurze bezahlte Format hält die Session fokussiert und vermeidet den Nebel kostenloser Calls.', 'Una risposta utile richiede contesto, giudizio e una raccomandazione difendibile. Il formato breve a pagamento mantiene la sessione focalizzata ed evita la nebbia delle call gratuite.')}</p>
+              <ol class="process-list">
+                <li><i>01</i><div><b>{t('Vous apportez une décision', 'You bring one decision', 'Sie bringen eine Entscheidung mit', 'Portate una decisione')}</b><span>{t('On évite la discovery large et on reste concret.', 'We avoid broad discovery and stay concrete.', 'Wir vermeiden breite Discovery und bleiben konkret.', 'Evitiamo discovery ampie e restiamo concreti.')}</span></div></li>
+                <li><i>02</i><div><b>{t('On teste les options', 'We test the options', 'Wir testen die Optionen', 'Testiamo le opzioni')}</b><span>{t('Les risques, dépendances et mauvais virages sont identifiés.', 'Risks, dependencies and wrong turns are identified.', 'Risiken, Abhängigkeiten und Fehlwege werden identifiziert.', 'Rischi, dipendenze e direzioni sbagliate vengono identificati.')}</span></div></li>
+                <li><i>03</i><div><b>{t('Vous repartez avec une direction', 'You leave with direction', 'Sie gehen mit einer Richtung', 'Uscite con una direzione')}</b><span>{t('Build, pause, simplifier, cadrer, ou éviter.', 'Build, pause, simplify, scope, or avoid.', 'Build, Pause, vereinfachen, scopen oder vermeiden.', 'Build, pausa, semplificare, fare scope o evitare.')}</span></div></li>
+              </ol>
+              <svg class="mini-map" id="mini-orientation" viewBox="0 0 320 160"></svg>
+            </aside>
+          </div>
+        </section>
+
+        <section class="form-panel" id="panel-scoping">
+          <div class="form-inner">
+            <div>
+              <div class="form-head">
+                <div class="selected-badge">{t('CHF 140 · 1 heure · cadrage opérationnel', 'CHF 140 · 1 hour · operational scoping', 'CHF 140 · 1 Stunde · operatives Scoping', 'CHF 140 · 1 ora · scope operativo')}</div>
+                <h3 class="form-title">{t('Qu est-ce qui doit être cadré ?', 'What needs to be scoped?', 'Was muss gescopt werden?', 'Cosa deve essere definito?')}</h3>
+                <p class="form-subtitle">{t('Pour plusieurs options, un setup désordonné, une ownership floue, une migration, ou un système qui a besoin de structure avant l implémentation.', 'For several options, a messy setup, unclear ownership, a migration, or a system that needs structure before implementation.', 'Für mehrere Optionen, ein unordentliches Setup, unklare Ownership, eine Migration oder ein System, das vor der Umsetzung Struktur braucht.', 'Per più opzioni, un setup disordinato, ownership poco chiara, una migrazione o un sistema che ha bisogno di struttura prima dell implementazione.')}</p>
+              </div>
+              <div class="field-grid">
+                <div class="field"><label>{t('Nom', 'Name', 'Name', 'Nome')}</label><input type="text" placeholder="Anna Müller" /></div>
+                <div class="field"><label>Email</label><input type="email" placeholder="anna@company.ch" /></div>
+              </div>
+              <div class="field"><label>{t('Entreprise / contexte', 'Company / context', 'Unternehmen / Kontext', 'Azienda / contesto')}</label><input type="text" placeholder={t('PME, taille d équipe, stack actuelle, prestataire existant, contraintes...', 'SME, team size, current stack, existing vendor, constraints...', 'KMU, Teamgrösse, aktueller Stack, bestehender Anbieter, Einschränkungen...', 'PMI, dimensione team, stack attuale, fornitore esistente, vincoli...')} /></div>
+              <div class="field"><label>{t('Situation à cadrer', 'Situation to scope', 'Zu scopende Situation', 'Situazione da definire')}</label><textarea placeholder={t('Décrivez ce qui existe, ce qui est flou, ce qui casse, ce qui doit changer, et quelle décision ou quel plan vous voulez après la session.', 'Describe what exists, what is unclear, what breaks, what needs to change, and what decision or plan you need after the session.', 'Beschreiben Sie, was existiert, was unklar ist, was bricht, was sich ändern muss und welche Entscheidung oder welchen Plan Sie nach der Session brauchen.', 'Descrivete cosa esiste, cosa è poco chiaro, cosa si rompe, cosa deve cambiare e quale decisione o piano vi serve dopo la sessione.')}></textarea></div>
+              <div class="field">
+                <label>{t('Zones du sujet', 'Topic areas', 'Themenbereiche', 'Aree del tema')}</label>
+                <div class="tag-row">
+                  <span class="tag" data-toggle-tag>{t('Analyse de stack', 'Stack analysis', 'Stack-Analyse', 'Analisi della stack')}</span>
+                  <span class="tag" data-toggle-tag>{t('Déploiement', 'Deployment', 'Deployment', 'Deployment')}</span>
+                  <span class="tag" data-toggle-tag>{t('Migration', 'Migration', 'Migration', 'Migrazione')}</span>
+                  <span class="tag" data-toggle-tag>{t('Outillage interne', 'Internal tooling', 'Interne Tools', 'Tooling interno')}</span>
+                  <span class="tag" data-toggle-tag>{t('Accès / permissions', 'Access / permissions', 'Zugänge / Berechtigungen', 'Accessi / permessi')}</span>
+                  <span class="tag" data-toggle-tag>{t('Revue prestataire', 'Vendor review', 'Anbieter-Review', 'Revisione fornitore')}</span>
+                  <span class="tag" data-toggle-tag>Roadmap</span>
+                  <span class="tag" data-toggle-tag>{t('Plan budgetaire', 'Budget planning', 'Budgetplanung', 'Pianificazione budget')}</span>
+                </div>
+              </div>
+              <div class="outcome-box">
+                <h4>{t('Ce avec quoi vous repartez', 'What leaves with you', 'Was Sie mitnehmen', 'Cosa vi portate via')}</h4>
+                <ul class="outcome-list">
+                  <li>{t('Un scope structuré', 'A structured scope', 'Ein strukturierter Scope', 'Uno scope strutturato')}</li>
+                  <li>{t('Des limites d implémentation claires', 'Clear implementation boundaries', 'Klare Umsetzungsgrenzen', 'Confini di implementazione chiari')}</li>
+                  <li>{t('Risques et dépendances', 'Risks and dependencies', 'Risiken und Abhängigkeiten', 'Rischi e dipendenze')}</li>
+                  <li>{t('La prochaine séquence recommandée', 'Recommended next sequence', 'Empfohlene nächste Sequenz', 'Sequenza successiva consigliata')}</li>
+                </ul>
+              </div>
+              <div class="submit-row">
+                <a class="btn btn-primary" href="/api/payment/redirect?tenant=iopartner&plan=session140">{t('Payer CHF 140 et réserver →', 'Pay CHF 140 & book →', 'CHF 140 zahlen und buchen →', 'Paga CHF 140 e prenota →')}</a>
+                <button class="micro-link" type="button" data-open-path="orientation">{t('Une seule décision ? Choisir 15 min', 'Only one decision? Choose 15 min', 'Nur eine Entscheidung? 15 Min wählen', 'Una sola decisione? Scegli 15 min')}</button>
+              </div>
+            </div>
+            <aside class="side-card">
+              <h4 class="side-title">{t('Meilleur pour des décisions liées', 'Best for linked decisions', 'Am besten für verknüpfte Entscheidungen', 'Ideale per decisioni collegate')}</h4>
+              <p class="side-copy">{t('Quand le sujet n est pas une question unique mais une chaîne de dépendances, la session d une heure laisse la place de cartographier correctement la situation.', 'When the issue is not one question but a chain of dependencies, the 1-hour session gives room to map the situation properly.', 'Wenn das Thema nicht eine einzelne Frage, sondern eine Kette von Abhängigkeiten ist, gibt die 1-Stunden-Session Raum, die Situation sauber zu kartieren.', 'Quando il problema non è una sola domanda ma una catena di dipendenze, la sessione da 1 ora lascia spazio per mappare bene la situazione.')}</p>
+              <ol class="process-list">
+                <li><i>01</i><div><b>{t('Cartographier l état actuel', 'Map the current state', 'Aktuellen Zustand kartieren', 'Mappare lo stato attuale')}</b><span>{t('Outils, accès, hébergement, workflows, personnes.', 'Tools, access, hosting, workflows, people.', 'Tools, Zugänge, Hosting, Workflows, Personen.', 'Strumenti, accessi, hosting, workflow, persone.')}</span></div></li>
+                <li><i>02</i><div><b>{t('Séparer symptômes et structure', 'Separate symptoms from structure', 'Symptome von Struktur trennen', 'Separare sintomi e struttura')}</b><span>{t('Ce qui casse versus pourquoi cela casse.', 'What breaks versus why it breaks.', 'Was bricht versus warum es bricht.', 'Cosa si rompe rispetto al perché si rompe.')}</span></div></li>
+                <li><i>03</i><div><b>{t('Définir le prochain scope', 'Define the next scope', 'Nächsten Scope definieren', 'Definire il prossimo scope')}</b><span>{t('Une séquence réaliste, pas une wishlist.', 'A realistic sequence, not a wishlist.', 'Eine realistische Sequenz, keine Wunschliste.', 'Una sequenza realistica, non una wishlist.')}</span></div></li>
+              </ol>
+              <svg class="mini-map" id="mini-scoping" viewBox="0 0 320 160"></svg>
+            </aside>
+          </div>
+        </section>
+
+        <section class="form-panel" id="panel-context">
+          <div class="form-inner">
+            <div>
+              <div class="form-head">
+                <div class="selected-badge">{t('Routing du contexte · scope flou', 'Context routing · unclear scope', 'Kontext-Routing · unklarer Scope', 'Routing del contesto · scope poco chiaro')}</div>
+                <h3 class="form-title">{t('Décrivez le setup réel.', 'Describe the real setup.', 'Beschreiben Sie das reale Setup.', 'Descrivete il setup reale.')}</h3>
+                <p class="form-subtitle">{t('Pas une wishlist. Ce qui existe, ce qui bloque, ce que vous voulez rendre plus fiable, et ce que vous essayez d éviter.', 'Not a wishlist. What exists, what blocks, what you want to make more reliable, and what you are trying to avoid.', 'Keine Wunschliste. Was existiert, was blockiert, was zuverlässiger werden soll und was Sie vermeiden möchten.', 'Non una wishlist. Cosa esiste, cosa blocca, cosa volete rendere più affidabile e cosa state cercando di evitare.')}</p>
+              </div>
+              <div class="field-grid">
+                <div class="field"><label>{t('Nom', 'Name', 'Name', 'Nome')}</label><input type="text" placeholder="Anna Müller" /></div>
+                <div class="field"><label>Email</label><input type="email" placeholder="anna@company.ch" /></div>
+              </div>
+              <div class="field"><label>{t('Situation actuelle', 'Actual situation', 'Aktuelle Situation', 'Situazione attuale')}</label><textarea placeholder={t('Exemple : nous avons un site, les factures dans un autre outil, un hébergement flou, un ancien setup email, pas de documentation interne, et nous devons décider quoi nettoyer d abord.', 'Example: We have a website, invoices in another tool, unclear hosting, old email setup, no internal documentation, and we need to decide what to clean first.', 'Beispiel: Wir haben eine Website, Rechnungen in einem anderen Tool, unklareres Hosting, ein altes E-Mail-Setup, keine interne Dokumentation und müssen entscheiden, was wir zuerst bereinigen.', 'Esempio: abbiamo un sito, fatture in un altro strumento, hosting poco chiaro, vecchio setup email, nessuna documentazione interna e dobbiamo decidere cosa ripulire per primo.')}></textarea></div>
+              <div class="field">
+                <label>{t('Direction probable', 'Likely direction', 'Wahrscheinliche Richtung', 'Direzione probabile')}</label>
+                <div class="tag-row">
+                  <span class="tag" data-toggle-tag>{t('Présence web', 'Web presence', 'Web-Präsenz', 'Presenza web')}</span>
+                  <span class="tag" data-toggle-tag>Systems & operations</span>
+                  <span class="tag" data-toggle-tag>Backend / API</span>
+                  <span class="tag" data-toggle-tag>{t('Infrastructure', 'Infrastructure', 'Infrastruktur', 'Infrastruttura')}</span>
+                  <span class="tag" data-toggle-tag>{t('Outillage interne', 'Internal tooling', 'Interne Tools', 'Tooling interno')}</span>
+                  <span class="tag" data-toggle-tag>{t('Pas encore sûr', 'Not sure yet', 'Noch nicht sicher', 'Non ancora sicuro')}</span>
+                </div>
+              </div>
+              <div class="field"><label>{t('Urgence', 'Urgency', 'Dringlichkeit', 'Urgenza')}</label><select><option>{t('Choisir...', 'Select...', 'Wählen...', 'Selezionare...')}</option><option>{t('Flexible', 'Flexible', 'Flexibel', 'Flessibile')}</option><option>{t('Sous 1 mois', 'Within 1 month', 'Innerhalb 1 Monats', 'Entro 1 mese')}</option><option>{t('Sous 2 semaines', 'Within 2 weeks', 'Innerhalb 2 Wochen', 'Entro 2 settimane')}</option><option>ASAP</option></select></div>
+              <div class="outcome-box">
+                <h4>{t('Ce qui se passe ensuite', 'What happens next', 'Wie es weitergeht', 'Cosa succede dopo')}</h4>
+                <ul class="outcome-list">
+                  <li>{t('On route le sujet', 'We route the topic', 'Wir routen das Thema', 'Instradiamo il tema')}</li>
+                  <li>{t('On propose la bonne session', 'We suggest the right session', 'Wir schlagen die richtige Session vor', 'Suggeriamo la sessione giusta')}</li>
+                  <li>{t('On identifie le scope probable', 'We identify likely scope', 'Wir identifizieren den wahrscheinlichen Scope', 'Identifichiamo lo scope probabile')}</li>
+                  <li>{t('On évite les sales calls génériques', 'We avoid generic sales calls', 'Wir vermeiden generische Sales-Calls', 'Evitiamo call commerciali generiche')}</li>
+                </ul>
+              </div>
+              <div class="submit-row">
+                <a class="btn btn-primary" href={`mailto:support@iopartner.ch?subject=${encodeURIComponent(emailSubject)}`}>{t('Envoyer le contexte →', 'Send context →', 'Kontext senden →', 'Inviare il contesto →')}</a>
+                <button class="micro-link" type="button" data-open-path="orientation">{t('Vous avez déjà une question ?', 'Already have one question?', 'Sie haben schon eine Frage?', 'Avete già una domanda?')}</button>
+              </div>
+            </div>
+            <aside class="side-card">
+              <h4 class="side-title">{t('Le routing est utile quand le problème est flou', 'Routing is useful when the problem is fuzzy', 'Routing ist nützlich, wenn das Problem unscharf ist', 'Il routing è utile quando il problema è sfocato')}</h4>
+              <p class="side-copy">{t('Beaucoup de problèmes opérationnels ne commencent pas comme des projets. Ils commencent comme un inconfort : trop d outils, ownership floue, workflows fragiles, ou une proposition prestataire qui ne semble pas juste.', 'Many operational issues do not start as projects. They start as discomfort: too many tools, unclear ownership, fragile workflows, or a vendor proposal that does not feel right.', 'Viele operative Probleme beginnen nicht als Projekte. Sie beginnen als Unbehagen: zu viele Tools, unklare Ownership, fragile Workflows oder ein Anbieter-Vorschlag, der sich nicht richtig anfühlt.', 'Molti problemi operativi non iniziano come progetti. Iniziano come disagio: troppi strumenti, ownership poco chiara, workflow fragili o una proposta fornitore che non sembra giusta.')}</p>
+              <ol class="process-list">
+                <li><i>01</i><div><b>{t('Vous décrivez la réalité', 'You describe reality', 'Sie beschreiben die Realität', 'Descrivete la realtà')}</b><span>{t('Pas besoin d emballer cela comme un projet tout de suite.', 'No need to package it as a project yet.', 'Sie müssen es noch nicht als Projekt verpacken.', 'Non serve ancora confezionarlo come progetto.')}</span></div></li>
+                <li><i>02</i><div><b>{t('On identifie le point d entrée', 'We identify the entry point', 'Wir identifizieren den Einstiegspunkt', 'Identifichiamo il punto di ingresso')}</b><span>{t('Décision, cadrage, présence web, ou systems work sur devis.', 'Decision, scoping, web presence, or quoted systems work.', 'Entscheidung, Scoping, Web-Präsenz oder angebotene Systems-Arbeit.', 'Decisione, scope, presenza web o lavoro systems su preventivo.')}</span></div></li>
+                <li><i>03</i><div><b>{t('Vous choisissez la suite', 'You choose the next move', 'Sie wählen den nächsten Schritt', 'Scegliete il passo successivo')}</b><span>{t('Petit pas, scope plus grand, ou pas de build.', 'Small step, larger scope, or no build.', 'Kleiner Schritt, grösserer Scope oder kein Build.', 'Piccolo passo, scope più grande o nessuna build.')}</span></div></li>
+              </ol>
+              <svg class="mini-map" id="mini-context" viewBox="0 0 320 160"></svg>
+            </aside>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="kicker reveal">{t('Process', 'Process', 'Prozess', 'Processo')}</span>
+          <h2 class="h2 reveal">{t('Assez simple pour inspirer confiance.', 'Simple enough to trust.', 'Einfach genug, um Vertrauen zu schaffen.', 'Abbastanza semplice da ispirare fiducia.')}</h2>
+        </div>
+        <p class="lead reveal">{t('Le service n est pas une boîte noire. La structure est volontairement sobre : comprendre, décider, cadrer, puis ne construire que si le scope le mérite.', 'The service is not a mystery box. The structure is intentionally boring: understand, decide, scope, then only build when the scope deserves it.', 'Der Service ist keine Blackbox. Die Struktur ist bewusst schlicht: verstehen, entscheiden, scopen und nur dann bauen, wenn der Scope es verdient.', 'Il servizio non è una scatola nera. La struttura è volutamente semplice: capire, decidere, fare scope e costruire solo se lo scope lo merita.')}</p>
+      </div>
+      <div class="steps">
+        <article class="step-card reveal"><span class="step-num">01</span><h3>{t('Choisir le point d entrée', 'Choose entry point', 'Einstiegspunkt wählen', 'Scegliere il punto di ingresso')}</h3><p>{t('Choisir 15 minutes, 1 heure ou le routing du contexte selon l incertitude.', 'Pick 15 minutes, 1 hour, or context routing depending on uncertainty.', '15 Minuten, 1 Stunde oder Kontext-Routing je nach Unsicherheit wählen.', 'Scegliere 15 minuti, 1 ora o il routing del contesto in base all incertezza.')}</p></article>
+        <article class="step-card reveal"><span class="step-num">02</span><h3>{t('Apporter le setup réel', 'Bring the real setup', 'Das reale Setup mitbringen', 'Portare il setup reale')}</h3><p>{t('Outils actuels, contraintes, prestataires, accès, workflows et réalité métier.', 'Current tools, constraints, vendors, access, workflows and business reality.', 'Aktuelle Tools, Einschränkungen, Anbieter, Zugänge, Workflows und Business-Realität.', 'Strumenti attuali, vincoli, fornitori, accessi, workflow e realtà operativa.')}</p></article>
+        <article class="step-card reveal"><span class="step-num">03</span><h3>{t('Obtenir une direction défendable', 'Get a defensible direction', 'Eine vertretbare Richtung erhalten', 'Ottenere una direzione difendibile')}</h3><p>{t('Vous repartez avec des risques, des tradeoffs et une prochaine étape claire.', 'You leave with risks, tradeoffs, and a clear next step.', 'Sie gehen mit Risiken, Tradeoffs und einem klaren nächsten Schritt.', 'Uscite con rischi, tradeoff e un prossimo passo chiaro.')}</p></article>
+        <article class="step-card reveal"><span class="step-num">04</span><h3>{t('Continuer seulement si utile', 'Continue only if useful', 'Nur weitermachen, wenn es sinnvoll ist', 'Continuare solo se utile')}</h3><p>{t('L implémentation ou un cadrage plus profond n arrivent que si le scope suivant est justifié.', 'Implementation or deeper scoping happens only when the next scope is justified.', 'Umsetzung oder tieferes Scoping folgen nur, wenn der nächste Scope gerechtfertigt ist.', 'Implementazione o scope più profondo avvengono solo se il prossimo scope è giustificato.')}</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="fit-grid">
+        <article class="fit-card reveal">
+          <h3>{t('Bon fit', 'Good fit', 'Guter Fit', 'Buon fit')}</h3>
+          <ul class="fit-list">
+            <li><span class="mark">✓</span><span>{t('Vous avez besoin de clarté opérationnelle avant de dépenser plus.', 'You need operational clarity before spending more.', 'Sie brauchen operative Klarheit, bevor Sie mehr ausgeben.', 'Avete bisogno di chiarezza operativa prima di spendere di più.')}</span></li>
+            <li><span class="mark">✓</span><span>{t('Vos outils fonctionnent, mais l ownership et la structure sont floues.', 'Your tools work, but ownership and structure are unclear.', 'Ihre Tools funktionieren, aber Ownership und Struktur sind unklar.', 'I vostri strumenti funzionano, ma ownership e struttura sono poco chiare.')}</span></li>
+            <li><span class="mark">✓</span><span>{t('Vous voulez un projet web/système cadré, pas du brouillard agence.', 'You want a scoped web/system project, not agency fog.', 'Sie wollen ein sauber gerahmtes Web-/Systemprojekt, nicht Agentur-Nebel.', 'Volete un progetto web/sistema ben definito, non nebbia da agenzia.')}</span></li>
+            <li><span class="mark">✓</span><span>{t('Vous valorisez la maintenabilité, la documentation et la continuité.', 'You value maintainability, documentation and continuity.', 'Sie schätzen Wartbarkeit, Dokumentation und Kontinuität.', 'Valorizzate mantenibilità, documentazione e continuità.')}</span></li>
+          </ul>
+        </article>
+        <article class="fit-card not reveal">
+          <h3>{t('Mauvais fit', 'Bad fit', 'Kein guter Fit', 'Cattivo fit')}</h3>
+          <ul class="fit-list">
+            <li><span class="mark">×</span><span>{t('Vous voulez du consulting spéculatif non payé.', 'You want speculative unpaid consulting.', 'Sie wollen spekulatives unbezahltes Consulting.', 'Volete consulting speculativo non pagato.')}</span></li>
+            <li><span class="mark">×</span><span>{t('Vous voulez seulement le prestataire d implémentation le moins cher.', 'You only want the cheapest implementation vendor.', 'Sie wollen nur den billigsten Implementierungsanbieter.', 'Volete solo il fornitore di implementazione più economico.')}</span></li>
+            <li><span class="mark">×</span><span>{t('Vous voulez de la complexité pour l apparence plutôt que pour la fonction.', 'You want complexity for appearance instead of function.', 'Sie wollen Komplexität für die Wirkung statt für die Funktion.', 'Volete complessità per l apparenza invece che per la funzione.')}</span></li>
+            <li><span class="mark">×</span><span>{t('Vous n êtes pas prêt à décrire la situation réelle.', 'You are not ready to describe the actual situation.', 'Sie sind nicht bereit, die reale Situation zu beschreiben.', 'Non siete pronti a descrivere la situazione reale.')}</span></li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap faq-grid">
+      <div>
+        <span class="kicker reveal">{t('Questions', 'Questions', 'Fragen', 'Domande')}</span>
+        <h2 class="h2 reveal">{t('Retirer le doute avant paiement.', 'Remove doubt before payment.', 'Zweifel vor der Zahlung ausräumen.', 'Togliere i dubbi prima del pagamento.')}</h2>
+        <p class="lead reveal">{t('Des réponses courtes et pratiques qui rendent le modèle paid-first structuré, pas défensif.', 'Short, practical answers that make the paid-first model feel structured, not defensive.', 'Kurze, praktische Antworten, die das Paid-first-Modell strukturiert wirken lassen, nicht defensiv.', 'Risposte brevi e pratiche che fanno sembrare il modello paid-first strutturato, non difensivo.')}</p>
+      </div>
+      <div class="faq-list reveal">
+        <article class="faq-item open">
+          <button class="faq-q" type="button" data-faq-button>{t('Pourquoi payer avant un call ?', 'Why paid before a call?', 'Warum vor dem Call bezahlen?', 'Perché pagare prima di una call?')}<span>−</span></button>
+          <div class="faq-a">{t('Parce que la première sortie utile est généralement une décision, pas une conversation commerciale. Le cadrage payé garde la session focalisée et rend le résultat actionnable.', 'Because the first useful output is usually a decision, not a sales conversation. Paid scoping keeps the session focused and makes the result worth acting on.', 'Weil das erste nützliche Ergebnis meist eine Entscheidung ist, nicht ein Verkaufsgespräch. Bezahltes Scoping hält die Session fokussiert und macht das Resultat umsetzbar.', 'Perché il primo output utile è di solito una decisione, non una conversazione commerciale. Lo scope a pagamento mantiene la sessione focalizzata e rende il risultato utilizzabile.')}</div>
+        </article>
+        <article class="faq-item">
+          <button class="faq-q" type="button" data-faq-button>{t('Et si je choisis le mauvais format ?', 'What if I choose the wrong format?', 'Was, wenn ich das falsche Format wähle?', 'E se scelgo il formato sbagliato?')}<span>+</span></button>
+          <div class="faq-a">{t('Si le sujet de 15 minutes demande clairement plus de cadrage, on le dit. Si la session de 1 heure suffit, elle peut s arrêter là. L objectif est la bonne suite, pas une continuation forcée.', 'If the 15-minute topic clearly needs deeper scoping, we say so. If the 1-hour session is enough, it can end there. The goal is the right next step, not forced continuation.', 'Wenn das 15-Minuten-Thema klar tieferes Scoping braucht, sagen wir das. Wenn die 1-Stunden-Session reicht, kann es dort enden. Das Ziel ist der richtige nächste Schritt, nicht eine erzwungene Fortsetzung.', 'Se il tema da 15 minuti richiede chiaramente più scope, lo diciamo. Se la sessione da 1 ora basta, può finire lì. L obiettivo è il passo successivo giusto, non una continuazione forzata.')}</div>
+        </article>
+        <article class="faq-item">
+          <button class="faq-q" type="button" data-faq-button>{t('Est-ce seulement pour des entreprises techniques ?', 'Is this only for technical companies?', 'Ist das nur für technische Unternehmen?', 'È solo per aziende tecniche?')}<span>+</span></button>
+          <div class="faq-a">{t('Non. C est pour les PME dont les outils, workflows, sites ou infrastructures sont devenus difficiles à comprendre, maintenir ou transmettre.', 'No. It is for SMEs whose tools, workflows, websites or infrastructure have become hard to understand, maintain or hand over.', 'Nein. Es ist für KMU, deren Tools, Workflows, Websites oder Infrastruktur schwer verständlich, wartbar oder übergebbar geworden sind.', 'No. È per PMI i cui strumenti, workflow, siti o infrastrutture sono diventati difficili da capire, mantenere o trasmettere.')}</div>
+        </article>
+        <article class="faq-item">
+          <button class="faq-q" type="button" data-faq-button>{t('Cela peut-il devenir du travail d implémentation ?', 'Can this become implementation work?', 'Kann daraus Implementierungsarbeit werden?', 'Può diventare lavoro di implementazione?')}<span>+</span></button>
+          <div class="faq-a">{t('Oui, quand le scope est clair et que le travail correspond à IOPartner. Sinon, la session peut simplement produire une direction, une revue ou une roadmap.', 'Yes, when the scope is clear and the work fits IOPartner. Otherwise the session can simply produce a direction, review or roadmap.', 'Ja, wenn der Scope klar ist und die Arbeit zu IOPartner passt. Andernfalls kann die Session einfach eine Richtung, ein Review oder eine Roadmap liefern.', 'Sì, quando lo scope è chiaro e il lavoro corrisponde a IOPartner. Altrimenti la sessione può semplicemente produrre una direzione, una review o una roadmap.')}</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <div class="wrap">
+      <div class="cta-box reveal">
+        <div class="cta-content">
+          <div>
+            <h2>{t('Commencer par la plus petite décision utile.', 'Start with the smallest useful decision.', 'Mit der kleinsten nützlichen Entscheidung beginnen.', 'Partire dalla più piccola decisione utile.')}</h2>
+            <p>{t('Si la situation est floue, routez-la. S il y a une décision, réservez 15 minutes. Si le système a besoin de structure, réservez 1 heure.', 'If the situation is unclear, route it. If there is one decision, book 15 minutes. If the system needs structure, book 1 hour.', 'Wenn die Situation unklar ist, routen Sie sie. Wenn es eine Entscheidung gibt, buchen Sie 15 Minuten. Wenn das System Struktur braucht, buchen Sie 1 Stunde.', 'Se la situazione non è chiara, instradatela. Se c è una decisione, prenotate 15 minuti. Se il sistema ha bisogno di struttura, prenotate 1 ora.')}</p>
+          </div>
+          <div class="cta-actions">
+            <a class="btn btn-primary" href="#routing" data-open-path="orientation">CHF 60 · {t('15 min', '15 min', '15 Min', '15 min')}</a>
+            <a class="btn btn-secondary" href="#routing" data-open-path="scoping">CHF 140 · {t('1 heure', '1 hour', '1 Stunde', '1 ora')}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<script is:inline define:vars={{ heroMapLabels, miniMapLabels }}>
+'use strict';
+
+const ns = 'http://www.w3.org/2000/svg';
+const svg = (tag, attrs = {}, parent) => {
+  const el = document.createElementNS(ns, tag);
+  Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
+  if (parent) parent.appendChild(el);
+  return el;
+};
+const $ = sel => document.querySelector(sel);
+const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+function openPath(id) {
+  $$('.path-card').forEach(card => card.classList.remove('active'));
+  const card = $('#card-' + id);
+  if (card) card.classList.add('active');
+  $$('.form-panel').forEach(panel => panel.classList.remove('open'));
+  const panel = $('#panel-' + id);
+  if (panel) panel.classList.add('open');
+}
+
+function tog(el) {
+  el.classList.toggle('on');
+}
+
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  $$('.faq-item').forEach(i => {
+    i.classList.remove('open');
+    const s = i.querySelector('.faq-q span');
+    if (s) s.textContent = '+';
+  });
+  if (!isOpen) {
+    item.classList.add('open');
+    btn.querySelector('span').textContent = '−';
+  }
+}
+
+function revealOnScroll() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('in');
+    });
+  }, { threshold: .12 });
+  $$('.reveal').forEach(el => obs.observe(el));
+}
+
+function drawTopologyBg() {
+  const root = $('#topology-bg');
+  if (!root) return;
+  const nodes = [
+    [140,120,4], [320,210,3], [520,120,4], [780,170,3], [1040,100,4], [1260,220,3],
+    [190,440,3], [420,540,4], [690,420,3], [960,520,4], [1240,470,3],
+    [260,820,4], [580,910,3], [860,790,4], [1140,890,3]
+  ];
+  const lines = [[0,1],[1,2],[2,3],[3,4],[4,5],[1,6],[6,7],[7,8],[8,9],[9,10],[7,11],[11,12],[12,13],[13,14],[8,13],[3,8],[5,10]];
+  const defs = svg('defs', {}, root);
+  const grad = svg('linearGradient', { id:'bgLine', x1:'0%', y1:'0%', x2:'100%', y2:'0%' }, defs);
+  svg('stop', { offset:'0%', 'stop-color':'rgba(26,86,255,0)' }, grad);
+  svg('stop', { offset:'50%', 'stop-color':'rgba(26,86,255,.34)' }, grad);
+  svg('stop', { offset:'100%', 'stop-color':'rgba(26,86,255,0)' }, grad);
+  const g = svg('g', { opacity: '.46' }, root);
+  lines.forEach(([a,b], idx) => {
+    const A = nodes[a], B = nodes[b];
+    const path = svg('path', {
+      d: `M${A[0]},${A[1]} C${(A[0]+B[0])/2},${A[1]} ${(A[0]+B[0])/2},${B[1]} ${B[0]},${B[1]}`,
+      fill:'none', stroke:'url(#bgLine)', 'stroke-width': idx % 3 === 0 ? '1.2' : '.8', opacity: '.55'
+    }, g);
+    path.style.strokeDasharray = '7 10';
+    path.style.animation = `dashMove ${18 + idx}s linear infinite`;
+  });
+  nodes.forEach(([x,y,r], idx) => {
+    svg('circle', { cx:x, cy:y, r:r+9, fill:'rgba(26,86,255,.04)' }, g);
+    svg('circle', { cx:x, cy:y, r, fill:'rgba(26,86,255,.34)' }, g);
+  });
+  const style = document.createElement('style');
+  style.textContent = `@keyframes dashMove { to { stroke-dashoffset: -220; } }`;
+  document.head.appendChild(style);
+}
+
+function drawHeroMap() {
+  const root = $('#hero-map');
+  if (!root) return;
+  const defs = svg('defs', {}, root);
+  const glow = svg('filter', { id:'softGlow', x:'-30%', y:'-30%', width:'160%', height:'160%' }, defs);
+  svg('feGaussianBlur', { stdDeviation:'4', result:'blur' }, glow);
+  const merge = svg('feMerge', {}, glow);
+  svg('feMergeNode', { in:'blur' }, merge);
+  svg('feMergeNode', { in:'SourceGraphic' }, merge);
+
+  const items = [
+    { id: heroMapLabels[0], x:92, y:112, r:38 },
+    { id: heroMapLabels[1], x:266, y:76, r:34 },
+    { id: heroMapLabels[2], x:410, y:156, r:42 },
+    { id: heroMapLabels[3], x:148, y:278, r:36 },
+    { id: heroMapLabels[4], x:318, y:254, r:46 },
+    { id: heroMapLabels[5], x:238, y:390, r:34 },
+    { id: heroMapLabels[6], x:410, y:362, r:40 }
+  ];
+  const links = [[0,1],[1,2],[0,3],[3,4],[2,4],[4,5],[4,6],[5,6],[1,4]];
+  const linkG = svg('g', {}, root);
+  const nodeG = svg('g', {}, root);
+  links.forEach(([a,b], i) => {
+    const A = items[a], B = items[b];
+    const p = svg('path', {
+      d:`M${A.x},${A.y} C${(A.x+B.x)/2},${A.y} ${(A.x+B.x)/2},${B.y} ${B.x},${B.y}`,
+      fill:'none', stroke:'rgba(26,86,255,.24)', 'stroke-width':'1.5'
+    }, linkG);
+    p.style.strokeDasharray = '5 8';
+    p.style.animation = `dashMove ${14+i}s linear infinite`;
+  });
+  items.forEach((n, i) => {
+    const group = svg('g', { transform:`translate(${n.x} ${n.y})` }, nodeG);
+    svg('circle', { r:n.r+10, fill:'rgba(26,86,255,.055)' }, group);
+    svg('circle', { r:n.r, fill:'rgba(255,255,255,.84)', stroke:'rgba(26,86,255,.28)', 'stroke-width':'1.4', filter:'url(#softGlow)' }, group);
+    svg('circle', { r:5, fill:'#1a56ff' }, group);
+    const text = svg('text', { y:n.r+26, 'text-anchor':'middle', 'font-family':'JetBrains Mono, monospace', 'font-size':'10', 'letter-spacing':'.08em', fill:'rgba(7,17,31,.48)' }, group);
+    text.textContent = n.id;
+    const ring = svg('circle', { r:n.r + 4, fill:'none', stroke:'rgba(26,86,255,.16)', 'stroke-width':'1' }, group);
+    ring.style.transformOrigin = 'center';
+    ring.style.animation = `pulseNode ${3.8 + i * .4}s ease-in-out infinite`;
+  });
+  const style = document.createElement('style');
+  style.textContent = `@keyframes pulseNode { 0%,100%{ opacity:.35; transform:scale(1); } 50%{ opacity:.9; transform:scale(1.04); } }`;
+  document.head.appendChild(style);
+}
+
+function drawMiniMap(id, variant) {
+  const root = $('#' + id);
+  if (!root) return;
+  const nodesByVariant = {
+    orientation: [[46,78,miniMapLabels.orientation[0]],[138,48,miniMapLabels.orientation[1]],[138,112,miniMapLabels.orientation[2]],[250,78,miniMapLabels.orientation[3]]],
+    scoping: [[38,78,miniMapLabels.scoping[0]],[112,38,miniMapLabels.scoping[1]],[112,118,miniMapLabels.scoping[2]],[198,48,miniMapLabels.scoping[3]],[198,112,miniMapLabels.scoping[4]],[280,78,miniMapLabels.scoping[5]]],
+    context: [[52,50,miniMapLabels.context[0]],[52,112,miniMapLabels.context[1]],[150,80,miniMapLabels.context[2]],[252,48,miniMapLabels.context[3]],[252,112,miniMapLabels.context[4]]]
+  };
+  const data = nodesByVariant[variant] || nodesByVariant.orientation;
+  const links = variant === 'orientation' ? [[0,1],[0,2],[1,3],[2,3]] : variant === 'scoping' ? [[0,1],[0,2],[1,3],[2,4],[3,5],[4,5]] : [[0,2],[1,2],[2,3],[2,4]];
+  links.forEach(([a,b]) => {
+    const A = data[a], B = data[b];
+    svg('path', { d:`M${A[0]},${A[1]} C${(A[0]+B[0])/2},${A[1]} ${(A[0]+B[0])/2},${B[1]} ${B[0]},${B[1]}`, fill:'none', stroke:'rgba(26,86,255,.28)', 'stroke-width':'1.4', 'stroke-dasharray':'4 6' }, root);
+  });
+  data.forEach(([x,y,label]) => {
+    const g = svg('g', { transform:`translate(${x} ${y})` }, root);
+    svg('circle', { r:'18', fill:'rgba(26,86,255,.08)', stroke:'rgba(26,86,255,.28)' }, g);
+    svg('circle', { r:'4', fill:'#1a56ff' }, g);
+    const t = svg('text', { y:'36', 'text-anchor':'middle', 'font-family':'JetBrains Mono, monospace', 'font-size':'8.5', fill:'rgba(7,17,31,.42)' }, g);
+    t.textContent = label;
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  revealOnScroll();
+  drawTopologyBg();
+  drawHeroMap();
+  drawMiniMap('mini-orientation', 'orientation');
+  drawMiniMap('mini-scoping', 'scoping');
+  drawMiniMap('mini-context', 'context');
+
+  $$('[data-open-path]').forEach(el => {
+    el.addEventListener('click', event => {
+      const id = el.getAttribute('data-open-path');
+      if (!id) return;
+      openPath(id);
+      const isAnchor = el.tagName === 'A';
+      const href = isAnchor ? el.getAttribute('href') || '' : '';
+      if (isAnchor && href.startsWith('#')) {
+        event.preventDefault();
+        const target = document.querySelector(href);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  $$('[data-toggle-tag]').forEach(el => {
+    el.addEventListener('click', () => tog(el));
+  });
+
+  $$('[data-faq-button]').forEach(btn => {
+    btn.addEventListener('click', () => toggleFaq(btn));
+  });
+
+  $$('.path-card').forEach(card => {
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const id = card.getAttribute('data-open-path') || card.id.replace('card-', '');
+        openPath(id);
+      }
+    });
+  });
+});
+</script>
 </Layout>
