@@ -10,7 +10,12 @@ import { determineStripePriceId, isSubscriptionPlan, normalizePlanId } from './p
 import { buildSuccessUrl, buildCancelUrl } from './urls.js';
 import { serializeMetadata } from './metadata.js';
 import { isAllowedTemplate } from './templates.js';
-import { getCheckoutConfig, normalizeCheckoutTenantSlug, type DynamicCheckoutConfig, type PlanCheckoutConfig } from './checkout-config';
+import {
+  getCheckoutConfig,
+  normalizeCheckoutTenantSlug,
+  type DynamicCheckoutConfig,
+  type PlanCheckoutConfig,
+} from './checkout-config';
 import { tenantBrand, resolveTenantFromRequest } from './tenants';
 import { sendContactConfirmationEmail, sendEmailTemplate } from './email';
 import { getTenantFromContext } from '~/utils/tenant';
@@ -51,6 +56,8 @@ function parseBodyParams(body: Record<string, any>) {
 async function handlePlanCheckout(ctx: CheckoutContext, config: PlanCheckoutConfig): Promise<Response> {
   const { request, url, locals } = ctx;
   const tenant = resolveTenant({ request, url, locals, tenantOverride: ctx.tenantOverride });
+  assertRateLimit(request, { key: `checkout-plan:${tenant.slug}`, limit: 10, window: 60 });
+
   const stripe = await getStripe();
   if (!stripe) return new Response('Stripe not configured', { status: 501 });
 
@@ -182,7 +189,8 @@ async function handleDynamicCheckout(ctx: CheckoutContext, config: DynamicChecko
   const totalBytes = files.reduce((sum, file) => sum + (file.size || 0), 0);
 
   if (files.length > config.maxFiles) return new Response(`Too many files (max ${config.maxFiles})`, { status: 400 });
-  if (intake === 'online' && !transferLink && files.length === 0) return new Response('Provide files or a transfer link', { status: 400 });
+  if (intake === 'online' && !transferLink && files.length === 0)
+    return new Response('Provide files or a transfer link', { status: 400 });
   if (files.some((file) => !(file.type.startsWith('image/') || file.type === 'application/pdf')))
     return new Response('Unsupported file type', { status: 400 });
   if (totalBytes > config.maxAttachmentBytes && !transferLink) {
@@ -332,20 +340,24 @@ async function handleDynamicCheckout(ctx: CheckoutContext, config: DynamicChecko
 
 async function handleCustomCheckout(ctx: CheckoutContext): Promise<Response> {
   const { request, url } = ctx;
+  const tenant = resolveTenant(ctx);
+  assertRateLimit(request, { key: `checkout-custom:${tenant.slug}`, limit: 10, window: 60 });
+
   const stripe = await getStripe();
   if (!stripe) return new Response('Stripe not configured', { status: 501 });
 
   const origin = ENV.ORIGIN || request.headers.get('origin') || url.origin;
 
   const amountChf = Number(url.searchParams.get('amount') || 0);
-  const description = String(url.searchParams.get('description') || 'Site web sur mesure').trim().slice(0, 200);
+  const description = String(url.searchParams.get('description') || 'Site web sur mesure')
+    .trim()
+    .slice(0, 200);
   const email = String(url.searchParams.get('email') || '').trim() || undefined;
   const name = String(url.searchParams.get('name') || '').trim();
   const phone = String(url.searchParams.get('phone') || '').trim();
   const company = String(url.searchParams.get('company') || '').trim();
   const locale = String(url.searchParams.get('locale') || '').trim();
   const template = String(url.searchParams.get('template') || 'classic-clean').trim();
-  const tenant = resolveTenant(ctx);
 
   if (!amountChf || amountChf <= 0 || amountChf > 100000) {
     return new Response('Invalid amount — must be 1–100000 CHF', { status: 400 });
@@ -353,14 +365,16 @@ async function handleCustomCheckout(ctx: CheckoutContext): Promise<Response> {
 
   const session = await stripe.checkout.sessions.create({
     mode: 'payment',
-    line_items: [{
-      price_data: {
-        currency: 'chf',
-        unit_amount: Math.round(amountChf * 100),
-        product_data: { name: description },
+    line_items: [
+      {
+        price_data: {
+          currency: 'chf',
+          unit_amount: Math.round(amountChf * 100),
+          product_data: { name: description },
+        },
+        quantity: 1,
       },
-      quantity: 1,
-    }],
+    ],
     customer_email: email,
     billing_address_collection: 'auto',
     phone_number_collection: { enabled: true },

@@ -9,7 +9,7 @@ export const iopartnerTheme = {
     accent: '#2563eb',
     line: 'rgba(15, 23, 42, 0.1)',
     dark: '#0f172a',
-    haze: 'rgba(37, 99, 235, 0.14)',
+    haze: 'rgba(37, 99, 235, 0.1)',
   },
   typography: {
     heading: "'Sora', 'Avenir Next', 'Segoe UI', sans-serif",

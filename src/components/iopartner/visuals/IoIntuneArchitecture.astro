@@ -1,0 +1,43 @@
+---
+import IoSourceVisualFrame from './IoSourceVisualFrame.astro';
+import rawHtml from '~/pages/iopartner/iopartner-intune-arch.html?raw';
+
+const styleMatch = rawHtml.match(/<style>([\s\S]*?)<\/style>/i);
+const scriptMatch = rawHtml.match(/<script type="module">([\s\S]*?)<\/script>/i);
+const sectionMatch = rawHtml.match(/<section class="intune-section"[\s\S]*?<\/section>/i);
+
+const sourceCss = styleMatch?.[1] ?? '';
+const sourceJs = scriptMatch?.[1] ?? '';
+const sectionHtml = sectionMatch?.[0] ?? rawHtml;
+
+const css = `${sourceCss}
+html { background: transparent !important; }
+body {
+  margin: 0;
+  padding: 0;
+  min-height: auto;
+  background: transparent;
+  display: block;
+}
+.intune-section[data-astro-cid-pmphqem3] {
+  max-width: none;
+  padding: 0;
+}
+`;
+
+const html = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Intune + Entra ID Architecture — IOPartner</title>
+    <style>${css}</style>
+  </head>
+  <body>
+    ${sectionHtml}
+    <script type="module">${sourceJs}</script>
+  </body>
+</html>`;
+---
+
+<IoSourceVisualFrame title="IOPartner Intune architecture" html={html} css="" js="" minHeight="56rem" />

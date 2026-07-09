@@ -48,7 +48,11 @@ const {
 } = Astro.props;
 
 const urlObj = new URL(Astro.url);
-const currentPath = `/${trimSlash(urlObj.pathname)}`;
+const rawCurrentPath = `/${trimSlash(urlObj.pathname)}`;
+const currentPath =
+  brandKey === 'iopartner' || brandKey === 'tonsiteweb'
+    ? rawCurrentPath.replace(/^\/(?:iopartner|tonsiteweb)(?=\/|$)/, '').replace(/^\/(?:fr|en|de|it)(?=\/|$)/, '') || '/'
+    : rawCurrentPath;
 const filteredLinks = links ?? [];
 const isUrgent = brandKey === 'urgent';
 const isLaclemanExperience = brandKey === 'laclemanexperience';
@@ -633,6 +637,33 @@ const flagClasses: Record<string, string> = {
   :global(.brand-tonsiteweb .aw-header .dropdown > button:hover),
   :global(.brand-iopartner .aw-header .dropdown > button:hover) {
     color: #e2e8f0 !important;
+  }
+  :global(.brand-iopartner .aw-header nav a),
+  :global(.brand-iopartner .aw-header .dropdown > button) {
+    position: relative;
+  }
+  :global(.brand-iopartner .aw-header nav a.aw-link-active),
+  :global(.brand-iopartner .aw-header nav a:focus-visible),
+  :global(.brand-iopartner .aw-header .dropdown > button:focus-visible) {
+    color: #ffffff !important;
+    outline: none;
+  }
+  :global(.brand-iopartner .aw-header nav a.aw-link-active::after),
+  :global(.brand-iopartner .aw-header nav a:focus-visible::after) {
+    content: '';
+    position: absolute;
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 0.4rem;
+    height: 2px;
+    background: #d52b1e;
+  }
+  :global(.brand-iopartner .lang-select-wrap:has(.aw-lang-select-input:focus-visible)) {
+    border-color: rgba(213, 43, 30, 0.5);
+    box-shadow:
+      0 0 0 3px rgba(213, 43, 30, 0.16),
+      0 16px 30px -22px rgba(15, 23, 42, 0.52),
+      inset 0 1px 0 rgba(255, 255, 255, 0.98);
   }
   /* Maison Cortes: light header with dark text/links */
   :global(.brand-maisoncortes .aw-header) {

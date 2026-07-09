@@ -351,7 +351,7 @@ export const buildFooterData = (brand: NavigationBrand, locale: string = 'fr'): 
             'Mit einem Experten sprechen',
             'Parlare con un esperto'
           ),
-          href: getPermalink('/contact#form'),
+          href: getPermalink('/contact'),
         },
         ...(brand.email ? [{ text: brand.email, href: `mailto:${brand.email}` }] : []),
         ...(!isIoPartner && brand.phone ? [{ text: brand.phone, href: `tel:${brand.phone.replace(/\s+/g, '')}` }] : []),

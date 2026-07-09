@@ -25,8 +25,8 @@ const COPY = {
     phone: 'Téléphone',
     notes: 'Contexte',
     notesPlaceholder: 'Décrivez le besoin, le système existant, les délais et le point de friction principal.',
-    payNow: 'Continuer vers Stripe',
-    paySession: 'Payer la session 1 h',
+    payNow: 'Continuer vers la réservation',
+    paySession: 'Réserver la session 1 h',
     back: 'Revenir aux paliers techniques',
     error: 'Merci de compléter nom, email et téléphone.',
     noteFixed: 'Paiement direct du palier sélectionné.',
@@ -50,8 +50,8 @@ const COPY = {
     phone: 'Phone',
     notes: 'Context',
     notesPlaceholder: 'Describe the need, the existing system, timing, and the main source of friction.',
-    payNow: 'Continue to Stripe',
-    paySession: 'Pay for the 1h session',
+    payNow: 'Continue to booking',
+    paySession: 'Book the 1h session',
     back: 'Back to technical tiers',
     error: 'Please complete name, email, and phone.',
     noteFixed: 'Direct payment for the selected tier.',
@@ -68,15 +68,15 @@ const COPY = {
     heading: 'Gewählte Stufe vor der Zahlung bestätigen.',
     lead: 'Beschreiben Sie Unternehmen und Kontext kurz. Bei Festpreis-Stufen gehen Sie danach direkt zu Stripe.',
     variableLead:
-      'Diese Stufe beginnt bei CHF 8’000+. Der erste bezahlte Schritt bleibt eine 1-Stunden-Session, damit das Thema vor einem grösseren Engagement sauber geklärt ist.',
+      'Diese Stufe beginnt bei CHF 8’000+. Der erste buchbare Schritt bleibt eine 1-Stunden-Session, damit das Thema vor einem grösseren Engagement sauber geklärt ist.',
     company: 'Unternehmen',
     name: 'Vollständiger Name',
     email: 'E-Mail',
     phone: 'Telefon',
     notes: 'Kontext',
     notesPlaceholder: 'Beschreiben Sie Bedarf, bestehendes System, Timing und den wichtigsten Reibungspunkt.',
-    payNow: 'Weiter zu Stripe',
-    paySession: '1h-Session bezahlen',
+    payNow: 'Weiter zur Buchung',
+    paySession: '1h-Session buchen',
     back: 'Zurück zu den technischen Stufen',
     error: 'Bitte Name, E-Mail und Telefon ausfüllen.',
     noteFixed: 'Direktzahlung für die gewählte Stufe.',
@@ -100,8 +100,8 @@ const COPY = {
     phone: 'Telefono',
     notes: 'Contesto',
     notesPlaceholder: 'Descrivi il bisogno, il sistema esistente, i tempi e il principale punto di attrito.',
-    payNow: 'Continua verso Stripe',
-    paySession: 'Paga la sessione da 1 h',
+    payNow: 'Continua alla prenotazione',
+    paySession: 'Prenota la sessione da 1 h',
     back: 'Torna ai livelli tecnici',
     error: 'Completa nome, email e telefono.',
     noteFixed: 'Pagamento diretto del livello selezionato.',
@@ -118,6 +118,7 @@ const copy = COPY[locale as keyof typeof COPY] ?? COPY.fr;
 const title = tier.title[locale as keyof typeof tier.title] || tier.title.fr;
 const summary = tier.summary[locale as keyof typeof tier.summary] || tier.summary.fr;
 const priceLabel = tier.priceLabel[locale as keyof typeof tier.priceLabel] || tier.priceLabel.fr;
+const formStartedAt = Date.now();
 ---
 
 <Layout metadata={{ title: copy.title }} brandKey="iopartner">
@@ -145,6 +146,11 @@ const priceLabel = tier.priceLabel[locale as keyof typeof tier.priceLabel] || ti
         <form method="post" action="/api/iopartner/custom-tier" class="space-y-5">
           <input type="hidden" name="track" value={tier.key} />
           <input type="hidden" name="locale" value={locale} />
+          <input type="hidden" name="form_started_at" value={formStartedAt} />
+          <label style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+            Website
+            <input name="website_url" type="text" tabindex="-1" autocomplete="off" />
+          </label>
 
           {
             error && (

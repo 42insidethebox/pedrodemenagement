@@ -63,20 +63,6 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
         pricing: 'Tarifs',
         contact: 'Contact',
       },
-      workspace: {
-        label: 'Pages app',
-        overview: 'Vue d’ensemble',
-        clients: 'Clients',
-        projects: 'Projets',
-        websites: 'Sites',
-        tasks: 'Taches',
-        documents: 'Documents',
-        invoices: 'Factures',
-        orders: 'Commandes',
-        support: 'Support',
-        subscriptions: 'Abonnements',
-        settings: 'Parametres',
-      },
       whatsapp: 'WhatsApp',
       swissBased: 'Base en Suisse',
       deliveryArtifact: 'Conseil adosse a la livraison',
@@ -189,18 +175,38 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
         title: "Le pipeline fait partie de l'offre.",
         lead: 'Teams si le sujet est court. Scope et delivery si la suite le justifie. Le point dentree reste simple.',
         nodes: [
-          { label: '01', title: 'Creneau choisi', body: 'Le bon point dentree est choisi: site, diagnostic Teams, Linux ou advisory.' },
-          { label: '02', title: 'Fit confirme', body: 'Le besoin est qualifie avant de mobiliser du temps ou un projet plus large.' },
-          { label: '03', title: 'Lien Teams ou brief', body: 'Vous recevez le lien de session ou le cadre de brief selon le type de mission.' },
-          { label: '04', title: 'Diagnostic ou revue', body: 'Le sujet est travaille sans detour: decision, architecture, priorites ou friction operationnelle.' },
-          { label: '05', title: 'Next step scope', body: 'Vous repartez avec une recommandation, un plan de lancement, un scope Linux ou une formule continue.' },
+          {
+            label: '01',
+            title: 'Creneau choisi',
+            body: 'Le bon point dentree est choisi: site, diagnostic Teams, Linux ou advisory.',
+          },
+          {
+            label: '02',
+            title: 'Fit confirme',
+            body: 'Le besoin est qualifie avant de mobiliser du temps ou un projet plus large.',
+          },
+          {
+            label: '03',
+            title: 'Lien Teams ou brief',
+            body: 'Vous recevez le lien de session ou le cadre de brief selon le type de mission.',
+          },
+          {
+            label: '04',
+            title: 'Diagnostic ou revue',
+            body: 'Le sujet est travaille sans detour: decision, architecture, priorites ou friction operationnelle.',
+          },
+          {
+            label: '05',
+            title: 'Next step scope',
+            body: 'Vous repartez avec une recommandation, un plan de lancement, un scope Linux ou une formule continue.',
+          },
         ],
       },
       closing: {
         eyebrow: 'Start here',
         title: (config: typeof iopartnerConfig) =>
           `${config.offerDuration} pour verifier si le sujet doit rester court ou devenir un vrai chantier.`,
-        lead: "Si le sujet merite plus, IO Partner peut ensuite basculer vers la livraison web, la structuration Linux ou une formule advisory board.",
+        lead: 'Si le sujet merite plus, IO Partner peut ensuite basculer vers la livraison web, la structuration Linux ou une formule advisory board.',
         ctaContact: 'Voir le contact',
         ctaPricing: 'Voir les tarifs',
       },
@@ -243,7 +249,7 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
         {
           eyebrow: '04',
           title: 'Advisory board light',
-          body: "Une formule pour garder un regard senior au-dessus des priorites sans monter une couche de management fictive.",
+          body: 'Une formule pour garder un regard senior au-dessus des priorites sans monter une couche de management fictive.',
           items: [
             'Cadence mensuelle ou bimensuelle.',
             'Revue des priorites et des risques.',
@@ -275,7 +281,7 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
         eyebrow: 'Point dentree',
         title: (config: typeof iopartnerConfig) =>
           `${config.offerDuration} sur Teams pour cadrer avant de surconstruire.`,
-        lead: "Le diagnostic court sert de filtre. Si le bon mouvement est un site, un systeme Linux ou un accompagnement advisory board, la suite se scope apres.",
+        lead: 'Le diagnostic court sert de filtre. Si le bon mouvement est un site, un systeme Linux ou un accompagnement advisory board, la suite se scope apres.',
         ctaBook: 'Reserver le diagnostic',
         ctaPricing: 'Comparer les offres',
       },
@@ -370,10 +376,26 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
         lead: 'Entree simple, scope propre, escalation seulement si la suite le justifie.',
         nodes: [
           { label: '01', title: 'Need chosen', body: 'Web launch, Teams diagnostic, Linux option or advisory board.' },
-          { label: '02', title: 'Fit checked', body: 'Le bon niveau de prix et de temps est choisi avant engagement plus large.' },
-          { label: '03', title: 'Session or brief', body: 'Teams link, brief structure or scope conversation sent ahead of time.' },
-          { label: '04', title: 'Live work', body: 'Decision, review or build direction happens in live context, not in vague back-and-forth.' },
-          { label: '05', title: 'Scoped next move', body: 'Memo, launch plan, Linux scope or recurring board cadence.' },
+          {
+            label: '02',
+            title: 'Fit checked',
+            body: 'Le bon niveau de prix et de temps est choisi avant engagement plus large.',
+          },
+          {
+            label: '03',
+            title: 'Session or brief',
+            body: 'Teams link, brief structure or scope conversation sent ahead of time.',
+          },
+          {
+            label: '04',
+            title: 'Live work',
+            body: 'Decision, review or build direction happens in live context, not in vague back-and-forth.',
+          },
+          {
+            label: '05',
+            title: 'Scoped next move',
+            body: 'Memo, launch plan, Linux scope or recurring board cadence.',
+          },
         ],
       },
       cards: [
@@ -406,7 +428,8 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
           eyebrow: 'Teams',
           title: 'Reserver le diagnostic',
           liveBody: 'Choisissez un creneau et recevez le lien Teams automatiquement.',
-          fallbackBody: 'Demandez le lien de reservation ou le bon creneau via WhatsApp si le calendrier public nest pas encore branche.',
+          fallbackBody:
+            'Demandez le lien de reservation ou le bon creneau via WhatsApp si le calendrier public nest pas encore branche.',
           liveCta: 'Ouvrir la reservation',
           fallbackCta: 'Demander le lien',
         },
@@ -421,9 +444,17 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
         title: 'Choix du canal, puis cadrage rapide.',
         lead: 'WhatsApp, Teams ou email: le premier objectif reste le meme, reduire le bruit avant de faire grossir le sujet.',
         nodes: [
-          { label: '01', title: 'Channel chosen', body: 'WhatsApp, Teams or email depending on how formed the need already is.' },
+          {
+            label: '01',
+            title: 'Channel chosen',
+            body: 'WhatsApp, Teams or email depending on how formed the need already is.',
+          },
           { label: '02', title: 'Context received', body: 'The need is framed before a larger promise is made.' },
-          { label: '03', title: 'Right entry point', body: 'Short Teams call, web brief, Linux review or board conversation.' },
+          {
+            label: '03',
+            title: 'Right entry point',
+            body: 'Short Teams call, web brief, Linux review or board conversation.',
+          },
           { label: '04', title: 'Live clarification', body: 'The important tradeoffs are named explicitly.' },
           { label: '05', title: 'Next step', body: 'Booking, scope, delivery or recurring cadence.' },
         ],
@@ -505,20 +536,6 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
         pricing: 'Pricing',
         contact: 'Contact',
       },
-      workspace: {
-        label: 'App pages',
-        overview: 'Overview',
-        clients: 'Clients',
-        projects: 'Projects',
-        websites: 'Websites',
-        tasks: 'Tasks',
-        documents: 'Documents',
-        invoices: 'Invoices',
-        orders: 'Orders',
-        support: 'Support',
-        subscriptions: 'Subscriptions',
-        settings: 'Settings',
-      },
       whatsapp: 'WhatsApp',
       swissBased: 'Swiss-based',
       deliveryArtifact: 'Advisory backed by delivery',
@@ -543,13 +560,11 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
       },
       services: {
         title: 'Services',
-        description:
-          'Web launch, Teams diagnostics, Linux systems implementation, and light advisory board support.',
+        description: 'Web launch, Teams diagnostics, Linux systems implementation, and light advisory board support.',
       },
       pricing: {
         title: 'Pricing',
-        description:
-          'Three launch offers, plus paid Teams diagnostics, working sessions, and advisory board support.',
+        description: 'Three launch offers, plus paid Teams diagnostics, working sessions, and advisory board support.',
       },
       contact: {
         title: 'Contact',
@@ -586,10 +601,22 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
         eyebrow: 'Layers',
         title: 'Four layers that can live together.',
         cards: [
-          { title: 'Launch web systems', body: 'Showcase sites, content structure, go-live, light workflows, and a clean commercial base.' },
-          { title: 'Teams diagnostic', body: 'A short paid session to frame a choice, friction, repositioning issue, or technical priority.' },
-          { title: 'Linux and operations', body: 'Machines, services, pragmatic self-hosting, tool structure, and simplification.' },
-          { title: 'Advisory board light', body: 'A recurring senior layer for priorities, reviews, and decisions without fake management theatre.' },
+          {
+            title: 'Launch web systems',
+            body: 'Showcase sites, content structure, go-live, light workflows, and a clean commercial base.',
+          },
+          {
+            title: 'Teams diagnostic',
+            body: 'A short paid session to frame a choice, friction, repositioning issue, or technical priority.',
+          },
+          {
+            title: 'Linux and operations',
+            body: 'Machines, services, pragmatic self-hosting, tool structure, and simplification.',
+          },
+          {
+            title: 'Advisory board light',
+            body: 'A recurring senior layer for priorities, reviews, and decisions without fake management theatre.',
+          },
         ],
       },
       outcomes: {
@@ -619,11 +646,31 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
         title: 'The pipeline is part of the promise.',
         lead: 'Teams when the issue is short. Scope and delivery when the issue earns it. The entry stays simple.',
         nodes: [
-          { label: '01', title: 'Need chosen', body: 'Website launch, Teams diagnostic, Linux option, or advisory board.' },
-          { label: '02', title: 'Fit confirmed', body: 'The right level is chosen before more time or scope gets consumed.' },
-          { label: '03', title: 'Teams link or brief', body: 'You receive the call link or the project brief structure ahead of time.' },
-          { label: '04', title: 'Live review', body: 'The issue is worked directly: decision, architecture, priorities, or operating friction.' },
-          { label: '05', title: 'Next-step scope', body: 'Recommendation, launch plan, Linux scope, or recurring board cadence.' },
+          {
+            label: '01',
+            title: 'Need chosen',
+            body: 'Website launch, Teams diagnostic, Linux option, or advisory board.',
+          },
+          {
+            label: '02',
+            title: 'Fit confirmed',
+            body: 'The right level is chosen before more time or scope gets consumed.',
+          },
+          {
+            label: '03',
+            title: 'Teams link or brief',
+            body: 'You receive the call link or the project brief structure ahead of time.',
+          },
+          {
+            label: '04',
+            title: 'Live review',
+            body: 'The issue is worked directly: decision, architecture, priorities, or operating friction.',
+          },
+          {
+            label: '05',
+            title: 'Next-step scope',
+            body: 'Recommendation, launch plan, Linux scope, or recurring board cadence.',
+          },
         ],
       },
       closing: {
@@ -644,7 +691,11 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
           eyebrow: '01',
           title: 'Launch web systems',
           body: 'The TonSiteWeb commercial logic stays inside the merged brand as a cleaner launch layer.',
-          items: ['Showcase sites and conversion pages.', 'Content structure, workflow choices, and go-live.', 'Clear launch packs for independents, agencies, and SMEs.'],
+          items: [
+            'Showcase sites and conversion pages.',
+            'Content structure, workflow choices, and go-live.',
+            'Clear launch packs for independents, agencies, and SMEs.',
+          ],
         },
         {
           eyebrow: '02',
@@ -656,13 +707,21 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
           eyebrow: '03',
           title: 'Linux systems option',
           body: 'When the need goes beyond a site: machines, services, hygiene, observability, and operational simplicity.',
-          items: ['Linux servers and service setup.', 'Pragmatic self-hosting and maintenance.', 'Documentation, supervision, and complexity reduction.'],
+          items: [
+            'Linux servers and service setup.',
+            'Pragmatic self-hosting and maintenance.',
+            'Documentation, supervision, and complexity reduction.',
+          ],
         },
         {
           eyebrow: '04',
           title: 'Advisory board light',
           body: 'A recurring senior layer to review priorities and risks without turning the relationship into vague coaching.',
-          items: ['Monthly or twice-monthly cadence.', 'Priority and risk review.', 'Useful for founders, agencies, and small operator teams.'],
+          items: [
+            'Monthly or twice-monthly cadence.',
+            'Priority and risk review.',
+            'Useful for founders, agencies, and small operator teams.',
+          ],
         },
       ],
       fit: {
@@ -706,21 +765,33 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
             eyebrow: 'Essential',
             title: 'Showcase site',
             summary: 'The cleanest starting level for getting online properly.',
-            items: ['Professional showcase site.', 'Content structure and contact flow.', 'Typical delivery in a few business days.'],
+            items: [
+              'Professional showcase site.',
+              'Content structure and contact flow.',
+              'Typical delivery in a few business days.',
+            ],
             cta: 'Start this level',
           },
           launchWorkflow: {
             eyebrow: 'Workflow',
             title: 'Site + one workflow',
             summary: 'For adding a light automation without turning the project into a monster.',
-            items: ['Everything in essential.', 'One light integration or automation.', 'Better continuity between site and operations.'],
+            items: [
+              'Everything in essential.',
+              'One light integration or automation.',
+              'Better continuity between site and operations.',
+            ],
             cta: 'Check this level',
           },
           launchOps: {
             eyebrow: 'Ops stack',
             title: 'Site + ops stack',
             summary: 'When the site already needs to connect to several flows or a more operational structure.',
-            items: ['Everything in the previous level.', 'Two to three automations or handoffs.', 'More rigour in scope and delivery.'],
+            items: [
+              'Everything in the previous level.',
+              'Two to three automations or handoffs.',
+              'More rigour in scope and delivery.',
+            ],
             cta: 'Discuss this level',
           },
         },
@@ -734,21 +805,33 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
             eyebrow: 'Teams diagnostic',
             title: '15-minute operator cut',
             summary: 'A short paid session for clarifying a friction point or a decision.',
-            items: ['Focused Teams discussion.', 'Decision, clarification, or fit assessment.', 'Recommendation on the next move.'],
+            items: [
+              'Focused Teams discussion.',
+              'Decision, clarification, or fit assessment.',
+              'Recommendation on the next move.',
+            ],
             cta: 'Book Teams',
           },
           working: {
             eyebrow: 'Working session',
             title: 'Working session',
             summary: 'For issues that need more depth, architecture, or live review.',
-            items: ['Longer time window and denser signal.', 'Web systems, Linux, workflows, or decision structure.', 'Can turn into a real scoped delivery path.'],
+            items: [
+              'Longer time window and denser signal.',
+              'Web systems, Linux, workflows, or decision structure.',
+              'Can turn into a real scoped delivery path.',
+            ],
             cta: 'Request session',
           },
           board: {
             eyebrow: 'Advisory board',
             title: 'Recurring senior layer',
             summary: 'A light retainer for keeping priorities and decisions cleaner over time.',
-            items: ['Monthly or twice-monthly cadence.', 'Operator board, not vague coaching.', 'Best for founders, agencies, and small teams.'],
+            items: [
+              'Monthly or twice-monthly cadence.',
+              'Operator board, not vague coaching.',
+              'Best for founders, agencies, and small teams.',
+            ],
             cta: 'Discuss board support',
           },
         },
@@ -758,11 +841,31 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
         title: 'The same short pipeline every time.',
         lead: 'Simple entry, clean scope, escalation only when the issue earns it.',
         nodes: [
-          { label: '01', title: 'Need chosen', body: 'Website launch, Teams diagnostic, Linux option, or advisory board.' },
-          { label: '02', title: 'Fit checked', body: 'The right price and time level are chosen before larger promises are made.' },
-          { label: '03', title: 'Session or brief', body: 'Teams link, brief structure, or scope conversation sent ahead of time.' },
-          { label: '04', title: 'Live work', body: 'Decision, review, or build direction happens in live context, not vague back-and-forth.' },
-          { label: '05', title: 'Scoped next move', body: 'Memo, launch plan, Linux scope, or recurring board cadence.' },
+          {
+            label: '01',
+            title: 'Need chosen',
+            body: 'Website launch, Teams diagnostic, Linux option, or advisory board.',
+          },
+          {
+            label: '02',
+            title: 'Fit checked',
+            body: 'The right price and time level are chosen before larger promises are made.',
+          },
+          {
+            label: '03',
+            title: 'Session or brief',
+            body: 'Teams link, brief structure, or scope conversation sent ahead of time.',
+          },
+          {
+            label: '04',
+            title: 'Live work',
+            body: 'Decision, review, or build direction happens in live context, not vague back-and-forth.',
+          },
+          {
+            label: '05',
+            title: 'Scoped next move',
+            body: 'Memo, launch plan, Linux scope, or recurring board cadence.',
+          },
         ],
       },
       cards: [
@@ -810,9 +913,17 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
         title: 'Channel first, framing second.',
         lead: 'WhatsApp, Teams, or email: the first goal stays the same, reduce noise before expanding the issue.',
         nodes: [
-          { label: '01', title: 'Channel chosen', body: 'WhatsApp, Teams, or email depending on how formed the need already is.' },
+          {
+            label: '01',
+            title: 'Channel chosen',
+            body: 'WhatsApp, Teams, or email depending on how formed the need already is.',
+          },
           { label: '02', title: 'Context received', body: 'The need is framed before a larger promise is made.' },
-          { label: '03', title: 'Right entry point', body: 'Short Teams call, web brief, Linux review, or board conversation.' },
+          {
+            label: '03',
+            title: 'Right entry point',
+            body: 'Short Teams call, web brief, Linux review, or board conversation.',
+          },
           { label: '04', title: 'Live clarification', body: 'The important tradeoffs are named explicitly.' },
           { label: '05', title: 'Next step', body: 'Booking, scope, delivery, or recurring cadence.' },
         ],
@@ -894,20 +1005,6 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
         pricing: 'Preise',
         contact: 'Kontakt',
       },
-      workspace: {
-        label: 'App-Seiten',
-        overview: 'Ubersicht',
-        clients: 'Kunden',
-        projects: 'Projekte',
-        websites: 'Websites',
-        tasks: 'Aufgaben',
-        documents: 'Dokumente',
-        invoices: 'Rechnungen',
-        orders: 'Bestellungen',
-        support: 'Support',
-        subscriptions: 'Abos',
-        settings: 'Einstellungen',
-      },
       whatsapp: 'WhatsApp',
       swissBased: 'In der Schweiz',
       deliveryArtifact: 'Beratung mit Lieferfaehigkeit',
@@ -940,7 +1037,8 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
       },
       contact: {
         title: 'Kontakt',
-        description: 'Buchen Sie eine Teams-Diagnose oder senden Sie den Kontext fuer Website-, Linux- oder Advisory-Bedarf.',
+        description:
+          'Buchen Sie eine Teams-Diagnose oder senden Sie den Kontext fuer Website-, Linux- oder Advisory-Bedarf.',
       },
       privacy: {
         title: 'Datenschutz',
@@ -972,10 +1070,22 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
         eyebrow: 'Ebenen',
         title: 'Vier Ebenen, die zusammenpassen.',
         cards: [
-          { title: 'Launch web systems', body: 'Showcase-Seiten, Inhaltsstruktur, Go-live, leichte Workflows und eine saubere kommerzielle Basis.' },
-          { title: 'Teams diagnostic', body: 'Eine kurze bezahlte Session fuer Entscheidungen, Friktionen, Repositionierung oder technische Prioritaeten.' },
-          { title: 'Linux and operations', body: 'Maschinen, Services, pragmatisches Self-Hosting, Tool-Struktur und Vereinfachung.' },
-          { title: 'Advisory board light', body: 'Eine wiederkehrende Senior-Schicht fuer Prioritaeten, Reviews und Entscheide ohne Management-Theater.' },
+          {
+            title: 'Launch web systems',
+            body: 'Showcase-Seiten, Inhaltsstruktur, Go-live, leichte Workflows und eine saubere kommerzielle Basis.',
+          },
+          {
+            title: 'Teams diagnostic',
+            body: 'Eine kurze bezahlte Session fuer Entscheidungen, Friktionen, Repositionierung oder technische Prioritaeten.',
+          },
+          {
+            title: 'Linux and operations',
+            body: 'Maschinen, Services, pragmatisches Self-Hosting, Tool-Struktur und Vereinfachung.',
+          },
+          {
+            title: 'Advisory board light',
+            body: 'Eine wiederkehrende Senior-Schicht fuer Prioritaeten, Reviews und Entscheide ohne Management-Theater.',
+          },
         ],
       },
       outcomes: {
@@ -1005,11 +1115,31 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
         title: 'Die Pipeline ist Teil des Versprechens.',
         lead: 'Teams, wenn das Thema kurz ist. Scope und Lieferung, wenn das Thema es verdient. Der Einstieg bleibt einfach.',
         nodes: [
-          { label: '01', title: 'Need chosen', body: 'Website-Launch, Teams-Diagnose, Linux-Option oder Advisory Board.' },
-          { label: '02', title: 'Fit confirmed', body: 'Das richtige Level wird gewaehlt, bevor mehr Zeit oder Scope verbraucht wird.' },
-          { label: '03', title: 'Teams link or brief', body: 'Sie erhalten den Call-Link oder die Brief-Struktur vorab.' },
-          { label: '04', title: 'Live review', body: 'Das Thema wird direkt bearbeitet: Entscheidung, Architektur, Prioritaeten oder Reibung.' },
-          { label: '05', title: 'Next-step scope', body: 'Empfehlung, Launch-Plan, Linux-Scope oder wiederkehrende Cadence.' },
+          {
+            label: '01',
+            title: 'Need chosen',
+            body: 'Website-Launch, Teams-Diagnose, Linux-Option oder Advisory Board.',
+          },
+          {
+            label: '02',
+            title: 'Fit confirmed',
+            body: 'Das richtige Level wird gewaehlt, bevor mehr Zeit oder Scope verbraucht wird.',
+          },
+          {
+            label: '03',
+            title: 'Teams link or brief',
+            body: 'Sie erhalten den Call-Link oder die Brief-Struktur vorab.',
+          },
+          {
+            label: '04',
+            title: 'Live review',
+            body: 'Das Thema wird direkt bearbeitet: Entscheidung, Architektur, Prioritaeten oder Reibung.',
+          },
+          {
+            label: '05',
+            title: 'Next-step scope',
+            body: 'Empfehlung, Launch-Plan, Linux-Scope oder wiederkehrende Cadence.',
+          },
         ],
       },
       closing: {
@@ -1030,25 +1160,41 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
           eyebrow: '01',
           title: 'Launch web systems',
           body: 'Die TonSiteWeb-Logik bleibt innerhalb der fusionierten Marke als saubere Launch-Schicht erhalten.',
-          items: ['Showcase-Seiten und Conversion-Pages.', 'Inhaltsstruktur, Workflow-Wahl und Go-live.', 'Klare Launch-Pakete fuer Selbststaendige, Agenturen und KMU.'],
+          items: [
+            'Showcase-Seiten und Conversion-Pages.',
+            'Inhaltsstruktur, Workflow-Wahl und Go-live.',
+            'Klare Launch-Pakete fuer Selbststaendige, Agenturen und KMU.',
+          ],
         },
         {
           eyebrow: '02',
           title: 'Teams diagnostics',
           body: 'Kurze bezahlte Sessions fuer kommerzielle, technische oder operative Fragen, die mehr Signal als Theater brauchen.',
-          items: ['Decision framing.', 'Positionierung und Angebotsarchitektur.', 'Workflow drag, Tool-Sprawl, AI fit.'],
+          items: [
+            'Decision framing.',
+            'Positionierung und Angebotsarchitektur.',
+            'Workflow drag, Tool-Sprawl, AI fit.',
+          ],
         },
         {
           eyebrow: '03',
           title: 'Linux systems option',
           body: 'Wenn das Thema ueber die Website hinausgeht: Maschinen, Services, Hygiene, Observability und betriebliche Einfachheit.',
-          items: ['Linux-Server und Service-Setup.', 'Pragmatisches Self-Hosting und Wartung.', 'Dokumentation, Supervision und Komplexitaetsreduktion.'],
+          items: [
+            'Linux-Server und Service-Setup.',
+            'Pragmatisches Self-Hosting und Wartung.',
+            'Dokumentation, Supervision und Komplexitaetsreduktion.',
+          ],
         },
         {
           eyebrow: '04',
           title: 'Advisory board light',
           body: 'Eine wiederkehrende Senior-Schicht fuer Prioritaeten und Risiken ohne vages Coaching-Gefuehl.',
-          items: ['Monatliche oder zweiwoechentliche Cadence.', 'Prioritaeten- und Risiko-Review.', 'Nuetzlich fuer Gruender, Agenturen und kleine Teams.'],
+          items: [
+            'Monatliche oder zweiwoechentliche Cadence.',
+            'Prioritaeten- und Risiko-Review.',
+            'Nuetzlich fuer Gruender, Agenturen und kleine Teams.',
+          ],
         },
       ],
       fit: {
@@ -1073,7 +1219,8 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
       },
       closing: {
         eyebrow: 'Entry point',
-        title: (config: typeof iopartnerConfig) => `${config.offerDuration} auf Teams, bevor das Problem ueberbaut wird.`,
+        title: (config: typeof iopartnerConfig) =>
+          `${config.offerDuration} auf Teams, bevor das Problem ueberbaut wird.`,
         lead: 'Die kurze Diagnose bleibt der Filter. Wenn der richtige Schritt eine Website, ein Linux-Scope oder eine Advisory-Board-Beziehung ist, wird das danach gescopet.',
         ctaBook: 'Diagnose buchen',
         ctaPricing: 'Angebote vergleichen',
@@ -1092,21 +1239,33 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
             eyebrow: 'Essential',
             title: 'Showcase site',
             summary: 'Das sauberste Startniveau fuer einen professionellen Online-Auftritt.',
-            items: ['Professionelle Showcase-Website.', 'Inhaltsstruktur und Kontaktfluss.', 'Typische Lieferung in wenigen Werktagen.'],
+            items: [
+              'Professionelle Showcase-Website.',
+              'Inhaltsstruktur und Kontaktfluss.',
+              'Typische Lieferung in wenigen Werktagen.',
+            ],
             cta: 'Dieses Level starten',
           },
           launchWorkflow: {
             eyebrow: 'Workflow',
             title: 'Site + one workflow',
             summary: 'Fuer eine leichte Automation ohne Monsterprojekt.',
-            items: ['Alles aus Essential.', 'Eine leichte Integration oder Automation.', 'Mehr Kontinuitaet zwischen Website und Betrieb.'],
+            items: [
+              'Alles aus Essential.',
+              'Eine leichte Integration oder Automation.',
+              'Mehr Kontinuitaet zwischen Website und Betrieb.',
+            ],
             cta: 'Dieses Level pruefen',
           },
           launchOps: {
             eyebrow: 'Ops stack',
             title: 'Site + ops stack',
             summary: 'Wenn die Website bereits mehrere Fluesse oder mehr operative Struktur braucht.',
-            items: ['Alles aus dem vorherigen Level.', 'Zwei bis drei Automationen oder Handoffs.', 'Mehr Strenge in Scope und Lieferung.'],
+            items: [
+              'Alles aus dem vorherigen Level.',
+              'Zwei bis drei Automationen oder Handoffs.',
+              'Mehr Strenge in Scope und Lieferung.',
+            ],
             cta: 'Dieses Level besprechen',
           },
         },
@@ -1120,21 +1279,33 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
             eyebrow: 'Teams diagnostic',
             title: '15-minute operator cut',
             summary: 'Eine kurze bezahlte Session fuer Reibungspunkte oder Entscheide.',
-            items: ['Fokussiertes Teams-Gespraech.', 'Entscheidung, Klaerung oder Fit-Assessment.', 'Empfehlung fuer den naechsten Schritt.'],
+            items: [
+              'Fokussiertes Teams-Gespraech.',
+              'Entscheidung, Klaerung oder Fit-Assessment.',
+              'Empfehlung fuer den naechsten Schritt.',
+            ],
             cta: 'Teams buchen',
           },
           working: {
             eyebrow: 'Working session',
             title: 'Working session',
             summary: 'Fuer Themen mit mehr Tiefe, Architektur oder Live-Review-Bedarf.',
-            items: ['Laengeres Zeitfenster und dichteres Signal.', 'Websysteme, Linux, Workflows oder Entscheidungsstruktur.', 'Kann in echten Delivery-Scope uebergehen.'],
+            items: [
+              'Laengeres Zeitfenster und dichteres Signal.',
+              'Websysteme, Linux, Workflows oder Entscheidungsstruktur.',
+              'Kann in echten Delivery-Scope uebergehen.',
+            ],
             cta: 'Session anfragen',
           },
           board: {
             eyebrow: 'Advisory board',
             title: 'Recurring senior layer',
             summary: 'Ein leichtes Retainer-Modell fuer sauberere Prioritaeten und Entscheidungen ueber Zeit.',
-            items: ['Monatliche oder zweiwoechentliche Cadence.', 'Operator Board statt vages Coaching.', 'Am besten fuer Gruender, Agenturen und kleine Teams.'],
+            items: [
+              'Monatliche oder zweiwoechentliche Cadence.',
+              'Operator Board statt vages Coaching.',
+              'Am besten fuer Gruender, Agenturen und kleine Teams.',
+            ],
             cta: 'Board-Support besprechen',
           },
         },
@@ -1144,11 +1315,27 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
         title: 'Immer dieselbe kurze Pipeline.',
         lead: 'Einfacher Einstieg, sauberer Scope, Eskalation nur wenn das Thema es verdient.',
         nodes: [
-          { label: '01', title: 'Need chosen', body: 'Website-Launch, Teams-Diagnose, Linux-Option oder Advisory Board.' },
-          { label: '02', title: 'Fit checked', body: 'Preis- und Zeitniveau werden gewaehlt, bevor groessere Versprechen gemacht werden.' },
+          {
+            label: '01',
+            title: 'Need chosen',
+            body: 'Website-Launch, Teams-Diagnose, Linux-Option oder Advisory Board.',
+          },
+          {
+            label: '02',
+            title: 'Fit checked',
+            body: 'Preis- und Zeitniveau werden gewaehlt, bevor groessere Versprechen gemacht werden.',
+          },
           { label: '03', title: 'Session or brief', body: 'Teams-Link, Brief-Struktur oder Scope-Gespraech vorab.' },
-          { label: '04', title: 'Live work', body: 'Entscheidung, Review oder Build-Richtung entsteht live statt in vagem Pingpong.' },
-          { label: '05', title: 'Scoped next move', body: 'Memo, Launch-Plan, Linux-Scope oder wiederkehrende Cadence.' },
+          {
+            label: '04',
+            title: 'Live work',
+            body: 'Entscheidung, Review oder Build-Richtung entsteht live statt in vagem Pingpong.',
+          },
+          {
+            label: '05',
+            title: 'Scoped next move',
+            body: 'Memo, Launch-Plan, Linux-Scope oder wiederkehrende Cadence.',
+          },
         ],
       },
       cards: [
@@ -1181,7 +1368,8 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
           eyebrow: 'Teams',
           title: 'Diagnose buchen',
           liveBody: 'Waehlen Sie einen Slot und erhalten Sie den Teams-Link automatisch.',
-          fallbackBody: 'Fragen Sie den passenden Slot oder Link per WhatsApp an, wenn der oeffentliche Kalender noch nicht verbunden ist.',
+          fallbackBody:
+            'Fragen Sie den passenden Slot oder Link per WhatsApp an, wenn der oeffentliche Kalender noch nicht verbunden ist.',
           liveCta: 'Booking oeffnen',
           fallbackCta: 'Link anfragen',
         },
@@ -1197,8 +1385,16 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
         lead: 'WhatsApp, Teams oder E-Mail: Das erste Ziel bleibt gleich, Rauschen reduzieren bevor das Thema groesser wird.',
         nodes: [
           { label: '01', title: 'Channel chosen', body: 'WhatsApp, Teams oder E-Mail je nach Formgrad des Bedarfs.' },
-          { label: '02', title: 'Context received', body: 'Der Bedarf wird gerahmt, bevor ein groesseres Versprechen gemacht wird.' },
-          { label: '03', title: 'Right entry point', body: 'Kurzer Teams-Call, Web-Brief, Linux-Review oder Board-Gespraech.' },
+          {
+            label: '02',
+            title: 'Context received',
+            body: 'Der Bedarf wird gerahmt, bevor ein groesseres Versprechen gemacht wird.',
+          },
+          {
+            label: '03',
+            title: 'Right entry point',
+            body: 'Kurzer Teams-Call, Web-Brief, Linux-Review oder Board-Gespraech.',
+          },
           { label: '04', title: 'Live clarification', body: 'Die wichtigen Tradeoffs werden explizit benannt.' },
           { label: '05', title: 'Next step', body: 'Booking, Scope, Delivery oder wiederkehrende Cadence.' },
         ],
@@ -1280,20 +1476,6 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
         pricing: 'Prezzi',
         contact: 'Contatto',
       },
-      workspace: {
-        label: 'Pagine app',
-        overview: 'Panoramica',
-        clients: 'Clienti',
-        projects: 'Progetti',
-        websites: 'Siti',
-        tasks: 'Attivita',
-        documents: 'Documenti',
-        invoices: 'Fatture',
-        orders: 'Ordini',
-        support: 'Supporto',
-        subscriptions: 'Abbonamenti',
-        settings: 'Impostazioni',
-      },
       whatsapp: 'WhatsApp',
       swissBased: 'Basato in Svizzera',
       deliveryArtifact: 'Advisory con capacita di delivery',
@@ -1357,10 +1539,22 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
         eyebrow: 'Livelli',
         title: 'Quattro livelli che possono convivere.',
         cards: [
-          { title: 'Launch web systems', body: 'Siti vetrina, struttura contenuti, go-live, workflow leggeri e base commerciale pulita.' },
-          { title: 'Teams diagnostic', body: 'Una sessione breve a pagamento per decisioni, attrito, riposizionamento o priorita tecnica.' },
-          { title: 'Linux and operations', body: 'Macchine, servizi, self-hosting pragmatico, struttura dei tool e semplificazione.' },
-          { title: 'Advisory board light', body: 'Uno strato senior ricorrente per priorita, review e decisioni senza teatro manageriale.' },
+          {
+            title: 'Launch web systems',
+            body: 'Siti vetrina, struttura contenuti, go-live, workflow leggeri e base commerciale pulita.',
+          },
+          {
+            title: 'Teams diagnostic',
+            body: 'Una sessione breve a pagamento per decisioni, attrito, riposizionamento o priorita tecnica.',
+          },
+          {
+            title: 'Linux and operations',
+            body: 'Macchine, servizi, self-hosting pragmatico, struttura dei tool e semplificazione.',
+          },
+          {
+            title: 'Advisory board light',
+            body: 'Uno strato senior ricorrente per priorita, review e decisioni senza teatro manageriale.',
+          },
         ],
       },
       outcomes: {
@@ -1391,10 +1585,26 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
         lead: 'Teams se il tema e breve. Scope e delivery se il tema se lo guadagna. L ingresso resta semplice.',
         nodes: [
           { label: '01', title: 'Need chosen', body: 'Launch web, diagnosi Teams, opzione Linux o advisory board.' },
-          { label: '02', title: 'Fit confirmed', body: 'Il livello giusto viene scelto prima di consumare altro tempo o scope.' },
-          { label: '03', title: 'Teams link or brief', body: 'Ricevi il link della call o la struttura del brief in anticipo.' },
-          { label: '04', title: 'Live review', body: 'Il tema viene lavorato direttamente: decisione, architettura, priorita o attrito operativo.' },
-          { label: '05', title: 'Next-step scope', body: 'Raccomandazione, piano di launch, scope Linux o cadenza ricorrente.' },
+          {
+            label: '02',
+            title: 'Fit confirmed',
+            body: 'Il livello giusto viene scelto prima di consumare altro tempo o scope.',
+          },
+          {
+            label: '03',
+            title: 'Teams link or brief',
+            body: 'Ricevi il link della call o la struttura del brief in anticipo.',
+          },
+          {
+            label: '04',
+            title: 'Live review',
+            body: 'Il tema viene lavorato direttamente: decisione, architettura, priorita o attrito operativo.',
+          },
+          {
+            label: '05',
+            title: 'Next-step scope',
+            body: 'Raccomandazione, piano di launch, scope Linux o cadenza ricorrente.',
+          },
         ],
       },
       closing: {
@@ -1415,25 +1625,41 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
           eyebrow: '01',
           title: 'Launch web systems',
           body: 'La logica commerciale TonSiteWeb resta dentro il nuovo marchio come strato di launch piu pulito.',
-          items: ['Siti vetrina e pagine di conversione.', 'Struttura contenuti, scelta workflow e go-live.', 'Pacchetti launch chiari per indipendenti, agenzie e PMI.'],
+          items: [
+            'Siti vetrina e pagine di conversione.',
+            'Struttura contenuti, scelta workflow e go-live.',
+            'Pacchetti launch chiari per indipendenti, agenzie e PMI.',
+          ],
         },
         {
           eyebrow: '02',
           title: 'Teams diagnostics',
           body: 'Sessioni brevi a pagamento per domande commerciali, tecniche o operative che hanno bisogno di segnale, non di teatro.',
-          items: ['Decision framing.', 'Posizionamento e architettura dell offerta.', 'Workflow drag, tool sprawl, AI fit.'],
+          items: [
+            'Decision framing.',
+            'Posizionamento e architettura dell offerta.',
+            'Workflow drag, tool sprawl, AI fit.',
+          ],
         },
         {
           eyebrow: '03',
           title: 'Linux systems option',
           body: 'Quando il bisogno va oltre il sito: macchine, servizi, hygiene, observability e semplicita operativa.',
-          items: ['Server Linux e setup servizi.', 'Self-hosting pragmatico e manutenzione.', 'Documentazione, supervisione e riduzione della complessita.'],
+          items: [
+            'Server Linux e setup servizi.',
+            'Self-hosting pragmatico e manutenzione.',
+            'Documentazione, supervisione e riduzione della complessita.',
+          ],
         },
         {
           eyebrow: '04',
           title: 'Advisory board light',
           body: 'Uno strato senior ricorrente per priorita e rischi senza scivolare nel coaching vago.',
-          items: ['Cadenza mensile o bisettimanale.', 'Review di priorita e rischi.', 'Utile per founder, agenzie e piccoli team.'],
+          items: [
+            'Cadenza mensile o bisettimanale.',
+            'Review di priorita e rischi.',
+            'Utile per founder, agenzie e piccoli team.',
+          ],
         },
       ],
       fit: {
@@ -1458,7 +1684,8 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
       },
       closing: {
         eyebrow: 'Entry point',
-        title: (config: typeof iopartnerConfig) => `${config.offerDuration} su Teams prima di sovracostruire il problema.`,
+        title: (config: typeof iopartnerConfig) =>
+          `${config.offerDuration} su Teams prima di sovracostruire il problema.`,
         lead: 'La diagnosi breve resta il filtro. Se la mossa giusta e un sito, uno scope Linux o una relazione board, viene definita dopo.',
         ctaBook: 'Prenota la diagnosi',
         ctaPricing: 'Confronta le offerte',
@@ -1477,21 +1704,33 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
             eyebrow: 'Essential',
             title: 'Showcase site',
             summary: 'Il punto di partenza piu pulito per andare online bene.',
-            items: ['Sito vetrina professionale.', 'Struttura contenuti e flusso contatto.', 'Consegna tipica in pochi giorni lavorativi.'],
+            items: [
+              'Sito vetrina professionale.',
+              'Struttura contenuti e flusso contatto.',
+              'Consegna tipica in pochi giorni lavorativi.',
+            ],
             cta: 'Avvia questo livello',
           },
           launchWorkflow: {
             eyebrow: 'Workflow',
             title: 'Site + one workflow',
             summary: 'Per aggiungere una leggera automazione senza creare un progetto mostruoso.',
-            items: ['Tutto il livello essential.', 'Una integrazione o automazione leggera.', 'Piu continuita tra sito e operazioni.'],
+            items: [
+              'Tutto il livello essential.',
+              'Una integrazione o automazione leggera.',
+              'Piu continuita tra sito e operazioni.',
+            ],
             cta: 'Verifica questo livello',
           },
           launchOps: {
             eyebrow: 'Ops stack',
             title: 'Site + ops stack',
             summary: 'Quando il sito deve gia collegarsi a piu flussi o a una struttura piu operativa.',
-            items: ['Tutto il livello precedente.', 'Due o tre automazioni o handoff.', 'Piu rigore di scope e delivery.'],
+            items: [
+              'Tutto il livello precedente.',
+              'Due o tre automazioni o handoff.',
+              'Piu rigore di scope e delivery.',
+            ],
             cta: 'Discuti questo livello',
           },
         },
@@ -1505,21 +1744,33 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
             eyebrow: 'Teams diagnostic',
             title: '15-minute operator cut',
             summary: 'Una sessione breve a pagamento per chiarire attrito o decisione.',
-            items: ['Discussione Teams focalizzata.', 'Decisione, chiarimento o fit assessment.', 'Raccomandazione per la prossima mossa.'],
+            items: [
+              'Discussione Teams focalizzata.',
+              'Decisione, chiarimento o fit assessment.',
+              'Raccomandazione per la prossima mossa.',
+            ],
             cta: 'Prenota Teams',
           },
           working: {
             eyebrow: 'Working session',
             title: 'Working session',
             summary: 'Per temi che richiedono piu profondita, architettura o live review.',
-            items: ['Finestra piu lunga e segnale piu denso.', 'Web systems, Linux, workflow o struttura decisionale.', 'Puo diventare uno scope reale di delivery.'],
+            items: [
+              'Finestra piu lunga e segnale piu denso.',
+              'Web systems, Linux, workflow o struttura decisionale.',
+              'Puo diventare uno scope reale di delivery.',
+            ],
             cta: 'Richiedi sessione',
           },
           board: {
             eyebrow: 'Advisory board',
             title: 'Recurring senior layer',
             summary: 'Un retainer leggero per mantenere piu pulite priorita e decisioni nel tempo.',
-            items: ['Cadenza mensile o bisettimanale.', 'Operator board, non coaching vago.', 'Ideale per founder, agenzie e piccoli team.'],
+            items: [
+              'Cadenza mensile o bisettimanale.',
+              'Operator board, non coaching vago.',
+              'Ideale per founder, agenzie e piccoli team.',
+            ],
             cta: 'Discuti il board',
           },
         },
@@ -1531,8 +1782,16 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
         nodes: [
           { label: '01', title: 'Need chosen', body: 'Launch web, diagnosi Teams, opzione Linux o advisory board.' },
           { label: '02', title: 'Fit checked', body: 'Livello di prezzo e tempo scelto prima di promettere di piu.' },
-          { label: '03', title: 'Session or brief', body: 'Link Teams, struttura del brief o conversazione di scope in anticipo.' },
-          { label: '04', title: 'Live work', body: 'Decisione, review o direzione build succedono dal vivo, non in ping-pong vago.' },
+          {
+            label: '03',
+            title: 'Session or brief',
+            body: 'Link Teams, struttura del brief o conversazione di scope in anticipo.',
+          },
+          {
+            label: '04',
+            title: 'Live work',
+            body: 'Decisione, review o direzione build succedono dal vivo, non in ping-pong vago.',
+          },
           { label: '05', title: 'Scoped next move', body: 'Memo, piano launch, scope Linux o cadenza ricorrente.' },
         ],
       },
@@ -1581,9 +1840,21 @@ const copy: Record<IoPartnerLocale, IoPartnerCopy> = {
         title: 'Prima il canale, poi il framing.',
         lead: 'WhatsApp, Teams o email: il primo obiettivo resta lo stesso, ridurre il rumore prima di allargare il tema.',
         nodes: [
-          { label: '01', title: 'Channel chosen', body: 'WhatsApp, Teams o email secondo quanto il bisogno e gia formato.' },
-          { label: '02', title: 'Context received', body: 'Il bisogno viene inquadrato prima di fare promesse piu grandi.' },
-          { label: '03', title: 'Right entry point', body: 'Short Teams call, web brief, Linux review o board conversation.' },
+          {
+            label: '01',
+            title: 'Channel chosen',
+            body: 'WhatsApp, Teams o email secondo quanto il bisogno e gia formato.',
+          },
+          {
+            label: '02',
+            title: 'Context received',
+            body: 'Il bisogno viene inquadrato prima di fare promesse piu grandi.',
+          },
+          {
+            label: '03',
+            title: 'Right entry point',
+            body: 'Short Teams call, web brief, Linux review o board conversation.',
+          },
           { label: '04', title: 'Live clarification', body: 'I tradeoff importanti vengono nominati esplicitamente.' },
           { label: '05', title: 'Next step', body: 'Booking, scope, delivery o cadenza ricorrente.' },
         ],

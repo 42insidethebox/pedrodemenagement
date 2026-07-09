@@ -4,12 +4,41 @@ import { getSupabaseAdmin } from '~/lib/supabase';
 import { sendEmailTemplate } from '~/lib/email';
 import { normalizePlanId, TONSITEWEB_DEFAULT_PLAN } from '~/lib/pricing.js';
 import { isAllowedTemplate } from '~/lib/templates.js';
+import { assertRateLimit } from '~/lib/rate-limit';
 
 export const prerender = false;
 
+const MAX_ONBOARDING_BODY_BYTES = 20 * 1024 * 1024;
+const MIN_FORM_AGE_MS = 1800;
+const HONEYPOT_FIELDS = ['website_url', 'company_url', 'fax_number'];
+
+function getText(form: FormData, key: string) {
+  const value = form.get(key);
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+function isLikelyBot(form: FormData) {
+  const honeypotFilled = HONEYPOT_FIELDS.some((field) => Boolean(getText(form, field)));
+  if (honeypotFilled) return true;
+
+  const rawStartedAt = getText(form, 'form_started_at');
+  if (!rawStartedAt) return false;
+  const startedAt = Number(rawStartedAt);
+  if (!Number.isFinite(startedAt)) return true;
+  return Date.now() - startedAt < MIN_FORM_AGE_MS;
+}
+
 export const POST: APIRoute = async ({ request }) => {
   try {
+    const contentLength = Number(request.headers.get('content-length') || 0);
+    if (contentLength > MAX_ONBOARDING_BODY_BYTES) {
+      return new Response('Payload too large', { status: 413 });
+    }
+
+    assertRateLimit(request, { key: 'iopartner-onboarding', limit: 4, window: 300 });
+
     const form = await request.formData();
+    if (isLikelyBot(form)) return new Response(null, { status: 204 });
 
     const plan = normalizePlanId(String(form.get('plan') || TONSITEWEB_DEFAULT_PLAN).trim());
     const template = isAllowedTemplate(String(form.get('template') || '').trim())
@@ -32,8 +61,10 @@ export const POST: APIRoute = async ({ request }) => {
     const domainOwned = form.get('domain_owned') === 'yes';
     const references = String(form.get('references') || '').trim();
     const notes = String(form.get('notes') || '').trim();
+    const customerName = String(form.get('customer_name') || '').trim();
+    const customerEmail = String(form.get('customer_email') || '').trim();
 
-    if (!businessName || !description) {
+    if (!customerName || !customerEmail || !businessName || !description) {
       return new Response(null, {
         status: 303,
         headers: { Location: `/iopartner/onboarding?error=missing&plan=${encodeURIComponent(plan)}` },
@@ -168,8 +199,10 @@ export const POST: APIRoute = async ({ request }) => {
     const params = new URLSearchParams({
       plan,
       template,
-      name: businessName,
+      name: customerName || businessName,
+      email: customerEmail,
       phone,
+      company: businessName,
       locale: String(form.get('locale') || 'fr'),
       ...(submissionId ? { submission_id: submissionId } : {}),
     });
@@ -178,8 +211,8 @@ export const POST: APIRoute = async ({ request }) => {
       headers: { Location: `/api/payment/redirect?${params.toString()}` },
     });
   } catch (e) {
+    if (e instanceof Response) return e;
     console.error('[onboarding] error:', e);
-    const sid = '';
     return new Response(null, {
       status: 303,
       headers: { Location: '/iopartner/onboarding?error=server' },

@@ -22,6 +22,9 @@ const COUNTRY_HEADERS = ['x-vercel-ip-country', 'cf-ipcountry', 'x-country-code'
 
 const isSwissIpOnlyEnabled = () => {
   if (import.meta.env.DEV) return false;
+  // Public websites must remain globally reachable. This legacy lock is now opt-in only;
+  // abuse protection belongs on mutating endpoints and forms, not on page views.
+  if (process.env.SWISS_SITE_GEO_BLOCK !== '1') return false;
   if (process.env.SWISS_IP_ONLY === '0') return false;
   if (process.env.VERCEL_ENV) return process.env.VERCEL_ENV === 'production';
   return import.meta.env.PROD;
@@ -238,7 +241,7 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   // Redirect browser-visible locale prefixes on IOPartner host back to clean URLs.
   // Persist the chosen locale in aw_lang so the clean URL still renders the translated page.
   if (isIoPartnerHost) {
-    const localePrefixMatch = url.pathname.match(/^\/(en|de|it)(\/.*)?$/);
+    const localePrefixMatch = url.pathname.match(/^\/(fr|en|de|it)(\/.*)?$/);
     if (localePrefixMatch) {
       const lang = localePrefixMatch[1];
       const stripped = localePrefixMatch[2] || '/';

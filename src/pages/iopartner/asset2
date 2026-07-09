@@ -1,0 +1,46 @@
+---
+import IntuneArchitecture from '../components/IntuneArchitecture.astro';
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Intune + Entra ID Architecture — IOPartner</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{background:#f5f6f8}
+body{font-family:'Inter',sans-serif;display:flex;flex-direction:column;
+     align-items:center;padding:0 24px 80px;min-height:100vh}
+.nav{width:100%;max-width:1140px;height:52px;display:flex;align-items:center;
+     justify-content:space-between;border-bottom:1px solid rgba(11,21,38,.07)}
+.nav-logo{display:flex;align-items:center;gap:9px;text-decoration:none}
+.nav-logo-text{font-family:'JetBrains Mono',monospace;font-size:13px;
+  font-weight:500;letter-spacing:.04em;color:#0b1526}
+.nav-links{display:flex;gap:24px}
+.nav-links a{font-family:'JetBrains Mono',monospace;font-size:10px;
+  letter-spacing:.09em;text-transform:uppercase;color:rgba(11,21,38,.4);
+  text-decoration:none;transition:color .15s}
+.nav-links a:hover{color:#1a56ff}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="/" class="nav-logo">
+    <svg width="24" height="24" viewBox="0 0 26 26" fill="none">
+      <circle cx="9" cy="13" r="7.5" stroke="#1a56ff" stroke-width="1.4" fill="none"/>
+      <circle cx="17" cy="13" r="7.5" stroke="#1a56ff" stroke-width="1.4" fill="none"/>
+      <path d="M13 6.5C15.2 8.2 16.5 10.5 16.5 13C16.5 15.5 15.2 17.8 13 19.5C10.8 17.8 9.5 15.5 9.5 13C9.5 10.5 10.8 8.2 13 6.5Z" fill="#1a56ff" opacity=".2"/>
+    </svg>
+    <span class="nav-logo-text">IOPartner</span>
+  </a>
+  <div class="nav-links">
+    <a href="/pricing">Pricing</a>
+    <a href="/systems-operations">Systems</a>
+    <a href="/contact">Contact</a>
+  </div>
+</nav>
+<IntuneArchitecture />
+</body>
+</html>

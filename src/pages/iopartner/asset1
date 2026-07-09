@@ -1,0 +1,1012 @@
+---
+// IntuneArchitecture.astro
+// Microsoft Intune + Azure AD / Entra ID architecture diagram
+// Rebuilt in IOPartner Swiss blueprint style
+// Source: Microsoft official Intune architecture diagram
+---
+
+<section class="intune-section">
+
+  <!-- Header -->
+  <div class="intune-header">
+    <p class="intune-eyebrow">Reference Architecture</p>
+    <h2 class="intune-title">Microsoft Intune &amp; Entra ID</h2>
+    <p class="intune-sub">
+      Device management, conditional access, and app protection —
+      how the identity and compliance layer actually connects.
+    </p>
+  </div>
+
+  <!-- SVG Frame -->
+  <div class="intune-frame">
+    <div class="intune-topbar">
+      <span class="intune-topbar-left">
+        <span class="intune-topbar-dot" style="background:#ef4444"></span>
+        <span class="intune-topbar-dot" style="background:#f59e0b"></span>
+        <span class="intune-topbar-dot" style="background:#22c55e"></span>
+      </span>
+      <span class="intune-topbar-title">
+        MICROSOFT INTUNE · ENTRA ID · CONDITIONAL ACCESS · MDM ARCHITECTURE
+      </span>
+      <span class="intune-topbar-rev">REV.1 · 2026</span>
+    </div>
+
+    <svg
+      id="intune-svg"
+      viewBox="0 0 1080 720"
+      xmlns="http://www.w3.org/2000/svg"
+      role="img"
+      aria-label="Microsoft Intune and Entra ID architecture diagram"
+    >
+      <defs>
+        <!-- Dot grid -->
+        <pattern id="i-dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+          <circle cx="10" cy="10" r=".6" fill="rgba(26,86,255,.08)"/>
+        </pattern>
+
+        <!-- Fine rule grid -->
+        <pattern id="i-grid" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+          <path d="M60 0L0 0 0 60" fill="none"
+                stroke="rgba(26,86,255,.04)" stroke-width=".5"/>
+        </pattern>
+
+        <!-- Filters -->
+        <filter id="i-card-shadow" x="-6%" y="-8%" width="112%" height="122%">
+          <feDropShadow dx="0" dy="2" stdDeviation="5"
+                        flood-color="rgba(11,21,38,.1)"/>
+        </filter>
+        <filter id="i-glow-blue" x="-40%" y="-40%" width="180%" height="180%">
+          <feGaussianBlur stdDeviation="5" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="i-glow-sm" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="2.5" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="i-cloud-shadow" x="-8%" y="-8%" width="116%" height="124%">
+          <feDropShadow dx="0" dy="3" stdDeviation="8"
+                        flood-color="rgba(0,120,212,.18)"/>
+        </filter>
+        <filter id="i-highlight-shadow" x="-8%" y="-8%" width="116%" height="124%">
+          <feDropShadow dx="0" dy="3" stdDeviation="8"
+                        flood-color="rgba(255,165,0,.35)"/>
+        </filter>
+
+        <!-- Gradients -->
+        <linearGradient id="i-azure-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#1565c0"/>
+          <stop offset="100%" stop-color="#0d47a1"/>
+        </linearGradient>
+        <linearGradient id="i-intune-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#1976d2"/>
+          <stop offset="100%" stop-color="#1565c0"/>
+        </linearGradient>
+        <linearGradient id="i-entra-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#0078d4"/>
+          <stop offset="100%" stop-color="#005a9e"/>
+        </linearGradient>
+        <radialGradient id="i-cloud-inner" cx="50%" cy="40%" r="55%">
+          <stop offset="0%" stop-color="rgba(25,118,210,.15)"/>
+          <stop offset="100%" stop-color="rgba(13,71,161,.0)"/>
+        </radialGradient>
+
+        <!-- Arrow markers -->
+        <marker id="m-blue" markerWidth="7" markerHeight="7"
+                refX="6" refY="3.5" orient="auto">
+          <polygon points="0 1,6 3.5,0 6" fill="#1a56ff"/></marker>
+        <marker id="m-white" markerWidth="7" markerHeight="7"
+                refX="6" refY="3.5" orient="auto">
+          <polygon points="0 1,6 3.5,0 6" fill="rgba(255,255,255,.8)"/></marker>
+        <marker id="m-dim" markerWidth="6" markerHeight="6"
+                refX="5" refY="3" orient="auto">
+          <polygon points="0 .8,5 3,0 5.2" fill="rgba(11,21,38,.2)"/></marker>
+        <marker id="m-amber" markerWidth="7" markerHeight="7"
+                refX="6" refY="3.5" orient="auto">
+          <polygon points="0 1,6 3.5,0 6" fill="#f59e0b"/></marker>
+        <marker id="m-both-l" markerWidth="7" markerHeight="7"
+                refX="1" refY="3.5" orient="auto">
+          <polygon points="7 1,1 3.5,7 6" fill="rgba(255,255,255,.7)"/></marker>
+      </defs>
+
+      <!-- ── BACKGROUND ── -->
+      <rect width="1080" height="720" fill="#f8f9fb"/>
+      <rect width="1080" height="720" fill="url(#i-dots)"/>
+      <rect width="1080" height="720" fill="url(#i-grid)"/>
+
+      <!-- ═══════════════════════════════════════
+           AZURE CLOUD — large background shape
+      ═══════════════════════════════════════ -->
+      <!-- Cloud blob path: hand-crafted organic shape -->
+      <g id="azure-cloud">
+        <!-- Outer cloud silhouette (dark blue fill) -->
+        <path id="cloud-path"
+          d="M180,60
+             Q220,20 280,30 Q310,8 360,20 Q400,4 450,18
+             Q510,0 560,20 Q610,5 660,22 Q700,8 740,28
+             Q790,10 830,35 Q870,18 910,40 Q940,22 970,48
+             Q1010,32 1020,65
+             Q1040,90 1030,130 Q1050,160 1040,195
+             Q1060,230 1040,265 Q1050,295 1030,320
+             Q1020,355 990,370 Q970,390 940,388
+             L200,388
+             Q165,385 145,360 Q120,335 130,305
+             Q110,280 120,250 Q100,220 115,190
+             Q95,160 110,130 Q100,95 130,72 Q155,55 180,60 Z"
+          fill="url(#i-azure-grad)"
+          filter="url(#i-cloud-shadow)"
+          opacity=".97"
+        />
+        <!-- Inner cloud highlight -->
+        <path
+          d="M200,75 Q250,40 320,52 Q370,28 430,45 Q490,22 550,40
+             Q610,20 670,42 Q720,22 770,45 Q820,28 870,55
+             Q920,35 960,62 Q990,78 1000,115 Q1020,150 1005,185
+             Q1020,215 1005,245 Q1015,275 995,302
+             Q978,330 950,340
+             L220,340
+             Q190,335 172,310 Q152,282 165,252
+             Q148,222 162,192 Q145,162 162,132 Q152,100 178,80 Z"
+          fill="rgba(255,255,255,.04)"
+        />
+        <!-- Azure label -->
+        <text x="540" y="68" font-family="'Inter',sans-serif" font-size="13"
+              font-weight="300" fill="rgba(255,255,255,.55)" text-anchor="middle"
+              letter-spacing=".1em">Microsoft Azure</text>
+        <line x1="360" y1="74" x2="720" y2="74"
+              stroke="rgba(255,255,255,.12)" stroke-width=".7"/>
+      </g>
+
+      <!-- ═══════════════════════════════════════
+           INTUNE SUB-CLOUD
+      ═══════════════════════════════════════ -->
+      <g id="intune-cloud">
+        <path
+          d="M155,105
+             Q185,78 230,88 Q265,68 315,82
+             Q360,62 415,80 Q460,62 510,80
+             Q555,60 600,80 Q640,62 680,82
+             Q715,68 745,90 Q775,74 800,102
+             Q825,118 820,150 Q835,178 820,205
+             Q828,235 810,258 Q795,278 770,285
+             L185,285
+             Q158,280 140,258 Q120,232 128,205
+             Q112,178 125,152 Q118,122 155,105 Z"
+          fill="url(#i-intune-grad)"
+          opacity=".92"
+        />
+        <!-- Intune label -->
+        <text x="490" y="122" font-family="'Inter',sans-serif" font-size="12"
+              font-weight="500" fill="rgba(255,255,255,.9)" text-anchor="middle"
+              letter-spacing=".06em">Microsoft Intune</text>
+
+        <!-- ── Three capability columns inside Intune ── -->
+        <!-- Configure Devices -->
+        <g id="col-configure">
+          <rect x="170" y="136" width="150" height="120" rx="6"
+                fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.12)"
+                stroke-width=".8"/>
+          <!-- Icon: gear outline -->
+          <g transform="translate(245,157)">
+            <circle r="10" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.5"/>
+            <circle r="4" fill="rgba(255,255,255,.6)"/>
+            <!-- Gear teeth (simplified) -->
+            <line x1="0" y1="-10" x2="0" y2="-14" stroke="rgba(255,255,255,.6)" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="0" y1="10" x2="0" y2="14" stroke="rgba(255,255,255,.6)" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="-10" y1="0" x2="-14" y2="0" stroke="rgba(255,255,255,.6)" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="10" y1="0" x2="14" y2="0" stroke="rgba(255,255,255,.6)" stroke-width="2.5" stroke-linecap="round"/>
+          </g>
+          <text x="245" y="178" font-family="'Inter',sans-serif" font-size="9"
+                font-weight="500" fill="rgba(255,255,255,.85)" text-anchor="middle"
+                letter-spacing=".04em">Configure devices</text>
+          <!-- Sub items -->
+          <rect x="182" y="186" width="60" height="28" rx="3"
+                fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.15)" stroke-width=".6"/>
+          <text x="212" y="198" font-family="'JetBrains Mono',monospace" font-size="7"
+                fill="rgba(255,255,255,.7)" text-anchor="middle">Profiles</text>
+          <text x="212" y="208" font-family="'JetBrains Mono',monospace" font-size="6"
+                fill="rgba(255,255,255,.45)" text-anchor="middle">device config</text>
+
+          <rect x="252" y="186" width="60" height="28" rx="3"
+                fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.15)" stroke-width=".6"/>
+          <text x="282" y="198" font-family="'JetBrains Mono',monospace" font-size="7"
+                fill="rgba(255,255,255,.7)" text-anchor="middle">Config</text>
+          <text x="282" y="208" font-family="'JetBrains Mono',monospace" font-size="6"
+                fill="rgba(255,255,255,.45)" text-anchor="middle">policies</text>
+
+          <!-- Small device icons row -->
+          <text x="245" y="242" font-family="'JetBrains Mono',monospace" font-size="7"
+                fill="rgba(255,255,255,.35)" text-anchor="middle"
+                letter-spacing=".06em">Win · Mac · iOS · And</text>
+        </g>
+
+        <!-- Protect Data -->
+        <g id="col-protect">
+          <rect x="335" y="136" width="160" height="120" rx="6"
+                fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.12)"
+                stroke-width=".8"/>
+          <!-- Lock icon -->
+          <g transform="translate(415,156)">
+            <rect x="-8" y="-2" width="16" height="12" rx="2"
+                  fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.5"/>
+            <path d="M-5,-2 Q-5,-10 0,-10 Q5,-10 5,-2"
+                  fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.5"/>
+            <circle cx="0" cy="4" r="2" fill="rgba(255,255,255,.6)"/>
+          </g>
+          <text x="415" y="178" font-family="'Inter',sans-serif" font-size="9"
+                font-weight="500" fill="rgba(255,255,255,.85)" text-anchor="middle"
+                letter-spacing=".04em">Protect data</text>
+
+          <rect x="344" y="186" width="66" height="28" rx="3"
+                fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.15)" stroke-width=".6"/>
+          <text x="377" y="198" font-family="'JetBrains Mono',monospace" font-size="7"
+                fill="rgba(255,255,255,.7)" text-anchor="middle">App protect</text>
+          <text x="377" y="208" font-family="'JetBrains Mono',monospace" font-size="6"
+                fill="rgba(255,255,255,.45)" text-anchor="middle">policies</text>
+
+          <rect x="420" y="186" width="66" height="28" rx="3"
+                fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.15)" stroke-width=".6"/>
+          <text x="453" y="198" font-family="'JetBrains Mono',monospace" font-size="7"
+                fill="rgba(255,255,255,.7)" text-anchor="middle">Device</text>
+          <text x="453" y="208" font-family="'JetBrains Mono',monospace" font-size="6"
+                fill="rgba(255,255,255,.45)" text-anchor="middle">compliance</text>
+
+          <text x="415" y="242" font-family="'JetBrains Mono',monospace" font-size="7"
+                fill="rgba(255,255,255,.35)" text-anchor="middle"
+                letter-spacing=".06em">MAM · MDM · BYOD</text>
+        </g>
+
+        <!-- Manage Apps -->
+        <g id="col-apps">
+          <rect x="510" y="136" width="145" height="120" rx="6"
+                fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.12)"
+                stroke-width=".8"/>
+          <!-- Grid icon -->
+          <g transform="translate(582,156)">
+            <rect x="-10" y="-10" width="8" height="8" rx="1.5"
+                  fill="rgba(255,255,255,.65)"/>
+            <rect x="2"   y="-10" width="8" height="8" rx="1.5"
+                  fill="rgba(255,255,255,.65)"/>
+            <rect x="-10" y="2"   width="8" height="8" rx="1.5"
+                  fill="rgba(255,255,255,.65)"/>
+            <rect x="2"   y="2"   width="8" height="8" rx="1.5"
+                  fill="rgba(255,255,255,.65)"/>
+          </g>
+          <text x="582" y="178" font-family="'Inter',sans-serif" font-size="9"
+                font-weight="500" fill="rgba(255,255,255,.85)" text-anchor="middle"
+                letter-spacing=".04em">Manage apps</text>
+
+          <rect x="519" y="186" width="58" height="28" rx="3"
+                fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.15)" stroke-width=".6"/>
+          <text x="548" y="198" font-family="'JetBrains Mono',monospace" font-size="7"
+                fill="rgba(255,255,255,.7)" text-anchor="middle">Apps</text>
+          <text x="548" y="208" font-family="'JetBrains Mono',monospace" font-size="6"
+                fill="rgba(255,255,255,.45)" text-anchor="middle">deploy</text>
+
+          <rect x="587" y="186" width="60" height="28" rx="3"
+                fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.15)" stroke-width=".6"/>
+          <text x="617" y="198" font-family="'JetBrains Mono',monospace" font-size="7"
+                fill="rgba(255,255,255,.7)" text-anchor="middle">App config</text>
+          <text x="617" y="208" font-family="'JetBrains Mono',monospace" font-size="6"
+                fill="rgba(255,255,255,.45)" text-anchor="middle">policies</text>
+
+          <text x="582" y="242" font-family="'JetBrains Mono',monospace" font-size="7"
+                fill="rgba(255,255,255,.35)" text-anchor="middle"
+                letter-spacing=".06em">Store · LOB · Web</text>
+        </g>
+
+        <!-- Compliance bridge box (between Intune and Entra) -->
+        <g id="compliance-bridge">
+          <rect x="680" y="160" width="112" height="36" rx="3"
+                fill="rgba(255,255,255,.12)" stroke="rgba(255,255,255,.2)"
+                stroke-width=".8"/>
+          <text x="736" y="174" font-family="'JetBrains Mono',monospace" font-size="7.5"
+                font-weight="500" fill="rgba(255,255,255,.8)" text-anchor="middle"
+                letter-spacing=".08em">Group targeting</text>
+          <text x="736" y="186" font-family="'JetBrains Mono',monospace" font-size="6.5"
+                fill="rgba(255,255,255,.45)" text-anchor="middle">Entra → Intune</text>
+        </g>
+
+        <g id="device-compliance-bridge">
+          <rect x="680" y="213" width="112" height="44" rx="3"
+                fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.18)"
+                stroke-width=".8"/>
+          <text x="736" y="228" font-family="'JetBrains Mono',monospace" font-size="7.5"
+                font-weight="500" fill="rgba(255,255,255,.8)" text-anchor="middle"
+                letter-spacing=".08em">Device compliance</text>
+          <text x="736" y="240" font-family="'JetBrains Mono',monospace" font-size="6.5"
+                fill="rgba(255,255,255,.45)" text-anchor="middle">results → Entra CA</text>
+          <text x="736" y="251" font-family="'JetBrains Mono',monospace" font-size="6"
+                fill="rgba(255,255,255,.3)" text-anchor="middle">read compliance info</text>
+        </g>
+      </g>
+
+      <!-- ═══════════════════════════════════════
+           ENTRA ID / AZURE AD — highlighted box
+           (the orange-highlighted component)
+      ═══════════════════════════════════════ -->
+      <g id="entra-box">
+        <!-- Outer highlight (the "selected" orange frame from original) -->
+        <rect x="812" y="90" width="240" height="200" rx="4"
+              fill="rgba(245,158,11,.08)"
+              stroke="#f59e0b" stroke-width="1.5"
+              filter="url(#i-highlight-shadow)"
+              stroke-dasharray="none"/>
+
+        <!-- Inner box -->
+        <rect x="822" y="98" width="220" height="184" rx="3"
+              fill="rgba(0,120,212,.12)" stroke="rgba(0,120,212,.3)"
+              stroke-width="1" filter="url(#i-card-shadow)"/>
+
+        <!-- Entra ID diamond icon -->
+        <g transform="translate(932,130)">
+          <polygon points="0,-18 18,0 0,18 -18,0"
+                   fill="none" stroke="#0078d4" stroke-width="1.5"
+                   filter="url(#i-glow-sm)"/>
+          <polygon points="0,-10 10,0 0,10 -10,0"
+                   fill="#0078d4" opacity=".7"
+                   filter="url(#i-glow-sm)"/>
+          <polygon points="0,-5 5,0 0,5 -5,0"
+                   fill="#fff" opacity=".8"/>
+        </g>
+
+        <text x="932" y="158" font-family="'Inter',sans-serif" font-size="11"
+              font-weight="600" fill="#0b1526" text-anchor="middle"
+              letter-spacing=".02em">Entra ID</text>
+        <text x="932" y="171" font-family="'JetBrains Mono',monospace" font-size="7.5"
+              fill="#4a6080" text-anchor="middle" letter-spacing=".06em">
+          Azure Active Directory
+        </text>
+
+        <!-- Divider -->
+        <line x1="835" y1="180" x2="1028" y2="180"
+              stroke="rgba(11,21,38,.08)" stroke-width=".8"/>
+
+        <!-- Conditional Access sub-box -->
+        <rect x="832" y="186" width="100" height="52" rx="3"
+              fill="rgba(0,120,212,.08)" stroke="rgba(0,120,212,.2)"
+              stroke-width=".8"/>
+        <!-- CA icon: shield -->
+        <g transform="translate(860,204)">
+          <path d="M0,-9 L9,-4 L9,4 Q9,10 0,13 Q-9,10 -9,4 L-9,-4 Z"
+                fill="none" stroke="#0078d4" stroke-width="1.3"/>
+          <text y="4" font-size="8" fill="#0078d4" text-anchor="middle">✓</text>
+        </g>
+        <text x="895" y="204" font-family="'JetBrains Mono',monospace" font-size="7.5"
+              font-weight="500" fill="#0b1526" text-anchor="middle">Conditional</text>
+        <text x="895" y="215" font-family="'JetBrains Mono',monospace" font-size="7.5"
+              font-weight="500" fill="#0b1526" text-anchor="middle">Access</text>
+        <text x="882" y="230" font-family="'JetBrains Mono',monospace" font-size="6.5"
+              fill="#4a6080" text-anchor="middle">MFA · location · risk</text>
+
+        <!-- Auth & Authorization sub-box -->
+        <rect x="942" y="186" width="100" height="52" rx="3"
+              fill="rgba(0,120,212,.08)" stroke="rgba(0,120,212,.2)"
+              stroke-width=".8"/>
+        <!-- Key icon -->
+        <g transform="translate(970,204)">
+          <circle cx="0" cy="0" r="6" fill="none" stroke="#0078d4" stroke-width="1.3"/>
+          <line x1="6" y1="0" x2="14" y2="0" stroke="#0078d4" stroke-width="1.3"/>
+          <line x1="11" y1="0" x2="11" y2="4" stroke="#0078d4" stroke-width="1.3"/>
+          <line x1="14" y1="0" x2="14" y2="4" stroke="#0078d4" stroke-width="1.3"/>
+        </g>
+        <text x="1005" y="204" font-family="'JetBrains Mono',monospace" font-size="7.5"
+              font-weight="500" fill="#0b1526" text-anchor="middle">Auth &amp;</text>
+        <text x="1005" y="215" font-family="'JetBrains Mono',monospace" font-size="7.5"
+              font-weight="500" fill="#0b1526" text-anchor="middle">Authorization</text>
+        <text x="994" y="230" font-family="'JetBrains Mono',monospace" font-size="6.5"
+              fill="#4a6080" text-anchor="middle">SSO · tokens · RBAC</text>
+
+        <!-- Highlight label -->
+        <text x="932" y="284" font-family="'JetBrains Mono',monospace" font-size="7.5"
+              fill="rgba(245,158,11,.8)" text-anchor="middle" letter-spacing=".1em">
+          ← IDENTITY BACKBONE
+        </text>
+      </g>
+
+      <!-- ═══════════════════════════════════════
+           LEFT SIDE — Web Console / Graph API
+      ═══════════════════════════════════════ -->
+      <g id="left-panel">
+        <!-- Graph API cloud shape -->
+        <g id="graph-api">
+          <ellipse cx="70" cy="195" rx="52" ry="38"
+                   fill="rgba(173,216,230,.25)" stroke="rgba(100,160,220,.4)"
+                   stroke-width="1" stroke-dasharray="5 3"/>
+          <!-- Cloud bumps -->
+          <ellipse cx="52" cy="183" rx="20" ry="15"
+                   fill="rgba(173,216,230,.3)" stroke="rgba(100,160,220,.35)"
+                   stroke-width=".8" stroke-dasharray="4 3"/>
+          <ellipse cx="88" cy="180" rx="22" ry="16"
+                   fill="rgba(173,216,230,.3)" stroke="rgba(100,160,220,.35)"
+                   stroke-width=".8" stroke-dasharray="4 3"/>
+          <text x="70" y="198" font-family="'Inter',sans-serif" font-size="9"
+                font-weight="500" fill="#2d4a6b" text-anchor="middle">Graph API</text>
+          <text x="70" y="210" font-family="'JetBrains Mono',monospace" font-size="7"
+                fill="#6b8aaa" text-anchor="middle">config · report</text>
+        </g>
+
+        <!-- Web Console box -->
+        <g id="web-console">
+          <rect x="18" y="296" width="104" height="72" rx="3"
+                fill="rgba(255,255,255,.9)" stroke="rgba(11,21,38,.12)"
+                stroke-width="1" filter="url(#i-card-shadow)"/>
+          <!-- Screen lines mockup -->
+          <rect x="28" y="306" width="84" height="48" rx="2"
+                fill="#f0f2f8" stroke="rgba(11,21,38,.08)" stroke-width=".6"/>
+          <line x1="32" y1="316" x2="100" y2="316"
+                stroke="rgba(26,86,255,.3)" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="32" y1="324" x2="88"  y2="324"
+                stroke="rgba(11,21,38,.15)" stroke-width="1" stroke-linecap="round"/>
+          <line x1="32" y1="332" x2="94"  y2="332"
+                stroke="rgba(11,21,38,.1)" stroke-width="1" stroke-linecap="round"/>
+          <line x1="32" y1="340" x2="78"  y2="340"
+                stroke="rgba(11,21,38,.1)" stroke-width="1" stroke-linecap="round"/>
+          <text x="70" y="382" font-family="'JetBrains Mono',monospace" font-size="7.5"
+                fill="rgba(11,21,38,.5)" text-anchor="middle" letter-spacing=".07em">
+            Web console
+          </text>
+        </g>
+
+        <text x="70" y="388" font-family="'JetBrains Mono',monospace" font-size="7.5"
+              fill="rgba(11,21,38,.4)" text-anchor="middle">admin.microsoft.com</text>
+      </g>
+
+      <!-- ═══════════════════════════════════════
+           RIGHT SIDE — SaaS apps
+      ═══════════════════════════════════════ -->
+      <!-- Outer container -->
+      <rect x="808" y="308" width="250" height="210" rx="4"
+            fill="none" stroke="rgba(11,21,38,.08)" stroke-width="1"
+            stroke-dasharray="6 4"/>
+      <text x="933" y="325" font-family="'JetBrains Mono',monospace" font-size="7.5"
+            fill="rgba(11,21,38,.3)" text-anchor="middle" letter-spacing=".1em">
+        APPS & RESOURCES
+      </text>
+
+      <!-- App stores group -->
+      <rect x="818" y="332" width="110" height="80" rx="3"
+            fill="rgba(11,21,38,.03)" stroke="rgba(11,21,38,.07)"
+            stroke-width=".8" stroke-dasharray="4 3"/>
+      <text x="873" y="347" font-family="'JetBrains Mono',monospace" font-size="7"
+            fill="rgba(11,21,38,.4)" text-anchor="middle" letter-spacing=".08em">APP STORES</text>
+      <!-- Store icons (simplified) -->
+      <g transform="translate(838,360)">
+        <rect x="0" y="0" width="14" height="14" rx="3" fill="#007aff"/>
+        <text x="7" y="11" font-size="9" fill="#fff" text-anchor="middle">A</text>
+      </g>
+      <text x="858" y="371" font-family="'JetBrains Mono',monospace" font-size="7"
+            fill="rgba(11,21,38,.5)">App Store</text>
+      <g transform="translate(838,378)">
+        <rect x="0" y="0" width="14" height="14" rx="3" fill="#3ddc84"/>
+        <text x="7" y="11" font-size="9" fill="#fff" text-anchor="middle">▶</text>
+      </g>
+      <text x="858" y="389" font-family="'JetBrains Mono',monospace" font-size="7"
+            fill="rgba(11,21,38,.5)">Google Play</text>
+      <g transform="translate(838,396)">
+        <rect x="0" y="0" width="14" height="14" rx="3" fill="#0078d4"/>
+        <text x="7" y="11" font-size="8" fill="#fff" text-anchor="middle">⊞</text>
+      </g>
+      <text x="858" y="407" font-family="'JetBrains Mono',monospace" font-size="7"
+            fill="rgba(11,21,38,.5)">Microsoft</text>
+
+      <!-- SaaS apps box (the green one from original) -->
+      <rect x="940" y="332" width="108" height="46" rx="3"
+            fill="#065f46" stroke="rgba(16,185,129,.4)" stroke-width="1"
+            filter="url(#i-card-shadow)"/>
+      <text x="994" y="353" font-family="'Inter',sans-serif" font-size="10"
+            font-weight="500" fill="#fff" text-anchor="middle">SaaS apps</text>
+      <text x="994" y="367" font-family="'JetBrains Mono',monospace" font-size="7"
+            fill="rgba(255,255,255,.5)" text-anchor="middle">SSO via Entra</text>
+
+      <!-- Office 365 box -->
+      <rect x="940" y="390" width="108" height="46" rx="3"
+            fill="#c2410c" stroke="rgba(239,68,68,.3)" stroke-width="1"
+            filter="url(#i-card-shadow)"/>
+      <text x="994" y="411" font-family="'Inter',sans-serif" font-size="10"
+            font-weight="500" fill="#fff" text-anchor="middle">Office 365</text>
+      <text x="994" y="425" font-family="'JetBrains Mono',monospace" font-size="7"
+            fill="rgba(255,255,255,.5)" text-anchor="middle">Exchange · Teams</text>
+
+      <!-- Custom / LOB apps -->
+      <rect x="818" y="424" width="228" height="46" rx="3"
+            fill="rgba(255,255,255,.9)" stroke="rgba(11,21,38,.1)"
+            stroke-width=".8" filter="url(#i-card-shadow)"/>
+      <g transform="translate(838,444)">
+        <rect x="0" y="-10" width="20" height="20" rx="3"
+              fill="rgba(11,21,38,.08)" stroke="rgba(11,21,38,.15)" stroke-width=".8"/>
+        <text x="10" y="5" font-size="9" fill="rgba(11,21,38,.5)" text-anchor="middle">⬡</text>
+      </g>
+      <text x="866" y="443" font-family="'JetBrains Mono',monospace" font-size="8"
+            fill="rgba(11,21,38,.6)" font-weight="500">Custom Web apps</text>
+      <text x="866" y="456" font-family="'JetBrains Mono',monospace" font-size="7"
+            fill="rgba(11,21,38,.35)">deployed via Intune</text>
+      <g transform="translate(965,444)">
+        <rect x="0" y="-10" width="20" height="20" rx="3"
+              fill="rgba(11,21,38,.08)" stroke="rgba(11,21,38,.15)" stroke-width=".8"/>
+        <text x="10" y="5" font-size="9" fill="rgba(11,21,38,.5)" text-anchor="middle">⬜</text>
+      </g>
+      <text x="993" y="443" font-family="'JetBrains Mono',monospace" font-size="8"
+            fill="rgba(11,21,38,.6)" font-weight="500">LOB apps</text>
+      <text x="993" y="456" font-family="'JetBrains Mono',monospace" font-size="7"
+            fill="rgba(11,21,38,.35)">line of business</text>
+
+      <!-- ═══════════════════════════════════════
+           BOTTOM CENTER — Mobile device
+      ═══════════════════════════════════════ -->
+      <g id="mobile-device">
+        <!-- Device frame -->
+        <rect x="376" y="380" width="130" height="240" rx="16"
+              fill="#1e2533" stroke="#374151" stroke-width="2"
+              filter="url(#i-card-shadow)"/>
+        <!-- Screen -->
+        <rect x="384" y="398" width="114" height="192" rx="8"
+              fill="#0f1520"/>
+        <!-- Notch -->
+        <rect x="416" y="388" width="50" height="10" rx="5" fill="#374151"/>
+        <!-- Home bar -->
+        <rect x="421" y="607" width="40" height="5" rx="2.5" fill="#374151"/>
+
+        <!-- App icons on screen (4x2 grid — Intune managed apps) -->
+        <!-- Row 1 -->
+        <g id="app-grid">
+          <!-- App 1: Warning (non-compliant) -->
+          <rect x="394" y="408" width="44" height="40" rx="6"
+                fill="#fef3c7" stroke="rgba(245,158,11,.3)" stroke-width=".8"/>
+          <text x="416" y="426" font-size="14" text-anchor="middle">⚠</text>
+          <text x="416" y="440" font-family="'JetBrains Mono',monospace" font-size="6"
+                fill="#92400e" text-anchor="middle">Non-comp.</text>
+
+          <!-- App 2: Locked/protected -->
+          <rect x="446" y="408" width="44" height="40" rx="6"
+                fill="rgba(0,120,212,.15)" stroke="rgba(0,120,212,.3)" stroke-width=".8"/>
+          <text x="468" y="426" font-size="14" text-anchor="middle">🔒</text>
+          <text x="468" y="440" font-family="'JetBrains Mono',monospace" font-size="6"
+                fill="rgba(0,120,212,.8)" text-anchor="middle">Protected</text>
+
+          <!-- App 3: Managed -->
+          <rect x="394" y="456" width="44" height="40" rx="6"
+                fill="rgba(22,163,74,.12)" stroke="rgba(22,163,74,.3)" stroke-width=".8"/>
+          <text x="416" y="474" font-size="14" text-anchor="middle">✓</text>
+          <text x="416" y="488" font-family="'JetBrains Mono',monospace" font-size="6"
+                fill="rgba(22,163,74,.8)" text-anchor="middle">Managed</text>
+
+          <!-- App 4: Encrypted -->
+          <rect x="446" y="456" width="44" height="40" rx="6"
+                fill="rgba(98,100,167,.12)" stroke="rgba(98,100,167,.3)" stroke-width=".8"/>
+          <text x="468" y="474" font-size="14" text-anchor="middle">🔐</text>
+          <text x="468" y="488" font-family="'JetBrains Mono',monospace" font-size="6"
+                fill="rgba(98,100,167,.8)" text-anchor="middle">Encrypted</text>
+
+          <!-- App 5: Blocked -->
+          <rect x="394" y="504" width="44" height="40" rx="6"
+                fill="rgba(220,38,38,.1)" stroke="rgba(220,38,38,.25)" stroke-width=".8"/>
+          <text x="416" y="522" font-size="14" text-anchor="middle">🚫</text>
+          <text x="416" y="536" font-family="'JetBrains Mono',monospace" font-size="6"
+                fill="rgba(220,38,38,.7)" text-anchor="middle">Blocked</text>
+
+          <!-- App 6: Office -->
+          <rect x="446" y="504" width="44" height="40" rx="6"
+                fill="rgba(194,65,12,.12)" stroke="rgba(194,65,12,.3)" stroke-width=".8"/>
+          <text x="468" y="522" font-size="14" text-anchor="middle">📧</text>
+          <text x="468" y="536" font-family="'JetBrains Mono',monospace" font-size="6"
+                fill="rgba(194,65,12,.8)" text-anchor="middle">Outlook</text>
+
+          <!-- App 7: Enrolled -->
+          <rect x="394" y="552" width="44" height="32" rx="6"
+                fill="rgba(0,120,212,.08)" stroke="rgba(0,120,212,.2)" stroke-width=".8"/>
+          <text x="416" y="572" font-family="'JetBrains Mono',monospace" font-size="6.5"
+                fill="rgba(0,120,212,.7)" text-anchor="middle">Enrolled</text>
+
+          <!-- App 8: Teams -->
+          <rect x="446" y="552" width="44" height="32" rx="6"
+                fill="rgba(98,100,167,.1)" stroke="rgba(98,100,167,.25)" stroke-width=".8"/>
+          <text x="468" y="572" font-family="'JetBrains Mono',monospace" font-size="6.5"
+                fill="rgba(98,100,167,.7)" text-anchor="middle">Teams</text>
+        </g>
+
+        <!-- Device label -->
+        <text x="441" y="640" font-family="'JetBrains Mono',monospace" font-size="8"
+              fill="rgba(11,21,38,.5)" text-anchor="middle" letter-spacing=".07em">
+          MANAGED DEVICE
+        </text>
+        <text x="441" y="652" font-family="'JetBrains Mono',monospace" font-size="7"
+              fill="rgba(11,21,38,.3)" text-anchor="middle">
+          iOS · Android · Windows · macOS
+        </text>
+      </g>
+
+      <!-- ═══════════════════════════════════════
+           BOTTOM LEFT — Threat connectors
+      ═══════════════════════════════════════ -->
+      <!-- Telecom connector -->
+      <g id="telecom-connector">
+        <rect x="165" y="400" width="125" height="64" rx="3"
+              fill="rgba(255,255,255,.9)" stroke="rgba(11,21,38,.1)"
+              stroke-width="1" filter="url(#i-card-shadow)"/>
+        <!-- Lightning bolt icon (telecom) -->
+        <g transform="translate(190,422)">
+          <polygon points="8,0 2,14 7,14 4,26 14,10 8,10 12,0"
+                   fill="#16a34a" transform="scale(.7) translate(-8,-13)"/>
+        </g>
+        <text x="232" y="422" font-family="'Inter',sans-serif" font-size="8.5"
+              font-weight="500" fill="rgba(11,21,38,.7)">Telecom expense</text>
+        <text x="232" y="434" font-family="'JetBrains Mono',monospace" font-size="7"
+              fill="rgba(11,21,38,.35)">management</text>
+        <rect x="175" y="444" width="105" height="16" rx="2"
+              fill="rgba(22,163,74,.08)" stroke="rgba(22,163,74,.2)" stroke-width=".7"/>
+        <text x="227" y="456" font-family="'JetBrains Mono',monospace" font-size="6.5"
+              fill="rgba(22,163,74,.7)" text-anchor="middle">Data from telco usage</text>
+      </g>
+
+      <!-- Mobile Threat Defense -->
+      <g id="mtd-connector">
+        <rect x="260" y="400" width="110" height="64" rx="3"
+              fill="rgba(255,255,255,.9)" stroke="rgba(220,38,38,.15)"
+              stroke-width="1" filter="url(#i-card-shadow)"/>
+        <!-- Shield X icon -->
+        <g transform="translate(285,422)">
+          <path d="M0,-10 L10,-5 L10,5 Q10,12 0,15 Q-10,12 -10,5 L-10,-5 Z"
+                fill="none" stroke="#dc2626" stroke-width="1.3"/>
+          <line x1="-4" y1="-2" x2="4" y2="6" stroke="#dc2626" stroke-width="1.5"/>
+          <line x1="4" y1="-2" x2="-4" y2="6" stroke="#dc2626" stroke-width="1.5"/>
+        </g>
+        <text x="310" y="420" font-family="'Inter',sans-serif" font-size="8.5"
+              font-weight="500" fill="rgba(11,21,38,.7)">Mobile Threat</text>
+        <text x="310" y="432" font-family="'Inter',sans-serif" font-size="8.5"
+              font-weight="500" fill="rgba(11,21,38,.7)">Defense</text>
+        <rect x="270" y="444" width="90" height="16" rx="2"
+              fill="rgba(220,38,38,.06)" stroke="rgba(220,38,38,.2)" stroke-width=".7"/>
+        <text x="315" y="456" font-family="'JetBrains Mono',monospace" font-size="6.5"
+              fill="rgba(220,38,38,.7)" text-anchor="middle">threat assessment</text>
+      </g>
+
+      <!-- ═══════════════════════════════════════
+           BOTTOM RIGHT — On-prem network
+      ═══════════════════════════════════════ -->
+      <g id="onprem">
+        <!-- Building/network icon -->
+        <rect x="570" y="490" width="130" height="90" rx="3"
+              fill="rgba(255,255,255,.9)" stroke="rgba(11,21,38,.1)"
+              stroke-width="1" filter="url(#i-card-shadow)"/>
+        <!-- Building shapes -->
+        <rect x="590" y="510" width="25" height="40" rx="1"
+              fill="rgba(0,120,212,.2)" stroke="rgba(0,120,212,.3)" stroke-width=".8"/>
+        <rect x="620" y="520" width="20" height="30" rx="1"
+              fill="rgba(0,120,212,.15)" stroke="rgba(0,120,212,.25)" stroke-width=".8"/>
+        <rect x="645" y="515" width="18" height="35" rx="1"
+              fill="rgba(0,120,212,.2)" stroke="rgba(0,120,212,.3)" stroke-width=".8"/>
+        <!-- Network lines -->
+        <line x1="590" y1="555" x2="665" y2="555"
+              stroke="rgba(0,120,212,.3)" stroke-width="1"/>
+        <line x1="602" y1="550" x2="602" y2="560"
+              stroke="rgba(0,120,212,.3)" stroke-width=".8"/>
+        <line x1="630" y1="550" x2="630" y2="560"
+              stroke="rgba(0,120,212,.3)" stroke-width=".8"/>
+        <line x1="655" y1="550" x2="655" y2="560"
+              stroke="rgba(0,120,212,.3)" stroke-width=".8"/>
+        <text x="640" y="573" font-family="'Inter',sans-serif" font-size="8.5"
+              font-weight="500" fill="rgba(11,21,38,.6)" text-anchor="middle">On-premises</text>
+        <text x="640" y="584" font-family="'JetBrains Mono',monospace" font-size="7"
+              fill="rgba(11,21,38,.4)" text-anchor="middle">network</text>
+        <text x="640" y="570" font-family="'JetBrains Mono',monospace" font-size="6.5"
+              fill="rgba(11,21,38,.3)" text-anchor="middle">NACS · VPN · connector</text>
+      </g>
+
+      <!-- ═══════════════════════════════════════
+           ALL WIRES
+      ═══════════════════════════════════════ -->
+      <g id="wires" stroke-linecap="round">
+
+        <!-- Graph API ↔ Intune (bidirectional) -->
+        <path d="M122,210 C180,210 200,200 210,200"
+              fill="none" stroke="rgba(100,160,220,.5)" stroke-width="1"
+              marker-end="url(#m-blue)" marker-start="url(#m-both-l)"
+              stroke-dasharray="none"/>
+        <text x="162" y="206" font-family="'JetBrains Mono',monospace"
+              font-size="6.5" fill="rgba(100,160,220,.7)" text-anchor="middle">
+          config &amp; reporting
+        </text>
+
+        <!-- Web console → Graph API -->
+        <path d="M70,296 L70,236"
+              fill="none" stroke="rgba(11,21,38,.2)" stroke-width="1"
+              marker-end="url(#m-dim)"/>
+
+        <!-- Intune ↔ Entra: Group targeting -->
+        <path d="M670,178 C710,178 740,178 812,178"
+              fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.2"
+              marker-end="url(#m-white)" marker-start="url(#m-both-l)"/>
+
+        <!-- Intune → Entra: Device compliance results -->
+        <path d="M792,232 C800,232 808,232 812,232"
+              fill="none" stroke="rgba(255,255,255,.4)" stroke-width="1"
+              marker-end="url(#m-white)"/>
+
+        <!-- Entra → Intune: Read compliance -->
+        <path d="M812,248 C805,248 798,248 792,248"
+              fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1"
+              stroke-dasharray="4 3" marker-end="url(#m-white)"/>
+
+        <!-- Mobile device → Intune configure -->
+        <path d="M441,380 C441,340 350,290 310,270"
+              fill="none" stroke="rgba(26,86,255,.3)" stroke-width="1.2"
+              marker-end="url(#m-blue)"/>
+
+        <!-- Mobile device → Intune protect -->
+        <path d="M455,380 C455,330 415,280 415,285"
+              fill="none" stroke="rgba(26,86,255,.3)" stroke-width="1.2"
+              marker-end="url(#m-blue)"/>
+
+        <!-- Mobile device → Intune apps -->
+        <path d="M470,380 C480,340 530,290 535,285"
+              fill="none" stroke="rgba(26,86,255,.3)" stroke-width="1.2"
+              marker-end="url(#m-blue)"/>
+
+        <!-- Telecom → Mobile device -->
+        <path d="M252,432 C310,432 350,432 376,450"
+              fill="none" stroke="rgba(22,163,74,.4)" stroke-width="1"
+              marker-end="url(#m-blue)"/>
+
+        <!-- MTD → Mobile device -->
+        <path d="M370,432 L376,460"
+              fill="none" stroke="rgba(220,38,38,.4)" stroke-width="1"
+              marker-end="url(#m-blue)"/>
+
+        <!-- Intune → compliance data for MTD -->
+        <path d="M415,285 C360,330 330,380 320,400"
+              fill="none" stroke="rgba(26,86,255,.2)" stroke-width=".9"
+              stroke-dasharray="4 3" marker-end="url(#m-blue)"/>
+        <text x="355" y="346" font-family="'JetBrains Mono',monospace"
+              font-size="6" fill="rgba(11,21,38,.3)" text-anchor="middle"
+              transform="rotate(-50 355 346)">compliance data</text>
+
+        <!-- On-prem → Mobile (Network Access Control) -->
+        <path d="M570,530 C530,520 510,500 506,480"
+              fill="none" stroke="rgba(0,120,212,.3)" stroke-width="1"
+              stroke-dasharray="5 3" marker-end="url(#m-blue)"/>
+
+        <!-- Entra → SaaS apps (authentication) -->
+        <path d="M1032,220 C1048,220 1054,380 1048,380"
+              fill="none" stroke="rgba(0,120,212,.4)" stroke-width="1.2"
+              marker-end="url(#m-blue)"/>
+        <text x="1058" y="302" font-family="'JetBrains Mono',monospace"
+              font-size="6.5" fill="rgba(0,120,212,.5)" text-anchor="middle"
+              transform="rotate(90 1058 302)">auth &amp; SSO</text>
+
+        <!-- Mobile → On-prem (VPN / NACS) -->
+        <path d="M506,530 C530,540 550,540 570,540"
+              fill="none" stroke="rgba(11,21,38,.15)" stroke-width="1"
+              stroke-dasharray="4 3" marker-end="url(#m-dim)"/>
+
+        <!-- Intune ↔ App stores -->
+        <path d="M600,220 C700,320 780,360 818,380"
+              fill="none" stroke="rgba(11,21,38,.12)" stroke-width=".9"
+              stroke-dasharray="5 3" marker-end="url(#m-dim)"/>
+        <text x="708" y="312" font-family="'JetBrains Mono',monospace"
+              font-size="6.5" fill="rgba(11,21,38,.25)" text-anchor="middle">
+          app deploy
+        </text>
+
+        <!-- Entra → Custom/LOB apps -->
+        <path d="M932,290 C932,360 932,400 992,424"
+              fill="none" stroke="rgba(0,120,212,.25)" stroke-width=".9"
+              stroke-dasharray="4 3" marker-end="url(#m-blue)"/>
+
+      </g>
+
+      <!-- ═══════════════════════════════════════
+           ANNOTATION LABELS (key callouts)
+      ═══════════════════════════════════════ -->
+      <!-- "This is the identity backbone" annotation on Entra box -->
+      <g id="annotations">
+        <!-- Entra highlighted label -->
+        <rect x="820" y="72" width="224" height="18" rx="2"
+              fill="rgba(245,158,11,.1)" stroke="rgba(245,158,11,.3)"
+              stroke-width=".8"/>
+        <text x="932" y="85" font-family="'JetBrains Mono',monospace" font-size="7.5"
+              fill="rgba(245,158,11,.8)" text-anchor="middle" letter-spacing=".1em">
+          HIGHLIGHTED: IDENTITY BACKBONE
+        </text>
+
+        <!-- Data flow labels -->
+        <rect x="672" y="152" width="136" height="14" rx="2"
+              fill="rgba(255,255,255,.15)"/>
+        <text x="740" y="163" font-family="'JetBrains Mono',monospace" font-size="6.5"
+              fill="rgba(255,255,255,.6)" text-anchor="middle" letter-spacing=".08em">
+          ← Group targeting →
+        </text>
+
+        <rect x="672" y="203" width="136" height="14" rx="2"
+              fill="rgba(255,255,255,.1)"/>
+        <text x="740" y="214" font-family="'JetBrains Mono',monospace" font-size="6.5"
+              fill="rgba(255,255,255,.5)" text-anchor="middle">
+          Device compliance results →
+        </text>
+
+        <rect x="672" y="222" width="136" height="14" rx="2"
+              fill="rgba(255,255,255,.07)"/>
+        <text x="740" y="233" font-family="'JetBrains Mono',monospace" font-size="6.5"
+              fill="rgba(255,255,255,.4)" text-anchor="middle">
+          ← Read compliance info
+        </text>
+      </g>
+
+      <!-- ═══════════════════════════════════════
+           ANIMATED PARTICLES (JS-driven)
+      ═══════════════════════════════════════ -->
+      <g id="particles"></g>
+
+      <!-- Revision block -->
+      <text x="1072" y="714" font-family="'JetBrains Mono',monospace"
+            font-size="6.5" fill="rgba(11,21,38,.18)" text-anchor="end"
+            letter-spacing=".06em">
+        IOPARTNER · INTUNE + ENTRA ID REF. ARCH. · SOURCE: MICROSOFT · 2026
+      </text>
+    </svg>
+  </div>
+
+  <!-- Legend -->
+  <div class="intune-legend">
+    <div class="legend-item">
+      <svg width="24" height="10"><line x1="2" y1="5" x2="22" y2="5"
+        stroke="#1a56ff" stroke-width="1.8" marker-end="url(#m-blue2)"/></svg>
+      <span>Auth / enrollment flow</span>
+    </div>
+    <div class="legend-item">
+      <svg width="24" height="10">
+        <line x1="2" y1="5" x2="22" y2="5" stroke="rgba(220,38,38,.5)"
+              stroke-width="1.5" stroke-dasharray="4 3"/>
+      </svg>
+      <span>Threat / risk signal</span>
+    </div>
+    <div class="legend-item">
+      <svg width="24" height="10">
+        <line x1="2" y1="5" x2="22" y2="5" stroke="rgba(11,21,38,.2)"
+              stroke-width="1.2" stroke-dasharray="4 3"/>
+      </svg>
+      <span>Optional / conditional path</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#f59e0b"></div>
+      <span>Identity backbone (Entra)</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#dc2626"></div>
+      <span>Security / threat</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#16a34a"></div>
+      <span>Compliant / managed</span>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════
+     STYLES
+══════════════════════════════════════ -->
+<style>
+.intune-section{
+  width:100%;max-width:1140px;
+  padding:60px 0 40px;
+  display:flex;flex-direction:column;align-items:center;
+  font-family:'Inter',sans-serif;
+}
+.intune-eyebrow{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:#1a56ff;margin-bottom:8px;text-align:center;font-weight:500;
+}
+.intune-title{
+  font-size:clamp(20px,3vw,30px);font-weight:600;
+  letter-spacing:-.025em;color:#0b1526;text-align:center;
+  margin-bottom:8px;line-height:1.2;
+}
+.intune-sub{
+  font-size:13px;color:#5a6a82;text-align:center;
+  max-width:500px;line-height:1.7;margin-bottom:28px;
+}
+.intune-frame{
+  width:100%;
+  border:1px solid rgba(11,21,38,.08);
+  border-radius:3px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(11,21,38,.04),0 8px 40px rgba(11,21,38,.08);
+}
+.intune-topbar{
+  background:#0b1526;height:32px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 14px;
+}
+.intune-topbar-left{display:flex;gap:6px;align-items:center}
+.intune-topbar-dot{
+  width:10px;height:10px;border-radius:50%;display:inline-block;
+}
+.intune-topbar-title{
+  font-family:'JetBrains Mono',monospace;font-size:8px;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(255,255,255,.4);
+}
+.intune-topbar-rev{
+  font-family:'JetBrains Mono',monospace;font-size:8px;
+  letter-spacing:.1em;color:rgba(255,255,255,.2);
+}
+#intune-svg{width:100%;height:auto;display:block;background:#f8f9fb}
+
+/* Legend */
+.intune-legend{
+  display:flex;flex-wrap:wrap;gap:20px;justify-content:center;
+  margin-top:16px;
+}
+.legend-item{
+  display:flex;align-items:center;gap:7px;
+  font-family:'JetBrains Mono',monospace;font-size:9.5px;
+  color:rgba(11,21,38,.45);letter-spacing:.04em;
+}
+.legend-dot{
+  width:8px;height:8px;border-radius:50%;flex-shrink:0;
+}
+</style>
+
+<!-- ══════════════════════════════════════
+     PARTICLES (signal flow animation)
+══════════════════════════════════════ -->
+<script>
+(function() {
+  const ns = 'http://www.w3.org/2000/svg';
+  const partG = document.getElementById('particles');
+  if (!partG) return;
+
+  // Key paths to animate signal flow along
+  // Each path: from point → to point with control points
+  const FLOWS = [
+    // Device → Intune (enrollment)
+    { pts:[441,380, 441,340, 350,290, 310,270], col:'rgba(26,86,255,.8)', speed:.007 },
+    { pts:[455,380, 455,330, 415,295, 415,285], col:'rgba(26,86,255,.7)', speed:.009 },
+    // Intune ↔ Entra (group targeting)
+    { pts:[670,178, 710,178, 760,178, 812,178], col:'rgba(255,255,255,.7)', speed:.008 },
+    // Entra → Auth → SaaS
+    { pts:[1032,220, 1048,220, 1052,355, 1048,380], col:'rgba(0,120,212,.8)', speed:.006 },
+    // MTD signal
+    { pts:[320,432, 350,440, 370,450, 376,460], col:'rgba(220,38,38,.8)', speed:.011 },
+    // Compliance results
+    { pts:[792,232, 800,232, 806,232, 812,232], col:'rgba(255,255,255,.6)', speed:.012 },
+    // Telecom → device
+    { pts:[292,432, 330,432, 355,432, 376,450], col:'rgba(22,163,74,.8)', speed:.007 },
+  ];
+
+  class Pulse {
+    constructor(flow) {
+      this.flow = flow;
+      this.t = Math.random();
+      this.speed = flow.speed + (Math.random() - .5) * .002;
+      this.el = document.createElementNS(ns, 'circle');
+      this.el.setAttribute('r', '2.5');
+      this.el.setAttribute('fill', flow.col);
+      this.el.style.filter = 'url(#i-glow-sm)';
+      partG.appendChild(this.el);
+      this.dead = false;
+    }
+    tick() {
+      this.t += this.speed;
+      if (this.t > 1) { this.t = 0; }
+      const t = this.t, mt = 1 - t;
+      const [x0,y0,x1,y1,x2,y2,x3,y3] = this.flow.pts;
+      const x = mt**3*x0 + 3*mt**2*t*x1 + 3*mt*t**2*x2 + t**3*x3;
+      const y = mt**3*y0 + 3*mt**2*t*y1 + 3*mt*t**2*y2 + t**3*y3;
+      this.el.setAttribute('cx', x.toFixed(1));
+      this.el.setAttribute('cy', y.toFixed(1));
+    }
+  }
+
+  const pulses = FLOWS.map(f => new Pulse(f));
+  // Add a second pulse on each flow with offset
+  FLOWS.forEach(f => pulses.push(new Pulse(f)));
+
+  function loop() {
+    pulses.forEach(p => p.tick());
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+</script>

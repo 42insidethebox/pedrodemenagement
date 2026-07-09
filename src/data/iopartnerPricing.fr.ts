@@ -105,7 +105,7 @@ export const IOPARTNER_FR_PRICE_LABELS = {
   infraStarter: '390 CHF',
   infraPrivate: 'dès 990 CHF',
   infraPlatform: 'dès 2 490 CHF',
-  privateCodebase: '2 000 CHF',
+  privateCodebase: '2 500 CHF',
   privateCodebaseHandoff: '2 200 CHF',
   backendLight: '4 500 CHF',
   heavierSystems: '8 000+ CHF',
@@ -401,16 +401,17 @@ export const IOPARTNER_FR_CUSTOM_SYSTEMS_TRACKS: CustomSystemsTrack[] = [
   {
     key: 'private-2000',
     amountLabel: IOPARTNER_FR_PRICE_LABELS.privateCodebase,
-    title: 'Codebase privée',
-    summary: 'Quand vous devez sortir de l’infrastructure mutualisée et garder votre propre base de projet.',
+    title: 'Application ou portail dédié',
+    summary:
+      'Quand le besoin demande une base projet séparée, des rôles, des écrans spécifiques ou un parcours métier.',
     href: '/custom-systems?track=private-2000#diagnostic',
   },
   {
     key: 'private-2200',
     amountLabel: IOPARTNER_FR_PRICE_LABELS.privateCodebaseHandoff,
-    title: 'Codebase privée + transmission',
-    summary: 'Même base privée, avec passation structurée et explication claire de ce qui est livré.',
-    href: '/custom-systems?track=private-2200#diagnostic',
+    title: 'Site administrable + Builder.io',
+    summary: 'Même logique de présence web, avec Builder.io configuré et passation visuelle.',
+    href: '/contact?type=editable-site',
   },
   {
     key: 'backend-4500',

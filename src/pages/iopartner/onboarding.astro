@@ -348,6 +348,7 @@ const t = T[locale];
 const planPrice =
   PLAN_PRICE_LABELS[plan as keyof typeof PLAN_PRICE_LABELS] ?? PLAN_PRICE_LABELS[TONSITEWEB_DEFAULT_PLAN];
 const submitLabel = `${t.submitPrefix} — ${planPrice[locale]} →`;
+const formStartedAt = Date.now();
 ---
 
 <Layout metadata={{ title: t.title }} brandKey="iopartner">
@@ -377,6 +378,11 @@ const submitLabel = `${t.submitPrefix} — ${planPrice[locale]} →`;
         <input type="hidden" name="plan" value={plan} />
         <input type="hidden" name="template" value={selectedTemplate} />
         <input type="hidden" name="locale" value={locale} />
+        <input type="hidden" name="form_started_at" value={formStartedAt} />
+        <label style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+          Website
+          <input name="website_url" type="text" tabindex="-1" autocomplete="off" />
+        </label>
 
         <!-- Customer contact -->
         <div class="bg-blue-50 border border-blue-200 rounded-2xl p-6">
@@ -744,157 +750,3 @@ const submitLabel = `${t.submitPrefix} — ${planPrice[locale]} →`;
     </div>
   </main>
 </Layout>
-
-<script
-  is:inline
-  define:vars={{
-    _sbUrl: import.meta.env.SUPABASE_URL,
-    _sbKey: import.meta.env.SUPABASE_ANON_KEY,
-    _plan: plan,
-    _locale: locale,
-    _template: selectedTemplate,
-  }}
->
-  (function () {
-    const SB_URL = _sbUrl;
-    const SB_KEY = _sbKey;
-    const PLAN = _plan;
-    const LOCALE = _locale;
-    const TEMPLATE = _template;
-
-    const form = document.querySelector('form');
-    const btn = document.getElementById('onboarding-submit');
-    if (!form || !SB_URL || !SB_KEY) return;
-
-    const originalText = btn ? btn.textContent : '';
-
-    async function uploadFile(file, path) {
-      const res = await fetch(`${SB_URL}/storage/v1/object/onboarding-assets/${path}`, {
-        method: 'POST',
-        headers: {
-          apikey: SB_KEY,
-          Authorization: `Bearer ${SB_KEY}`,
-          'Content-Type': file.type || 'application/octet-stream',
-          'x-upsert': 'true',
-        },
-        body: file,
-      });
-      if (!res.ok) return null;
-      return `${SB_URL}/storage/v1/object/public/onboarding-assets/${path}`;
-    }
-
-    form.addEventListener('submit', async function (e) {
-      e.preventDefault();
-      if (btn) {
-        btn.disabled = true;
-        btn.textContent = '⏳ Envoi en cours…';
-      }
-
-      try {
-        const fd = new FormData(form);
-        const ts = Date.now();
-        const str = (k) => String(fd.get(k) || '').trim();
-
-        // Upload logo
-        let logoUrl = null;
-        const logoFile = fd.get('logo');
-        if (logoFile instanceof File && logoFile.size > 0) {
-          const ext = logoFile.name.split('.').pop() || 'png';
-          logoUrl = await uploadFile(logoFile, `${ts}/logo.${ext}`);
-        }
-
-        // Upload photos
-        const photoUrls = [];
-        for (const photo of Array.from(fd.getAll('photos')).slice(0, 3)) {
-          if (!(photo instanceof File) || photo.size === 0) continue;
-          const ext = photo.name.split('.').pop() || 'jpg';
-          const url = await uploadFile(
-            photo,
-            `${ts}/photo_${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`
-          );
-          if (url) photoUrls.push(url);
-        }
-
-        // Collect services
-        const services = [];
-        for (let i = 1; i <= 4; i++) {
-          const name = str(`service_${i}_name`);
-          if (!name) continue;
-          services.push({ name, desc: str(`service_${i}_desc`), price: str(`service_${i}_price`) });
-        }
-
-        const businessName = str('business_name');
-        const description = str('description');
-
-        if (!businessName || !description) {
-          window.location.href = `/onboarding?error=missing&plan=${encodeURIComponent(PLAN)}`;
-          return;
-        }
-
-        const payload = {
-          tenant_id: 'iopartner',
-          session_id: null,
-          business_name: businessName,
-          tagline: str('tagline') || null,
-          sector: str('sector') || null,
-          description,
-          services,
-          address: str('address') || null,
-          phone: str('phone') || null,
-          email: str('site_email') || null,
-          hours: str('hours') || null,
-          color_primary: str('color_primary_hex') || str('color_primary') || null,
-          color_secondary: str('color_secondary_hex') || str('color_secondary') || null,
-          style: str('style') || null,
-          logo_url: logoUrl,
-          photo_urls: photoUrls.length > 0 ? photoUrls : null,
-          instagram: str('instagram') || null,
-          facebook: str('facebook') || null,
-          domain_desired: str('domain_desired') || null,
-          domain_owned: fd.get('domain_owned') === 'yes',
-          references: str('references') || null,
-          notes: str('notes') || null,
-        };
-
-        // Insert directly to Supabase
-        let submissionId = null;
-        const insertRes = await fetch(`${SB_URL}/rest/v1/onboarding_submissions`, {
-          method: 'POST',
-          headers: {
-            apikey: SB_KEY,
-            Authorization: `Bearer ${SB_KEY}`,
-            'Content-Type': 'application/json',
-            Prefer: 'return=representation',
-          },
-          body: JSON.stringify(payload),
-        });
-        if (insertRes.ok) {
-          const rows = await insertRes.json();
-          submissionId = (Array.isArray(rows) ? rows[0] : rows)?.id ?? null;
-        }
-
-        // Redirect to Stripe
-        const customerName = str('customer_name');
-        const customerEmail = str('customer_email');
-        const params = new URLSearchParams({
-          plan: PLAN,
-          template: TEMPLATE,
-          name: customerName || businessName,
-          email: customerEmail,
-          phone: str('phone'),
-          company: businessName,
-          locale: LOCALE,
-        });
-        if (submissionId) params.set('submission_id', submissionId);
-        window.location.href = `/api/payment/redirect?${params.toString()}`;
-      } catch (err) {
-        console.error('[onboarding]', err);
-        if (btn) {
-          btn.disabled = false;
-          btn.textContent = originalText;
-        }
-        window.location.href = `/onboarding?error=server&plan=${encodeURIComponent(PLAN)}`;
-      }
-    });
-  })();
-</script>

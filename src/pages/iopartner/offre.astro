@@ -8,7 +8,8 @@ export const prerender = false;
 const error = Astro.url.searchParams.get('error');
 const locale = detectRequestLocale(Astro.request, Astro.url);
 const localePrefix = ['en', 'de', 'it'].includes(locale) ? `/${locale}` : '';
-const checkoutUrl = `${localePrefix}/api/checkout?plan=essential999&template=classic-clean&tenant=iopartner`;
+const contextUrl = `${localePrefix}/contact`;
+const formStartedAt = Date.now();
 
 const COPY = {
   fr: {
@@ -21,8 +22,8 @@ const COPY = {
     heroTitle: 'Un site vitrine professionnel, sans transformer un besoin simple en gros chantier.',
     heroBody:
       'Le format standard convient quand l’objectif est clair: présenter l’activité, rassurer, générer des contacts et mettre en ligne rapidement une base maintenable, sans complexité éditoriale lourde.',
-    start: 'Démarrer le projet — 999 CHF',
-    contextFirst: 'Envoyer le contexte d’abord',
+    start: 'Qualifier le besoin',
+    contextFirst: 'Voir les tarifs',
     strip: [
       ['999 CHF', 'Paiement unique'],
       ['3-5 jours', 'Délai typique après contenus'],
@@ -68,8 +69,8 @@ const COPY = {
     heroTitle: 'A professional showcase site, without turning a simple need into a large project.',
     heroBody:
       'This standard format fits when the objective is clear: present the business, reassure prospects, generate contacts, and launch a maintainable base quickly, without heavy editorial complexity.',
-    start: 'Start the project — CHF 999',
-    contextFirst: 'Send the context first',
+    start: 'Qualify the need',
+    contextFirst: 'See pricing',
     strip: [
       ['CHF 999', 'One-time payment'],
       ['3-5 days', 'Typical lead time after content'],
@@ -115,8 +116,8 @@ const COPY = {
     heroTitle: 'Eine professionelle Showcase-Website, ohne aus einem einfachen Bedarf ein Grossprojekt zu machen.',
     heroBody:
       'Dieses Standardformat passt, wenn das Ziel klar ist: das Unternehmen präsentieren, Vertrauen schaffen, Kontakte generieren und schnell eine wartbare Basis online bringen, ohne schwere redaktionelle Komplexität.',
-    start: 'Projekt starten — CHF 999',
-    contextFirst: 'Zuerst den Kontext senden',
+    start: 'Bedarf qualifizieren',
+    contextFirst: 'Preise ansehen',
     strip: [
       ['CHF 999', 'Einmalige Zahlung'],
       ['3-5 Tage', 'Typischer Zeitraum nach Inhalt'],
@@ -162,8 +163,8 @@ const COPY = {
     heroTitle: 'Un sito vetrina professionale, senza trasformare un bisogno semplice in un grande progetto.',
     heroBody:
       'Questo formato standard funziona quando l’obiettivo è chiaro: presentare l’attività, rassicurare, generare contatti e mettere online rapidamente una base mantenibile, senza complessità editoriale pesante.',
-    start: 'Avvia il progetto — CHF 999',
-    contextFirst: 'Invia prima il contesto',
+    start: 'Qualificare il bisogno',
+    contextFirst: 'Vedere i prezzi',
     strip: [
       ['CHF 999', 'Pagamento unico'],
       ['3-5 giorni', 'Tempo tipico dopo i contenuti'],
@@ -204,9 +205,7 @@ const COPY = {
 const copy = COPY[locale as keyof typeof COPY] ?? COPY.fr;
 ---
 
-<Layout
-  metadata={copy.metadata}
->
+<Layout metadata={copy.metadata}>
   <main class="io-offer">
     <section class="io-shell io-hero">
       <div>
@@ -214,20 +213,22 @@ const copy = COPY[locale as keyof typeof COPY] ?? COPY.fr;
         <h1>{copy.heroTitle}</h1>
         <p>{copy.heroBody}</p>
         <div class="io-actions">
-          <a class="io-btn io-btn-primary" href={checkoutUrl}>{copy.start}</a>
-          <a class="io-btn io-btn-secondary" href="#form">{copy.contextFirst}</a>
+          <a class="io-btn io-btn-primary" href="#form">{copy.start}</a>
+          <a class="io-btn io-btn-secondary" href={`${localePrefix}/pricing`}>{copy.contextFirst}</a>
         </div>
       </div>
       <IoBlueprintVisual variant="standard" />
     </section>
 
     <section class="io-shell io-strip">
-      {copy.strip.map(([strong, text]) => (
-        <div>
-          <strong>{strong}</strong>
-          <span>{text}</span>
-        </div>
-      ))}
+      {
+        copy.strip.map(([strong, text]) => (
+          <div>
+            <strong>{strong}</strong>
+            <span>{text}</span>
+          </div>
+        ))
+      }
     </section>
 
     <section class="io-shell io-scope">
@@ -243,7 +244,7 @@ const copy = COPY[locale as keyof typeof COPY] ?? COPY.fr;
         <p class="io-kicker">{copy.notEnoughKicker}</p>
         <h2>{copy.notEnoughTitle}</h2>
         <p>{copy.notEnoughBody}</p>
-        <a class="io-btn io-btn-light" href={`${localePrefix}/contact#form`}>{copy.scopeNeed}</a>
+        <a class="io-btn io-btn-light" href={contextUrl}>{copy.scopeNeed}</a>
       </article>
     </section>
 
@@ -254,13 +255,24 @@ const copy = COPY[locale as keyof typeof COPY] ?? COPY.fr;
         <p>{copy.beforeBody}</p>
       </div>
 
-      <form method="POST" action="/api/iopartner/lead-offre" class="io-form">
+      <form method="POST" action="/api/contact" class="io-form">
         {error && <p class="io-error">{copy.form.error}</p>}
+        <input type="hidden" name="tenant" value="iopartner" />
+        <input type="hidden" name="source" value="standard-deployment-offer" />
+        <input type="hidden" name="locale" value={locale} />
+        <input type="hidden" name="message" value="Demande de qualification pour une présence web cadrée" />
+        <input type="hidden" name="need_type" value="standard_website" />
+        <input type="hidden" name="budget" value="1000_1500" />
+        <input type="hidden" name="form_started_at" value={formStartedAt} />
         <input type="hidden" name="utm_source" value={Astro.url.searchParams.get('utm_source') || ''} />
         <input type="hidden" name="utm_campaign" value={Astro.url.searchParams.get('utm_campaign') || ''} />
+        <label class="io-honeypot" aria-hidden="true">
+          Website
+          <input name="website_url" type="text" tabindex="-1" autocomplete="off" />
+        </label>
         <label>
           {copy.form.name}
-          <input name="prenom" type="text" required />
+          <input name="name" type="text" required />
         </label>
         <label>
           {copy.form.phone}
@@ -272,7 +284,7 @@ const copy = COPY[locale as keyof typeof COPY] ?? COPY.fr;
         </label>
         <label>
           {copy.form.sector}
-          <input name="secteur" type="text" placeholder={copy.form.sectorPh} />
+          <input name="company" type="text" placeholder={copy.form.sectorPh} />
         </label>
         <button type="submit" class="io-btn io-btn-primary">{copy.form.submit}</button>
       </form>
@@ -462,6 +474,14 @@ const copy = COPY[locale as keyof typeof COPY] ?? COPY.fr;
       gap: 0.45rem;
       color: #334155;
       font-weight: 720;
+    }
+
+    .io-honeypot {
+      position: absolute;
+      left: -10000px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
     }
 
     .io-form input {

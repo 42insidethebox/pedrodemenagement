@@ -34,25 +34,72 @@ const COPY = {
     },
     offers: [
       {
+        id: 'offre-999',
         price: '999 CHF',
         title: 'Pack Essentiel',
-        body: 'Présence web professionnelle, périmètre court, architecture légère et maintenance simple.',
+        body: 'Site vitrine 5 sections sur l’architecture multi-tenant IOPartner, sans éditeur visuel livré.',
+        items: [
+          'Téléphone, WhatsApp et liens sociaux si disponibles',
+          'Contenus fournis intégrés',
+          'Contact simple',
+          'Interventions IOpartner facturées séparément',
+        ],
         href: '/choose-template?plan=essential999',
         cta: 'Voir les projets 999 CHF',
       },
       {
+        id: 'offre-1500',
         price: '1 500 CHF',
         title: 'Pack Public',
-        body: 'Même logique cadrée avec plus de marge fonctionnelle, tant que le site ne devient pas un outil éditorial lourd.',
+        body: 'Même base multi-tenant, avec Calendly et une courte passation pour exploiter le site sans le transformer en CMS.',
+        items: [
+          '5 sections + téléphone, WhatsApp et liens sociaux',
+          'Intégration Calendly',
+          'Petit handoff de prise en main',
+          'Modifications via IOpartner, ou à vos risques si vous éditez seul',
+        ],
         href: '/choose-template?plan=essential1500',
         cta: 'Voir les projets 1 500 CHF',
       },
       {
+        id: 'offre-2200',
         price: '2 200 CHF+',
-        title: 'Build privé',
-        body: 'Déploiement dédié et base privée quand le besoin devient spécifique ou doit sortir du standard.',
-        href: '/custom-systems?track=private-2200#diagnostic',
-        cta: 'Cadrer le privé',
+        title: 'Site administrable',
+        body: 'Même périmètre de présence, avec handoff Builder.io pour modifier visuellement certaines zones à vos risques.',
+        items: [
+          '5 sections + socials + Calendly',
+          'Builder.io configuré quand pertinent',
+          'Handoff visuel',
+          'Interventions et corrections facturées séparément',
+        ],
+        href: '/contact?type=editable-site',
+        cta: 'Cadrer l’administrable',
+      },
+    ],
+    levelGuideHead: {
+      kicker: 'Choix rapide',
+      title: '999, 1 500, 2 200 ou 2 500+ ne vendent pas la même chose.',
+    },
+    levelGuide: [
+      {
+        price: '999 CHF',
+        title: 'Présence stable',
+        body: '5 sections, téléphone, WhatsApp, socials et contact simple sur la base multi-tenant IOPartner.',
+      },
+      {
+        price: '1 500 CHF',
+        title: 'Présence + rendez-vous',
+        body: 'Même base, avec Calendly et courte passation. Pas de CMS ni éditeur visuel livré.',
+      },
+      {
+        price: '2 200 CHF+',
+        title: 'Administrable',
+        body: 'Même périmètre, avec Builder.io et handoff visuel pour modifier certaines zones à vos risques.',
+      },
+      {
+        price: '2 500 CHF+',
+        title: 'Custom',
+        body: 'Quand le besoin devient application, portail, workflow, backend, rôles ou codebase dédiée.',
       },
     ],
     thresholdsHead: {
@@ -82,6 +129,37 @@ const COPY = {
       ['Premium sobre', 'Typographie, espaces, offre plus éditoriale.', 'Choisir cette base'],
       ['Portfolio visuel', 'Galerie, prestations et parcours de contact simple.', 'Choisir cette base'],
     ],
+    decision: {
+      kicker: 'Avant de choisir',
+      title: 'Un exemple ne doit pas forcer le mauvais niveau.',
+      body: 'Choisissez une base visuelle pour comprendre le rendu, puis vérifiez si le bon niveau est 999 CHF, 1 500 CHF, 2 200 CHF+, un créneau de cadrage ou simplement le formulaire gratuit.',
+      routes: [
+        {
+          title: 'Standard 999 / 1 500',
+          body: 'Comparer les bases livrables sans transformer le site en projet custom.',
+          href: '/choose-template?plan=essential999',
+          cta: 'Comparer les bases',
+        },
+        {
+          title: 'Niveau 2 ou privé',
+          body: 'Quand le site doit devenir éditable, dédié ou plus spécifique.',
+          href: '/contact?type=editable-site',
+          cta: 'Voir le seuil 2 200+',
+        },
+        {
+          title: 'Vérifier avant budget',
+          body: '15 minutes à 60 CHF si la décision peut éviter 3, 5 ou 50k mal engagés.',
+          href: '/cadrage-technique',
+          cta: 'Cadrer vite',
+        },
+        {
+          title: 'Formulaire gratuit',
+          body: 'Envoyer le contexte gratuitement via le formulaire de qualification.',
+          href: '/contact?type=web-presence',
+          cta: 'Formulaire gratuit',
+        },
+      ],
+    },
     codebase: {
       kicker: 'Public ou privé',
       title: 'Le choix important n’est pas seulement visuel.',
@@ -126,25 +204,72 @@ const COPY = {
     },
     offers: [
       {
+        id: 'offre-999',
         price: 'CHF 999',
         title: 'Essential Pack',
-        body: 'Professional web presence, short perimeter, light architecture, and simple maintenance.',
+        body: 'Five-section brochure site on IOPartner’s multi-tenant architecture, with no visual editor delivered.',
+        items: [
+          'Phone, WhatsApp, and social links when available',
+          'Provided content integrated',
+          'Simple contact path',
+          'IOPartner interventions billed separately',
+        ],
         href: '/choose-template?plan=essential999',
         cta: 'View CHF 999 projects',
       },
       {
+        id: 'offre-1500',
         price: 'CHF 1,500',
         title: 'Public Pack',
-        body: 'Same scoped logic with more functional room, as long as the site does not become a heavy editorial tool.',
+        body: 'Same multi-tenant base, with Calendly and a short handoff to operate the site without turning it into a CMS.',
+        items: [
+          '5 sections + phone, WhatsApp, and social links',
+          'Calendly integration',
+          'Short operational handoff',
+          'Changes via IOPartner, or at your own risk if you edit alone',
+        ],
         href: '/choose-template?plan=essential1500',
         cta: 'View CHF 1,500 projects',
       },
       {
+        id: 'offre-2200',
         price: 'CHF 2,200+',
-        title: 'Private build',
-        body: 'Dedicated deployment and private base when the need becomes specific or must leave the standard path.',
-        href: '/custom-systems?track=private-2200#diagnostic',
-        cta: 'Scope private',
+        title: 'Editable site',
+        body: 'Same web-presence perimeter, with Builder.io handoff to edit selected areas visually at your own risk.',
+        items: [
+          '5 sections + socials + Calendly',
+          'Builder.io configured when relevant',
+          'Visual handoff',
+          'Interventions and fixes billed separately',
+        ],
+        href: '/contact?type=editable-site',
+        cta: 'Scope editable',
+      },
+    ],
+    levelGuideHead: {
+      kicker: 'Quick choice',
+      title: 'CHF 999, 1,500, 2,200, or 2,500+ are not the same product.',
+    },
+    levelGuide: [
+      {
+        price: 'CHF 999',
+        title: 'Stable presence',
+        body: '5 sections, phone, WhatsApp, socials, and simple contact on the IOPartner multi-tenant base.',
+      },
+      {
+        price: 'CHF 1,500',
+        title: 'Presence + booking',
+        body: 'Same base, with Calendly and a short handoff. No CMS or visual editor delivered.',
+      },
+      {
+        price: 'CHF 2,200+',
+        title: 'Editable',
+        body: 'Same perimeter, with Builder.io and visual handoff to edit selected areas at your own risk.',
+      },
+      {
+        price: 'CHF 2,500+',
+        title: 'Custom',
+        body: 'When the need becomes an app, portal, workflow, backend, roles, or dedicated codebase.',
       },
     ],
     thresholdsHead: {
@@ -174,6 +299,37 @@ const COPY = {
       ['Quiet premium', 'Typography, space, more editorial offer.', 'Choose this base'],
       ['Visual portfolio', 'Gallery, services, and simple contact path.', 'Choose this base'],
     ],
+    decision: {
+      kicker: 'Before choosing',
+      title: 'A visual example should not force the wrong level.',
+      body: 'Use the example to understand the finish level, then decide whether the right path is CHF 999, CHF 1,500, CHF 2,200+, a scoping slot, or the free qualification form.',
+      routes: [
+        {
+          title: 'Standard CHF 999 / 1,500',
+          body: 'Compare deliverable bases without turning the site into a custom project.',
+          href: '/choose-template?plan=essential999',
+          cta: 'Compare bases',
+        },
+        {
+          title: 'Level 2 or private',
+          body: 'When the site needs to become editable, dedicated, or more specific.',
+          href: '/contact?type=editable-site',
+          cta: 'View CHF 2,200+ threshold',
+        },
+        {
+          title: 'Verify before budgeting',
+          body: '15 minutes at CHF 60 if the decision can avoid a badly committed 3, 5, or 50k.',
+          href: '/cadrage-technique',
+          cta: 'Scope quickly',
+        },
+        {
+          title: 'Do not pay now',
+          body: 'Send the context for free through the qualification form.',
+          href: '/contact?type=web-presence',
+          cta: 'Free form',
+        },
+      ],
+    },
     codebase: {
       kicker: 'Public or private',
       title: 'The important choice is not only visual.',
@@ -215,25 +371,72 @@ const COPY = {
     },
     offers: [
       {
+        id: 'offre-999',
         price: 'CHF 999',
         title: 'Essential Pack',
-        body: 'Professionelle Web-Präsenz, kurzer Umfang, leichte Architektur und einfache Wartung.',
+        body: 'Fünfteilige Website auf der Multi-Tenant-Architektur von IOPartner, ohne gelieferten visuellen Editor.',
+        items: [
+          'Telefon, WhatsApp und Social Links wenn vorhanden',
+          'Gelieferte Inhalte integriert',
+          'Einfacher Kontaktweg',
+          'IOPartner-Interventionen separat verrechnet',
+        ],
         href: '/choose-template?plan=essential999',
         cta: 'CHF 999 Projekte ansehen',
       },
       {
+        id: 'offre-1500',
         price: 'CHF 1’500',
         title: 'Public Pack',
-        body: 'Gleiche abgegrenzte Logik mit mehr funktionaler Marge, solange die Website kein schweres Redaktionstool wird.',
+        body: 'Gleiche Multi-Tenant-Basis mit Calendly und kurzer Übergabe, ohne die Website in ein CMS zu verwandeln.',
+        items: [
+          '5 Sektionen + Telefon, WhatsApp und Social Links',
+          'Calendly-Integration',
+          'Kurzer operativer Handoff',
+          'Änderungen über IOPartner oder auf eigenes Risiko',
+        ],
         href: '/choose-template?plan=essential1500',
         cta: 'CHF 1’500 Projekte ansehen',
       },
       {
+        id: 'offre-2200',
         price: 'CHF 2’200+',
-        title: 'Privater Build',
-        body: 'Dediziertes Deployment und private Basis, wenn der Bedarf spezifisch wird oder den Standard verlassen muss.',
-        href: '/custom-systems?track=private-2200#diagnostic',
-        cta: 'Privat scopen',
+        title: 'Editierbare Website',
+        body: 'Gleicher Web-Präsenz-Umfang mit Builder.io-Handoff, um ausgewählte Bereiche visuell auf eigenes Risiko zu bearbeiten.',
+        items: [
+          '5 Sektionen + Socials + Calendly',
+          'Builder.io eingerichtet, wenn sinnvoll',
+          'Visueller Handoff',
+          'Interventionen und Korrekturen separat verrechnet',
+        ],
+        href: '/contact?type=editable-site',
+        cta: 'Editierbar scopen',
+      },
+    ],
+    levelGuideHead: {
+      kicker: 'Schnelle Wahl',
+      title: 'CHF 999, 1’500, 2’200 oder 2’500+ sind nicht dasselbe Produkt.',
+    },
+    levelGuide: [
+      {
+        price: 'CHF 999',
+        title: 'Stabile Präsenz',
+        body: '5 Sektionen, Telefon, WhatsApp, Socials und einfacher Kontakt auf der IOPartner-Multi-Tenant-Basis.',
+      },
+      {
+        price: 'CHF 1’500',
+        title: 'Präsenz + Termine',
+        body: 'Gleiche Basis mit Calendly und kurzer Übergabe. Kein CMS oder visueller Editor geliefert.',
+      },
+      {
+        price: 'CHF 2’200+',
+        title: 'Editierbar',
+        body: 'Gleicher Umfang mit Builder.io und visuellem Handoff für ausgewählte Bereiche auf eigenes Risiko.',
+      },
+      {
+        price: 'CHF 2’500+',
+        title: 'Custom',
+        body: 'Wenn der Bedarf zu App, Portal, Workflow, Backend, Rollen oder dedizierter Codebase wird.',
       },
     ],
     thresholdsHead: {
@@ -263,6 +466,37 @@ const COPY = {
       ['Ruhig premium', 'Typografie, Raum, redaktionelleres Angebot.', 'Diese Basis wählen'],
       ['Visuelles Portfolio', 'Galerie, Leistungen und einfacher Kontaktweg.', 'Diese Basis wählen'],
     ],
+    decision: {
+      kicker: 'Vor der Auswahl',
+      title: 'Ein visuelles Beispiel darf nicht zur falschen Ebene führen.',
+      body: 'Nutzen Sie das Beispiel für das Qualitätsniveau, dann klären Sie, ob CHF 999, CHF 1’500, CHF 2’200+, ein Scoping-Slot oder das kostenlose Formular passt.',
+      routes: [
+        {
+          title: 'Standard CHF 999 / 1’500',
+          body: 'Lieferbare Grundlagen vergleichen, ohne daraus ein Custom-Projekt zu machen.',
+          href: '/choose-template?plan=essential999',
+          cta: 'Grundlagen vergleichen',
+        },
+        {
+          title: 'Stufe 2 oder privat',
+          body: 'Wenn die Website editierbar, dediziert oder spezifischer werden muss.',
+          href: '/contact?type=editable-site',
+          cta: 'Schwelle CHF 2’200+ ansehen',
+        },
+        {
+          title: 'Vor Budget klären',
+          body: '15 Minuten für CHF 60, wenn die Entscheidung 3, 5 oder 50k Fehlbudget vermeiden kann.',
+          href: '/cadrage-technique',
+          cta: 'Schnell scopen',
+        },
+        {
+          title: 'Kostenloses Formular',
+          body: 'Kontext kostenlos über das Qualifikationsformular senden.',
+          href: '/contact?type=web-presence',
+          cta: 'Kostenloses Formular',
+        },
+      ],
+    },
     codebase: {
       kicker: 'Öffentlich oder privat',
       title: 'Die wichtige Wahl ist nicht nur visuell.',
@@ -305,25 +539,72 @@ const COPY = {
     },
     offers: [
       {
+        id: 'offre-999',
         price: 'CHF 999',
         title: 'Pack Essential',
-        body: 'Presenza web professionale, perimetro breve, architettura leggera e manutenzione semplice.',
+        body: 'Sito vetrina a 5 sezioni sull’architettura multi-tenant IOPartner, senza editor visuale consegnato.',
+        items: [
+          'Telefono, WhatsApp e link social se disponibili',
+          'Contenuti forniti integrati',
+          'Percorso di contatto semplice',
+          'Interventi IOPartner fatturati separatamente',
+        ],
         href: '/choose-template?plan=essential999',
         cta: 'Vedere progetti CHF 999',
       },
       {
+        id: 'offre-1500',
         price: 'CHF 1’500',
         title: 'Pack Public',
-        body: 'Stessa logica inquadrata con più margine funzionale, finché il sito non diventa uno strumento editoriale pesante.',
+        body: 'Stessa base multi-tenant, con Calendly e breve passaggio per usare il sito senza trasformarlo in un CMS.',
+        items: [
+          '5 sezioni + telefono, WhatsApp e link social',
+          'Integrazione Calendly',
+          'Breve handoff operativo',
+          'Modifiche tramite IOPartner o a vostro rischio',
+        ],
         href: '/choose-template?plan=essential1500',
         cta: 'Vedere progetti CHF 1’500',
       },
       {
+        id: 'offre-2200',
         price: 'CHF 2’200+',
-        title: 'Build privato',
-        body: 'Deployment dedicato e base privata quando il bisogno diventa specifico o deve uscire dallo standard.',
-        href: '/custom-systems?track=private-2200#diagnostic',
-        cta: 'Inquadrare il privato',
+        title: 'Sito modificabile',
+        body: 'Stesso perimetro di presenza web, con handoff Builder.io per modificare visivamente alcune zone a vostro rischio.',
+        items: [
+          '5 sezioni + social + Calendly',
+          'Builder.io configurato quando pertinente',
+          'Handoff visuale',
+          'Interventi e correzioni fatturati separatamente',
+        ],
+        href: '/contact?type=editable-site',
+        cta: 'Inquadrare il modificabile',
+      },
+    ],
+    levelGuideHead: {
+      kicker: 'Scelta rapida',
+      title: 'CHF 999, 1’500, 2’200 o 2’500+ non sono lo stesso prodotto.',
+    },
+    levelGuide: [
+      {
+        price: 'CHF 999',
+        title: 'Presenza stabile',
+        body: '5 sezioni, telefono, WhatsApp, social e contatto semplice sulla base multi-tenant IOPartner.',
+      },
+      {
+        price: 'CHF 1’500',
+        title: 'Presenza + appuntamenti',
+        body: 'Stessa base, con Calendly e breve handoff. Nessun CMS o editor visuale consegnato.',
+      },
+      {
+        price: 'CHF 2’200+',
+        title: 'Modificabile',
+        body: 'Stesso perimetro, con Builder.io e handoff visuale per modificare alcune zone a vostro rischio.',
+      },
+      {
+        price: 'CHF 2’500+',
+        title: 'Custom',
+        body: 'Quando il bisogno diventa app, portale, workflow, backend, ruoli o codebase dedicato.',
       },
     ],
     thresholdsHead: {
@@ -356,6 +637,37 @@ const COPY = {
       ['Premium sobrio', 'Tipografia, spazi, offerta più editoriale.', 'Scegliere questa base'],
       ['Portfolio visivo', 'Galleria, prestazioni e percorso di contatto semplice.', 'Scegliere questa base'],
     ],
+    decision: {
+      kicker: 'Prima di scegliere',
+      title: 'Un esempio visivo non deve forzare il livello sbagliato.',
+      body: 'Usate l’esempio per capire il livello di finitura, poi decidete se serve CHF 999, CHF 1’500, CHF 2’200+, uno slot di scope o formulario gratuito.',
+      routes: [
+        {
+          title: 'Standard CHF 999 / 1’500',
+          body: 'Confrontare basi consegnabili senza trasformare il sito in un progetto custom.',
+          href: '/choose-template?plan=essential999',
+          cta: 'Confrontare le basi',
+        },
+        {
+          title: 'Livello 2 o privato',
+          body: 'Quando il sito deve diventare modificabile, dedicato o più specifico.',
+          href: '/contact?type=editable-site',
+          cta: 'Vedere soglia CHF 2’200+',
+        },
+        {
+          title: 'Verificare prima del budget',
+          body: '15 minuti a CHF 60 se la decisione può evitare 3, 5 o 50k investiti male.',
+          href: '/cadrage-technique',
+          cta: 'Inquadrare rapidamente',
+        },
+        {
+          title: 'Formulario gratuito',
+          body: 'Inviare il contesto gratuitamente tramite il formulario di qualificazione.',
+          href: '/contact?type=web-presence',
+          cta: 'Formulario gratuito',
+        },
+      ],
+    },
     codebase: {
       kicker: 'Pubblico o privato',
       title: 'La scelta importante non è solo visiva.',
@@ -391,25 +703,25 @@ const modelAssets = [
   {
     id: 'pedro',
     img: toAssetSrc(pedroLogo as string | { src: string }),
-    href: '/onboarding?plan=essential999&template=lausanne-demenagement',
+    href: '/choose-template?plan=essential999&template=lausanne-demenagement',
     imageClass: 'object-contain p-8 bg-gradient-to-br from-slate-50 to-blue-100',
   },
   {
     id: 'tolo-coiffure',
     img: toAssetSrc(toloPreview as string | { src: string }),
-    href: '/onboarding?plan=essential999&template=tolo-coiffure',
+    href: '/choose-template?plan=essential1500&template=tolo-coiffure',
     imageClass: 'object-cover object-top',
   },
   {
     id: 'maison-cortes',
     img: toAssetSrc(maisonPreview as string | { src: string }),
-    href: '/onboarding?plan=essential999&template=maison-cortes',
+    href: '/choose-template?plan=essential1500&template=maison-cortes',
     imageClass: 'object-cover object-top',
   },
   {
     id: 'onglesgel',
     img: toAssetSrc(onglesPreview as string | { src: string }),
-    href: '/onboarding?plan=essential999&template=onglesgel',
+    href: '/choose-template?plan=essential999&template=onglesgel',
     imageClass: 'object-cover object-top',
   },
 ];
@@ -445,13 +757,36 @@ const models = modelAssets.map((asset, index) => {
       <div class="io-offer-grid">
         {
           copy.offers.map((offer: any) => (
-            <article>
+            <article id={offer.id}>
               <strong class="io-price">{offer.price}</strong>
               <h3>{offer.title}</h3>
               <p>{offer.body}</p>
+              <ul>
+                {offer.items.map((item: string) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
               <a class="io-link" href={offer.href}>
                 {offer.cta}
               </a>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="io-shell io-level-guide">
+      <div class="io-section-head">
+        <p class="io-kicker">{copy.levelGuideHead.kicker}</p>
+        <h2>{copy.levelGuideHead.title}</h2>
+      </div>
+      <div class="io-level-guide-grid">
+        {
+          copy.levelGuide.map((level: any) => (
+            <article>
+              <strong>{level.price}</strong>
+              <h3>{level.title}</h3>
+              <p>{level.body}</p>
             </article>
           ))
         }
@@ -499,6 +834,25 @@ const models = modelAssets.map((asset, index) => {
             ))
           }
         </div>
+      </div>
+    </section>
+
+    <section class="io-shell io-decision">
+      <div class="io-section-head">
+        <p class="io-kicker">{copy.decision.kicker}</p>
+        <h2>{copy.decision.title}</h2>
+        <p>{copy.decision.body}</p>
+      </div>
+      <div class="io-decision-grid">
+        {
+          copy.decision.routes.map((route: any) => (
+            <a href={route.href}>
+              <h3>{route.title}</h3>
+              <p>{route.body}</p>
+              <span>{route.cta}</span>
+            </a>
+          ))
+        }
       </div>
     </section>
 
@@ -645,7 +999,9 @@ const models = modelAssets.map((asset, index) => {
     }
 
     .io-offers,
+    .io-level-guide,
     .io-thresholds,
+    .io-decision,
     .io-codebase,
     .io-process {
       padding-bottom: 5rem;
@@ -668,11 +1024,87 @@ const models = modelAssets.map((asset, index) => {
       gap: 1rem;
     }
 
+    .io-level-guide-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.85rem;
+      counter-reset: level;
+    }
+
+    .io-level-guide-grid article {
+      counter-increment: level;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--io-line);
+      border-radius: 1rem;
+      padding: 1.2rem;
+      background:
+        linear-gradient(90deg, rgba(37, 99, 235, 0.035) 1px, transparent 1px),
+        linear-gradient(rgba(37, 99, 235, 0.035) 1px, transparent 1px), rgba(255, 255, 255, 0.86);
+      background-size: 24px 24px;
+      transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        box-shadow 180ms ease;
+    }
+
+    .io-level-guide-grid article::before {
+      content: counter(level, decimal-leading-zero);
+      display: grid;
+      width: 2.2rem;
+      height: 2.2rem;
+      place-items: center;
+      border-radius: 0.55rem;
+      margin-bottom: 1rem;
+      background: rgba(37, 99, 235, 0.08);
+      color: var(--io-blue);
+      font-size: 0.72rem;
+      font-weight: 900;
+    }
+
+    .io-level-guide-grid article:hover {
+      transform: translateY(-3px);
+      border-color: rgba(37, 99, 235, 0.3);
+      box-shadow: 0 26px 64px -54px rgba(15, 23, 42, 0.42);
+    }
+
+    .io-level-guide-grid strong {
+      display: block;
+      color: var(--io-blue);
+      font-size: 1.4rem;
+      line-height: 1;
+    }
+
+    .io-level-guide-grid h3 {
+      margin: 0.75rem 0 0.55rem;
+      font-size: 1.05rem;
+      line-height: 1.14;
+    }
+
+    .io-level-guide-grid p {
+      margin: 0;
+      color: var(--io-muted);
+      font-size: 0.92rem;
+      line-height: 1.58;
+    }
+
     .io-threshold-grid article {
       border: 1px solid var(--io-line);
       border-radius: 1rem;
       padding: 1.35rem;
       background: rgba(255, 255, 255, 0.8);
+      transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        background-color 180ms ease,
+        box-shadow 180ms ease;
+    }
+
+    .io-threshold-grid article:hover {
+      transform: translateY(-3px);
+      border-color: rgba(37, 99, 235, 0.3);
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 26px 64px -54px rgba(15, 23, 42, 0.42);
     }
 
     .io-threshold-grid h3 {
@@ -696,6 +1128,26 @@ const models = modelAssets.map((asset, index) => {
       border-radius: 1rem;
       padding: 1.35rem;
       background: rgba(255, 255, 255, 0.8);
+      scroll-margin-top: 7rem;
+      transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        background-color 180ms ease,
+        box-shadow 180ms ease;
+    }
+
+    .io-offer-grid article:hover,
+    .io-offer-grid article:target,
+    .io-codebase article:hover {
+      transform: translateY(-3px);
+      border-color: rgba(37, 99, 235, 0.32);
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 26px 64px -54px rgba(15, 23, 42, 0.42);
+    }
+
+    .io-offer-grid article:active,
+    .io-codebase article:active {
+      transform: translateY(-1px) scale(0.997);
     }
 
     .io-price {
@@ -710,6 +1162,34 @@ const models = modelAssets.map((asset, index) => {
       margin: 0;
       color: var(--io-muted);
       line-height: 1.62;
+    }
+
+    .io-offer-grid ul {
+      display: grid;
+      gap: 0.55rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .io-offer-grid li {
+      position: relative;
+      padding-left: 1rem;
+      color: #334155;
+      font-size: 0.94rem;
+      font-weight: 680;
+      line-height: 1.5;
+    }
+
+    .io-offer-grid li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.7em;
+      width: 0.38rem;
+      height: 0.38rem;
+      border-radius: 999px;
+      background: var(--io-blue);
     }
 
     .io-link,
@@ -734,6 +1214,20 @@ const models = modelAssets.map((asset, index) => {
       border: 1px solid var(--io-line);
       border-radius: 1rem;
       background: #fff;
+      transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        box-shadow 180ms ease;
+    }
+
+    .io-model-grid article:hover {
+      transform: translateY(-3px);
+      border-color: rgba(37, 99, 235, 0.3);
+      box-shadow: 0 26px 64px -54px rgba(15, 23, 42, 0.42);
+    }
+
+    .io-model-grid article:active {
+      transform: translateY(-1px) scale(0.997);
     }
 
     .io-model-preview {
@@ -752,6 +1246,63 @@ const models = modelAssets.map((asset, index) => {
       display: grid;
       gap: 0.7rem;
       padding: 1rem;
+    }
+
+    .io-decision {
+      padding-top: 0.25rem;
+    }
+
+    .io-decision-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .io-decision-grid a {
+      display: grid;
+      gap: 0.75rem;
+      align-content: start;
+      min-height: 14rem;
+      border: 1px solid var(--io-line);
+      border-radius: 1rem;
+      padding: 1.2rem;
+      background: rgba(255, 255, 255, 0.82);
+      color: inherit;
+      text-decoration: none;
+      transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        background-color 180ms ease,
+        box-shadow 180ms ease;
+    }
+
+    .io-decision-grid a:hover,
+    .io-decision-grid a:focus-visible {
+      transform: translateY(-3px);
+      border-color: rgba(37, 99, 235, 0.32);
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 26px 64px -54px rgba(15, 23, 42, 0.42);
+      outline: none;
+    }
+
+    .io-decision-grid a:active {
+      transform: translateY(-1px) scale(0.997);
+    }
+
+    .io-decision-grid h3 {
+      font-size: 1.12rem;
+    }
+
+    .io-decision-grid p {
+      margin: 0;
+      color: var(--io-muted);
+      line-height: 1.58;
+    }
+
+    .io-decision-grid span {
+      margin-top: auto;
+      color: var(--io-blue);
+      font-weight: 820;
     }
 
     .io-codebase {
@@ -801,8 +1352,10 @@ const models = modelAssets.map((asset, index) => {
       }
 
       .io-threshold-grid,
+      .io-level-guide-grid,
       .io-offer-grid,
       .io-model-grid,
+      .io-decision-grid,
       .io-codebase-grid {
         grid-template-columns: repeat(2, 1fr);
       }
@@ -818,8 +1371,10 @@ const models = modelAssets.map((asset, index) => {
       }
 
       .io-offer-grid,
+      .io-level-guide-grid,
       .io-threshold-grid,
       .io-model-grid,
+      .io-decision-grid,
       .io-codebase-grid {
         grid-template-columns: 1fr;
       }

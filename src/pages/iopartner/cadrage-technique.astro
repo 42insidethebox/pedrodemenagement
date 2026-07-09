@@ -18,8 +18,8 @@ const COPY = {
     kicker: 'Cadrage technique',
     heroTitle: 'Décider avant de construire.',
     heroLead:
-      'Une session courte pour clarifier une décision, débloquer un sujet ou éviter de transformer un besoin simple en mauvais chantier.',
-    note: '15 min pour arbitrer vite · 1 h pour un sujet plus sérieux · puis 140 CHF / h si le travail continue.',
+      'Un formulaire gratuit ou une session courte pour clarifier une décision, débloquer un sujet ou éviter de transformer un besoin simple en mauvais chantier.',
+    note: 'Formulaire gratuit si vous n’êtes pas prêt à réserver · 15 min pour arbitrer vite · 1 h pour un sujet plus sérieux.',
     useKicker: 'Quand l’utiliser',
     useTitle: 'Quand le problème n’est pas encore le build.',
     situations: [
@@ -41,7 +41,13 @@ const COPY = {
     shortBody: 'Utile pour arbitrer un choix, débloquer un sujet ou confirmer qu’il ne faut pas surconstruire.',
     longKicker: 'Session étendue',
     longTitle: '1 heure pour un vrai cadrage.',
-    longBody: 'Utile pour une PME déjà engagée dans plusieurs outils, contraintes, parties prenantes ou décisions liées.',
+    longBody:
+      'Utile pour une PME déjà engagée dans plusieurs outils, contraintes, parties prenantes ou décisions liées.',
+    freeKicker: 'Qualification gratuite',
+    freeTitle: 'Décrire le besoin sans réserver.',
+    freeBody: 'Utile si vous ne savez pas encore si le sujet mérite 60 CHF, 140 CHF / h, 3k, 5k ou aucun projet.',
+    freePrice: '0 CHF',
+    freeCta: 'Envoyer le contexte gratuit',
     formatKicker: 'Format',
     formatTitle: 'Une séquence courte, utile même si rien n’est construit ensuite.',
     discernLead: 'Parfois la meilleure décision technique est de ne pas construire.',
@@ -49,8 +55,8 @@ const COPY = {
       'Si un site cadré suffit, on le dit. Si le sujet mérite une infrastructure dédiée, on le cadre avant de vendre une exécution.',
     finalTitle: 'Clarifier votre prochain mouvement.',
     finalBody: 'Envoyez le contexte ou réservez une session courte. L’objectif est de décider proprement.',
-    pay15: 'Payer 15 min',
-    pay60: 'Payer 1 heure',
+    pay15: 'Réserver 15 min',
+    pay60: 'Réserver 1 heure',
     steps: [
       { label: '01', title: 'Contexte', detail: 'Ce qui existe, ce qui bloque.', icon: 'diagnostic' },
       { label: '02', title: 'Arbitrage', detail: 'Standard, custom ou pause.', icon: 'scope' },
@@ -67,8 +73,8 @@ const COPY = {
     kicker: 'Technical scoping',
     heroTitle: 'Decide before you build.',
     heroLead:
-      'A short paid session to clarify a decision, unblock an issue, or avoid turning a simple need into the wrong project.',
-    note: '15 min for a fast arbitration · 1 h for a more serious topic · then CHF 140 / h if the work continues.',
+      'A free context form or a short session to clarify a decision, unblock an issue, or avoid turning a simple need into the wrong project.',
+    note: 'Free form if you are not ready to pay · 15 min for fast arbitration · 1 h for a more serious topic.',
     useKicker: 'When to use it',
     useTitle: 'When the problem is not the build yet.',
     situations: [
@@ -87,10 +93,16 @@ const COPY = {
     ],
     shortKicker: 'Short session',
     shortTitle: '15 minutes to decide.',
-    shortBody: 'Useful for arbitrating a choice, unblocking a topic, or confirming that overbuilding would be a mistake.',
+    shortBody:
+      'Useful for arbitrating a choice, unblocking a topic, or confirming that overbuilding would be a mistake.',
     longKicker: 'Extended session',
     longTitle: '1 hour for real scoping.',
     longBody: 'Useful for SMEs already dealing with several tools, constraints, stakeholders, or linked decisions.',
+    freeKicker: 'Free qualification',
+    freeTitle: 'Describe the need without paying.',
+    freeBody: 'Useful if you do not yet know whether the topic deserves CHF 60, CHF 140/h, 3k, 5k, or no project.',
+    freePrice: 'CHF 0',
+    freeCta: 'Send free context',
     formatKicker: 'Format',
     formatTitle: 'A short sequence that stays useful even if nothing gets built afterwards.',
     discernLead: 'Sometimes the best technical decision is not to build.',
@@ -98,8 +110,8 @@ const COPY = {
       'If a scoped website is enough, we say so. If the topic deserves dedicated infrastructure, we scope it before selling execution.',
     finalTitle: 'Clarify your next move.',
     finalBody: 'Send the context or book a short session. The goal is to decide cleanly.',
-    pay15: 'Pay for 15 min',
-    pay60: 'Pay for 1 hour',
+    pay15: 'Book 15 min',
+    pay60: 'Book 1 hour',
     steps: [
       { label: '01', title: 'Context', detail: 'What exists, what blocks.', icon: 'diagnostic' },
       { label: '02', title: 'Arbitration', detail: 'Standard, custom, or pause.', icon: 'scope' },
@@ -116,8 +128,8 @@ const COPY = {
     kicker: 'Technisches Scoping',
     heroTitle: 'Erst entscheiden, dann bauen.',
     heroLead:
-      'Eine kurze bezahlte Session, um eine Entscheidung zu klären, ein Thema zu entblocken oder aus einem einfachen Bedarf kein falsches Projekt zu machen.',
-    note: '15 Min. für schnelle Klärung · 1 h für ein ernsthafteres Thema · danach CHF 140 / h, wenn die Arbeit weitergeht.',
+      'Ein kostenloses Kontextformular oder eine kurze Session, um eine Entscheidung zu klären, ein Thema zu entblocken oder aus einem einfachen Bedarf kein falsches Projekt zu machen.',
+    note: 'Kostenloses Formular, wenn Sie noch nicht zahlen möchten · 15 Min. für schnelle Klärung · 1 h für ein ernsthafteres Thema.',
     useKicker: 'Wann es sinnvoll ist',
     useTitle: 'Wenn das Problem noch nicht der Build ist.',
     situations: [
@@ -136,10 +148,17 @@ const COPY = {
     ],
     shortKicker: 'Kurze Session',
     shortTitle: '15 Minuten zum Entscheiden.',
-    shortBody: 'Nützlich, um eine Wahl zu treffen, ein Thema zu entblocken oder zu bestätigen, dass Überbau ein Fehler wäre.',
+    shortBody:
+      'Nützlich, um eine Wahl zu treffen, ein Thema zu entblocken oder zu bestätigen, dass Überbau ein Fehler wäre.',
     longKicker: 'Erweiterte Session',
     longTitle: '1 Stunde für echtes Scoping.',
-    longBody: 'Nützlich für KMU, die bereits mit mehreren Tools, Einschränkungen, Beteiligten oder gekoppelten Entscheidungen arbeiten.',
+    longBody:
+      'Nützlich für KMU, die bereits mit mehreren Tools, Einschränkungen, Beteiligten oder gekoppelten Entscheidungen arbeiten.',
+    freeKicker: 'Kostenlose Qualifikation',
+    freeTitle: 'Den Bedarf ohne Zahlung beschreiben.',
+    freeBody: 'Nützlich, wenn noch unklar ist, ob das Thema CHF 60, CHF 140/h, 3k, 5k oder gar kein Projekt verdient.',
+    freePrice: 'CHF 0',
+    freeCta: 'Kontext kostenlos senden',
     formatKicker: 'Format',
     formatTitle: 'Eine kurze Abfolge, die auch dann nützlich bleibt, wenn danach nichts gebaut wird.',
     discernLead: 'Manchmal ist die beste technische Entscheidung, nicht zu bauen.',
@@ -147,8 +166,8 @@ const COPY = {
       'Wenn eine klar abgegrenzte Website reicht, sagen wir das. Wenn das Thema eine dedizierte Infrastruktur verdient, scopen wir es vor der Umsetzung.',
     finalTitle: 'Ihren nächsten Schritt klären.',
     finalBody: 'Senden Sie den Kontext oder buchen Sie eine kurze Session. Das Ziel ist eine saubere Entscheidung.',
-    pay15: '15 Min. bezahlen',
-    pay60: '1 Stunde bezahlen',
+    pay15: '15 Min. buchen',
+    pay60: '1 Stunde buchen',
     steps: [
       { label: '01', title: 'Kontext', detail: 'Was existiert, was blockiert.', icon: 'diagnostic' },
       { label: '02', title: 'Abwägung', detail: 'Standard, Custom oder Pause.', icon: 'scope' },
@@ -165,8 +184,8 @@ const COPY = {
     kicker: 'Inquadramento tecnico',
     heroTitle: 'Decidere prima di costruire.',
     heroLead:
-      'Una sessione breve a pagamento per chiarire una decisione, sbloccare un tema o evitare di trasformare un bisogno semplice in un progetto sbagliato.',
-    note: '15 min per arbitrare rapidamente · 1 h per un tema più serio · poi CHF 140 / h se il lavoro continua.',
+      'Un formulario gratuito o una sessione breve per chiarire una decisione, sbloccare un tema o evitare di trasformare un bisogno semplice in un progetto sbagliato.',
+    note: 'Formulario gratuito se non volete ancora prenotare · 15 min per arbitrare rapidamente · 1 h per un tema più serio.',
     useKicker: 'Quando usarlo',
     useTitle: 'Quando il problema non è ancora la build.',
     situations: [
@@ -189,6 +208,11 @@ const COPY = {
     longKicker: 'Sessione estesa',
     longTitle: '1 ora per un vero inquadramento.',
     longBody: 'Utile per PMI già coinvolte con più strumenti, vincoli, stakeholder o decisioni collegate.',
+    freeKicker: 'Qualificazione gratuita',
+    freeTitle: 'Descrivere il bisogno senza prenotare.',
+    freeBody: 'Utile se non sapete ancora se il tema merita CHF 60, CHF 140/h, 3k, 5k o nessun progetto.',
+    freePrice: 'CHF 0',
+    freeCta: 'Inviare contesto gratuito',
     formatKicker: 'Formato',
     formatTitle: 'Una sequenza breve che resta utile anche se poi non si costruisce nulla.',
     discernLead: 'A volte la migliore decisione tecnica è non costruire.',
@@ -196,8 +220,8 @@ const COPY = {
       'Se basta un sito ben inquadrato, lo diciamo. Se il tema richiede un’infrastruttura dedicata, la definiamo prima di vendere l’esecuzione.',
     finalTitle: 'Chiarire la vostra prossima mossa.',
     finalBody: 'Inviate il contesto o prenotate una sessione breve. L’obiettivo è decidere bene.',
-    pay15: 'Paga 15 min',
-    pay60: 'Paga 1 ora',
+    pay15: 'Prenota 15 min',
+    pay60: 'Prenota 1 ora',
     steps: [
       { label: '01', title: 'Contesto', detail: 'Cosa esiste, cosa blocca.', icon: 'diagnostic' },
       { label: '02', title: 'Arbitraggio', detail: 'Standard, custom o pausa.', icon: 'scope' },
@@ -220,7 +244,8 @@ const metadata = copy.metadata;
           <h1>{copy.heroTitle}</h1>
           <p class="io-lead">{copy.heroLead}</p>
           <div class="io-actions">
-            <a class="io-btn io-btn-primary" href="/api/payment/redirect?tenant=iopartner&plan=diagnostic60">
+            <a class="io-btn io-btn-primary" href="/contact?type=scoping">{copy.freeCta}</a>
+            <a class="io-btn io-btn-secondary" href="/api/payment/redirect?tenant=iopartner&plan=diagnostic60">
               15 min — 60 CHF
             </a>
             <a class="io-btn io-btn-secondary" href="/api/payment/redirect?tenant=iopartner&plan=session140">
@@ -264,11 +289,18 @@ const metadata = copy.metadata;
 
     <section class="io-shell io-session-grid">
       <article>
+        <p class="io-kicker">{copy.freeKicker}</p>
+        <h2>{copy.freeTitle}</h2>
+        <p>{copy.freeBody}</p>
+        <strong>{copy.freePrice}</strong>
+        <a class="io-btn io-btn-primary" href="/contact?type=scoping">{copy.freeCta}</a>
+      </article>
+      <article>
         <p class="io-kicker">{copy.shortKicker}</p>
         <h2>{copy.shortTitle}</h2>
         <p>{copy.shortBody}</p>
         <strong>60 CHF</strong>
-        <a class="io-btn io-btn-primary" href="/api/payment/redirect?tenant=iopartner&plan=diagnostic60">
+        <a class="io-btn io-btn-secondary" href="/api/payment/redirect?tenant=iopartner&plan=diagnostic60">
           {copy.pay15}
         </a>
       </article>
@@ -300,7 +332,8 @@ const metadata = copy.metadata;
       <h2>{copy.finalTitle}</h2>
       <p>{copy.finalBody}</p>
       <div class="io-actions">
-        <a class="io-btn io-btn-primary" href="/api/payment/redirect?tenant=iopartner&plan=diagnostic60">
+        <a class="io-btn io-btn-primary" href="/contact?type=scoping">{copy.freeCta}</a>
+        <a class="io-btn io-btn-secondary" href="/api/payment/redirect?tenant=iopartner&plan=diagnostic60">
           {copy.pay15}
         </a>
         <a class="io-btn io-btn-secondary" href="/api/payment/redirect?tenant=iopartner&plan=session140">
@@ -423,7 +456,7 @@ const metadata = copy.metadata;
 
     .io-session-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 1rem;
       padding-bottom: 5rem;
     }
@@ -436,6 +469,22 @@ const metadata = copy.metadata;
       border-radius: 1rem;
       padding: 1.6rem;
       background: rgba(255, 255, 255, 0.82);
+      transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        background-color 180ms ease,
+        box-shadow 180ms ease;
+    }
+
+    .io-session-grid article:hover {
+      transform: translateY(-3px);
+      border-color: rgba(37, 99, 235, 0.32);
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 26px 64px -54px rgba(15, 23, 42, 0.42);
+    }
+
+    .io-session-grid article:active {
+      transform: translateY(-1px) scale(0.997);
     }
 
     .io-session-grid article p {
@@ -470,6 +519,18 @@ const metadata = copy.metadata;
       border-radius: 1rem;
       padding: 1.25rem;
       background: rgba(255, 255, 255, 0.78);
+      transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        background-color 180ms ease,
+        box-shadow 180ms ease;
+    }
+
+    .io-card-grid article:hover {
+      transform: translateY(-3px);
+      border-color: rgba(37, 99, 235, 0.28);
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 24px 58px -52px rgba(15, 23, 42, 0.38);
     }
 
     .io-card-grid span {

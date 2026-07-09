@@ -1,12 +1,42 @@
 import type { APIRoute } from 'astro';
 
 import { IOPARTNER_CUSTOM_TIER_FLOW, type IoPartnerCustomTierKey } from '~/data/iopartnerCustomTierFlow';
+import { assertRateLimit } from '~/lib/rate-limit';
 import { getSupabaseAdmin } from '~/lib/supabase';
 
 export const prerender = false;
 
+const MAX_CUSTOM_TIER_BODY_BYTES = 64 * 1024;
+const MIN_FORM_AGE_MS = 1800;
+const HONEYPOT_FIELDS = ['website_url', 'company_url', 'fax_number'];
+
+function getText(form: FormData, key: string) {
+  const value = form.get(key);
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+function isLikelyBot(form: FormData) {
+  const honeypotFilled = HONEYPOT_FIELDS.some((field) => Boolean(getText(form, field)));
+  if (honeypotFilled) return true;
+
+  const rawStartedAt = getText(form, 'form_started_at');
+  if (!rawStartedAt) return false;
+  const startedAt = Number(rawStartedAt);
+  if (!Number.isFinite(startedAt)) return true;
+  return Date.now() - startedAt < MIN_FORM_AGE_MS;
+}
+
 export const POST: APIRoute = async ({ request, url }) => {
+  const contentLength = Number(request.headers.get('content-length') || 0);
+  if (contentLength > MAX_CUSTOM_TIER_BODY_BYTES) {
+    return new Response('Payload too large', { status: 413 });
+  }
+
+  assertRateLimit(request, { key: 'iopartner-custom-tier', limit: 4, window: 300 });
+
   const form = await request.formData();
+  if (isLikelyBot(form)) return new Response(null, { status: 204 });
+
   const track = String(form.get('track') || '').trim() as IoPartnerCustomTierKey;
   const locale = String(form.get('locale') || 'fr').trim();
   const localePrefix = ['en', 'de', 'it'].includes(locale) ? `/${locale}` : '';

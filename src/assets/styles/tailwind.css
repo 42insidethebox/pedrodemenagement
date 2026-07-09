@@ -108,7 +108,8 @@
   .brand-transport {
     color: #f8fafc;
     background-color: var(--brand-bg, #0c1020);
-    background-image: var(--brand-pattern, radial-gradient(circle at 22% 18%, rgba(242, 176, 69, 0.1) 0, transparent 32%)),
+    background-image:
+      var(--brand-pattern, radial-gradient(circle at 22% 18%, rgba(242, 176, 69, 0.1) 0, transparent 32%)),
       var(--brand-gradient, linear-gradient(135deg, #0b1220 0%, #111827 45%, #1f2a44 85%));
   }
 
@@ -253,7 +254,8 @@
 
   .brand-nettoyagesuccession {
     background-color: var(--brand-bg, #f8fbfd);
-    background-image: var(--brand-pattern, radial-gradient(circle at 70% 10%, rgba(103, 232, 249, 0.15) 0, transparent 35%)),
+    background-image:
+      var(--brand-pattern, radial-gradient(circle at 70% 10%, rgba(103, 232, 249, 0.15) 0, transparent 35%)),
       var(--brand-gradient, linear-gradient(135deg, #ecfeff 0%, #67e8f9 45%, #0f172a 100%));
     color: #0f172a;
   }
@@ -279,7 +281,8 @@
   .brand-etatdeslieux {
     color: #0f172a;
     background-color: #f8fbff;
-    background-image: var(--brand-pattern, none), var(--brand-gradient, linear-gradient(135deg, #e0f2fe 0%, #0ea5e9 45%, #0f172a 100%));
+    background-image:
+      var(--brand-pattern, none), var(--brand-gradient, linear-gradient(135deg, #e0f2fe 0%, #0ea5e9 45%, #0f172a 100%));
   }
 
   .brand-etatdeslieux main,
@@ -303,7 +306,8 @@
 
   .brand-laclemanexperience {
     background-color: var(--brand-bg, #f8fafc);
-    background-image: var(
+    background-image:
+      var(
         --brand-pattern,
         radial-gradient(circle at 12% 18%, rgba(253, 230, 138, 0.18) 0, transparent 28%),
         radial-gradient(circle at 78% 10%, rgba(14, 118, 110, 0.14) 0, transparent 30%)
@@ -333,7 +337,8 @@
 
   .brand-lausannenettoyage {
     background-color: var(--brand-bg, #f7fbff);
-    background-image: var(--brand-pattern, radial-gradient(circle at 15% 20%, rgba(56, 189, 248, 0.12) 0, transparent 30%)),
+    background-image:
+      var(--brand-pattern, radial-gradient(circle at 15% 20%, rgba(56, 189, 248, 0.12) 0, transparent 30%)),
       var(--brand-gradient, linear-gradient(135deg, #e0f2fe 0%, #0ea5e9 45%, #0f172a 100%));
     color: #0f172a;
   }
@@ -501,6 +506,36 @@
   color: #e2e8f0 !important;
 }
 
+.brand-iopartner {
+  --io-swiss-red: #d52b1e;
+  --io-red-soft: rgba(213, 43, 30, 0.1);
+}
+
+.brand-iopartner .io-btn {
+  border-radius: 0.42rem !important;
+  box-shadow: 0 16px 38px -30px rgba(7, 17, 31, 0.55);
+}
+
+.brand-iopartner .io-btn-primary {
+  background: #07111f !important;
+  border-color: #07111f !important;
+  color: #ffffff !important;
+}
+
+.brand-iopartner .io-btn-primary:hover,
+.brand-iopartner .io-btn-primary:focus-visible {
+  background: var(--io-swiss-red) !important;
+  border-color: var(--io-swiss-red) !important;
+  color: #ffffff !important;
+  box-shadow: 0 18px 42px -30px rgba(213, 43, 30, 0.72);
+}
+
+.brand-iopartner .io-btn-secondary:hover,
+.brand-iopartner .io-btn-secondary:focus-visible {
+  border-color: rgba(11, 99, 246, 0.34) !important;
+  color: #07111f !important;
+}
+
 /* Preserve WhatsApp button styling even inside light heroes */
 .hero-light .btn-secondary.bg-emerald-500 {
   background: #10b981 !important;
@@ -660,8 +695,8 @@
   }
 }
 
-section.hero, 
-section.hero-section, 
+section.hero,
+section.hero-section,
 .hero-wrapper {
   background-image: none !important;
 }

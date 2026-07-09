@@ -433,7 +433,7 @@ export const BRANDS: Record<BrandKey, BrandProfile> = {
     secondaryColor: '#2563eb',
     fonts: { sans: 'Inter Variable', heading: 'Space Grotesk' },
     theme: {
-      accent: '#1e3a8a',
+      accent: '#2563eb',
     },
     phone: '+41 76 798 27 93',
     whatsapp: 'https://wa.me/41767982793',

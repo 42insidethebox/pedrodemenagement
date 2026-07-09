@@ -7,6 +7,7 @@ const locale = detectRequestLocale(Astro.request, Astro.url);
 const localePrefix = ['en', 'de', 'it'].includes(locale) ? `/${locale}` : '';
 const sessionId = Astro.url.searchParams.get('session_id') || '';
 const hasSession = Boolean(sessionId);
+const nextStep = Astro.url.searchParams.get('next') || 'free-response';
 const diagnosticBookingUrl15 = iopartnerConfig.diagnosticBookingUrl;
 const diagnosticBookingUrl60 = iopartnerConfig.workingSessionBookingUrl;
 const hasCalendlyBooking = iopartnerConfig.bookingChannel === 'calendly';
@@ -34,7 +35,8 @@ const COPY = {
     loading: 'Chargement des détails…',
     error: 'Impossible de charger les détails. Merci de contacter le support.',
     orderTitle: 'Votre site est en cours de lancement',
-    orderLead: 'Nous avons bien votre brief et votre commande. Les demandes hors scope restent chiffrées séparément avant exécution.',
+    orderLead:
+      'Nous avons bien votre brief et votre commande. Les demandes hors scope restent chiffrées séparément avant exécution.',
     orderBullets: [
       'Intégration et mise en forme des contenus validés.',
       'Livraison typique en 3–5 jours ouvrables selon vos contenus.',
@@ -44,7 +46,7 @@ const COPY = {
     bookingLead: 'Le créneau est bloqué. Vous recevrez aussi les détails par email, avec le lien Teams partagé.',
     bookingBullets: [
       'Session courte et payée, pas un call vague.',
-      'Le diagnostic qualifie la bonne couche: 2 000, 2 200, 4 500, 8 000+ ou architecture plus profonde.',
+      'Le diagnostic qualifie la bonne couche: consultation, présence web cadrée, projet sur mesure ou architecture plus profonde.',
       'Si le bon mouvement reste 999 ou 1 500, nous vous le dirons clairement.',
     ],
     diagnosticTitle: 'Votre session de cadrage est payée',
@@ -57,7 +59,8 @@ const COPY = {
     ],
     diagnosticCta: hasCalendlyBooking ? 'Choisir un créneau' : 'Écrire sur WhatsApp',
     customTitle: 'Besoin d’aller plus loin ?',
-    customDesc: 'Si le diagnostic ouvre une vraie surface de travail, la suite se scope proprement après cette première lecture.',
+    customDesc:
+      'Si vos réponses ouvrent une vraie surface de travail, la suite se scope proprement après cette première lecture.',
     customBtn: 'Voir les systèmes custom',
     whatsappLabel: 'Questions ? Écrivez-nous sur WhatsApp',
     whatsappBtn: 'Écrire sur WhatsApp',
@@ -95,7 +98,7 @@ const COPY = {
     bookingLead: 'The slot is locked. You will also receive the details by email, including the shared Teams link.',
     bookingBullets: [
       'Short paid session, not a vague exploratory call.',
-      'The diagnostic qualifies the right layer: 2,000, 2,200, 4,500, 8,000+, or a deeper architecture subject.',
+      'The diagnostic qualifies the right layer: consulting, scoped web presence, custom project, or deeper architecture.',
       'If the right move is still 999 or 1,500, we will tell you clearly.',
     ],
     diagnosticTitle: 'Your scoping session is paid',
@@ -108,7 +111,8 @@ const COPY = {
     ],
     diagnosticCta: hasCalendlyBooking ? 'Choose a slot' : 'Message on WhatsApp',
     customTitle: 'Need to go further?',
-    customDesc: 'If the diagnostic opens a real implementation surface, the next step gets scoped properly after this first pass.',
+    customDesc:
+      'If your answers open a real implementation surface, the next step gets scoped properly after this first pass.',
     customBtn: 'See custom systems',
     whatsappLabel: 'Questions? Message us on WhatsApp',
     whatsappBtn: 'Message on WhatsApp',
@@ -136,7 +140,8 @@ const COPY = {
     loading: 'Details werden geladen…',
     error: 'Details konnten nicht geladen werden. Bitte Support kontaktieren.',
     orderTitle: 'Ihre Website geht jetzt in die Produktion',
-    orderLead: 'Wir haben Ihr Briefing und Ihre Bestellung. Leistungen ausserhalb des Scopes werden vor Ausführung separat offeriert.',
+    orderLead:
+      'Wir haben Ihr Briefing und Ihre Bestellung. Leistungen ausserhalb des Scopes werden vor Ausführung separat offeriert.',
     orderBullets: [
       'Integration und Formatierung der validierten Inhalte.',
       'Typische Lieferung in 3–5 Arbeitstagen je nach Inhalt.',
@@ -146,7 +151,7 @@ const COPY = {
     bookingLead: 'Der Slot ist blockiert. Sie erhalten die Details auch per E-Mail, inklusive geteiltem Teams-Link.',
     bookingBullets: [
       'Kurze bezahlte Session, kein vager Explorationscall.',
-      'Die Diagnose qualifiziert die richtige Ebene: 2’000, 2’200, 4’500, 8’000+ oder tiefere Architektur.',
+      'Die Diagnose qualifiziert die richtige Ebene: Consulting, klare Web-Präsenz, Custom-Projekt oder tiefere Architektur.',
       'Wenn der richtige Weg weiterhin 999 oder 1’500 ist, sagen wir das klar.',
     ],
     diagnosticTitle: 'Ihre Scoping-Session ist bezahlt',
@@ -159,7 +164,8 @@ const COPY = {
     ],
     diagnosticCta: hasCalendlyBooking ? 'Slot wählen' : 'Auf WhatsApp schreiben',
     customTitle: 'Brauchen Sie mehr Tiefe?',
-    customDesc: 'Wenn die Diagnose eine echte Umsetzungsfläche öffnet, wird der nächste Schritt nach dieser ersten Lesart sauber gescopt.',
+    customDesc:
+      'Wenn Ihre Antworten eine echte Umsetzungsfläche öffnen, wird der nächste Schritt nach dieser ersten Lesart sauber gescopt.',
     customBtn: 'Custom systems ansehen',
     whatsappLabel: 'Fragen? Schreiben Sie uns auf WhatsApp',
     whatsappBtn: 'Auf WhatsApp schreiben',
@@ -187,7 +193,8 @@ const COPY = {
     loading: 'Caricamento dettagli…',
     error: 'Impossibile caricare i dettagli. Contatta il supporto.',
     orderTitle: 'Il tuo sito entra ora in produzione',
-    orderLead: 'Abbiamo brief e ordine. Le richieste fuori perimetro restano preventivate separatamente prima dell’esecuzione.',
+    orderLead:
+      'Abbiamo brief e ordine. Le richieste fuori perimetro restano preventivate separatamente prima dell’esecuzione.',
     orderBullets: [
       'Integrazione e impaginazione dei contenuti validati.',
       'Consegna tipica in 3–5 giorni lavorativi in base ai contenuti.',
@@ -197,7 +204,7 @@ const COPY = {
     bookingLead: 'Lo slot è bloccato. Riceverai anche i dettagli via email, incluso il link Teams condiviso.',
     bookingBullets: [
       'Sessione breve e pagata, non una call vaga.',
-      'La diagnosi qualifica il livello giusto: 2’000, 2’200, 4’500, 8’000+ o architettura più profonda.',
+      'La diagnosi qualifica il livello giusto: consulenza, presenza web strutturata, progetto custom o architettura più profonda.',
       'Se la mossa giusta resta 999 o 1’500, te lo diremo chiaramente.',
     ],
     diagnosticTitle: 'La vostra sessione di inquadramento è pagata',
@@ -210,7 +217,8 @@ const COPY = {
     ],
     diagnosticCta: hasCalendlyBooking ? 'Scegli uno slot' : 'Scrivi su WhatsApp',
     customTitle: 'Serve andare oltre?',
-    customDesc: 'Se la diagnosi apre una vera superficie di implementazione, il passo successivo viene scoped bene dopo questa prima lettura.',
+    customDesc:
+      'Se le vostre risposte aprono una vera superficie di implementazione, il passo successivo viene scoped bene dopo questa prima lettura.',
     customBtn: 'Vedi custom systems',
     whatsappLabel: 'Domande? Scrivici su WhatsApp',
     whatsappBtn: 'Scrivi su WhatsApp',
@@ -219,6 +227,258 @@ const COPY = {
 } as const;
 
 const copy = COPY[locale as keyof typeof COPY] ?? COPY.fr;
+const DISCOVERY_NEXT = {
+  fr: {
+    'free-response': {
+      title: 'Votre contexte est reçu',
+      lead: 'Nous le relisons avant de recommander la suite. Si une réponse initiale suffit, vous recevrez une orientation claire sans consultation payée.',
+      bullets: [
+        'Réponse sous un jour ouvré.',
+        'Orientation vers le bon niveau de service.',
+        'Aucun paiement demandé avant recommandation.',
+      ],
+      cta: 'Voir les tarifs',
+      href: `${localePrefix}/pricing`,
+    },
+    'consulting-60': {
+      title: 'Prochaine étape probable: consultation courte',
+      lead: 'Votre demande ressemble à une décision ponctuelle, un second avis ou un go/no-go. Nous confirmerons si le format 15 minutes est suffisant.',
+      bullets: ['15 minutes.', 'CHF 60.', 'Décision ou direction concrète.'],
+      cta: 'Voir le cadrage technique',
+      href: `${localePrefix}/cadrage-technique`,
+    },
+    'consulting-140': {
+      title: 'Prochaine étape probable: consulting standard',
+      lead: 'Votre demande semble demander plus qu’une réponse courte. Le format 1 heure ou le tarif CHF 140/h sera validé après lecture.',
+      bullets: ['Architecture, audit ou planification.', 'CHF 140/h.', 'Pas de build lancé sans scope clair.'],
+      cta: 'Voir le cadrage technique',
+      href: `${localePrefix}/cadrage-technique`,
+    },
+    'standard-website': {
+      title: 'Prochaine étape probable: site standard',
+      lead: 'Votre besoin semble compatible avec une présence web cadrée. Nous vérifierons le périmètre avant de confirmer le pack adapté.',
+      bullets: ['Base dès CHF 999.', 'Contenu fourni intégré.', 'Livraison cadrée si le besoin reste simple.'],
+      cta: 'Voir la présence web cadrée',
+      href: `${localePrefix}/presence-web-cadree`,
+    },
+    'website-plus': {
+      title: 'Prochaine étape probable: site avec intégrations',
+      lead: 'Votre demande ressemble à un site standard avec quelques outils de communication ou réservation. Nous vérifierons que cela reste dans le format cadré.',
+      bullets: ['Référence CHF 1 500.', 'WhatsApp ou Calendly selon besoin.', 'Seuil clair vers custom si nécessaire.'],
+      cta: 'Voir la présence web cadrée',
+      href: `${localePrefix}/presence-web-cadree#offres`,
+    },
+    'project-proposal': {
+      title: 'Prochaine étape probable: proposition projet',
+      lead: 'Votre demande semble dépasser le site standard. Nous devrons cadrer le périmètre avant toute estimation ou proposition.',
+      bullets: [
+        'Projet sur mesure dès environ CHF 2 500.',
+        'Scope et livrables définis avant engagement.',
+        'Referral possible si IOpartner n’est pas le bon fit.',
+      ],
+      cta: 'Voir les systèmes sur mesure',
+      href: `${localePrefix}/custom-systems`,
+    },
+    referral: {
+      title: 'Votre contexte est reçu',
+      lead: 'Si IOPartner n’est pas le bon interlocuteur, nous vous orienterons vers une piste plus adaptée au lieu de forcer un service.',
+      bullets: ['Lecture du contexte.', 'Orientation honnête.', 'Pas de rendez-vous inutile.'],
+      cta: 'Retour à l’accueil',
+      href: localePrefix || '/iopartner',
+    },
+  },
+  en: {
+    'free-response': {
+      title: 'Your context was received',
+      lead: 'We will review it before recommending the next step. If an initial response is enough, you will receive clear guidance without a paid consultation.',
+      bullets: [
+        'Reply within one business day.',
+        'Routing toward the right service level.',
+        'No payment requested before recommendation.',
+      ],
+      cta: 'See pricing',
+      href: `${localePrefix}/pricing`,
+    },
+    'consulting-60': {
+      title: 'Likely next step: short consultation',
+      lead: 'Your request looks like a focused decision, second opinion, or go/no-go. We will confirm whether 15 minutes is enough.',
+      bullets: ['15 minutes.', 'CHF 60.', 'Concrete decision or direction.'],
+      cta: 'View technical scoping',
+      href: `${localePrefix}/cadrage-technique`,
+    },
+    'consulting-140': {
+      title: 'Likely next step: standard consulting',
+      lead: 'Your request appears to need more than a short answer. The 1-hour format or CHF 140/h rate will be confirmed after review.',
+      bullets: ['Architecture, audit, or planning.', 'CHF 140/h.', 'No build starts without clear scope.'],
+      cta: 'View technical scoping',
+      href: `${localePrefix}/cadrage-technique`,
+    },
+    'standard-website': {
+      title: 'Likely next step: standard website',
+      lead: 'Your need appears compatible with a scoped web presence. We will verify the perimeter before confirming the right package.',
+      bullets: ['Baseline from CHF 999.', 'Client content integrated.', 'Scoped delivery if the need stays simple.'],
+      cta: 'View scoped web presence',
+      href: `${localePrefix}/presence-web-cadree`,
+    },
+    'website-plus': {
+      title: 'Likely next step: website with integrations',
+      lead: 'Your request looks like a standard site with communication or booking tools. We will verify that it still fits the scoped format.',
+      bullets: [
+        'Reference CHF 1,500.',
+        'WhatsApp or Calendly depending on need.',
+        'Clear threshold toward custom if needed.',
+      ],
+      cta: 'View scoped web presence',
+      href: `${localePrefix}/presence-web-cadree#offres`,
+    },
+    'project-proposal': {
+      title: 'Likely next step: project proposal',
+      lead: 'Your request appears to go beyond a standard site. We need to scope the perimeter before any estimate or proposal.',
+      bullets: [
+        'Custom project from around CHF 2,500.',
+        'Scope and deliverables defined before commitment.',
+        'Referral possible if IOpartner is not the right fit.',
+      ],
+      cta: 'View custom systems',
+      href: `${localePrefix}/custom-systems`,
+    },
+    referral: {
+      title: 'Your context was received',
+      lead: 'If IOPartner is not the right contact, we will point you toward a better route instead of forcing a service.',
+      bullets: ['Context review.', 'Honest orientation.', 'No unnecessary meeting.'],
+      cta: 'Back to home',
+      href: localePrefix || '/iopartner',
+    },
+  },
+  de: {
+    'free-response': {
+      title: 'Ihr Kontext ist eingegangen',
+      lead: 'Wir prüfen ihn zuerst. Wenn eine erste Antwort genügt, erhalten Sie eine klare Orientierung ohne bezahlte Beratung.',
+      bullets: [
+        'Antwort innerhalb eines Arbeitstages.',
+        'Einordnung des passenden Serviceniveaus.',
+        'Keine Zahlung vor Empfehlung.',
+      ],
+      cta: 'Preise ansehen',
+      href: `${localePrefix}/pricing`,
+    },
+    'consulting-60': {
+      title: 'Wahrscheinlicher nächster Schritt: kurze Beratung',
+      lead: 'Ihre Anfrage wirkt wie eine fokussierte Entscheidung, Zweitmeinung oder Go/No-go-Frage. Wir bestätigen, ob 15 Minuten reichen.',
+      bullets: ['15 Minuten.', 'CHF 60.', 'Konkrete Entscheidung oder Richtung.'],
+      cta: 'Technisches Scoping ansehen',
+      href: `${localePrefix}/cadrage-technique`,
+    },
+    'consulting-140': {
+      title: 'Wahrscheinlicher nächster Schritt: Standard-Consulting',
+      lead: 'Ihre Anfrage scheint mehr als eine kurze Antwort zu brauchen. Das 1-Stunden-Format oder CHF 140/h wird nach Prüfung bestätigt.',
+      bullets: ['Architektur, Audit oder Planung.', 'CHF 140/h.', 'Kein Build ohne klaren Scope.'],
+      cta: 'Technisches Scoping ansehen',
+      href: `${localePrefix}/cadrage-technique`,
+    },
+    'standard-website': {
+      title: 'Wahrscheinlicher nächster Schritt: Standard-Website',
+      lead: 'Ihr Bedarf scheint zu einer klar abgegrenzten Web-Präsenz zu passen. Wir prüfen den Umfang vor der Paketempfehlung.',
+      bullets: [
+        'Basis ab CHF 999.',
+        'Gelieferte Inhalte integriert.',
+        'Klare Lieferung, wenn der Bedarf einfach bleibt.',
+      ],
+      cta: 'Web-Präsenz ansehen',
+      href: `${localePrefix}/presence-web-cadree`,
+    },
+    'website-plus': {
+      title: 'Wahrscheinlicher nächster Schritt: Website mit Integrationen',
+      lead: 'Ihre Anfrage wirkt wie eine Standardseite mit Kommunikation oder Buchung. Wir prüfen, ob sie im abgegrenzten Format bleibt.',
+      bullets: ['Referenz CHF 1 500.', 'WhatsApp oder Calendly je nach Bedarf.', 'Klare Schwelle zu Custom.'],
+      cta: 'Web-Präsenz ansehen',
+      href: `${localePrefix}/presence-web-cadree#offres`,
+    },
+    'project-proposal': {
+      title: 'Wahrscheinlicher nächster Schritt: Projektvorschlag',
+      lead: 'Ihre Anfrage scheint über eine Standardseite hinauszugehen. Der Umfang muss vor Schätzung oder Vorschlag sauber geklärt werden.',
+      bullets: [
+        'Custom-Projekt ab ca. CHF 2 500.',
+        'Scope und Lieferumfang vor Engagement.',
+        'Referral möglich, wenn IOpartner nicht passt.',
+      ],
+      cta: 'Custom systems ansehen',
+      href: `${localePrefix}/custom-systems`,
+    },
+    referral: {
+      title: 'Ihr Kontext ist eingegangen',
+      lead: 'Wenn IOPartner nicht der passende Ansprechpartner ist, schlagen wir einen besseren Weg vor statt einen Service zu erzwingen.',
+      bullets: ['Kontextprüfung.', 'Ehrliche Orientierung.', 'Kein unnötiges Meeting.'],
+      cta: 'Zur Startseite',
+      href: localePrefix || '/iopartner',
+    },
+  },
+  it: {
+    'free-response': {
+      title: 'Contesto ricevuto',
+      lead: 'Lo leggiamo prima di raccomandare il prossimo passo. Se basta una prima risposta, riceverete orientamento chiaro senza consulenza pagata.',
+      bullets: [
+        'Risposta entro un giorno lavorativo.',
+        'Orientamento verso il livello giusto.',
+        'Nessun pagamento prima della raccomandazione.',
+      ],
+      cta: 'Vedere i prezzi',
+      href: `${localePrefix}/pricing`,
+    },
+    'consulting-60': {
+      title: 'Prossimo passo probabile: consulenza breve',
+      lead: 'La richiesta sembra una decisione puntuale, un secondo parere o un go/no-go. Confermeremo se bastano 15 minuti.',
+      bullets: ['15 minuti.', 'CHF 60.', 'Decisione o direzione concreta.'],
+      cta: 'Vedere lo scope tecnico',
+      href: `${localePrefix}/cadrage-technique`,
+    },
+    'consulting-140': {
+      title: 'Prossimo passo probabile: consulenza standard',
+      lead: 'La richiesta sembra richiedere più di una risposta breve. Il formato da 1 ora o CHF 140/h sarà confermato dopo la lettura.',
+      bullets: ['Architettura, audit o pianificazione.', 'CHF 140/h.', 'Nessun build senza scope chiaro.'],
+      cta: 'Vedere lo scope tecnico',
+      href: `${localePrefix}/cadrage-technique`,
+    },
+    'standard-website': {
+      title: 'Prossimo passo probabile: sito standard',
+      lead: 'Il bisogno sembra compatibile con una presenza web strutturata. Verificheremo il perimetro prima di confermare il pacchetto.',
+      bullets: [
+        'Base da CHF 999.',
+        'Contenuti forniti integrati.',
+        'Consegna strutturata se il bisogno resta semplice.',
+      ],
+      cta: 'Vedere la presenza web',
+      href: `${localePrefix}/presence-web-cadree`,
+    },
+    'website-plus': {
+      title: 'Prossimo passo probabile: sito con integrazioni',
+      lead: 'La richiesta sembra un sito standard con strumenti di comunicazione o prenotazione. Verificheremo che resti nel formato strutturato.',
+      bullets: ['Riferimento CHF 1 500.', 'WhatsApp o Calendly secondo bisogno.', 'Soglia chiara verso custom.'],
+      cta: 'Vedere la presenza web',
+      href: `${localePrefix}/presence-web-cadree#offres`,
+    },
+    'project-proposal': {
+      title: 'Prossimo passo probabile: proposta progetto',
+      lead: 'La richiesta sembra superare il sito standard. Serve definire il perimetro prima di stima o proposta.',
+      bullets: [
+        'Progetto custom da circa CHF 2 500.',
+        'Scope e deliverable definiti prima dell’impegno.',
+        'Referral possibile se IOpartner non è il fit giusto.',
+      ],
+      cta: 'Vedere i sistemi custom',
+      href: `${localePrefix}/custom-systems`,
+    },
+    referral: {
+      title: 'Contesto ricevuto',
+      lead: 'Se IOPartner non è l’interlocutore giusto, vi orienteremo verso una strada più adatta invece di forzare un servizio.',
+      bullets: ['Lettura del contesto.', 'Orientamento onesto.', 'Nessun meeting inutile.'],
+      cta: 'Torna alla home',
+      href: localePrefix || '/iopartner',
+    },
+  },
+} as const;
+const discoveryMap = DISCOVERY_NEXT[locale as keyof typeof DISCOVERY_NEXT] ?? DISCOVERY_NEXT.fr;
+const discovery = discoveryMap[nextStep as keyof typeof discoveryMap] ?? discoveryMap['free-response'];
 const waMessageBase = encodeURIComponent("Bonjour, j'ai une question concernant IOPartner.");
 const waUrl = `https://wa.me/41767982793?text=${waMessageBase}`;
 ---
@@ -229,37 +489,82 @@ const waUrl = `https://wa.me/41767982793?text=${waMessageBase}`;
       <div class="text-center mb-10">
         <div class="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
           <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
           </svg>
         </div>
-        <h1 class="text-3xl font-bold text-slate-950">{copy.heading}</h1>
-        <p class="mt-3 text-slate-500" id="desc">{hasSession ? copy.descLoading : copy.descGeneric}</p>
+        <h1 class="text-3xl font-bold text-slate-950">{hasSession ? copy.heading : discovery.title}</h1>
+        <p class="mt-3 text-slate-500" id="desc">{hasSession ? copy.descLoading : discovery.lead}</p>
       </div>
 
-      {hasSession ? (
-        <div id="session" class="mb-8 rounded-2xl border border-slate-200 bg-white p-5 text-sm shadow-sm">
-          <div id="loader">{copy.loading}</div>
-          <div id="content" class="hidden space-y-2">
-            <p><strong>{copy.summary.email}:</strong> <span id="email">—</span></p>
-            <p><strong>{copy.summary.amount}:</strong> <span id="amount">—</span></p>
-            <p><strong>{copy.summary.status}:</strong> <span id="status">—</span></p>
-            <p data-order-row><strong>{copy.summary.template}:</strong> <span id="template">—</span></p>
-            <p data-order-row><strong>{copy.summary.plan}:</strong> <span id="plan">—</span></p>
-            <p data-booking-row class="hidden"><strong>{copy.summary.service}:</strong> <span id="service">—</span></p>
-            <p data-booking-row class="hidden"><strong>{copy.summary.slot}:</strong> <span id="slot">—</span></p>
-            <p data-booking-row class="hidden"><strong>{copy.summary.teams}:</strong> <a id="teams" href="#" target="_blank" rel="noreferrer" class="text-blue-600 hover:underline">—</a></p>
+      {
+        hasSession ? (
+          <div id="session" class="mb-8 rounded-2xl border border-slate-200 bg-white p-5 text-sm shadow-sm">
+            <div id="loader">{copy.loading}</div>
+            <div id="content" class="hidden space-y-2">
+              <p>
+                <strong>{copy.summary.email}:</strong> <span id="email">—</span>
+              </p>
+              <p>
+                <strong>{copy.summary.amount}:</strong> <span id="amount">—</span>
+              </p>
+              <p>
+                <strong>{copy.summary.status}:</strong> <span id="status">—</span>
+              </p>
+              <p data-order-row>
+                <strong>{copy.summary.template}:</strong> <span id="template">—</span>
+              </p>
+              <p data-order-row>
+                <strong>{copy.summary.plan}:</strong> <span id="plan">—</span>
+              </p>
+              <p data-booking-row class="hidden">
+                <strong>{copy.summary.service}:</strong> <span id="service">—</span>
+              </p>
+              <p data-booking-row class="hidden">
+                <strong>{copy.summary.slot}:</strong> <span id="slot">—</span>
+              </p>
+              <p data-booking-row class="hidden">
+                <strong>{copy.summary.teams}:</strong>{' '}
+                <a id="teams" href="#" target="_blank" rel="noreferrer" class="text-blue-600 hover:underline">
+                  —
+                </a>
+              </p>
+            </div>
+            <div id="error" class="hidden text-red-600">
+              {copy.error}
+            </div>
           </div>
-          <div id="error" class="hidden text-red-600">{copy.error}</div>
-        </div>
-      ) : null}
+        ) : null
+      }
 
-      <div id="order-panel" class="rounded-3xl border border-blue-100 bg-blue-50 p-6 md:p-8 shadow-sm">
-        <h2 class="text-2xl font-bold text-blue-950">{copy.orderTitle}</h2>
-        <p class="mt-3 text-blue-900/80">{copy.orderLead}</p>
-        <ul class="mt-5 space-y-2 text-sm text-blue-900/75">
-          {copy.orderBullets.map((item) => <li>• {item}</li>)}
-        </ul>
-      </div>
+      {
+        hasSession ? (
+          <div id="order-panel" class="rounded-3xl border border-blue-100 bg-blue-50 p-6 md:p-8 shadow-sm">
+            <h2 class="text-2xl font-bold text-blue-950">{copy.orderTitle}</h2>
+            <p class="mt-3 text-blue-900/80">{copy.orderLead}</p>
+            <ul class="mt-5 space-y-2 text-sm text-blue-900/75">
+              {copy.orderBullets.map((item) => (
+                <li>• {item}</li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <div class="rounded-3xl border border-blue-100 bg-blue-50 p-6 md:p-8 shadow-sm">
+            <h2 class="text-2xl font-bold text-blue-950">{discovery.title}</h2>
+            <p class="mt-3 text-blue-900/80">{discovery.lead}</p>
+            <ul class="mt-5 space-y-2 text-sm text-blue-900/75">
+              {discovery.bullets.map((item) => (
+                <li>• {item}</li>
+              ))}
+            </ul>
+            <a
+              href={discovery.href}
+              class="mt-6 inline-flex rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+            >
+              {discovery.cta}
+            </a>
+          </div>
+        )
+      }
 
       <div id="booking-panel" class="hidden rounded-3xl border border-emerald-100 bg-emerald-50 p-6 md:p-8 shadow-sm">
         <h2 class="text-2xl font-bold text-emerald-950">{copy.bookingTitle}</h2>
@@ -317,70 +622,70 @@ const waUrl = `https://wa.me/41767982793?text=${waMessageBase}`;
     </div>
   </section>
 
-  {hasSession ? (
-    <script is:inline define:vars={{ copy, diagnosticBookingUrl15, diagnosticBookingUrl60 }}>
-      const params = new URLSearchParams(location.search);
-      const id = params.get('session_id');
-      if (id) {
-        fetch(`/api/payment/session?session_id=${encodeURIComponent(id)}`)
-          .then((r) => (r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))))
-          .then((data) => {
-            const amountMinor =
-              typeof data.amount_total_order === 'number'
-                ? data.amount_total_order
-                : typeof data.amount_total === 'number'
-                  ? data.amount_total
-                  : null;
-            const currency = (data.currency || 'CHF').toUpperCase();
-            const formatter = new Intl.NumberFormat(copy.currencyLocale, { style: 'currency', currency });
-            const plan = data.plan || data.metadata?.plan || '';
+  <script is:inline define:vars={{ copy, diagnosticBookingUrl15, diagnosticBookingUrl60 }}>
+    const params = new URLSearchParams(location.search);
+    const id = params.get('session_id');
+    if (id) {
+      fetch(`/api/payment/session?session_id=${encodeURIComponent(id)}`)
+        .then((r) => (r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))))
+        .then((data) => {
+          const amountMinor =
+            typeof data.amount_total_order === 'number'
+              ? data.amount_total_order
+              : typeof data.amount_total === 'number'
+                ? data.amount_total
+                : null;
+          const currency = (data.currency || 'CHF').toUpperCase();
+          const formatter = new Intl.NumberFormat(copy.currencyLocale, { style: 'currency', currency });
+          const plan = data.plan || data.metadata?.plan || '';
 
-            document.getElementById('email').textContent = data.customer_email || data.metadata?.email || '—';
-            document.getElementById('amount').textContent = typeof amountMinor === 'number' ? formatter.format((amountMinor || 0) / 100) : '—';
-            document.getElementById('status').textContent = data.payment_status || '—';
-            document.getElementById('loader').classList.add('hidden');
-            document.getElementById('content').classList.remove('hidden');
+          document.getElementById('email').textContent = data.customer_email || data.metadata?.email || '—';
+          document.getElementById('amount').textContent =
+            typeof amountMinor === 'number' ? formatter.format((amountMinor || 0) / 100) : '—';
+          document.getElementById('status').textContent = data.payment_status || '—';
+          document.getElementById('loader').classList.add('hidden');
+          document.getElementById('content').classList.remove('hidden');
 
-            if (data.mode === 'booking' && data.booking) {
-              document.getElementById('desc').textContent = copy.descBooking;
-              document.getElementById('order-panel').classList.add('hidden');
-              document.getElementById('booking-panel').classList.remove('hidden');
-              document.querySelectorAll('[data-order-row]').forEach((el) => el.classList.add('hidden'));
-              document.querySelectorAll('[data-booking-row]').forEach((el) => el.classList.remove('hidden'));
-              document.getElementById('service').textContent = data.booking.service || '—';
-              document.getElementById('slot').textContent = `${data.booking.start_time || '—'} → ${data.booking.end_time || '—'}`;
-              const teams = document.getElementById('teams');
-              if (teams && data.booking.teams_url) {
-                teams.href = data.booking.teams_url;
-                teams.textContent = data.booking.teams_url;
-              }
-            } else if (plan === 'diagnostic60') {
-              document.getElementById('desc').textContent = copy.descOrder;
-              document.getElementById('order-panel').classList.add('hidden');
-              document.getElementById('diagnostic-panel').classList.remove('hidden');
-              document.getElementById('template').textContent = data.template || data.metadata?.template || '—';
-              document.getElementById('plan').textContent = plan || '—';
-              const diagnosticCta = document.getElementById('diagnostic-cta');
-              if (diagnosticCta) diagnosticCta.href = diagnosticBookingUrl15;
-            } else if (plan === 'session140') {
-              document.getElementById('desc').textContent = copy.descOrder;
-              document.getElementById('order-panel').classList.add('hidden');
-              document.getElementById('diagnostic-panel').classList.remove('hidden');
-              document.getElementById('template').textContent = data.template || data.metadata?.template || '—';
-              document.getElementById('plan').textContent = plan || '—';
-              const diagnosticCta = document.getElementById('diagnostic-cta');
-              if (diagnosticCta) diagnosticCta.href = diagnosticBookingUrl60;
-            } else {
-              document.getElementById('desc').textContent = copy.descOrder;
-              document.getElementById('template').textContent = data.template || data.metadata?.template || '—';
-              document.getElementById('plan').textContent = plan || '—';
+          if (data.mode === 'booking' && data.booking) {
+            document.getElementById('desc').textContent = copy.descBooking;
+            document.getElementById('order-panel').classList.add('hidden');
+            document.getElementById('booking-panel').classList.remove('hidden');
+            document.querySelectorAll('[data-order-row]').forEach((el) => el.classList.add('hidden'));
+            document.querySelectorAll('[data-booking-row]').forEach((el) => el.classList.remove('hidden'));
+            document.getElementById('service').textContent = data.booking.service || '—';
+            document.getElementById('slot').textContent =
+              `${data.booking.start_time || '—'} → ${data.booking.end_time || '—'}`;
+            const teams = document.getElementById('teams');
+            if (teams && data.booking.teams_url) {
+              teams.href = data.booking.teams_url;
+              teams.textContent = data.booking.teams_url;
             }
-          })
-          .catch(() => {
-            document.getElementById('loader').classList.add('hidden');
-            document.getElementById('error').classList.remove('hidden');
-          });
-      }
-    </script>
-  ) : null}
+          } else if (plan === 'diagnostic60') {
+            document.getElementById('desc').textContent = copy.descOrder;
+            document.getElementById('order-panel').classList.add('hidden');
+            document.getElementById('diagnostic-panel').classList.remove('hidden');
+            document.getElementById('template').textContent = data.template || data.metadata?.template || '—';
+            document.getElementById('plan').textContent = plan || '—';
+            const diagnosticCta = document.getElementById('diagnostic-cta');
+            if (diagnosticCta) diagnosticCta.href = diagnosticBookingUrl15;
+          } else if (plan === 'session140') {
+            document.getElementById('desc').textContent = copy.descOrder;
+            document.getElementById('order-panel').classList.add('hidden');
+            document.getElementById('diagnostic-panel').classList.remove('hidden');
+            document.getElementById('template').textContent = data.template || data.metadata?.template || '—';
+            document.getElementById('plan').textContent = plan || '—';
+            const diagnosticCta = document.getElementById('diagnostic-cta');
+            if (diagnosticCta) diagnosticCta.href = diagnosticBookingUrl60;
+          } else {
+            document.getElementById('desc').textContent = copy.descOrder;
+            document.getElementById('template').textContent = data.template || data.metadata?.template || '—';
+            document.getElementById('plan').textContent = plan || '—';
+          }
+        })
+        .catch(() => {
+          document.getElementById('loader').classList.add('hidden');
+          document.getElementById('error').classList.remove('hidden');
+        });
+    }
+  </script>
 </Layout>

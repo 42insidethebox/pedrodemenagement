@@ -1,13 +1,13 @@
 ---
 import Layout from '~/layouts/Layout.astro';
-import BookingSlotPicker from '~/components/widgets/BookingSlotPicker.astro';
 import { detectRequestLocale } from '~/lib/locale';
 
 export const prerender = false;
 
 const locale = detectRequestLocale(Astro.request, Astro.url);
 const localePrefix = ['en', 'de', 'it'].includes(locale) ? `/${locale}` : '';
-const customSystemsPath = `${localePrefix}/custom-systems`;
+const qualificationUrl = `${localePrefix}/contact`;
+const formStartedAt = Date.now();
 
 const track = (Astro.url.searchParams.get('track') || '').trim().toLowerCase();
 const pathFor = (path: string) => `${localePrefix}${path}`;
@@ -20,7 +20,7 @@ const COPY = {
     heroLead:
       'IOPartner garde la présence web cadrée quand elle suffit, puis ouvre une couche systèmes & opérations quand le sujet demande une codebase séparée, un backend léger ou une architecture plus robuste.',
     backing: 'Architecture, backend, infrastructure et continuité cadrés avant build.',
-    exactLadder: 'Paliers techniques',
+    exactLadder: 'Exemples de besoins',
     tiers: [
       {
         key: 'starter-1500',
@@ -32,34 +32,34 @@ const COPY = {
       },
       {
         key: 'private-2000',
-        price: '2 000 CHF',
-        title: 'Codebase privée',
-        body: 'Quand vous voulez sortir de l’infrastructure mutualisée et garder votre propre base de projet.',
-        cta: 'Démarrer ce palier',
+        price: 'Dès 2 500 CHF',
+        title: 'Application ou portail dédié',
+        body: 'Quand le besoin demande une base projet séparée, des rôles, des écrans spécifiques ou un parcours métier.',
+        cta: 'Qualifier ce besoin',
         href: pathFor('/custom-tier?track=private-2000'),
       },
       {
         key: 'private-2200',
-        price: '2 200 CHF',
-        title: 'Codebase privée + transmission',
-        body: 'Même base privée, avec une vraie passation et une explication structurée de ce qui a été livré.',
-        cta: 'Démarrer ce palier',
+        price: 'Sur devis',
+        title: 'Automatisations & intégrations',
+        body: 'Quand plusieurs outils doivent échanger, réduire du travail manuel ou fiabiliser un workflow existant.',
+        cta: 'Qualifier ce besoin',
         href: pathFor('/custom-tier?track=private-2200'),
       },
       {
         key: 'backend-4500',
-        price: '4 500 CHF',
-        title: 'Back-end léger',
-        body: 'Le bon niveau pour un “hello backend” sérieux : logique métier légère, collecte, synchronisation ou portail simple.',
-        cta: 'Démarrer ce palier',
+        price: 'Sur devis',
+        title: 'Système interne ou dashboard',
+        body: 'Quand il faut centraliser des données, suivre des opérations ou donner une interface claire à une équipe.',
+        cta: 'Qualifier ce besoin',
         href: pathFor('/custom-tier?track=backend-4500'),
       },
       {
         key: 'shop-8000',
-        price: '8 000+ CHF',
-        title: 'Headless shop ou système plus lourd',
-        body: 'Quand il faut un vrai sujet d’architecture, de commerce headless, d’admin, de portail ou de plateforme interne.',
-        cta: 'Démarrer ce palier',
+        price: 'Sur cadrage',
+        title: 'Plateforme plus lourde',
+        body: 'Quand le sujet implique architecture, commerce, portail, administration avancée ou continuité technique.',
+        cta: 'Qualifier ce besoin',
         href: pathFor('/custom-tier?track=shop-8000'),
       },
     ],
@@ -72,25 +72,25 @@ const COPY = {
     ],
     architectureTitle: 'Architecture, admin, portail, plateforme',
     architectureBody:
-      'Ces sujets ne sont pas vendus à la volée. Le diagnostic décide si le vrai sujet est un back-end léger, un headless shop ou une architecture plus profonde.',
-    diagnosticEyebrow: 'Diagnostic payé',
-    diagnosticTitle: '15 min / 60 CHF pour cadrer correctement le sujet.',
+      'Ces sujets ne sont pas vendus à la volée. La qualification décide si le vrai sujet est une application, une automatisation, un système interne ou une architecture plus profonde.',
+    diagnosticEyebrow: 'Qualification avant devis',
+    diagnosticTitle: 'Envoyer le contexte avant de chiffrer.',
     diagnosticLead:
-      'Le produit n’est pas un appel vague. Vous choisissez un créneau, vous payez, puis vous recevez la confirmation et le lien Teams partagé.',
+      'Décrivez le besoin, le budget visé et ce qui bloque. Nous revenons avec la suite rationnelle: réponse initiale, consulting, proposition projet ou referral.',
     diagnosticIncludesTitle: 'Le pipeline',
     diagnosticIncludes: [
-      'Créneau de 15 minutes choisi avant paiement.',
-      'Paiement Stripe immédiat.',
-      'Confirmation par email avec le lien Teams partagé.',
-      'Qualification rapide: 2 000, 2 200, 4 500, 8 000+ ou sujet plus profond.',
+      'Contexte envoyé gratuitement.',
+      'Lecture du besoin, du timing et du budget.',
+      'Recommandation du bon niveau de service.',
+      'Proposition seulement si le scope justifie un projet sur mesure.',
     ],
     selectedTrackLabel: 'Sujet sélectionné',
-    selectedTrackFallback: 'Diagnostic IOPartner — systèmes sur mesure',
+    selectedTrackFallback: 'Qualification IOPartner — systèmes sur mesure',
     selectedTrackMap: {
-      'private-2000': 'Codebase privée — 2 000 CHF',
-      'private-2200': 'Codebase privée + transmission — 2 200 CHF',
-      'backend-4500': 'Back-end léger — 4 500 CHF',
-      'shop-8000': 'Headless shop / système plus lourd — 8 000+ CHF',
+      'private-2000': 'Application ou portail dédié — dès 2 500 CHF',
+      'private-2200': 'Automatisations & intégrations — sur devis',
+      'backend-4500': 'Système interne ou dashboard — sur devis',
+      'shop-8000': 'Plateforme plus lourde — sur cadrage',
     },
     form: {
       dateLabel: 'Date',
@@ -105,9 +105,9 @@ const COPY = {
       phone: 'Téléphone',
       notes: 'Contexte',
       notesPlaceholder: 'Décrivez le besoin, le budget visé et ce qui bloque déjà.',
-      submit: 'Réserver et payer 60 CHF',
+      submit: 'Envoyer pour qualification',
     },
-    note: 'Si vous cherchez du custom à moins de 2 000 CHF, le bon produit n’est généralement pas du custom. Prenez plutôt la voie 999 / 1 500.',
+    note: 'Si vous cherchez du custom sous 2 500 CHF, le bon produit est souvent un site cadré, une consultation courte ou une automatisation plus simple.',
   },
   en: {
     title: 'IOPartner — Custom systems',
@@ -116,7 +116,7 @@ const COPY = {
     heroLead:
       'IOPartner keeps the clean launch-site logic, then opens a second layer when the work needs a separate codebase, a light backend, or a heavier architecture.',
     backing: 'Custom layer backed by IO Partner for work that exceeds a simple showcase site.',
-    exactLadder: 'Exact ladder',
+    exactLadder: 'Example needs',
     tiers: [
       {
         key: 'starter-1500',
@@ -128,34 +128,34 @@ const COPY = {
       },
       {
         key: 'private-2000',
-        price: 'CHF 2,000',
-        title: 'Private codebase',
-        body: 'For cases where you want to leave the shared infrastructure and keep a dedicated project base.',
-        cta: 'Start this tier',
+        price: 'From CHF 2,500',
+        title: 'Dedicated app or portal',
+        body: 'For needs that require a separate project base, roles, custom screens, or a business workflow.',
+        cta: 'Qualify this need',
         href: pathFor('/custom-tier?track=private-2000'),
       },
       {
         key: 'private-2200',
-        price: 'CHF 2,200',
-        title: 'Private codebase + handoff',
-        body: 'Same private base, with a real handoff and a structured explanation of what was delivered.',
-        cta: 'Start this tier',
+        price: 'Quoted',
+        title: 'Automations & integrations',
+        body: 'When several tools need to exchange data, reduce manual work, or make an existing workflow more reliable.',
+        cta: 'Qualify this need',
         href: pathFor('/custom-tier?track=private-2200'),
       },
       {
         key: 'backend-4500',
-        price: 'CHF 4,500',
-        title: 'Light backend',
-        body: 'The right level for a serious “hello backend”: light business logic, intake, sync, or a simple portal.',
-        cta: 'Start this tier',
+        price: 'Quoted',
+        title: 'Internal system or dashboard',
+        body: 'When data needs to be centralized, operations tracked, or a team needs a clear working interface.',
+        cta: 'Qualify this need',
         href: pathFor('/custom-tier?track=backend-4500'),
       },
       {
         key: 'shop-8000',
-        price: 'CHF 8,000+',
-        title: 'Headless shop or heavier system',
-        body: 'For real architecture, headless commerce, admin tooling, portals, or internal platforms.',
-        cta: 'Start this tier',
+        price: 'After scoping',
+        title: 'Heavier platform',
+        body: 'When the subject involves architecture, commerce, portals, advanced administration, or technical continuity.',
+        cta: 'Qualify this need',
         href: pathFor('/custom-tier?track=shop-8000'),
       },
     ],
@@ -168,25 +168,25 @@ const COPY = {
     ],
     architectureTitle: 'Architecture, admin, portal, platform',
     architectureBody:
-      'Those topics are not sold off a menu. The diagnostic decides whether the real subject is a light backend, a headless shop, or a deeper architecture layer.',
-    diagnosticEyebrow: 'Paid diagnostic',
-    diagnosticTitle: '15 min / CHF 60 to frame the work properly.',
+      'Those topics are not sold off a menu. Qualification decides whether the real subject is an app, an automation, an internal system, or deeper architecture.',
+    diagnosticEyebrow: 'Qualification before quote',
+    diagnosticTitle: 'Send the context before pricing.',
     diagnosticLead:
-      'This is not a vague call. You choose a slot, pay, then receive the confirmation and shared Teams link.',
+      'Describe the need, target budget, and what is blocking progress. We reply with the rational next step: initial response, consulting, project proposal, or referral.',
     diagnosticIncludesTitle: 'The pipeline',
     diagnosticIncludes: [
-      '15-minute slot selected before payment.',
-      'Immediate Stripe payment.',
-      'Confirmation email with the shared Teams link.',
-      'Fast qualification: 2,000, 2,200, 4,500, 8,000+, or a deeper architecture subject.',
+      'Context sent for free.',
+      'Review of need, timing, and budget.',
+      'Recommendation of the right service level.',
+      'Proposal only when the scope justifies custom work.',
     ],
     selectedTrackLabel: 'Selected topic',
-    selectedTrackFallback: 'IOPartner diagnostic — custom systems',
+    selectedTrackFallback: 'IOPartner qualification — custom systems',
     selectedTrackMap: {
-      'private-2000': 'Private codebase — CHF 2,000',
-      'private-2200': 'Private codebase + handoff — CHF 2,200',
-      'backend-4500': 'Light backend — CHF 4,500',
-      'shop-8000': 'Headless shop / heavier system — CHF 8,000+',
+      'private-2000': 'Dedicated app or portal — from CHF 2,500',
+      'private-2200': 'Automations & integrations — quoted',
+      'backend-4500': 'Internal system or dashboard — quoted',
+      'shop-8000': 'Heavier platform — after scoping',
     },
     form: {
       dateLabel: 'Date',
@@ -201,9 +201,9 @@ const COPY = {
       phone: 'Phone',
       notes: 'Context',
       notesPlaceholder: 'Describe the need, the budget band, and what is already slowing you down.',
-      submit: 'Book and pay CHF 60',
+      submit: 'Send for qualification',
     },
-    note: 'If you are looking for custom work below CHF 2,000, the right product is usually not custom. Start with CHF 999 / CHF 1,500 instead.',
+    note: 'If you are looking for custom work below CHF 2,500, the right product is often a scoped website, short consultation, or simpler automation.',
   },
   de: {
     title: 'IOPartner — Custom systems',
@@ -212,7 +212,7 @@ const COPY = {
     heroLead:
       'IOPartner behält die klare Launch-Logik und öffnet dann eine zweite Ebene, wenn die Arbeit eine eigene Codebase, ein leichtes Backend oder eine schwerere Architektur braucht.',
     backing: 'Custom-Schicht mit subtiler IO-Partner-Absicherung für Arbeiten jenseits der einfachen Showcase-Seite.',
-    exactLadder: 'Exakte Leiter',
+    exactLadder: 'Beispiele für Bedarf',
     tiers: [
       {
         key: 'starter-1500',
@@ -224,34 +224,34 @@ const COPY = {
       },
       {
         key: 'private-2000',
-        price: 'CHF 2’000',
-        title: 'Private Codebase',
-        body: 'Wenn Sie die gemeinsame Infrastruktur verlassen und eine eigene Projektbasis behalten wollen.',
-        cta: 'Diese Stufe starten',
+        price: 'Ab CHF 2’500',
+        title: 'Dedizierte App oder Portal',
+        body: 'Wenn der Bedarf eine separate Projektbasis, Rollen, eigene Screens oder einen Geschäftsworkflow braucht.',
+        cta: 'Bedarf qualifizieren',
         href: pathFor('/custom-tier?track=private-2000'),
       },
       {
         key: 'private-2200',
-        price: 'CHF 2’200',
-        title: 'Private Codebase + Übergabe',
-        body: 'Gleiche private Basis, mit echter Übergabe und strukturierter Erklärung des Lieferumfangs.',
-        cta: 'Diese Stufe starten',
+        price: 'Auf Anfrage',
+        title: 'Automatisierungen & Integrationen',
+        body: 'Wenn mehrere Tools Daten austauschen, manuelle Arbeit reduzieren oder einen Workflow stabiler machen sollen.',
+        cta: 'Bedarf qualifizieren',
         href: pathFor('/custom-tier?track=private-2200'),
       },
       {
         key: 'backend-4500',
-        price: 'CHF 4’500',
-        title: 'Leichtes Backend',
-        body: 'Das richtige Niveau für ein seriöses “Hello Backend”: leichte Business-Logik, Intake, Sync oder ein simples Portal.',
-        cta: 'Diese Stufe starten',
+        price: 'Auf Anfrage',
+        title: 'Internes System oder Dashboard',
+        body: 'Wenn Daten zentralisiert, Abläufe verfolgt oder Teams eine klare Arbeitsoberfläche brauchen.',
+        cta: 'Bedarf qualifizieren',
         href: pathFor('/custom-tier?track=backend-4500'),
       },
       {
         key: 'shop-8000',
-        price: 'CHF 8’000+',
-        title: 'Headless Shop oder schwereres System',
-        body: 'Für echte Architektur, Headless Commerce, Admin-Tools, Portale oder interne Plattformen.',
-        cta: 'Diese Stufe starten',
+        price: 'Nach Scoping',
+        title: 'Schwerere Plattform',
+        body: 'Wenn Architektur, Commerce, Portale, erweiterte Administration oder technische Kontinuität betroffen sind.',
+        cta: 'Bedarf qualifizieren',
         href: pathFor('/custom-tier?track=shop-8000'),
       },
     ],
@@ -264,25 +264,25 @@ const COPY = {
     ],
     architectureTitle: 'Architektur, Admin, Portal, Plattform',
     architectureBody:
-      'Diese Themen werden nicht als Menü verkauft. Die Diagnose entscheidet, ob das echte Thema ein leichtes Backend, ein Headless Shop oder eine tiefere Architekturebene ist.',
-    diagnosticEyebrow: 'Bezahlte Diagnose',
-    diagnosticTitle: '15 Min. / CHF 60, um das Thema sauber zu rahmen.',
+      'Diese Themen werden nicht als Menü verkauft. Die Qualifikation entscheidet, ob es um eine App, Automatisierung, ein internes System oder tiefere Architektur geht.',
+    diagnosticEyebrow: 'Qualifikation vor Offerte',
+    diagnosticTitle: 'Kontext vor der Preisangabe senden.',
     diagnosticLead:
-      'Das ist kein vager Call. Sie wählen einen Slot, zahlen und erhalten dann die Bestätigung und den geteilten Teams-Link.',
+      'Beschreiben Sie Bedarf, Zielbudget und Blockade. Wir melden uns mit dem rationalen nächsten Schritt: erste Antwort, Consulting, Projektvorschlag oder Referral.',
     diagnosticIncludesTitle: 'Die Pipeline',
     diagnosticIncludes: [
-      '15-Minuten-Slot vor der Zahlung gewählt.',
-      'Sofortige Stripe-Zahlung.',
-      'Bestätigungs-E-Mail mit dem geteilten Teams-Link.',
-      'Schnelle Qualifizierung: 2’000, 2’200, 4’500, 8’000+ oder ein tieferes Architekturthema.',
+      'Kontext kostenlos senden.',
+      'Prüfung von Bedarf, Timing und Budget.',
+      'Empfehlung des passenden Serviceniveaus.',
+      'Vorschlag nur, wenn der Scope Custom-Arbeit rechtfertigt.',
     ],
     selectedTrackLabel: 'Gewähltes Thema',
-    selectedTrackFallback: 'IOPartner-Diagnose — Custom systems',
+    selectedTrackFallback: 'IOPartner-Qualifikation — Custom systems',
     selectedTrackMap: {
-      'private-2000': 'Private Codebase — CHF 2’000',
-      'private-2200': 'Private Codebase + Übergabe — CHF 2’200',
-      'backend-4500': 'Leichtes Backend — CHF 4’500',
-      'shop-8000': 'Headless Shop / schwereres System — CHF 8’000+',
+      'private-2000': 'Dedizierte App oder Portal — ab CHF 2’500',
+      'private-2200': 'Automatisierungen & Integrationen — auf Anfrage',
+      'backend-4500': 'Internes System oder Dashboard — auf Anfrage',
+      'shop-8000': 'Schwerere Plattform — nach Scoping',
     },
     form: {
       dateLabel: 'Datum',
@@ -297,9 +297,9 @@ const COPY = {
       phone: 'Telefon',
       notes: 'Kontext',
       notesPlaceholder: 'Beschreiben Sie Bedarf, Budgetband und den aktuellen Engpass.',
-      submit: 'Buchen und CHF 60 bezahlen',
+      submit: 'Zur Qualifikation senden',
     },
-    note: 'Wenn Sie Custom unter CHF 2’000 suchen, ist das richtige Produkt meist nicht Custom. Starten Sie eher mit CHF 999 / CHF 1’500.',
+    note: 'Wenn Sie Custom unter CHF 2’500 suchen, ist das richtige Produkt oft eine klare Web-Präsenz, kurze Beratung oder einfachere Automatisierung.',
   },
   it: {
     title: 'IOPartner — Custom systems',
@@ -308,7 +308,7 @@ const COPY = {
     heroLead:
       'IOPartner mantiene la logica chiara dei siti di lancio e apre un secondo livello quando il lavoro richiede un codebase separato, un backend leggero o un’architettura più pesante.',
     backing: 'Strato custom sostenuto in modo discreto da IO Partner per lavori oltre il semplice sito vetrina.',
-    exactLadder: 'Ladder esatto',
+    exactLadder: 'Esempi di bisogni',
     tiers: [
       {
         key: 'starter-1500',
@@ -320,34 +320,34 @@ const COPY = {
       },
       {
         key: 'private-2000',
-        price: 'CHF 2’000',
-        title: 'Codebase privato',
-        body: 'Per uscire dall’infrastruttura condivisa e mantenere una base di progetto dedicata.',
-        cta: 'Avvia questo livello',
+        price: 'Da CHF 2’500',
+        title: 'App o portale dedicato',
+        body: 'Quando serve una base progetto separata, ruoli, schermate specifiche o un workflow métier.',
+        cta: 'Qualificare il bisogno',
         href: pathFor('/custom-tier?track=private-2000'),
       },
       {
         key: 'private-2200',
-        price: 'CHF 2’200',
-        title: 'Codebase privato + passaggio',
-        body: 'Stessa base privata, con una vera consegna e una spiegazione strutturata di ciò che è stato rilasciato.',
-        cta: 'Avvia questo livello',
+        price: 'Su preventivo',
+        title: 'Automazioni & integrazioni',
+        body: 'Quando più strumenti devono scambiare dati, ridurre lavoro manuale o rendere un workflow più affidabile.',
+        cta: 'Qualificare il bisogno',
         href: pathFor('/custom-tier?track=private-2200'),
       },
       {
         key: 'backend-4500',
-        price: 'CHF 4’500',
-        title: 'Backend leggero',
-        body: 'Il livello giusto per un “hello backend” serio: logica business leggera, intake, sync o portale semplice.',
-        cta: 'Avvia questo livello',
+        price: 'Su preventivo',
+        title: 'Sistema interno o dashboard',
+        body: 'Quando bisogna centralizzare dati, seguire operazioni o dare al team un’interfaccia chiara.',
+        cta: 'Qualificare il bisogno',
         href: pathFor('/custom-tier?track=backend-4500'),
       },
       {
         key: 'shop-8000',
-        price: 'CHF 8’000+',
-        title: 'Headless shop o sistema più pesante',
-        body: 'Per vera architettura, commercio headless, admin tool, portali o piattaforme interne.',
-        cta: 'Avvia questo livello',
+        price: 'Dopo scope',
+        title: 'Piattaforma più pesante',
+        body: 'Quando il tema coinvolge architettura, commerce, portali, amministrazione avanzata o continuità tecnica.',
+        cta: 'Qualificare il bisogno',
         href: pathFor('/custom-tier?track=shop-8000'),
       },
     ],
@@ -360,24 +360,25 @@ const COPY = {
     ],
     architectureTitle: 'Architettura, admin, portale, piattaforma',
     architectureBody:
-      'Questi temi non si vendono a catalogo. La diagnosi decide se il vero tema è un backend leggero, un headless shop o uno strato di architettura più profondo.',
-    diagnosticEyebrow: 'Diagnosi a pagamento',
-    diagnosticTitle: '15 min / CHF 60 per inquadrare bene il tema.',
-    diagnosticLead: 'Non è una chiamata vaga. Scegli uno slot, paghi, poi ricevi conferma e link Teams condiviso.',
+      'Questi temi non si vendono a catalogo. La qualificazione decide se il vero tema è app, automazione, sistema interno o architettura più profonda.',
+    diagnosticEyebrow: 'Qualificazione prima del preventivo',
+    diagnosticTitle: 'Inviare il contesto prima del prezzo.',
+    diagnosticLead:
+      'Descrivete bisogno, budget indicativo e blocco. Rispondiamo con il prossimo passo razionale: prima risposta, consulenza, proposta progetto o referral.',
     diagnosticIncludesTitle: 'La pipeline',
     diagnosticIncludes: [
-      'Slot da 15 minuti scelto prima del pagamento.',
-      'Pagamento Stripe immediato.',
-      'Email di conferma con il link Teams condiviso.',
-      'Qualificazione rapida: 2’000, 2’200, 4’500, 8’000+ o tema di architettura più profondo.',
+      'Contesto inviato gratuitamente.',
+      'Lettura di bisogno, tempi e budget.',
+      'Raccomandazione del livello di servizio giusto.',
+      'Proposta solo se lo scope giustifica un progetto custom.',
     ],
     selectedTrackLabel: 'Tema selezionato',
-    selectedTrackFallback: 'Diagnosi IOPartner — custom systems',
+    selectedTrackFallback: 'Qualificazione IOPartner — custom systems',
     selectedTrackMap: {
-      'private-2000': 'Codebase privato — CHF 2’000',
-      'private-2200': 'Codebase privato + passaggio — CHF 2’200',
-      'backend-4500': 'Backend leggero — CHF 4’500',
-      'shop-8000': 'Headless shop / sistema più pesante — CHF 8’000+',
+      'private-2000': 'App o portale dedicato — da CHF 2’500',
+      'private-2200': 'Automazioni & integrazioni — su preventivo',
+      'backend-4500': 'Sistema interno o dashboard — su preventivo',
+      'shop-8000': 'Piattaforma più pesante — dopo scope',
     },
     form: {
       dateLabel: 'Data',
@@ -392,9 +393,9 @@ const COPY = {
       phone: 'Telefono',
       notes: 'Contesto',
       notesPlaceholder: 'Descrivi bisogno, fascia di budget e ciò che sta già creando attrito.',
-      submit: 'Prenota e paga CHF 60',
+      submit: 'Inviare per qualificazione',
     },
-    note: 'Se cerchi custom sotto CHF 2’000, il prodotto giusto di solito non è il custom. Meglio iniziare da CHF 999 / CHF 1’500.',
+    note: 'Se cercate custom sotto CHF 2’500, il prodotto giusto è spesso una presenza web strutturata, una consulenza breve o un’automazione più semplice.',
   },
 } as const;
 
@@ -464,7 +465,7 @@ const diagnosticService =
               <h2 class="mt-3 text-2xl font-bold text-slate-950">{tier.title}</h2>
               <p class="mt-3 text-sm leading-6 text-slate-600">{tier.body}</p>
               <a
-                href={tier.href}
+                href={tier.key === 'starter-1500' ? tier.href : qualificationUrl}
                 class={`mt-6 inline-flex rounded-xl px-4 py-3 text-sm font-semibold transition-colors ${
                   tier.key === 'starter-1500'
                     ? 'bg-slate-950 text-white hover:bg-slate-800'
@@ -519,24 +520,21 @@ const diagnosticService =
               </ul>
             </div>
 
-            <form action="/api/booking" method="post" class="mt-6 space-y-4">
-              <BookingSlotPicker
-                dateLabel={copy.form.dateLabel}
-                slotLabel={copy.form.slotLabel}
-                chooseDateText={copy.form.chooseDate}
-                selectSlotText={copy.form.selectSlot}
-                loadingText={copy.form.loading}
-                unavailableText={copy.form.unavailable}
-                missingSlotText={copy.form.missingSlot}
-                theme="light"
-                accent="blue"
-                startHour={9}
-                endHour={17}
-                slotDurationMinutes={15}
-                slotStepMinutes={15}
-              />
+            <form action="/api/contact" method="post" class="mt-6 space-y-4">
+              <input type="hidden" name="tenant" value="iopartner" />
+              <input type="hidden" name="source" value="iopartner-custom-systems" />
               <input type="hidden" name="locale" value={locale} />
-              <input type="hidden" name="service" value={diagnosticService} />
+              <input type="hidden" name="need_type" value="custom_software" />
+              <input type="hidden" name="message" value={diagnosticService} />
+              <input type="hidden" name="form_started_at" value={formStartedAt} />
+              <label
+                class="io-honeypot"
+                aria-hidden="true"
+                style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden;"
+              >
+                Website
+                <input name="website_url" type="text" tabindex="-1" autocomplete="off" />
+              </label>
               <div class="grid gap-3 md:grid-cols-2">
                 <div class="grid gap-2">
                   <label class="text-sm font-semibold text-slate-800">{copy.form.name}</label>
@@ -569,7 +567,7 @@ const diagnosticService =
               <div class="grid gap-2">
                 <label class="text-sm font-semibold text-slate-800">{copy.form.notes}</label>
                 <textarea
-                  name="notes"
+                  name="problem"
                   rows={4}
                   placeholder={copy.form.notesPlaceholder}
                   class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder:text-slate-400"
