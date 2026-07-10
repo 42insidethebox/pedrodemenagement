@@ -7,6 +7,7 @@ import { detectRequestLocale } from '~/lib/locale';
 import Layout from '~/layouts/PageLayout.astro';
 
 const locale = detectRequestLocale(Astro.request, Astro.url);
+const localePrefix = ['en', 'de', 'it'].includes(locale) ? `/${locale}` : '';
 
 const COPY = {
   fr: {
@@ -244,8 +245,8 @@ const metadata = copy.metadata;
           <h1>{copy.heroTitle}</h1>
           <p class="io-lead">{copy.heroLead}</p>
           <div class="io-actions">
-            <a class="io-btn io-btn-primary" href="/contact?type=scoping">{copy.freeCta}</a>
-            <a class="io-btn io-btn-secondary" href="/api/payment/redirect?tenant=iopartner&plan=diagnostic60">
+            <a class="io-btn io-btn-primary" href={`${localePrefix}/contact?type=scoping`}>{copy.freeCta}</a>
+            <a class="io-btn io-btn-accent" href="/api/payment/redirect?tenant=iopartner&plan=diagnostic60">
               15 min — 60 CHF
             </a>
             <a class="io-btn io-btn-secondary" href="/api/payment/redirect?tenant=iopartner&plan=session140">
@@ -293,14 +294,14 @@ const metadata = copy.metadata;
         <h2>{copy.freeTitle}</h2>
         <p>{copy.freeBody}</p>
         <strong>{copy.freePrice}</strong>
-        <a class="io-btn io-btn-primary" href="/contact?type=scoping">{copy.freeCta}</a>
+        <a class="io-btn io-btn-primary" href={`${localePrefix}/contact?type=scoping`}>{copy.freeCta}</a>
       </article>
       <article>
         <p class="io-kicker">{copy.shortKicker}</p>
         <h2>{copy.shortTitle}</h2>
         <p>{copy.shortBody}</p>
         <strong>60 CHF</strong>
-        <a class="io-btn io-btn-secondary" href="/api/payment/redirect?tenant=iopartner&plan=diagnostic60">
+        <a class="io-btn io-btn-accent" href="/api/payment/redirect?tenant=iopartner&plan=diagnostic60">
           {copy.pay15}
         </a>
       </article>
@@ -332,8 +333,8 @@ const metadata = copy.metadata;
       <h2>{copy.finalTitle}</h2>
       <p>{copy.finalBody}</p>
       <div class="io-actions">
-        <a class="io-btn io-btn-primary" href="/contact?type=scoping">{copy.freeCta}</a>
-        <a class="io-btn io-btn-secondary" href="/api/payment/redirect?tenant=iopartner&plan=diagnostic60">
+        <a class="io-btn io-btn-primary" href={`${localePrefix}/contact?type=scoping`}>{copy.freeCta}</a>
+        <a class="io-btn io-btn-accent" href="/api/payment/redirect?tenant=iopartner&plan=diagnostic60">
           {copy.pay15}
         </a>
         <a class="io-btn io-btn-secondary" href="/api/payment/redirect?tenant=iopartner&plan=session140">
@@ -429,6 +430,12 @@ const metadata = copy.metadata;
       padding: 0.78rem 1.35rem;
       font-weight: 780;
       text-decoration: none;
+      transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        background-color 180ms ease,
+        color 180ms ease,
+        box-shadow 180ms ease;
     }
 
     .io-btn-primary {
@@ -440,6 +447,19 @@ const metadata = copy.metadata;
       border: 1px solid rgba(15, 23, 42, 0.22);
       background: rgba(255, 255, 255, 0.72);
       color: var(--io-ink);
+    }
+
+    .io-btn-accent {
+      border: 1px solid #d52b1e;
+      background: #d52b1e;
+      color: #fff;
+      box-shadow: 0 18px 34px -28px rgba(213, 43, 30, 0.7);
+    }
+
+    .io-btn-accent:hover {
+      transform: translateY(-1px);
+      border-color: #b42318;
+      background: #b42318;
     }
 
     .io-price-note {
@@ -463,6 +483,7 @@ const metadata = copy.metadata;
 
     .io-session-grid article {
       display: grid;
+      grid-template-rows: auto auto minmax(0, 1fr) auto auto;
       gap: 1rem;
       align-content: start;
       border: 1px solid var(--io-line);
@@ -497,6 +518,11 @@ const metadata = copy.metadata;
       font-size: 1.55rem;
       font-weight: 840;
       color: var(--io-ink);
+    }
+
+    .io-session-grid .io-btn {
+      align-self: end;
+      margin-top: auto;
     }
 
     .io-section-head {

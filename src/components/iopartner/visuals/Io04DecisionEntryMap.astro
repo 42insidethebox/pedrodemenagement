@@ -1,88 +1,485 @@
 ---
-import IoSourceVisualFrame from './IoSourceVisualFrame.astro';
-import html from '~/assets/iopartner/svgs/04_decision_entry_map/index.html?raw';
-import css from '~/assets/iopartner/svgs/04_decision_entry_map/style.css?raw';
-import js from '~/assets/iopartner/svgs/04_decision_entry_map/script.js?raw';
+import IoNodeIcon from '~/components/iopartner/IoNodeIcon.astro';
+import type { IoIconName } from '~/components/iopartner/ioNodeIconTypes';
 import { detectRequestLocale } from '~/lib/locale';
 
-const locale = detectRequestLocale(Astro.request, Astro.url);
+type DecisionLane = {
+  key: 'standard' | 'scoping' | 'systems';
+  label: string;
+  title: string;
+  detail: string;
+  href: string;
+  icon: IoIconName;
+  featured?: boolean;
+};
 
-const REPLACEMENTS = {
+const locale = detectRequestLocale(Astro.request, Astro.url);
+const localePrefix = ['en', 'de', 'it'].includes(locale) ? `/${locale}` : '';
+
+const COPY = {
+  fr: {
+    eyebrow: 'Carte de décision',
+    title: 'Choisir le bon niveau',
+    subtitle: 'Le besoin part au centre. Le bon format dépend de la valeur, du risque et du besoin d’autonomie.',
+    center: 'Besoin',
+    centerHint: 'standard · cadrage · niveau 3',
+    lanes: [
+      {
+        key: 'standard',
+        label: 'Niveau 1',
+        title: 'Présence web cadrée',
+        detail: '999 / 1 500 / 2 200 CHF+',
+        href: `${localePrefix}/presence-web-cadree#offres`,
+        icon: 'standard',
+      },
+      {
+        key: 'scoping',
+        label: 'Décision',
+        title: 'Cadrage technique',
+        detail: '0 CHF · 60 CHF · 140 CHF/h',
+        href: `${localePrefix}/cadrage-technique`,
+        icon: 'scope',
+      },
+      {
+        key: 'systems',
+        label: 'Niveau 3',
+        title: 'Site réel / système métier',
+        detail: 'Portail · dashboard · workflow · backend',
+        href: `${localePrefix}/systems-operations`,
+        icon: 'systems',
+        featured: true,
+      },
+    ],
+  },
   en: {
-    '<html lang="fr">': '<html lang="en">',
-    'Décider le bon niveau d’intervention': 'Choose the right intervention level',
-    'Présence web · Consulting · Systems': 'Web presence · Scoping · Systems',
-    Besoin: 'Need',
-    'Quel niveau d’intervention ?': 'Which intervention level?',
-    Cadrage: 'Scoping',
-    'Scope · risque · complexité': 'Scope · risk · complexity',
-    'Présence web cadrée': 'Scoped web presence',
-    'Site vitrine clair, rapide, cadré': 'Clear, fast, scoped brochure site',
-    'dès 999 CHF': 'from CHF 999',
-    'Consulting technique': 'Technical scoping',
-    'Arbitrer, cadrer, débloquer': 'Arbitrate, scope, unblock',
-    'Systems & operations': 'Systems & operations',
-    'Architecture, infra, automatisation': 'Architecture, infra, automation',
-    'sur devis': 'quoted',
-    'Présence web': 'Web presence',
-    'quand le besoin est simple': 'when the need is simple',
-    Consulting: 'Scoping',
-    'quand il faut décider': 'when a decision is needed',
-    Systems: 'Systems',
-    'quand le site devient système': 'when the site becomes a system',
+    eyebrow: 'Decision map',
+    title: 'Choose the right level',
+    subtitle: 'The need starts in the centre. The right format depends on value, risk, and autonomy.',
+    center: 'Need',
+    centerHint: 'standard · scoping · level 3',
+    lanes: [
+      {
+        key: 'standard',
+        label: 'Level 1',
+        title: 'Scoped web presence',
+        detail: 'CHF 999 / 1,500 / 2,200+',
+        href: `${localePrefix}/presence-web-cadree#offres`,
+        icon: 'standard',
+      },
+      {
+        key: 'scoping',
+        label: 'Decision',
+        title: 'Technical scoping',
+        detail: 'CHF 0 · CHF 60 · CHF 140/h',
+        href: `${localePrefix}/cadrage-technique`,
+        icon: 'scope',
+      },
+      {
+        key: 'systems',
+        label: 'Level 3',
+        title: 'Real site / business system',
+        detail: 'Portal · dashboard · workflow · backend',
+        href: `${localePrefix}/systems-operations`,
+        icon: 'systems',
+        featured: true,
+      },
+    ],
   },
   de: {
-    '<html lang="fr">': '<html lang="de">',
-    'Décider le bon niveau d’intervention': 'Die richtige Eingriffsebene wählen',
-    'Présence web · Consulting · Systems': 'Web-Präsenz · Scoping · Systeme',
-    Besoin: 'Bedarf',
-    'Quel niveau d’intervention ?': 'Welche Eingriffsebene?',
-    Cadrage: 'Scoping',
-    'Scope · risque · complexité': 'Scope · Risiko · Komplexität',
-    'Présence web cadrée': 'Klare Web-Präsenz',
-    'Site vitrine clair, rapide, cadré': 'Klare, schnelle, abgegrenzte Website',
-    'dès 999 CHF': 'ab CHF 999',
-    'Consulting technique': 'Technisches Scoping',
-    'Arbitrer, cadrer, débloquer': 'Abwägen, scopen, lösen',
-    'Systems & operations': 'Systeme & Betrieb',
-    'Architecture, infra, automatisation': 'Architektur, Infra, Automatisierung',
-    'sur devis': 'auf Offerte',
-    'Présence web': 'Web-Präsenz',
-    'quand le besoin est simple': 'wenn der Bedarf einfach ist',
-    Consulting: 'Scoping',
-    'quand il faut décider': 'wenn entschieden werden muss',
-    Systems: 'Systeme',
-    'quand le site devient système': 'wenn die Site zum System wird',
+    eyebrow: 'Entscheidungskarte',
+    title: 'Die richtige Ebene wählen',
+    subtitle: 'Der Bedarf startet in der Mitte. Das passende Format hängt von Wert, Risiko und Autonomie ab.',
+    center: 'Bedarf',
+    centerHint: 'Standard · Scoping · Stufe 3',
+    lanes: [
+      {
+        key: 'standard',
+        label: 'Stufe 1',
+        title: 'Klare Web-Präsenz',
+        detail: 'CHF 999 / 1’500 / 2’200+',
+        href: `${localePrefix}/presence-web-cadree#offres`,
+        icon: 'standard',
+      },
+      {
+        key: 'scoping',
+        label: 'Entscheidung',
+        title: 'Technisches Scoping',
+        detail: 'CHF 0 · CHF 60 · CHF 140/h',
+        href: `${localePrefix}/cadrage-technique`,
+        icon: 'scope',
+      },
+      {
+        key: 'systems',
+        label: 'Stufe 3',
+        title: 'Echte Site / Business-System',
+        detail: 'Portal · Dashboard · Workflow · Backend',
+        href: `${localePrefix}/systems-operations`,
+        icon: 'systems',
+        featured: true,
+      },
+    ],
   },
   it: {
-    '<html lang="fr">': '<html lang="it">',
-    'Décider le bon niveau d’intervention': 'Scegliere il giusto livello d’intervento',
-    'Présence web · Consulting · Systems': 'Presenza web · Inquadramento · Sistemi',
-    Besoin: 'Bisogno',
-    'Quel niveau d’intervention ?': 'Quale livello d’intervento?',
-    Cadrage: 'Inquadramento',
-    'Scope · risque · complexité': 'Scope · rischio · complessità',
-    'Présence web cadrée': 'Presenza web strutturata',
-    'Site vitrine clair, rapide, cadré': 'Sito vetrina chiaro, rapido, inquadrato',
-    'dès 999 CHF': 'da CHF 999',
-    'Consulting technique': 'Inquadramento tecnico',
-    'Arbitrer, cadrer, débloquer': 'Arbitrare, inquadrare, sbloccare',
-    'Systems & operations': 'Sistemi & operazioni',
-    'Architecture, infra, automatisation': 'Architettura, infra, automazione',
-    'sur devis': 'su preventivo',
-    'Présence web': 'Presenza web',
-    'quand le besoin est simple': 'quando il bisogno è semplice',
-    Consulting: 'Inquadramento',
-    'quand il faut décider': 'quando bisogna decidere',
-    Systems: 'Sistemi',
-    'quand le site devient système': 'quando il sito diventa sistema',
+    eyebrow: 'Mappa decisionale',
+    title: 'Scegliere il livello giusto',
+    subtitle: 'Il bisogno parte dal centro. Il formato giusto dipende da valore, rischio e autonomia.',
+    center: 'Bisogno',
+    centerHint: 'standard · scope · livello 3',
+    lanes: [
+      {
+        key: 'standard',
+        label: 'Livello 1',
+        title: 'Presenza web strutturata',
+        detail: 'CHF 999 / 1’500 / 2’200+',
+        href: `${localePrefix}/presence-web-cadree#offres`,
+        icon: 'standard',
+      },
+      {
+        key: 'scoping',
+        label: 'Decisione',
+        title: 'Inquadramento tecnico',
+        detail: 'CHF 0 · CHF 60 · CHF 140/h',
+        href: `${localePrefix}/cadrage-technique`,
+        icon: 'scope',
+      },
+      {
+        key: 'systems',
+        label: 'Livello 3',
+        title: 'Sito reale / sistema business',
+        detail: 'Portale · dashboard · workflow · backend',
+        href: `${localePrefix}/systems-operations`,
+        icon: 'systems',
+        featured: true,
+      },
+    ],
   },
 } as const;
 
-const localizedHtml = Object.entries(REPLACEMENTS[locale as keyof typeof REPLACEMENTS] ?? {}).reduce(
-  (document, [from, to]) => document.replaceAll(from, to),
-  html
-);
+const copy = COPY[locale as keyof typeof COPY] ?? COPY.fr;
+const lanes = copy.lanes as DecisionLane[];
 ---
 
-<IoSourceVisualFrame title="04 Decision entry map" html={localizedHtml} {css} {js} minHeight="35rem" />
+<section class="io-decision-map" aria-label={copy.title}>
+  <div class="io-map-header">
+    <p>{copy.eyebrow}</p>
+    <h2>{copy.title}</h2>
+    <span>{copy.subtitle}</span>
+  </div>
+
+  <div class="io-map-canvas">
+    <svg class="io-map-routes" viewBox="0 0 680 420" aria-hidden="true">
+      <path class="io-route io-route-standard" d="M340 210 C230 160 190 120 112 96"></path>
+      <path class="io-route io-route-scoping" d="M340 210 C250 230 214 274 120 324"></path>
+      <path class="io-route io-route-systems" d="M340 210 C456 182 496 170 572 126"></path>
+      <path class="io-route io-route-systems" d="M340 210 C454 236 500 270 584 326"></path>
+    </svg>
+
+    <div class="io-map-core">
+      <small>{copy.center}</small>
+      <strong>IOPartner</strong>
+      <span>{copy.centerHint}</span>
+    </div>
+
+    {
+      lanes.map((lane, index) => (
+        <a
+          class:list={['io-map-node', `io-map-node-${lane.key}`, lane.featured && 'is-featured']}
+          href={lane.href}
+          style={`--node-delay: ${index * 90}ms`}
+        >
+          <small>{lane.label}</small>
+          <span class="io-map-node-title">
+            <span>
+              <IoNodeIcon name={lane.icon} />
+            </span>
+            {lane.title}
+          </span>
+          <em>{lane.detail}</em>
+        </a>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .io-decision-map {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 1.6rem;
+    padding: clamp(1.2rem, 3vw, 1.7rem);
+    background:
+      linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+      linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+      radial-gradient(circle at 76% 26%, rgba(213, 43, 30, 0.18), transparent 34%),
+      linear-gradient(135deg, #06152d 0%, #0b1b36 54%, #071225 100%);
+    background-size:
+      30px 30px,
+      30px 30px,
+      auto,
+      auto;
+    color: #fff;
+    box-shadow: 0 34px 90px -62px rgba(15, 23, 42, 0.8);
+  }
+
+  .io-map-header {
+    position: relative;
+    z-index: 2;
+    max-width: 30rem;
+  }
+
+  .io-map-header p,
+  .io-map-node.is-featured small {
+    margin: 0;
+    color: #ffb1a9;
+    font-size: 0.72rem;
+    font-weight: 860;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .io-map-header h2 {
+    margin: 0.45rem 0 0;
+    color: #fff;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 890;
+    line-height: 0.96;
+  }
+
+  .io-map-header span {
+    display: block;
+    max-width: 28rem;
+    margin-top: 0.9rem;
+    color: rgba(255, 255, 255, 0.72);
+    line-height: 1.55;
+  }
+
+  .io-map-canvas {
+    position: relative;
+    min-height: 27rem;
+    margin-top: 1.2rem;
+  }
+
+  .io-map-routes {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.95;
+  }
+
+  .io-route {
+    fill: none;
+    stroke: rgba(148, 163, 184, 0.42);
+    stroke-dasharray: 7 12;
+    stroke-linecap: round;
+    stroke-width: 2;
+    animation: ioRouteFlow 6.5s linear infinite;
+  }
+
+  .io-route-systems {
+    stroke: rgba(213, 43, 30, 0.78);
+    stroke-width: 2.4;
+  }
+
+  .io-map-core {
+    position: absolute;
+    top: 46%;
+    left: 50%;
+    z-index: 2;
+    display: grid;
+    width: min(12.5rem, 42vw);
+    min-height: 8.8rem;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 1.2rem;
+    padding: 1.2rem;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.14),
+      0 28px 68px -48px rgba(0, 0, 0, 0.85);
+    text-align: center;
+    transform: translate(-50%, -50%);
+    backdrop-filter: blur(12px);
+  }
+
+  .io-map-core small {
+    color: rgba(255, 255, 255, 0.58);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .io-map-core strong {
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: 900;
+  }
+
+  .io-map-core span {
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 0.78rem;
+    font-weight: 720;
+  }
+
+  .io-map-node {
+    position: absolute;
+    z-index: 3;
+    display: grid;
+    width: min(15.5rem, 42vw);
+    gap: 0.65rem;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.93);
+    color: #0f172a;
+    text-decoration: none;
+    box-shadow: 0 20px 58px -48px rgba(0, 0, 0, 0.88);
+    opacity: 0;
+    transform: translateY(10px);
+    animation: ioMapNodeIn 520ms ease forwards;
+    animation-delay: var(--node-delay);
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease,
+      background-color 180ms ease,
+      box-shadow 180ms ease;
+  }
+
+  .io-map-node:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 255, 255, 0.34);
+    background: #fff;
+    box-shadow: 0 28px 70px -48px rgba(0, 0, 0, 0.92);
+  }
+
+  .io-map-node:active {
+    transform: translateY(-1px) scale(0.995);
+  }
+
+  .io-map-node-standard {
+    top: 0.2rem;
+    left: 0.2rem;
+  }
+
+  .io-map-node-scoping {
+    bottom: 0.2rem;
+    left: 0.7rem;
+  }
+
+  .io-map-node-systems {
+    right: 0.2rem;
+    bottom: 2rem;
+  }
+
+  .io-map-node small {
+    margin: 0;
+    color: #2563eb;
+    font-size: 0.7rem;
+    font-weight: 860;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .io-map-node-title {
+    display: flex;
+    gap: 0.65rem;
+    align-items: center;
+    color: #0f172a;
+    font-weight: 880;
+    line-height: 1.16;
+  }
+
+  .io-map-node-title span {
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    flex: 0 0 auto;
+    place-items: center;
+    border-radius: 0.62rem;
+    background: rgba(37, 99, 235, 0.08);
+    color: #0b63f6;
+  }
+
+  .io-map-node em {
+    color: #475569;
+    font-size: 0.82rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+
+  .io-map-node.is-featured {
+    top: 5rem;
+    bottom: auto;
+    overflow: hidden;
+    border-color: rgba(213, 43, 30, 0.48);
+    background: #071225;
+    color: #fff;
+  }
+
+  .io-map-node.is-featured::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background: #d52b1e;
+  }
+
+  .io-map-node.is-featured .io-map-node-title,
+  .io-map-node.is-featured em {
+    color: #fff;
+  }
+
+  .io-map-node.is-featured em {
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .io-map-node.is-featured .io-map-node-title span {
+    background: rgba(213, 43, 30, 0.16);
+    color: #ffb1a9;
+  }
+
+  @keyframes ioRouteFlow {
+    to {
+      stroke-dashoffset: -76;
+    }
+  }
+
+  @keyframes ioMapNodeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 780px) {
+    .io-map-canvas {
+      display: grid;
+      min-height: auto;
+      gap: 0.85rem;
+      margin-top: 1.5rem;
+    }
+
+    .io-map-routes {
+      display: none;
+    }
+
+    .io-map-core,
+    .io-map-node,
+    .io-map-node-standard,
+    .io-map-node-scoping,
+    .io-map-node-systems,
+    .io-map-node.is-featured {
+      position: relative;
+      inset: auto;
+      width: 100%;
+      transform: none;
+    }
+
+    .io-map-core {
+      min-height: auto;
+    }
+  }
+</style>
